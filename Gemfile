@@ -7,14 +7,6 @@ gem 'rake'
 gem 'hanami',       '0.7.2'
 gem 'hanami-model', '~> 0.5'
 
-
 gem 'pg'
-
-group :test do
-  gem 'rspec'
-  gem 'capybara'
-end
-
-group :production do
-  # gem 'puma'
-end
+gem 'unicorn', '~> 5.0'
+gem 'rack-handlers', '~> 0.7'
