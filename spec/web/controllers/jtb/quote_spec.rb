@@ -15,7 +15,7 @@ RSpec.describe Web::Controllers::Jtb::Quote do
 
 
   describe 'valid params' do
-    let(:params) { Hash[property_id: 10, check_in: Date.today, check_out: Date] }
+    let(:params) { Hash[property_id: 10, check_in: Date.today, check_out: Date.today + 3, guests_count: 12] }
     it 'is successful' do
       response = action.call(params)
       expect(response[0]).to eq 200
