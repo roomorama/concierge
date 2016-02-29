@@ -64,6 +64,7 @@ GEM
       raindrops (~> 0.7)
     url_mount (0.2.1)
       rack
+    yajl-ruby (1.2.1)
 
 PLATFORMS
   ruby
@@ -76,6 +77,7 @@ DEPENDENCIES
   rack-handlers (~> 0.7)
   rake
   unicorn (~> 5.0)
+  yajl-ruby (~> 1.2)
 
 BUNDLED WITH
    1.11.2
