@@ -2,6 +2,10 @@ GEM
   remote: https://rubygems.org/
   specs:
     addressable (2.4.0)
+    akami (1.3.1)
+      gyoku (>= 0.4.0)
+      nokogiri
+    builder (3.2.2)
     capybara (2.6.2)
       addressable
       mime-types (>= 1.16)
@@ -11,6 +15,8 @@ GEM
       xpath (~> 2.0)
     diff-lcs (1.2.5)
     dotenv (2.1.0)
+    gyoku (1.3.1)
+      builder (>= 2.1.2)
     hanami (0.7.2)
       bundler (~> 1.6)
       dotenv (~> 2.0)
@@ -52,12 +58,15 @@ GEM
     http_router (0.11.2)
       rack (>= 1.0.0)
       url_mount (~> 0.2.1)
+    httpi (2.4.1)
+      rack
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     mime-types (2.99.1)
     mini_portile2 (2.0.0)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
+    nori (2.6.0)
     pg (0.18.4)
     rack (1.6.4)
     rack-test (0.6.3)
@@ -76,6 +85,14 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
+    savon (2.11.1)
+      akami (~> 1.2)
+      builder (>= 2.1.2)
+      gyoku (~> 1.2)
+      httpi (~> 2.3)
+      nokogiri (>= 1.4.0)
+      nori (~> 2.4)
+      wasabi (~> 3.4)
     sequel (4.31.0)
     shotgun (0.9.1)
       rack (>= 1.0)
@@ -83,6 +100,9 @@ GEM
     tilt (2.0.2)
     url_mount (0.2.1)
       rack
+    wasabi (3.5.0)
+      httpi (~> 2.0)
+      nokogiri (>= 1.4.2)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -97,6 +117,7 @@ DEPENDENCIES
   pg
   rake
   rspec
+  savon
 
 BUNDLED WITH
    1.11.2

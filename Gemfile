@@ -10,6 +10,9 @@ gem 'hanami-model', '~> 0.5'
 
 gem 'pg'
 
+## APIs gems
+gem 'savon'
+
 group :test do
   gem 'rspec'
   gem 'capybara'
