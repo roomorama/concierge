@@ -30,10 +30,14 @@ module Web::Controllers::Params
 
     def check_in
       self[:check_in] && Date.parse(self[:check_in])
+    rescue ArgumentError
+      self[:check_in]
     end
 
     def check_out
       self[:check_out] && Date.parse(self[:check_out])
+    rescue ArgumentError
+      self[:check_out]
     end
 
     def stay_length

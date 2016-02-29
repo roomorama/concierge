@@ -7,6 +7,7 @@ module Web
       root __dir__
 
       load_paths << [
+        'support',
         'controllers',
         'views'
       ]

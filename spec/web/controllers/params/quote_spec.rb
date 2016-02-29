@@ -11,11 +11,21 @@ RSpec.describe Web::Controllers::Params::Quote do
     it "returns the Date representation of the check-in parameter" do
       expect(subject.check_in).to be_kind_of Date
     end
+
+    it "returns the argument given if not a valid date" do
+      params[:check_in] = "invalid-date"
+      expect(subject.check_in).to eq "invalid-date"
+    end
   end
 
   describe "#check_out" do
     it "returns the Date representation of the check-in parameter" do
       expect(subject.check_out).to be_kind_of Date
+    end
+
+    it "returns the argument given if not a valid date" do
+      params[:check_out] = "invalid-date"
+      expect(subject.check_out).to eq "invalid-date"
     end
   end
 

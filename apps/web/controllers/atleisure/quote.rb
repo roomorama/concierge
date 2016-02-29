@@ -1,19 +1,13 @@
-require_relative "../params/quote"
+require_relative "../quote"
 
 module Web::Controllers::AtLeisure
 
   class Quote
-    include Web::Action
-    params Web::Controllers::Params::Quote
+    include Web::Controllers::Quote
 
-    expose :quotation
-
-    def call(params)
-      if params.valid?
-        @quotation = Struct.new(:name, :errors).new("AtLeisure", params)
-      else
-        @quotation = Struct.new(:name, :errors).new("AtLeisure", params.error_messages)
-      end
+    def quote_price(params)
+      # AtLeisure::Client.new.quote(params)
+      Quotation.new(params)
     end
 
   end
