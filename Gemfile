@@ -12,3 +12,7 @@ gem 'unicorn', '~> 5.0'
 gem 'rack-handlers', '~> 0.7'
 
 gem 'yajl-ruby', '~> 1.2', require: 'yajl'
+
+group :test do
+  gem 'rspec', '~> 3.4.0'
+end
