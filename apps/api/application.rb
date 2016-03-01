@@ -15,11 +15,6 @@ module API
       routes 'config/routes'
       scheme 'https'
 
-      # URI host used by the routing system to generate absolute URLs
-      # Defaults to "localhost"
-      #
-      # host 'example.org'
-
       cookies false
 
       default_request_format :json
@@ -43,6 +38,8 @@ module API
     end
 
     configure :production do
+      handle_exceptions true
+
       scheme 'https'
       host   'concierge.roomorama.com'
       port   443
