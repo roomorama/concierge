@@ -2,7 +2,6 @@ module API::Views
 
   class Quote
     include API::View
-    layout false
 
     def render
       json({
