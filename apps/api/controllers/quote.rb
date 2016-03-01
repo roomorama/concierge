@@ -26,6 +26,9 @@ module API::Controllers
   #
   # The +quote_price+ is expected to return a +Quotation+ object, always. See the documentation
   # of that class for further information.
+  #
+  # If the quotation is not successful, this method returns the errors declared in the returned
+  # +Quotation+ object, and the return status is 503.
   module Quote
 
     def self.included(base)
@@ -42,7 +45,12 @@ module API::Controllers
     def call(params)
       if params.valid?
         @quotation = quote_price(params)
-        self.body = API::Views::Quote.render(exposures)
+
+        if quotation.successful?
+          self.body = API::Views::Quote.render(exposures)
+        else
+          status 503, invalid_request(quotation.errors)
+        end
       else
         status 422, invalid_request(params.error_messages)
       end

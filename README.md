@@ -36,7 +36,8 @@ Note that the `quote_price` method:
 network-related issue is happening.
 
 If there are errors during the execution of the `quote_price` method, the `Quotation`
-object returned must include a non-empty `errors` list to be returned to the caller.
+object returned must include a non-empty `errors` list to be returned to the caller,
+which will receive a `503` HTTP status.
 
 *****
 
