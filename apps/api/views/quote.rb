@@ -1,7 +1,7 @@
-module Web::Views
+module API::Views
 
   class Quote
-    include Web::View
+    include API::View
     layout false
 
     def render

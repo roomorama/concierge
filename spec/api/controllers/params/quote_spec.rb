@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Web::Controllers::Params::Quote do
+RSpec.describe API::Controllers::Params::Quote do
   let(:params) {
     { property_id: "A123", check_in: "2015-03-22", check_out: "2015-03-25", guests: 2 }
   }

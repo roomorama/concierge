@@ -1,15 +1,15 @@
 require_relative "./params/quote"
 
-module Web::Controllers
+module API::Controllers
 
   module Quote
 
     def self.included(base)
       base.class_eval do
-        include Web::Action
-        include Web::Support::JSONEncode
+        include API::Action
+        include API::Support::JSONEncode
 
-        params Web::Controllers::Params::Quote
+        params API::Controllers::Params::Quote
 
         expose :quotation
       end
@@ -18,7 +18,7 @@ module Web::Controllers
     def call(params)
       if params.valid?
         @quotation = quote_price(params)
-        self.body = Web::Views::Quote.render(exposures)
+        self.body = API::Views::Quote.render(exposures)
       else
         status 422, invalid_request(params.error_messages)
       end

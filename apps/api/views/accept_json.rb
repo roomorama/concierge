@@ -1,6 +1,6 @@
-module Web::Views
+module API::Views
   module AcceptJSON
-    include Web::Support::JSONEncode
+    include API::Support::JSONEncode
 
     def self.included(view)
       view.class_eval do

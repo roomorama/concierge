@@ -1,9 +1,9 @@
 require_relative "../quote"
 
-module Web::Controllers::AtLeisure
+module API::Controllers::AtLeisure
 
   class Quote
-    include Web::Controllers::Quote
+    include API::Controllers::Quote
 
     def quote_price(params)
       # AtLeisure::Client.new.quote(params)

@@ -1,4 +1,4 @@
-module Web::Support
+module API::Support
   module JSONEncode
 
     def json_encode(data)

@@ -2,8 +2,8 @@ require 'rubygems'
 require 'bundler/setup'
 require 'hanami/setup'
 require_relative '../lib/concierge'
-require_relative '../apps/web/application'
+require_relative '../apps/api/application'
 
 Hanami::Container.configure do
-  mount Web::Application, at: '/'
+  mount API::Application, at: '/'
 end

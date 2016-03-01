@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.shared_examples "performing parameter validations" do |action:|
+RSpec.shared_examples "performing parameter validations" do |controller_generator:|
   QuoteResponse = Struct.new(:status, :headers, :body)
 
   let(:valid_params) {
@@ -9,7 +9,7 @@ RSpec.shared_examples "performing parameter validations" do |action:|
 
   it "is invalid without a property_id" do
     valid_params.delete(:property_id)
-    response = call(action, valid_params)
+    response = call(controller_generator, valid_params)
 
     expect(response.status).to eq 422
     expect(response.body["status"]).to eq "error"
@@ -18,7 +18,7 @@ RSpec.shared_examples "performing parameter validations" do |action:|
 
   it "is invalid without a check-in date" do
     valid_params.delete(:check_in)
-    response = call(action, valid_params)
+    response = call(controller_generator, valid_params)
 
     expect(response.status).to eq 422
     expect(response.body["status"]).to eq "error"
@@ -27,7 +27,7 @@ RSpec.shared_examples "performing parameter validations" do |action:|
 
   it "is invalid without a check-out date" do
     valid_params.delete(:check_out)
-    response = call(action, valid_params)
+    response = call(controller_generator, valid_params)
 
     expect(response.status).to eq 422
     expect(response.body["status"]).to eq "error"
@@ -36,7 +36,7 @@ RSpec.shared_examples "performing parameter validations" do |action:|
 
   it "is invalid without a number of guests" do
     valid_params.delete(:guests)
-    response = call(action, valid_params)
+    response = call(controller_generator, valid_params)
 
     expect(response.status).to eq 422
     expect(response.body["status"]).to eq "error"
@@ -45,7 +45,7 @@ RSpec.shared_examples "performing parameter validations" do |action:|
 
   it "is invalid if the check-in format is not correct" do
     valid_params[:check_in] = "invalid-format"
-    response = call(action, valid_params)
+    response = call(controller_generator, valid_params)
 
     expect(response.status).to eq 422
     expect(response.body["status"]).to eq "error"
@@ -54,7 +54,7 @@ RSpec.shared_examples "performing parameter validations" do |action:|
 
   it "is invalid if the check-out format is not correct" do
     valid_params[:check_out] = "invalid-format"
-    response = call(action, valid_params)
+    response = call(controller_generator, valid_params)
 
     expect(response.status).to eq 422
     expect(response.body["status"]).to eq "error"
@@ -62,7 +62,7 @@ RSpec.shared_examples "performing parameter validations" do |action:|
   end
 
   it "is valid if all parameters are correct" do
-    response = call(action, valid_params)
+    response = call(controller_generator, valid_params)
     expect(response.status).to eq 200
     expect(response.body["status"]).to eq "ok"
   end
@@ -70,8 +70,9 @@ RSpec.shared_examples "performing parameter validations" do |action:|
 
   private
 
-  def call(action, params)
-    response = action.call(params)
+  def call(generator, params)
+    controller = generator.call
+    response = controller.call(params)
 
     # Wrap Rack data structure for an HTTP response
     QuoteResponse.new(

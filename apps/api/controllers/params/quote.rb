@@ -1,6 +1,6 @@
-module Web::Controllers::Params
+module API::Controllers::Params
 
-  class Quote < Web::Action::Params
+  class Quote < API::Action::Params
 
     DATE_FORMAT = /\d\d\d-\d\d-\d\d/
 

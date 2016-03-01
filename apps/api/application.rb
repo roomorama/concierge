@@ -1,7 +1,7 @@
 require 'hanami/helpers'
 require 'hanami/assets'
 
-module Web
+module API
   class Application < Hanami::Application
     configure do
       root __dir__
@@ -28,18 +28,9 @@ module Web
 
       layout false
 
-      # X-Frame-Options is a HTTP header supported by modern browsers.
-      # It determines if a web page can or cannot be included via <frame> and
-      # <iframe> tags by untrusted domains.
-      #
-      # Web applications can send this header to prevent Clickjacking attacks.
-      security.x_frame_options "DENY"
-
       view.prepare do
         include Hanami::Helpers
-        include Web::Assets::Helpers
-
-        include Web::Views::AcceptJSON
+        include API::Views::AcceptJSON
       end
     end
 
