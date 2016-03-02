@@ -71,10 +71,30 @@ RSpec.describe API::Support::HTTPClient do
 
   describe "#get" do
     it_behaves_like "handling errors", http_method: :get
+
+    it "returns the wrapped response object if successful" do
+      stub_call(:get, "/get-endpoint") { [200, {}, "OK"] }
+      result = subject.get("/get-endpoint")
+
+      expect(result).to be_success
+      response = result.value
+      expect(response).to be_a Faraday::Response
+      expect(response.body).to eq "OK"
+    end
   end
 
   describe "#post" do
     it_behaves_like "handling errors", http_method: :post
+
+    it "returns the wrapped response object if successful" do
+      stub_call(:post, "/post/endpoint") { [201, {}, nil] }
+      result = subject.post("/post/endpoint")
+
+      expect(result).to be_success
+      response = result.value
+      expect(response).to be_a Faraday::Response
+      expect(response.body).to be_nil
+    end
   end
 
 end
