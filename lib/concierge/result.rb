@@ -22,6 +22,22 @@ class Result
 
   Error = Struct.new(:code, :message)
 
+  # Shortcut method for creating an error result object.
+  #
+  # Example
+  #
+  #   def method
+  #     call_third_party
+  #   rescue Partner::Error => e
+  #     Result.error(:partner_error, e.message)
+  #   end
+  def self.error(code, message)
+    self.new.tap do |result|
+      result.error.code    = code
+      result.error.message = message
+    end
+  end
+
   attr_reader :result
 
   def initialize(result = nil)

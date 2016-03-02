@@ -69,20 +69,13 @@ module API::Support
       result = Result.new(yield connection)
 
     rescue Faraday::TimeoutError => err
-      error(:connection_timeout, err.message)
+      Result.error(:connection_timeout, err.message)
     rescue Faraday::ConnectionFailed => err
-      error(:connection_failed, err.message)
+      Result.error(:connection_failed, err.message)
     rescue Faraday::SSLError => err
-      error(:ssl_error, err.message)
+      Result.error(:ssl_error, err.message)
     rescue Faraday::Error => err
-      error(:network_failure, err.message)
-    end
-
-    def error(code, message)
-      Result.new.tap do |r|
-        r.error.code    = code
-        r.error.message = message
-      end
+      Result.error(:network_failure, err.message)
     end
 
   end
