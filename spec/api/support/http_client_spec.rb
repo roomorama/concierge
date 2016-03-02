@@ -49,6 +49,24 @@ RSpec.describe API::Support::HTTPClient do
       expect(result).not_to be_success
       expect(result.error.code).to eq :network_failure
     end
+
+    it "fails if the endpoint is not found" do
+      stub_call(http_method, "/") { [404, {}, "Not Found"] }
+      result = subject.public_send(http_method, "/")
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :http_status_404
+      expect(result.error.message).to eq "Not Found"
+    end
+
+    it "fails if the remote server is broken" do
+      stub_call(http_method, "/") { [500, {}, "Stack trace"] }
+      result = subject.public_send(http_method, "/")
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :http_status_500
+      expect(result.error.message).to eq "Stack trace"
+    end
   end
 
   describe "#get" do

@@ -18,6 +18,7 @@ module API::Support
   #                             get a response from the server.
   #   * +:connection_failed+  - when there is a problem connecting to the server.
   #   * +:ssl_error+          - when there was an SSL issue connecting to a server.
+  #   * +:http_status_XXX+    - when the server returns a non-successful HTTP status (200, 201).
   #   * +:network_failure+    - general error category for any error network related failure.
   #
   # In all cases, the +Result+ object returned will have an error message associated
@@ -41,6 +42,7 @@ module API::Support
     end
 
     CONNECTION_TIMEOUT = 10
+    SUCCESSFUL_STATUSES = [200, 201]
 
     attr_reader :url
 
@@ -72,7 +74,13 @@ module API::Support
     end
 
     def with_error_handling
-      result = Result.new(yield connection)
+      response = yield(connection)
+
+      if SUCCESSFUL_STATUSES.include?(response.status)
+        Result.new(response)
+      else
+        Result.error(:"http_status_#{response.status}", response.body)
+      end
 
     rescue Faraday::TimeoutError => err
       Result.error(:connection_timeout, err.message)
