@@ -1,6 +1,8 @@
 require "spec_helper"
 
 RSpec.describe API::Support::HTTPClient do
+  include Support::HTTPStubbing
+
   let(:url) { "https://api.roomorama.com" }
   subject { described_class.new(url) }
 
@@ -57,15 +59,4 @@ RSpec.describe API::Support::HTTPClient do
     it_behaves_like "handling errors", http_method: :post
   end
 
-  def stub_call(http_method, endpoint, options = {})
-    stubs = Faraday::Adapter::Test::Stubs.new do |stubs|
-      stubs.public_send(http_method, endpoint) { yield }
-    end
-
-    conn = Faraday.new(options.merge(url: url)) do |f|
-      f.adapter :test, stubs
-    end
-
-    allow(subject).to receive(:connection) { conn }
-  end
 end

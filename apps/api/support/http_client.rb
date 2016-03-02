@@ -34,6 +34,12 @@ module API::Support
   #   end
   class HTTPClient
 
+    # Bypass the default +Faraday+ connection. This is private and is not to be used
+    # in production environments.
+    class << self
+      attr_accessor :_connection
+    end
+
     CONNECTION_TIMEOUT = 10
 
     attr_reader :url
@@ -60,7 +66,7 @@ module API::Support
     private
 
     def connection
-      @connection ||= Faraday.new(url: url, request: { timeout: CONNECTION_TIMEOUT }) do |f|
+      @connection ||= self.class._connection || Faraday.new(url: url, request: { timeout: CONNECTION_TIMEOUT }) do |f|
         f.adapter :patron
       end
     end
