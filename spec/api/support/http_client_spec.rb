@@ -8,7 +8,7 @@ RSpec.describe API::Support::HTTPClient do
 
   shared_examples "handling errors" do |http_method:|
     it "is successful if the underlying HTTP request succeeds" do
-      stub_call(http_method, "/") { [200, {}, "OK"] }
+      stub_call(http_method, url) { [200, {}, "OK"] }
       result = subject.public_send(http_method, "/")
 
       expect(result).to be_success
@@ -19,7 +19,7 @@ RSpec.describe API::Support::HTTPClient do
     # unfortunately Faraday does not have native timeout support on its
     # `test` adapter.
     it "fails when the connection times out" do
-      stub_call(http_method, "/") { raise Faraday::TimeoutError }
+      stub_call(http_method, url) { raise Faraday::TimeoutError }
       result = subject.public_send(http_method, "/")
 
       expect(result).not_to be_success
@@ -27,7 +27,7 @@ RSpec.describe API::Support::HTTPClient do
     end
 
     it "fails when the connection cannot be performed" do
-      stub_call(http_method, "/") { raise Faraday::ConnectionFailed.new("getaddrinfo returned -1") }
+      stub_call(http_method, url) { raise Faraday::ConnectionFailed.new("getaddrinfo returned -1") }
       result = subject.public_send(http_method, "/")
 
       expect(result).not_to be_success
@@ -35,7 +35,7 @@ RSpec.describe API::Support::HTTPClient do
     end
 
     it "fails if there is an SSL issue" do
-      stub_call(http_method, "/") { raise Faraday::SSLError.new("SSL error") }
+      stub_call(http_method, url) { raise Faraday::SSLError.new("SSL error") }
       result = subject.public_send(http_method, "/")
 
       expect(result).not_to be_success
@@ -43,7 +43,7 @@ RSpec.describe API::Support::HTTPClient do
     end
 
     it "fails if there is any network issue during the request" do
-      stub_call(http_method, "/") { raise Faraday::Error }
+      stub_call(http_method, url) { raise Faraday::Error }
       result = subject.public_send(http_method, "/")
 
       expect(result).not_to be_success
@@ -51,7 +51,7 @@ RSpec.describe API::Support::HTTPClient do
     end
 
     it "fails if the endpoint is not found" do
-      stub_call(http_method, "/") { [404, {}, "Not Found"] }
+      stub_call(http_method, url) { [404, {}, "Not Found"] }
       result = subject.public_send(http_method, "/")
 
       expect(result).not_to be_success
@@ -60,7 +60,7 @@ RSpec.describe API::Support::HTTPClient do
     end
 
     it "fails if the remote server is broken" do
-      stub_call(http_method, "/") { [500, {}, "Stack trace"] }
+      stub_call(http_method, url) { [500, {}, "Stack trace"] }
       result = subject.public_send(http_method, "/")
 
       expect(result).not_to be_success
@@ -73,7 +73,7 @@ RSpec.describe API::Support::HTTPClient do
     it_behaves_like "handling errors", http_method: :get
 
     it "returns the wrapped response object if successful" do
-      stub_call(:get, "/get-endpoint") { [200, {}, "OK"] }
+      stub_call(:get, [url, "/get-endpoint"].join) { [200, {}, "OK"] }
       result = subject.get("/get-endpoint")
 
       expect(result).to be_success
@@ -87,7 +87,7 @@ RSpec.describe API::Support::HTTPClient do
     it_behaves_like "handling errors", http_method: :post
 
     it "returns the wrapped response object if successful" do
-      stub_call(:post, "/post/endpoint") { [201, {}, nil] }
+      stub_call(:post, [url, "/post/endpoint"].join) { [201, {}, nil] }
       result = subject.post("/post/endpoint")
 
       expect(result).to be_success

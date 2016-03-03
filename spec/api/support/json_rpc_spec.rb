@@ -69,7 +69,7 @@ RSpec.describe API::Support::JSONRPC do
         jsonrpc: "2.0",
         id:      888888888888,
         method:  "anyMethod",
-      }, {
+      }.to_json, {
         "Content-Type" => "application/json"
       }).and_call_original
 
