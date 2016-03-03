@@ -67,7 +67,7 @@ class Credentials
     # all required credentials are properly set up.
     def validate_credentials!(credentials)
       credentials.each do |supplier, required_credentials|
-        supplier_credentials = data[supplier]
+        supplier_credentials = data[supplier.to_s]
 
         unless supplier_credentials
           raise MissingSupplierError.new(supplier)
