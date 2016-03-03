@@ -21,8 +21,8 @@ class Quotation
   include Hanami::Validations
 
   attribute :property_id, type: String
-  attribute :check_in,    type: Date
-  attribute :check_out,   type: Date
+  attribute :check_in,    type: String
+  attribute :check_out,   type: String
   attribute :guests,      type: Integer
   attribute :available,   type: Boolean
   attribute :total,       type: Integer

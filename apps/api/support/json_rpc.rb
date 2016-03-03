@@ -35,6 +35,7 @@ module API::Support
   # Note that if there is a network-related issue and the request cannot be performed,
   # the error from +API::Support::HTTPClient+ will be forwarded to the caller.
   class JSONRPC
+    include API::Support::JSONEncode
 
     PROTOCOL_VERSION = "2.0"
 
@@ -55,7 +56,7 @@ module API::Support
     # call was successful or what error happened during the process
     def invoke(method, params = {})
       payload = jsonrpc_payload(method, params)
-      result = http.post(path, payload, { "Content-Type" => "application/json" })
+      result = http.post(path, json_encode(payload), { "Content-Type" => "application/json" })
 
       if result.success?
         parse_response(result.value, request_id: payload.fetch(:id))
