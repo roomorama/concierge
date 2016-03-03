@@ -15,6 +15,9 @@ gem 'patron', '~> 0.5'
 
 gem 'yajl-ruby', '~> 1.2', require: 'yajl'
 
+# partners API stuff
+gem 'savon'
+
 group :test do
   gem 'rspec', '~> 3.4.0'
 end
