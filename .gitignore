@@ -4,3 +4,4 @@
 .gitkeep
 .ruby-gemset
 Vagrantfile
+.env.*
