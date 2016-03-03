@@ -43,6 +43,23 @@ If there are errors during the execution of the `quote_price` method, the `Quota
 object returned must include a non-empty `errors` list to be returned to the caller,
 which will receive a `503` HTTP status.
 
+### Supplier Credentials
+
+Oftentimes, supplier APIs requires some form of authentication in order to authenticate
+requests coming from clients. It is highly recommended that such credentials do not
+live in the codebase or under source control, but instead be declared as environment
+variables that are going to be defined in the production environment. Credentials
+are located at the `config/credentials` directory in files that match the running
+environment.
+
+It is equally important to make sure that all required credentials are defined by the
+time the application boots in production environments. For such purpose, check the
+`apps/api/config/initializers/validate_credentials.rb` file. For each supplier, there
+is a list of required environment variables such that, if the application is booting
+in production and one of the required credentials is not present or empty, it will raise
+an exception and prevent the application from booting.
+
+
 *****
 
 Brought to you by [Roomorama](https://www.roomorama.com/).
