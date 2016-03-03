@@ -75,6 +75,7 @@ RSpec.describe AtLeisure::Price do
       expect(quotation.check_in).to eq "2016-03-22"
       expect(quotation.check_out).to eq "2016-03-25"
       expect(quotation.guests).to eq 2
+      expect(quotation.currency).to eq "EUR"
       expect(quotation.total).to be_nil
     end
 
@@ -91,6 +92,7 @@ RSpec.describe AtLeisure::Price do
       expect(quotation.check_in).to eq "2016-03-22"
       expect(quotation.check_out).to eq "2016-03-25"
       expect(quotation.guests).to eq 2
+      expect(quotation.currency).to eq "EUR"
       expect(quotation.total).to eq 150
     end
 
