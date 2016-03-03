@@ -3,9 +3,9 @@ require "spec_helper"
 RSpec.describe API::Support::JSONRPC do
   include Support::HTTPStubbing
 
-  let(:endpoint) { "https://api.roomorama.com" }
+  let(:url) { "https://api.roomorama.com/the/endpoint" }
   let(:request_id) { 888888888888 }
-  subject { described_class.new(endpoint) }
+  subject { described_class.new(url) }
 
   before do
     allow(subject).to receive(:request_id) { request_id }
@@ -14,7 +14,7 @@ RSpec.describe API::Support::JSONRPC do
   describe "#invoke" do
     context "handling errors" do
       it "redirects network errors back to the caller if the call cannot be performed" do
-        stub_call(:post, endpoint) { raise Faraday::TimeoutError }
+        stub_call(:post, url) { raise Faraday::TimeoutError }
         result = subject.invoke("anyMethod")
 
         expect(result).not_to be_success
@@ -22,7 +22,7 @@ RSpec.describe API::Support::JSONRPC do
       end
 
       it "returns a proper error if the server returns an invalid JSON response" do
-        stub_call(:post, endpoint) { build_response("invalid json") }
+        stub_call(:post, url) { build_response("invalid json") }
         result = subject.invoke("anyMethod")
 
         expect(result).not_to be_success
@@ -31,7 +31,7 @@ RSpec.describe API::Support::JSONRPC do
       end
 
       it "returns a propert error if the response ID does not match the request ID" do
-        stub_call(:post, endpoint) { build_response({ "id" => "111111111111" }.to_json) }
+        stub_call(:post, url) { build_response({ "id" => "111111111111" }.to_json) }
         result = subject.invoke("anyMethod")
 
         expect(result).not_to be_success
@@ -40,7 +40,7 @@ RSpec.describe API::Support::JSONRPC do
       end
 
       it "wraps the response error if any" do
-        stub_call(:post, endpoint) {
+        stub_call(:post, url) {
           build_response({ "id" => request_id, "error" => { "code" => "-32602", "message" => "Something went wrong"  } }.to_json)
         }
         result = subject.invoke("anyMethod")
@@ -51,7 +51,7 @@ RSpec.describe API::Support::JSONRPC do
       end
 
       it "returns an error if there is no `error` or `result` elements" do
-        stub_call(:post, endpoint) { build_response({ "id" => request_id }.to_json) }
+        stub_call(:post, url) { build_response({ "id" => request_id }.to_json) }
         result = subject.invoke("anyMethod")
 
         expect(result).not_to be_success
@@ -61,14 +61,16 @@ RSpec.describe API::Support::JSONRPC do
     end
 
     it "returns a successful result with the response data when all goes well" do
-      stub_call(:post, endpoint) {
+      stub_call(:post, url) {
         build_response({ "id" => request_id, "result" => { "Available" => true, "Price" => 100 } }.to_json)
       }
 
-      expect_any_instance_of(API::Support::HTTPClient).to receive(:post).with("/", {
+      expect_any_instance_of(API::Support::HTTPClient).to receive(:post).with("/the/endpoint", {
         jsonrpc: "2.0",
         id:      888888888888,
         method:  "anyMethod",
+      }, {
+        "Content-Type" => "application/json"
       }).and_call_original
 
       result = subject.invoke("anyMethod")

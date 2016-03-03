@@ -59,8 +59,9 @@ module API::Support
       end
     end
 
-    def post(path, params = {})
+    def post(path, params = {}, headers = {})
       with_error_handling do |conn|
+        conn.headers.merge!(headers)
         conn.post(path, params)
       end
     end

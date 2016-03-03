@@ -38,10 +38,14 @@ module API::Support
 
     PROTOCOL_VERSION = "2.0"
 
-    attr_reader :endpoint
+    attr_reader :url, :endpoint, :path
 
-    def initialize(endpoint)
-      @endpoint = endpoint
+    def initialize(url)
+      @url = url
+
+      uri = URI(url)
+      @endpoint = [uri.scheme, "://", uri.host].join
+      @path = uri.path
     end
 
     # actually performs the HTTP request to the JSON-RPC server requesting the
@@ -51,7 +55,7 @@ module API::Support
     # call was successful or what error happened during the process
     def invoke(method, params = {})
       payload = jsonrpc_payload(method, params)
-      result = http.post("/", payload)
+      result = http.post(path, payload, { "Content-Type" => "application/json" })
 
       if result.success?
         parse_response(result.value, request_id: payload.fetch(:id))
