@@ -100,10 +100,6 @@ module AtLeisure
       API::Support::JSONRPC.new(endpoint)
     end
 
-    def endpoint(name)
-      ENDPOINTS.fetch(name)
-    end
-
     def authentication_params
       @authentication_params ||= {
         "WebpartnerCode"     => credentials.username,
