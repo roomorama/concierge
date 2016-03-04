@@ -1,0 +1,87 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body>
+      <GA_HotelAvailRS NumberOfRatePlans="2" xmlns="http://service.api.genesis2.jtbgmt.com/">
+         <HotelStays>
+            <HotelStay RoomStayRPH="1 2">
+               <BasicPropertyInfo AreaID="22" HotelAddress="2-2-1, Nishishinjuku, Shinjuku-ku, Tokyo, 160-8330, JAPAN" HotelCode="4016001" HotelName="Keio Plaza Hotel Tokyo" HotelTel="00-0000-0000">
+                  <HotelCategory BathReview="Bronze" HotelGrade="SPR" HotelType="H" MealReview="Silver" OverallReview="Silver" RoomReview="Silver"/>
+                  <LocationInfo Latitude="N35.41.24.77442" Longitude="E139.41.39.0499"/>
+               </BasicPropertyInfo>
+               <OptionInfo OptionRPH="1" OptionPlanType="DIN" OptionPlanName="Modern Japanese full course dinner with great night view" OptionPlanID="TYOHKPT000000001" Description="Adults only, or 18 and older." SalesUnitType="NGT" ServiceDateType="true" EffectiveDate="2013-01-01" ExpireDate="2199-01-17">
+                  <Total OptionAmount="8100.00"/>
+               </OptionInfo>
+               <OptionInfo OptionRPH="2" OptionPlanType="TIC" OptionPlanName="Virtual skiing one day ticket" OptionPlanID="TYOHKPT000000004" Description="Enjoy our popular virtual skiing available for a limited time to August 30th." SalesUnitType="NUM" ServiceDateType="true" EffectiveDate="2013-01-01" ExpireDate="2013-08-30">
+                  <Total OptionAmount="5110.00"/>
+               </OptionInfo>
+            </HotelStay>
+         </HotelStays>
+         <RatePlans>
+            <RatePlan RatePlanID="TYOHKPT00STD1TWN" RatePlanShortName="Standard Twin" RatePlanName="Standard Twin 2-person use Room Only" EffectiveDate="2013-01-01" ExpireDate="2013-12-31">
+               <MealsIncluded MealPlanCodes="RMO" MealPlanNames="Room Only"/>
+               <OptionRatePlans RPH="1" OptionRPH="1 2"/>
+            </RatePlan>
+            <RatePlan RatePlanID="TYOHKPT00STD1DBL" RatePlanShortName="Standard Double" RatePlanName="Standard Double 2-person use Room Only" EffectiveDate="2013-01-01" ExpireDate="2013-12-31">
+               <MealsIncluded MealPlanCodes="RMO" MealPlanNames="Room Only"/>
+               <OptionRatePlans RPH="1" OptionRPH="1 2"/>
+            </RatePlan>
+         </RatePlans>
+         <RoomStays Start="2013-04-01" End="2013-04-02">
+            <RoomStay RPH="1" AvailabilityStatus="OK" NumberOfUnitsForTheDay="999" MinStay="1">
+               <RatePlans>
+                  <RatePlan RatePlanID="TYOHKPT00STD1TWN"/>
+               </RatePlans>
+               <TimeSpan Start="2013-04-01" End="2013-04-01"/>
+               <RoomRates>
+                  <RoomRate RoomTypeCode="TWN" RoomGrade="STD" NumberOfUnits="999">
+                     <Total AmountAfterTax="20700.00"/>
+                  </RoomRate>
+               </RoomRates>
+               <RoomTypes>
+                  <RoomType RoomTypeCode="TWN" RoomGrade="STD" RoomType="Standard Twin">
+                     <Occupancy MaxOccupancy="2" AgeQualifyingCode="ADL"/>
+                  </RoomType>
+               </RoomTypes>
+               <CancelPenalties>
+                  <CancelPenalty Start="2013-04-02" End="2015-12-26" Duration="1">
+                     <AmountPercent Percent="100.00"/>
+                  </CancelPenalty>
+                  <CancelPenalty Start="2013-04-01" End="2013-04-01" Duration="1">
+                     <AmountPercent Percent="80.00"/>
+                  </CancelPenalty>
+                  <CancelPenalty Start="2013-03-31" End="2013-03-31" Duration="1">
+                     <AmountPercent Percent="20.00"/>
+                  </CancelPenalty>
+               </CancelPenalties>
+            </RoomStay>
+            <RoomStay RPH="2" AvailabilityStatus="OK" NumberOfUnitsForTheDay="999" MinStay="1">
+               <RatePlans>
+                  <RatePlan RatePlanID="TYOHKPT00STD1DBL"/>
+               </RatePlans>
+               <TimeSpan Start="2013-04-01" End="2013-04-01"/>
+               <RoomRates>
+                  <RoomRate RoomTypeCode="DBL" RoomGrade="STD" NumberOfUnits="999">
+                     <Total AmountAfterTax="22770.00"/>
+                  </RoomRate>
+               </RoomRates>
+               <RoomTypes>
+                  <RoomType RoomTypeCode="DBL" RoomGrade="STD" RoomType="Standard Double">
+                     <Occupancy MaxOccupancy="2" AgeQualifyingCode="ADL"/>
+                  </RoomType>
+               </RoomTypes>
+               <CancelPenalties>
+                  <CancelPenalty Start="2013-04-02" End="2015-12-26" Duration="1">
+                     <AmountPercent Percent="100.00"/>
+                  </CancelPenalty>
+                  <CancelPenalty Start="2013-04-01" End="2013-04-01" Duration="1">
+                     <AmountPercent Percent="80.00"/>
+                  </CancelPenalty>
+                  <CancelPenalty Start="2013-03-31" End="2013-03-31" Duration="1">
+                     <AmountPercent Percent="20.00"/>
+                  </CancelPenalty>
+               </CancelPenalties>
+            </RoomStay>
+         </RoomStays>
+         <Success/>
+      </GA_HotelAvailRS>
+   </soap:Body>
+</soap:Envelope>

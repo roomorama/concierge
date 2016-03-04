@@ -1,0 +1,62 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body>
+      <GA_CancelRS PassiveIndicator="false" Status="XL" xmlns="http://service.api.genesis2.jtbgmt.com/">
+         <UniqueID ID="K2BDJY0001"/>
+         <Verification>
+            <RatePlans>
+               <RatePlan RatePlanID="TYOHKPT00STD1DBL"/>
+            </RatePlans>
+            <Comments>
+               <Comment>
+                  <Text>Free comments area for agents.</Text>
+               </Comment>
+            </Comments>
+            <ReservationTimeSpan Start="2013-04-01"/>
+         </Verification>
+         <CancelInfoRS>
+            <CancelRules>
+               <CancelRule Amount="11034.00">
+                  <RoomStays>
+                     <RoomStay>
+                        <TimeSpan Start="2013-04-01" End="2013-04-01"/>
+                        <RoomRates>
+                           <RoomRate RoomID="1" TotalForCancellation="4554.00">
+                              <GuestRate Amount="2277.00" PNRPAXID="001"/>
+                              <GuestRate Amount="2277.00" PNRPAXID="002"/>
+                           </RoomRate>
+                        </RoomRates>
+                        <CancelPenalties>
+                           <CancelPenalty Start="2013-04-02" End="2015-12-26" duration="1">
+                              <AmountPercent Percent="100.00"/>
+                           </CancelPenalty>
+                           <CancelPenalty Start="2013-04-01" End="2013-04-01" duration="1">
+                              <AmountPercent Percent="80.00"/>
+                           </CancelPenalty>
+                           <CancelPenalty Start="2013-03-31" End="2013-03-31" duration="1">
+                              <AmountPercent Percent="20.00"/>
+                           </CancelPenalty>
+                        </CancelPenalties>
+                     </RoomStay>
+                  </RoomStays>
+                  <OptionRatePlans>
+                     <OptionRatePlan NumberOfOptionOrder="2" OptionPlanID="TYOHKPT000000001" TotalForCancellation="6480.00">
+                        <CancelPenalties>
+                           <CancelPenalty Start="2013-04-02" End="2015-12-26" duration="1">
+                              <AmountPercent Percent="100.00"/>
+                           </CancelPenalty>
+                           <CancelPenalty Start="2013-04-01" End="2013-04-01" duration="1">
+                              <AmountPercent Percent="80.00"/>
+                           </CancelPenalty>
+                           <CancelPenalty Start="2013-03-31" End="2013-03-31" duration="1">
+                              <AmountPercent Percent="20.00"/>
+                           </CancelPenalty>
+                        </CancelPenalties>
+                     </OptionRatePlan>
+                  </OptionRatePlans>
+               </CancelRule>
+            </CancelRules>
+         </CancelInfoRS>
+         <Success/>
+      </GA_CancelRS>
+   </soap:Body>
+</soap:Envelope>

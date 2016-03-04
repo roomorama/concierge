@@ -1,0 +1,83 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body>
+      <GA_HotelResRS xmlns="http://service.api.genesis2.jtbgmt.com/">
+         <HotelReservations>
+            <HotelReservation CreateDateTime="2013-03-01" PNR="K2BDJY" PassiveIndicator="false" ResStatus="OK">
+               <Memo>Free comments area for agents.</Memo>
+               <UniqueID ID="K2BDJY0001"/>
+               <ResGuests>
+                  <ResGuest ResGuestRPH="1" PrimaryIndicator="true" Age="31" AgeQualifyingCode="ADL">
+                     <Customer>
+                        <PersonName>
+                           <GivenName>GivenName1</GivenName>
+                           <Surname>Surname1</Surname>
+                           <NamePrefix>Mr</NamePrefix>
+                        </PersonName>
+                        <PNRPAXID>001</PNRPAXID>
+                     </Customer>
+                  </ResGuest>
+                  <ResGuest ResGuestRPH="2" PrimaryIndicator="false" Age="25" AgeQualifyingCode="ADL">
+                     <Customer>
+                        <PersonName>
+                           <GivenName>GivenName2</GivenName>
+                           <Surname>Surname2</Surname>
+                           <NamePrefix>Ms</NamePrefix>
+                        </PersonName>
+                        <PNRPAXID>002</PNRPAXID>
+                     </Customer>
+                  </ResGuest>
+               </ResGuests>
+               <ResGlobalInfo>
+                  <RatePlans>
+                     <RatePlan EffectiveDate="2013-01-01" ExpireDate="2013-12-31" RatePlanID="TYOHKPT00STD1DBL" RatePlanName="Standard Double 2-person use Room Only">
+                        <MealsIncluded MealPlanCodes="RMO" MealPlanNames="Room Only"/>
+                     </RatePlan>
+                  </RatePlans>
+                  <HotelStays>
+                     <HotelStay>
+                        <BasicPropertyInfo AreaID="22" HotelAddress="2-2-1, Nishishinjuku, Shinjuku-ku, Tokyo, 160-8330, JAPAN" HotelCode="4016001" HotelName="Keio Plaza Hotel Tokyo" HotelTel="00-0000-0000">
+                           <LocationInfo Latitude="N35.41.24.77442" Longitude="E139.41.39.0499"/>
+                        </BasicPropertyInfo>
+                     </HotelStay>
+                  </HotelStays>
+                  <TimeSpan Start="2013-04-01"/>
+                  <Total AmountAfterTax="30870.00"/>
+               </ResGlobalInfo>
+               <RoomStays>
+                  <RoomStay>
+                     <TimeSpan Start="2013-04-01" End="2013-04-01" StartTime="1400"/>
+                     <RoomRates>
+                        <RoomRate RoomID="1" RoomTypeCode="DBL" RoomType="Standard Double" RoomGrade="STD">
+                           <Total AmountAfterTax="22770.00">
+                              <GuestRate AmountAfterTax="11385.00" PNRPAXID="001"/>
+                              <GuestRate AmountAfterTax="11385.00" PNRPAXID="002"/>
+                           </Total>
+                        </RoomRate>
+                     </RoomRates>
+                     <CancelPenalties>
+                        <CancelPenalty Start="2013-04-02" End="2015-12-26" duration="1">
+                           <AmountPercent Percent="100.00"/>
+                        </CancelPenalty>
+                        <CancelPenalty Start="2013-04-01" End="2013-04-01" duration="1">
+                           <AmountPercent Percent="80.00"/>
+                        </CancelPenalty>
+                        <CancelPenalty Start="2013-03-31" End="2013-03-31" duration="1">
+                           <AmountPercent Percent="20.00"/>
+                        </CancelPenalty>
+                     </CancelPenalties>
+                  </RoomStay>
+               </RoomStays>
+               <OptionRatePlans>
+                  <OptionRatePlan NumberOfOptionOrder="2" OptionPlanName="Modern Japanese full course dinner with great night view" OptionPlanID="TYOHKPT000000001" ServiceDate="2013-04-01" OptionAmount="8100.00"/>
+               </OptionRatePlans>
+               <Comments>
+                  <Comment>
+                     <Text>This attribute is used for short message from agents to hotels.</Text>
+                  </Comment>
+               </Comments>
+            </HotelReservation>
+         </HotelReservations>
+         <Success/>
+      </GA_HotelResRS>
+   </soap:Body>
+</soap:Envelope>

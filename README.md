@@ -1,5 +1,9 @@
 # <img src="https://cloud.githubusercontent.com/assets/613784/13418979/98600198-dfb5-11e5-96fd-142dc2932b10.png" height="80" width="80" /> Concierge
 
+<a href="https://circleci.com/gh/roomorama/concierge/tree/master">
+  <img src="https://circleci.com/gh/roomorama/concierge.svg?style=shield&circle-token=bd8f156b6313c0c08cfd943593287516720250fb" />
+</a>
+
 `Concierge` performs calls to Roomorama suppliers. It is able to make booking quotations
 and making actual bookings with partners.
 
