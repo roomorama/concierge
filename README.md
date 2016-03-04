@@ -7,6 +7,15 @@
 `Concierge` performs calls to Roomorama suppliers. It is able to make booking quotations
 and making actual bookings with partners.
 
+### Supplier Partners
+
+Concierge communicates with a number of Roomorama suppliers. For a technical
+description of the workings of each supplier API, check the project [Wiki](https://github.com/roomorama/concierge/wiki).
+
+What follows below is a general overview on how to add support for a new
+supplier on Concierge. Before starting, it is highly recommended to
+read the [project goals](https://github.com/roomorama/concierge/wiki/Concierge-Service-Goals).
+
 ### Quoting bookings
 
 To add the capability of quoting a booking for a new supplier, create a new controller
