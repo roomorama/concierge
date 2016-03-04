@@ -1,13 +1,12 @@
 require 'spec_helper'
-require_relative '../../support/helpers/jtb_client_helper'
 
 RSpec.describe Jtb::Client do
-  include JtbClientHelper
+  include Support::JtbClientHelper
 
-  before(:all) { savon.mock! }
-  after(:all)  { savon.unmock! }
-
-  let(:api) { double('Jtb::Api')}
+  let(:credentials) {
+    { id: 'some id', user: 'Roberto', password: '123', company: 'Apple' }
+  }
+  subject { described_class.new(credentials) }
 
   describe '#quote' do
     context 'success' do
@@ -21,9 +20,8 @@ RSpec.describe Jtb::Client do
         )
       end
 
-      before { allow(api).to receive(:quote_price).and_return(success_response) }
-
       it 'returns quotation with optimal price' do
+        allow_any_instance_of(Jtb::Api).to receive(:quote_price) { success_response }
         quotation = subject.quote({})
         expect(quotation).to be_a Quotation
         expect(quotation.total).to eq 2000
@@ -31,10 +29,14 @@ RSpec.describe Jtb::Client do
     end
 
     context 'fail' do
+      let(:fail_response) {
+        { ga_hotel_avail_rs: { error: 'Some error' } }
+      }
+
       it 'returns quotation' do
-        allow(api).to receive(:quote_price).and_return({})
+        allow_any_instance_of(Jtb::Api).to receive(:quote_price) { fail_response }
         quotation = subject.quote({})
-        expect(quotation.total).to be_nil
+        expect(quotation).to_not be_successful
       end
 
     end

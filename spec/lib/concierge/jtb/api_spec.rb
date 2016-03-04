@@ -1,8 +1,8 @@
 require 'spec_helper'
-require_relative '../../support/helpers/jtb_client_helper'
 
 RSpec.describe Jtb::Api do
-  include JtbClientHelper
+  include Support::Fixtures
+  include Support::JtbClientHelper
 
   let(:credentials) {
     { id: 'some id', user: 'Roberto', password: '123', company: 'Apple' }
@@ -42,7 +42,7 @@ RSpec.describe Jtb::Api do
 
     describe '#quote_price' do
       let(:message) { subject.build_availabilities({}) }
-      let(:fixture) { File.read('spec/support/fixtures/jtb/GA_HotelAvailRS.xml') }
+      let(:fixture) { read_fixture('jtb/GA_HotelAvailRS.xml') }
 
       it 'returns hash' do
         savon.expects(:gby010).with(message: message.to_xml).returns(fixture)

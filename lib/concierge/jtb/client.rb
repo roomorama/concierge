@@ -10,9 +10,12 @@ module Jtb
 
     def quote(params)
       response = api.quote_price(params)
-      rates    = prepare response
-      total    = extract_total_from(rates)
-      Quotation.new(params.to_h.merge(currency: JTB_CURRENCY))
+      total    = extract_total_from(response)
+      if total
+        Quotation.new(params.to_h.merge(currency: JTB_CURRENCY, total: total))
+      else
+        Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
+      end
     end
 
     private
@@ -21,7 +24,7 @@ module Jtb
       @api ||= Jtb::Api.new(credentials)
     end
 
-    def prepare(response)
+    def parse(response)
       availabilities = response.dig(:ga_hotel_avail_rs, :room_stays, :room_stay)
       return unless availabilities
 
@@ -36,7 +39,9 @@ module Jtb
       end.compact
     end
 
-    def extract_total_from(rates)
+    def extract_total_from(response)
+      rates = parse response
+      return unless rates
       cheapest_rate = rates.min_by { |rate| rate[:price].to_i }
       cheapest_rate[:price]
     end
