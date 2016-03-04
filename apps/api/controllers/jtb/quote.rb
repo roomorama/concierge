@@ -9,7 +9,8 @@ module API::Controllers::Jtb
     include API::Controllers::Quote
 
     def quote_price(params)
-      Jtb::Client.new.quote(params)
+      credentials = Credentials.for("jtb")
+      Jtb::Client.new(credentials).quote(params)
     end
 
   end
