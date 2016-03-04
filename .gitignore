@@ -5,3 +5,5 @@
 .ruby-gemset
 Vagrantfile
 .env.*
+.rspec
+.ruby-version
