@@ -1,7 +1,10 @@
 require "spec_helper"
 
-RSpec.shared_examples "performing parameter validations" do |controller_generator:|
+module Shared
   QuoteResponse = Struct.new(:status, :headers, :body)
+end
+
+RSpec.shared_examples "performing parameter validations" do |controller_generator:|
 
   let(:valid_params) {
     { property_id: "A123", check_in: "2016-03-22", check_out: "2016-03-24", guests: 2 }
@@ -86,7 +89,7 @@ RSpec.shared_examples "performing parameter validations" do |controller_generato
     response = controller.call(params)
 
     # Wrap Rack data structure for an HTTP response
-    QuoteResponse.new(
+    Shared::QuoteResponse.new(
       response[0],
       response[1],
       JSON.parse(response[2].first)

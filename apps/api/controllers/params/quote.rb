@@ -47,28 +47,26 @@ module API::Controllers::Params
     end
 
     # Returns a +Date+ representation of the check-in date given in the call.
-    # If the parameter cannot be parsed to a valid date, this method will just
-    # return the check-in parameter intact.
-    def check_in
+    # If the parameter cannot be parsed to a valid date, this method will
+    # return +nil+.
+    def check_in_date
       self[:check_in] && Date.parse(self[:check_in])
     rescue ArgumentError
       # check-in parameter is not a valid date
-      self[:check_in]
     end
 
     # Returns a +Date+ representation of the check-out date given in the call.
-    # If the parameter cannot be parsed to a valid date, this method will just
-    # return the check-out parameter intact.
-    def check_out
+    # If the parameter cannot be parsed to a valid date, this method will
+    # return +nil+.
+    def check_out_date
       self[:check_out] && Date.parse(self[:check_out])
     rescue ArgumentError
       # check-out parameter is not a valid date
-      self[:check_out]
     end
 
     def stay_length
-      if check_in && check_out
-        check_out - check_in
+      if check_in_date && check_out_date
+        check_out_date - check_in_date
       end
     end
 

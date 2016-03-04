@@ -7,3 +7,4 @@ Vagrantfile
 .env.*
 .rspec
 .ruby-version
+/config/credentials/development.yml
