@@ -1,8 +1,8 @@
 require 'spec_helper'
-require 'savon/mock/spec_helper'
+require_relative '../../support/helpers/jtb_client_helper'
 
 RSpec.describe Jtb::Api do
-  include Savon::SpecHelper
+  include JtbClientHelper
 
   let(:credentials) {
     { id: 'some id', user: 'Roberto', password: '123', company: 'Apple' }
@@ -52,12 +52,5 @@ RSpec.describe Jtb::Api do
       end
     end
 
-  end
-
-
-  private
-
-  def attribute_for(message, tag, attribute)
-    message.xpath("//jtb:#{tag}").map { |item| item[attribute] }.first
   end
 end
