@@ -29,7 +29,7 @@ RSpec.describe AtLeisure::Price do
       result = subject.quote(params)
 
       expect(result).not_to be_success
-      expect(result.error.code).to eq :invalid_json_response
+      expect(result.error.code).to eq :invalid_json_representation
     end
   end
 

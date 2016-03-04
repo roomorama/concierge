@@ -22,7 +22,7 @@ module API::Views
   #     end
   #   end
   module AcceptJSON
-    include API::Support::JSONEncode
+    include API::Support::JSON
 
     def self.included(view)
       view.class_eval do
