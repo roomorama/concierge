@@ -1,0 +1,11 @@
+{
+  "API_CALL_ID": "6a404761-820f-49bc-a505-ce988f44b534",
+  "API_DEPRECATED": "RES_CREATE has been deprecated. If it is provided, it must be set to today.",
+  "API_METHOD": "computePricing",
+  "API_REPLY": null,
+  "API_RESULT_CODE": "E_NOSUCH",
+  "API_RESULT_TEXT": "The property was not found, or is unavailable (i.e. was deactivated).",
+  "API_REVISION": 3,
+  "API_VERSION": 1
+}
+

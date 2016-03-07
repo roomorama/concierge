@@ -11,6 +11,7 @@
 #   +check_out+:   the check-out date for the stay
 #   +guests+:      the number of guests
 #   +available+:   whether or not the property is available for the given dates
+#   +fee+:         total fees applicable to the booking
 #   +total+:       the quoted price for the booking
 #   +currency+:    the currency used for the quotation
 #   +errors+:      if there were any errors during the quotation with the partner,
@@ -27,6 +28,7 @@ class Quotation
   attribute :check_out,   type: String
   attribute :guests,      type: Integer
   attribute :available,   type: Boolean
+  attribute :fee,         type: Integer
   attribute :total,       type: Integer
   attribute :currency,    type: String
   attribute :errors,      type: Hash

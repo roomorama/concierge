@@ -1,0 +1,25 @@
+{
+    "API_CALL_ID": "20160304114457-fce31f3ada37f868c87c94616c3413e604649fd014fe00d0f92af0cdd906c99d",
+    "API_METHOD": "computePricing",
+    "API_REPLY": {
+        "CURRENCY": "EUR",
+        "DEPOSIT_AMOUNT": "0.00",
+        "DEPOSIT_DUE_DATE": null,
+        "EXTRA_GUEST_CHARGES_AMOUNT": "0.00",
+        "FEES_AMOUNT": "0.00",
+        "FEES_DUE_DATE": null,
+        "RENT_AMOUNT": "570.00",
+        "RENT_BASE_AMOUNT": "570.00",
+        "RENT_DISCOUNTS_AMOUNT": "0.00",
+        "RENT_DOWN_PMT_AMOUNT": "570.00",
+        "RENT_DOWN_PMT_DUE_DATE": "2016-03-04",
+        "RENT_FEES_AMOUNT": "0.00",
+        "RENT_GUEST_CHARGES_AMOUNT": "0.00",
+        "RENT_REM_PMT_AMOUNT": "0.00",
+        "RENT_REM_PMT_DUE_DATE": null
+    },
+    "API_RESULT_CODE": "E_OK",
+    "API_RESULT_TEXT": "",
+    "API_REVISION": 14,
+    "API_VERSION": 1
+}
