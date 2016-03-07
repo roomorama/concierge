@@ -15,8 +15,11 @@ RSpec.describe Jtb::Price do
         build_quote_response(
             [
                 availability(price: '2000', date: '2016-10-10', status: 'OK', rate_plan_id: 'good rate'),
+                availability(price: '2100', date: '2016-10-11', status: 'OK', rate_plan_id: 'good rate'),
                 availability(price: '1000', date: '2016-10-10', status: 'UC', rate_plan_id: 'abc'),
+                availability(price: '1100', date: '2016-10-11', status: 'UC', rate_plan_id: 'abc'),
                 availability(price: '4000', date: '2016-10-10', status: 'OK', rate_plan_id: 'expensive_rate'),
+                availability(price: '4100', date: '2016-10-11', status: 'OK', rate_plan_id: 'expensive_rate'),
             ]
         )
       end
@@ -31,7 +34,7 @@ RSpec.describe Jtb::Price do
 
         quotation = result.value
         expect(quotation).to be_successful
-        expect(quotation.total).to eq 2000
+        expect(quotation.total).to eq 4100
         expect(quotation.available).to be true
       end
     end
