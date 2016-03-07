@@ -62,8 +62,7 @@ module API::Support
 
       if options[:basic_auth]
         basic_auth = options.fetch(:basic_auth)
-        @username = basic_auth.fetch(:username)
-        @password = basic_auth.fetch(:password)
+        connection.basic_auth(basic_auth.fetch(:username), basic_auth.fetch(:password))
       end
     end
 
@@ -85,10 +84,6 @@ module API::Support
     def connection
       @connection ||= self.class._connection || Faraday.new(url: url, request: { timeout: CONNECTION_TIMEOUT }) do |f|
         f.adapter :patron
-
-        if password
-          f.adapter :basic_authentication, username, password
-        end
       end
     end
 
