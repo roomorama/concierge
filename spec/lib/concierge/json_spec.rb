@@ -1,7 +1,7 @@
 require "spec_helper"
 
-RSpec.describe API::Support::JSON do
-  include API::Support::JSON
+RSpec.describe Concierge::JSON do
+  include Concierge::JSON
 
   describe "#json_encode" do
     it "transforms data to a valid JSON representation" do
