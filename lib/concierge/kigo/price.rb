@@ -37,7 +37,7 @@ module Kigo
       result       = http.post(endpoint, stay_details)
 
       if result.success?
-        parser.compute_pricing(params, result.value)
+        response_parser.compute_pricing(params, result.value.body)
       else
         result
       end
