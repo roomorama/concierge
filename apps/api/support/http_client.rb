@@ -48,12 +48,20 @@ module API::Support
 
     # Creates a new +API::Support::HTTPClient+ instance.
     #
-    # url        - the base URL to which upcoming requests will be performed.
-    # basic_auth - a +Hash+ containing +username+ and +password+ for HTTP Basic Authentication
-    def initialize(url, basic_auth = nil)
+    # url     - the base URL to which upcoming requests will be performed.
+    # options - a +Hash+ of options. Only +basic_auth+ is supported.
+    #
+    # Example
+    #
+    #   HTTPClient.new("https://www.example.org", basic_auth: {
+    #     username: "user",
+    #     password: "password"
+    #   })
+    def initialize(url, options = {})
       @url = url
 
-      if basic_auth
+      if options[:basic_auth]
+        basic_auth = options.fetch(:basic_auth)
         @username = basic_auth.fetch(:username)
         @password = basic_auth.fetch(:password)
       end

@@ -1,14 +1,14 @@
 require "spec_helper"
-require_relative "../shared/quote_validations"
+require_relative "../../shared/quote_validations"
 
-RSpec.describe API::Controllers::Kigo::Quote do
+RSpec.describe API::Controllers::Kigo::Legacy::Quote do
   include Support::HTTPStubbing
   include Support::Fixtures
 
   it_behaves_like "performing parameter validations", controller_generator: -> { described_class.new }
 
   describe "#call" do
-    let(:endpoint) { "https://www.kigoapis.com/channels/v1/computePricing" }
+    let(:endpoint) { "https://app.kigo.net/api/ra/v1/computePricing" }
     let(:params) {
       { property_id: "567", check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
     }
