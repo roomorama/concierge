@@ -39,6 +39,16 @@ RSpec.describe Kigo::ResponseParser do
       expect(result.error.code).to eq :unrecognised_response
     end
 
+    it "is unavailable if the API indicates so" do
+      response = read_fixture("kigo/unavailable.json")
+      result = subject.compute_pricing(request_params, response)
+
+      expect(result).to be_success
+      quotation = result.value
+      expect(quotation).to be_a Quotation
+      expect(quotation.available).to eq false
+    end
+
     it "returns a quotation with the returned information on success" do
       response = read_fixture("kigo/success.json")
       result = subject.compute_pricing(request_params, response)

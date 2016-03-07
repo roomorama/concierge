@@ -1,0 +1,9 @@
+{
+  "API_CALL_ID": "779a4c12-2764-4274-a0a5-4df19382f015",
+  "API_METHOD": "computePricing",
+  "API_REPLY": null,
+  "API_RESULT_CODE": "E_NOSUCH",
+  "API_RESULT_TEXT": "The property was not found, or is unavailable (i.e. was deactivated). Unfortunately, this unit is not available for your selected period. Please try another unit.",
+  "API_REVISION": 3,
+  "API_VERSION": 1
+}

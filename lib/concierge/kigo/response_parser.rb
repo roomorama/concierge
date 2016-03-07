@@ -31,9 +31,9 @@ module Kigo
       return decoded_payload unless decoded_payload.success?
 
       payload = decoded_payload.value
+      quotation = build_quotation(request_params)
 
       if payload["API_RESULT_CODE"] == "E_OK"
-        quotation = build_quotation(request_params)
         reply = payload["API_REPLY"]
         return unrecognised_response(response) unless reply
 
@@ -50,6 +50,15 @@ module Kigo
         quotation.fee       = fees.to_i
         quotation.total     = total.to_i
 
+        Result.new(quotation)
+      elsif payload["API_RESULT_CODE"] == "E_NOSUCH" && payload["API_RESULT_TEXT"] =~ /is not available for your selected period/
+        # Kigo uses the same result code (+E_NOSUCH+) to indicate when a property ID
+        # is unknown and when the property exists, but is unavailable for the selected
+        # dates. To determine which is the case, it is necessary to parse the
+        # +API_RESULT_TEXT+ and check if it mentions that the property is unavailable
+        # for the requested dates.
+
+        quotation.available = false
         Result.new(quotation)
       else
         Result.error(:quote_call_failed, payload.to_s)
