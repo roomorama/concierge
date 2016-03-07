@@ -1,6 +1,6 @@
 module Kigo
 
-  # +Kigo::RequestBuilder+
+  # +Kigo::Request+
   #
   # This class is responsible for building the request payload to be sent to Kigo's
   # API, for different calls. It can be extended for usage with the Legacy API
@@ -8,10 +8,20 @@ module Kigo
   #
   # Usage
   #
-  #   builder = Kigo::RequestBuilder.new
-  #   builder.compute_pricing(params)
+  #   request = Kigo::Request.new
+  #   request.build_compute_pricing(params)
   #   # => #<Result error=nil value={ "PROP_ID" => 123, ... }>
-  class RequestBuilder
+  class Request
+    BASE_URI = "https://www.kigoapis.com"
+
+    # Returns a String with the base URL of the API.
+    def base_uri
+      BASE_URI
+    end
+
+    # Returns an authenticated HTTP client to be used with Kigo's API.
+    def http_client
+    end
 
     # Builds the required request parameters for a +computePricing+ Kigo API call.
     # Property identifiers are numerical in Kigo, and they must be sent as numbers.
@@ -19,7 +29,7 @@ module Kigo
     #
     # Returns a +Result+ instance encapsulating the operation. Fails with code
     # +invalid_property_id+ if the ID cannot be converted to an integer.
-    def compute_pricing(params)
+    def build_compute_pricing(params)
       property_id_conversion = to_integer(params[:property_id], :invalid_property_id)
 
       if property_id_conversion.success?
