@@ -1,18 +1,20 @@
 module Kigo
 
-  # +AtLeisure::Client+
+  # +Kigo::Client+
   #
-  # This class is a convenience class for the smaller classes under +AtLeisure+.
+  # This class is a convenience class for the smaller classes under +Kigo+.
   # For now, it allows the caller to get price quotations.
   #
   # Usage
   #
-  #   quotation = AtLeisure::Client.new(credentials).quote(stay_params)
+  #   quotation = Kigo::Client.new(credentials).quote(stay_params)
   #   if quotation.sucessful?
   #     # ...
   #   end
   #
-  # For more information on how to interact with AtLeisure, check the project Wiki.
+  # For more information on how to interact with Kigo, check the project Wiki.
+  # Note that this client interacts with the new Kigo Channels API. For
+  # reference of the old Kigo API, check +Kigo::Legacy+.
   class Client
     attr_reader :credentials
 
