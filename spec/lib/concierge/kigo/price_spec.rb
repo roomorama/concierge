@@ -25,5 +25,13 @@ RSpec.describe Kigo::Price do
     let(:endpoint) { "https://www.kigoapis.com/channels/v1/computePricing" }
 
     it_behaves_like "handling errors"
+
+    it "returns a failure if the property ID given is not numerical" do
+      params[:property_id] = "KG-123"
+      result = subject.quote(params)
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :invalid_property_id
+    end
   end
 end

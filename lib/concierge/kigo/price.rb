@@ -18,6 +18,8 @@ module Kigo
   #   price.quote(params)
   #   # => #<Result error=nil value=Quotation>
   class Price
+    include Concierge::JSON
+
     API_METHOD = "computePricing"
 
     attr_reader :credentials, :request_handler, :response_parser
@@ -33,8 +35,10 @@ module Kigo
     # instance.
     def quote(params)
       stay_details = request_handler.build_compute_pricing(params)
-      endpoint     = request_handler.endpoint_for(API_METHOD)
-      result       = http.post(endpoint, stay_details)
+      return stay_details unless stay_details.success?
+
+      endpoint = request_handler.endpoint_for(API_METHOD)
+      result   = http.post(endpoint, json_encode(stay_details.value), { "Content-Type" => "application/json" })
 
       if result.success?
         response_parser.compute_pricing(params, result.value.body)
