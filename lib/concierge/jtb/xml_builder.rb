@@ -19,7 +19,7 @@ module Jtb
                 xml['jtb'].Criterion(SortType: "PRICE", AvailStatus: "ALL") {
                   xml['jtb'].HotelCode(Code: attributes[:property_id])
                   xml['jtb'].RoomStayCandidates(SearchCondition: "OR") {
-                    xml['jtb'].RoomStayCandidate(RoomTypeCode: attributes[:room_type_code], Quantity: "1")
+                    xml['jtb'].RoomStayCandidate(RoomTypeCode: attributes[:unit_id], Quantity: "1")
                   }
                   xml['jtb'].StayDateRange(Start: attributes[:check_in], End: attributes[:check_out])
                 }

@@ -13,7 +13,7 @@ RSpec.describe Jtb::Api do
 
     describe '#build_availabilities' do
       let(:params) {
-        { property_id: 10, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2, room_type_code: 'JPN' }
+        { property_id: 10, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2, unit_id: 'JPN' }
       }
       let(:message) { subject.build_availabilities(params) }
 
@@ -28,7 +28,7 @@ RSpec.describe Jtb::Api do
 
       context 'parameters' do
         it { expect(attribute_for(message, 'HotelCode', 'Code')).to eq params[:property_id].to_s }
-        it { expect(attribute_for(message, 'RoomStayCandidate', 'RoomTypeCode')).to eq params[:room_type_code] }
+        it { expect(attribute_for(message, 'RoomStayCandidate', 'RoomTypeCode')).to eq params[:unit_id] }
         it { expect(attribute_for(message, 'StayDateRange', 'Start')).to eq params[:check_in].to_s }
         it { expect(attribute_for(message, 'StayDateRange', 'End')).to eq params[:check_out].to_s }
       end
