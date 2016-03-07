@@ -8,6 +8,7 @@ module API::Views
         status:     "ok",
         available:   quotation.available,
         property_id: quotation.property_id,
+        unit_id:     quotation.unit_id,
         check_in:    quotation.check_in,
         check_out:   quotation.check_out,
         guests:      quotation.guests
