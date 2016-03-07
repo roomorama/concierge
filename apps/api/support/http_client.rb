@@ -44,13 +44,19 @@ module API::Support
     CONNECTION_TIMEOUT = 10
     SUCCESSFUL_STATUSES = [200, 201]
 
-    attr_reader :url
+    attr_reader :url, :username, :password
 
     # Creates a new +API::Support::HTTPClient+ instance.
     #
-    # url - the base URL to which upcoming requests will be performed.
-    def initialize(url)
+    # url        - the base URL to which upcoming requests will be performed.
+    # basic_auth - a +Hash+ containing +username+ and +password+ for HTTP Basic Authentication
+    def initialize(url, basic_auth = nil)
       @url = url
+
+      if basic_auth
+        @username = basic_auth.fetch(:username)
+        @password = basic_auth.fetch(:password)
+      end
     end
 
     def get(path, params = {})
@@ -71,6 +77,10 @@ module API::Support
     def connection
       @connection ||= self.class._connection || Faraday.new(url: url, request: { timeout: CONNECTION_TIMEOUT }) do |f|
         f.adapter :patron
+
+        if password
+          f.adapter :basic_authentication, username, password
+        end
       end
     end
 
