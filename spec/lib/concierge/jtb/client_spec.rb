@@ -1,44 +1,35 @@
 require 'spec_helper'
 
 RSpec.describe Jtb::Client do
-  include Support::JtbClientHelper
 
   let(:credentials) {
     { id: 'some id', user: 'Roberto', password: '123', company: 'Apple' }
   }
+  let(:params) {
+    { property_id: 10, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2, unit_id: 'JPN' }
+  }
+
   subject { described_class.new(credentials) }
 
   describe '#quote' do
-    context 'success' do
-      let(:success_response) do
-        build_quote_response(
-            [
-                availability(price: '2000', date: '2016-10-10', status: 'OK', rate_plan_id: 'good rate'),
-                availability(price: '1000', date: '2016-10-10', status: 'UC', rate_plan_id: 'abc'),
-                availability(price: '4000', date: '2016-10-10', status: 'OK', rate_plan_id: 'expensive_rate'),
-            ]
-        )
-      end
+    it 'returns the wrapped quotation from Jtb::Price when successful' do
+      successful_quotation = Quotation.new(total: 999)
+      allow_any_instance_of(Jtb::Price).to receive(:quote) { Result.new(successful_quotation) }
 
-      it 'returns quotation with optimal price' do
-        allow_any_instance_of(Jtb::Api).to receive(:quote_price) { success_response }
-        quotation = subject.quote({})
-        expect(quotation).to be_a Quotation
-        expect(quotation.total).to eq 2000
-      end
+      quote = subject.quote(params)
+      expect(quote).to be_a Quotation
+      expect(quote.total).to eq 999
     end
 
-    context 'fail' do
-      let(:fail_response) {
-        { ga_hotel_avail_rs: { error: 'Some error' } }
-      }
+    it 'returns a quotation object with a generic error message on failure' do
+      failed_operation = Result.error(:something_failed, "Error")
+      allow_any_instance_of(Jtb::Price).to receive(:quote) { failed_operation }
 
-      it 'returns quotation' do
-        allow_any_instance_of(Jtb::Api).to receive(:quote_price) { fail_response }
-        quotation = subject.quote({})
-        expect(quotation).to_not be_successful
-      end
-
+      quote = subject.quote(params)
+      expect(quote).to be_a Quotation
+      expect(quote).not_to be_successful
+      expect(quote.errors).to eq({ quote: "Could not quote price with remote supplier" })
     end
+
   end
 end
