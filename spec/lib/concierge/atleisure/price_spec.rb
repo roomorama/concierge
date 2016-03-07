@@ -15,7 +15,7 @@ RSpec.describe AtLeisure::Price do
 
   subject { described_class.new(credentials) }
 
-  RSpec.shared_examples "handling errors" do
+  RSpec.shared_examples "handling network errors" do
     it "returns the underlying network error if any happened" do
       stub_call(:post, endpoint) { raise Faraday::TimeoutError }
       result = subject.quote(params)
@@ -36,7 +36,7 @@ RSpec.describe AtLeisure::Price do
   describe "#quote" do
     let(:endpoint) { AtLeisure::Price::ENDPOINT }
 
-    it_behaves_like "handling errors"
+    it_behaves_like "handling network errors"
 
     it "does not recognise the response without an availability status" do
       stub_with_fixture("atleisure/no_availability.json")

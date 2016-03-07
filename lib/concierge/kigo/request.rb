@@ -8,11 +8,17 @@ module Kigo
   #
   # Usage
   #
-  #   request = Kigo::Request.new
+  #   request = Kigo::Request.new(credentials)
   #   request.build_compute_pricing(params)
   #   # => #<Result error=nil value={ "PROP_ID" => 123, ... }>
   class Request
     BASE_URI = "https://www.kigoapis.com"
+
+    attr_reader :credentials
+
+    def initialize(credentials)
+      @credentials = credentials
+    end
 
     # Returns a String with the base URL of the API.
     def base_uri
@@ -20,7 +26,17 @@ module Kigo
     end
 
     # Returns an authenticated HTTP client to be used with Kigo's API.
+    # For Kigo's new API, authentication happens by appending a parameter
+    # to the URL, so this just returns a regular +API::Support::HTTPClient+ instance.
     def http_client
+      @http_client ||= API::Support::HTTPClient.new(base_uri)
+    end
+
+    # builds the URL path to be used to perform a given +api_method+. For Kigo's new
+    # API, credentials are appended to every API call by adding a +subscription-key+
+    # parameter to the URL.
+    def endpoint_for(api_method)
+      ["/channels/v1/", api_method, "?subscription-key=", credentials.subscription_key].join
     end
 
     # Builds the required request parameters for a +computePricing+ Kigo API call.
