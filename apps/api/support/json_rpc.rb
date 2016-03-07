@@ -35,7 +35,7 @@ module API::Support
   # Note that if there is a network-related issue and the request cannot be performed,
   # the error from +API::Support::HTTPClient+ will be forwarded to the caller.
   class JSONRPC
-    include API::Support::JSON
+    include Concierge::JSON
 
     PROTOCOL_VERSION = "2.0"
 

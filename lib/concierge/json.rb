@@ -1,4 +1,4 @@
-module API::Support
+module Concierge
   module JSON
 
     # Encodes data to JSON.

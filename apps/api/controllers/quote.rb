@@ -34,7 +34,7 @@ module API::Controllers
     def self.included(base)
       base.class_eval do
         include API::Action
-        include API::Support::JSON
+        include Concierge::JSON
 
         params API::Controllers::Params::Quote
 
