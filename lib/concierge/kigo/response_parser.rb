@@ -45,9 +45,10 @@ module Kigo
           return unrecognised_response(response)
         end
 
-        quotation.currency = currency
-        quotation.fee      = fees.to_i
-        quotation.total    = total.to_i
+        quotation.available = true
+        quotation.currency  = currency
+        quotation.fee       = fees.to_i
+        quotation.total     = total.to_i
 
         Result.new(quotation)
       else

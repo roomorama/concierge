@@ -50,6 +50,7 @@ RSpec.describe Kigo::ResponseParser do
       expect(quotation.check_in).to eq "2016-04-05"
       expect(quotation.check_out).to eq "2016-04-08"
       expect(quotation.guests).to eq 1
+      expect(quotation.available).to eq true
       expect(quotation.currency).to eq "EUR"
       expect(quotation.fee).to eq 0
       expect(quotation.total).to eq 570
