@@ -6,13 +6,16 @@ RSpec.describe API::Controllers::Kigo::Quote do
   include Support::HTTPStubbing
   include Support::Fixtures
 
-  it_behaves_like "performing parameter validations", controller_generator: -> { described_class.new }
+  let(:params) {
+    { property_id: "567", check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
+  }
+
+  it_behaves_like "performing parameter validations", controller_generator: -> { described_class.new } do
+    let(:valid_params) { params }
+  end
 
   describe "#call" do
     let(:endpoint) { "https://www.kigoapis.com/channels/v1/computePricing" }
-    let(:params) {
-      { property_id: "567", check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
-    }
 
     it_behaves_like "Kigo price quotation"
   end
