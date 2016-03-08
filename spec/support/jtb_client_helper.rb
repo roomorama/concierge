@@ -13,20 +13,20 @@ module Support
 
     def build_quote_response(availabilities)
       {
-          ga_hotel_avail_rs: {
-              room_stays: {
-                  room_stay: availabilities
-              }
+        ga_hotel_avail_rs: {
+          room_stays: {
+            room_stay: availabilities
           }
+        }
       }
     end
 
     def availability(attributes)
       {
-          rate_plans:           { rate_plan: { :@rate_plan_id => attributes[:rate_plan_id] } },
-          time_span:            { :@start => attributes[:date], :@end => attributes[:date] },
-          room_rates:           { :room_rate => { total: { :@amount_after_tax => attributes[:price] } } },
-          :@availability_status => attributes[:status]
+        rate_plans:           { rate_plan: { :@rate_plan_id => attributes[:rate_plan_id] } },
+        time_span:            { :@start => attributes[:date], :@end => attributes[:date] },
+        room_rates:           { :room_rate => { total: { :@amount_after_tax => attributes[:price] } } },
+        :@availability_status => attributes[:status]
       }
     end
 

@@ -3,10 +3,10 @@ module JTB
     VERSION    = '2013'
     LANGUAGE   = 'EN'
     NAMESPACES = {
-        'xmlns:xsd'     => 'http://www.w3.org/2001/XMLSchema',
-        'xmlns:xsi'     => 'http://www.w3.org/2001/XMLSchema-instance',
-        'xmlns:jtb'     => 'http://service.api.genesis2.jtbgmt.com/',
-        'xmlns:soapenv' => 'http://schemas.xmlsoap.org/soap/envelope/'
+      'xmlns:xsd'     => 'http://www.w3.org/2001/XMLSchema',
+      'xmlns:xsi'     => 'http://www.w3.org/2001/XMLSchema-instance',
+      'xmlns:jtb'     => 'http://service.api.genesis2.jtbgmt.com/',
+      'xmlns:soapenv' => 'http://schemas.xmlsoap.org/soap/envelope/'
     }
 
     def build_availabilities(attributes)

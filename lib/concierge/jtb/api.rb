@@ -30,18 +30,17 @@ module JTB
 
     def uri
       Hanami.env == 'production' ?
-          'https://www.jtbgenesis.com/genesis2/services' :
-          # 'https://trial-www.jtbgenesis.com/genesis2-demo/services'
-          'https://www.jtbgenesis.com/genesis2/services' #todo: remove it when got credentials for genesis2-demo
+        'https://www.jtbgenesis.com/genesis2/services' :
+        'https://trial-www.jtbgenesis.com/genesis2-demo/services'
     end
 
     def options_for(endpoint)
       endpoint = [uri, ENDPOINTS[endpoint]].join('/')
       {
-          wsdl:                 endpoint + '?wsdl',
-          env_namespace:        :soapenv,
-          namespace_identifier: 'jtb',
-          endpoint:             endpoint
+        wsdl:                 endpoint + '?wsdl',
+        env_namespace:        :soapenv,
+        namespace_identifier: 'jtb',
+        endpoint:             endpoint
       }
     end
   end
