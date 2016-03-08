@@ -35,7 +35,7 @@ module API::Support
   # Note that if there is a network-related issue and the request cannot be performed,
   # the error from +API::Support::HTTPClient+ will be forwarded to the caller.
   class JSONRPC
-    include API::Support::JSONEncode
+    include Concierge::JSON
 
     PROTOCOL_VERSION = "2.0"
 
@@ -76,7 +76,7 @@ module API::Support
     # * No +error+ element in the response.
     # * A +data+ element in the response.
     def parse_response(response, request_id:)
-      parsed_data = to_json(response.body)
+      parsed_data = json_decode(response.body)
       return parsed_data unless parsed_data.success?
 
       json_response = parsed_data.value
@@ -100,16 +100,6 @@ module API::Support
 
     def wrong_response_id(expected, actual)
       Result.error(:json_rpc_response_ids_do_not_match, "Expected: #{expected}, Actual: #{actual}")
-    end
-
-    def to_json(data)
-      Result.new(parser.parse(data))
-    rescue Yajl::ParseError => err
-      Result.error(:invalid_json_response, err.message)
-    end
-
-    def parser
-      @parser ||= Yajl::Parser.new
     end
 
     def http

@@ -1,10 +1,6 @@
 require "spec_helper"
 require_relative "../shared/quote_validations"
 
-module Shared
-  QuoteResponse = Struct.new(:status, :headers, :body)
-end
-
 RSpec.shared_examples "performing multi unit parameter validations" do |controller_generator:|
 
   let(:params) {

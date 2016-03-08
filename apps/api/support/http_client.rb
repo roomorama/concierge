@@ -44,13 +44,26 @@ module API::Support
     CONNECTION_TIMEOUT = 10
     SUCCESSFUL_STATUSES = [200, 201]
 
-    attr_reader :url
+    attr_reader :url, :username, :password
 
     # Creates a new +API::Support::HTTPClient+ instance.
     #
-    # url - the base URL to which upcoming requests will be performed.
-    def initialize(url)
+    # url     - the base URL to which upcoming requests will be performed.
+    # options - a +Hash+ of options. Only +basic_auth+ is supported.
+    #
+    # Example
+    #
+    #   HTTPClient.new("https://www.example.org", basic_auth: {
+    #     username: "user",
+    #     password: "password"
+    #   })
+    def initialize(url, options = {})
       @url = url
+
+      if options[:basic_auth]
+        basic_auth = options.fetch(:basic_auth)
+        connection.basic_auth(basic_auth.fetch(:username), basic_auth.fetch(:password))
+      end
     end
 
     def get(path, params = {})
