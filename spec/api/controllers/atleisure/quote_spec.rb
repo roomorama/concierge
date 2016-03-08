@@ -5,13 +5,16 @@ RSpec.describe API::Controllers::AtLeisure::Quote do
   include Support::HTTPStubbing
   include Support::Fixtures
 
-  it_behaves_like "performing parameter validations", controller_generator: -> { described_class.new }
+  let(:params) {
+    { property_id: "AT-123", check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
+  }
+
+  it_behaves_like "performing parameter validations", controller_generator: -> { described_class.new } do
+    let(:valid_params) { params }
+  end
 
   describe "#call" do
     let(:endpoint) { AtLeisure::Price::ENDPOINT }
-    let(:params) {
-      { property_id: "AT-123", check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
-    }
 
     before do
       allow_any_instance_of(API::Support::JSONRPC).to receive(:request_id) { 888888888888 }
