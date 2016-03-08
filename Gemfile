@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.2.3'
+ruby '2.3.0'
 
 gem 'bundler'
 gem 'rake'
@@ -15,7 +15,6 @@ gem 'patron', '~> 0.5'
 
 gem 'yajl-ruby', '~> 1.2', require: 'yajl'
 gem 'savon'
-gem 'ruby_dig'
 
 group :test do
   gem 'rspec', '~> 3.4.0'
