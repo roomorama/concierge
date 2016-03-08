@@ -83,7 +83,6 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
-    ruby_dig (0.0.2)
     savon (2.11.1)
       akami (~> 1.2)
       builder (>= 2.1.2)
@@ -121,7 +120,6 @@ DEPENDENCIES
   rack-handlers (~> 0.7)
   rake
   rspec (~> 3.4.0)
-  ruby_dig
   savon
   unicorn (~> 5.0)
   yajl-ruby (~> 1.2)
