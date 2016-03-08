@@ -3,10 +3,6 @@ module Support
   module JTBClientHelper
     include Savon::SpecHelper
 
-    def stub_quote_price_response
-      savon.expects(:gby010).with(message: {}).returns(read_fixture('jtb/GA_HotelAvailRS.xml'))
-    end
-
     def attribute_for(message, tag, attribute)
       message.xpath("//jtb:#{tag}").map { |item| item[attribute] }.first
     end

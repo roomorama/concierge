@@ -17,7 +17,6 @@ module API::Controllers::Params
     param :check_in,    presence: true, type: String, format: DATE_FORMAT
     param :check_out,   presence: true, type: String, format: DATE_FORMAT
     param :guests,      presence: true, type: Integer
-    param :unit_id,                     type: String
 
 
     # Constructs a map of errors for the request.
