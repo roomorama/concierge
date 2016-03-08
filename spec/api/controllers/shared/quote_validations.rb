@@ -6,10 +6,6 @@ end
 
 RSpec.shared_examples "performing parameter validations" do |controller_generator:|
 
-  let(:valid_params) {
-    { property_id: "A123", check_in: "2016-03-22", check_out: "2016-03-24", guests: 2 }
-  }
-
   it "is invalid without a property_id" do
     valid_params.delete(:property_id)
     response = call(controller_generator.call, valid_params)
