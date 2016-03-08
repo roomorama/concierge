@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-RSpec.describe Jtb::Api do
+RSpec.describe JTB::API do
   include Support::Fixtures
-  include Support::JtbClientHelper
+  include Support::JTBClientHelper
 
   let(:credentials) {
     { id: 'some id', user: 'Roberto', password: '123', company: 'Apple' }

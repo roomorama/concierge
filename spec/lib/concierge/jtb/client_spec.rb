@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Jtb::Client do
+RSpec.describe JTB::Client do
 
   let(:credentials) {
     { id: 'some id', user: 'Roberto', password: '123', company: 'Apple' }
@@ -12,9 +12,9 @@ RSpec.describe Jtb::Client do
   subject { described_class.new(credentials) }
 
   describe '#quote' do
-    it 'returns the wrapped quotation from Jtb::Price when successful' do
+    it 'returns the wrapped quotation from JTB::Price when successful' do
       successful_quotation = Quotation.new(total: 999)
-      allow_any_instance_of(Jtb::Price).to receive(:quote) { Result.new(successful_quotation) }
+      allow_any_instance_of(JTB::Price).to receive(:quote) { Result.new(successful_quotation) }
 
       quote = subject.quote(params)
       expect(quote).to be_a Quotation
@@ -23,7 +23,7 @@ RSpec.describe Jtb::Client do
 
     it 'returns a quotation object with a generic error message on failure' do
       failed_operation = Result.error(:something_failed, "Error")
-      allow_any_instance_of(Jtb::Price).to receive(:quote) { failed_operation }
+      allow_any_instance_of(JTB::Price).to receive(:quote) { failed_operation }
 
       quote = subject.quote(params)
       expect(quote).to be_a Quotation

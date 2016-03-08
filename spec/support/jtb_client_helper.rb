@@ -1,6 +1,6 @@
 require 'savon/mock/spec_helper'
 module Support
-  module JtbClientHelper
+  module JTBClientHelper
     include Savon::SpecHelper
 
     def stub_quote_price_response

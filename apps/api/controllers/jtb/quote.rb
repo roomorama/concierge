@@ -1,16 +1,16 @@
 require_relative "../quote"
 
-module API::Controllers::Jtb
+module API::Controllers::JTB
 
-  # API::Controllers::Jtb::Quote
+  # API::Controllers::JTB::Quote
   #
-  # Performs booking quotations for properties from Jtb.
+  # Performs booking quotations for properties from JTB.
   class Quote
     include API::Controllers::Quote
 
     def quote_price(params)
       credentials = Credentials.for("jtb")
-      Jtb::Client.new(credentials).quote(params)
+      JTB::Client.new(credentials).quote(params)
     end
 
   end

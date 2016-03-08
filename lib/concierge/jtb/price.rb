@@ -1,4 +1,4 @@
-module Jtb
+module JTB
   class Price
     JTB_CURRENCY = 'JPY'
 

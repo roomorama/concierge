@@ -1,8 +1,8 @@
 require_relative 'xml_builder'
 
-module Jtb
-  class Api
-    include Jtb::XmlBuilder
+module JTB
+  class API
+    include JTB::XMLBuilder
 
     ENDPOINTS = { quote_price: 'GA_HotelAvail_v2013', create_booking: 'GA_HotelRes_v2013', cancel_booking: 'GA_Cancel_v2013' }
 

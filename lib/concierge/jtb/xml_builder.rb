@@ -1,5 +1,5 @@
-module Jtb
-  module XmlBuilder
+module JTB
+  module XMLBuilder
     VERSION    = '2013'
     LANGUAGE   = 'EN'
     NAMESPACES = {

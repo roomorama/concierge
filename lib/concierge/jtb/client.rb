@@ -1,4 +1,4 @@
-module Jtb
+module JTB
   class Client
 
     attr_reader :credentials
@@ -9,7 +9,7 @@ module Jtb
 
     def quote(params)
       response = api.quote_price(params)
-      result = Jtb::Price.new(params).quote(response)
+      result = JTB::Price.new(params).quote(response)
 
       if result.success?
         result.value
@@ -21,7 +21,7 @@ module Jtb
     private
 
     def api
-      @api ||= Jtb::Api.new(credentials)
+      @api ||= JTB::API.new(credentials)
     end
 
   end

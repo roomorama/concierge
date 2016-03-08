@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-RSpec.describe Jtb::Price do
-  include Support::JtbClientHelper
+RSpec.describe JTB::Price do
+  include Support::JTBClientHelper
 
   let(:params) {
     { property_id: 10, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2, room_type_code: 'JPN' }
