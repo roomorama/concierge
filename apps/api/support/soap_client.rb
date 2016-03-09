@@ -51,7 +51,7 @@ module API::Support
     def with_error_handling
       response = yield(client)
 
-      Result.new(response)
+      Result.new(response.body)
 
     rescue Savon::HTTPError => err
       Result.error("http_status_#{err.http.code}", err.message)

@@ -1,4 +1,16 @@
 module JTB
+  # +JTB::XMLBuilder+
+  #
+  # This class is responsible for building request messages t the response sent by JTB's API
+  # for different API calls.
+  #
+  # Usage
+  #
+  #   builder = JTB::XMLBuilder.new(credentials)
+  #   builder.quote_price(request_params)
+  #   # => <jtb:POS>...</jtb:POS>
+  #        <jtb:AvailRequestSegments>...</jtb:AvailRequestSegments>
+
   class XMLBuilder
     VERSION    = '2013'
     LANGUAGE   = 'EN'
@@ -15,6 +27,7 @@ module JTB
       @credentials = credentials
     end
 
+    # builds message for +JTB::API+ +quote_price+ method
     def quote_price(params)
       message = builder.new do |xml|
         xml.root(NAMESPACES) do
