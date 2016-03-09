@@ -8,20 +8,13 @@ module JTB
     end
 
     def quote(params)
-      response = api.quote_price(params)
-      result = JTB::Price.new(params).quote(response)
+      result = JTB::Price.new(credentials).quote(params)
 
       if result.success?
         result.value
       else
         Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
       end
-    end
-
-    private
-
-    def api
-      @api ||= JTB::API.new(credentials)
     end
 
   end

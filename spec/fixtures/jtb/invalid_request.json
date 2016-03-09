@@ -1,0 +1,12 @@
+{
+  "ga_hotel_avail_rs": {
+    "errors": {
+      "error_info": {
+        "@code": "GACZ005",
+        "@short_text": "Your XML Request is invalid.",
+        "@type": "003"
+      }
+    },
+    "@xmlns": "http://service.api.genesis2.jtbgmt.com/"
+  }
+}

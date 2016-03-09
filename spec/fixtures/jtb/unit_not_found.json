@@ -1,0 +1,12 @@
+{
+  "ga_hotel_avail_rs": {
+    "errors": {
+      "error_info": {
+        "@code": "FZZRC52",
+        "@short_text": "Room Type you specified (ddd) could not be found.",
+        "@type": "004"
+      }
+    },
+    "@xmlns": "http://service.api.genesis2.jtbgmt.com/"
+  }
+}

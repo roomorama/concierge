@@ -3,26 +3,13 @@ require 'spec_helper'
 RSpec.describe JTB::Price do
   include Support::JTBClientHelper
 
-  let(:params) {
-    { property_id: 10, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2, room_type_code: 'JPN' }
-  }
+  let(:credentials) { double(id: 'some id', user: 'Roberto', password: '123', company: 'Apple') }
 
-  subject { described_class.new(params) }
+  subject { described_class.new(credentials) }
 
   describe '#quote' do
     context 'success' do
-      let(:success_response) do
-        build_quote_response(
-            [
-                availability(price: '2000', date: '2016-10-10', status: 'OK', rate_plan_id: 'good rate'),
-                availability(price: '2100', date: '2016-10-11', status: 'OK', rate_plan_id: 'good rate'),
-                availability(price: '1000', date: '2016-10-10', status: 'UC', rate_plan_id: 'abc'),
-                availability(price: '1100', date: '2016-10-11', status: 'UC', rate_plan_id: 'abc'),
-                availability(price: '4000', date: '2016-10-10', status: 'OK', rate_plan_id: 'expensive_rate'),
-                availability(price: '4100', date: '2016-10-11', status: 'OK', rate_plan_id: 'expensive_rate'),
-            ]
-        )
-      end
+
 
       it 'returns quotation with optimal price' do
         result = subject.quote(success_response)
@@ -31,6 +18,7 @@ RSpec.describe JTB::Price do
 
         expect(result.value).to be_a Quotation
         expect(result.value).to be subject.quotation
+
 
         quotation = result.value
         expect(quotation).to be_successful
