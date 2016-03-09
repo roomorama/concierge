@@ -1,4 +1,33 @@
 module API::Support
+
+  # +API::Support::SOAPClient+
+  #
+  # This SOAP client is designed with error handling.
+  #
+  # The return of every network related operation from this class is an instance of the +Result+ object.
+  # This allows the caller to determine if the call was successful and, in case it was not,
+  # handle the error accordingly.
+  #
+  # Handled errors are:
+  #
+  #   * +:http_status_XXX+    - when the server returns a non-successful HTTP status (4XX, 5XX).
+  #   * +:soap_fault+         - happens if sent invalid request
+  #   * +:invalid_response+   - when got invalid resonse from the server.
+  #   * +:unknown_operation+  - when call unknown operation.
+  #
+  # In all cases, the +Result+ object returned will have an error message associated
+  # with the failure that can be logged somewhere for further analysis.
+  #
+  # Example
+  #
+  #   client = API::Support::SOAPClient.new(wsdl: "https://example.com?wsdl")
+  #   result = client.call(:operation_name, message: { *some data here* })
+  #   if result.success?
+  #     process_response(result.value)
+  #   else
+  #     handle_error(result.error)
+  #   end
+
   class SOAPClient
 
     attr_reader :options
