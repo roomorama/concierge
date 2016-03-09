@@ -1,56 +1,26 @@
 require 'spec_helper'
+require 'savon/mock/spec_helper'
 
 RSpec.describe JTB::API do
   include Support::Fixtures
-  include Support::JTBClientHelper
+  include Savon::SpecHelper
 
-  let(:credentials) {
-    { id: 'some id', user: 'Roberto', password: '123', company: 'Apple' }
-  }
+  before(:all) { savon.mock! }
+  after(:all) { savon.unmock! }
+
+  let(:credentials) { double(id: 'some id', user: 'Roberto', password: '123', company: 'Apple') }
   subject { described_class.new(credentials) }
 
-  context 'builder' do
+  describe '#quote_price' do
+    let(:quote_success) { 'jtb/GA_HotelAvailRS.xml' }
+    let(:fixture) { read_fixture(quote_success) }
 
-    describe '#build_availabilities' do
-      let(:params) {
-        { property_id: 10, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2, unit_id: 'JPN' }
-      }
-      let(:message) { subject.build_availabilities(params) }
+    it 'returns result' do
+      savon.expects(:gby010).with(message: :any).returns(fixture)
 
-      it { expect(message.first).to be_a Nokogiri::XML::Element }
-
-      context 'credentials' do
-        it { expect(attribute_for(message, 'RequestorID', 'ID')).to eq credentials[:id] }
-        it { expect(attribute_for(message, 'RequestorID', 'UserName')).to eq credentials[:user] }
-        it { expect(attribute_for(message, 'RequestorID', 'MessagePassword')).to eq credentials[:password] }
-        it { expect(attribute_for(message, 'CompanyName', 'Code')).to eq credentials[:company] }
-      end
-
-      context 'parameters' do
-        it { expect(attribute_for(message, 'HotelCode', 'Code')).to eq params[:property_id].to_s }
-        it { expect(attribute_for(message, 'RoomStayCandidate', 'RoomTypeCode')).to eq params[:unit_id] }
-        it { expect(attribute_for(message, 'StayDateRange', 'Start')).to eq params[:check_in].to_s }
-        it { expect(attribute_for(message, 'StayDateRange', 'End')).to eq params[:check_out].to_s }
-      end
-
+      response = subject.quote_price({})
+      expect(response).to be_a Result
     end
   end
 
-  context 'requests' do
-    before(:all) { savon.mock! }
-    after(:all)  { savon.unmock! }
-
-    describe '#quote_price' do
-      let(:message) { subject.build_availabilities({}) }
-      let(:fixture) { read_fixture('jtb/GA_HotelAvailRS.xml') }
-
-      it 'returns hash' do
-        savon.expects(:gby010).with(message: message.to_xml).returns(fixture)
-
-        response = subject.quote_price({})
-        expect(response).to be_a Hash
-      end
-    end
-
-  end
 end

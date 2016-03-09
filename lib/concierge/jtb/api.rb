@@ -1,31 +1,26 @@
-require_relative 'xml_builder'
-
 module JTB
   class API
-    include JTB::XMLBuilder
-
     ENDPOINTS = { quote_price: 'GA_HotelAvail_v2013', create_booking: 'GA_HotelRes_v2013', cancel_booking: 'GA_Cancel_v2013' }
 
-    attr_reader :message, :response
+    attr_reader :credentials, :message
 
-    def initialize(options)
-      @id       = options[:id]
-      @user     = options[:user]
-      @password = options[:password]
-      @company  = options[:company]
+    def initialize(credentials)
+      @credentials = credentials
     end
 
     def quote_price(params)
-      @message  = build_availabilities(params)
-      @response = caller(:quote_price).call(:gby010, message: @message.to_xml)
-      @response.body
+      @message = builder.quote_price(params)
+      caller(:quote_price).call(:gby010, message: @message.to_xml)
     end
-
 
     private
 
     def caller(endpoint)
-      Savon.client(options_for(endpoint))
+      @caller ||= ::API::Support::SOAPClient.new(options_for(endpoint))
+    end
+
+    def builder
+      XMLBuilder.new(credentials)
     end
 
     def uri
