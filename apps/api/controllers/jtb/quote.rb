@@ -12,7 +12,7 @@ module API::Controllers::JTB
     params API::Controllers::Params::MultiUnitQuote
 
     def quote_price(params)
-      credentials = Credentials.for("jtb")
+      credentials = Concierge::Credentials.for("jtb")
       JTB::Client.new(credentials).quote(params)
     end
 
