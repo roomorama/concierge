@@ -31,8 +31,12 @@ module JTB
       return unrecognised_response(response) unless response[:ga_hotel_avail_rs]
 
       if response[:ga_hotel_avail_rs][:errors]
-        code = response[:ga_hotel_avail_rs][:errors][:error_info][:@code]
-        return Result.error(error_code(code), response.to_s)
+        code = response.dig(:ga_hotel_avail_rs, :errors, :error_info, :@code)
+        if code
+          return Result.error(error_code(code), response.to_s)
+        else
+          return unrecognised_response(response)
+        end
       end
 
       rates = response.dig(:ga_hotel_avail_rs, :room_stays, :room_stay)
