@@ -16,6 +16,8 @@ module Kigo
   # Note that this client interacts with the new Kigo Channels API. For
   # reference of the old Kigo API, check +Kigo::Legacy+.
   class Client
+    SUPPLIER_NAME = "Kigo"
+
     attr_reader :credentials
 
     def initialize(credentials)
@@ -32,8 +34,21 @@ module Kigo
       if result.success?
         result.value
       else
+        announce_error("quote", result)
         Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
       end
+    end
+
+    private
+
+    def announce_error(operation, result)
+      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
+        operation:   operation,
+        supplier:    SUPPLIER_NAME,
+        code:        result.error.code,
+        message:     result.error.message,
+        happened_at: Time.now
+      })
     end
   end
 

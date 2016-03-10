@@ -1,7 +1,7 @@
 RSpec.shared_examples "external error reporting" do
 
   it "returns an error message in case there is a failure with the request" do
-    stub_call(:post, endpoint) { raise Faraday::TimeoutError }
+    provoke_failure!
     response = nil
 
     expect {

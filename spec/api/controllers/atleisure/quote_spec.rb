@@ -19,6 +19,10 @@ RSpec.describe API::Controllers::AtLeisure::Quote do
 
     it_behaves_like "external error reporting" do
       let(:supplier_name) { "AtLeisure" }
+
+      def provoke_failure!
+        stub_call(:post, endpoint) { raise Faraday::TimeoutError }
+      end
     end
 
     before do

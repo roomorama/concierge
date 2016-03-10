@@ -14,9 +14,9 @@ module AtLeisure
   #
   # For more information on how to interact with AtLeisure, check the project Wiki.
   class Client
-    attr_reader :credentials
-
     SUPPLIER_NAME = "AtLeisure"
+
+    attr_reader :credentials
 
     def initialize(credentials)
       @credentials = credentials
