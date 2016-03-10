@@ -6,6 +6,8 @@ module API::Controllers::Params
   # shared among all partner booking calls, and ensures that required parameters
   # are present and in an acceptable format.
   #
+  # It inherited by +Quote+ params with basic required params and errors displaying
+  # 
   # If the parameters given are not valid, booking controllers that include this
   # module will return a 422 HTTP status, with a response payload that reports
   # the errors in the parameters.
