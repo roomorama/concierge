@@ -17,7 +17,7 @@ module JTB
       @credentials = credentials
     end
 
-    # Always returns a +Result+.
+    # Always returns a +Result+. Success result wraps +Hash+ response.
     # If an error happens in any step in the process of getting a response back from
     # JTB, a generic error message is sent back to the caller, and the failure
     # is logged

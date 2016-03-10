@@ -55,12 +55,12 @@ module API::Support
 
     rescue Savon::HTTPError => err
       Result.error("http_status_#{err.http.code}", err.message)
-    rescue Savon::SOAPFault => err
-      Result.error(:soap_fault, err.message)
     rescue Savon::InvalidResponseError => err
       Result.error(:invalid_response, err.message)
     rescue Savon::UnknownOperationError => err
       Result.error(:unknown_operation, err.message)
+    rescue Savon::Error => err
+      Result.error(:soap_error, err.message)
     end
 
   end

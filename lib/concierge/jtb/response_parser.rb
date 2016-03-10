@@ -13,10 +13,13 @@ module JTB
   # See documentation of this class instace methods for their description
   # and possible errors.
   class ResponseParser
-    # error codes and meanings taked from documentation. Check wiki
-    ERROR_CODES = { unit_not_found: 'FZZRC52', invalid_request: 'GACZ005' }
+    # error codes and meanings took from documentation. Check wiki
+    ERROR_CODES = {
+      'FZZRC52' => :unit_not_found,
+      'GACZ005' => :invalid_request
+    }
 
-    # parses the response of a +quote_price+ API call.
+    # parses the response of a +quote_price+ API call. Response is a +Hash+
     #
     # Returns a +Result+ instance wrapping a +Quotation+ object
     # in case the response is successful. Possible errors that could
@@ -25,34 +28,36 @@ module JTB
     # +unit_not_found+:  the response sent back if unit not found
     # +invalid_request+: if property not found
     def parse_quote(response, params)
+      return unrecognised_response(response) unless response[:ga_hotel_avail_rs]
+
       if response[:ga_hotel_avail_rs][:errors]
-        error = response[:ga_hotel_avail_rs][:errors][:error_info]
-        return Result.error(error_code(error[:@code]), error[:@short_text])
+        code = response[:ga_hotel_avail_rs][:errors][:error_info][:@code]
+        return Result.error(error_code(code), response.to_s)
       end
 
       rates = response.dig(:ga_hotel_avail_rs, :room_stays, :room_stay)
       if rates.empty?
-        return Result.error(:unavailable_property, 'There is no room stays')
+        return Result.error(:unavailable_property, response.to_s)
       end
 
       rate_plans = group_to_rate_plans(rates)
       rate_plan  = get_best_rate_plan(rate_plans)
 
       if rate_plan
-        quotation = Quotation.new(params)
-        quotation.total = rate_plan.total
-        quotation.currency = Price::CURRENCY
+        quotation           = Quotation.new(params)
+        quotation.total     = rate_plan.total
+        quotation.currency  = Price::CURRENCY
         quotation.available = true
         Result.new(quotation)
       else
-        Result.error(:unavailable_property, 'There is no available rate plans')
+        Result.error(:unavailable_rate_plans, response.to_s)
       end
     end
 
     private
 
     def error_code(code)
-      ERROR_CODES.key(code)
+      ERROR_CODES.fetch(code, :request_error)
     end
 
     # JTB provides so deep nested scattered response. This method prepares rates and returns +RatePlan+ list
@@ -102,6 +107,10 @@ module JTB
     # # => #<struct JTB::ResponseParser::RatePlan rate_plan="good rate", total=4100, available=true>
     def get_best_rate_plan(rate_plans)
       rate_plans.select(&:available).min_by(&:total)
+    end
+
+    def unrecognised_response(response)
+      Result.error(:unrecognised_response, response.to_s)
     end
 
   end

@@ -17,9 +17,8 @@ module JTB
       @credentials = credentials
     end
 
-    # quotes the price with JTB by leveraging the +response_parser+
-    # given on this object initialization. This method will always return a +Quotation+
-    # instance.
+    # quotes the price with JTB by leveraging the +response_parser+.
+    # This method will always return a +Quotation+ instance.
     def quote(params)
       result = api.quote_price(params)
       if result.success?
