@@ -14,6 +14,7 @@ module API::Support
   #   * +:soap_fault+         - happens if sent invalid request
   #   * +:invalid_response+   - when got invalid resonse from the server.
   #   * +:unknown_operation+  - when call unknown operation.
+  #   * +:savon_error+        - generic savon error.
   #
   # In all cases, the +Result+ object returned will have an error message associated
   # with the failure that can be logged somewhere for further analysis.

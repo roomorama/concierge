@@ -36,14 +36,8 @@ module JTB
       XMLBuilder.new(credentials)
     end
 
-    def uri
-      Hanami.env == 'production' ?
-        'https://www.jtbgenesis.com/genesis2/services' :
-        'https://trial-www.jtbgenesis.com/genesis2-demo/services'
-    end
-
     def options_for(endpoint)
-      endpoint = [uri, ENDPOINTS[endpoint]].join('/')
+      endpoint = [credentials.url, ENDPOINTS[endpoint]].join('/')
       {
         wsdl:                 endpoint + '?wsdl',
         env_namespace:        :soapenv,
