@@ -59,8 +59,10 @@ module API::Support
       Result.error(:invalid_response, err.message)
     rescue Savon::UnknownOperationError => err
       Result.error(:unknown_operation, err.message)
-    rescue Savon::Error => err
+    rescue Savon::SOAPFault => err
       Result.error(:soap_error, err.message)
+    rescue Savon::Error => err
+      Result.error(:savon_error, err.message)
     end
 
   end
