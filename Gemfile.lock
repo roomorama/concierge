@@ -5,6 +5,7 @@ GEM
       gyoku (>= 0.4.0)
       nokogiri
     builder (3.2.2)
+    database_cleaner (1.5.1)
     diff-lcs (1.2.5)
     dotenv (2.1.0)
     faraday (0.9.2)
@@ -112,6 +113,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler
+  database_cleaner (~> 1.5)
   faraday (~> 0.9)
   hanami (= 0.7.2)
   hanami-model (~> 0.5)

@@ -16,6 +16,8 @@ module AtLeisure
   class Client
     attr_reader :credentials
 
+    SUPPLIER_NAME = "AtLeisure"
+
     def initialize(credentials)
       @credentials = credentials
     end
@@ -30,8 +32,21 @@ module AtLeisure
       if result.success?
         result.value
       else
+        announce_error("quote", result)
         Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
       end
+    end
+
+    private
+
+    def announce_error(operation, result)
+      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
+        operation:   operation,
+        supplier:    SUPPLIER_NAME,
+        code:        result.error.code,
+        message:     result.error.message,
+        happened_at: Time.now
+      })
     end
   end
 

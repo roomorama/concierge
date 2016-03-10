@@ -12,12 +12,6 @@ RSpec.describe UseCases::ExternalErrorCreation do
   }
 
   describe "#perform" do
-    around do |example|
-      ExternalErrorRepository.transaction do
-        example.run
-      end
-    end
-
     subject { described_class.new(parameters) }
 
     [:operation, :supplier, :code, :message, :happened_at].each do |required_attr|

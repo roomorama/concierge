@@ -33,3 +33,8 @@ module UseCases
   end
 
 end
+
+# whenever an external error happens, persist it to the database.
+Concierge::Announcer.on(Concierge::Errors::EXTERNAL_ERROR) do |params|
+  UseCases::ExternalErrorCreation.new(params).perform
+end
