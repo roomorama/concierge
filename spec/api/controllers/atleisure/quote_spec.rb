@@ -1,5 +1,6 @@
 require "spec_helper"
 require_relative "../shared/quote_validations"
+require_relative "../shared/external_error_reporting"
 
 RSpec.describe API::Controllers::AtLeisure::Quote do
   include Support::HTTPStubbing
@@ -8,25 +9,24 @@ RSpec.describe API::Controllers::AtLeisure::Quote do
   let(:params) {
     { property_id: "AT-123", check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
   }
+  let(:endpoint) { AtLeisure::Price::ENDPOINT }
 
   it_behaves_like "performing parameter validations", controller_generator: -> { described_class.new } do
     let(:valid_params) { params }
   end
 
-  describe "#call" do
-    let(:endpoint) { AtLeisure::Price::ENDPOINT }
+  it_behaves_like "external error reporting" do
+    let(:supplier_name) { "AtLeisure" }
 
+    def provoke_failure!
+      stub_call(:post, endpoint) { raise Faraday::TimeoutError }
+      Struct.new(:code, :message).new("connection_timeout", "timeout")
+    end
+  end
+
+  describe "#call" do
     before do
       allow_any_instance_of(API::Support::JSONRPC).to receive(:request_id) { 888888888888 }
-    end
-
-    it "returns an error message in case there is a failure with the request" do
-      stub_call(:post, endpoint) { raise Faraday::TimeoutError }
-      response = parse_response(described_class.new.call(params))
-
-      expect(response.status).to eq 503
-      expect(response.body["status"]).to eq "error"
-      expect(response.body["errors"]["quote"]).to eq "Could not quote price with remote supplier"
     end
 
     ["atleisure/no_availability.json", "atleisure/no_price.json", "atleisure/on_request.json"].each do |fixture|

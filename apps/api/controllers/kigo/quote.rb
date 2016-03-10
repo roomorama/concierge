@@ -10,7 +10,7 @@ module API::Controllers::Kigo
     include API::Controllers::Quote
 
     def quote_price(params)
-      credentials = Credentials.for("Kigo")
+      credentials = Concierge::Credentials.for("Kigo")
       Kigo::Client.new(credentials).quote(params)
     end
 

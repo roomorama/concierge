@@ -9,7 +9,8 @@ module API
       load_paths << [
         'support',
         'controllers',
-        'views'
+        'views',
+        'use_cases'
       ]
 
       routes 'config/routes'

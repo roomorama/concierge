@@ -8,5 +8,5 @@ Hanami::Model.configure do
   migrations 'db/migrations'
   schema     'db/schema.sql'
 
-  mapping "#{__dir__}/config/mapping"
+  mapping Hanami.root.join("config", "mapping").to_s
 end.load!
