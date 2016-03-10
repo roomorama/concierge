@@ -1,57 +1,47 @@
 require 'spec_helper'
 
 RSpec.describe JTB::Price do
+  include Support::Fixtures
   include Support::JTBClientHelper
 
+  let(:credentials) { double(id: 'some id', user: 'Roberto', password: '123', company: 'Apple', url: 'https://trial-www.jtbgenesis.com/genesis2-demo/services') }
   let(:params) {
-    { property_id: 10, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2, room_type_code: 'JPN' }
+    { property_id: 10, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2, unit_id: 'JPN' }
   }
-
-  subject { described_class.new(params) }
+  subject { described_class.new(credentials) }
 
   describe '#quote' do
     context 'success' do
-      let(:success_response) do
-        build_quote_response(
-            [
-                availability(price: '2000', date: '2016-10-10', status: 'OK', rate_plan_id: 'good rate'),
-                availability(price: '2100', date: '2016-10-11', status: 'OK', rate_plan_id: 'good rate'),
-                availability(price: '1000', date: '2016-10-10', status: 'UC', rate_plan_id: 'abc'),
-                availability(price: '1100', date: '2016-10-11', status: 'UC', rate_plan_id: 'abc'),
-                availability(price: '4000', date: '2016-10-10', status: 'OK', rate_plan_id: 'expensive_rate'),
-                availability(price: '4100', date: '2016-10-11', status: 'OK', rate_plan_id: 'expensive_rate'),
-            ]
-        )
-      end
+      let(:success_response) { parse_response('jtb/success_quote_response.json') }
 
       it 'returns quotation with optimal price' do
-        result = subject.quote(success_response)
+        allow_any_instance_of(JTB::API).to receive(:quote_price) { Result.new(success_response) }
+
+        result = subject.quote(params)
         expect(result).to be_a Result
         expect(result).to be_success
 
         expect(result.value).to be_a Quotation
-        expect(result.value).to be subject.quotation
-
-        quotation = result.value
-        expect(quotation).to be_successful
-        expect(quotation.total).to eq 4100
-        expect(quotation.available).to be true
       end
     end
 
     context 'fail' do
-      let(:fail_response) {
-        { ga_hotel_avail_rs: { error: 'Some error' } }
-      }
+      let(:fail_response) { parse_response('jtb/invalid_request.json') }
 
       it 'returns quotation' do
-        result = subject.quote(fail_response)
+        allow_any_instance_of(JTB::API).to receive(:quote_price) { Result.new(fail_response) }
+
+        result = subject.quote(params)
         expect(result).to be_a Result
         expect(result).not_to be_success
-        expect(result.error.code).to eq :unavailable_property
       end
 
     end
   end
 
+  private
+
+  def parse_response(fixture_path)
+    Yajl::Parser.parse read_fixture(fixture_path), symbolize_keys: true
+  end
 end

@@ -1,11 +1,5 @@
-require 'savon/mock/spec_helper'
 module Support
   module JTBClientHelper
-    include Savon::SpecHelper
-
-    def attribute_for(message, tag, attribute)
-      message.xpath("//jtb:#{tag}").map { |item| item[attribute] }.first
-    end
 
     def build_quote_response(availabilities)
       {

@@ -21,7 +21,7 @@ RSpec.describe API::Support::SOAPClient do
       result = subject.call(operation)
       expect(result).to be_a Result
       expect(result).to be_success
-      expect(result.value).to be_a Savon::Response
+      expect(result.value).to be_a Hash
     end
 
     context 'handling errors' do

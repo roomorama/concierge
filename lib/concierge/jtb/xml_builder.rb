@@ -1,5 +1,17 @@
 module JTB
-  module XMLBuilder
+  # +JTB::XMLBuilder+
+  #
+  # This class is responsible for building request messages t the response sent by JTB's API
+  # for different API calls.
+  #
+  # Usage
+  #
+  #   builder = JTB::XMLBuilder.new(credentials)
+  #   builder.quote_price(request_params)
+  #   # => <jtb:POS>...</jtb:POS>
+  #        <jtb:AvailRequestSegments>...</jtb:AvailRequestSegments>
+
+  class XMLBuilder
     VERSION    = '2013'
     LANGUAGE   = 'EN'
     NAMESPACES = {
@@ -8,20 +20,27 @@ module JTB
       'xmlns:jtb'     => 'http://service.api.genesis2.jtbgmt.com/',
       'xmlns:soapenv' => 'http://schemas.xmlsoap.org/soap/envelope/'
     }
+    
+    attr_reader :credentials
 
-    def build_availabilities(attributes)
+    def initialize(credentials)
+      @credentials = credentials
+    end
+
+    # builds message for +JTB::API+ +quote_price+ method
+    def quote_price(params)
       message = builder.new do |xml|
         xml.root(NAMESPACES) do
-          credentials(xml)
+          build_credentials(xml)
           xml['jtb'].AvailRequestSegments {
             xml['jtb'].AvailRequestSegment {
               xml['jtb'].HotelSearchCriteria {
                 xml['jtb'].Criterion(SortType: "PRICE", AvailStatus: "ALL") {
-                  xml['jtb'].HotelCode(Code: attributes[:property_id])
+                  xml['jtb'].HotelCode(Code: params[:property_id])
                   xml['jtb'].RoomStayCandidates(SearchCondition: "OR") {
-                    xml['jtb'].RoomStayCandidate(RoomTypeCode: attributes[:unit_id], Quantity: "1")
+                    xml['jtb'].RoomStayCandidate(RoomTypeCode: params[:unit_id], Quantity: "1")
                   }
-                  xml['jtb'].StayDateRange(Start: attributes[:check_in], End: attributes[:check_out])
+                  xml['jtb'].StayDateRange(Start: params[:check_in], End: params[:check_out])
                 }
               }
             }
@@ -37,11 +56,11 @@ module JTB
       Nokogiri::XML::Builder
     end
 
-    def credentials(xml)
+    def build_credentials(xml)
       xml['jtb'].POS {
         xml['jtb'].Source {
-          xml['jtb'].RequestorID(ID: @id, UserName: @user, MessagePassword: @password) {
-            xml['jtb'].CompanyName(Code: @company)
+          xml['jtb'].RequestorID(ID: credentials.id, UserName: credentials.user, MessagePassword: credentials.password) {
+            xml['jtb'].CompanyName(Code: credentials.company)
             xml['jtb'].BasicInfo(Version: VERSION, Language: LANGUAGE)
           }
         }
