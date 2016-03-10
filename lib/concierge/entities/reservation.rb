@@ -12,7 +12,8 @@
 #   +guests+:      the number of guests
 #   +customer+:    a +Customer+ entity should keep customer's required info
 #   +code+:        a String, returns after successful booking
-##  +errors+:      if there were any errors during the booking creation with the partner,
+#   +extra+:       if for partner required extra options like credit card, payment type... it should be here.
+#   +errors+:      if there were any errors during the booking creation with the partner,
 #                  the errors will be listed here.
 #
 # The reservation is only successful if the +errors+ attribute is empty and +customer+ is successful.
@@ -26,6 +27,9 @@ class Reservation
   attribute :check_out,   type: String
   attribute :guests,      type: Integer
   attribute :code,        type: String
+  attribute :extra,       type: Hash
+  attribute :errors,      type: Hash
+
   attribute :customer
 
 

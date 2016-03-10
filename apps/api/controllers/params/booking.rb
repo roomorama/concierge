@@ -11,6 +11,7 @@ module API::Controllers::Params
   # the errors in the parameters.
   class Booking < Quote
 
+    param :extra
     param :customer do
       param :first_name,  type: String, presence: true
       param :last_name,   type: String, presence: true
