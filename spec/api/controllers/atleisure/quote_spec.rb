@@ -9,22 +9,22 @@ RSpec.describe API::Controllers::AtLeisure::Quote do
   let(:params) {
     { property_id: "AT-123", check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
   }
+  let(:endpoint) { AtLeisure::Price::ENDPOINT }
 
   it_behaves_like "performing parameter validations", controller_generator: -> { described_class.new } do
     let(:valid_params) { params }
   end
 
-  describe "#call" do
-    let(:endpoint) { AtLeisure::Price::ENDPOINT }
+  it_behaves_like "external error reporting" do
+    let(:supplier_name) { "AtLeisure" }
 
-    it_behaves_like "external error reporting" do
-      let(:supplier_name) { "AtLeisure" }
-
-      def provoke_failure!
-        stub_call(:post, endpoint) { raise Faraday::TimeoutError }
-      end
+    def provoke_failure!
+      stub_call(:post, endpoint) { raise Faraday::TimeoutError }
+      Struct.new(:code, :message).new("connection_timeout", "timeout")
     end
+  end
 
+  describe "#call" do
     before do
       allow_any_instance_of(API::Support::JSONRPC).to receive(:request_id) { 888888888888 }
     end

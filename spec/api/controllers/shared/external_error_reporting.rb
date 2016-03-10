@@ -1,7 +1,18 @@
 RSpec.shared_examples "external error reporting" do
 
+  # checks that a given quotation controller properly handles external failures recording.
+  #
+  # Assumptions:
+  #
+  #   * +provoke_failure!+ method: sets up any stubbing necessary to provoke an external
+  #   failure in the API call. This method should return an object that responds to +code+
+  #   and +message+ to be checked against the +ExternalError+ record added at the end
+  #   of the API call.
+  #
+  #   * +supplier_name+: this must be defined to the currently running supplier
+  #   specs.
   it "returns an error message in case there is a failure with the request" do
-    provoke_failure!
+    failure = provoke_failure!
     response = nil
 
     expect {
@@ -16,8 +27,8 @@ RSpec.shared_examples "external error reporting" do
     expect(error).to be_a ExternalError
     expect(error.operation).to eq "quote"
     expect(error.supplier).to eq supplier_name
-    expect(error.code).to eq "connection_timeout"
-    expect(error.message).to eq "timeout"
+    expect(error.code).to eq failure.code
+    expect(error.message).to eq failure.message
     expect(error.happened_at).to be_a Time
   end
 
