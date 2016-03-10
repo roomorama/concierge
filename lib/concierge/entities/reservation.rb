@@ -5,22 +5,32 @@
 #
 # Attributes
 #
-#   +quotation+: a +Quotation+ entity
-#   +customer+:  a +Customer+ entity should keep customer's required info
-#   +code+:      a String, returns after succeed booking
+#   +property_id+: a String used to identify the proeprty with the partner. Not related to Roomorama.
+#   +unit_id+:     a String used to identify the proeprty's unit with the partner. Not related to Roomorama.
+#   +check_in+:    the check-in date for the stay
+#   +check_out+:   the check-out date for the stay
+#   +guests+:      the number of guests
+#   +customer+:    a +Customer+ entity should keep customer's required info
+#   +code+:        a String, returns after successful booking
+##  +errors+:      if there were any errors during the booking creation with the partner,
+#                  the errors will be listed here.
 #
-# The quotation is only successful if a +Customer+ and +Quotation+ are successful.
+# The reservation is only successful if the +errors+ attribute is empty and +customer+ is successful.
 class Reservation
   include Hanami::Entity
   include Hanami::Validations
 
-  attribute :quotation
+  attribute :property_id, type: String
+  attribute :unit_id,     type: String
+  attribute :check_in,    type: String
+  attribute :check_out,   type: String
+  attribute :guests,      type: Integer
+  attribute :code,        type: String
   attribute :customer
-  attribute :code, type: String
 
 
   def successful?
-    quotation.successful? && customer.successful?
+    Array(errors).empty? && customer.successful?
   end
 
 end
