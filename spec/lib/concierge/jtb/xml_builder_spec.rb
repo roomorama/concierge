@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe JTB::XMLBuilder do
 
-  let(:credentials) { double(id: 'some id', user: 'Roberto', password: '123', company: 'Apple') }
+  let(:credentials) { double(id: 'some id', user: 'Roberto', password: '123', company: 'Apple', url: 'https://trial-www.jtbgenesis.com/genesis2-demo/services') }
   subject { described_class.new(credentials) }
 
   describe '#quote_price' do
