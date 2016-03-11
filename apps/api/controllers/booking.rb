@@ -24,11 +24,11 @@ module API::Controllers
   # This method is only invoked in case validations were successful, meaning that partner
   # implementations need not to care about presence and format of expected parameters
   #
-  # The +create_booking+ is expected to return a +reservation+ object, always. See the documentation
+  # The +create_booking+ is expected to return a +Reservation+ object, always. See the documentation
   # of that class for further information.
   #
   # If the reservation is not successful, this method returns the errors declared in the returned
-  # +reservation+ object, and the return status is 503.
+  # +Reservation+ object, and the return status is 503.
   module Booking
 
     def self.included(base)
