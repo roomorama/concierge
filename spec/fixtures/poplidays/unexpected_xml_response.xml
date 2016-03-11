@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<availabilities>
+  <lastChange>2016-03-08 08:32</lastChange>
+  <availability>
+    <arrival>20161217</arrival>
+    <basePrice>3638.0</basePrice>
+    <departure>20161226</departure>
+    <discountPercent>0.0</discountPercent>
+    <price>3638.0</price>
+    <priceEnabled>true</priceEnabled>
+    <requestOnly>false</requestOnly>
+  </availability>
+  <availability>
+    <arrival>20160430</arrival>
+    <basePrice>2466.0</basePrice>
+    <departure>20160508</departure>
+    <discountPercent>0.0</discountPercent>
+    <price>2466.0</price>
+    <priceEnabled>true</priceEnabled>
+    <requestOnly>false</requestOnly>
+  </availability>
+</availabilities>
