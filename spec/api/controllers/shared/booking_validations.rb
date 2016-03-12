@@ -2,25 +2,6 @@ require "spec_helper"
 
 RSpec.shared_examples "performing booking parameters validations" do |controller_generator:|
 
-  let(:params) {
-    {
-      property_id: "A123",
-      check_in:    "2016-03-22",
-      check_out:   "2016-03-24",
-      guests:      2,
-      customer:    {
-        first_name:  "Alex",
-        last_name:   "Black",
-        country:     "India",
-        city:        "Mumbai",
-        address:     "first street",
-        postal_code: "123123",
-        email:       "test@example.com",
-        phone:       "555-55-55",
-      }
-    }
-  }
-
   it "is invalid without a property_id" do
     params.delete(:property_id)
     response = call(controller_generator.call, params)
@@ -90,12 +71,10 @@ RSpec.shared_examples "performing booking parameters validations" do |controller
   
   private
 
-  Response = Struct.new(:status, :headers, :body)
-
   def call(controller, params)
     response = controller.call(params)
     # Wrap Rack data structure for an HTTP response
-    Response.new(
+    Shared::QuoteResponse.new(
       response[0],
       response[1],
       JSON.parse(response[2].first)
