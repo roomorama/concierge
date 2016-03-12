@@ -28,10 +28,11 @@ module JTB
     # +unit_not_found+:  the response sent back if unit not found
     # +invalid_request+: if property not found
     def parse_quote(response, params)
+      response = wrap(response)
       return unrecognised_response(response) unless response[:ga_hotel_avail_rs]
 
       if response[:ga_hotel_avail_rs][:errors]
-        code = response.dig(:ga_hotel_avail_rs, :errors, :error_info, :@code)
+        code = response.get('ga_hotel_avail_rs.errors.error_info.@code')
         if code
           return Result.error(error_code(code), response.to_s)
         else
@@ -39,7 +40,7 @@ module JTB
         end
       end
 
-      rates = response.dig(:ga_hotel_avail_rs, :room_stays, :room_stay)
+      rates = response.get('ga_hotel_avail_rs.room_stays.room_stay')
       if rates.empty?
         return Result.error(:unavailable_property, response.to_s)
       end
@@ -115,6 +116,20 @@ module JTB
 
     def unrecognised_response(response)
       Result.error(:unrecognised_response, response.to_s)
+    end
+
+    #  wraps +Hash+ object to +Hanami::Action::Params+ to make flexible usage with indifferent access
+    # and avoiding NoMethodError for deep nested objects
+    #
+    # Example:
+    #
+    #   wise_hash = Hanami::Action::Params.new({ name: 'Alex', foo: { bar: { '@strange_key' => 20 } } })
+    #   wise_hash[:name]  # => "Alex"
+    #   wise_hash['name'] # => "Alex"
+    #   wise_hash.get('foo.bar.@strange_key') # => 20
+    #   wise_hash.get('foo.bar.unknown') # => nil
+    def wrap(response)
+      Hanami::Action::Params.new(response)
     end
 
   end
