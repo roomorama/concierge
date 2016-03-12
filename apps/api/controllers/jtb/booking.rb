@@ -1,4 +1,4 @@
-require_relative "../booking"
+require_relative "../params/multi_unit_booking"
 
 module API::Controllers::JTB
 
@@ -8,8 +8,10 @@ module API::Controllers::JTB
   class Booking
     include API::Controllers::Booking
 
+    params API::Controllers::Params::MultiUnitBooking
+
     def create_booking(params)
-      credentials = Credentials.for("jtb")
+      credentials = Concierge::Credentials.for("jtb")
       JTB::Client.new(credentials).book(params)
     end
 
