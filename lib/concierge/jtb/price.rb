@@ -51,6 +51,7 @@ module JTB
       Result.new(quotation)
     end
 
+    # === todo: move to reusable class ======
     def builder
       XMLBuilder.new(credentials)
     end
@@ -76,6 +77,7 @@ module JTB
         endpoint:             endpoint
       }
     end
+    #  ========================================
 
   end
 end

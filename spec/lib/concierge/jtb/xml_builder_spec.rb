@@ -51,16 +51,17 @@ RSpec.describe JTB::XMLBuilder do
         }
       }
     }
-    let(:message) { subject.build_booking(params) }
+    let(:rate_plan) { JTB::RatePlan.new('sample') }
+    let(:message) { subject.build_booking(params, rate_plan) }
     
-    it { expect(attribute_for(message, 'RatePlan', 'RatePlanID')).to eq params[:rate_plan] }
+    it { expect(attribute_for(message, 'RatePlan', 'RatePlanID')).to eq 'sample' }
     it { expect(attribute_for(message, 'RoomType', 'RoomTypeCode')).to eq params[:unit_id] }
     it { expect(attribute_for(message, 'TimeSpan', 'StartDate')).to eq params[:check_in] }
     it { expect(attribute_for(message, 'TimeSpan', 'EndDate')).to eq params[:check_out] }
 
     it 'builds message with simulated call' do
       simulated_params = params.merge(simulate: true)
-      message = subject.build_booking(simulated_params)
+      message = subject.build_booking(simulated_params, rate_plan)
       expect(attribute_for(message, 'HotelReservation', 'PassiveIndicator')).to eq 'true'
     end
 

@@ -1,0 +1,88 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://service.api.genesis2.jtbgmt.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <GA_HotelResRQ>
+         <POS>
+            <Source>
+               <RequestorID ID="AGTUSER01" UserName="USERNAME" MessagePassword="Agtuser_01">
+                  <CompanyName Code="AGT01" Nationality="USA"/>
+                  <BasicInfo Version="2013" Language="EN"/>
+               </RequestorID>
+            </Source>
+         </POS>
+         <HotelReservations>
+            <HotelReservation PassiveIndicator="false">
+               <Memo>Free comments area for agents.</Memo>
+               <ResGlobalInfo>
+                  <HotelReservationID ResID_Value="AGT00134"/>
+                  <RatePlans>
+                     <RatePlan RatePlanID="TYOHKPT00STD1DBL"/>
+                  </RatePlans>
+                  <OptionRatePlans>
+                     <OptionRatePlan NumberOfOptionOrder="2" OptionPlanID="TYOHKPT000000001" ServiceDate="2013-04-01"/>
+                  </OptionRatePlans>
+                  <TimeSpan StartDate="2013-04-01" EndDate="2013-04-02" StartTime="1400"/>
+                  <Comments>
+                     <Comment>
+                        <Text>This attribute is used for short message from agents to hotels.</Text>
+                     </Comment>
+                  </Comments>
+               </ResGlobalInfo>
+               <ResGuests>
+                  <ResGuest ResGuestRPH="1" PrimaryIndicator="true" Age="31" AgeQualifyingCode="ADL">
+                     <Profiles>
+                        <ProfileInfo>
+                           <Profile>
+                              <PrefCollections>
+                                 <PrefCollection>
+                                    <CommonPref SmokingAllowed="true"/>
+                                 </PrefCollection>
+                              </PrefCollections>
+                              <Customer>
+                                 <PersonName>
+                                    <GivenName>GivenName1</GivenName>
+                                    <Surname>Surname1</Surname>
+                                    <NamePrefix>Mr</NamePrefix>
+                                 </PersonName>
+                              </Customer>
+                           </Profile>
+                        </ProfileInfo>
+                     </Profiles>
+                  </ResGuest>
+                  <ResGuest ResGuestRPH="2" PrimaryIndicator="false" Age="25" AgeQualifyingCode="ADL">
+                     <Profiles>
+                        <ProfileInfo>
+                           <Profile>
+                              <PrefCollections>
+                                 <PrefCollection>
+                                    <CommonPref SmokingAllowed="true"/>
+                                 </PrefCollection>
+                              </PrefCollections>
+                              <Customer>
+                                 <PersonName>
+                                    <GivenName>GivenName2</GivenName>
+                                    <Surname>Surname2</Surname>
+                                    <NamePrefix>Ms</NamePrefix>
+                                 </PersonName>
+                              </Customer>
+                           </Profile>
+                        </ProfileInfo>
+                     </Profiles>
+                  </ResGuest>
+               </ResGuests>
+               <RoomStays>
+                  <RoomStay>
+                     <ResGuestRPHs>
+                        <ResGuestRPH RPH="1"/>
+                        <ResGuestRPH RPH="2"/>
+                     </ResGuestRPHs>
+                     <RoomTypes>
+                        <RoomType RoomTypeCode="DBL"/>
+                     </RoomTypes>
+                  </RoomStay>
+               </RoomStays>
+            </HotelReservation>
+         </HotelReservations>
+      </GA_HotelResRQ>
+   </soapenv:Body>
+</soapenv:Envelope>

@@ -36,6 +36,16 @@ module JTB
       end
     end
 
+    def book(params)
+      result = JTB::Booking.new(credentials).book(params)
+
+      if result.success?
+        result.value
+      else
+        announce_error("booking", result)
+      end
+    end
+
     private
 
     def announce_error(operation, result)
