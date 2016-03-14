@@ -18,7 +18,7 @@ module Poplidays
   # The price quotation API call is open - it requires no authentication. Therefore
   # no parameters are required to build this class.
   #
-  # The +quote+ method returns a +Result+ object that, when succcessful, encapsulates
+  # The +quote+ method returns a +Result+ object that, when successful, encapsulates
   # the resulting +Quotation+ object. Possible errors at this stage are:
   #
   # * +unrecognised_response+:           happens when the request was successful, but the format
