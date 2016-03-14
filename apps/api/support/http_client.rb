@@ -66,8 +66,9 @@ module API::Support
       end
     end
 
-    def get(path, params = {})
+    def get(path, params = {}, headers = {})
       with_error_handling do |conn|
+        conn.headers.merge!(headers)
         conn.get(path, params)
       end
     end

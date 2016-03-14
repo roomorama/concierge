@@ -41,33 +41,33 @@ RSpec.describe API::Controllers::AtLeisure::Quote do
     end
 
     it "returns unavailable quotation when the supplier responds so" do
-        stub_call(:post, endpoint) { [200, {}, jsonrpc_fixture("atleisure/unavailable.json")] }
-        response = parse_response(described_class.new.call(params))
+      stub_call(:post, endpoint) { [200, {}, jsonrpc_fixture("atleisure/unavailable.json")] }
+      response = parse_response(described_class.new.call(params))
 
-        expect(response.status).to eq 200
-        expect(response.body["status"]).to eq "ok"
-        expect(response.body["available"]).to eq false
-        expect(response.body["property_id"]).to eq "AT-123"
-        expect(response.body["check_in"]).to eq "2016-03-22"
-        expect(response.body["check_out"]).to eq "2016-03-25"
-        expect(response.body["guests"]).to eq 2
-        expect(response.body).not_to have_key("currency")
-        expect(response.body).not_to have_key("total")
+      expect(response.status).to eq 200
+      expect(response.body["status"]).to eq "ok"
+      expect(response.body["available"]).to eq false
+      expect(response.body["property_id"]).to eq "AT-123"
+      expect(response.body["check_in"]).to eq "2016-03-22"
+      expect(response.body["check_out"]).to eq "2016-03-25"
+      expect(response.body["guests"]).to eq 2
+      expect(response.body).not_to have_key("currency")
+      expect(response.body).not_to have_key("total")
     end
 
     it "returns available quotations with price when the call is successful" do
-        stub_call(:post, endpoint) { [200, {}, jsonrpc_fixture("atleisure/available.json")] }
-        response = parse_response(described_class.new.call(params))
+      stub_call(:post, endpoint) { [200, {}, jsonrpc_fixture("atleisure/available.json")] }
+      response = parse_response(described_class.new.call(params))
 
-        expect(response.status).to eq 200
-        expect(response.body["status"]).to eq "ok"
-        expect(response.body["available"]).to eq true
-        expect(response.body["property_id"]).to eq "AT-123"
-        expect(response.body["check_in"]).to eq "2016-03-22"
-        expect(response.body["check_out"]).to eq "2016-03-25"
-        expect(response.body["guests"]).to eq 2
-        expect(response.body["currency"]).to eq "EUR"
-        expect(response.body["total"]).to eq 150
+      expect(response.status).to eq 200
+      expect(response.body["status"]).to eq "ok"
+      expect(response.body["available"]).to eq true
+      expect(response.body["property_id"]).to eq "AT-123"
+      expect(response.body["check_in"]).to eq "2016-03-22"
+      expect(response.body["check_out"]).to eq "2016-03-25"
+      expect(response.body["guests"]).to eq 2
+      expect(response.body["currency"]).to eq "EUR"
+      expect(response.body["total"]).to eq 150
     end
 
   end
