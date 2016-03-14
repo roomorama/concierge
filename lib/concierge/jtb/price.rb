@@ -10,8 +10,11 @@ module JTB
   #   price.quote(params)
   #   # => #<Result error=nil value=Quotation>
   class Price
-    CURRENCY = 'JPY'
-    attr_reader :credentials
+    ENDPOINT       = 'GA_HotelAvail_v2013'
+    OPERATION_NAME = :gby010
+    CURRENCY       = 'JPY'
+
+    attr_reader :credentials, :rate_plan
 
     def initialize(credentials)
       @credentials = credentials
@@ -20,9 +23,19 @@ module JTB
     # quotes the price with JTB by leveraging the +response_parser+.
     # This method will always return a +Quotation+ instance.
     def quote(params)
-      result = api.quote_price(params)
+      result = get_rate_plan(params)
       if result.success?
-        response_parser.parse_quote result.value, params
+        build_quotation(params, result.value)
+      else
+        result
+      end
+    end
+
+    def get_rate_plan(params)
+      message = builder.quote_price(params)
+      result  = remote_call(message)
+      if result.success?
+        response_parser.parse_rate_plan result.value
       else
         result
       end
@@ -30,12 +43,38 @@ module JTB
 
     private
 
+    def build_quotation(params, rate_plan)
+      quotation           = Quotation.new(params)
+      quotation.total     = rate_plan.total
+      quotation.currency  = CURRENCY
+      quotation.available = true
+      Result.new(quotation)
+    end
+
+    def builder
+      XMLBuilder.new(credentials)
+    end
+
+    def remote_call(message)
+      caller.call(OPERATION_NAME, message: message.to_xml)
+    end
+
     def response_parser
       @response_parser ||= ResponseParser.new
     end
 
-    def api
-      @api ||= JTB::API.new(credentials)
+    def caller
+      @caller ||= API::Support::SOAPClient.new(options)
+    end
+
+    def options
+      endpoint = [credentials.url, ENDPOINT].join('/')
+      {
+        wsdl:                 endpoint + '?wsdl',
+        env_namespace:        :soapenv,
+        namespace_identifier: 'jtb',
+        endpoint:             endpoint
+      }
     end
 
   end

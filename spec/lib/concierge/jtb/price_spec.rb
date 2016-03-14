@@ -8,35 +8,60 @@ RSpec.describe JTB::Price do
   let(:params) {
     { property_id: 10, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2, unit_id: 'JPN' }
   }
+  let(:success_response) { parse_response('jtb/success_quote_response.json') }
+  let(:fail_response) { parse_response('jtb/invalid_request.json') }
+
+
   subject { described_class.new(credentials) }
 
+  describe '#get_rate_plan' do
+
+    it 'returns quotation with optimal price' do
+      allow(subject).to receive(:remote_call) { Result.new(success_response) }
+
+      result = subject.get_rate_plan(params)
+      expect(result).to be_a Result
+      expect(result).to be_success
+
+      expect(result.value).to be_a JTB::RatePlan
+    end
+
+    it 'fails if gets bad response' do
+      allow(subject).to receive(:remote_call) { Result.new(fail_response) }
+
+      result = subject.get_rate_plan(params)
+      expect(result).to be_a Result
+      expect(result).not_to be_success
+    end
+
+  end
+
   describe '#quote' do
-    context 'success' do
-      let(:success_response) { parse_response('jtb/success_quote_response.json') }
+    let(:rate_plan) { JTB::RatePlan.new('test', 1000, true) }
 
-      it 'returns quotation with optimal price' do
-        allow_any_instance_of(JTB::API).to receive(:quote_price) { Result.new(success_response) }
+    it 'returns quotation with rate plan total' do
+      allow(subject).to receive(:get_rate_plan) { Result.new(rate_plan) }
 
-        result = subject.quote(params)
-        expect(result).to be_a Result
-        expect(result).to be_success
+      result = subject.quote(params)
+      expect(result).to be_a Result
+      expect(result).to be_success
 
-        expect(result.value).to be_a Quotation
-      end
+      quotation = result.value
+      expect(quotation).to be_a Quotation
+      expect(quotation.total).to eq 1000
+      expect(quotation.currency).to eq 'JPY'
     end
 
-    context 'fail' do
-      let(:fail_response) { parse_response('jtb/invalid_request.json') }
+    it 'fails if gets bad response' do
+      allow(subject).to receive(:get_rate_plan) { Result.error(:some_error, 'Message') }
 
-      it 'returns quotation' do
-        allow_any_instance_of(JTB::API).to receive(:quote_price) { Result.new(fail_response) }
-
-        result = subject.quote(params)
-        expect(result).to be_a Result
-        expect(result).not_to be_success
-      end
-
+      result = subject.get_rate_plan(params)
+      expect(result).to be_a Result
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :some_error
     end
+
+
   end
 
   private

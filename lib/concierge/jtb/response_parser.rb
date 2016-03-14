@@ -1,4 +1,8 @@
 module JTB
+  # JTB provide list of availabilities for each day with multiple rate plans
+  # +RatePlan+ have to keep sum of daily prices and check if all days are available
+  RatePlan = Struct.new(:rate_plan, :total, :available)
+
   # +JTB::ResponseParser+
   #
   # This class is responsible for managing the response sent by JTB's API
@@ -7,10 +11,10 @@ module JTB
   # Usage
   #
   #   parser = JTB::ResponseParser.new
-  #   parser.parse_quote(response_body, request_params)
-  #   # => #<Result error=nil value=Quotation>
+  #   parser.parse_rate_plan(response_body)
+  #   # => #<Result error=nil value=RatePlan>
   #
-  # See documentation of this class instace methods for their description
+  # See documentation of this class instance methods for their description
   # and possible errors.
   class ResponseParser
     # error codes and meanings took from documentation. Check wiki
@@ -19,43 +23,48 @@ module JTB
       'GACZ005' => :invalid_request
     }
 
-    # parses the response of a +quote_price+ API call. Response is a +Hash+
+    # parses the response of a +parse_rate_plan+ API call. Response is a +Hash+
     #
-    # Returns a +Result+ instance wrapping a +Quotation+ object
+    # Returns a +Result+ instance wrapping a +RatePlan+ object
     # in case the response is successful. Possible errors that could
     # happen in this step are:
     #
     # +unit_not_found+:  the response sent back if unit not found
     # +invalid_request+: if property not found
-    def parse_quote(response, params)
+    def parse_rate_plan(response)
       response = wrap(response)
       return unrecognised_response(response) unless response[:ga_hotel_avail_rs]
 
-      if response[:ga_hotel_avail_rs][:errors]
+      if response.get('ga_hotel_avail_rs.errors')
         code = response.get('ga_hotel_avail_rs.errors.error_info.@code')
         if code
-          return Result.error(error_code(code), response.to_s)
+          return Result.error(error_code(code), response.to_h.to_s)
         else
           return unrecognised_response(response)
         end
       end
 
       rates = response.get('ga_hotel_avail_rs.room_stays.room_stay')
-      if rates.empty?
-        return Result.error(:unavailable_property, response.to_s)
+      if rates.blank?
+        return Result.error(:unavailable_property, response)
       end
 
       rate_plans = group_to_rate_plans(rates)
       rate_plan  = get_best_rate_plan(rate_plans)
-
       if rate_plan
-        quotation           = Quotation.new(params)
-        quotation.total     = rate_plan.total
-        quotation.currency  = Price::CURRENCY
-        quotation.available = true
-        Result.new(quotation)
+        Result.new(rate_plan)
       else
-        Result.error(:unavailable_rate_plans, response.to_s)
+        Result.error(:unavailable_rate_plans, response)
+      end
+    end
+
+
+    def parse_booking(response)
+      response = wrap(response)
+      if response.get('ga_hotel_avail_rs.errors')
+        Result.error(:some, response)
+      else
+        Result.new(Reservation.new)
       end
     end
 
@@ -97,15 +106,12 @@ module JTB
       end
     end
 
-    # JTB provide list of availabilities for each day with multiple rate plans
-    # +RatePlan+ have to keep sum of daily prices and check if all days are available
-    RatePlan = Struct.new(:rate_plan, :total, :available)
 
     # get cheapest +RatePlan+
     # rate_plans = [
-    #   <struct JTB::ResponseParser::RatePlan rate_plan="good rate", total=4100, available=true>,
-    #   <struct JTB::ResponseParser::RatePlan rate_plan="abc", total=2100, available=false>,
-    #   <struct JTB::ResponseParser::RatePlan rate_plan="expensive_rate", total=8100, available=true>
+    #   <struct JTB::RatePlan rate_plan="good rate", total=4100, available=true>,
+    #   <struct JTB::RatePlan rate_plan="abc", total=2100, available=false>,
+    #   <struct JTB::RatePlan rate_plan="expensive_rate", total=8100, available=true>
     # ]
     #
     # get_best_rate_plan(rate_plans)
@@ -115,7 +121,7 @@ module JTB
     end
 
     def unrecognised_response(response)
-      Result.error(:unrecognised_response, response.to_s)
+      Result.error(:unrecognised_response, response)
     end
 
     #  wraps +Hash+ object to +Hanami::Action::Params+ to make flexible usage with indifferent access
