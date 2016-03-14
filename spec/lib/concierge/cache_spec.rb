@@ -45,6 +45,12 @@ RSpec.describe Concierge::Cache do
       expect(result.error.message).to eq "Something went wrong"
     end
 
+    it "raises an error if the value returned by a +fetch+ is not a +Result+" do
+      expect {
+        result = subject.fetch(key) { "unwrapped result" }
+      }.to raise_error Concierge::Cache::ResultObjectExpectedError
+    end
+
     it "performs the computation again if the entry is not fresh enough" do
       old_entry = create_entry(key, "value")
       result = nil
