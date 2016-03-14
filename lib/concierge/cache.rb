@@ -47,16 +47,24 @@ module Concierge
     #   Deletes the entry associated with the given +key+. Return value: unspecified
     #   and should not be relied upon.
     class Storage
+
+      # Hanami was designed to have an +id+ attribute for every entity. Since this is
+      # not the case for the +Concierge::Cache::Entry+ entity, we simulate an artificial
+      # ID so that Hanami will not complain when saving an object.
+      DEFAULT_ID = 1
+
       def read(key)
         EntryRepository.by_key(key)
       end
 
       def write(key, value)
-        entry = from_key(key, value)
+        entry = read(key)
 
-        if read(key)
+        if entry
+          entry.value = value
           EntryRepository.update(entry)
         else
+          entry = Entry.new(key: key, value: value, updated_at: Time.now)
           EntryRepository.create(entry)
         end
 
@@ -64,15 +72,14 @@ module Concierge
       end
 
       def delete(key)
-        EntryRepository.delete(from_key(key))
+        entry = read(key)
+        EntryRepository.delete(entry) if entry
       end
 
-      private
-
-      def from_key(key, value = nil)
-        Entry.new(key: key, value: value, updated_at: Time.now)
-      end
     end
+
+    # by default, cached entries have a living time of 1 hour.
+    DEFAULT_TTL = 60 * 60
 
     attr_reader :namespace, :storage
 
@@ -118,25 +125,32 @@ module Concierge
     #   end
     #
     #   # => #<Result error=nil value=payload>
-    def fetch(key)
+    def fetch(key, freshness: DEFAULT_TTL)
       full_key = namespaced(key)
       entry    = storage.read(full_key)
 
-      if storage.read(full_key)
-        Result.new(entry.value)
-      else
-        result = yield
-        ensure_result!(result)
-
-        if result.success?
-          storage.write(full_key, result.value.to_s)
-        end
-
-        result
+      if entry && fresh?(entry, freshness)
+        return Result.new(entry.value)
       end
+
+      result = yield
+      ensure_result!(result)
+
+      if result.success?
+        storage.write(full_key, result.value.to_s)
+      end
+
+      result
     end
 
     private
+
+    def fresh?(entry, freshness)
+      now           = Time.now.to_i
+      entry_updated = entry.updated_at.to_i
+
+      (now - entry_updated) < freshness
+    end
 
     def namespaced(key)
       if namespace

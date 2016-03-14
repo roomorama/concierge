@@ -14,6 +14,7 @@ collection :cache_entries do
   entity     Concierge::Cache::Entry
   repository Concierge::Cache::EntryRepository
 
+  attribute :id,         Integer
   attribute :key,        String
   attribute :value,      String
   attribute :updated_at, Time

@@ -9,13 +9,14 @@ module Concierge
     #
     # Attributes:
     #
+    # +id+         - a numerical, incrementing ID. No meaning on this entity.
     # +key+        - the key associated with a value. Example: +supplier.quotation.price_response+.
     # +value+      - the cached value associated with a +key+.
     # +updated_at+ - a timestamp indicating when the entry was last updated.
     class Entry
       include Hanami::Entity
 
-      attributes :key, :value, :updated_at
+      attributes :id, :key, :value, :updated_at
     end
   end
 end

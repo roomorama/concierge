@@ -16,7 +16,7 @@ RSpec.describe Concierge::Cache do
       expect(entry.updated_at).to be_a Time
     end
 
-    it "updates the database in case the key is cached" do
+    it "does not perform the calculation in case key is cached" do
       old_entry = create_entry(key, "value")
       result = nil
 
@@ -25,6 +25,8 @@ RSpec.describe Concierge::Cache do
       }.not_to change { Concierge::Cache::EntryRepository.count }
 
       expect(result).to be_a Result
+      expect(result).to be_success
+
       entry = result.value
       expect(entry).to eq "value"
     end
@@ -38,8 +40,24 @@ RSpec.describe Concierge::Cache do
 
       expect(result).to be_a Result
       expect(result).not_to be_success
+
       expect(result.error.code).to eq :error
       expect(result.error.message).to eq "Something went wrong"
+    end
+
+    it "performs the computation again if the entry is not fresh enough" do
+      old_entry = create_entry(key, "value")
+      result = nil
+
+      expect {
+        result = subject.fetch(key, freshness: 0) { Result.new("result") }
+      }.not_to change { Concierge::Cache::EntryRepository.count }
+
+      expect(result).to be_a Result
+      expect(result).to be_success
+
+      value = result.value
+      expect(value).to eq "result"
     end
 
     private
