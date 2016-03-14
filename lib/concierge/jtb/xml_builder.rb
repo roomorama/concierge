@@ -52,12 +52,12 @@ module JTB
 
     # builds message for +JTB::API+ +create_booking+ method
     # full description on 28th page of JTB "API References Guide"
-    def build_booking(params, simulate: false)
+    def build_booking(params)
       message = builder.new do |xml|
         xml.root(NAMESPACES) do
           build_credentials(xml)
           xml['jtb'].HotelReservations {
-            xml['jtb'].HotelReservation(PassiveIndicator: simulate) {
+            xml['jtb'].HotelReservation(PassiveIndicator: params.fetch(:simulate, false)) {
               xml['jtb'].ResGlobalInfo {
                 xml['jtb'].RatePlans {
                   xml['jtb'].RatePlan(RatePlanID: params[:rate_plan])

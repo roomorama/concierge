@@ -59,7 +59,8 @@ RSpec.describe JTB::XMLBuilder do
     it { expect(attribute_for(message, 'TimeSpan', 'EndDate')).to eq params[:check_out] }
 
     it 'builds message with simulated call' do
-      message = subject.build_booking(params, simulate: true)
+      simulated_params = params.merge(simulate: true)
+      message = subject.build_booking(simulated_params)
       expect(attribute_for(message, 'HotelReservation', 'PassiveIndicator')).to eq 'true'
     end
 
