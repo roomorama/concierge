@@ -16,6 +16,20 @@ RSpec.describe Concierge::Cache do
       expect(entry.updated_at).to be_a Time
     end
 
+    it "namespaces the given key according to the namespace given on initialization" do
+      subject = described_class.new(namespace: "supplier.quote")
+
+      expect {
+        subject.fetch(key) { Result.new("result") }
+      }.to change { Concierge::Cache::EntryRepository.count }.by(1)
+
+      entry = Concierge::Cache::EntryRepository.most_recent
+      expect(entry).to be_a Concierge::Cache::Entry
+      expect(entry.key).to eq "supplier.quote.test_key"
+      expect(entry.value).to eq "result"
+      expect(entry.updated_at).to be_a Time
+    end
+
     it "does not perform the calculation in case key is cached" do
       old_entry = create_entry(key, "value")
       result = nil
