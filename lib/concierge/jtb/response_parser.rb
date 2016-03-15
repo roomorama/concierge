@@ -62,8 +62,11 @@ module JTB
 
       booking = response.get('ga_hotel_res_rs.hotel_reservations.hotel_reservation')
       return unrecognised_response(response) unless booking
-
-      Result.new(success: booking[:@res_status], booking_id: booking[:unique_id][:@id])
+      if booking[:@res_status] == 'OK'
+        Result.new(booking[:unique_id][:@id])
+      else
+        Result.error(:fail_booking, booking[:@res_status_comment])
+      end
     end
 
     private

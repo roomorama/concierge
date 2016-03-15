@@ -45,7 +45,7 @@ module JTB
     private
 
     def build_quotation(params, rate_plan)
-      quotation_params = params.merge(total: rate_plan.total, available: rate_plan.available, currency: CURRENCY)
+      quotation_params = params.to_h.merge(total: rate_plan.total, available: rate_plan.available, currency: CURRENCY)
       Quotation.new(quotation_params)
     end
 

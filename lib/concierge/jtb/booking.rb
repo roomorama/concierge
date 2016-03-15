@@ -26,7 +26,7 @@ module JTB
     def book(params)
       rate_plan_result = price_handler.best_rate_plan(params)
 
-      return Result.error(:unavailable_rate_plans, params) unless rate_plan_result.success?
+      return rate_plan_result unless rate_plan_result.success?
 
       message = builder.build_booking(params, rate_plan_result.value)
       result  = remote_call(message)
