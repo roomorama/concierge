@@ -9,3 +9,13 @@ collection :external_errors do
   attribute :message,     String
   attribute :happened_at, Time
 end
+
+collection :cache_entries do
+  entity     Concierge::Cache::Entry
+  repository Concierge::Cache::EntryRepository
+
+  attribute :id,         Integer
+  attribute :key,        String
+  attribute :value,      String
+  attribute :updated_at, Time
+end
