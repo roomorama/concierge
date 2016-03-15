@@ -52,6 +52,8 @@ module JTB
 
     # builds message for +JTB::API+ +create_booking+ method
     # full description on 28th page of JTB "API References Guide"
+    # message has a test behaviour if +PassiveIndicator+ is true JTB will not create a booking
+    # but return success response without reservation code
     def build_booking(params, rate)
       message = builder.new do |xml|
         xml.root(NAMESPACES) do
@@ -68,7 +70,7 @@ module JTB
               xml['jtb'].RoomStays {
                 xml['jtb'].RoomStay {
                   xml['jtb'].ResGuestRPHs {
-                    (1..params[:guests].to_i).each do |guest|
+                    1.upto(params[:guests]) do |guest|
                       xml['jtb'].ResGuestRPH(RPH: guest)
                     end
                   }
@@ -103,7 +105,7 @@ module JTB
 
     def guests_info(xml, params)
       customer = params[:customer]
-      (1..params[:guests]).each do |guest|
+      1.upto(params[:guests]) do |guest|
         xml['jtb'].ResGuest(AgeQualifyingCode: "ADL", PrimaryIndicator: (guest == 1), ResGuestRPH: guest) {
           xml['jtb'].Profiles {
             xml['jtb'].ProfileInfo {

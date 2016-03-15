@@ -20,7 +20,8 @@ module JTB
     # error codes and meanings took from documentation. Check wiki
     ERROR_CODES = {
       'FZZRC52' => :unit_not_found,
-      'GACZ005' => :invalid_request
+      'GACZ005' => :invalid_request,
+      'FZZRC14' => :invalid_number_of_guests
     }
 
     # parses the response of a +parse_rate_plan+ API call. Response is a +Hash+

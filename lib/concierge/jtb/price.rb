@@ -25,7 +25,8 @@ module JTB
     def quote(params)
       result = get_rate_plan(params)
       if result.success?
-        build_quotation(params, result.value)
+        quotation = build_quotation(params, result.value)
+        Result.new(quotation)
       else
         result
       end
@@ -44,11 +45,8 @@ module JTB
     private
 
     def build_quotation(params, rate_plan)
-      quotation           = Quotation.new(params)
-      quotation.total     = rate_plan.total
-      quotation.currency  = CURRENCY
-      quotation.available = true
-      Result.new(quotation)
+      quotation_params = params.merge(total: rate_plan.total, available: rate_plan.available, currency: CURRENCY)
+      Quotation.new(quotation_params)
     end
 
     # === todo: move to reusable class ======
