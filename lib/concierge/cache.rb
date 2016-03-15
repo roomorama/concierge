@@ -113,13 +113,29 @@ module Concierge
     #
     # Example
     #
-    #   cache = Concierge::Cache.new("supplier")
+    #   cache = Concierge::Cache.new(namespace: "supplier")
     #   cache.fetch("expensive_operation") do
     #     # some expensive computation
     #     Result.new(payload)
     #   end
     #
     #   # => #<Result error=nil value=payload>
+    #
+    # There is also support for customised levels of cache freshness. By default,
+    # if no argument is given, a value from the cache is considered fresh
+    # if it was updated less than an hour before. More granular control over
+    # the definition of freshness can be obtained by passing a +freshness+
+    # parameter to this method. This is the maximum number of seconds that
+    # an entry should have been last updated in order for it to be considered
+    # fresh.
+    #
+    # Example
+    #
+    #   cache = Concierge::Cache.new(namespace: "supplier")
+    #   four_hours = 4 * 60 * 60
+    #   cache.fetch("expensive_operation", freshness: four_hours) do
+    #     # some expensive computation
+    #   end
     def fetch(key, freshness: DEFAULT_TTL)
       full_key = namespaced(key)
       entry    = storage.read(full_key)
