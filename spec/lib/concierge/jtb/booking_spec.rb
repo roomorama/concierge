@@ -22,7 +22,7 @@ RSpec.describe JTB::Booking do
   subject { described_class.new(credentials) }
 
   describe '#booking' do
-    let(:success_response) { parse_response('jtb/success_quote_response.json') }
+    let(:success_response) { parse_response('jtb/success_booking_response.json') }
     let(:rate_plan) { JTB::RatePlan.new('some rate') }
 
     it 'returns reservation' do
@@ -33,7 +33,9 @@ RSpec.describe JTB::Booking do
       expect(result).to be_a Result
       expect(result).to be_success
 
-      expect(result.value).to be_a Reservation
+      expect(result.value).to be_a Hash
+      expect(result.value[:booking_id]).to eq 'XXXXXXXXXX'
+      expect(result.value[:success]).to be_truthy
     end
 
     let(:fail_response) { parse_response('jtb/invalid_request.json') }
