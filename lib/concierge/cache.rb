@@ -48,11 +48,6 @@ module Concierge
     #   and should not be relied upon.
     class Storage
 
-      # Hanami was designed to have an +id+ attribute for every entity. Since this is
-      # not the case for the +Concierge::Cache::Entry+ entity, we simulate an artificial
-      # ID so that Hanami will not complain when saving an object.
-      DEFAULT_ID = 1
-
       def read(key)
         EntryRepository.by_key(key)
       end
