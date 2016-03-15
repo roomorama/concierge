@@ -18,7 +18,7 @@ module JTB
     # JTB, a generic error message is sent back to the caller, and the failure
     # is logged
     def book(params)
-      rate_plan_result = price_handler.get_rate_plan(params)
+      rate_plan_result = price_handler.best_rate_plan(params)
 
       return Result.error(:unavailable_rate_plans, params) unless rate_plan_result.success?
 

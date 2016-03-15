@@ -26,7 +26,7 @@ RSpec.describe JTB::Booking do
     let(:rate_plan) { JTB::RatePlan.new('some rate') }
 
     it 'returns reservation' do
-      allow_any_instance_of(JTB::Price).to receive(:get_rate_plan) { Result.new(rate_plan) }
+      allow_any_instance_of(JTB::Price).to receive(:best_rate_plan) { Result.new(rate_plan) }
       allow(subject).to receive(:remote_call) { Result.new(success_response) }
 
       result = subject.book(params)

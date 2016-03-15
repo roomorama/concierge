@@ -14,12 +14,12 @@ RSpec.describe JTB::Price do
 
   subject { described_class.new(credentials) }
 
-  describe '#get_rate_plan' do
+  describe '#best_rate_plan' do
 
     it 'returns quotation with optimal price' do
       allow(subject).to receive(:remote_call) { Result.new(success_response) }
 
-      result = subject.get_rate_plan(params)
+      result = subject.best_rate_plan(params)
       expect(result).to be_a Result
       expect(result).to be_success
 
@@ -29,7 +29,7 @@ RSpec.describe JTB::Price do
     it 'fails if gets bad response' do
       allow(subject).to receive(:remote_call) { Result.new(fail_response) }
 
-      result = subject.get_rate_plan(params)
+      result = subject.best_rate_plan(params)
       expect(result).to be_a Result
       expect(result).not_to be_success
     end
@@ -40,7 +40,7 @@ RSpec.describe JTB::Price do
     let(:rate_plan) { JTB::RatePlan.new('test', 1000, true) }
 
     it 'returns quotation with rate plan total' do
-      allow(subject).to receive(:get_rate_plan) { Result.new(rate_plan) }
+      allow(subject).to receive(:best_rate_plan) { Result.new(rate_plan) }
 
       result = subject.quote(params)
       expect(result).to be_a Result
@@ -53,9 +53,9 @@ RSpec.describe JTB::Price do
     end
 
     it 'fails if gets bad response' do
-      allow(subject).to receive(:get_rate_plan) { Result.error(:some_error, 'Message') }
+      allow(subject).to receive(:best_rate_plan) { Result.error(:some_error, 'Message') }
 
-      result = subject.get_rate_plan(params)
+      result = subject.best_rate_plan(params)
       expect(result).to be_a Result
       expect(result).not_to be_success
       expect(result.error.code).to eq :some_error
