@@ -57,7 +57,7 @@ RSpec.shared_examples "performing booking parameters validations" do |controller
   end
 
   context "customer" do
-    %w(first_name last_name country city address postal_code phone).map do |attribute|
+    %w(first_name last_name).map do |attribute|
       it "is invalid without #{attribute}" do
         params[:customer].delete(attribute.to_sym)
         response = call(controller_generator.call, params)

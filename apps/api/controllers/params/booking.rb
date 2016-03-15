@@ -22,12 +22,12 @@ module API::Controllers::Params
     param :customer do
       param :first_name,  type: String, presence: true
       param :last_name,   type: String, presence: true
-      param :country,     type: String, presence: true
-      param :city,        type: String, presence: true
-      param :address,     type: String, presence: true
-      param :postal_code, type: String, presence: true
-      param :email,       type: String, presence: true
-      param :phone,       type: String, presence: true
+      param :country,     type: String
+      param :city,        type: String
+      param :address,     type: String
+      param :postal_code, type: String
+      param :email,       type: String
+      param :phone,       type: String
       param :language,    type: String
       param :gender,      type: String
     end

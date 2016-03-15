@@ -34,7 +34,7 @@ class Reservation
 
 
   def successful?
-    Array(errors).empty? && customer.successful?
+    Array(errors).empty?
   end
 
 end

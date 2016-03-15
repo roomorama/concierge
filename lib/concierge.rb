@@ -1,6 +1,5 @@
 require 'hanami/model'
 require 'hanami/mailer'
-Dir["#{ __dir__ }/utils/**/*.rb"].each { |file| require_relative file }
 Dir["#{ __dir__ }/concierge/**/*.rb"].each { |file| require_relative file }
 
 Hanami::Model.configure do
