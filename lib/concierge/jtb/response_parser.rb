@@ -33,22 +33,15 @@ module JTB
     # +unit_not_found+:  the response sent back if unit not found
     # +invalid_request+: if property not found
     def parse_rate_plan(response)
-      response = wrap(response)
+      response = Concierge::SafeAccessHash.new(response)
+
       return unrecognised_response(response) unless response[:ga_hotel_avail_rs]
 
-      if response.get('ga_hotel_avail_rs.errors')
-        code = response.get('ga_hotel_avail_rs.errors.error_info.@code')
-        if code
-          return Result.error(error_code(code), response.to_h.to_s)
-        else
-          return unrecognised_response(response)
-        end
-      end
+      errors = response[:ga_hotel_avail_rs][:errors]
+      return handle_error(errors) if errors
 
       rates = response.get('ga_hotel_avail_rs.room_stays.room_stay')
-      if rates.blank?
-        return Result.error(:unavailable_property, response)
-      end
+      return Result.error(:unavailable_property, response) unless rates
 
       rate_plans = group_to_rate_plans(rates)
       rate_plan  = get_best_rate_plan(rate_plans)
@@ -61,19 +54,19 @@ module JTB
 
 
     def parse_booking(response)
-      response = wrap(response)
-      if response.get('ga_hotel_avail_rs.errors')
-        Result.error(:some, response)
-      else
-        Result.new(Reservation.new)
-      end
+      response = Concierge::SafeAccessHash.new(response)
+      return unrecognised_response(response) unless response[:ga_hotel_res_rs]
+
+      errors = response[:ga_hotel_res_rs][:errors]
+      return handle_error(errors) if errors
+
+      booking = response.get('ga_hotel_res_rs.hotel_reservations.hotel_reservation')
+      return unrecognised_response(response) unless booking
+
+      Result.new(success: booking[:@res_status], booking_id: booking[:unique_id][:@id])
     end
 
     private
-
-    def error_code(code)
-      ERROR_CODES.fetch(code, :request_error)
-    end
 
     # JTB provides so deep nested scattered response. This method prepares rates and returns +RatePlan+ list
     #
@@ -107,7 +100,6 @@ module JTB
       end
     end
 
-
     # get cheapest +RatePlan+
     # rate_plans = [
     #   <struct JTB::RatePlan rate_plan="good rate", total=4100, available=true>,
@@ -121,22 +113,21 @@ module JTB
       rate_plans.select(&:available).min_by(&:total)
     end
 
+    def error_code(code)
+      ERROR_CODES.fetch(code, :request_error)
+    end
+
     def unrecognised_response(response)
       Result.error(:unrecognised_response, response)
     end
 
-    #  wraps +Hash+ object to +Hanami::Action::Params+ to make flexible usage with indifferent access
-    # and avoiding NoMethodError for deep nested objects
-    #
-    # Example:
-    #
-    #   wise_hash = Hanami::Action::Params.new({ name: 'Alex', foo: { bar: { '@strange_key' => 20 } } })
-    #   wise_hash[:name]  # => "Alex"
-    #   wise_hash['name'] # => "Alex"
-    #   wise_hash.get('foo.bar.@strange_key') # => 20
-    #   wise_hash.get('foo.bar.unknown') # => nil
-    def wrap(response)
-      Hanami::Action::Params.new(response)
+    def handle_error(response)
+      code = response.get("error_info.@code")
+      if code
+        Result.error(error_code(code), response)
+      else
+        unrecognised_response(response)
+      end
     end
 
   end

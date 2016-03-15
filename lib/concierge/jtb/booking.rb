@@ -17,6 +17,12 @@ module JTB
     # If an error happens in any step in the process of getting a response back from
     # JTB, a generic error message is sent back to the caller, and the failure
     # is logged
+    #
+    # example:
+    #   booking = JTB::Booking.new(credentials)
+    #   booking.book(params)
+    #
+    #   # => #<Result error=nil value={success: 'OK', booking_id: 'XXXXXXXXXX'}>
     def book(params)
       rate_plan_result = price_handler.best_rate_plan(params)
 
@@ -38,7 +44,6 @@ module JTB
       @price_handler ||= Price.new(credentials)
     end
 
-    # === todo: move to reusable class ======
     def builder
       XMLBuilder.new(credentials)
     end
@@ -64,7 +69,6 @@ module JTB
         endpoint:             endpoint
       }
     end
-    #  ========================================
 
   end
 end

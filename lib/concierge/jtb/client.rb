@@ -40,7 +40,7 @@ module JTB
       result = JTB::Booking.new(credentials).book(params)
 
       if result.success?
-        result.value
+        Reservation.new(params.merge(result.value))
       else
         announce_error("booking", result)
         Reservation.new(errors: { booking: 'Could not book property with remote supplier' })
