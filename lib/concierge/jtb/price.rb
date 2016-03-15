@@ -23,7 +23,7 @@ module JTB
     # quotes the price with JTB by leveraging the +response_parser+.
     # This method will always return a +Quotation+ instance.
     def quote(params)
-      result = get_rate_plan(params)
+      result = best_rate_plan(params)
       if result.success?
         quotation = build_quotation(params, result.value)
         Result.new(quotation)
@@ -32,7 +32,7 @@ module JTB
       end
     end
 
-    def get_rate_plan(params)
+    def best_rate_plan(params)
       message = builder.quote_price(params)
       result  = remote_call(message)
       if result.success?
