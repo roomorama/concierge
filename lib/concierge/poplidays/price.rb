@@ -106,9 +106,10 @@ module Poplidays
     end
 
     def retrieve_mandatory_services(id)
-      cache_key = ["mandatory_services", ".", id].join
+      cache_key      = ["mandatory_services", ".", id].join
+      cache_duration = 12 * 60 * 60 # twelve hours
 
-      with_cache(cache_key) do
+      with_cache(cache_key, freshness: cache_duration) do
         property_details = fetch_json(property_endpoint(id))
         return property_details unless property_details.success?
 
@@ -154,8 +155,8 @@ module Poplidays
       end
     end
 
-    def with_cache(key)
-      cache.fetch(key) { yield }
+    def with_cache(key, freshness: Concierge::Cache::DEFAULT_TTL)
+      cache.fetch(key, freshness: freshness) { yield }
     end
 
     def cache
