@@ -64,7 +64,7 @@ module JTB
                 }
                 xml['jtb'].TimeSpan(StartDate: params[:check_in], EndDate: params[:check_out])
               }
-              xml['jtb'].ResGuests guests_info(xml, params)
+              xml['jtb'].ResGuests { guests_info(xml, params) }
               xml['jtb'].RoomStays {
                 xml['jtb'].RoomStay {
                   xml['jtb'].ResGuestRPHs {

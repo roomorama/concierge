@@ -37,16 +37,9 @@ RSpec.describe JTB::XMLBuilder do
         check_in:    '2016-03-22',
         check_out:   '2016-03-24',
         guests:      2,
-        rate_plan:   'xxx',
         customer:    {
           first_name:  'Alex',
           last_name:   'Black',
-          country:     'India',
-          city:        'Mumbai',
-          address:     'first street',
-          postal_code: '123123',
-          email:       'test@example.com',
-          phone:       '555-55-55',
           gender:      'male'
         }
       }

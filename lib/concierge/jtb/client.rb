@@ -43,6 +43,7 @@ module JTB
         result.value
       else
         announce_error("booking", result)
+        Reservation.new(errors: { booking: 'Could not book property with remote supplier' })
       end
     end
 
