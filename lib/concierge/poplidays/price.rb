@@ -41,6 +41,10 @@ module Poplidays
     # always quoted in EUR.
     CURRENCY = "EUR"
 
+    # some API calls are cached using +Concierge::Cache+ and this is the cache
+    # key prefix used for those entries.
+    CACHE_PREFIX = "poplidays.quote"
+
     # Checks the price with Poplidays. Downloads the availabilities calendar
     # and checks whether the selected dates are available. If so, the price
     # is extracted.
@@ -49,7 +53,8 @@ module Poplidays
     # for when calculating the subtotal. For that purpose, an API call to
     # the property details endpoint is made and that value is extracted.
     def quote(params)
-      calendar = fetch_json(availabilities_calendar_endpoint(params[:property_id]))
+      cache_key = ["availabilities", ".", params[:property_id]].join
+      calendar = fetch_with_cache(cache_key, availabilities_calendar_endpoint(params[:property_id]))
       return calendar unless calendar.success?
 
       availability_calculation = check_availability(calendar.value, params[:check_in], params[:check_out])
@@ -101,15 +106,22 @@ module Poplidays
     end
 
     def retrieve_mandatory_services(id)
-      property_details = fetch_json(property_endpoint(id))
-      return property_details unless property_details.success?
+      cache_key = ["mandatory_services", ".", id].join
 
-      payload = property_details.value
+      with_cache(cache_key) do
+        property_details = fetch_json(property_endpoint(id))
+        return property_details unless property_details.success?
 
-      if payload.key?("mandatoryServicesPrice")
-        Result.new(payload["mandatoryServicesPrice"])
-      else
-        unrecognised_response(payload)
+        data = json_decode(property_details.value)
+        return data unless data.success?
+
+        payload = data.value
+
+        if payload.key?("mandatoryServicesPrice")
+          Result.new(payload["mandatoryServicesPrice"])
+        else
+          unrecognised_response(payload)
+        end
       end
     end
 
@@ -118,7 +130,7 @@ module Poplidays
 
       if result.success?
         response = result.value
-        json_decode(response.body)
+        Result.new(response.body)
       else
         # augment the upstream error message by adding the endpoint which caused
         # the failure. Useful in this scenario where two endpoints are involved
@@ -126,6 +138,28 @@ module Poplidays
         message = [result.error.message, " - ", endpoint].join
         Result.error(result.error.code, message)
       end
+    end
+
+    # uses +fetch_json+ to fetch the JSON payload from the given +endpoint+,
+    # leveraging the cache with key +key+.
+    def fetch_with_cache(key, endpoint)
+      payload = with_cache(key) do
+        fetch_json(endpoint)
+      end
+
+      if payload.success?
+        json_decode(payload.value)
+      else
+        payload
+      end
+    end
+
+    def with_cache(key)
+      cache.fetch(key) { yield }
+    end
+
+    def cache
+      @_cache ||= Concierge::Cache.new(namespace: CACHE_PREFIX)
     end
 
     def build_quotation(params)

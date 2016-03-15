@@ -9,7 +9,7 @@ module Concierge
   # Example
   #
   #   cache = Concierge::Cache.new
-  #   cache.fetch("supplier.key") do
+  #   cache.fetch(namespace: "supplier.key") do
   #     # some expensive computation
   #   end
   #
