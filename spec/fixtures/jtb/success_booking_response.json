@@ -1,0 +1,173 @@
+{
+  "ga_hotel_res_rs": {
+    "hotel_reservations": {
+      "hotel_reservation": {
+        "memo": null,
+        "res_global_info": {
+          "hotel_stays": {
+            "hotel_stay": {
+              "basic_property_info": {
+                "location_info": {
+                  "@latitude": "N26.11.28.38254",
+                  "@longitude": "E127.16.55.6328"
+                },
+                "@area_id": "90",
+                "@hotel_address": "22-2 Maehara, Akashima, Zamami, Shimajiri-gun, Okinawa Prefecture",
+                "@hotel_code": "8732001",
+                "@hotel_name": "Seadorun",
+                "@hotel_tel": " "
+              }
+            }
+          },
+          "rate_plans": {
+            "rate_plan": {
+              "meals_included": {
+                "@meal_plan_codes": "BBB",
+                "@meal_plan_names": "With breakfast!"
+              },
+              "@effective_date": "2015-01-01",
+              "@expire_date": "2016-03-31",
+              "@rate_plan_id": "ZZZH37K01TRP2TP3",
+              "@rate_plan_name": "Standard Triple (Sleeps 3) With Breakfast"
+            }
+          },
+          "time_span": {
+            "@start": "2016-03-27"
+          },
+          "total": {
+            "@amount_after_tax": "24300.00"
+          }
+        },
+        "res_guests": {
+          "res_guest": [
+            {
+              "customer": {
+                "pnrpaxid": "001",
+                "person_name": {
+                  "given_name": "jon1",
+                  "name_prefix": "MR",
+                  "surname": "doe"
+                }
+              },
+              "@age_qualifying_code": "ADL",
+              "@primary_indicator": "true",
+              "@res_guest_rph": "1"
+            },
+            {
+              "customer": {
+                "pnrpaxid": "002",
+                "person_name": {
+                  "given_name": "jon2",
+                  "name_prefix": "MR",
+                  "surname": "doe"
+                }
+              },
+              "@age_qualifying_code": "ADL",
+              "@primary_indicator": "false",
+              "@res_guest_rph": "2"
+            },
+            {
+              "customer": {
+                "pnrpaxid": "003",
+                "person_name": {
+                  "given_name": "jon3",
+                  "name_prefix": "MR",
+                  "surname": "doe"
+                }
+              },
+              "@age_qualifying_code": "ADL",
+              "@primary_indicator": "false",
+              "@res_guest_rph": "3"
+            }
+          ]
+        },
+        "room_stays": {
+          "room_stay": {
+            "cancel_penalties": {
+              "cancel_penalty": [
+                {
+                  "amount_percent": {
+                    "@percent": "0.00"
+                  },
+                  "@end": "2016-03-23",
+                  "@start": "2013-07-02",
+                  "@duration": "1"
+                },
+                {
+                  "amount_percent": {
+                    "@percent": "30.00"
+                  },
+                  "@end": "2016-03-25",
+                  "@start": "2016-03-24",
+                  "@duration": "1"
+                },
+                {
+                  "amount_percent": {
+                    "@percent": "50.00"
+                  },
+                  "@end": "2016-03-26",
+                  "@start": "2016-03-26",
+                  "@duration": "1"
+                },
+                {
+                  "amount_percent": {
+                    "@percent": "100.00"
+                  },
+                  "@end": "2016-03-27",
+                  "@start": "2016-03-27",
+                  "@duration": "1"
+                },
+                {
+                  "amount_percent": {
+                    "@percent": "100.00"
+                  },
+                  "@end": "2016-07-04",
+                  "@start": "2016-03-28",
+                  "@duration": "1"
+                }
+              ]
+            },
+            "room_rates": {
+              "room_rate": {
+                "total": {
+                  "guest_rate": [
+                    {
+                      "@amount_after_tax": "8100.00",
+                      "@pnrpaxid": "001"
+                    },
+                    {
+                      "@amount_after_tax": "8100.00",
+                      "@pnrpaxid": "002"
+                    },
+                    {
+                      "@amount_after_tax": "8100.00",
+                      "@pnrpaxid": "003"
+                    }
+                  ],
+                  "@amount_after_tax": "24300.00"
+                },
+                "@room_grade": "STD",
+                "@room_id": "1",
+                "@room_type": "Triple",
+                "@room_type_code": "TPL"
+              }
+            },
+            "time_span": {
+              "@end": "2016-03-27",
+              "@start": "2016-03-27"
+            }
+          }
+        },
+        "unique_id": {
+          "@id": "XXXXXXXXXX"
+        },
+        "@create_date_time": "2016-03-14",
+        "@pnr": "XXXXXX",
+        "@passive_indicator": "true",
+        "@res_status": "OK"
+      }
+    },
+    "success": null,
+    "@xmlns": "http://service.api.genesis2.jtbgmt.com/"
+  }
+}

@@ -29,22 +29,7 @@ module API::Controllers::Params
     # The keys for the returned hash are attribute names (see the +param+ declaration list above)
     # and the values for each key is a list of errors for the attribute.
     def error_messages
-      messages = Hash.new { |h, k| h[k] = [] }
-
-      errors.each do |error|
-        attr = error.attribute
-
-        case error.validation
-        when :presence
-          messages[attr] << "#{attr} is required"
-        when :format
-          messages[attr] << "#{attr}: invalid format"
-        else
-          messages[attr] << "#{attr} is invalid"
-        end
-      end
-
-      messages
+      ErrorMessages.new(errors).generate
     end
 
     # Returns a +Date+ representation of the check-in date given in the call.

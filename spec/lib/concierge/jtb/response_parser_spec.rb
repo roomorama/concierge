@@ -6,7 +6,7 @@ RSpec.describe JTB::ResponseParser do
 
   subject { described_class.new }
 
-  describe '#parse_quote' do
+  describe '#parse_rate_plan' do
     let(:params) {
       { property_id: 10, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2, unit_id: 'JPN' }
     }
@@ -24,7 +24,7 @@ RSpec.describe JTB::ResponseParser do
           ]
         )
       end
-      let(:result) { subject.parse_quote(success_response, params) }
+      let(:result) { subject.parse_rate_plan(success_response) }
 
       it 'is successful result' do
         expect(result).to be_a Result
@@ -32,26 +32,25 @@ RSpec.describe JTB::ResponseParser do
       end
 
       it 'has quotation value with best rate' do
-        expect(result.value).to be_a Quotation
+        expect(result.value).to be_a JTB::RatePlan
 
-        quotation = result.value
-        expect(quotation.total).to eq 4100
-        expect(quotation.currency).to eq 'JPY'
-        expect(quotation.available).to be_truthy
+        rate_plan = result.value
+        expect(rate_plan.total).to eq 4100
+        expect(rate_plan.available).to be_truthy
       end
 
     end
 
     it 'fails if invalid request' do
       response = parse read_fixture('jtb/invalid_request.json')
-      result   = subject.parse_quote(response, params)
+      result   = subject.parse_rate_plan(response)
       expect(result).not_to be_success
       expect(result.error.code).to eq :invalid_request
     end
 
     it 'fails if unit not found' do
       response = parse read_fixture('jtb/unit_not_found.json')
-      result   = subject.parse_quote(response, params)
+      result   = subject.parse_rate_plan(response)
       expect(result).not_to be_success
       expect(result.error.code).to eq :unit_not_found
     end

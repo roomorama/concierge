@@ -28,6 +28,46 @@ RSpec.describe JTB::XMLBuilder do
     end
 
   end
+  
+  describe '#build_booking' do
+    let(:params) {
+      {
+        property_id: 'A123',
+        unit_id:     'JPN',
+        check_in:    '2016-03-22',
+        check_out:   '2016-03-24',
+        guests:      2,
+        customer:    {
+          first_name:  'Alex',
+          last_name:   'Black',
+          gender:      'male'
+        }
+      }
+    }
+    let(:rate_plan) { JTB::RatePlan.new('sample') }
+    let(:message) { subject.build_booking(params, rate_plan) }
+    
+    it { expect(attribute_for(message, 'RatePlan', 'RatePlanID')).to eq 'sample' }
+    it { expect(attribute_for(message, 'RoomType', 'RoomTypeCode')).to eq params[:unit_id] }
+    it { expect(attribute_for(message, 'TimeSpan', 'StartDate')).to eq params[:check_in] }
+    it { expect(attribute_for(message, 'TimeSpan', 'EndDate')).to eq params[:check_out] }
+
+    it 'builds message with simulated call' do
+      simulated_params = params.merge(simulate: true)
+      message = subject.build_booking(simulated_params, rate_plan)
+      expect(attribute_for(message, 'HotelReservation', 'PassiveIndicator')).to eq 'true'
+    end
+
+    context 'customer' do
+      let(:customer) { params[:customer] }
+
+      it { expect(message.xpath('//jtb:ResGuest').size).to eq(params[:guests]) }
+      it { expect(message.xpath('//jtb:GivenName').first.text).to include(customer[:first_name]) }
+      it { expect(message.xpath('//jtb:Surname').first.text).to include(customer[:last_name]) }
+      it { expect(message.xpath('//jtb:NamePrefix').first.text).to eq('Mr') }
+
+    end
+  end
 
   private
 

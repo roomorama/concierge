@@ -1,4 +1,8 @@
 module JTB
+  # JTB provide list of availabilities for each day with multiple rate plans
+  # +RatePlan+ have to keep sum of daily prices and check if all days are available
+  RatePlan = Struct.new(:rate_plan, :total, :available)
+
   # +JTB::ResponseParser+
   #
   # This class is responsible for managing the response sent by JTB's API
@@ -7,62 +11,65 @@ module JTB
   # Usage
   #
   #   parser = JTB::ResponseParser.new
-  #   parser.parse_quote(response_body, request_params)
-  #   # => #<Result error=nil value=Quotation>
+  #   parser.parse_rate_plan(response_body)
+  #   # => #<Result error=nil value=RatePlan>
   #
-  # See documentation of this class instace methods for their description
+  # See documentation of this class instance methods for their description
   # and possible errors.
   class ResponseParser
     # error codes and meanings took from documentation. Check wiki
     ERROR_CODES = {
       'FZZRC52' => :unit_not_found,
-      'GACZ005' => :invalid_request
+      'GACZ005' => :invalid_request,
+      'FZZRC14' => :invalid_number_of_guests
     }
 
-    # parses the response of a +quote_price+ API call. Response is a +Hash+
+    # parses the response of a +parse_rate_plan+ API call. Response is a +Hash+
     #
-    # Returns a +Result+ instance wrapping a +Quotation+ object
+    # Returns a +Result+ instance wrapping a +RatePlan+ object
     # in case the response is successful. Possible errors that could
     # happen in this step are:
     #
     # +unit_not_found+:  the response sent back if unit not found
     # +invalid_request+: if property not found
-    def parse_quote(response, params)
+    def parse_rate_plan(response)
+      response = Concierge::SafeAccessHash.new(response)
+
       return unrecognised_response(response) unless response[:ga_hotel_avail_rs]
 
-      if response[:ga_hotel_avail_rs][:errors]
-        code = response.dig(:ga_hotel_avail_rs, :errors, :error_info, :@code)
-        if code
-          return Result.error(error_code(code), response.to_s)
-        else
-          return unrecognised_response(response)
-        end
-      end
+      errors = response[:ga_hotel_avail_rs][:errors]
+      return handle_error(errors) if errors
 
-      rates = response.dig(:ga_hotel_avail_rs, :room_stays, :room_stay)
-      if rates.empty?
-        return Result.error(:unavailable_property, response.to_s)
-      end
+      rates = response.get('ga_hotel_avail_rs.room_stays.room_stay')
+      return Result.error(:unavailable_property, response) unless rates
 
       rate_plans = group_to_rate_plans(rates)
       rate_plan  = get_best_rate_plan(rate_plans)
-
       if rate_plan
-        quotation           = Quotation.new(params)
-        quotation.total     = rate_plan.total
-        quotation.currency  = Price::CURRENCY
-        quotation.available = true
-        Result.new(quotation)
+        Result.new(rate_plan)
       else
-        Result.error(:unavailable_rate_plans, response.to_s)
+        Result.error(:unavailable_rate_plans, response)
+      end
+    end
+
+
+    def parse_booking(response)
+      response = Concierge::SafeAccessHash.new(response)
+      return unrecognised_response(response) unless response[:ga_hotel_res_rs]
+
+      errors = response[:ga_hotel_res_rs][:errors]
+      return handle_error(errors) if errors
+
+      booking = response.get('ga_hotel_res_rs.hotel_reservations.hotel_reservation')
+      return unrecognised_response(response) unless booking
+      if booking[:@res_status] == 'OK'
+        Result.new(booking[:unique_id][:@id])
+      else
+        Result.error(:fail_booking, response)
       end
     end
 
     private
-
-    def error_code(code)
-      ERROR_CODES.fetch(code, :request_error)
-    end
 
     # JTB provides so deep nested scattered response. This method prepares rates and returns +RatePlan+ list
     #
@@ -96,15 +103,11 @@ module JTB
       end
     end
 
-    # JTB provide list of availabilities for each day with multiple rate plans
-    # +RatePlan+ have to keep sum of daily prices and check if all days are available
-    RatePlan = Struct.new(:rate_plan, :total, :available)
-
     # get cheapest +RatePlan+
     # rate_plans = [
-    #   <struct JTB::ResponseParser::RatePlan rate_plan="good rate", total=4100, available=true>,
-    #   <struct JTB::ResponseParser::RatePlan rate_plan="abc", total=2100, available=false>,
-    #   <struct JTB::ResponseParser::RatePlan rate_plan="expensive_rate", total=8100, available=true>
+    #   <struct JTB::RatePlan rate_plan="good rate", total=4100, available=true>,
+    #   <struct JTB::RatePlan rate_plan="abc", total=2100, available=false>,
+    #   <struct JTB::RatePlan rate_plan="expensive_rate", total=8100, available=true>
     # ]
     #
     # get_best_rate_plan(rate_plans)
@@ -113,8 +116,21 @@ module JTB
       rate_plans.select(&:available).min_by(&:total)
     end
 
+    def error_code(code)
+      ERROR_CODES.fetch(code, :request_error)
+    end
+
     def unrecognised_response(response)
-      Result.error(:unrecognised_response, response.to_s)
+      Result.error(:unrecognised_response, response)
+    end
+
+    def handle_error(response)
+      code = response.get("error_info.@code")
+      if code
+        Result.error(error_code(code), response)
+      else
+        unrecognised_response(response)
+      end
     end
 
   end

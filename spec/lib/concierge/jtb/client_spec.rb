@@ -4,13 +4,13 @@ RSpec.describe JTB::Client do
 
   let(:credentials) { double(id: 'some id', user: 'Roberto', password: '123', company: 'Apple', url: 'https://trial-www.jtbgenesis.com/genesis2-demo/services') }
 
-  let(:params) {
-    { property_id: 10, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2, unit_id: 'JPN' }
-  }
-
   subject { described_class.new(credentials) }
 
   describe '#quote' do
+    let(:params) {
+      { property_id: 10, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2, unit_id: 'JPN' }
+    }
+
     it 'returns the wrapped quotation from JTB::Price when successful' do
       successful_quotation = Quotation.new(total: 999)
       allow_any_instance_of(JTB::Price).to receive(:quote) { Result.new(successful_quotation) }
