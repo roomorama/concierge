@@ -22,15 +22,15 @@ To add the capability of quoting a booking for a new supplier, create a new cont
 as follows
 
 ~~~ruby
-module API::Controllers::Partner
+module API::Controllers::Supplier
 
   class Quote
     include API::Controllers::Quote
-    
+
     # params API::Controllers::Params::MultiUnitQuote # uncomment for multi unit supplier
-    
+
     def quote_price(params)
-      Partner::Client.new.quote(params)
+      Supplier::Client.new.quote(params)
     end
 
   end
@@ -41,7 +41,7 @@ end
 that the parameters at this point were already validated, so required parameters
 will be present and valid.
 
-In the code above, `Partner::Client` is an implementation of a client library
+In the code above, `Supplier::Client` is an implementation of a client library
 for the supplier's API.
 
 Note that the `quote_price` method:
@@ -60,15 +60,15 @@ To add the capability to create a booking for a new supplier, create a new contr
 as follows
 
 ~~~ruby
-module API::Controllers::Partner
+module API::Controllers::Supplier
 
   class Booking
     include API::Controllers::Booking
 
     # params API::Controllers::Params::MultiUnitBooking # uncomment for multi unit supplier
-    
+
     def create_booking(params)
-      Partner::Client.new.book(params)
+      Supplier::Client.new.book(params)
     end
 
   end
@@ -77,9 +77,9 @@ end
 
 `create_booking` is the only method whose implementation is necessary. You can assume
 that the parameters at this point were already validated, so required parameters
-will be present and valid. 
+will be present and valid.
 
-In the code above, `Partner::Client` is an implementation of a client library
+In the code above, `Supplier::Client` is an implementation of a client library
 for the supplier's API.
 
 Note that the `create_booking` method:
