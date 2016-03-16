@@ -1,3 +1,4 @@
+require_relative "../booking"
 require_relative "../params/multi_unit_booking"
 
 module API::Controllers::JTB
