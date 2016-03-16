@@ -1,3 +1,5 @@
+require "erb"
+
 module Concierge
 
   # +Concierge::Credentials+

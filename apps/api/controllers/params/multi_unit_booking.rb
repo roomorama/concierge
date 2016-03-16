@@ -1,3 +1,5 @@
+require_relative "booking"
+
 module API::Controllers::Params
 
   # +API::Controllers::Params::MultiUnitBooking
