@@ -42,7 +42,7 @@ module API
         if valid_webhook
           app.call(env)
         else
-          [403, {}, "Forbidden"]
+          [403, {}, ["Forbidden"]]
         end
       end
 
