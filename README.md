@@ -26,7 +26,9 @@ module API::Controllers::Partner
 
   class Quote
     include API::Controllers::Quote
-
+    
+    # params API::Controllers::Params::MultiUnitQuote # uncomment for multi unit supplier
+    
     def quote_price(params)
       Partner::Client.new.quote(params)
     end
@@ -49,6 +51,44 @@ Note that the `quote_price` method:
 network-related issue is happening.
 
 If there are errors during the execution of the `quote_price` method, the `Quotation`
+object returned must include a non-empty `errors` list to be returned to the caller,
+which will receive a `503` HTTP status.
+
+### Create bookings
+
+To add the capability to create a booking for a new supplier, create a new controller
+as follows
+
+~~~ruby
+module API::Controllers::Partner
+
+  class Booking
+    include API::Controllers::Booking
+
+    # params API::Controllers::Params::MultiUnitBooking # uncomment for multi unit supplier
+    
+    def create_booking(params)
+      Partner::Client.new.book(params)
+    end
+
+  end
+end
+~~~
+
+`create_booking` is the only method whose implementation is necessary. You can assume
+that the parameters at this point were already validated, so required parameters
+will be present and valid. 
+
+In the code above, `Partner::Client` is an implementation of a client library
+for the supplier's API.
+
+Note that the `create_booking` method:
+
+* **must** return a `Reservation` object
+* does not raise an exception if the supplier API is unavailable or errors out or any
+network-related issue is happening.
+
+If there are errors during the execution of the `create_booking` method, the `Reservation`
 object returned must include a non-empty `errors` list to be returned to the caller,
 which will receive a `503` HTTP status.
 
