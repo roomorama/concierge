@@ -7,11 +7,11 @@ module Concierge
   #
   # Example:
   #
-    # wise_hash = Concierge::SafeAccessHash.new({ name: 'Alex', foo: { bar: { '@strange_key' => 20 } } })
-    # wise_hash[:name]  # => "Alex"
-    # wise_hash['name'] # => "Alex"
-    # wise_hash.get('foo.bar.@strange_key') # => 20
-    # wise_hash.get('foo.bar.unknown') # => nil
+  #   wise_hash = Concierge::SafeAccessHash.new({ name: 'Alex', foo: { bar: { '@strange_key' => 20 } } })
+  #   wise_hash[:name]  # => "Alex"
+  #   wise_hash['name'] # => "Alex"
+  #   wise_hash.get('foo.bar.@strange_key') # => 20
+  #   wise_hash.get('foo.bar.unknown') # => nil
   class SafeAccessHash
     GET_SEPARATOR = '.'
 
