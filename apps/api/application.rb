@@ -1,5 +1,6 @@
 require 'hanami/helpers'
 require 'hanami/assets'
+require_relative "middlewares/authentication"
 
 module API
   class Application < Hanami::Application
@@ -18,11 +19,13 @@ module API
 
       cookies false
 
-      default_request_format :json
+      default_request_format  :json
       default_response_format :json
-      body_parsers :json
+      body_parsers            :json
 
       layout false
+
+      middleware.use API::Middlewares::Authentication
 
       view.prepare do
         include Hanami::Helpers

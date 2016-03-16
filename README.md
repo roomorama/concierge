@@ -16,21 +16,42 @@ What follows below is a general overview on how to add support for a new
 supplier on Concierge. Before starting, it is highly recommended to
 read the [project goals](https://github.com/roomorama/concierge/wiki/Concierge-Service-Goals).
 
+### Authentication
+
+By default, every request sent to Concierge is validated to make sure it comes from
+a Roomorama webhook. That is done by checking if the `Content-Signature` HTTP header,
+which must be present on every request, matches the given payload when signed with a
+Roomorama secret.
+
+Authentication is handled by the `API::Middlewares::Authentication` Rack middleware.
+
+If you wish to test Concierge's API locally, either:
+
+* Use `curl` or a browser extension that allows you to set HTTP request headers and set them
+properly.
+
+* Comment out the middleware inclusion on `apps/api/config/application.rb`. If you follow
+this method, remember not to commit this change.
+
+Note that the purpose of checking things out in a browser or `curl` is to make sure
+things work on an integration level. If you wish to test the behaviour of a controller during
+the development process, specs are the right tool for it.
+
 ### Quoting bookings
 
 To add the capability of quoting a booking for a new supplier, create a new controller
 as follows
 
 ~~~ruby
-module API::Controllers::Partner
+module API::Controllers::Supplier
 
   class Quote
     include API::Controllers::Quote
-    
+
     # params API::Controllers::Params::MultiUnitQuote # uncomment for multi unit supplier
-    
+
     def quote_price(params)
-      Partner::Client.new.quote(params)
+      Supplier::Client.new.quote(params)
     end
 
   end
@@ -41,7 +62,7 @@ end
 that the parameters at this point were already validated, so required parameters
 will be present and valid.
 
-In the code above, `Partner::Client` is an implementation of a client library
+In the code above, `Supplier::Client` is an implementation of a client library
 for the supplier's API.
 
 Note that the `quote_price` method:
@@ -60,15 +81,15 @@ To add the capability to create a booking for a new supplier, create a new contr
 as follows
 
 ~~~ruby
-module API::Controllers::Partner
+module API::Controllers::Supplier
 
   class Booking
     include API::Controllers::Booking
 
     # params API::Controllers::Params::MultiUnitBooking # uncomment for multi unit supplier
-    
+
     def create_booking(params)
-      Partner::Client.new.book(params)
+      Supplier::Client.new.book(params)
     end
 
   end
@@ -77,9 +98,9 @@ end
 
 `create_booking` is the only method whose implementation is necessary. You can assume
 that the parameters at this point were already validated, so required parameters
-will be present and valid. 
+will be present and valid.
 
-In the code above, `Partner::Client` is an implementation of a client library
+In the code above, `Supplier::Client` is an implementation of a client library
 for the supplier's API.
 
 Note that the `create_booking` method:
