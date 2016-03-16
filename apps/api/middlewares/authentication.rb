@@ -37,7 +37,6 @@ module API
       end
 
       def call(env)
-        # raise env.to_s
         valid_webhook = http_post?(env) && headers_present?(env) && valid_signature?(env)
 
         if valid_webhook
@@ -63,8 +62,7 @@ module API
 
       def valid_signature?(env)
         request_body = env["rack.input"].read
-        # raise "Request body: #{request_body}"
-        env[SIGNATURE_HEADER] == sign(request_body, secret: credentials.secret)
+        env[SIGNATURE_HEADER] == sign(request_body, secret: credentials.secret.to_s)
       end
 
       # This is the same method used when signing a request in Roomorama's Webhooks.
