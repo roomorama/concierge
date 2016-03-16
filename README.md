@@ -16,6 +16,27 @@ What follows below is a general overview on how to add support for a new
 supplier on Concierge. Before starting, it is highly recommended to
 read the [project goals](https://github.com/roomorama/concierge/wiki/Concierge-Service-Goals).
 
+### Authentication
+
+By default, every request sent to Concierge is validated to make sure it comes from
+a Roomorama webhook. That is done by checking if the `Content-Signature` HTTP header,
+which must be present on every request, matches the given payload when signed with a
+Roomorama secret.
+
+Authentication is handled by the `API::Middlewares::Authentication` Rack middleware.
+
+If you wish to test Concierge's API locally, either:
+
+* Use `curl` or a browser extension that allows you to set HTTP request headers and set them
+properly.
+
+* Comment out the middleware inclusion on `apps/api/config/application.rb`. If you follow
+this method, remember not to commit this change.
+
+Note that the purpose of checking things out in a browser or `curl` is to make sure
+things work on an integration level. If you wish to test the behaviour of a controller during
+the development process, specs are the right tool for it.
+
 ### Quoting bookings
 
 To add the capability of quoting a booking for a new supplier, create a new controller
