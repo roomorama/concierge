@@ -65,7 +65,7 @@ module JTB
       if booking[:@res_status] == 'OK'
         Result.new(booking[:unique_id][:@id])
       else
-        Result.error(:fail_booking, booking[:@res_status_comment])
+        Result.error(:fail_booking, response)
       end
     end
 

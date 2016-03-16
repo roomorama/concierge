@@ -13,7 +13,7 @@ module JTB
       @credentials = credentials
     end
 
-    # Always returns a +Result+. Success result wraps +Hash+ response.
+    # Always returns a +Result+. Successful result contains +String+ value with booking identifier on JTB side.
     # If an error happens in any step in the process of getting a response back from
     # JTB, a generic error message is sent back to the caller, and the failure
     # is logged
@@ -22,7 +22,7 @@ module JTB
     #   booking = JTB::Booking.new(credentials)
     #   booking.book(params)
     #
-    #   # => #<Result error=nil value={success: 'OK', booking_id: 'XXXXXXXXXX'}>
+    #   # => #<Result error=nil value='XXXXXXXXXX'>
     def book(params)
       rate_plan_result = price_handler.best_rate_plan(params)
 

@@ -11,7 +11,7 @@
 #   +check_out+:   the check-out date for the stay
 #   +guests+:      the number of guests
 #   +customer+:    a +Customer+ entity should keep customer's required info
-#   +code+:        a String, returns after successful booking
+#   +code+:        is a booking identifier on the supplier side
 #   +extra+:       if for partner required extra options like credit card, payment type... it should be here.
 #   +errors+:      if there were any errors during the booking creation with the partner,
 #                  the errors will be listed here.
