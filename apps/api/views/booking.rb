@@ -12,7 +12,7 @@ module API::Views
         check_in:    reservation.check_in,
         check_out:   reservation.check_out,
         guests:      reservation.guests,
-        customer:    reservation.customer.to_h
+        customer:    reservation.customer
       }
 
       json(response)

@@ -29,8 +29,7 @@ class Reservation
   attribute :code,        type: String
   attribute :extra,       type: Hash
   attribute :errors,      type: Hash
-
-  attribute :customer
+  attribute :customer,    type: Hash
 
 
   def successful?
