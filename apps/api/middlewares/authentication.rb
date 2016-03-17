@@ -134,8 +134,6 @@ module API
         OpenSSL::HMAC.hexdigest(digest, secret, encoded)
       end
 
-      def credentials
-      end
     end
   end
 
