@@ -24,6 +24,10 @@ which must be present on every request, matches the given payload when signed wi
 Roomorama secret.
 
 Authentication is handled by the `API::Middlewares::Authentication` Rack middleware.
+Each supplier has its own secret, which is configured on Roomorama and associated with
+the supplier on Concierge. Secrets are supposed to live in environment variables on
+production/staging environments. Check the aforementioned class to understand how
+secrets are organised.
 
 If you wish to test Concierge's API locally, either:
 
@@ -128,6 +132,13 @@ time the application boots in production environments. For such purpose, check t
 is a list of required environment variables such that, if the application is booting
 in production and one of the required credentials is not present or empty, it will raise
 an exception and prevent the application from booting.
+
+#### Environment Variables
+
+Whenever the use of environment variables is necessary outside of the "supplier credentials"
+context described above, make sure that the variable is properly declared in the
+`config/environment_variables.yml` file. This ensures that the application will fail to
+boot in case the variable is not properly defined.
 
 
 *****

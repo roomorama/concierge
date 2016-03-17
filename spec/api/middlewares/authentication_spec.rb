@@ -8,38 +8,54 @@ RSpec.describe API::Middlewares::Authentication do
     {
       input: body, # this is where Rack gets the request body from
       "CONTENT_TYPE"           => "application/json",
-      "HTTP_CONTENT_SIGNATURE" => sign(body)
+      "HTTP_CONTENT_SIGNATURE" => sign(body, secret)
     }
   }
+  let(:secret) { "secret-key" }
+  let(:secret_mapping) {
+    { "/supplier" => secret }
+  }
+  let(:secrets) { API::Middlewares::Authentication::Secrets.new(secret_mapping) }
 
-  subject { described_class.new(upstream) }
+  subject { described_class.new(upstream, secrets) }
 
   it "is valid if it is a POST request with content-type and correct signature" do
-    expect(post("/", headers)).to eq success
+    expect(post("/supplier/quote", headers)).to eq success
+  end
+
+  it "is forbidden without a request body" do
+    headers.delete(:input)
+    expect(post("/supplier/quote", headers)).to eq forbidden
+  end
+
+  it "is forbidden if the path is not recognized" do
+    expect(post("/malicious/quote", headers)).to eq forbidden
+  end
+
+  it "is forbidden withe root path" do
+    expect(post("/", headers)).to eq forbidden
   end
 
   it "is forbidden for GET requests" do
-    ["/", "/poplidays/quote", "/jtb/booking"].each do |path|
-      expect(get(path, headers)).to eq forbidden
-    end
+    expect(get("/supplier/quote", headers)).to eq forbidden
   end
 
   it "is forbidden without a content-type header" do
     headers.delete("CONTENT_TYPE")
-    expect(post("/", headers)).to eq forbidden
+    expect(post("/supplier/quote", headers)).to eq forbidden
   end
 
   it "is forbidden without a signature header" do
     headers.delete("HTTP_CONTENT_SIGNATURE")
-    expect(post("/", headers)).to eq forbidden
+    expect(post("/supplier/quote", headers)).to eq forbidden
   end
 
   it "is forbidden if the secret used in the signature is different" do
     headers["HTTP_CONTENT_SIGNATURE"] = sign(body, "malicious_secret")
-    expect(post("/", headers)).to eq forbidden
+    expect(post("/supplier/quote", headers)).to eq forbidden
   end
 
-  def sign(content, secret = credentials.secret)
+  def sign(content, secret)
     encoded = Base64.encode64(content)
     digest  = OpenSSL::Digest.new("sha1")
     OpenSSL::HMAC.hexdigest(digest, secret, encoded)
@@ -51,10 +67,6 @@ RSpec.describe API::Middlewares::Authentication do
 
   def success
     [200, { "Content-Length" => "2" }, "OK"]
-  end
-
-  def credentials
-    Concierge::Credentials.for("roomorama_webhooks")
   end
 
   def get(path, headers = {})
