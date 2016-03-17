@@ -41,6 +41,14 @@ module API
       handle_exceptions false
     end
 
+    configure :staging do
+      handle_exceptions true
+
+      scheme 'https'
+      host   'concierge-staging.roomorama.com'
+      port   443
+    end
+
     configure :production do
       handle_exceptions true
 
