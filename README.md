@@ -24,6 +24,10 @@ which must be present on every request, matches the given payload when signed wi
 Roomorama secret.
 
 Authentication is handled by the `API::Middlewares::Authentication` Rack middleware.
+Each supplier has its own secret, which is configured on Roomorama and associated with
+the supplier on Concierge. Secrets are supposed to live in environment variables on
+production/staging environments. Check the aforementioned class to understand how
+secrets are organised.
 
 If you wish to test Concierge's API locally, either:
 
