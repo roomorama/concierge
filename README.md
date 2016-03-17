@@ -133,6 +133,13 @@ is a list of required environment variables such that, if the application is boo
 in production and one of the required credentials is not present or empty, it will raise
 an exception and prevent the application from booting.
 
+#### Environment Variables
+
+Whenever the use of environment variables is necessary outside of the "supplier credentials"
+context described above, make sure that the variable is properly declared in the
+`config/environment_variables.yml` file. This ensures that the application will fail to
+boot in case the variable is not properly defined.
+
 
 *****
 
