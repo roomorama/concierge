@@ -106,7 +106,7 @@ module API
       end
 
       def valid_signature?(env)
-        request_body = env["rack.input"].read
+        request_body = read_request_body(env)
         request_path = env["PATH_INFO"]
 
         valid_request_body = request_body && !request_body.empty?
@@ -115,6 +115,16 @@ module API
         signatures_match   = (env[SIGNATURE_HEADER] == expected_signature)
 
         valid_request_body && secret && signatures_match
+      end
+
+      # +env["rack.input"]+ is a IO-like object. According to the Rack spec,
+      # it must respond to +read+ and +rewind+ methods without throwing errors.
+      # This reads the response body and makes it available for the upstream
+      # application.
+      def read_request_body(env)
+        env["rack.input"].read.tap do
+          env["rack.input"].rewind
+        end
       end
 
       # This is the same method used when signing a request in Roomorama's Webhooks.
