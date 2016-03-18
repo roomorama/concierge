@@ -1,6 +1,7 @@
 require 'hanami/helpers'
 require 'hanami/assets'
 require_relative "middlewares/authentication"
+require_relative "middlewares/roomorama_webhook"
 
 module API
   class Application < Hanami::Application
@@ -26,6 +27,7 @@ module API
       layout false
 
       middleware.use API::Middlewares::Authentication
+      middleware.use API::Middlewares::RoomoramaWebhook
 
       view.prepare do
         include Hanami::Helpers
