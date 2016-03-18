@@ -161,6 +161,7 @@ module API
 
           payload["inquiry"].merge!({
             "base_rental"            => response["total"],
+            "currency_code"          => response["currency"],
             "tax"                    => 0,
             "processing_fee"         => 0,
             "extra_guests_surcharge" => 0,

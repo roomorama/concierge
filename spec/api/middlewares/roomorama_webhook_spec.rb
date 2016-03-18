@@ -85,6 +85,7 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
       {
         status:      "ok",
         total:       150,
+        currency:    "EUR",
         available:   true,
         property_id: "710387083",
         check_in:    "2016-04-05",
@@ -94,7 +95,7 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
     }
 
     it "returns a modified webhook with the correct information on success" do
-      expect(post("/", headers)).to eq success_payload(total: 150)
+      expect(post("/", headers)).to eq success_payload(total: 150, currency: "EUR")
     end
 
     it "returns the upstream (Concierge) response if the property is unavailable" do
@@ -157,7 +158,7 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
     [422, { "Content-Length" => "15" }, "Invalid webhook"]
   end
 
-  def success_payload(total:)
+  def success_payload(total:, currency:)
     response = {
       "action"  => "quote_instant",
       "event"   => "quote_instant",
@@ -167,7 +168,7 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
         "base_rental"            => total,
         "check_in"               => "2016-04-05",
         "check_out"              => "2016-04-08",
-        "currency_code"          => "USD",
+        "currency_code"          => currency,
         "currency_symbol"        => "US$",
         "num_guests"             => 1,
         "extra_guests_surcharge" => 0,
