@@ -186,7 +186,7 @@ module API
       attr_reader :app, :env, :webhook_payload
 
       def initialize(app)
-        @app         = app
+        @app = app
       end
 
       def call(env)
@@ -262,10 +262,6 @@ module API
         env["rack.input"].read.tap do
           env["rack.input"].rewind
         end
-      end
-
-      def safe_acess(hash)
-        Concierge::SafeAccessHash.new(hash)
       end
 
     end
