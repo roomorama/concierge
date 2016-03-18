@@ -16,6 +16,20 @@ What follows below is a general overview on how to add support for a new
 supplier on Concierge. Before starting, it is highly recommended to
 read the [project goals](https://github.com/roomorama/concierge/wiki/Concierge-Service-Goals).
 
+### Communication with Roomorama
+
+Concierge was conceived as a _webhook provider_ for externally supplied properties.
+This means that Concierge makes it possible to instantly book properties managed by
+Roomorama's suppliers through the use of webhooks: endpoints associated with different
+properties that allow Roomorama to check the price and availability of stays and to
+confirm bookings on external platforms in a transparent manner.
+
+Currently, Concierge is compatible with the format of Roomorama's webhooks through
+the use of the `API::Middlewares::RoomoramaWebhook` Rack middleware. That format
+is not ideal, and the use of the middleware makes straightforward to use a better,
+default Concierge format when the time comes for Roomorama to support a simpler
+webhook format.
+
 ### Authentication
 
 By default, every request sent to Concierge is validated to make sure it comes from
