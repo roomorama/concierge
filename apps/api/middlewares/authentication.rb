@@ -107,7 +107,7 @@ module API
 
       def valid_signature?(env)
         request_body = read_request_body(env)
-        request_path = env["PATH_INFO"]
+        request_path = env["PATH_INFO"] || env["REQUEST_PATH"]
 
         valid_request_body = request_body && !request_body.empty?
         secret             = secrets.for(request_path)
