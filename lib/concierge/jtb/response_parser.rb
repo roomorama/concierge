@@ -1,7 +1,8 @@
 module JTB
   # JTB provide list of availabilities for each day with multiple rate plans
   # +RatePlan+ have to keep sum of daily prices and check if all days are available
-  RatePlan = Struct.new(:rate_plan, :total, :available)
+  # there is +occupancy+ attribute to define maximum guests for each rate plan - effects to price
+  RatePlan = Struct.new(:rate_plan, :total, :available, :occupancy)
 
   # +JTB::ResponseParser+
   #
@@ -32,7 +33,7 @@ module JTB
     #
     # +unit_not_found+:  the response sent back if unit not found
     # +invalid_request+: if property not found
-    def parse_rate_plan(response)
+    def parse_rate_plan(response, params)
       response = Concierge::SafeAccessHash.new(response)
 
       return unrecognised_response(response) unless response[:ga_hotel_avail_rs]
@@ -44,7 +45,7 @@ module JTB
       return Result.error(:unavailable_property, response) unless rates
 
       rate_plans = group_to_rate_plans(rates)
-      rate_plan  = get_best_rate_plan(rate_plans)
+      rate_plan  = get_best_rate_plan(rate_plans, guests: params[:guests])
       if rate_plan
         Result.new(rate_plan)
       else
@@ -92,28 +93,32 @@ module JTB
           date:      Date.parse(room_stay[:time_span][:@start]),
           price:     room_stay[:room_rates][:room_rate][:total][:@amount_after_tax].to_i,
           rate_plan: room_stay[:rate_plans][:rate_plan][:@rate_plan_id],
-          available: room_stay[:@availability_status] == 'OK'
+          available: room_stay[:@availability_status] == 'OK',
+          occupancy: room_stay[:room_types][:room_type][:occupancy][:@max_occupancy].to_i
         }
       end
       grouped_rates = rates.group_by { |rate| rate[:rate_plan] }
       grouped_rates.map do |rate_plan, rates|
         total     = rates.map { |rate| rate[:price] }.reduce(:+)
         available = rates.all? { |rate| rate[:available] }
-        RatePlan.new(rate_plan, total, available)
+        occupancy = rates.first[:occupancy]
+        RatePlan.new(rate_plan, total, available, occupancy)
       end
     end
 
     # get cheapest +RatePlan+
     # rate_plans = [
-    #   <struct JTB::RatePlan rate_plan="good rate", total=4100, available=true>,
-    #   <struct JTB::RatePlan rate_plan="abc", total=2100, available=false>,
-    #   <struct JTB::RatePlan rate_plan="expensive_rate", total=8100, available=true>
+    #   <struct JTB::RatePlan total=4100, occupancy=2 available=true rate_plan="good rate">,
+    #   <struct JTB::RatePlan total=2100, occupancy=1 available=true, rate_plan="small occupancy"">,
+    #   <struct JTB::RatePlan total=2100, occupancy=2 available=false, rate_plan="abc"">,
+    #   <struct JTB::RatePlan total=8100, occupancy=2 available=true, rate_plan="expensive_rate">
     # ]
     #
-    # get_best_rate_plan(rate_plans)
-    # # => #<struct JTB::ResponseParser::RatePlan rate_plan="good rate", total=4100, available=true>
-    def get_best_rate_plan(rate_plans)
-      rate_plans.select(&:available).min_by(&:total)
+    # get_best_rate_plan(rate_plans, guests: 2)
+    # # => #<struct JTB::ResponseParser::RatePlan total=4100, occupancy=2, available=true, rate_plan="good rate">
+    def get_best_rate_plan(rate_plans, guests:)
+      available_rate_plans = rate_plans.select { |rate_plan| rate_plan.available && rate_plan.occupancy >= guests }
+      available_rate_plans.min_by(&:total)
     end
 
     def error_code(code)
