@@ -88,7 +88,7 @@ module JTB
     #    ...
     # ]
     def group_to_rate_plans(rates)
-      rates.map! do |room_stay|
+      prepared_rates = rates.map do |room_stay|
         {
           date:      Date.parse(room_stay[:time_span][:@start]),
           price:     room_stay[:room_rates][:room_rate][:total][:@amount_after_tax].to_i,
@@ -97,7 +97,7 @@ module JTB
           occupancy: room_stay[:room_types][:room_type][:occupancy][:@max_occupancy].to_i
         }
       end
-      grouped_rates = rates.group_by { |rate| rate[:rate_plan] }
+      grouped_rates = prepared_rates.group_by { |rate| rate[:rate_plan] }
       grouped_rates.map do |rate_plan, rates|
         total     = rates.map { |rate| rate[:price] }.reduce(:+)
         available = rates.all? { |rate| rate[:available] }
