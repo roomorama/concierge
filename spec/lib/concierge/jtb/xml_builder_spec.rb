@@ -44,7 +44,7 @@ RSpec.describe JTB::XMLBuilder do
         }
       }
     }
-    let(:rate_plan) { JTB::RatePlan.new('sample') }
+    let(:rate_plan) { JTB::RatePlan.new('sample', 2000, true, 2) }
     let(:message) { subject.build_booking(params, rate_plan) }
     
     it { expect(attribute_for(message, 'RatePlan', 'RatePlanID')).to eq 'sample' }
