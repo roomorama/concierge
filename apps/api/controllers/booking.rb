@@ -1,4 +1,5 @@
 require_relative "./params/booking"
+require_relative "internal_error"
 
 module API::Controllers
 
@@ -35,6 +36,7 @@ module API::Controllers
       base.class_eval do
         include API::Action
         include Concierge::JSON
+        include API::Controllers::InternalError
 
         params API::Controllers::Params::Booking
 
