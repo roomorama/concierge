@@ -26,7 +26,8 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
         "url"                    => "https://www.roomorama.com/host/inquiries/12345",
         "room" => {
           "id"          => 123789,
-          "internal_id" => "710387083",
+          "property_id" => "710387083",
+          "unit_id"     => "JP32",
           "url"         => "https://www.roomorama.com/rooms/241364"
         },
         "user" => {
@@ -183,7 +184,8 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
         "url"                    => "https://www.roomorama.com/host/inquiries/12345",
         "room" => {
           "id"          => 123789,
-          "internal_id" => "710387083",
+          "property_id" => "710387083",
+          "unit_id"     => "JP32",
           "url"         => "https://www.roomorama.com/rooms/241364"
         },
         "user" => {

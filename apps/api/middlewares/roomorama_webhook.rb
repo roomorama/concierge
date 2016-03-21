@@ -34,7 +34,8 @@ module API
       #     # ...
       #     "room" => {
       #       "id" => 23304,
-      #       "internal_id" => "023",
+      #       "property_id" => "023",
+      #       "unit_id" => "JP32",
       #       "url" => "..."
       #     },
       #     "user" => {
@@ -65,7 +66,7 @@ module API
           payload = safe_access(data)
 
           params = {
-            property_id: payload.get("inquiry.room.internal_id"),
+            property_id: payload.get("inquiry.room.property_id"),
             unit_id:     payload.get("inquiry.room.unit_id"),
             check_in:    payload.get("inquiry.check_in"),
             check_out:   payload.get("inquiry.check_out"),
