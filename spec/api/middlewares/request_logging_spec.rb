@@ -42,12 +42,6 @@ RSpec.describe API::Middlewares::RequestLogging do
     [200, { "Content-Length" => "2" }, "OK"]
   end
 
-  def sign(content, secret)
-    encoded = Base64.encode64(content)
-    digest  = OpenSSL::Digest.new("sha1")
-    OpenSSL::HMAC.hexdigest(digest, secret, encoded)
-  end
-
   def post(path, params = {})
     to_rack(app.post(path, params))
   end
