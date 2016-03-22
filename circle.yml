@@ -2,6 +2,10 @@ machine:
   ruby:
     version: 2.3.0
 
+checkout:
+  post:
+    - mkdir log
+
 database:
   override:
     - mv .env.example .env
