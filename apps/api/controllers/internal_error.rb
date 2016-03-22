@@ -6,6 +6,8 @@ module API::Controllers
   # while a request is being processed. In case an exception is raised, this
   # module catches it and returns a valid JSON response back to the caller
   # indicating the failure.
+  #
+  # It also reports the failure to Rollbar for later analysis.
   module InternalError
 
     def self.included(base)
@@ -17,11 +19,14 @@ module API::Controllers
 
     private
 
-    def generate_internal_error_message(_)
+    def generate_internal_error_message(error)
       internal_error = {
         internal: "The request could not be processed due to an internal error. Please try again later."
       }
       response = { status: "error" }.merge!(errors: internal_error)
+
+      Rollbar.error(error)
+
       status 500, json_encode(response)
     end
   end
