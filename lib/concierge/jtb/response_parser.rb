@@ -89,6 +89,7 @@ module JTB
     # ]
     def group_to_rate_plans(rates)
       prepared_rates = rates.map do |room_stay|
+        room_stay = Concierge::SafeAccessHash.new(room_stay)
         {
           date:      Date.parse(room_stay[:time_span][:@start]),
           price:     room_stay[:room_rates][:room_rate][:total][:@amount_after_tax].to_i,
