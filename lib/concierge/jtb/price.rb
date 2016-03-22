@@ -36,7 +36,7 @@ module JTB
       message = builder.quote_price(params)
       result  = remote_call(message)
       if result.success?
-        response_parser.parse_rate_plan result.value
+        response_parser.parse_rate_plan(result.value, params)
       else
         result
       end
