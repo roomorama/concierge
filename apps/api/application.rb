@@ -1,5 +1,6 @@
 require 'hanami/helpers'
 require 'hanami/assets'
+require_relative "middlewares/health_check"
 require_relative "middlewares/request_logging"
 require_relative "middlewares/authentication"
 require_relative "middlewares/roomorama_webhook"
@@ -27,6 +28,7 @@ module API
 
       layout false
 
+      middleware.use API::Middlewares::HealthCheck
       middleware.use API::Middlewares::Authentication
       middleware.use API::Middlewares::RequestLogging
       middleware.use API::Middlewares::RoomoramaWebhook
