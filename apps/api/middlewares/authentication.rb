@@ -94,7 +94,7 @@ module API
       private
 
       def http_post?(env)
-        env["REQUEST_METHOD"] == "POST"
+        env["REQUEST_METHOD"] == HTTP_METHOD
       end
 
       def headers_present?(env)
