@@ -25,7 +25,7 @@ module Concierge
   #
   # Requests are logged by default on the +log/concierge.<env>+ file.
   #
-  # See +API::Middlewares::Logging+ to check how this class is used in
+  # See +API::Middlewares::RequestLogging+ to check how this class is used in
   # the request lifecycle.
   #
   # TODO remove this class when Hanami ships with a more robust form of request
