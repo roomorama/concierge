@@ -84,7 +84,7 @@ module API
           payload = safe_access(data)
 
           params = {
-            property_id: payload.get("inquiry.room.internal_id"),
+            property_id: payload.get("inquiry.room.property_id"),
             unit_id:     payload.get("inquiry.room.unit_id"),
             check_in:    payload.get("inquiry.check_in"),
             check_out:   payload.get("inquiry.check_out"),
@@ -218,7 +218,7 @@ module API
         event            = webhook_payload["event"]
 
         case event
-        when "price_check", "quote_instant"
+        when "price_check", "quote_instant", "checkout_instant"
           concierge_request.quote(webhook_payload)
         when "booked_instant"
           concierge_request.booking(webhook_payload)
@@ -240,7 +240,7 @@ module API
         event = webhook_payload["event"]
 
         case event
-        when "price_check", "quote_instant"
+        when "price_check", "quote_instant", "checkout_instant"
           webhook_response.quote(status, headers, data)
         when "booked_instant"
           webhook_response.booking(status, headers, data)
