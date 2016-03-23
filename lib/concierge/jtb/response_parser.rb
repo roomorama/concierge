@@ -42,15 +42,14 @@ module JTB
       return handle_error(errors) if errors
 
       rates = response.get('ga_hotel_avail_rs.room_stays.room_stay')
-      return Result.error(:unavailable_property, response) unless rates
+      return unavailable_rate_plan unless rates
 
       rate_plans = group_to_rate_plans(rates)
       rate_plan  = get_best_rate_plan(rate_plans, guests: params[:guests])
-      if rate_plan
-        Result.new(rate_plan)
-      else
-        Result.error(:unavailable_rate_plans, response)
-      end
+
+      return unavailable_rate_plan unless rate_plan
+
+      Result.new(rate_plan)
     end
 
 
@@ -71,6 +70,10 @@ module JTB
     end
 
     private
+
+    def unavailable_rate_plan
+      Result.new(RatePlan.new)
+    end
 
     # JTB provides so deep nested scattered response. This method prepares rates and returns +RatePlan+ list
     #
