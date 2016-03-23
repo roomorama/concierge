@@ -8,3 +8,4 @@ Vagrantfile
 .rspec
 .ruby-version
 /config/credentials/development.yml
+/log/*
