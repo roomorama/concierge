@@ -52,6 +52,17 @@ RSpec.describe JTB::Price do
       expect(quotation.currency).to eq 'JPY'
     end
 
+    it 'returns unavailable quotation when unavailable rate plan' do
+      allow(subject).to receive(:best_rate_plan) { Result.new(JTB::RatePlan.new) }
+
+      result = subject.quote(params)
+      expect(result).to be_success
+
+      quotation = result.value
+      expect(quotation).to be_a Quotation
+      expect(quotation.available).to be_falsey
+    end
+
     it 'fails if gets bad response' do
       allow(subject).to receive(:best_rate_plan) { Result.error(:some_error, 'Message') }
 
