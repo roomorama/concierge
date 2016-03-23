@@ -60,7 +60,7 @@ RSpec.describe JTB::Price do
 
       quotation = result.value
       expect(quotation).to be_a Quotation
-      expect(quotation.available).to be_falsey
+      expect(quotation.available).to be false
     end
 
     it 'fails if gets bad response' do

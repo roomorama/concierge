@@ -72,7 +72,7 @@ module JTB
     private
 
     def unavailable_rate_plan
-      Result.new(RatePlan.new)
+      Result.new(RatePlan.new(nil, nil, false))
     end
 
     # JTB provides so deep nested scattered response. This method prepares rates and returns +RatePlan+ list
