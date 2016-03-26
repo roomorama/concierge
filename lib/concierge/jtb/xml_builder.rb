@@ -36,11 +36,11 @@ module JTB
             xml['jtb'].AvailRequestSegment {
               xml['jtb'].HotelSearchCriteria {
                 xml['jtb'].Criterion(SortType: "PRICE", AvailStatus: "ALL") {
-                  xml['jtb'].HotelCode(Code: params['property_id'])
+                  xml['jtb'].HotelCode(Code: params[:property_id])
                   xml['jtb'].RoomStayCandidates(SearchCondition: "OR") {
-                    xml['jtb'].RoomStayCandidate(RoomTypeCode: params['unit_id'], Quantity: "1")
+                    xml['jtb'].RoomStayCandidate(RoomTypeCode: params[:unit_id], Quantity: "1")
                   }
-                  xml['jtb'].StayDateRange(Start: params['check_in'], End: params['check_out'])
+                  xml['jtb'].StayDateRange(Start: params[:check_in], End: params[:check_out])
                 }
               }
             }
@@ -55,7 +55,8 @@ module JTB
     # message has a test behaviour if +PassiveIndicator+ is true JTB will not create a booking
     # but return success response 'XXXXXXXXXX' reservation code
     def build_booking(params, rate)
-      message = builder.new do |xml|
+      params = Concierge::SafeAccessHash.new(params)
+      message = builder.new(encoding: 'utf-8') do |xml|
         xml.root(NAMESPACES) do
           build_credentials(xml)
           xml['jtb'].HotelReservations {
@@ -64,9 +65,9 @@ module JTB
                 xml['jtb'].RatePlans {
                   xml['jtb'].RatePlan(RatePlanID: rate.rate_plan)
                 }
-                xml['jtb'].TimeSpan(StartDate: params['check_in'], EndDate: params['check_out'])
+                xml['jtb'].TimeSpan(StartDate: params[:check_in], EndDate: params[:check_out])
               }
-              xml['jtb'].ResGuests { guests_info(xml, params['customer'], rate.occupancy) }
+              xml['jtb'].ResGuests { guests_info(xml, params[:customer], rate.occupancy) }
               xml['jtb'].RoomStays {
                 xml['jtb'].RoomStay {
                   xml['jtb'].ResGuestRPHs {
@@ -75,7 +76,7 @@ module JTB
                     end
                   }
                   xml['jtb'].RoomTypes {
-                    xml['jtb'].RoomType(RoomTypeCode: params['unit_id'])
+                    xml['jtb'].RoomType(RoomTypeCode: params[:unit_id])
                   }
                 }
               }
@@ -111,9 +112,9 @@ module JTB
               xml['jtb'].Profile {
                 xml['jtb'].Customer {
                   xml['jtb'].PersonName {
-                    xml['jtb'].GivenName customer['first_name']
-                    xml['jtb'].NamePrefix name_prefix(customer['gender'].to_s)
-                    xml['jtb'].Surname customer['last_name']
+                    xml['jtb'].GivenName customer[:first_name]
+                    xml['jtb'].NamePrefix name_prefix(customer[:gender].to_s)
+                    xml['jtb'].Surname customer[:last_name]
                   }
                 }
               }
