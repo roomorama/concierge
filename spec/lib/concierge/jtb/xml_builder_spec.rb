@@ -21,17 +21,17 @@ RSpec.describe JTB::XMLBuilder do
     end
 
     context 'parameters' do
-      it { expect(attribute_for(message, 'HotelCode', 'Code')).to eq params[:property_id].to_s }
-      it { expect(attribute_for(message, 'RoomStayCandidate', 'RoomTypeCode')).to eq params[:unit_id] }
-      it { expect(attribute_for(message, 'StayDateRange', 'Start')).to eq params[:check_in].to_s }
-      it { expect(attribute_for(message, 'StayDateRange', 'End')).to eq params[:check_out].to_s }
+      it { expect(attribute_for(message, 'HotelCode', 'Code')).to eq params['property_id'].to_s }
+      it { expect(attribute_for(message, 'RoomStayCandidate', 'RoomTypeCode')).to eq params['unit_id'] }
+      it { expect(attribute_for(message, 'StayDateRange', 'Start')).to eq params['check_in'].to_s }
+      it { expect(attribute_for(message, 'StayDateRange', 'End')).to eq params['check_out'].to_s }
     end
 
   end
   
   describe '#build_booking' do
     let(:params) {
-      {
+      Hanami::Action::Params.new({
         property_id: 'A123',
         unit_id:     'JPN',
         check_in:    '2016-03-22',
@@ -42,28 +42,22 @@ RSpec.describe JTB::XMLBuilder do
           last_name:   'Black',
           gender:      'male'
         }
-      }
+      })
     }
     let(:rate_plan) { JTB::RatePlan.new('sample', 2000, true, 2) }
     let(:message) { subject.build_booking(params, rate_plan) }
     
     it { expect(attribute_for(message, 'RatePlan', 'RatePlanID')).to eq 'sample' }
-    it { expect(attribute_for(message, 'RoomType', 'RoomTypeCode')).to eq params[:unit_id] }
-    it { expect(attribute_for(message, 'TimeSpan', 'StartDate')).to eq params[:check_in] }
-    it { expect(attribute_for(message, 'TimeSpan', 'EndDate')).to eq params[:check_out] }
-
-    it 'builds message with simulated call' do
-      simulated_params = params.merge(simulate: true)
-      message = subject.build_booking(simulated_params, rate_plan)
-      expect(attribute_for(message, 'HotelReservation', 'PassiveIndicator')).to eq 'true'
-    end
+    it { expect(attribute_for(message, 'RoomType', 'RoomTypeCode')).to eq params['unit_id'] }
+    it { expect(attribute_for(message, 'TimeSpan', 'StartDate')).to eq params['check_in'] }
+    it { expect(attribute_for(message, 'TimeSpan', 'EndDate')).to eq params['check_out'] }
 
     context 'customer' do
-      let(:customer) { params[:customer] }
+      let(:customer) { params['customer'] }
 
-      it { expect(message.xpath('//jtb:ResGuest').size).to eq(params[:guests]) }
-      it { expect(message.xpath('//jtb:GivenName').first.text).to include(customer[:first_name]) }
-      it { expect(message.xpath('//jtb:Surname').first.text).to include(customer[:last_name]) }
+      it { expect(message.xpath('//jtb:ResGuest').size).to eq(params['guests']) }
+      it { expect(message.xpath('//jtb:GivenName').first.text).to eq(customer['first_name']) }
+      it { expect(message.xpath('//jtb:Surname').first.text).to eq(customer['last_name']) }
       it { expect(message.xpath('//jtb:NamePrefix').first.text).to eq('Mr') }
 
     end
