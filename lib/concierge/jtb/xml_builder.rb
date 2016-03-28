@@ -55,7 +55,8 @@ module JTB
     # message has a test behaviour if +PassiveIndicator+ is true JTB will not create a booking
     # but return success response 'XXXXXXXXXX' reservation code
     def build_booking(params, rate)
-      message = builder.new do |xml|
+      params = Concierge::SafeAccessHash.new(params)
+      message = builder.new(encoding: 'utf-8') do |xml|
         xml.root(NAMESPACES) do
           build_credentials(xml)
           xml['jtb'].HotelReservations {
