@@ -1,5 +1,6 @@
 require_relative "../../../lib/concierge/request_logger"
 require_relative "../../../lib/concierge/json"
+require_relative "../../../lib/concierge/version"
 
 module API
   module Middlewares
@@ -27,8 +28,9 @@ module API
 
         if health_check?
           response = {
-            status: "ok",
-            time: Time.now.strftime("%Y-%m-%d %T %Z")
+            status:  "ok",
+            time:    Time.now.strftime("%Y-%m-%d %T %Z"),
+            version: Concierge::VERSION
           }
 
           request_logger.log(
