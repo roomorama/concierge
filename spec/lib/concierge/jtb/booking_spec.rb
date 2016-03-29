@@ -23,7 +23,7 @@ RSpec.describe JTB::Booking do
 
   describe '#booking' do
     let(:success_response) { parse_response('jtb/success_booking_response.json') }
-    let(:rate_plan) { JTB::RatePlan.new('some rate') }
+    let(:rate_plan) { JTB::RatePlan.new('some rate', 2000, true, 2) }
 
     it 'returns reservation' do
       allow_any_instance_of(JTB::Price).to receive(:best_rate_plan) { Result.new(rate_plan) }
