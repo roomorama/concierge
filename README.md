@@ -16,6 +16,20 @@ What follows below is a general overview on how to add support for a new
 supplier on Concierge. Before starting, it is highly recommended to
 read the [project goals](https://github.com/roomorama/concierge/wiki/Concierge-Service-Goals).
 
+### Communication with Roomorama
+
+Concierge was conceived as a _webhook provider_ for externally supplied properties.
+This means that Concierge makes it possible to instantly book properties managed by
+Roomorama's suppliers through the use of webhooks: endpoints associated with different
+properties that allow Roomorama to check the price and availability of stays and to
+confirm bookings on external platforms in a transparent manner.
+
+Currently, Concierge is compatible with the format of Roomorama's webhooks through
+the use of the `API::Middlewares::RoomoramaWebhook` Rack middleware. That format
+is not ideal, and the use of the middleware makes straightforward to use a better,
+default Concierge format when the time comes for Roomorama to support a simpler
+webhook format.
+
 ### Authentication
 
 By default, every request sent to Concierge is validated to make sure it comes from
@@ -24,6 +38,10 @@ which must be present on every request, matches the given payload when signed wi
 Roomorama secret.
 
 Authentication is handled by the `API::Middlewares::Authentication` Rack middleware.
+Each supplier has its own secret, which is configured on Roomorama and associated with
+the supplier on Concierge. Secrets are supposed to live in environment variables on
+production/staging environments. Check the aforementioned class to understand how
+secrets are organised.
 
 If you wish to test Concierge's API locally, either:
 
@@ -128,6 +146,13 @@ time the application boots in production environments. For such purpose, check t
 is a list of required environment variables such that, if the application is booting
 in production and one of the required credentials is not present or empty, it will raise
 an exception and prevent the application from booting.
+
+#### Environment Variables
+
+Whenever the use of environment variables is necessary outside of the "supplier credentials"
+context described above, make sure that the variable is properly declared in the
+`config/environment_variables.yml` file. This ensures that the application will fail to
+boot in case the variable is not properly defined.
 
 
 *****

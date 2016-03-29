@@ -15,6 +15,7 @@ gem 'patron', '~> 0.5'
 
 gem 'yajl-ruby', '~> 1.2', require: 'yajl'
 gem 'savon'
+gem 'rollbar', '~> 2.8'
 
 group :test do
   gem 'rspec', '~> 3.4.0'

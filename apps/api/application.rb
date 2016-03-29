@@ -1,6 +1,9 @@
 require 'hanami/helpers'
 require 'hanami/assets'
+require_relative "middlewares/health_check"
+require_relative "middlewares/request_logging"
 require_relative "middlewares/authentication"
+require_relative "middlewares/roomorama_webhook"
 
 module API
   class Application < Hanami::Application
@@ -25,7 +28,10 @@ module API
 
       layout false
 
+      middleware.use API::Middlewares::HealthCheck
       middleware.use API::Middlewares::Authentication
+      middleware.use API::Middlewares::RequestLogging
+      middleware.use API::Middlewares::RoomoramaWebhook
 
       view.prepare do
         include Hanami::Helpers
@@ -39,6 +45,14 @@ module API
 
     configure :test do
       handle_exceptions false
+    end
+
+    configure :staging do
+      handle_exceptions true
+
+      scheme 'https'
+      host   'concierge-staging.roomorama.com'
+      port   443
     end
 
     configure :production do

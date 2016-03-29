@@ -2,6 +2,14 @@ machine:
   ruby:
     version: 2.3.0
 
+checkout:
+  post:
+    # we have request logs on Concierge, which includes request logs on the test
+    # environment. However, the +log+ directory is not kept under source control.
+    # This ensures that we will have a +log+ directory on Circle before running the
+    # tests, allowing the log file to be created.
+    - mkdir log
+
 database:
   override:
     - mv .env.example .env

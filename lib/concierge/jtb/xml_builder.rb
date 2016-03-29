@@ -55,7 +55,8 @@ module JTB
     # message has a test behaviour if +PassiveIndicator+ is true JTB will not create a booking
     # but return success response 'XXXXXXXXXX' reservation code
     def build_booking(params, rate)
-      message = builder.new do |xml|
+      params = Concierge::SafeAccessHash.new(params)
+      message = builder.new(encoding: 'utf-8') do |xml|
         xml.root(NAMESPACES) do
           build_credentials(xml)
           xml['jtb'].HotelReservations {
@@ -66,11 +67,11 @@ module JTB
                 }
                 xml['jtb'].TimeSpan(StartDate: params[:check_in], EndDate: params[:check_out])
               }
-              xml['jtb'].ResGuests { guests_info(xml, params) }
+              xml['jtb'].ResGuests { guests_info(xml, params[:customer], rate.occupancy) }
               xml['jtb'].RoomStays {
                 xml['jtb'].RoomStay {
                   xml['jtb'].ResGuestRPHs {
-                    1.upto(params[:guests]) do |guest|
+                    1.upto(rate.occupancy) do |guest|
                       xml['jtb'].ResGuestRPH(RPH: guest)
                     end
                   }
@@ -103,16 +104,15 @@ module JTB
       }
     end
 
-    def guests_info(xml, params)
-      customer = params[:customer]
-      1.upto(params[:guests]) do |guest|
+    def guests_info(xml, customer, occupancy)
+      1.upto(occupancy) do |guest|
         xml['jtb'].ResGuest(AgeQualifyingCode: "ADL", PrimaryIndicator: (guest == 1), ResGuestRPH: guest) {
           xml['jtb'].Profiles {
             xml['jtb'].ProfileInfo {
               xml['jtb'].Profile {
                 xml['jtb'].Customer {
                   xml['jtb'].PersonName {
-                    xml['jtb'].GivenName customer[:first_name]+ "#{guest}"
+                    xml['jtb'].GivenName customer[:first_name]
                     xml['jtb'].NamePrefix name_prefix(customer[:gender].to_s)
                     xml['jtb'].Surname customer[:last_name]
                   }

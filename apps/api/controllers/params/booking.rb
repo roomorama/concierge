@@ -17,17 +17,17 @@ module API::Controllers::Params
     param :check_in,    presence: true, type: String, format: DATE_FORMAT
     param :check_out,   presence: true, type: String, format: DATE_FORMAT
     param :guests,      presence: true, type: Integer
-    
+
     param :extra
     param :customer do
       param :first_name,  type: String, presence: true
       param :last_name,   type: String, presence: true
-      param :country,     type: String
-      param :city,        type: String
-      param :address,     type: String
-      param :postal_code, type: String
       param :email,       type: String
       param :phone,       type: String
+      param :address,     type: String
+      param :postal_code, type: String
+      param :country,     type: String
+      param :city,        type: String
       param :language,    type: String
       param :gender,      type: String
     end
