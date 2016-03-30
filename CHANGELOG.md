@@ -6,6 +6,7 @@ how this file is formatted and how the process works.
 
 ## Unreleased
 ### Added
+- caching for JTB fetching rate plan to avoid the same call to JTB::API
 - database table to keep reservations while webhook doesn't support booking code
 
 ## [0.1.1] - 2016-03-29

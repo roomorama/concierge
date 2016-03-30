@@ -10,9 +10,12 @@ module JTB
   #   price.quote(params)
   #   # => #<Result error=nil value=Quotation>
   class Price
+    include Concierge::JSON
+
     ENDPOINT       = 'GA_HotelAvail_v2013'
     OPERATION_NAME = :gby010
     CURRENCY       = 'JPY'
+    CACHE_PREFIX   = 'jtb.rate_plan'
 
     attr_reader :credentials, :rate_plan
 
@@ -32,9 +35,17 @@ module JTB
       end
     end
 
+    # gets best rate plan by JTB API. This method caches response to avoid the same request to JTB API
+    # because rate plan uses for +quote+ and +JTB::Booking#book+ methods
     def best_rate_plan(params)
-      message = builder.quote_price(params)
-      result  = remote_call(message)
+      cache_key      = params.to_h.to_s
+      cache_duration = 10 * 60 # ten minutes
+
+      result = with_cache(cache_key, freshness: cache_duration) do
+        message = builder.quote_price(params)
+        remote_call(message)
+      end
+
       if result.success?
         response_parser.parse_rate_plan(result.value, params)
       else
@@ -73,6 +84,20 @@ module JTB
         namespace_identifier: 'jtb',
         endpoint:             endpoint
       }
+    end
+
+    def with_cache(key, freshness: Concierge::Cache::DEFAULT_TTL)
+      payload = cache.fetch(key, freshness: freshness) { yield }
+      if payload.success?
+        # uses +to_json+ because value can be response Hash or cached String
+        json_decode(payload.value.to_json)
+      else
+        payload
+      end
+    end
+
+    def cache
+      @_cache ||= Concierge::Cache.new(namespace: CACHE_PREFIX)
     end
 
   end
