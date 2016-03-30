@@ -45,7 +45,9 @@ module JTB
       if result.success?
         reservation = Reservation.new(params)
         reservation.code = result.value
-        reservation
+
+        # workaround to keep booking code for reservation. Returns reservation
+        ReservationRepository.create(reservation)
       else
         announce_error("booking", result)
         Reservation.new(errors: { booking: 'Could not book property with remote supplier' })
