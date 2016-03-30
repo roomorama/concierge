@@ -4,6 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## Unreleased
+### Added
+- database table to keep reservations while webhook doesn't support booking code
+
 ## [0.1.1] - 2016-03-29
 ### Added
 - Price check ability for:
