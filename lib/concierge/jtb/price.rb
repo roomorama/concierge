@@ -38,7 +38,7 @@ module JTB
     # gets best rate plan by JTB API. This method caches response to avoid the same request to JTB API
     # because rate plan uses for +quote+ and +JTB::Booking#book+ methods
     def best_rate_plan(params)
-      cache_key      = params.to_s
+      cache_key      = params.to_h.to_s
       cache_duration = 10 * 60 # ten minutes
 
       result = with_cache(cache_key, freshness: cache_duration) do
