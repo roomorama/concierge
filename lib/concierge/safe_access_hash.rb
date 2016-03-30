@@ -43,7 +43,7 @@ module Concierge
     end
 
     def to_s
-      to_h.to_s
+      to_h.to_json
     end
 
   end

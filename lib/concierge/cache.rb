@@ -59,7 +59,7 @@ module Concierge
           entry.value = value
           EntryRepository.update(entry)
         else
-          entry = Entry.new(key: key, value: value, updated_at: Time.now)
+          entry = Entry.new(key: key, value: stringify(value), updated_at: Time.now)
           EntryRepository.create(entry)
         end
 
@@ -69,6 +69,16 @@ module Concierge
       def delete(key)
         entry = read(key)
         EntryRepository.delete(entry) if entry
+      end
+
+      private
+
+      def stringify(value)
+        if value.is_a?(Hash)
+          value.to_json
+        else
+          value.to_s
+        end
       end
 
     end
@@ -148,7 +158,7 @@ module Concierge
       ensure_result!(result)
 
       if result.success?
-        storage.write(full_key, result.value.to_s)
+        storage.write(full_key, result.value)
       end
 
       result

@@ -80,6 +80,14 @@ RSpec.describe Concierge::Cache do
       expect(value).to eq "result"
     end
 
+    it "parseble if result Hash" do
+      entry = create_entry(key, { some_key: 'value' })
+      decoded_value = JSON.parse(entry.value)
+
+      expect(decoded_value).to be_a Hash
+      expect(decoded_value).to have_key 'some_key'
+    end
+
     private
 
     def create_entry(key, value)
