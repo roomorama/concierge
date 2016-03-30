@@ -89,11 +89,13 @@ module JTB
     def with_cache(key, freshness: Concierge::Cache::DEFAULT_TTL)
       payload = cache.fetch(key, freshness: freshness) { yield }
       if payload.success?
-        # uses +to_json+ because value can be response Hash or cached String
-        json_decode(payload.value.to_json)
+        value = payload.value
+        return Result.new(value) if value.is_a? Hash
+        json_decode(value)
       else
         payload
       end
+
     end
 
     def cache

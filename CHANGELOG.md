@@ -6,6 +6,7 @@ how this file is formatted and how the process works.
 
 ## Unreleased
 ### Added
+- possibility to save Hash as JSON in cache storage
 - caching for JTB fetching rate plan to avoid the same call to JTB::API
 - database table to keep reservations while webhook doesn't support booking code
 
