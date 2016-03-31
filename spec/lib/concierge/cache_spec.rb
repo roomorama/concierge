@@ -2,6 +2,7 @@ require "spec_helper"
 
 RSpec.describe Concierge::Cache do
   let(:key) { "test_key" }
+  let(:json_serializer) { Concierge::Cache::Serializers::JSON.new }
 
   describe "#fetch" do
     it "saves the result of an operation to the storage" do
@@ -80,12 +81,24 @@ RSpec.describe Concierge::Cache do
       expect(value).to eq "result"
     end
 
-    it "parseble if result Hash" do
-      entry = create_entry(key, { some_key: 'value' })
-      decoded_value = JSON.parse(entry.value)
+    it "supports JSON serialization for cached attributes" do
+      payload = { key: "value", name: "Supplier" }
+      result  = nil
 
-      expect(decoded_value).to be_a Hash
-      expect(decoded_value).to have_key 'some_key'
+      expect {
+        result = subject.fetch(key, serializer: json_serializer) { Result.new(payload) }
+      }.to change { Concierge::Cache::EntryRepository.count }
+
+      expect(result).to be_success
+      expect(result.value).to eq({ "key" => "value", "name" => "Supplier" })
+
+      # test de-serialization works
+      expect {
+        result = subject.fetch(key, serializer: json_serializer)
+      }.not_to change { Concierge::Cache::EntryRepository.count }
+
+      expect(result).to be_success
+      expect(result.value).to eq({ "key" => "value", "name" => "Supplier" })
     end
 
     private

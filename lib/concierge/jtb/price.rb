@@ -86,16 +86,12 @@ module JTB
       }
     end
 
-    def with_cache(key, freshness: Concierge::Cache::DEFAULT_TTL)
-      payload = cache.fetch(key, freshness: freshness) { yield }
-      if payload.success?
-        value = payload.value
-        return Result.new(value) if value.is_a? Hash
-        json_decode(value)
-      else
-        payload
-      end
+    def with_cache(key, freshness:)
+      cache.fetch(key, freshness: freshness, serializer: json_serializer) { yield }
+    end
 
+    def json_serializer
+      @serializer ||= Concierge::Cache::Serializers::JSON.new
     end
 
     def cache
