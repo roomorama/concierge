@@ -132,7 +132,7 @@ module Concierge
     #   cache.fetch("key", serializer: IntegerSerializer.new) do
     #     1 + 1
     #   end
-    #   # => 2
+    #   # => #<Result value=2 ...>
     def fetch(key, freshness: DEFAULT_TTL, serializer: text_serializer)
       full_key = namespaced(key)
       entry    = storage.read(full_key)
