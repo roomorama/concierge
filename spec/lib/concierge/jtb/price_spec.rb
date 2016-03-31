@@ -20,6 +20,19 @@ RSpec.describe JTB::Price do
       allow(subject).to receive(:remote_call) { Result.new(success_response) }
 
       result = subject.best_rate_plan(params)
+
+      expect(result).to be_a Result
+      expect(result).to be_success
+
+      expect(result.value).to be_a JTB::RatePlan
+    end
+
+    it 'caches result for the same call' do
+      allow(subject).to receive(:remote_call) { Result.new(success_response) }
+
+      expect{ subject.best_rate_plan(params) }.to change { Concierge::Cache::EntryRepository.count }
+
+      result = subject.best_rate_plan(params)
       expect(result).to be_a Result
       expect(result).to be_success
 
