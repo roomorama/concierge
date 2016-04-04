@@ -20,6 +20,8 @@ module JTB
       'xmlns:jtb'     => 'http://service.api.genesis2.jtbgmt.com/',
       'xmlns:soapenv' => 'http://schemas.xmlsoap.org/soap/envelope/'
     }
+    DEFAULT_FIRST_NAME = 'Roomorama'
+    DEFAULT_LAST_NAME = 'Friend'
 
     attr_reader :credentials
 
@@ -112,9 +114,9 @@ module JTB
               xml['jtb'].Profile {
                 xml['jtb'].Customer {
                   xml['jtb'].PersonName {
-                    xml['jtb'].GivenName customer[:first_name]
+                    xml['jtb'].GivenName latin_only(customer[:first_name], default: DEFAULT_FIRST_NAME)
                     xml['jtb'].NamePrefix name_prefix(customer[:gender].to_s)
-                    xml['jtb'].Surname customer[:last_name]
+                    xml['jtb'].Surname latin_only(customer[:last_name], default: DEFAULT_LAST_NAME)
                   }
                 }
               }
@@ -122,6 +124,11 @@ module JTB
           }
         }
       end
+    end
+
+    def latin_only(string, default:)
+      return string if !string.blank? && string.ascii_only?
+      default
     end
 
     def name_prefix(gender)
