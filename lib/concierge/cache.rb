@@ -1,5 +1,7 @@
 require_relative "cache/entry"
 require_relative "cache/entry_repository"
+require_relative "cache/storage"
+require_relative "cache/serializers"
 
 module Concierge
 
@@ -25,53 +27,6 @@ module Concierge
   # (+cache_entries+). +Concierge::Cache::Entry+ entities wrap records from
   # the cache.
   class Cache
-
-    # +Concierge::Cache::Storage+
-    #
-    # Thin wrapper class for the PostgreSQL persistence layer. This makes it
-    # easier to change the underlying cache persistence technology without
-    # affecting the actual caching logic.
-    #
-    # It implements the expected +storage+ protocol for +Concierge::Cache+,
-    # meaning:
-    #
-    # * read(key)
-    #   This receives a +key+ (+String+) and returns a +Concierge::Cache::Entry+
-    #   instance if any, or +nil+ otherwise.
-    #
-    # * write(key, value)
-    #   Persists the +key, value+ combination in the PostgreSQL storage. Returns
-    #   a +Concierge::Cache::Entry+ resulting from that.
-    #
-    # * delete(key)
-    #   Deletes the entry associated with the given +key+. Return value: unspecified
-    #   and should not be relied upon.
-    class Storage
-
-      def read(key)
-        EntryRepository.by_key(key)
-      end
-
-      def write(key, value)
-        entry = read(key)
-
-        if entry
-          entry.value = value
-          EntryRepository.update(entry)
-        else
-          entry = Entry.new(key: key, value: value, updated_at: Time.now)
-          EntryRepository.create(entry)
-        end
-
-        entry
-      end
-
-      def delete(key)
-        entry = read(key)
-        EntryRepository.delete(entry) if entry
-      end
-
-    end
 
     # by default, cached entries have a living time of 1 hour.
     DEFAULT_TTL = 60 * 60
@@ -136,22 +91,70 @@ module Concierge
     #   cache.fetch("expensive_operation", freshness: four_hours) do
     #     # some expensive computation
     #   end
-    def fetch(key, freshness: DEFAULT_TTL)
+    #
+    # Serialization: by default, the value wrapped in the +Result+ instance
+    # to be returned by the block passed to this method is serialized to a
+    # string (using +to_s+) before persisting the content. However, it might
+    # be useful to have different kinds of serializers for different data
+    # strucutures. Available serializers are:
+    #
+    # * Concierge::Cache::Serializers::JSON
+    # This serializer transforms the wrapped result into a valid JSON string
+    # before storing the value into the cache. Similarly, when a value is
+    # read from the cache, this serializer decodes the content back to
+    # a +Hash+ instance.
+    #
+    # Apart from the default serializers, a custom serializer can be
+    # passed to this method using the +serializer+ option. Custom
+    # implementations need to implement two methods:
+    #
+    # * encode(value) - transforms a given value to the serialized data
+    #                   to be kept in the cache storage.
+    # * decode(value) - receives an encoded version of the content (according
+    #                   to the +encode+ implementation) and returns a
+    #                   +Result+ instance that wraps the decoded content.
+    #
+    # Example:
+    #
+    #   class IntegerSerializer
+    #     def encode(value)
+    #       value.to_s
+    #     end
+    #
+    #     def decode(value)
+    #       Result.new(Integer(value))
+    #     rescue ArgumentError
+    #       Result.error(:invalid_number_representation)
+    #     end
+    #   end
+    #
+    #   cache = Concierge::Cache.new
+    #   cache.fetch("key", serializer: IntegerSerializer.new) do
+    #     1 + 1
+    #   end
+    #   # => #<Result value=2 ...>
+    def fetch(key, freshness: DEFAULT_TTL, serializer: text_serializer)
       full_key = namespaced(key)
       entry    = storage.read(full_key)
 
       if entry && fresh?(entry, freshness)
-        return Result.new(entry.value)
+        return serializer.decode(entry.value)
       end
 
       result = yield
       ensure_result!(result)
 
       if result.success?
-        storage.write(full_key, result.value.to_s)
-      end
+        encoded = serializer.encode(result.value)
+        storage.write(full_key, encoded)
 
-      result
+        # go through the process of encoding and decoding before returning to
+        # make sure the return of this method is consistent whether we are
+        # loading from the cache or not.
+        serializer.decode(encoded)
+      else
+        result
+      end
     end
 
     private
@@ -169,6 +172,10 @@ module Concierge
       else
         key.to_s
       end
+    end
+
+    def text_serializer
+      Serializers::Text.new
     end
 
     def ensure_result!(object)

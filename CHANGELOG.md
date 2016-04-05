@@ -4,6 +4,15 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.1.2] - 2016-04-04
+### Added
+- database table to keep reservations while webhook doesn't support booking code
+
+### Changed
+- fix occasional non-iteratable rate plans on JTB response for checking price.
+- caching for JTB fetching rate plan to avoid the same call to JTB::API
+- support for cache serializers, allowing JTB to store cache responses as JSON.
+
 ## [0.1.1] - 2016-03-29
 ### Added
 - Price check ability for:

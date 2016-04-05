@@ -16,8 +16,7 @@ module Concierge
     GET_SEPARATOR = '.'
 
     def initialize(hash)
-      copy  = Hanami::Utils::Hash.new(hash).deep_dup
-      @hash = Hanami::Utils::Hash.new(copy).stringify!
+      @hash = Hanami::Utils::Hash.new(hash).deep_dup.stringify!
     end
 
     def [](key)

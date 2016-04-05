@@ -31,4 +31,30 @@ RSpec.describe JTB::Client do
     end
 
   end
+
+  describe '#book' do
+    let(:params) {
+      {
+        property_id: 'A123',
+        unit_id:     'JPN',
+        check_in:    '2016-03-22',
+        check_out:   '2016-03-24',
+        guests:      2,
+        customer:    {
+          first_name: 'Alex',
+          last_name:  'Black',
+          gender:     'male'
+        }
+      }
+    }
+
+    it 'creates record with booking code in database' do
+      allow_any_instance_of(JTB::Booking).to receive(:book) { Result.new('booking code') }
+
+      subject.book(params)
+
+      expect(ReservationRepository.first.code).to eq 'booking code'
+    end
+
+  end
 end
