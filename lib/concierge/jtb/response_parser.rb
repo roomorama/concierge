@@ -42,7 +42,7 @@ module JTB
       return handle_error(errors) if errors
 
       rates = extract_rates(response)
-      return rates unless rates.success?
+      return rates if !rates.success? || rates.value.is_a?(RatePlan)
 
       rate_plans = group_to_rate_plans(rates.value)
       rate_plan  = get_best_rate_plan(rate_plans, guests: params[:guests])
