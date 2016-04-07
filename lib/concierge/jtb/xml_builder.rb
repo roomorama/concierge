@@ -127,8 +127,13 @@ module JTB
     end
 
     def latin_only(string, default:)
-      return string if !string.blank? && string.ascii_only?
-      default
+      # converts accented latin letters to ascii encoding
+      normalized(string) || default
+    end
+
+    def normalized(string)
+      string = string.mb_chars.normalize(:kd).gsub(/[^\x00-\x7F]/,'').to_s
+      string if !string.blank? && string.ascii_only?
     end
 
     def name_prefix(gender)
