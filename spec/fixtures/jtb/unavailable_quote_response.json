@@ -1,0 +1,95 @@
+{
+  "ga_hotel_avail_rs": {
+    "hotel_stays": {
+      "hotel_stay": {
+        "basic_property_info": {
+          "hotel_category": {
+            "@bath_review": "Bronze",
+            "@hotel_grade": "SPR",
+            "@hotel_type": "H",
+            "@meal_review": "Silver",
+            "@overall_review": "Silver",
+            "@room_review": "Silver"
+          },
+          "location_info": {
+            "@latitude": "N35.41.24.77442",
+            "@longitude": "E139.41.39.0499"
+          },
+          "@area_id": "22",
+          "@hotel_address": "2-2-1, Nishishinjuku, Shinjuku-ku, Tokyo, 160-8330, JAPAN",
+          "@hotel_code": "4016001",
+          "@hotel_name": "Keio Plaza Hotel Tokyo",
+          "@hotel_tel": "00-0000-0000"
+        },
+        "option_info": [
+          {
+            "total": {
+              "@option_amount": "8100.00"
+            },
+            "@option_rph": "1",
+            "@option_plan_type": "DIN",
+            "@option_plan_name": "Modern Japanese full course dinner with great night view",
+            "@option_plan_id": "TYOHKPT000000001",
+            "@description": "Adults only, or 18 and older.",
+            "@sales_unit_type": "NGT",
+            "@service_date_type": "true",
+            "@effective_date": "2013-01-01",
+            "@expire_date": "2199-01-17"
+          },
+          {
+            "total": {
+              "@option_amount": "5110.00"
+            },
+            "@option_rph": "2",
+            "@option_plan_type": "TIC",
+            "@option_plan_name": "Virtual skiing one day ticket",
+            "@option_plan_id": "TYOHKPT000000004",
+            "@description": "Enjoy our popular virtual skiing available for a limited time to August 30th.",
+            "@sales_unit_type": "NUM",
+            "@service_date_type": "true",
+            "@effective_date": "2013-01-01",
+            "@expire_date": "2013-08-30"
+          }
+        ],
+        "@room_stay_rph": "1 2"
+      }
+    },
+    "rate_plans": {
+      "rate_plan": [
+        {
+          "meals_included": {
+            "@meal_plan_codes": "RMO",
+            "@meal_plan_names": "Room Only"
+          },
+          "option_rate_plans": {
+            "@rph": "1",
+            "@option_rph": "1 2"
+          },
+          "@rate_plan_id": "TYOHKPT00STD1TWN",
+          "@rate_plan_short_name": "Standard Twin",
+          "@rate_plan_name": "Standard Twin 2-person use Room Only",
+          "@effective_date": "2013-01-01",
+          "@expire_date": "2013-12-31"
+        },
+        {
+          "meals_included": {
+            "@meal_plan_codes": "RMO",
+            "@meal_plan_names": "Room Only"
+          },
+          "option_rate_plans": {
+            "@rph": "1",
+            "@option_rph": "1 2"
+          },
+          "@rate_plan_id": "TYOHKPT00STD1DBL",
+          "@rate_plan_short_name": "Standard Double",
+          "@rate_plan_name": "Standard Double 2-person use Room Only",
+          "@effective_date": "2013-01-01",
+          "@expire_date": "2013-12-31"
+        }
+      ]
+    },
+    "success": null,
+    "@xmlns": "http://service.api.genesis2.jtbgmt.com/",
+    "@number_of_rate_plans": "2"
+  }
+}
