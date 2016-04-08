@@ -4,9 +4,11 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## Unrelased
+- valid name for customer with non-latin letters for JTB client
+
 ## [0.1.3] - 2016-04-07
 ### Changed
-- valid name for customer with non-latin letters for JTB client
 - fixed a bug on JTB's response parser when a unit is not available (no rate plans returned.)
 
 ## [0.1.2] - 2016-04-04
