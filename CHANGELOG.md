@@ -6,6 +6,7 @@ how this file is formatted and how the process works.
 
 ## Unreleased
 ### Changed
+- valid name for customer with non-latin letters for JTB client
 - fixed a bug on JTB's response parser when a unit is not available (no rate plans returned.)
 
 ## [0.1.2] - 2016-04-04

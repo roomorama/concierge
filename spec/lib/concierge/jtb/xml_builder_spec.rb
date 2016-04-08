@@ -79,16 +79,6 @@ RSpec.describe JTB::XMLBuilder do
           expect(message.xpath('//jtb:GivenName').first.text).to eq 'Roomorama'
           expect(message.xpath('//jtb:Surname').first.text).to eq 'Guest'
         end
-
-        it 'set default first name and last name if name blank' do
-          params[:customer].delete(:first_name)
-          params[:customer].delete(:last_name)
-          message = subject.build_booking(params, rate_plan)
-
-          expect(message.xpath('//jtb:GivenName').first.text).to eq 'Roomorama'
-          expect(message.xpath('//jtb:Surname').first.text).to eq 'Guest'
-        end
-
       end
     end
   end
