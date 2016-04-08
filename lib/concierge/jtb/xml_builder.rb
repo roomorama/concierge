@@ -21,7 +21,7 @@ module JTB
       'xmlns:soapenv' => 'http://schemas.xmlsoap.org/soap/envelope/'
     }
     DEFAULT_FIRST_NAME = 'Roomorama'
-    DEFAULT_LAST_NAME = 'Friend'
+    DEFAULT_LAST_NAME = 'Guest'
 
     attr_reader :credentials
 
