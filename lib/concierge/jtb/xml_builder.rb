@@ -127,8 +127,6 @@ module JTB
     end
 
     def latin_only(string, default:)
-      return default if string.blank?
-
       # converts accented latin letters to ascii encoding
       normalized(string) || default
     end
