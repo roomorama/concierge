@@ -33,7 +33,7 @@ class Concierge::Cache
         EntryRepository.update(entry)
       else
         entry = Entry.new(key: key, value: value, updated_at: Time.now)
-        EntryRepository.create(entry)
+        create_or_update(entry)
       end
 
       entry
@@ -42,6 +42,23 @@ class Concierge::Cache
     def delete(key)
       entry = read(key)
       EntryRepository.delete(entry) if entry
+    end
+
+    private
+
+    # under some very specific situations, by the time the cache is being written,
+    # a different process executed a query for the same cache key and wrote it to
+    # the database, causing the creation call to fail with a unique constraint
+    # violation error. In technical terms, this is a time-of-check, time-of-use
+    # issue.
+    #
+    # This method works around such scenario by falling back to a standard update
+    # in case the creation of the record cause the error described above.
+    def create_or_update(entry)
+      EntryRepository.create(entry)
+    rescue Hanami::Model::UniqueConstraintViolationError
+      entry = read(entry.key)
+      EntryRepository.update(entry)
     end
 
   end
