@@ -59,8 +59,24 @@ module Concierge
 
     def with_safe_access
       yield
-    rescue Hanami::Model::Error
+    rescue Hanami::Model::Error => err
+      emergency_log.report(database_error(err))
       false
+    end
+
+    def emergency_log
+      @log ||= Concierge::EmergencyLog.new
+    end
+
+    def database_error(error)
+      Concierge::EmergencyLog::Event.new.tap do |event|
+        event.type        = "database_error"
+        event.description = "Error when trying to perform a database operation"
+        event.messages    = [
+          error.message,
+          error.cause && error.cause.message
+        ]
+      end
     end
 
   end

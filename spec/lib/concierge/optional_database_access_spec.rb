@@ -41,6 +41,10 @@ RSpec.describe Concierge::OptionalDatabaseAccess do
     end
   end
 
+  before do
+    allow(Rollbar).to receive(:critical) { true }
+  end
+
   shared_examples "recovering from database errors" do |operation|
     let(:record) { double }
     let(:repository) { TestRepository.new }
@@ -56,6 +60,13 @@ RSpec.describe Concierge::OptionalDatabaseAccess do
 
       subject.public_send(operation, record)
       expect(repository.operations).to be_empty
+    end
+
+    it "reports the incident in the emergency log" do
+      repository.failure_mode!
+      expect(Rollbar).to receive(:critical).with("Emergency Log: database_error")
+
+      subject.public_send(operation, record)
     end
   end
 
