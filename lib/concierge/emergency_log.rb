@@ -21,7 +21,8 @@ module Concierge
   #   end
   #
   # Logged messages are kept under +log/emergency_log.{env}+, where +env+
-  # is the Hanami environment.
+  # is the Hanami environment. Apart from that, errors reported through the
+  # emergency log are also reported on Rollbar on +critical+ level.
   class EmergencyLog
     class << self
       attr_writer :logger
@@ -66,6 +67,7 @@ module Concierge
 
     def report(event)
       logger.error(event)
+      Rollbar.critical("Emergency Log: #{event.type}")
     end
 
     private
