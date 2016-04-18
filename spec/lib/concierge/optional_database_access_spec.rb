@@ -31,7 +31,7 @@ RSpec.describe Concierge::OptionalDatabaseAccess do
 
     private
 
-    def run(operation)
+    def run(operation, &block)
       if failure_mode?
         raise Hanami::Model::UniqueConstraintViolationError
       else
@@ -41,14 +41,11 @@ RSpec.describe Concierge::OptionalDatabaseAccess do
     end
   end
 
-  before do
-    allow(Rollbar).to receive(:critical) { true }
-  end
+  let(:repository) { TestRepository.new }
+  subject { described_class.new(repository) }
 
   shared_examples "recovering from database errors" do |operation|
     let(:record) { double }
-    let(:repository) { TestRepository.new }
-    subject { described_class.new(repository) }
 
     it "performs its #{operation} in case the repository succeeds without database errors" do
       subject.public_send(operation, record)
@@ -67,6 +64,27 @@ RSpec.describe Concierge::OptionalDatabaseAccess do
       expect(Rollbar).to receive(:critical).with("Emergency Log: database_error")
 
       subject.public_send(operation, record)
+    end
+  end
+
+  describe "#with_repository" do
+    it "is successful in case the operation in the block succeeds" do
+      subject.with_repository { |repo| repo.delete("key") }
+      expect(repository.operations).to eq [:delete]
+    end
+
+    it "does not raise an error if database access is compromised" do
+      repository.failure_mode!
+      subject.with_repository { |repo| repo.delete("key") }
+
+      expect(repository.operations).to be_empty
+    end
+
+    it "reports the incident to the emergency log in case of failure" do
+      repository.failure_mode!
+      expect(Rollbar).to receive(:critical).with("Emergency Log: database_error")
+
+      subject.with_repository { |repo| repo.delete("key") }
     end
   end
 

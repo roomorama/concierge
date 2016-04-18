@@ -19,7 +19,7 @@ RSpec.describe UseCases::ExternalErrorCreation do
         parameters.delete(required_attr)
 
         expect {
-          expect(subject.perform)
+          subject.perform
         }.not_to change { ExternalErrorRepository.count }
       end
 
@@ -27,14 +27,22 @@ RSpec.describe UseCases::ExternalErrorCreation do
         parameters[:operation] = "invalid_operation"
 
         expect {
-          expect(subject.perform)
+          subject.perform
         }.not_to change { ExternalErrorRepository.count }
       end
 
       it "saves an external error to the database in case all parameters are valid" do
         expect {
-          expect(subject.perform)
+          subject.perform
         }.to change { ExternalErrorRepository.count }.by(1)
+      end
+
+      it "does not fail with a hard error in case of a database failure" do
+        allow(ExternalErrorRepository).to receive(:create) { raise Hanami::Model::UniqueConstraintViolationError }
+
+        expect {
+          subject.perform
+        }.not_to raise_error
       end
     end
   end

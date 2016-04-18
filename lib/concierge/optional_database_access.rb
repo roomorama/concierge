@@ -43,6 +43,10 @@ module Concierge
       @repository = repository
     end
 
+    def with_repository
+      with_safe_access { yield repository }
+    end
+
     def create(record)
       with_safe_access { repository.create(record) }
     end
