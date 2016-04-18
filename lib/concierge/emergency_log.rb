@@ -35,28 +35,14 @@ module Concierge
       private
 
       # By default, emergency messages are logged to a file under the +log+
-      # directory. The default logger uses a custom message formatter
-      # which accepts a +Concierge::EmergencyLog::Event+ instance, and
-      # formats it accordingly.
+      # directory.
       def build_logger
         path = Hanami.root.join("log", ["emergency_log.", Hanami.env].join)
-        Logger.new(path).tap do |logger|
-          logger.formatter = ->(_, timestamp, _, event) {
-            messages = Array(event.messages)
-            if messages.empty?
-              messages = nil
-            end
-
-            [
-              "[#{timestamp}] Emergency error",
-              ["Type: ", event.type].join,
-              ["Description: ", event.description].join,
-              messages
-            ].flatten.compact.join("\n")
-          }
-        end
+        Logger.new(path)
       end
     end
+
+    include JSON
 
     # data structure used to encapsulate an emergency event that needs to be reported.
     #
@@ -66,11 +52,24 @@ module Concierge
     Event = Struct.new(:type, :description, :messages)
 
     def report(event)
-      logger.error(event)
+      logger.error(to_json(event))
       Rollbar.critical("Emergency Log: #{event.type}")
     end
 
     private
+
+    def to_json(event)
+      # remove possible duplications in exception messages when the exception
+      # +cause+ is also included.
+      messages = event.messages.uniq
+      metadata = { timestamp: Time.now }
+
+      unless messages.empty?
+        metadata[:messages] = messages
+      end
+
+      json_encode(event.to_h.merge(metadata))
+    end
 
     def logger
       self.class.logger
