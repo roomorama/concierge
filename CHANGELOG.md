@@ -5,6 +5,7 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unrelased
+- make Concierge operations resilient to database failures (introduces Emergency Log).
 - time-of-check, time-of-use issue on Concierge's cache. Fixes [Rollbar #8](https://rollbar.com/Roomorama/Concierge/items/8/).
 - valid name for customer with non-latin letters for JTB client
 
