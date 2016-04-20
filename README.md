@@ -55,6 +55,20 @@ Note that the purpose of checking things out in a browser or `curl` is to make s
 things work on an integration level. If you wish to test the behaviour of a controller during
 the development process, specs are the right tool for it.
 
+### Database Access
+
+Database access in Concierge exists as a means to provide extra functionality during
+the execution of the operations provided. However, it is by no means a _required_
+precondition for Concierge to work. Therefore, whenever possible, make database access
+optional.
+
+A convenience class - `Concierge::OptionalDatabaseAccess` - is provided so that
+control can be regained even on the situation when the database is unaccessible.
+
+The caching functionality provided by Concierge - `Concierge::Cache` already makes
+use of such feature and therefore no changes are needed if the database is only
+used for caching.
+
 ### Quoting bookings
 
 To add the capability of quoting a booking for a new supplier, create a new controller
