@@ -22,7 +22,7 @@ RSpec.describe Concierge::EmergencyLog do
         error:  { class: "SomeError", message: "Something went wrong" },
         record: { attribute: "value" }
       })
-      allow(Time).to receive(:now) { Time.new("2016", "04", "18", "10", "37", "12") }
+      allow(Time).to receive(:now) { Time.new("2016", "04", "18", "10", "37", "12", "+08:00") }
 
       subject.report(event)
 
