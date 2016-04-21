@@ -52,12 +52,6 @@ RSpec.describe JTB::XMLBuilder do
     it { expect(attribute_for(message, 'TimeSpan', 'StartDate')).to eq params[:check_in] }
     it { expect(attribute_for(message, 'TimeSpan', 'EndDate')).to eq params[:check_out] }
 
-    it 'builds message with simulated call' do
-      simulated_params = params.merge(simulate: true)
-      message = subject.build_booking(simulated_params, rate_plan)
-      expect(attribute_for(message, 'HotelReservation', 'PassiveIndicator')).to eq 'true'
-    end
-
     context 'customer' do
       let(:customer) { params[:customer] }
 
@@ -66,6 +60,26 @@ RSpec.describe JTB::XMLBuilder do
       it { expect(message.xpath('//jtb:Surname').first.text).to include(customer[:last_name]) }
       it { expect(message.xpath('//jtb:NamePrefix').first.text).to eq('Mr') }
 
+      it 'converts accented latin letters to ascii encoding' do
+        params[:customer].merge!(first_name: 'Ĕřïć', last_name: 'BÁŔBÈÅÜ')
+        message = subject.build_booking(params, rate_plan)
+
+        expect(message.xpath('//jtb:GivenName').first.text).to be_ascii_only
+        expect(message.xpath('//jtb:GivenName').first.text).to eq 'Eric'
+
+        expect(message.xpath('//jtb:Surname').first.text).to be_ascii_only
+        expect(message.xpath('//jtb:Surname').first.text).to eq 'BARBEAU'
+      end
+
+      context 'invalid name' do
+        it 'set default first name and last name if non-latin letters' do
+          params[:customer].merge!(first_name: 'Игорь', last_name: 'Трофимов')
+          message = subject.build_booking(params, rate_plan)
+
+          expect(message.xpath('//jtb:GivenName').first.text).to eq 'Roomorama'
+          expect(message.xpath('//jtb:Surname').first.text).to eq 'Guest'
+        end
+      end
     end
   end
 

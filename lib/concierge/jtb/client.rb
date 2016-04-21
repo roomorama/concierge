@@ -47,7 +47,7 @@ module JTB
         reservation.code = result.value
 
         # workaround to keep booking code for reservation. Returns reservation
-        ReservationRepository.create(reservation)
+        database.create(reservation)
       else
         announce_error("booking", result)
         Reservation.new(errors: { booking: 'Could not book property with remote supplier' })
@@ -64,6 +64,10 @@ module JTB
         message:     result.error.message,
         happened_at: Time.now
       })
+    end
+
+    def database
+      @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
     end
 
   end
