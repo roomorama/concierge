@@ -45,7 +45,7 @@ RSpec.describe Concierge::OptionalDatabaseAccess do
   subject { described_class.new(repository) }
 
   shared_examples "recovering from database errors" do |operation|
-    let(:record) { double }
+    let(:record) { double(to_h: { attribute: "value" }) }
 
     it "performs its #{operation} in case the repository succeeds without database errors" do
       subject.public_send(operation, record)

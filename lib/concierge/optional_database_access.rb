@@ -48,23 +48,23 @@ module Concierge
     end
 
     def create(record)
-      with_safe_access { repository.create(record) }
+      with_safe_access(record) { repository.create(record) }
     end
 
     def update(record)
-      with_safe_access { repository.update(record) }
+      with_safe_access(record) { repository.update(record) }
     end
 
     def delete(record)
-      with_safe_access { repository.delete(record) }
+      with_safe_access(record) { repository.delete(record) }
     end
 
     private
 
-    def with_safe_access
+    def with_safe_access(record = nil)
       yield
     rescue Hanami::Model::Error => err
-      emergency_log.report(database_error(err))
+      emergency_log.report(database_error(err, record))
       false
     end
 
@@ -72,14 +72,23 @@ module Concierge
       @log ||= Concierge::EmergencyLog.new
     end
 
-    def database_error(error)
+    def database_error(error, record)
       Concierge::EmergencyLog::Event.new.tap do |event|
         event.type        = "database_error"
         event.description = "Error when trying to perform a database operation"
-        event.messages    = [
-          error.message,
-          error.cause && error.cause.message
-        ]
+
+        data = {
+          error: {
+            class: error.class.to_s,
+            message: error.message
+          }
+        }
+
+        if record
+          data[:record] = record.to_h
+        end
+
+        event.data = data
       end
     end
 

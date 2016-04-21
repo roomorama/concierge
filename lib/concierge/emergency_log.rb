@@ -48,8 +48,8 @@ module Concierge
     #
     # type        - an error identifier.
     # description - a longer description of the error.
-    # messages    - a list of complementary messages associated with the event.
-    Event = Struct.new(:type, :description, :messages)
+    # data        - a map of extra data associated with the event.
+    Event = Struct.new(:type, :description, :data)
 
     def report(event)
       logger.error(to_json(event))
@@ -59,16 +59,7 @@ module Concierge
     private
 
     def to_json(event)
-      # remove possible duplications in exception messages when the exception
-      # +cause+ is also included.
-      messages = event.messages.uniq
-      metadata = { timestamp: Time.now }
-
-      unless messages.empty?
-        metadata[:messages] = messages
-      end
-
-      json_encode(event.to_h.merge(metadata))
+      json_encode(event.to_h.merge(timestamp: Time.now))
     end
 
     def logger
