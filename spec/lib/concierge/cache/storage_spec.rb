@@ -4,7 +4,23 @@ RSpec.describe Concierge::Cache::Storage do
   let(:key) { "supplier.operation.cache_key" }
   let(:entry) { Concierge::Cache::Entry.new(key: key, value: "resulting value") }
 
+  shared_examples "recovering from database failures" do |operation, args|
+    before do
+      [:by_key, :create, :update, :delete].each do |action|
+        allow(Concierge::Cache::EntryRepository).to receive(action) { raise Hanami::Model::UniqueConstraintViolationError }
+      end
+    end
+
+    it "does not raise a hard failure in case there is an issue at the database level" do
+      expect {
+        subject.public_send(operation, *args)
+      }.not_to raise_error
+    end
+  end
+
   describe "#read" do
+    it_behaves_like "recovering from database failures", :read, ["key"]
+
     it "returns nil in case there is no cache entry with the given key" do
       expect(subject.read(key)).to eq nil
     end
@@ -19,6 +35,8 @@ RSpec.describe Concierge::Cache::Storage do
   end
 
   describe "#write" do
+    it_behaves_like "recovering from database failures", :write, ["key", "value"]
+
     it "creates a new cache entry if none exist for the given key" do
       expect {
         subject.write(key, "resulting value")
@@ -45,6 +63,8 @@ RSpec.describe Concierge::Cache::Storage do
   end
 
   describe "#delete" do
+    it_behaves_like "recovering from database failures", :delete, ["key"]
+
     it "does nothing if there is no entry associated with the given key" do
       expect {
         subject.delete(key)

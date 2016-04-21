@@ -21,7 +21,7 @@ module UseCases
     def perform
       if valid?
         error = ExternalError.new(attributes)
-        ExternalErrorRepository.create(error)
+        database.create(error)
       end
     end
 
@@ -29,6 +29,10 @@ module UseCases
 
     def attributes
       to_h
+    end
+
+    def database
+      @database ||= Concierge::OptionalDatabaseAccess.new(ExternalErrorRepository)
     end
   end
 
