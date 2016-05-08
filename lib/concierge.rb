@@ -9,3 +9,9 @@ Hanami::Model.configure do
 
   mapping Hanami.root.join("config", "mapping").to_s
 end.load!
+
+module Concierge
+  def self.app
+    @_app ||=  ENV["CONCIERGE_APP"].downcase
+  end
+end
