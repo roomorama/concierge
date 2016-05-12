@@ -1,4 +1,4 @@
-module Support
+module Web::Support
   class StatusCheck
     include Concierge::JSON
 
@@ -27,6 +27,7 @@ module Support
 
     def raw_response
       @response ||= http.get("/_ping")
+    rescue Faraday::Error => err
     end
 
     private
