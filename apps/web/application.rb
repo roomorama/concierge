@@ -8,7 +8,8 @@ module Web
 
       load_paths << [
         "controllers",
-        "views"
+        "views",
+        "support"
       ]
 
       routes "config/routes"
@@ -25,7 +26,6 @@ module Web
 
       assets do
         javascript_compressor :builtin
-
         stylesheet_compressor :builtin
 
         sources << [
@@ -34,7 +34,6 @@ module Web
       end
 
       security.x_frame_options "DENY"
-      security.content_security_policy "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self'; font-src 'self';"
 
       controller.prepare do
         # include MyAuthentication # included in all the actions

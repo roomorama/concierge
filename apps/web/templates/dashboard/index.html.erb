@@ -1,0 +1,13 @@
+<div class="content">
+  <h2 class="content-subhead">API Status</h2>
+  <ul class="concierge-status">
+    <li><strong>Ping:</strong> <%= concierge_ping %></li>
+    <li><strong>Healthy:</strong> <%= concierge_healthy %></li>
+
+    <% if concierge.healthy? %>
+      <li><strong>Version:</strong> <%= concierge.version %></li>
+    <% else %>
+      <li><strong>Response:</strong> <code><%= concierge.raw_response.body %></code></li>
+    <% end %>
+  </ul>
+</div>

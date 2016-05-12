@@ -1,1 +1,1 @@
-# routes file
+get "/", to: "dashboard#index"
