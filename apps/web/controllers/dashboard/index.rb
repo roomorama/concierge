@@ -5,7 +5,7 @@ module Web::Controllers::Dashboard
     expose :concierge
 
     def call(params)
-      @concierge = Support::StatusCheck.new
+      @concierge = Web::Support::StatusCheck.new
     end
   end
 end
