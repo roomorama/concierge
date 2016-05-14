@@ -7,7 +7,7 @@
     <% if concierge.healthy? %>
       <li><strong>Version:</strong> <%= concierge.version %></li>
     <% else %>
-      <li><strong>Response:</strong> <code><%= concierge.raw_response.body %></code></li>
+      <li><strong>Error:</strong> <%= error_message %></li>
     <% end %>
   </ul>
 </div>
