@@ -35,9 +35,8 @@ module Web
 
       security.x_frame_options "DENY"
 
-      controller.prepare do
-        # include MyAuthentication # included in all the actions
-        # before :authenticate!    # run an authentication before callback
+      middleware.use Rack::Auth::Basic, "Roomorama Concierge - authentication required" do |username, password|
+        Web::Support::Authentication.new(username, password).authorized?
       end
 
       view.prepare do
