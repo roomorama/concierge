@@ -1,0 +1,35 @@
+<div class="content">
+  <h2 class="content-subhead">External Errors</h2>
+  <div class="section-intro">
+    External errors are errors that happen while Concierge is performing
+    one of its operations (price checking, booking, cancellation, etc).
+    The nature of such errors are <em>external</em> - meaning they happened
+    due to factors outside of Concierge's control. Potential reasons:
+    supplier was unavailable and could not process the request, infra-structure
+    problems, among others.
+  </div>
+
+  <table class="errors-table pure-table pure-table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Operation</th>
+        <th>Supplier</th>
+        <th>Error Code</th>
+        <th>Timestamp</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% external_errors.each do |error| %>
+        <tr>
+          <td><%= error.id %></td>
+          <td><%= error.operation %></td>
+          <td><%= error.supplier %></td>
+          <td><%= error.code %></td>
+          <td><%= format_time(error) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

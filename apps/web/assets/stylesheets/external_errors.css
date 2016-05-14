@@ -1,0 +1,13 @@
+.section-intro {
+  font-size: 0.9em;
+  color: #aaa;
+  padding: 20px;
+  background-color: #eee;
+  margin-bottom: 20px;
+  border: 1px solid #bbb;
+  text-align: justify;
+}
+
+.errors-table {
+  width: 100%;
+}
