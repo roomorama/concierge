@@ -12,6 +12,6 @@ end.load!
 
 module Concierge
   def self.app
-    @_app ||=  ENV["CONCIERGE_APP"].downcase
+    @_app ||=  ENV["CONCIERGE_APP"].downcase.to_sym
   end
 end

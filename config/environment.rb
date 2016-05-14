@@ -3,18 +3,26 @@ require "bundler/setup"
 require "hanami/setup"
 require_relative "../lib/concierge"
 
-apps = %w(api web)
-unless apps.include?(Concierge.app)
+apps = {
+  api: %w(api),
+  web: %w(web),
+  all: %w(api web)
+}
+
+unless apps.keys.include?(Concierge.app)
   raise RuntimeError.new("Unknown CONCIERGE_APP: #{Concierge.app}")
 end
 
-require_relative "../apps/#{Concierge.app}/application"
+apps[Concierge.app].each { |app| require_relative "../apps/#{app}/application" }
 
 Hanami::Container.configure do
   case Concierge.app
-  when "api"
+  when :api
     mount API::Application, at: "/"
-  when "web"
+  when :web
     mount Web::Application, at: "/"
+  when :all
+    mount API::Application, at: "/api"
+    mount Web::Application, at: "/web"
   end
 end
