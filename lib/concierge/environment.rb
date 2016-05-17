@@ -71,7 +71,7 @@ module Concierge
 
     # app specific environment variables.
     def default_app_variables_path
-      Hanami.root.join("apps", Concierge.app, "config", "environment_variables.yml").to_s
+      Hanami.root.join("apps", Concierge.app.to_s, "config", "environment_variables.yml").to_s
     end
 
     # variables required by Concierge, no matter which app is booting.
