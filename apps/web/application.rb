@@ -55,9 +55,21 @@ module Web
       handle_exceptions false
     end
 
+    configure :staging do
+      handle_exceptions true
+
+      scheme 'https'
+      host   'concierge-staging-web.roomorama.com'
+
+      assets do
+        compile false
+        digest  true
+      end
+    end
+
     configure :production do
       scheme 'https'
-      host   'example.org'
+      host   'concierge-web.roomorama.com'
       port   443
 
       assets do
