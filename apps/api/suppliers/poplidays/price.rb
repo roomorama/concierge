@@ -182,7 +182,7 @@ module Poplidays
     end
 
     def http
-      @http ||= API::Support::HTTPClient.new(BASE_URI)
+      @http ||= Concierge::HTTPClient.new(BASE_URI)
     end
 
     def unrecognised_response(response)

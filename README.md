@@ -4,8 +4,22 @@
   <img src="https://circleci.com/gh/roomorama/concierge.svg?style=shield&circle-token=bd8f156b6313c0c08cfd943593287516720250fb" />
 </a>
 
+![Concierge Web App](https://cloud.githubusercontent.com/assets/613784/15269423/900f7efa-1a30-11e6-9f61-aaf48ac71ab4.png)
+
 `Concierge` performs calls to Roomorama suppliers. It is able to make booking quotations
 and making actual bookings with partners.
+
+### Concierge Apps
+
+Concierge embraces the container architecture encouraged by the Hanami framework.
+In that sense, Concierge is divided into two apps: `api` and `web`. The former is
+responsible for being a provider for Roomorama webhooks; the latter is a web interface
+for inspecting general runtime data from the API. See the Wiki entry on the apps
+to understand how responsibility is divided.
+
+Unless explicitly mentioned, all the documentation below refers to the API,
+the most important component of Concierge, dealing with supplier integrations
+and performing operations on behalf of Roomorama.
 
 ### Supplier Partners
 
@@ -165,9 +179,11 @@ an exception and prevent the application from booting.
 
 Whenever the use of environment variables is necessary outside of the "supplier credentials"
 context described above, make sure that the variable is properly declared in the
-`config/environment_variables.yml` file. This ensures that the application will fail to
-boot in case the variable is not properly defined.
-
+in the corresponding YML file. Variables required for the `api` app must be listed
+on `apps/api/config/environment_variables.yml`. Similarly, variables required on the
+`web` app must be declared on `apps/web/config/environment_variables.yml`. Variables
+defined on `config/environment_variables.yml` will be required no matter what app
+is being booted.
 
 *****
 

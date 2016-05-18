@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe API::Support::HTTPClient do
+RSpec.describe Concierge::HTTPClient do
   include Support::HTTPStubbing
 
   let(:url) { "https://api.roomorama.com" }

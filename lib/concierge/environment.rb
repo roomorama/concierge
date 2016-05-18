@@ -1,4 +1,5 @@
 require "yaml"
+require "set"
 
 module Concierge
 
@@ -13,10 +14,12 @@ module Concierge
   #   Concierge::Environment.verify!
   #   # => true
   #
-  # By default, the list of required environment variables is located at
-  # +config/environment_variables.yml+. If one of the variables declared in
-  # that file is not defined or is empty, the +verify!+ method will raise
-  # an exception, halting the boot process.
+  # Each Concierge app (+api+ and +web+) can customize the environment
+  # variables it requires upon boot time. App-specific variables
+  # are defined on +apps/<app>/config/environment_variables.yml+.
+  #
+  # The variables defined on +config/environment_variables.yml+ are
+  # required for every app.
   class Environment
 
     class UndefinedVariableError < StandardError
@@ -30,12 +33,12 @@ module Concierge
       new.verify!
     end
 
-    attr_reader :required_variables_path
+    attr_reader :paths
 
-    # +required_variables_path+ is the path to the YML file containing
-    # the list of required environment variables.
-    def initialize(required_variables_path = default_required_variables_path)
-      @required_variables_path = required_variables_path
+    # paths - a list of paths to YML files containing lists of required
+    # environment variables to be checked.
+    def initialize(paths: [default_app_variables_path, default_concierge_variables_path])
+      @paths = paths
     end
 
     # Checks that all required environment variables are defined and
@@ -59,11 +62,21 @@ module Concierge
     end
 
     def required_variables
-      @required_variables ||= YAML.load_file(required_variables_path)
+      @required_variables ||= Set.new(paths.flat_map { |path| load(path) }).to_a
     end
 
-    def default_required_variables_path
-      Hanami.root.join("config/environment_variables.yml").to_s
+    def load(path)
+      YAML.load_file(path)
+    end
+
+    # app specific environment variables.
+    def default_app_variables_path
+      Hanami.root.join("apps", Concierge.app.to_s, "config", "environment_variables.yml").to_s
+    end
+
+    # variables required by Concierge, no matter which app is booting.
+    def default_concierge_variables_path
+      Hanami.root.join("config", "environment_variables.yml").to_s
     end
 
   end

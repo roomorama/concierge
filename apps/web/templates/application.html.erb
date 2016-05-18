@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+    <%= stylesheet "dashboard", "external_errors" %>
+
+    <title>Concierge - Monitoring</title>
+    <%= favicon %>
+  </head>
+
+  <body>
+    <div id="layout">
+      <div id="menu">
+        <div class="pure-menu">
+          <a class="pure-menu-heading" href="<%= routes.root_path %>">
+            <%= image "roomorama-white-small.png" %>
+            Concierge
+          </a>
+
+          <ul class="pure-menu-list">
+            <li class="pure-menu-item"><%= link_to "External Errors", routes.external_errors_path, class: "pure-menu-link" %></li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="main">
+        <div class="header">
+          <h1>
+            <%= image "concierge-logo.png" %>
+            Concierge: Supplier Integrations
+          </h1>
+        </div>
+
+        <%= yield %>
+      </div>
+    </div>
+  </body>
+</html>

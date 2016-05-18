@@ -27,9 +27,9 @@ module Kigo
 
     # Returns an authenticated HTTP client to be used with Kigo's API.
     # For Kigo's new API, authentication happens by appending a parameter
-    # to the URL, so this just returns a regular +API::Support::HTTPClient+ instance.
+    # to the URL, so this just returns a regular +Concierge::HTTPClient+ instance.
     def http_client
-      @http_client ||= API::Support::HTTPClient.new(base_uri)
+      @http_client ||= Concierge::HTTPClient.new(base_uri)
     end
 
     # builds the URL path to be used to perform a given +api_method+. For Kigo's new

@@ -33,7 +33,7 @@ module Support
         f.adapter :test, stubs
       end
 
-      API::Support::HTTPClient._connection = conn
+      Concierge::HTTPClient._connection = conn
     end
 
     # reuse stubs across different calls so that previous stubs are not lost.
