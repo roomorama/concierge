@@ -1,6 +1,7 @@
 module Web::Controllers::ExternalErrors
   class Index
     include Web::Action
+    include Web::Controllers::InternalError
 
     expose :external_errors
 
