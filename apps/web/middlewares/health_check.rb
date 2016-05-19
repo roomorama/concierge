@@ -1,4 +1,3 @@
-require_relative "../../../lib/concierge/request_logger"
 require_relative "../../../lib/concierge/json"
 require_relative "../../../lib/concierge/version"
 
@@ -34,15 +33,6 @@ module Web
             version: Concierge::VERSION
           }
 
-          request_logger.log(
-            http_method:  env["REQUEST_METHOD"],
-            status:       200,
-            path:         request_path,
-            query:        query_string,
-            time:         0,
-            request_body: ""
-          )
-
           [200, { "Content-Type" => "application/json" }, [json_encode(response)]]
         else
           app.call(env)
@@ -70,10 +60,6 @@ module Web
 
       def query_string
         env["QUERY_STRING"]
-      end
-
-      def request_logger
-        @logger ||= Concierge::RequestLogger.new
       end
 
     end

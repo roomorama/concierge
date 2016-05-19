@@ -29,9 +29,9 @@ module API
 
       layout false
 
+      middleware.use API::Middlewares::RequestLogging
       middleware.use API::Middlewares::HealthCheck
       middleware.use API::Middlewares::Authentication
-      middleware.use API::Middlewares::RequestLogging
       middleware.use API::Middlewares::RoomoramaWebhook
 
       view.prepare do
