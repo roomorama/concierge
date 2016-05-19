@@ -22,11 +22,12 @@ RSpec.describe Concierge::RequestLogger do
         http_method: "POST",
         status:       200,
         path:         "/jtb/booking",
+        query:        "page=2&per=10",
         time:         1.23,
         request_body: ""
       )
 
-      expect(logger_engine.logged_info).to eq ["POST /jtb/booking | T: 1.23s | S: 200"]
+      expect(logger_engine.logged_info).to eq ["POST /jtb/booking?page=2&per=10 | T: 1.23s | S: 200"]
     end
 
     it "includes the request body if there is any" do
@@ -36,6 +37,7 @@ RSpec.describe Concierge::RequestLogger do
         http_method: "POST",
         status:       200,
         path:         "/jtb/booking",
+        query:        "",
         time:         1.23,
         request_body: payload
       )

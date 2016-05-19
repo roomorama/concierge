@@ -6,6 +6,7 @@ how this file is formatted and how the process works.
 
 ## Unreleased
 ### Added
+- support for request logging and health checking on the web app.
 - new Hanami app: `web`. Builds a web interface for inspecting API status and external errors.
 
 ## [0.1.4] - 2016-04-21

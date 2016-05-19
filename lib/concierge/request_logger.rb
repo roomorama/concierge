@@ -14,16 +14,17 @@ module Concierge
   #
   # Usage:
   #
-  #   logger = Concierge::RequestLogger.new
+  #   logger = Concierge::RequestLogger.new("api")
   #   logger.log(
   #     http_method: "POST",
   #     status: 200,
   #     path: "/jtb/quote",
+  #     query: "pretty=true",
   #     time: 1.23, # seconds
   #     request_body: { foo: "bar" }
   #   )
   #
-  # Requests are logged by default on the +log/concierge.<env>+ file.
+  # Requests are logged by default on the +log/<name>.<env>+ file.
   #
   # See +API::Middlewares::RequestLogging+ to check how this class is used in
   # the request lifecycle.
@@ -43,20 +44,28 @@ module Concierge
       @engine = engine
     end
 
-    def log(http_method:, status:, path:, time:, request_body:)
-      message = format(http_method, status, path, time, request_body)
+    def log(http_method:, status:, path:, query:, time:, request_body:)
+      message = format(http_method, status, path, query, time, request_body)
       engine.info(message)
     end
 
     private
 
-    def format(http_method, status, path, time, request_body)
-      summary = "%s %s | T: %.2fs | S: %s" % [http_method.upcase, path, time.to_f, status]
+    def format(http_method, status, path, query, time, request_body)
+      summary = "%s %s | T: %.2fs | S: %s" % [http_method.upcase, with_query_string(path, query), time.to_f, status]
 
       if request_body.to_s.empty?
         summary
       else
         [summary, "\n", request_body].join
+      end
+    end
+
+    def with_query_string(path, query)
+      if query.to_s.empty?
+        path
+      else
+        [path, "?", query].join
       end
     end
 

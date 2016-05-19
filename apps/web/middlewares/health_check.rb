@@ -1,13 +1,13 @@
 require_relative "../../../lib/concierge/json"
 require_relative "../../../lib/concierge/version"
 
-module API
+module Web
   module Middlewares
 
-    # +API::Middlewares::HealthCheck+
+    # +Web::Middlewares::HealthCheck+
     #
-    # Implements a simple endpoint for health checking, skipping authentication
-    # requirements enforced in all other endpoints.
+    # Implements a simple endpoint for health checking, necessary for the load
+    # balancer to determine if the server is healthy.
     #
     # Requests coming to the +/_ping+ endpoint will always return a +200+ success
     # status, with a small JSON response with the current timestamp.
@@ -28,7 +28,7 @@ module API
         if health_check?
           response = {
             status:  "ok",
-            app:     "api",
+            app:     "web",
             time:    Time.now.strftime("%Y-%m-%d %T %Z"),
             version: Concierge::VERSION
           }
@@ -45,13 +45,10 @@ module API
         request_path == [namespace, HEALTH_CHECK_PATH].join
       end
 
-      # in development mode, all apps are loaded, and the URLs are namespaced.
-      # This accounts for that behaviour, making sure that the middleware works
-      # as expected on all environments.
       def namespace
         case Hanami.env
         when "development"
-          "/api"
+          "/web"
         else
           ""
         end
