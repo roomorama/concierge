@@ -14,8 +14,8 @@ and making actual bookings with partners.
 Concierge embraces the container architecture encouraged by the Hanami framework.
 In that sense, Concierge is divided into two apps: `api` and `web`. The former is
 responsible for being a provider for Roomorama webhooks; the latter is a web interface
-for inspecting general runtime data from the API. See the Wiki entry on the apps
-to understand how responsibility is divided.
+for inspecting general runtime data from the API. See the [Wiki entry](https://github.com/roomorama/concierge/wiki/Concierge-Apps)
+on the apps to understand how responsibility is divided.
 
 Unless explicitly mentioned, all the documentation below refers to the API,
 the most important component of Concierge, dealing with supplier integrations
