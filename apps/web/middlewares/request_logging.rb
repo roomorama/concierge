@@ -1,9 +1,10 @@
+require "logger"
 require_relative "../../../lib/concierge/request_logger"
 
-module API
+module Web
   module Middlewares
 
-    # +API::Middlewares::RequestLogging+
+    # +Web::Middlewares::RequestLogging+
     #
     # Tiny Rack middleware to implement request logging, a feature missing
     # in the currently used Hanami version. Leverages +Concierge::RequestLogger+
@@ -58,7 +59,12 @@ module API
       end
 
       def request_logger
-        @logger ||= Concierge::RequestLogger.new
+        @logger ||= Concierge::RequestLogger.new(logger)
+      end
+
+      def logger
+        output = Hanami.root.join("log", ["concierge_web.", Hanami.env].join).to_s
+        ::Logger.new(output)
       end
 
     end

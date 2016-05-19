@@ -1,5 +1,6 @@
 require 'hanami/helpers'
 require 'hanami/assets'
+require_relative "middlewares/request_logging"
 
 module Web
   class Application < Hanami::Application
@@ -38,6 +39,8 @@ module Web
       middleware.use Rack::Auth::Basic, "Roomorama Concierge - authentication required" do |username, password|
         Web::Support::Authentication.new(username, password).authorized?
       end
+
+      middleware.use Web::Middlewares::RequestLogging
 
       view.prepare do
         include Hanami::Helpers
