@@ -21,6 +21,7 @@ RSpec.describe API::Middlewares::HealthCheck do
   def health_check_response
     response = {
       status: "ok",
+      app:  "api",
       time: Time.now.strftime("%Y-%m-%d %T %Z"),
       version: Concierge::VERSION
     }.to_json

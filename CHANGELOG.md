@@ -4,6 +4,11 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.2.0] - 2016-05-19
+### Added
+- support for request logging and health checking on the web app.
+- new Hanami app: `web`. Builds a web interface for inspecting API status and external errors.
+
 ## [0.1.4] - 2016-04-21
 - make Concierge operations resilient to database failures (introduces Emergency Log).
 - time-of-check, time-of-use issue on Concierge's cache. Fixes [Rollbar #8](https://rollbar.com/Roomorama/Concierge/items/8/).

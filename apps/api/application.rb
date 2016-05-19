@@ -14,7 +14,8 @@ module API
         'support',
         'controllers',
         'views',
-        'use_cases'
+        'use_cases',
+        'suppliers'
       ]
 
       routes 'config/routes'
@@ -28,9 +29,9 @@ module API
 
       layout false
 
+      middleware.use API::Middlewares::RequestLogging
       middleware.use API::Middlewares::HealthCheck
       middleware.use API::Middlewares::Authentication
-      middleware.use API::Middlewares::RequestLogging
       middleware.use API::Middlewares::RoomoramaWebhook
 
       view.prepare do

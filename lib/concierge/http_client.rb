@@ -1,6 +1,6 @@
-module API::Support
+module Concierge
 
-  # +API::Support::HTTPClient+
+  # +Concierge::HTTPClient+
   #
   # This HTTP client is designed with error handling in mind. Networks are not
   # reliable, so code that performs any network related activity should be
@@ -26,7 +26,7 @@ module API::Support
   #
   # Example
   #
-  #   client = API::Support::HTTPClient.new("https://api.roomorama.com")
+  #   client = Concierge::HTTPClient.new("https://api.roomorama.com")
   #   result = client.get("/users")
   #   if result.success?
   #     process_response(result.value)

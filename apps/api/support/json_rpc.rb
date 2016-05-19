@@ -33,7 +33,7 @@ module API::Support
   # and further analysis.
   #
   # Note that if there is a network-related issue and the request cannot be performed,
-  # the error from +API::Support::HTTPClient+ will be forwarded to the caller.
+  # the error from +Concierge::HTTPClient+ will be forwarded to the caller.
   class JSONRPC
     include Concierge::JSON
 
@@ -103,7 +103,7 @@ module API::Support
     end
 
     def http
-      @http_client ||= HTTPClient.new(endpoint)
+      @http_client ||= Concierge::HTTPClient.new(endpoint)
     end
 
     def jsonrpc_payload(method, params)

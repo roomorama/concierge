@@ -45,7 +45,7 @@ module Kigo
       # Kigo Legacy API uses HTTP Basic Authentication to authenticate with
       # their servers. A username and password combination is required.
       def http_client
-        @http_client ||= API::Support::HTTPClient.new(base_uri, basic_auth: {
+        @http_client ||= Concierge::HTTPClient.new(base_uri, basic_auth: {
           username: credentials.username,
           password: credentials.password
         })

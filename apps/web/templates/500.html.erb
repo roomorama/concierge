@@ -1,0 +1,54 @@
+<%
+  # currently, Hanami does not expose its helper methods or routers when rendering
+  # custom error pages. Therefore, links have to be hardcoded in this view.
+  #
+  # TODO remove the hardcoding here if Hanami supports access to +routes+ in
+  # this template as it does for regular templates.
+  prefix = ""
+
+  case Hanami.env
+  when "development"
+    prefix = "/web"
+  end
+%>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+    <link href="/assets/dashboard.css" />
+    <link href="/assets/web/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link rel="stylesheet" href="/assets/dashboard.css" />
+    <link rel="stylesheet" href="/assets/external_errors.css" />
+
+    <title>Concierge - Internal Server Error</title>
+  </head>
+
+  <body>
+    <div id="layout">
+      <div id="menu">
+        <div class="pure-menu">
+          <a class="pure-menu-heading" href="<%= prefix %>/">
+            <img src="/assets/roomorama-white-small.png" />
+            Concierge
+          </a>
+
+          <ul class="pure-menu-list">
+            <li class="pure-menu-item"><a href="<%= prefix %>/errors" class="pure-menu-link">External Errors</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="main">
+        <div class="header">
+          <h2>
+            500 - Internal Server Error
+          </h2>
+
+          <h4>We have been notified of this incident. Please try again later.</h4>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

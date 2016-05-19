@@ -1,4 +1,3 @@
-require_relative "../../../lib/concierge/request_logger"
 require_relative "../../../lib/concierge/json"
 require_relative "../../../lib/concierge/version"
 
@@ -29,17 +28,10 @@ module API
         if health_check?
           response = {
             status:  "ok",
+            app:     "api",
             time:    Time.now.strftime("%Y-%m-%d %T %Z"),
             version: Concierge::VERSION
           }
-
-          request_logger.log(
-            http_method:  env["REQUEST_METHOD"],
-            status:       200,
-            path:         HEALTH_CHECK_PATH,
-            time:         0,
-            request_body: ""
-          )
 
           [200, { "Content-Type" => "application/json" }, [json_encode(response)]]
         else
@@ -50,15 +42,27 @@ module API
       private
 
       def health_check?
-        request_path == HEALTH_CHECK_PATH
+        request_path == [namespace, HEALTH_CHECK_PATH].join
+      end
+
+      # in development mode, all apps are loaded, and the URLs are namespaced.
+      # This accounts for that behaviour, making sure that the middleware works
+      # as expected on all environments.
+      def namespace
+        case Hanami.env
+        when "development"
+          "/api"
+        else
+          ""
+        end
       end
 
       def request_path
         env["REQUEST_PATH"] || env["PATH_INFO"]
       end
 
-      def request_logger
-        @logger ||= Concierge::RequestLogger.new
+      def query_string
+        env["QUERY_STRING"]
       end
 
     end

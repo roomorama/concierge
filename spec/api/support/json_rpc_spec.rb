@@ -65,7 +65,7 @@ RSpec.describe API::Support::JSONRPC do
         build_response({ "id" => request_id, "result" => { "Available" => true, "Price" => 100 } }.to_json)
       }
 
-      expect_any_instance_of(API::Support::HTTPClient).to receive(:post).with("/the/endpoint", {
+      expect_any_instance_of(Concierge::HTTPClient).to receive(:post).with("/the/endpoint", {
         jsonrpc: "2.0",
         id:      888888888888,
         method:  "anyMethod",

@@ -6,7 +6,7 @@ module API
     # +API::Middlewares::RequestLogging+
     #
     # Tiny Rack middleware to implement request logging, a feature missing
-    # in the currently used Hanami version. Leveragest +Concierge::RequestLogger+
+    # in the currently used Hanami version. Leverages +Concierge::RequestLogger+
     # to provide the logging functionality.
     #
     # See that class' documentation on usage instructions.
@@ -30,6 +30,7 @@ module API
             http_method:  http_method,
             status:       status,
             path:         request_path,
+            query:        query_string,
             time:         elapsed,
             request_body: request_body
           )
@@ -44,6 +45,10 @@ module API
 
       def request_path
         env["REQUEST_PATH"] || env["PATH_INFO"]
+      end
+
+      def query_string
+        env["QUERY_STRING"]
       end
 
       def request_body
