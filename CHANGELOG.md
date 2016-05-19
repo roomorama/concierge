@@ -4,6 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## Unreleased
+### Changed
+- change the way error notifications are handled on the `web` app to get Rollbar notifications.
+
 ## [0.2.0] - 2016-05-19
 ### Added
 - support for request logging and health checking on the web app.

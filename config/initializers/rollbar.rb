@@ -4,4 +4,5 @@ Rollbar.configure do |config|
   config.framework    = "Hanami #{Hanami::VERSION}"
   config.root         = Hanami.root.to_s
   config.enabled      = %w(staging production).include?(Hanami.env)
+  config.code_version = Concierge::VERSION
 end
