@@ -41,15 +41,6 @@ RSpec.describe API::Controllers::JTB::Quote do
       expect(response.body).not_to have_key("total")
     end
 
-    it "fails if stay length more then 14 days" do
-      params[:check_out] = "2016-04-10"
-      response = parse_response(subject.call(params))
-
-      expect(response.status).to eq 503
-      
-      expect(response.body["status"]).to eq "error"
-      expect(response.body["errors"]).to_not be_empty
-    end
   end
 
   private
