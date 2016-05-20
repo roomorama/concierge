@@ -4,6 +4,11 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.2.1] - 2016-05-20
+### Changed
+- fixes issue on external errors page where query string could cause a 500 error.
+- change the way error notifications are handled on the `web` app to get Rollbar notifications.
+
 ## [0.2.0] - 2016-05-19
 ### Added
 - support for request logging and health checking on the web app.

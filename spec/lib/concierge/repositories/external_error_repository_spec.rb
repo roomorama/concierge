@@ -51,6 +51,14 @@ RSpec.describe ExternalErrorRepository do
       expect(collection.last.supplier).to eq "SupplierA"
     end
 
+    it "uses the defaults in case the parameters given are invalid" do
+      collection = described_class.paginate(page: -1, per: -10).to_a
+
+      expect(collection.size).to eq 2
+      expect(collection.first.supplier).to eq "SupplierB"
+      expect(collection.last.supplier).to eq "SupplierA"
+    end
+
     it "uses the parameters given" do
       collection = described_class.paginate(per: 1).to_a
       expect(collection.size).to eq 1
