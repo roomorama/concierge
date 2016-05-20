@@ -14,6 +14,7 @@ module JTB
   # For more information on how to interact with JTB, check the project Wiki.
   class Client
     SUPPLIER_NAME = "JTB"
+    MAXIMUM_STAY_LENGTH = 15 # days
 
     attr_reader :credentials
 
@@ -26,6 +27,7 @@ module JTB
     # JTB, a generic error message is sent back to the caller, and the failure
     # is logged.
     def quote(params)
+      return unavailable_quotation if params.stay_length > MAXIMUM_STAY_LENGTH
       result = JTB::Price.new(credentials).quote(params)
 
       if result.success?
@@ -68,6 +70,10 @@ module JTB
 
     def database
       @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
+    end
+
+    def unavailable_quotation
+      Quotation.new(errors: { quote: "Maximum length of stay must be less than #{MAXIMUM_STAY_LENGTH} nights." })
     end
 
   end

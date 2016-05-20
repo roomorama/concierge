@@ -40,6 +40,7 @@ RSpec.describe API::Controllers::JTB::Quote do
       expect(response.body).not_to have_key("currency")
       expect(response.body).not_to have_key("total")
     end
+
   end
 
   private
