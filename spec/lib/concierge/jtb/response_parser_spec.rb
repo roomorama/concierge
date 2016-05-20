@@ -58,6 +58,13 @@ RSpec.describe JTB::ResponseParser do
       expect(result.error.code).to eq :unit_not_found
     end
 
+    it 'recognises the response with single rate plan response' do
+      response = parse(read_fixture("jtb/single_rate_plan_response.json"))
+      result   = subject.parse_rate_plan(response, params)
+      expect(result).to be_success
+      expect(result.value).to be_a JTB::RatePlan
+    end
+
   end
 
   private
