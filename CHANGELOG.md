@@ -8,6 +8,9 @@ how this file is formatted and how the process works.
 ### Changed
 - fixed a bug on JTB's response parser when a unit has only one rate plan
 
+### Added
+- checking exceeded stay length for JTB
+
 ## [0.2.1] - 2016-05-20
 ### Changed
 - fixes issue on external errors page where query string could cause a 500 error.
