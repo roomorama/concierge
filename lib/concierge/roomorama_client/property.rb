@@ -19,6 +19,16 @@ class Concierge::RoomoramaClient
   #
   #   property.update_calendar("2016-05-22" => true, "2016-05-23" => true")
   class Property
+
+    # +Concierge::RoomoramaClient::Property::ValidationError+
+    #
+    # Raised when a property fails to meet expected parameter requirements.
+    class ValidationError < Concierge::RoomoramaClient::Error
+      def initialize(message)
+        super("Property validation error: #{message}")
+      end
+    end
+
     attr_accessor :type, :title, :address, :postal_code, :city, :description,
       :number_of_bedrooms, :max_guests, :minimum_stay, :nightly_rate,
       :weekly_rate, :monthly_rate, :default_to_available, :availabilities,
@@ -69,6 +79,34 @@ class Concierge::RoomoramaClient
 
     def update_calendar(dates)
       calendar.merge!(dates.dup)
+    end
+
+    # validates that all required fields for a unit are present. A unit needs:
+    #
+    # * a non-empty identifier
+    # * a list of images
+    # * a set of availabilities.
+    #
+    # Note that the validations performed here are basic validations performed in
+    # order to avoid making API calls to Roomorama when it is possible to know in
+    # advance that there will be failures due to missing data. However, the goal
+    # here is not to entirely duplicate all validations present on Roomorama -
+    # that would bring forth a duplication of validation rules that should be
+    # avoided.
+    #
+    # If any of the validations above fail, this method will raise a
+    # +Concierge::RoomoramaClient::Property::ValidationError+ exception. If all
+    # required parameters are present, +true+ is returned.
+    def validate!
+      if identifier.to_s.empty?
+        raise ValidationError.new("identifier is not given or empty")
+      elsif images.empty?
+        raise ValidationError.new("no images")
+      elsif calendar.empty?
+        raise ValidationError.new("no availabilities")
+      else
+        true
+      end
     end
 
     def images
