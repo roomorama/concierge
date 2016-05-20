@@ -48,7 +48,7 @@ RSpec.describe Concierge::RoomoramaClient::Property do
 
     it "adds the given image to the list of property images" do
       expect(subject.add_image(image)).to be
-      expect(subject.send(:_images)).to include image
+      expect(subject.images).to include image
     end
 
     it "rejects invalid image objects" do
@@ -60,12 +60,43 @@ RSpec.describe Concierge::RoomoramaClient::Property do
     end
   end
 
+  describe "#add_unit" do
+    let(:unit) { Concierge::RoomoramaClient::Unit.new("UNIT123") }
+
+    before do
+      image = Concierge::RoomoramaClient::Image.new("IMG1")
+      image.url = "https://www.example.org/units/image1.png"
+      unit.add_image(image)
+
+      unit.update_calendar("2016-05-22" => true)
+    end
+
+    it "adds a unit to the list of units of that property" do
+      subject.add_unit(unit)
+      expect(subject.units).to include unit
+    end
+
+    it "marks the property as multi-unit" do
+      subject.multi_unit = false
+      subject.add_unit(unit)
+
+      expect(subject).to be_multi_unit
+    end
+
+    it "validates added units" do
+      unit.images.clear
+      expect {
+        subject.add_unit(unit)
+      }.to raise_error Concierge::RoomoramaClient::Unit::ValidationError
+    end
+  end
+
   describe "#update_calendar" do
     it "updates its calendar with the data given" do
       calendar = { "2016-05-22" => true, "2016-05-25" => true }
       expect(subject.update_calendar(calendar)).to be
 
-      expect(subject.send(:_calendar)).to eq({ "2016-05-22" => true, "2016-05-25" => true })
+      expect(subject.calendar).to eq({ "2016-05-22" => true, "2016-05-25" => true })
     end
   end
 end
