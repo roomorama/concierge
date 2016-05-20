@@ -26,8 +26,8 @@ class ExternalErrorRepository
   # If +page+ is not given, this method will return the first page. If +per+
   # is not given, this method will assume 10 results per page.
   def self.paginate(page: nil, per: nil)
-    page ||= 1
-    per  ||= DEFAULT_PER_PAGE
+    page = (page.to_i > 0) ? page.to_i : 1
+    per  = (per.to_i  > 0) ? per.to_i  : DEFAULT_PER_PAGE
 
     offset = (page - 1) * per
     query { desc(:happened_at).offset(offset).limit(per) }

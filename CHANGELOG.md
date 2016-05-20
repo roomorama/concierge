@@ -6,6 +6,7 @@ how this file is formatted and how the process works.
 
 ## Unreleased
 ### Changed
+- fixes issue on external errors page where query string could cause a 500 error.
 - change the way error notifications are handled on the `web` app to get Rollbar notifications.
 
 ## [0.2.0] - 2016-05-19
