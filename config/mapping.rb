@@ -6,6 +6,7 @@ collection :external_errors do
   attribute :operation,   String
   attribute :supplier,    String
   attribute :code,        String
+  attribute :environment, Hash
   attribute :message,     String
   attribute :happened_at, Time
 end
