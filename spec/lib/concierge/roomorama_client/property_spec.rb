@@ -99,4 +99,49 @@ RSpec.describe Concierge::RoomoramaClient::Property do
       expect(subject.calendar).to eq({ "2016-05-22" => true, "2016-05-25" => true })
     end
   end
+
+  describe "#validate!" do
+    before do
+      # populate some data so that the object is valid
+      subject.identifier = "PROP1"
+
+      image = Concierge::RoomoramaClient::Image.new("IMG1")
+      image.url = "https://wwww.example.org/image1.png"
+      subject.add_image(image)
+
+      image = Concierge::RoomoramaClient::Image.new("IMG2")
+      image.url = "https://wwww.example.org/image2.png"
+      subject.add_image(image)
+
+      subject.update_calendar({
+        "2016-05-22" => true,
+        "2015-05-28" => true
+      })
+    end
+
+    it "is invalid if the identifier is not given" do
+      subject.identifier = nil
+      expect {
+        subject.validate!
+      }.to raise_error Concierge::RoomoramaClient::Property::ValidationError
+    end
+
+    it "is invalid if there are no images associated with the property" do
+      subject.images.clear
+      expect {
+        subject.validate!
+      }.to raise_error Concierge::RoomoramaClient::Property::ValidationError
+    end
+
+    it "is invalid if there are no availabilities for the property" do
+      allow(subject).to receive(:calendar) { {} }
+      expect {
+        subject.validate!
+      }.to raise_error Concierge::RoomoramaClient::Property::ValidationError
+    end
+
+    it "is valid if all required parameters are present" do
+      expect(subject.validate!).to be
+    end
+  end
 end
