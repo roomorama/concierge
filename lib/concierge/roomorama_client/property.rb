@@ -30,9 +30,9 @@ class Concierge::RoomoramaClient
       :security_deposit_type, :security_deposit_currency_code, :tax_rate,
       :extra_charges, :rate_base_max_guests, :extra_guest_surcharge,
       :cancellation_policy, :services_cleaning, :services_cleaning_rate,
-      :services_cleaning_required, :services_airport_pickup,
-      :services_airport_pickup_rate, :services_concierge, :services_concierge_rate,
-      :disabled, :instant_booking
+      :services_cleaning_required, :services_airport_pickup, :services_car_rental,
+      :services_car_rental_rate, :services_airport_pickup_rate, :services_concierge,
+      :services_concierge_rate, :disabled, :instant_booking
 
     # identifier - the identifier on the supplier system. Required attribute
     def initialize(identifier)
@@ -57,21 +57,30 @@ class Concierge::RoomoramaClient
 
     def add_image(image)
       image.validate!
-      _images << image
+      images << image
     end
 
-    def update_calendar(calendar)
-      _calendar.merge!(calendar.dup)
+    def add_unit(unit)
+      unit.validate!
+
+      multi_unit!
+      units << unit
     end
 
-    private
+    def update_calendar(dates)
+      calendar.merge!(dates.dup)
+    end
 
-    def _images
+    def images
       @images ||= []
     end
 
-    def _calendar
+    def calendar
       @calendar ||= {}
+    end
+
+    def units
+      @units ||= []
     end
   end
 
