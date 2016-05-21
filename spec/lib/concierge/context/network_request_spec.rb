@@ -1,13 +1,12 @@
 require "spec_helper"
 
-RSpec.describe Concierge::Context::IncomingRequest do
+RSpec.describe Concierge::Context::NetworkRequest do
   let(:params) {
     {
       method:       "post",
-      path:         "/jtb/quote",
-      query_string: "",
+      url:          "https://maps.googleapis.com/geocode/json",
+      query_string: "address=115%20Amoy%20St.",
       headers: {
-        "Host"       => "concierge.roomorama.com",
         "Connection" => "keep-alive",
         "User-Agent" => "curl/7.0"
       },
@@ -20,21 +19,15 @@ RSpec.describe Concierge::Context::IncomingRequest do
   describe "#to_h" do
     it "serializes the information to a valid hash" do
       expect(subject.to_h).to eq({
-        type:        "incoming_request",
+        type:        "network_request",
         http_method: "POST",
+        url:         "https://maps.googleapis.com/geocode/json?address=115%20Amoy%20St.",
         headers: {
-          "Host"       => "concierge.roomorama.com",
           "Connection" => "keep-alive",
           "User-Agent" => "curl/7.0"
         },
-        body: "request_body",
-        path: "/jtb/quote"
+        body: "request_body"
       })
-    end
-
-    it "includes the query string if present" do
-      params[:query_string] = "format=json"
-      expect(subject.to_h[:path]).to eq "/jtb/quote?format=json"
     end
   end
 end
