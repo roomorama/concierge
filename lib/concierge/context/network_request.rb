@@ -29,18 +29,20 @@ class Concierge::Context
     # registering network requests.
     CONTEXT_TYPE = "network_request"
 
-    attr_reader :http_method, :url, :headers, :body
+    attr_reader :http_method, :url, :headers, :body, :timestamp
 
     def initialize(method:, url:, query_string:, headers:, body:)
       @http_method = method
       @url         = build_url(url, query_string)
       @headers     = headers
       @body        = body
+      @timestamp   = Time.now
     end
 
     def to_h
       {
         type:        CONTEXT_TYPE,
+        timestamp:   timestamp,
         http_method: http_method.upcase,
         url:         url,
         headers:     headers,

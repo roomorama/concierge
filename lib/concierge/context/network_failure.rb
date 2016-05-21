@@ -18,18 +18,20 @@ class Concierge::Context
 
     CONTEXT_TYPE = "network_failure"
 
-    attr_reader :message
+    attr_reader :message, :timestamp
 
     # message - a string describing the network failure. Often, this is going
     # to be the exception error message raised by the underlying HTTP client library.
     def initialize(message:)
-      @message = message
+      @message   = message
+      @timestamp = Time.now
     end
 
     def to_h
       {
-        type:    CONTEXT_TYPE,
-        message: message
+        type:      CONTEXT_TYPE,
+        timestamp: timestamp,
+        message:   message
       }
     end
 

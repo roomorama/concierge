@@ -26,16 +26,18 @@ class Concierge::Context
 
     CONTEXT_TYPE = "response_mismatch"
 
-    attr_reader :message, :backtrace
+    attr_reader :message, :backtrace, :timestamp
 
     def initialize(message:, backtrace:)
       @message   = message
       @backtrace = scrub(backtrace)
+      @timestamp = Time.now
     end
 
     def to_h
       {
         type:      CONTEXT_TYPE,
+        timestamp: timestamp,
         message:   message,
         backtrace: backtrace
       }

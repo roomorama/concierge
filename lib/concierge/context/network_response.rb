@@ -20,20 +20,22 @@ class Concierge::Context
 
     CONTEXT_TYPE = "network_response"
 
-    attr_reader :status, :headers, :body
+    attr_reader :status, :headers, :body, :timestamp
 
     def initialize(status:, headers:, body:)
-      @status  = status
-      @headers = headers
-      @body    = body
+      @status    = status
+      @headers   = headers
+      @body      = body
+      @timestamp = Time.now
     end
 
     def to_h
       {
-        type:    CONTEXT_TYPE,
-        status:  status,
-        headers: headers,
-        body:    body
+        type:      CONTEXT_TYPE,
+        timestamp: timestamp,
+        status:    status,
+        headers:   headers,
+        body:      body
       }
     end
 

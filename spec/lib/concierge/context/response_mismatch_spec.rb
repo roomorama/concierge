@@ -18,9 +18,12 @@ RSpec.describe Concierge::Context::ResponseMismatch do
 
   describe "#to_h" do
     it "serializes the information to a valid hash" do
+      allow(Time).to receive(:now) { Time.new("2016", "05", "21", "16", "15", "42") }
+
       expect(subject.to_h).to eq({
-        type:    "response_mismatch",
-        message: "Expected a non-null nightly rate",
+        type:      "response_mismatch",
+        timestamp: Time.now,
+        message:   "Expected a non-null nightly rate",
         backtrace: [
           "lib/concierge/supplier/parser.rb:19 in get_rates",
           "lib/concierge/supplier/client/requester.rb:392 in perform_call"
