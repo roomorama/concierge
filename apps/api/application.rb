@@ -4,8 +4,22 @@ require_relative "middlewares/health_check"
 require_relative "middlewares/request_logging"
 require_relative "middlewares/authentication"
 require_relative "middlewares/roomorama_webhook"
+require_relative "middlewares/request_context"
 
 module API
+  class << self
+
+    # the +context+ variable on the +API+ module holds the current request
+    # context. It is initialized to an instance of +Concierge::Context+ at
+    # the +API::Middlewares::RequestContext+ middleware and from there, the
+    # context is augmented as the request is processed.
+    #
+    # See the documentation of the +Concierge::Context+ class for more
+    # information, as well as usages of this variable throughout the +api+
+    # app to understand how it fits the request lifecycle.
+    attr_accessor :context
+  end
+
   class Application < Hanami::Application
     configure do
       root __dir__
@@ -33,6 +47,7 @@ module API
       middleware.use API::Middlewares::HealthCheck
       middleware.use API::Middlewares::Authentication
       middleware.use API::Middlewares::RoomoramaWebhook
+      middleware.use API::Middlewares::RequestContext
 
       view.prepare do
         include Hanami::Helpers
