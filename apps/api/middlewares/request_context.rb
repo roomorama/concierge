@@ -22,19 +22,19 @@ module API
       def call(env)
         @env  = env
 
-        initialize_environment
-        augment_environment
+        initialize_context
+        augment_context
 
         app.call(env)
       end
 
       private
 
-      def initialize_environment
+      def initialize_context
         API.context = Concierge::Context.new
       end
 
-      def augment_environment
+      def augment_context
         incoming_request = Concierge::Context::IncomingRequest.new(
           method:       http_method,
           path:         request_path,
