@@ -32,19 +32,34 @@ RSpec.describe Poplidays::Price do
 
     it "does not recognise the availabilities calendar response without availabilities" do
       stub_with_fixture(calendar_endpoint, "poplidays/availabilities_calendar_no_availabilities.json")
-      result = subject.quote(params)
+      result = nil
+
+      expect {
+        result = subject.quote(params)
+      }.to change { API.context.events.size }
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unrecognised_response
+
+      event = API.context.events.last
+      expect(event.to_h[:type]).to eq "response_mismatch"
     end
 
     it "does not recognise the property details reponse without mandatory services declaration" do
       stub_with_fixture(calendar_endpoint, "poplidays/availabilities_calendar_no_availabilities.json")
       stub_with_fixture(property_details_endpoint, "poplidays/property_details_missing_mandatory_services.json")
-      result = subject.quote(params)
+
+      result = nil
+
+      expect {
+        result = subject.quote(params)
+      }.to change { API.context.events.size }
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unrecognised_response
+
+      event = API.context.events.last
+      expect(event.to_h[:type]).to eq "response_mismatch"
     end
 
     it "does not recognise the response if it returns an XML body instead" do
@@ -59,10 +74,17 @@ RSpec.describe Poplidays::Price do
       stub_with_fixture(calendar_endpoint, "poplidays/availabilities_calendar.json")
       params[:check_in]  = "2016-05-04"
       params[:check_out] = "2016-05-11"
-      result = subject.quote(params)
+      result = nil
+
+      expect {
+        result = subject.quote(params)
+      }.to change { API.context.events.size }
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unsupported_on_request_property
+
+      event = API.context.events.last
+      expect(event.to_h[:type]).to eq "response_mismatch"
     end
 
     it "returns an unavailable quotation in case there is no availability for the selected dates" do

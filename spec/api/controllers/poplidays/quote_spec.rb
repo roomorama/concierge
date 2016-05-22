@@ -21,7 +21,7 @@ RSpec.describe API::Controllers::Poplidays::Quote do
 
     def provoke_failure!
       stub_call(:get, calendar_endpoint) { raise Faraday::TimeoutError }
-      Struct.new(:code, :message).new("connection_timeout", "timeout - https://api.poplidays.com/v2/lodgings/48327/availabilities")
+      Struct.new(:code, :message).new("connection_timeout", "timeout")
     end
   end
 
