@@ -1,3 +1,5 @@
+require_relative "version"
+
 module Concierge
 
   # +Concierge::HTTPClient+
@@ -100,8 +102,21 @@ module Concierge
       end
     end
 
+    # by default, consider any request made through this HTTP client to be timed
+    # out if no response is received within 10 seconds.
     CONNECTION_TIMEOUT = 10
+
+    # if the HTTP response status is not 200 or 201, then the request is considered
+    # to have failed.
     SUCCESSFUL_STATUSES = [200, 201]
+
+    # by default, include a self identifying +User-Agent+ HTTP header so that
+    # later analysis can pinpoint the running version of Concierge (and also
+    # removes the default +Faraday+ User Agent configuration which is not
+    # ideal.)
+    DEFAULT_HEADERS = {
+      "User-Agent" => "Roomorama/Concierge #{Concierge::VERSION}"
+    }
 
     attr_reader :url, :username, :password
 
@@ -127,7 +142,7 @@ module Concierge
 
     def get(path, params = {}, headers = {})
       with_error_handling do |conn|
-        conn.headers.merge!(headers)
+        conn.headers.merge(DEFAULT_HEADERS).merge!(headers)
         run_on_request_hook(:get, params, conn.headers)
         conn.get(path, params)
       end
@@ -135,7 +150,7 @@ module Concierge
 
     def post(path, params = {}, headers = {})
       with_error_handling do |conn|
-        conn.headers.merge!(headers)
+        conn.headers.merge(DEFAULT_HEADERS).merge!(headers)
         run_on_request_hook(:post, params, conn.headers)
         conn.post(path, params)
       end
