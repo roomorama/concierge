@@ -44,6 +44,7 @@ module AtLeisure
         operation:   operation,
         supplier:    SUPPLIER_NAME,
         code:        result.error.code,
+        context:     { todo: "changeme" },
         message:     result.error.message,
         happened_at: Time.now
       })

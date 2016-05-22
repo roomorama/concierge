@@ -39,6 +39,7 @@ module Poplidays
         supplier:    SUPPLIER_NAME,
         code:        result.error.code,
         message:     result.error.message,
+        context:     { todo: "changeme" },
         happened_at: Time.now
       })
     end
