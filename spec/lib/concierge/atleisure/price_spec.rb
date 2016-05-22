@@ -40,26 +40,47 @@ RSpec.describe AtLeisure::Price do
 
     it "does not recognise the response without an availability status" do
       stub_with_fixture("atleisure/no_availability.json")
-      result = subject.quote(params)
+      result = nil
+
+      expect {
+        result = subject.quote(params)
+      }.to change { API.context.events.size }
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unrecognised_response
+
+      event = API.context.events.last
+      expect(event.to_h[:type]).to eq "response_mismatch"
     end
 
     it "returns an error in case the property is on request" do
       stub_with_fixture("atleisure/on_request.json")
-      result = subject.quote(params)
+      result = nil
+
+      expect {
+        result = subject.quote(params)
+      }.to change { API.context.events.size }
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unsupported_on_request_property
+
+      event = API.context.events.last
+      expect(event.to_h[:type]).to eq "response_mismatch"
     end
 
     it "does not recognise the response in case there is no price" do
       stub_with_fixture("atleisure/no_price.json")
-      result = subject.quote(params)
+      result = nil
+
+      expect {
+        result = subject.quote(params)
+      }.to change { API.context.events.size }
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unrecognised_response
+
+      event = API.context.events.last
+      expect(event.to_h[:type]).to eq "response_mismatch"
     end
 
     it "returns an unavailable quotation in case the response indicates so" do

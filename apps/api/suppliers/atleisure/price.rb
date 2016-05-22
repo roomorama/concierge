@@ -60,6 +60,7 @@ module AtLeisure
       quotation = build_quotation(params)
 
       if response["OnRequest"] == "Yes"
+        no_instant_confirmation
         return Result.error(:unsupported_on_request_property, params.to_s)
       end
 
@@ -70,6 +71,7 @@ module AtLeisure
           quotation.total     = price
           return Result.new(quotation)
         else
+          no_price_information
           unrecognised_response(response)
         end
 
@@ -78,6 +80,7 @@ module AtLeisure
         return Result.new(quotation)
 
       else
+        no_availability_information
         unrecognised_response(response)
       end
     end
@@ -98,6 +101,36 @@ module AtLeisure
 
     def jsonrpc(endpoint)
       API::Support::JSONRPC.new(endpoint)
+    end
+
+    def no_instant_confirmation
+      message = "Roomorama can only work with properties with instant confirmation from AtLeisure." +
+        " However, the `OnRequest` field was set to `true`."
+
+      mismatch(message, caller)
+    end
+
+    def no_price_information
+      message = "No price information could be retrieved. Searched fields `CorrectPrice`" +
+        " and `Price` and neither is given."
+
+      mismatch(message, caller)
+    end
+
+    def no_availability_information
+      message = "Could not determine if the property was available. The `Available` field" +
+        " was not given or has an invalid value."
+
+      mismatch(message, caller)
+    end
+
+    def mismatch(message, backtrace)
+      response_mismatch = Concierge::Context::ResponseMismatch.new(
+        message:   message,
+        backtrace: backtrace
+      )
+
+      API.context.augment(response_mismatch)
     end
 
     def authentication_params
