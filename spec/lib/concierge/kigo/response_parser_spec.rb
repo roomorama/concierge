@@ -10,10 +10,17 @@ RSpec.describe Kigo::ResponseParser do
   describe "#compute_pricing" do
     it "fails if the API response does not indicate success" do
       response = read_fixture("kigo/e_nosuch.json")
-      result = subject.compute_pricing(request_params, response)
+      result = nil
+
+      expect {
+        result = subject.compute_pricing(request_params, response)
+      }.to change { API.context.events.size }
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :quote_call_failed
+
+      event = API.context.events.last
+      expect(event.to_h[:type]).to eq "response_mismatch"
     end
 
     it "fails if the API returns an invalid JSON response" do
@@ -25,18 +32,32 @@ RSpec.describe Kigo::ResponseParser do
 
     it "fails without a reply field" do
       response = read_fixture("kigo/no_api_reply.json")
-      result = subject.compute_pricing(request_params, response)
+      result = nil
+
+      expect {
+        result = subject.compute_pricing(request_params, response)
+      }.to change { API.context.events.size }
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unrecognised_response
+
+      event = API.context.events.last
+      expect(event.to_h[:type]).to eq "response_mismatch"
     end
 
     it "fails if there is no currency, fees or total fields" do
       response = read_fixture("kigo/no_total.json")
-      result = subject.compute_pricing(request_params, response)
+      result = nil
+
+      expect {
+        result = subject.compute_pricing(request_params, response)
+      }.to change { API.context.events.size }
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unrecognised_response
+
+      event = API.context.events.last
+      expect(event.to_h[:type]).to eq "response_mismatch"
     end
 
     it "is unavailable if the API indicates so" do
