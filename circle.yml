@@ -13,6 +13,11 @@ checkout:
 database:
   override:
     - mv .env.example .env
-    - bundle exec hanami db create
-    - sudo -u postgres psql -c 'CREATE EXTENSION hstore;'
+    - sudo -u postgres createdb concierge_development
+
+      # the +external_errors+ database table requires the PostgreSQL specific
+      # +hstore+ extension. This runs a command to load the extension on the
+      # database specified on the +.env.example+ file so that migrations can
+      # be successfully performed on Circle's environment.
+    - sudo -u postgres psql -d concierge_development -c 'CREATE EXTENSION hstore;'
     - bundle exec hanami db migrate
