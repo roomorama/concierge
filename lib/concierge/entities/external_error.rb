@@ -20,13 +20,13 @@
 # +operation+   - the operation being run.
 # +supplier+    - the supplier with which the issue occurred.
 # +code+        - an error code.
-# +environment+ - a data structure containing runtime information of the failure moment.
-# +message+     - an error message. Oftentimes, this will include a response payload.
+# +context+     - a data structure containing runtime information of the failure moment.
+# +message+     - a descriptive error message of the error. DEPRECATED
 # +happened_at+ - a timestamp indicating when the error happened.
 class ExternalError
   include Hanami::Entity
 
   OPERATIONS = %w(quote booking)
 
-  attributes :id, :operation, :supplier, :code, :environment, :message, :happened_at
+  attributes :id, :operation, :supplier, :code, :context, :message, :happened_at
 end

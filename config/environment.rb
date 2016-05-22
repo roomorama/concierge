@@ -3,6 +3,8 @@ require "bundler/setup"
 require "hanami/setup"
 require_relative "../lib/concierge"
 
+require "sequel/extensions/pg_hstore"
+
 apps = {
   api: %w(api),
   web: %w(web),
