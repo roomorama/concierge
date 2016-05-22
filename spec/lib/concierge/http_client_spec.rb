@@ -69,8 +69,108 @@ RSpec.describe Concierge::HTTPClient do
     end
   end
 
+  shared_examples "request hooks" do |http_method:|
+    class RequestRecorder
+      attr_reader :requests, :responses, :errors
+
+      def initialize
+        @requests  = []
+        @responses = []
+        @errors    = []
+      end
+
+      def record_request(method, url, query_string, headers, body)
+        requests << {
+          method:       method,
+          url:          url,
+          query_string: query_string,
+          headers:      headers,
+          body:         body
+        }
+      end
+
+      def record_response(status, headers, body)
+        responses << {
+          status:  status,
+          headers: headers,
+          body:    body
+        }
+      end
+
+      def record_error(message)
+        errors << {
+          message: message
+        }
+      end
+    end
+
+    let(:recorder) { RequestRecorder.new }
+
+    context "no hooks" do
+      it "works without changes" do
+        stub_call(http_method, url) { [200, {}, "OK"] }
+        result = subject.public_send(http_method, "/")
+
+        expect(result).to be_success
+        response = result.value
+        expect(response.body).to eq "OK"
+      end
+    end
+
+    context "installed hooks" do
+      before do
+        described_class.on_request  { |*args| recorder.record_request(*args) }
+        described_class.on_response { |*args| recorder.record_response(*args) }
+        described_class.on_error    { |*args| recorder.record_error(*args) }
+      end
+
+      it "runs the before/after request and response hooks" do
+        stub_call(http_method, url) { [200, {}, "OK"] }
+        result = subject.public_send(http_method, "/")
+
+        expect(result).to be_success
+        response = result.value
+        expect(response.body).to eq "OK"
+
+        expect(recorder.requests.size).to eq 1
+        recorded = recorder.requests.first
+        expect(recorded).to eq({
+          method:       http_method,
+          url:          url,
+          query_string: http_method == :get ? "" : nil,
+          headers:      { "User-Agent" => "Faraday v0.9.2" },
+          body:         http_method == :get ? nil : {}
+        })
+
+        expect(recorder.responses.size).to eq 1
+        recorded = recorder.responses.first
+        expect(recorded).to eq({
+          status:  200,
+          headers: {},
+          body:    "OK"
+        })
+      end
+
+      it "runs error hooks" do
+        stub_call(http_method, url) { raise Faraday::ConnectionFailed.new("getaddrinfo returned -1") }
+        result = subject.public_send(http_method, "/")
+
+        expect(result).not_to be_success
+        expect(result.error.code).to eq :connection_failed
+
+        expect(recorder.errors.size).to eq 1
+        recorded = recorder.errors.first
+        expect(recorded).to eq({
+          message: "getaddrinfo returned -1"
+        })
+      end
+    end
+
+  end
+
   describe "#get" do
     it_behaves_like "handling errors", http_method: :get
+    it_behaves_like "request hooks",   http_method: :get
 
     it "returns the wrapped response object if successful" do
       stub_call(:get, [url, "/get-endpoint"].join) { [200, {}, "OK"] }
@@ -85,6 +185,7 @@ RSpec.describe Concierge::HTTPClient do
 
   describe "#post" do
     it_behaves_like "handling errors", http_method: :post
+    it_behaves_like "request hooks",   http_method: :post
 
     it "returns the wrapped response object if successful" do
       stub_call(:post, [url, "/post/endpoint"].join) { [201, {}, nil] }
