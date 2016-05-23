@@ -4,7 +4,7 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
-## Unreleased
+## [0.2.2] - 2016-05-23
 ### Changed
 - fixed a bug on JTB's response parser when a unit has only one rate plan
 
