@@ -62,6 +62,13 @@ RSpec.describe Roomorama::Diff::Unit do
     end
   end
 
+  describe "#delete_image" do
+    it "adds the identifier to the list of images to be deleted" do
+      subject.delete_image("IMG_DEL")
+      expect(subject.image_changes.deleted).to eq ["IMG_DEL"]
+    end
+  end
+
   describe "#update_calendar" do
     it "updates its calendar with the data given" do
       calendar = { "2016-05-22" => true, "2016-05-25" => true }
