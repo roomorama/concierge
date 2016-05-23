@@ -94,4 +94,57 @@ RSpec.describe Roomorama::Unit do
       expect(subject.validate!).to be
     end
   end
+
+  describe "#to_h" do
+    before do
+      subject.title        = "Nice Unit"
+      subject.description  = "Largest Unit Available"
+      subject.nightly_rate = 100
+      subject.weekly_rate  = 200
+      subject.monthly_rate = 300
+
+      image = Roomorama::Image.new("image1")
+      image.url = "https://www.example.org/image1.png"
+      subject.add_image(image)
+
+      image = Roomorama::Image.new("image2")
+      image.url = "https://www.example.org/image2.png"
+      subject.add_image(image)
+
+      subject.update_calendar({
+        "2016-06-20" => true,
+        "2016-06-22" => true,
+        "2016-06-25" => true,
+        "2016-06-28" => false,
+        "2016-06-21" => true,
+      })
+    end
+
+    it "serializes all attributes" do
+      expect(subject.to_h).to eq({
+        identifier:   "JPN123UN",
+        title:        "Nice Unit",
+        description:  "Largest Unit Available",
+        nightly_rate: 100,
+        weekly_rate:  200,
+        monthly_rate: 300,
+
+        images: [
+          {
+            identifier: "image1",
+            url:        "https://www.example.org/image1.png"
+          },
+          {
+            identifier: "image2",
+            url:        "https://www.example.org/image2.png"
+          }
+        ],
+
+        availabilities: {
+          start_date: "2016-06-20",
+          data:        "111111110"
+        }
+      })
+    end
+  end
 end
