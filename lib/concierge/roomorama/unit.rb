@@ -18,6 +18,7 @@ module Roomorama
   #
   #   unit.update_calendar("2016-05-22" => true, "2016-05-23" => true")
   class Unit
+    include Roomorama::Mappers
 
     # +Roomorama::Unit::ValidationError+
     #
@@ -76,6 +77,39 @@ module Roomorama
 
     def calendar
       @calendar ||= {}
+    end
+
+    def to_h
+      data = {
+        identifier:            identifier,
+        title:                 title,
+        description:           description,
+        nightly_rate:          nightly_rate,
+        weekly_rate:           weekly_rate,
+        monthly_rate:          monthly_rate,
+        number_of_bedrooms:    number_of_bedrooms,
+        number_of_units:       number_of_units,
+        number_of_bathrooms:   number_of_bathrooms,
+        floor:                 floor,
+        number_of_double_beds: number_of_double_beds,
+        number_of_single_beds: number_of_single_beds,
+        number_of_sofa_beds:   number_of_sofa_beds,
+        surface:               surface,
+        surface_unit:          surface_unit,
+        amenities:             amenities,
+        max_guests:            max_guests,
+        minimum_stay:          minimum_stay,
+        smoking_allowed:       smoking_allowed,
+        pets_allowed:          pets_allowed,
+        tax_rate:              tax_rate,
+        extra_guest_surcharge: extra_guest_surcharge,
+        disabled:              disabled
+      }
+
+      data[:images]         = map_images(self)
+      data[:availabilities] = map_availabilities(self)
+
+      scrub(data)
     end
   end
 
