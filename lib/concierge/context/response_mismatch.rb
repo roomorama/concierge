@@ -25,51 +25,21 @@ class Concierge::Context
   class ResponseMismatch
 
     CONTEXT_TYPE = "response_mismatch"
+    LABEL        = "Response Mismatch"
 
-    attr_reader :message, :backtrace, :timestamp
+    attr_reader :message
 
+    # a thin wrapper around the generic +message+ event type.
     def initialize(message:, backtrace:)
-      @message   = message
-      @backtrace = scrub(backtrace)
-      @timestamp = Time.now
+      @message = Concierge::Context::Message.new(
+        label:     LABEL,
+        message:   message,
+        backtrace: backtrace
+      )
     end
 
     def to_h
-      {
-        type:      CONTEXT_TYPE,
-        timestamp: timestamp,
-        message:   message,
-        backtrace: backtrace
-      }
-    end
-
-    private
-
-    # removes entries from the backtrace that are not related to Concierge.
-    # To that purpose, each line of the backtrace is analysed to check if it
-    # includes the root directory along the path - if it does not, then it
-    # can be safely removed. Also, the root path of such entries, since
-    # repeat on all entries, is removed from them.
-    #
-    # Example
-    #
-    #   scrub([
-    #     "/data/concierge/current/lib/concierge/jtb/client.rb:293 in get_quote"
-    #     "/data/concierge/current/lib/concierge/jtb/client/parser.rb:12 in parse"
-    #     "/home/deploy/.rvm/rubies/2.3.0/gems/hanami/loader.rb:3092 in process",
-    #     "/home/deploy/.rvm/rubies/2.3.0/gems/unicorn/server.rb:129 in process",
-    #     "/home/deploy/.rvm/rubies/2.3.0/gems/unicorn/application.rb:29 in new",
-    #   ])
-    #
-    #   # => ["lib/concierge/jtb/client.rb:293 in get_quote", lib/concierge/jtb/client/parser.rb:12 in parse"]
-    #
-    # NOTE this assumes that the gems will not be in the same directory as the
-    # application. If one day gems start to be vendored inside the application,
-    # the logic of this method should be adapted.
-    def scrub(backtrace)
-      backtrace.
-        select { |path| path =~ Regexp.new(Hanami.root.to_s) }.
-        map    { |path| path.sub(%r[^#{Hanami.root.to_s}/], "") }
+      message.to_h.merge!(type: CONTEXT_TYPE)
     end
 
   end

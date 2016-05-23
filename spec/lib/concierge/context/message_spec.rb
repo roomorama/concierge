@@ -1,8 +1,9 @@
 require "spec_helper"
 
-RSpec.describe Concierge::Context::ResponseMismatch do
+RSpec.describe Concierge::Context::Message do
   let(:params) {
     {
+      label:   "Parsing Failure",
       message: "Expected a non-null nightly rate",
       backtrace: [
         [Hanami.root.join("lib/concierge/supplier/parser.rb").to_s, ":19 in get_rates"].join,
@@ -21,9 +22,9 @@ RSpec.describe Concierge::Context::ResponseMismatch do
       allow(Time).to receive(:now) { Time.new("2016", "05", "21", "16", "15", "42") }
 
       expect(subject.to_h).to eq({
-        type:      "response_mismatch",
+        type:      "generic_message",
         timestamp: Time.now,
-        label:     "Response Mismatch",
+        label:     "Parsing Failure",
         message:   "Expected a non-null nightly rate",
         backtrace: [
           "lib/concierge/supplier/parser.rb:19 in get_rates",
