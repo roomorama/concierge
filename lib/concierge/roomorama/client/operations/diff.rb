@@ -14,21 +14,21 @@ class Roomorama::Client::Operations
   #
   #   operation = Roomorama::Client::Operations::Publish.new(property)
   #   roomorama_client.perform(operation)
-  class Publish
+  class Diff
 
-    # the Roomorama API endpoint for the +publish+ call
-    ENDPOINT = "/v1.0/host/publish"
+    # the Roomorama API endpoint for the +apply+ call
+    ENDPOINT = "/v1.0/host/apply"
 
-    attr_reader :property
+    attr_reader :property_diff
 
-    # property - a +Roomorama::Property+ object
+    # diff - a +Roomorama::Diff+ object
     #
-    # On initialization the +validate!+ method of the property is called - therefore,
+    # On initialization the +validate!+ method of the diff is called - therefore,
     # an operation cannot be built unless the property given is conformant to the
     # basica validations performed on that class.
-    def initialize(property)
-      @property = property
-      property.validate!
+    def initialize(diff)
+      @property_diff = diff
+      property_diff.validate!
     end
 
     def endpoint
@@ -36,11 +36,11 @@ class Roomorama::Client::Operations
     end
 
     def request_method
-      :post
+      :put
     end
 
     def request_data
-      property.to_h
+      property_diff.to_h
     end
 
   end
