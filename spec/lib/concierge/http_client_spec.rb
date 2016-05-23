@@ -106,7 +106,7 @@ RSpec.describe Concierge::HTTPClient do
 
     let(:recorder) { RequestRecorder.new }
 
-    context "no hooks" do
+    context "events" do
       it "works without changes" do
         stub_call(http_method, url) { [200, {}, "OK"] }
         result = subject.public_send(http_method, "/")
@@ -117,11 +117,19 @@ RSpec.describe Concierge::HTTPClient do
       end
     end
 
-    context "installed hooks" do
+    context "listening to events" do
       before do
-        described_class.on_request  { |*args| recorder.record_request(*args) }
-        described_class.on_response { |*args| recorder.record_response(*args) }
-        described_class.on_error    { |*args| recorder.record_error(*args) }
+        Concierge::Announcer.on(Concierge::HTTPClient::ON_REQUEST) do |*args|
+          recorder.record_request(*args)
+        end
+
+        Concierge::Announcer.on(Concierge::HTTPClient::ON_RESPONSE) do |*args|
+          recorder.record_response(*args)
+        end
+
+        Concierge::Announcer.on(Concierge::HTTPClient::ON_FAILURE) do |*args|
+          recorder.record_error(*args)
+        end
       end
 
       it "runs the before/after request and response hooks" do
@@ -136,7 +144,7 @@ RSpec.describe Concierge::HTTPClient do
         recorded = recorder.requests.first
         expect(recorded).to eq({
           method:       http_method,
-          url:          url,
+          url:          [url, "/"].join,
           query_string: http_method == :get ? "" : nil,
           headers:      { "User-Agent" => "Faraday v0.9.2" },
           body:         http_method == :get ? nil : {}

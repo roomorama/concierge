@@ -26,22 +26,10 @@ module Concierge
   # In all cases, the +Result+ object returned will have an error message associated
   # with the failure that can be logged somewhere for further analysis.
   #
-  # The client is also enables the caller to associate hooks to diferent moments
-  # of the request cycle:
-  #
-  # +on_request+  - called before an HTTP request is performed
-  # +on_response+ - called when an HTTP response is received.
-  # +on_error+    - called when there is an error while making a request,
-  #                 which could not be finished.
-  #
   # Example
   #
-  #   Concierge::HTTPClient.on_request do |http_method, url, query, headers, body|
-  #     log_request(http_method, headers)
-  #   end
-  #
   #   client = Concierge::HTTPClient.new("https://api.roomorama.com")
-  #   result = client.get("/users") # => +log_request+ is called
+  #   result = client.get("/users")
   #   if result.success?
   #     process_response(result.value)
   #   else
@@ -53,54 +41,13 @@ module Concierge
       # Bypass the default +Faraday+ connection. This is private and is not to be used
       # in production environments.
       attr_accessor :_connection
-
-      # container structure to hold the three possible hooks that can be associated
-      # with the HTTP client when performing network requests.
-      Hooks = Struct.new(:on_request, :on_response, :on_error)
-
-      # associates the given block to an +on_request+event. The block given
-      # is invoked whenever an HTTP request is about to be performed.
-      #
-      # The block receives the following parameters:
-      #
-      # * +method+       - the HTTP method of the request being performed.
-      # * +url+          - the URL of the request being performed.
-      # * +query_string+ - the query string, if any
-      # * +headers+      - the HTTP headers being sent.
-      # * +body+         - the request body, if any.
-      def on_request(&block)
-        hooks.on_request = block
-      end
-
-      # associates the given block to an +on_response+ event. The block given
-      # is invoked whenever an HTTP response is received from a server.
-      #
-      # The block receives the following parameters:
-      #
-      # * +status+  - the HTTP status of the response
-      # * +headers+ - the HTTP response headers
-      # * +body+    - the response body, if any
-      def on_response(&block)
-        hooks.on_response = block
-      end
-
-      # associates the given block to an +on_error+ event. The block given
-      # is invoked whenever there is an error performing an HTTP call and
-      # the request is not finished (no response is received back.)
-      #
-      # The block receives the following parameters:
-      #
-      # * +message+ - the message associated with the error.
-      def on_error(&block)
-        hooks.on_error = block
-      end
-
-      private
-
-      def hooks
-        @hooks ||= Hooks.new
-      end
     end
+
+    # events that are published via +Concierge::Announcer+ and that can be listened
+    # independently.
+    ON_REQUEST  = "http_client.on_request"
+    ON_RESPONSE = "http_client.on_response"
+    ON_FAILURE  = "http_client.on_failure"
 
     # by default, consider any request made through this HTTP client to be timed
     # out if no response is received within 10 seconds.
@@ -143,7 +90,7 @@ module Concierge
     def get(path, params = {}, headers = {})
       with_error_handling do |conn|
         conn.headers.merge(DEFAULT_HEADERS).merge!(headers)
-        run_on_request_hook(:get, params, conn.headers)
+        announce_request(:get, path, params, conn.headers)
         conn.get(path, params)
       end
     end
@@ -151,7 +98,7 @@ module Concierge
     def post(path, params = {}, headers = {})
       with_error_handling do |conn|
         conn.headers.merge(DEFAULT_HEADERS).merge!(headers)
-        run_on_request_hook(:post, params, conn.headers)
+        announce_request(:post, path, params, conn.headers)
         conn.post(path, params)
       end
     end
@@ -167,7 +114,7 @@ module Concierge
     def with_error_handling
       response   = yield(connection)
       successful = true
-      run_on_response_hook(response)
+      announce_response(response)
 
       if SUCCESSFUL_STATUSES.include?(response.status)
         Result.new(response)
@@ -176,22 +123,20 @@ module Concierge
       end
 
     rescue Faraday::TimeoutError => err
-      run_on_error_hook(err)
+      announce_error(err)
       Result.error(:connection_timeout, err.message)
     rescue Faraday::ConnectionFailed => err
-      run_on_error_hook(err)
+      announce_error(err)
       Result.error(:connection_failed, err.message)
     rescue Faraday::SSLError => err
-      run_on_error_hook(err)
+      announce_error(err)
       Result.error(:ssl_error, err.message)
     rescue Faraday::Error => err
-      run_on_error_hook(err)
+      announce_error(err)
       Result.error(:network_failure, err.message)
     end
 
-    def run_on_request_hook(method, params, headers)
-      return unless hooks.on_request
-
+    def announce_request(method, path, params, headers)
       # if this is a GET request, +params+ is interpreted to be a query string,
       # and is properly represented as such below. For other HTTP methods,
       # the given parameters are sent in the request body.
@@ -201,21 +146,21 @@ module Concierge
         body = params
       end
 
-      hooks.on_request.call(method, url, query_string, headers, body)
+      full_url = [url, path].join
+      Concierge::Announcer.trigger(ON_REQUEST, method, full_url, query_string, headers, body)
     end
 
-    def run_on_response_hook(response)
-      return unless hooks.on_response
-      hooks.on_response.call(response.status, response.headers, response.body)
+    def announce_response(response)
+      Concierge::Announcer.trigger(ON_RESPONSE, response.status, response.headers, response.body)
+    end
+
+    def announce_error(error)
+      Concierge::Announcer.trigger(ON_FAILURE, error.message)
     end
 
     def run_on_error_hook(error)
       return unless hooks.on_error
       hooks.on_error.call(error.message)
-    end
-
-    def hooks
-      @hooks ||= self.class.send(:hooks)
     end
 
   end
