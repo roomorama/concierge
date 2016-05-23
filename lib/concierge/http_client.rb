@@ -53,8 +53,8 @@ module Concierge
     # out if no response is received within 10 seconds.
     CONNECTION_TIMEOUT = 10
 
-    # if the HTTP response status is not 200 or 201, then the request is considered
-    # to have failed.
+    # if the HTTP response status is not 200, 201 or 202, then the request is
+    # considered to have failed.
     SUCCESSFUL_STATUSES = [200, 201, 202]
 
     # by default, include a self identifying +User-Agent+ HTTP header so that
