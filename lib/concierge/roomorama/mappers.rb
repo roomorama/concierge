@@ -39,12 +39,12 @@ module Roomorama
 
     # maps changes according to the format expected by the Roomorama Diff API.
     # Same format for both properties and units.
-    def map_image_changes(place)
+    def map_changes(changeset)
       changes = {}
 
-      changes[:create] = place.image_changes.created.map(&:to_h)
-      changes[:update] = place.image_changes.updated.map(&:to_h)
-      changes[:delete] = place.image_changes.deleted.map(&:to_s)
+      changes[:create] = changeset.created.map(&:to_h)
+      changes[:update] = changeset.updated.map(&:to_h)
+      changes[:delete] = changeset.deleted.map(&:to_s)
 
       scrub_collection(changes)
     end
