@@ -42,10 +42,9 @@ module JTB
       return handle_error(errors) if errors
 
       rates = extract_rates(response)
-      return rates                 unless rates.success?
-      return unavailable_rate_plan if     rates.value.empty?
+      return unavailable_rate_plan if rates.empty?
 
-      rate_plans = group_to_rate_plans(rates.value)
+      rate_plans = group_to_rate_plans(rates)
       rate_plan  = get_best_rate_plan(rate_plans, guests: params[:guests])
 
       return unavailable_rate_plan unless rate_plan
@@ -126,19 +125,13 @@ module JTB
       available_rate_plans.min_by(&:total)
     end
 
-    # extracts the collection of rates from a JTB response. In case the rates are not
-    # a collection of rate plans, the response is not recognised. Otherwise,
+    # extracts the collection of rates from a JTB response. As case rate plans might be a
+    # collection(Array) or a single item (Hash), the response will be converted to collection. Otherwise,
     # returns the collection of rate plans (which can be empty in case the unit is not
-    # available on the selected dates.), wrapped in a +Result+ instance.
+    # available on the selected dates.).
     def extract_rates(response)
       rates = response.get('ga_hotel_avail_rs.room_stays.room_stay')
-      return Result.new([]) unless rates
-
-      if rates.is_a? Array
-        Result.new(rates)
-      else
-        unrecognised_response(response)
-      end
+      Array(rates)
     end
 
     def error_code(code)

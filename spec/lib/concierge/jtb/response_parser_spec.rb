@@ -58,11 +58,11 @@ RSpec.describe JTB::ResponseParser do
       expect(result.error.code).to eq :unit_not_found
     end
 
-    it "does not recognise the response in case there is not collection of rate plans" do
-      response = parse(read_fixture("jtb/unrecognised_quote_response.json"))
+    it 'recognises the response with single rate plan response' do
+      response = parse(read_fixture("jtb/single_rate_plan_response.json"))
       result   = subject.parse_rate_plan(response, params)
-      expect(result).not_to be_success
-      expect(result.error.code).to eq :unrecognised_response
+      expect(result).to be_success
+      expect(result.value).to be_a JTB::RatePlan
     end
 
   end

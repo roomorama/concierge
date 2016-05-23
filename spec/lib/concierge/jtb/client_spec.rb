@@ -7,8 +7,11 @@ RSpec.describe JTB::Client do
   subject { described_class.new(credentials) }
 
   describe '#quote' do
-    let(:params) {
-      { property_id: 10, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2, unit_id: 'JPN' }
+    let(:params) { wrapper.new(property_id: 10,
+                               check_in: Date.today + 10,
+                               check_out: Date.today + 20,
+                               guests: 2,
+                               unit_id: 'JPN')
     }
 
     it 'returns the wrapped quotation from JTB::Price when successful' do
@@ -30,6 +33,22 @@ RSpec.describe JTB::Client do
       expect(quote.errors).to eq({ quote: "Could not quote price with remote supplier" })
     end
 
+    context 'exceeded stay length' do
+      let(:params) { wrapper.new(property_id: 10,
+                                 check_in: Date.today + 10,
+                                 check_out: Date.today + 30,
+                                 guests: 2,
+                                 unit_id: 'JPN')
+      }
+
+
+      it 'returns a quotation object with a specific error message' do
+        quote = subject.quote(params)
+        expect(quote).to be_a Quotation
+        expect(quote).not_to be_successful
+        expect(quote.errors).to eq({ quote: "Maximum length of stay must be less than 15 nights." })
+      end
+    end
   end
 
   describe '#book' do
@@ -64,5 +83,11 @@ RSpec.describe JTB::Client do
       }.not_to raise_error
     end
 
+  end
+
+  private
+
+  def wrapper
+    API::Controllers::Params::Quote
   end
 end
