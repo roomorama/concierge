@@ -34,7 +34,20 @@ module Roomorama
       end
     end
 
+    def to_h
+      scrub({
+        identifier: identifier,
+        url:        url,
+        caption:    caption,
+        position:   position
+      })
+    end
+
     private
+
+    def scrub(data)
+      data.delete_if { |_, value| value.to_s.empty? }
+    end
 
     def valid_url?
       URI.parse(url).kind_of?(URI::HTTP)

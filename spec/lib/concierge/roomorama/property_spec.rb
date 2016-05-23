@@ -144,4 +144,159 @@ RSpec.describe Roomorama::Property do
       expect(subject.validate!).to be
     end
   end
+
+  describe "#to_h" do
+    before do
+      # populate the property with some basic data
+      subject.title        = "Studio Apartment in Paris"
+      subject.description  = "Bonjour!"
+      subject.nightly_rate = 100
+      subject.currency     = "EUR"
+
+      image         = Roomorama::Image.new("IMG1")
+      image.url     = "https://www.example.org/image1.png"
+      image.caption = "Swimming Pool"
+      subject.add_image(image)
+
+      image         = Roomorama::Image.new("IMG2")
+      image.url     = "https://www.example.org/image2.png"
+      image.caption = "Barbecue Pit"
+      subject.add_image(image)
+
+      subject.update_calendar({
+        "2016-05-22" => true,
+        "2016-05-20" => false,
+        "2016-05-28" => true,
+        "2016-05-21" => true
+      })
+
+      unit = Roomorama::Unit.new("UNIT1")
+      unit.title = "Unit 1"
+      unit.nightly_rate = 200
+      unit.floor = 3
+
+      image         = Roomorama::Image.new("UNIT1-IMG1")
+      image.url     = "https://www.example.org/unit1/image1.png"
+      image.caption = "Bedroom 1"
+      unit.add_image(image)
+
+      image         = Roomorama::Image.new("UNIT1-IMG2")
+      image.url     = "https://www.example.org/unit1/image2.png"
+      image.caption = "Bedroom 2"
+      unit.add_image(image)
+
+      unit.update_calendar("2016-05-22" => true, "2016-05-28" => true)
+
+      subject.add_unit(unit)
+
+      unit = Roomorama::Unit.new("UNIT2")
+      unit.title = "Unit 2"
+      unit.description = "Largest Available Unit"
+      unit.number_of_double_beds = 10
+
+      image         = Roomorama::Image.new("UNIT2-IMG1")
+      image.url     = "https://www.example.org/unit2/image1.png"
+      unit.add_image(image)
+
+      image         = Roomorama::Image.new("UNIT2-IMG2")
+      image.url     = "https://www.example.org/unit2/image2.png"
+      unit.add_image(image)
+
+      unit.update_calendar("2016-05-22" => true, "2016-05-28" => true)
+
+      subject.add_unit(unit)
+    end
+
+    let(:expected_attributes) {
+      {
+        identifier:      "JPN123",
+        title:           "Studio Apartment in Paris",
+        description:     "Bonjour!",
+        nightly_rate:    100,
+        currency:        "EUR",
+        multi_unit:      true,
+        instant_booking: false,
+
+        images: [
+          {
+            identifier: "IMG1",
+            url:        "https://www.example.org/image1.png",
+            caption:    "Swimming Pool"
+          },
+          {
+            identifier: "IMG2",
+            url:        "https://www.example.org/image2.png",
+            caption:    "Barbecue Pit"
+          }
+        ],
+
+        availabilities: {
+          start_date: "2016-05-20",
+          data:       "011111111"
+        }
+      }
+    }
+
+    let(:units_attributes) {
+      [
+        {
+          identifier:   "UNIT1",
+          title:        "Unit 1",
+          nightly_rate: 200,
+          floor:        3,
+
+          images: [
+            {
+              identifier: "UNIT1-IMG1",
+              url:        "https://www.example.org/unit1/image1.png",
+              caption:    "Bedroom 1"
+            },
+            {
+              identifier: "UNIT1-IMG2",
+              url:        "https://www.example.org/unit1/image2.png",
+              caption:    "Bedroom 2"
+            }
+          ],
+
+          availabilities: {
+            start_date: "2016-05-22",
+            data:       "1111111"
+          }
+        },
+        {
+          identifier:            "UNIT2",
+          title:                 "Unit 2",
+          description:           "Largest Available Unit",
+          number_of_double_beds: 10,
+
+          images: [
+            {
+              identifier: "UNIT2-IMG1",
+              url:        "https://www.example.org/unit2/image1.png"
+            },
+            {
+              identifier: "UNIT2-IMG2",
+              url:        "https://www.example.org/unit2/image2.png"
+            }
+          ],
+
+          availabilities: {
+            start_date: "2016-05-22",
+            data:       "1111111"
+          }
+        }
+      ]
+    }
+
+    it "builds a proper API payload, removing non-defined keys" do
+      expect(subject.to_h).to eq(expected_attributes.merge!(units: units_attributes))
+    end
+
+    it "does not include units data if the property is not declared to be multi-unit" do
+      expected_attributes[:multi_unit] = false
+      subject.multi_unit               = false
+
+      expect(subject.to_h).to eq expected_attributes
+    end
+  end
 end
