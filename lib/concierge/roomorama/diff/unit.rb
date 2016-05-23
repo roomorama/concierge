@@ -93,7 +93,7 @@ class Roomorama::Diff
       }
 
       # map created/updated/deleted images
-      mapped_image_changes  = map_image_changes(self)
+      mapped_image_changes  = map_changes(image_changes)
 
       # only include an images field if there are changes to be applied.
       unless mapped_image_changes.empty?
