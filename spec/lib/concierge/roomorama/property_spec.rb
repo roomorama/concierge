@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Concierge::RoomoramaClient::Property do
+RSpec.describe Roomorama::Property do
   let(:identifier) { "JPN123" }
 
   subject { described_class.new(identifier) }
@@ -40,7 +40,7 @@ RSpec.describe Concierge::RoomoramaClient::Property do
   end
 
   describe "#add_image" do
-    let(:image) { Concierge::RoomoramaClient::Image.new("ID123") }
+    let(:image) { Roomorama::Image.new("ID123") }
 
     before do
       image.url = "https://www.example.org/image.png"
@@ -56,15 +56,15 @@ RSpec.describe Concierge::RoomoramaClient::Property do
 
       expect {
         subject.add_image(image)
-      }.to raise_error Concierge::RoomoramaClient::Image::ValidationError
+      }.to raise_error Roomorama::Image::ValidationError
     end
   end
 
   describe "#add_unit" do
-    let(:unit) { Concierge::RoomoramaClient::Unit.new("UNIT123") }
+    let(:unit) { Roomorama::Unit.new("UNIT123") }
 
     before do
-      image = Concierge::RoomoramaClient::Image.new("IMG1")
+      image = Roomorama::Image.new("IMG1")
       image.url = "https://www.example.org/units/image1.png"
       unit.add_image(image)
 
@@ -87,7 +87,7 @@ RSpec.describe Concierge::RoomoramaClient::Property do
       unit.images.clear
       expect {
         subject.add_unit(unit)
-      }.to raise_error Concierge::RoomoramaClient::Unit::ValidationError
+      }.to raise_error Roomorama::Unit::ValidationError
     end
   end
 
@@ -105,11 +105,11 @@ RSpec.describe Concierge::RoomoramaClient::Property do
       # populate some data so that the object is valid
       subject.identifier = "PROP1"
 
-      image = Concierge::RoomoramaClient::Image.new("IMG1")
+      image = Roomorama::Image.new("IMG1")
       image.url = "https://wwww.example.org/image1.png"
       subject.add_image(image)
 
-      image = Concierge::RoomoramaClient::Image.new("IMG2")
+      image = Roomorama::Image.new("IMG2")
       image.url = "https://wwww.example.org/image2.png"
       subject.add_image(image)
 
@@ -123,21 +123,21 @@ RSpec.describe Concierge::RoomoramaClient::Property do
       subject.identifier = nil
       expect {
         subject.validate!
-      }.to raise_error Concierge::RoomoramaClient::Property::ValidationError
+      }.to raise_error Roomorama::Property::ValidationError
     end
 
     it "is invalid if there are no images associated with the property" do
       subject.images.clear
       expect {
         subject.validate!
-      }.to raise_error Concierge::RoomoramaClient::Property::ValidationError
+      }.to raise_error Roomorama::Property::ValidationError
     end
 
     it "is invalid if there are no availabilities for the property" do
       allow(subject).to receive(:calendar) { {} }
       expect {
         subject.validate!
-      }.to raise_error Concierge::RoomoramaClient::Property::ValidationError
+      }.to raise_error Roomorama::Property::ValidationError
     end
 
     it "is valid if all required parameters are present" do
