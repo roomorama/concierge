@@ -74,14 +74,16 @@ RSpec.describe API::Support::SOAPClient do
         end
 
         it "announces the error" do
-          error = Struct.new(:message).new
+          error = Struct.new(:message, :backtrace).new
 
-          Concierge::Announcer.on(API::Support::SOAPClient::ON_FAILURE) do |message|
-            error.message = message
+          Concierge::Announcer.on(API::Support::SOAPClient::ON_FAILURE) do |message, backtrace|
+            error.message   = message
+            error.backtrace = backtrace
           end
 
           subject.call(operation)
           expect(error.message).to match %r[HTTP error \(404\)]
+          expect(error.backtrace).to be_a Array
         end
       end
 

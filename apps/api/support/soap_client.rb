@@ -34,7 +34,8 @@ module API::Support
   #
   # * +ON_FAILURE+ - triggered when there is a failure (network related, remote server issue
   #                  a generic SOAP fault.) Parameters:
-  #   - +message+ - a message describing the failure
+  #   - +message+   - a message describing the failure
+  #   - +backtrace+ - the backtrace of the underlying error.
   #
   # Example
   #
@@ -80,19 +81,19 @@ module API::Support
       Result.new(response.body)
 
     rescue Savon::HTTPError => err
-      announce_error(err.message)
+      announce_error(err)
       Result.error("http_status_#{err.http.code}", err.message)
     rescue Savon::InvalidResponseError => err
-      announce_error(err.message)
+      announce_error(err)
       Result.error(:invalid_response, err.message)
     rescue Savon::UnknownOperationError => err
-      announce_error(err.message)
+      announce_error(err)
       Result.error(:unknown_operation, err.message)
     rescue Savon::SOAPFault => err
-      announce_error(err.message)
+      announce_error(err)
       Result.error(:soap_error, err.message)
     rescue Savon::Error => err
-      announce_error(err.message)
+      announce_error(err)
       Result.error(:savon_error, err.message)
     end
 
@@ -114,8 +115,8 @@ module API::Support
       )
     end
 
-    def announce_error(message)
-      Concierge::Announcer.trigger(ON_FAILURE, message)
+    def announce_error(error)
+      Concierge::Announcer.trigger(ON_FAILURE, error.message, error.backtrace)
     end
 
   end
