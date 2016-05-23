@@ -43,4 +43,19 @@ RSpec.describe Roomorama::Image do
       }.to raise_error Roomorama::Image::ValidationError
     end
   end
+
+  describe "#to_h" do
+    before do
+      subject.url     = "https://www.example.org/imagex.png"
+      subject.caption = "Foosball Table"
+    end
+
+    it "serializes all attributes" do
+      expect(subject.to_h).to eq({
+        identifier: "IMG123",
+        url:        "https://www.example.org/imagex.png",
+        caption:    "Foosball Table"
+      })
+    end
+  end
 end
