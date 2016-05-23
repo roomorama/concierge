@@ -46,7 +46,7 @@ RSpec.describe Kigo::Request do
       expect(result.error.code).to eq :invalid_property_id
 
       event = API.context.events.last
-      expect(event.to_h[:type]).to eq "response_mismatch"
+      expect(event.to_h[:type]).to eq "generic_message"
     end
   end
 

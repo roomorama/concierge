@@ -71,17 +71,20 @@ module Kigo
     end
 
     def non_numerical_property_id(id)
+      label   = "Invalid Kigo Property ID"
       message = "Expected a numerical Kigo property ID, but received instead `#{id}`."
-      mismatch(message, caller)
+
+      report_message(label, message, caller)
     end
 
-    def mismatch(message, backtrace)
-      response_mismatch = Concierge::Context::ResponseMismatch.new(
+    def report_message(label, message, backtrace)
+      generic_message = Concierge::Context::Message.new(
+        label:     label,
         message:   message,
         backtrace: backtrace
       )
 
-      API.context.augment(response_mismatch)
+      API.context.augment(generic_message)
     end
 
   end
