@@ -1,7 +1,7 @@
 require "spec_helper"
 
-RSpec.describe Concierge::RoomoramaClient::Operations::Publish do
-  let(:property) { Concierge::RoomoramaClient::Property.new("JPN123") }
+RSpec.describe Roomorama::Client::Operations::Publish do
+  let(:property) { Roomorama::Property.new("JPN123") }
 
   subject { described_class.new(property) }
 
@@ -12,12 +12,12 @@ RSpec.describe Concierge::RoomoramaClient::Operations::Publish do
     property.nightly_rate = 100
     property.currency     = "EUR"
 
-    image         = Concierge::RoomoramaClient::Image.new("IMG1")
+    image         = Roomorama::Image.new("IMG1")
     image.url     = "https://www.example.org/image1.png"
     image.caption = "Swimming Pool"
     property.add_image(image)
 
-    image         = Concierge::RoomoramaClient::Image.new("IMG2")
+    image         = Roomorama::Image.new("IMG2")
     image.url     = "https://www.example.org/image2.png"
     image.caption = "Barbecue Pit"
     property.add_image(image)
@@ -29,17 +29,17 @@ RSpec.describe Concierge::RoomoramaClient::Operations::Publish do
       "2016-05-21" => true
     })
 
-    unit = Concierge::RoomoramaClient::Unit.new("UNIT1")
+    unit = Roomorama::Unit.new("UNIT1")
     unit.title = "Unit 1"
     unit.nightly_rate = 200
     unit.floor = 3
 
-    image         = Concierge::RoomoramaClient::Image.new("UNIT1-IMG1")
+    image         = Roomorama::Image.new("UNIT1-IMG1")
     image.url     = "https://www.example.org/unit1/image1.png"
     image.caption = "Bedroom 1"
     unit.add_image(image)
 
-    image         = Concierge::RoomoramaClient::Image.new("UNIT1-IMG2")
+    image         = Roomorama::Image.new("UNIT1-IMG2")
     image.url     = "https://www.example.org/unit1/image2.png"
     image.caption = "Bedroom 2"
     unit.add_image(image)
@@ -48,16 +48,16 @@ RSpec.describe Concierge::RoomoramaClient::Operations::Publish do
 
     property.add_unit(unit)
 
-    unit = Concierge::RoomoramaClient::Unit.new("UNIT2")
+    unit = Roomorama::Unit.new("UNIT2")
     unit.title = "Unit 2"
     unit.description = "Largest Available Unit"
     unit.number_of_double_beds = 10
 
-    image         = Concierge::RoomoramaClient::Image.new("UNIT2-IMG1")
+    image         = Roomorama::Image.new("UNIT2-IMG1")
     image.url     = "https://www.example.org/unit2/image1.png"
     unit.add_image(image)
 
-    image         = Concierge::RoomoramaClient::Image.new("UNIT2-IMG2")
+    image         = Roomorama::Image.new("UNIT2-IMG2")
     image.url     = "https://www.example.org/unit2/image2.png"
     unit.add_image(image)
 
@@ -75,7 +75,7 @@ RSpec.describe Concierge::RoomoramaClient::Operations::Publish do
       property.images.clear
       expect {
         subject
-      }.to raise_error Concierge::RoomoramaClient::Property::ValidationError
+      }.to raise_error Roomorama::Property::ValidationError
     end
   end
 

@@ -1,6 +1,6 @@
-class Concierge::RoomoramaClient
+module Roomorama
 
-  # +Concierge::RoomoramaClient::Unit+
+  # +Roomorama::Unit+
   #
   # This class is responsible for wrapping the units of an entry in the `units`
   # table in Roomorama. It includes attribute accessors for all parameters accepted
@@ -9,21 +9,21 @@ class Concierge::RoomoramaClient
   #
   # Usage
   #
-  #   unit = Concierge::RoomoramaClient::Unit.new("ID123Unit")
+  #   unit = Roomorama::Unit.new("ID123Unit")
   #   unit.title = "Beautiful Apartment"
   #
-  #   image = Concierge::RoomoramaClient::Image.new("img134")
+  #   image = Roomorama::Image.new("img134")
   #   image.url = "https://www.example.org/image.png"
   #   unit.add_image(image)
   #
   #   unit.update_calendar("2016-05-22" => true, "2016-05-23" => true")
   class Unit
 
-    # +Concierge::RoomoramaClient::Unit::ValidationError+
+    # +Roomorama::Unit::ValidationError+
     #
     # Raised when a unit fails to meet the expected requirements in terms of
     # parameter presence.
-    class ValidationError < Concierge::RoomoramaClient::Error
+    class ValidationError < Roomorama::Error
       def initialize(message)
         super("Unit validation failed: #{message}")
       end
@@ -47,7 +47,7 @@ class Concierge::RoomoramaClient
     # * a set of availabilities.
     #
     # If any of the validations above fail, this method will raise a
-    # +Concierge::RoomoramaClient::Unit::ValidationError+ exception. If all
+    # +Roomorama::Unit::ValidationError+ exception. If all
     # required parameters are present, +true+ is returned.
     def validate!
       if identifier.to_s.empty?

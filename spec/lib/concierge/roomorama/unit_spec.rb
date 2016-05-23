@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Concierge::RoomoramaClient::Unit do
+RSpec.describe Roomorama::Unit do
   let(:identifier) { "JPN123UN" }
 
   subject { described_class.new(identifier) }
@@ -22,7 +22,7 @@ RSpec.describe Concierge::RoomoramaClient::Unit do
   end
 
   describe "#add_image" do
-    let(:image) { Concierge::RoomoramaClient::Image.new("ID123") }
+    let(:image) { Roomorama::Image.new("ID123") }
 
     before do
       image.url = "https://www.example.org/image.png"
@@ -38,7 +38,7 @@ RSpec.describe Concierge::RoomoramaClient::Unit do
 
       expect {
         subject.add_image(image)
-      }.to raise_error Concierge::RoomoramaClient::Image::ValidationError
+      }.to raise_error Roomorama::Image::ValidationError
     end
   end
 
@@ -55,11 +55,11 @@ RSpec.describe Concierge::RoomoramaClient::Unit do
     before do
       subject.identifier = "UNIT1"
 
-      image = Concierge::RoomoramaClient::Image.new("IMG1")
+      image = Roomorama::Image.new("IMG1")
       image.url = "https://wwww.example.org/image1.png"
       subject.add_image(image)
 
-      image = Concierge::RoomoramaClient::Image.new("IMG2")
+      image = Roomorama::Image.new("IMG2")
       image.url = "https://wwww.example.org/image2.png"
       subject.add_image(image)
 
@@ -73,21 +73,21 @@ RSpec.describe Concierge::RoomoramaClient::Unit do
       subject.identifier = nil
       expect {
         subject.validate!
-      }.to raise_error Concierge::RoomoramaClient::Unit::ValidationError
+      }.to raise_error Roomorama::Unit::ValidationError
     end
 
     it "is invalid if there are no images associated with the unit" do
       allow(subject).to receive(:images) { [] }
       expect {
         subject.validate!
-      }.to raise_error Concierge::RoomoramaClient::Unit::ValidationError
+      }.to raise_error Roomorama::Unit::ValidationError
     end
 
     it "is invalid if there are no availabilities for the unit" do
       allow(subject).to receive(:calendar) { {} }
       expect {
         subject.validate!
-      }.to raise_error Concierge::RoomoramaClient::Unit::ValidationError
+      }.to raise_error Roomorama::Unit::ValidationError
     end
 
     it "is valid if all required parameters are present" do
