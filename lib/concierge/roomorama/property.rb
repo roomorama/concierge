@@ -1,6 +1,6 @@
-class Concierge::RoomoramaClient
+module Roomorama
 
-  # +Concierge::RoomoramaClient::Property+
+  # +Roomorama::Property+
   #
   # This class is responsible for wrapping the properties of an entry in the `rooms`
   # table in Roomorama. It includes attribute accessors for all parameters accepted
@@ -9,21 +9,21 @@ class Concierge::RoomoramaClient
   #
   # Usage
   #
-  #   property = Concierge::RoomoramaClient::Property.new("ID123")
+  #   property = Roomorama::Property.new("ID123")
   #   property.title = "Beautiful Apartment"
   #   property.multi_unit!
   #
-  #   image = Concierge::RoomoramaClient::Image.new("img134")
+  #   image = Roomorama::Image.new("img134")
   #   image.url = "https://www.example.org/image.png"
   #   property.add_image(image)
   #
   #   property.update_calendar("2016-05-22" => true, "2016-05-23" => true")
   class Property
 
-    # +Concierge::RoomoramaClient::Property::ValidationError+
+    # +Roomorama::Property::ValidationError+
     #
     # Raised when a property fails to meet expected parameter requirements.
-    class ValidationError < Concierge::RoomoramaClient::Error
+    class ValidationError < Roomorama::Error
       def initialize(message)
         super("Property validation error: #{message}")
       end
@@ -95,7 +95,7 @@ class Concierge::RoomoramaClient
     # avoided.
     #
     # If any of the validations above fail, this method will raise a
-    # +Concierge::RoomoramaClient::Property::ValidationError+ exception. If all
+    # +Roomorama::Property::ValidationError+ exception. If all
     # required parameters are present, +true+ is returned.
     def validate!
       if identifier.to_s.empty?

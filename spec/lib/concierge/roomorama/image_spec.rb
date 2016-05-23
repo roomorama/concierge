@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Concierge::RoomoramaClient::Image do
+RSpec.describe Roomorama::Image do
   let(:identifier) { "IMG123" }
 
   subject { described_class.new(identifier) }
@@ -26,21 +26,21 @@ RSpec.describe Concierge::RoomoramaClient::Image do
       subject.identifier = nil
       expect {
         subject.validate!
-      }.to raise_error Concierge::RoomoramaClient::Image::ValidationError
+      }.to raise_error Roomorama::Image::ValidationError
     end
 
     it "does not allow empty URLs" do
       subject.url = nil
       expect {
         subject.validate!
-      }.to raise_error Concierge::RoomoramaClient::Image::ValidationError
+      }.to raise_error Roomorama::Image::ValidationError
     end
 
     it "does not allow invalid URLs" do
       subject.url = "something://very.invalid"
       expect {
         subject.validate!
-      }.to raise_error Concierge::RoomoramaClient::Image::ValidationError
+      }.to raise_error Roomorama::Image::ValidationError
     end
   end
 end

@@ -1,6 +1,6 @@
-class Concierge::RoomoramaClient::Operations
+class Roomorama::Client::Operations
 
-  # +Concierge::RoomoramaClient::Operations::Publish+
+  # +Roomorama::Client::Operations::Publish+
   #
   # This class is responsible for encapsulating the logic of serializing a property's
   # attributes in a format that is understandable by the publish call of Roomorama's
@@ -12,7 +12,7 @@ class Concierge::RoomoramaClient::Operations
   #
   # Usage
   #
-  #   operation = Concierge::RoomoramaClient::Operations::Publish.new(property)
+  #   operation = Roomorama::Client::Operations::Publish.new(property)
   #   roomorama_client.perform(operation)
   class Publish
 
@@ -21,7 +21,7 @@ class Concierge::RoomoramaClient::Operations
 
     attr_reader :property
 
-    # property - a +Concierge::RoomoramaClient::Operations::Property+ object
+    # property - a +Roomorama::Client::Operations::Property+ object
     #
     # On initialization the +validate!+ method of the property is called - therefore,
     # an operation cannot be built unless the property given is conformant to the
