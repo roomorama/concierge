@@ -24,6 +24,34 @@ RSpec.describe API::Support::SOAPClient do
       expect(result.value).to be_a Hash
     end
 
+    it "announces request and response" do
+      request  = Struct.new(:endpoint, :operation, :message).new
+      response = Struct.new(:code, :headers, :body).new
+
+      Concierge::Announcer.on(API::Support::SOAPClient::ON_REQUEST) do |endpoint, operation, message|
+        request.endpoint  = endpoint
+        request.operation = operation
+        request.message   = message
+      end
+
+      Concierge::Announcer.on(API::Support::SOAPClient::ON_RESPONSE) do |code, headers, body|
+        response.code    = code
+        response.headers = headers
+        response.body    = body
+      end
+
+      savon.expects(operation).with(message: :any).returns(succeed_response)
+      subject.call(operation, message: "<concierge>true</concierge>")
+
+      expect(request.endpoint).to eq "https://trial-www.jtbgenesis.com/genesis2-demo/services/GA_HotelAvail_v2013"
+      expect(request.operation).to eq :gby010
+      expect(request.message).to eq "<concierge>true</concierge>"
+
+      expect(response.code).to eq 200
+      expect(response.headers).to eq({})
+      expect(response.body).to eq read_fixture("jtb/GA_HotelAvailRS.xml")
+    end
+
     context 'handling errors' do
 
       it 'fails if wrong operation name' do
@@ -43,6 +71,17 @@ RSpec.describe API::Support::SOAPClient do
           expect(result).to be_a Result
           expect(result).not_to be_success
           expect(result.error.code).to eq 'http_status_404'
+        end
+
+        it "announces the error" do
+          error = Struct.new(:message).new
+
+          Concierge::Announcer.on(API::Support::SOAPClient::ON_FAILURE) do |message|
+            error.message = message
+          end
+
+          subject.call(operation)
+          expect(error.message).to match %r[HTTP error \(404\)]
         end
       end
 
