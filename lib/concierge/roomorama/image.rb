@@ -1,12 +1,12 @@
-class Concierge::RoomoramaClient
+module Roomorama
 
   class Image
 
-    # +Concierge::RoomoramaClient::Image::ValidationError+
+    # +Roomorama::Image::ValidationError+
     #
     # Raised in case the parameters required for a valid image are not present
     # or invalid.
-    class ValidationError < Concierge::RoomoramaClient::Error
+    class ValidationError < Roomorama::Error
       def initialize(message)
         super("Invalid image object: #{message}")
       end
@@ -22,7 +22,7 @@ class Concierge::RoomoramaClient
     # +identifier+ must be defined and non-empty, whereas the +url+ must be a valid
     # HTTP resource identifier.
     #
-    # Raises +Concierge::RoomoramaClient::Image::ValidationError+ in case one attribute
+    # Raises +Roomorama::Image::ValidationError+ in case one attribute
     # is invalid - returns +true+ otherwise.
     def validate!
       if identifier.to_s.empty?
