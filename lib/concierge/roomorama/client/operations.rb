@@ -11,6 +11,11 @@ class Roomorama::Client
       Publish.new(property)
     end
 
+    # Performs a +diff+ operation for the given property diff.
+    def self.diff(property_diff)
+      Diff.new(property_diff)
+    end
+
   end
 
 end

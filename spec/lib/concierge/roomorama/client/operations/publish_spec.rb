@@ -50,7 +50,7 @@ RSpec.describe Roomorama::Client::Operations::Publish do
   end
 
   describe "#method" do
-    it "knows the request methdo to be used when publishing" do
+    it "knows the request method to be used when publishing" do
       expect(subject.request_method).to eq :post
     end
   end
