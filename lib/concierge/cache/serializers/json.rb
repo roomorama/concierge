@@ -28,6 +28,10 @@ class Concierge::Cache
         json_decode(value)
       end
 
+      def content_type
+        "json"
+      end
+
     end
   end
 end

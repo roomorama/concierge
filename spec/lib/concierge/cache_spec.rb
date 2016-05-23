@@ -17,6 +17,17 @@ RSpec.describe Concierge::Cache do
       expect(entry.updated_at).to be_a Time
     end
 
+    it "announces cache misses" do
+      miss = Struct.new(:key).new
+
+      Concierge::Announcer.on(Concierge::Cache::CACHE_MISS) do |key|
+        miss.key = key
+      end
+
+      subject.fetch(key) { Result.new("result") }
+      expect(miss.key).to eq "test_key"
+    end
+
     it "namespaces the given key according to the namespace given on initialization" do
       subject = described_class.new(namespace: "supplier.quote")
 
@@ -44,6 +55,22 @@ RSpec.describe Concierge::Cache do
 
       entry = result.value
       expect(entry).to eq "value"
+    end
+
+    it "announces cache hits" do
+      hit = Struct.new(:key, :value, :type).new
+      Concierge::Announcer.on(Concierge::Cache::CACHE_HIT) do |key, value, type|
+        hit.key   = key
+        hit.value = value
+        hit.type  = type
+      end
+
+      create_entry(key, "value")
+      subject.fetch(key) { Result.new("result") }
+
+      expect(hit.key).to eq "test_key"
+      expect(hit.value).to eq "value"
+      expect(hit.type).to eq "text"
     end
 
     it "does not cache anything if the result indicates failure" do

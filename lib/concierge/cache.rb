@@ -26,6 +26,19 @@ module Concierge
   # By default, all cache keys and values are persisted in a PostgreSQL table
   # (+cache_entries+). +Concierge::Cache::Entry+ entities wrap records from
   # the cache.
+  #
+  # Cache behaviour can be monitored by subscribing to +Concierge::Announcer+
+  # events. Supported events are:
+  #
+  # * +Concierge::Cache::CACHE_HIT+
+  # Triggered when there is a cache lookup hit. Parameters passed:
+  #   * +key+   - the key that was looked up.
+  #   * +value+ - the cached result associated with the key.
+  #   * +type+  - the content type of the cached value. Supported types are only +text+ and +json+.
+  #
+  # * +Concierge::Cache::CACHE_MISS+
+  # Triggered when a cache lookup fails and the result needs to be calculated. Parameters:
+  #   * +key+ - the key that was looked up.
   class Cache
 
     # by default, cached entries have a living time of 1 hour.
@@ -45,6 +58,10 @@ module Concierge
         super("Expected Result object, received #{object.class.name}")
       end
     end
+
+    # events published through +Concierge::Announcer+.
+    CACHE_HIT  = "cache.hit"
+    CACHE_MISS = "cache.miss"
 
     def initialize(namespace: nil, storage: Storage.new)
       @namespace = namespace
@@ -138,7 +155,12 @@ module Concierge
       entry    = storage.read(full_key)
 
       if entry && fresh?(entry, freshness)
-        return serializer.decode(entry.value)
+        decoded = serializer.decode(entry.value)
+        announce_cache_hit(full_key, decoded.value, serializer)
+
+        return decoded
+      else
+        announce_cache_miss(full_key)
       end
 
       result = yield
@@ -176,6 +198,14 @@ module Concierge
 
     def text_serializer
       Serializers::Text.new
+    end
+
+    def announce_cache_hit(key, value, serializer)
+      Concierge::Announcer.trigger(CACHE_HIT, key, value, serializer.content_type)
+    end
+
+    def announce_cache_miss(key)
+      Concierge::Announcer.trigger(CACHE_MISS, key)
     end
 
     def ensure_result!(object)
