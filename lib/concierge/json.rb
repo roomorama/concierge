@@ -1,6 +1,8 @@
 module Concierge
   module JSON
 
+    PARSING_ERROR = "json.parsing_error"
+
     # Encodes data to JSON.
     #
     # +data+: a Hash
@@ -15,8 +17,15 @@ module Concierge
     def json_decode(json_string)
       Result.new(Yajl::Parser.parse(json_string))
     rescue Yajl::ParseError => err
+      announce_parsing_error(err)
       message = ["Error: #{err.message}", json_string.to_s].join("\n")
       Result.error(:invalid_json_representation, message)
+    end
+
+    private
+
+    def announce_parsing_error(error)
+      Concierge::Announcer.trigger(PARSING_ERROR, error.message)
     end
 
   end
