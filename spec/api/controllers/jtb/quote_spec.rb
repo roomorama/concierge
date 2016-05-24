@@ -16,7 +16,7 @@ RSpec.describe API::Controllers::JTB::Quote do
 
     def provoke_failure!
       allow_any_instance_of(Savon::Client).to receive(:call) { raise Savon::Error }
-      Struct.new(:code, :message).new("savon_error", "Savon::Error")
+      Struct.new(:code).new("savon_error")
     end
   end
 

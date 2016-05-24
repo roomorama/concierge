@@ -21,7 +21,7 @@ RSpec.describe API::Controllers::Kigo::Quote do
 
     def provoke_failure!
       stub_call(:post, endpoint) { raise Faraday::TimeoutError }
-      Struct.new(:code, :message).new("connection_timeout", "timeout")
+      Struct.new(:code).new("connection_timeout")
     end
   end
 

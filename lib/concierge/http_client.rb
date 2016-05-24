@@ -119,21 +119,21 @@ module Concierge
       if SUCCESSFUL_STATUSES.include?(response.status)
         Result.new(response)
       else
-        Result.error(:"http_status_#{response.status}", response.body)
+        Result.error(:"http_status_#{response.status}")
       end
 
     rescue Faraday::TimeoutError => err
       announce_error(err)
-      Result.error(:connection_timeout, err.message)
+      Result.error(:connection_timeout)
     rescue Faraday::ConnectionFailed => err
       announce_error(err)
-      Result.error(:connection_failed, err.message)
+      Result.error(:connection_failed)
     rescue Faraday::SSLError => err
       announce_error(err)
-      Result.error(:ssl_error, err.message)
+      Result.error(:ssl_error)
     rescue Faraday::Error => err
       announce_error(err)
-      Result.error(:network_failure, err.message)
+      Result.error(:network_failure)
     end
 
     def announce_request(method, path, params, headers)

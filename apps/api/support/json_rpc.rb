@@ -89,20 +89,20 @@ module API::Support
         message = json_response["error"]["message"]
 
         non_successful_json_rpc_response
-        return Result.error(:json_rpc_response_has_errors, [code, message].join(" - "))
+        return Result.error(:json_rpc_response_has_errors)
       end
 
       if json_response.has_key?("result")
         Result.new(json_response["result"])
       else
         invalid_json_rpc_response
-        Result.error(:invalid_json_rpc_response, json_response.to_s)
+        Result.error(:invalid_json_rpc_response)
       end
     end
 
     def wrong_response_id(expected, actual)
       json_rpc_response_ids_do_not_match
-      Result.error(:json_rpc_response_ids_do_not_match, "Expected: #{expected}, Actual: #{actual}")
+      Result.error(:json_rpc_response_ids_do_not_match)
     end
 
     def http

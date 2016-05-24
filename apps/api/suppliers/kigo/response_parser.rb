@@ -68,7 +68,7 @@ module Kigo
         Result.new(quotation)
       else
         non_successful_result_code
-        Result.error(:quote_call_failed, payload.to_s)
+        Result.error(:quote_call_failed)
       end
     end
 
@@ -84,7 +84,7 @@ module Kigo
     end
 
     def unrecognised_response(response)
-      Result.error(:unrecognised_response, response.to_s)
+      Result.error(:unrecognised_response)
     end
 
     def non_successful_result_code

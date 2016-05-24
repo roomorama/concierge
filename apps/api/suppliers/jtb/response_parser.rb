@@ -76,7 +76,7 @@ module JTB
         Result.new(booking[:unique_id][:@id])
       else
         non_successful_booking
-        Result.error(:fail_booking, response)
+        Result.error(:fail_booking)
       end
     end
 
@@ -150,7 +150,7 @@ module JTB
     end
 
     def unrecognised_response(response)
-      Result.error(:unrecognised_response, response)
+      Result.error(:unrecognised_response)
     end
 
     def non_successful_booking
@@ -177,7 +177,7 @@ module JTB
     def handle_error(response)
       code = response.get("error_info.@code")
       if code
-        Result.error(error_code(code), response)
+        Result.error(error_code(code))
       else
         no_field("error_info.@code")
         unrecognised_response(response)

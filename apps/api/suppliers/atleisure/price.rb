@@ -61,7 +61,7 @@ module AtLeisure
 
       if response["OnRequest"] == "Yes"
         no_instant_confirmation
-        return Result.error(:unsupported_on_request_property, params.to_s)
+        return Result.error(:unsupported_on_request_property)
       end
 
       if response["Available"] == "Yes"
@@ -96,7 +96,7 @@ module AtLeisure
     end
 
     def unrecognised_response(response)
-      Result.error(:unrecognised_response, response.to_s)
+      Result.error(:unrecognised_response)
     end
 
     def jsonrpc(endpoint)

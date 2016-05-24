@@ -24,7 +24,7 @@ RSpec.describe JTB::Client do
     end
 
     it 'returns a quotation object with a generic error message on failure' do
-      failed_operation = Result.error(:something_failed, "Error")
+      failed_operation = Result.error(:something_failed)
       allow_any_instance_of(JTB::Price).to receive(:quote) { failed_operation }
 
       quote = subject.quote(params)

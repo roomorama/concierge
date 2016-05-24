@@ -12,15 +12,15 @@
 #   if result.success?
 #     do_something(result.value)
 #   else
-#     handle_error(error.code, error.message)
+#     handle_error(error.code)
 #   end
 #
-# +Result::Error+ is an object with a code and a message. A code is a unique
-# representation of the error, whereas the message can be any further information
-# related to the error.
+# +Result::Error+ is an object that holds a representative error code. A code is
+# a unique representation of the error, that can be later used to identify
+# and group similar occurrences of errors.
 class Result
 
-  Error = Struct.new(:code, :message)
+  Error = Struct.new(:code)
 
   # Shortcut method for creating an error result object.
   #
@@ -29,12 +29,11 @@ class Result
   #   def method
   #     call_third_party
   #   rescue Partner::Error => e
-  #     Result.error(:partner_error, e.message)
+  #     Result.error(:partner_error)
   #   end
-  def self.error(code, message)
+  def self.error(code)
     self.new.tap do |result|
-      result.error.code    = code
-      result.error.message = message
+      result.error.code = code
     end
   end
 

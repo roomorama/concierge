@@ -67,7 +67,7 @@ module Kigo
       Result.new(Integer(str))
     rescue ArgumentError => err
       non_numerical_property_id(str)
-      Result.error(error_code, err.message)
+      Result.error(error_code)
     end
 
     def non_numerical_property_id(id)

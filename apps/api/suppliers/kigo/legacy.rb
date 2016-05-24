@@ -107,7 +107,7 @@ module Kigo
         operation:   operation,
         supplier:    SUPPLIER_NAME,
         code:        result.error.code,
-        message:     result.error.message,
+        message:     "DEPRECATED",
         context:     { todo: "changeme" },
         happened_at: Time.now
       })

@@ -27,7 +27,6 @@ RSpec.describe API::Support::JSONRPC do
 
         expect(result).not_to be_success
         expect(result.error.code).to eq :invalid_json_representation
-        expect(result.error.message).to match /invalid json/
       end
 
       it "returns a proper error if the response ID does not match the request ID" do
@@ -40,7 +39,6 @@ RSpec.describe API::Support::JSONRPC do
 
         expect(result).not_to be_success
         expect(result.error.code).to eq :json_rpc_response_ids_do_not_match
-        expect(result.error.message).to eq "Expected: 888888888888, Actual: 111111111111"
 
         event = API.context.events.last
         expect(event.to_h[:type]).to eq "generic_message"
@@ -59,7 +57,6 @@ RSpec.describe API::Support::JSONRPC do
 
         expect(result).not_to be_success
         expect(result.error.code).to eq :json_rpc_response_has_errors
-        expect(result.error.message).to eq "-32602 - Something went wrong"
 
         event = API.context.events.last
         expect(event.to_h[:type]).to eq "generic_message"
@@ -76,7 +73,6 @@ RSpec.describe API::Support::JSONRPC do
 
         expect(result).not_to be_success
         expect(result.error.code).to eq :invalid_json_rpc_response
-        expect(result.error.message).to eq %({"id"=>888888888888})
 
         event = API.context.events.last
         expect(event.to_h[:type]).to eq "generic_message"

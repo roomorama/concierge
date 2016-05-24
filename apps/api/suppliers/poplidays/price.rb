@@ -68,7 +68,7 @@ module Poplidays
         # should exist on Roomorama.
         if availability["requestOnly"] == true
           no_instant_confirmation
-          return Result.error(:unsupported_on_request_property, "Request Only")
+          return Result.error(:unsupported_on_request_property)
         end
 
         mandatory_services = retrieve_mandatory_services(params[:property_id])
@@ -184,7 +184,7 @@ module Poplidays
     end
 
     def unrecognised_response(response)
-      Result.error(:unrecognised_response, response.to_s)
+      Result.error(:unrecognised_response)
     end
 
     def no_instant_confirmation

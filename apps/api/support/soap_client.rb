@@ -82,19 +82,19 @@ module API::Support
 
     rescue Savon::HTTPError => err
       announce_error(err)
-      Result.error("http_status_#{err.http.code}", err.message)
+      Result.error("http_status_#{err.http.code}")
     rescue Savon::InvalidResponseError => err
       announce_error(err)
-      Result.error(:invalid_response, err.message)
+      Result.error(:invalid_response)
     rescue Savon::UnknownOperationError => err
       announce_error(err)
-      Result.error(:unknown_operation, err.message)
+      Result.error(:unknown_operation)
     rescue Savon::SOAPFault => err
       announce_error(err)
-      Result.error(:soap_error, err.message)
+      Result.error(:soap_error)
     rescue Savon::Error => err
       announce_error(err)
-      Result.error(:savon_error, err.message)
+      Result.error(:savon_error)
     end
 
     def announce_request(operation, locals)

@@ -77,14 +77,13 @@ RSpec.describe Concierge::Cache do
       result = nil
 
       expect {
-        result = subject.fetch(key) { Result.error(:error, "Something went wrong") }
+        result = subject.fetch(key) { Result.error(:error) }
       }.not_to change { Concierge::Cache::EntryRepository.count }
 
       expect(result).to be_a Result
       expect(result).not_to be_success
 
       expect(result.error.code).to eq :error
-      expect(result.error.message).to eq "Something went wrong"
     end
 
     it "raises an error if the value returned by a +fetch+ is not a +Result+" do
