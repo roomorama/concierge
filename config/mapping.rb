@@ -41,3 +41,14 @@ collection :suppliers do
   attribute :id,   Integer
   attribute :name, String
 end
+
+collection :hosts do
+  entity     Host
+  repository HostRepository
+
+  attribute :id,           Integer
+  attribute :supplier_id,  Integer
+  attribute :identifier,   String
+  attribute :username,     String
+  attribute :access_token, String
+end
