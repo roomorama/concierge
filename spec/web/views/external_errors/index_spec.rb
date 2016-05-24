@@ -14,6 +14,10 @@ RSpec.describe Web::Views::ExternalErrors::Index do
     end
   end
 
+  it "renders a link to the show page of an error" do
+    expect(rendered).to include %(<a href="/errors/1">#1</a>)
+  end
+
   def generate_error(id)
     double(
       id:          id,

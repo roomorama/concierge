@@ -11,3 +11,8 @@
 .errors-table {
   width: 100%;
 }
+
+.errors-table a {
+  color: #2ebbab;
+  text-decoration: none;
+}
