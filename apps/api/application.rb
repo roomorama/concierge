@@ -19,6 +19,7 @@ module API
     # app to understand how it fits the request lifecycle.
     attr_accessor :context
   end
+  API.context = Concierge::Context.new
 
   class Application < Hanami::Application
     configure do
