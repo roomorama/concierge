@@ -2,16 +2,12 @@ class Roomorama::Client::Operations
 
   # +Roomorama::Client::Operations::Publish+
   #
-  # This class is responsible for encapsulating the logic of serializing a property's
-  # attributes in a format that is understandable by the publish call of Roomorama's
-  # API. Following the protocol expected by the API client, this operation specifies:
-  #
-  # * the HTTP method of the API call to be performed (POST)
-  # * the endpoint of the API call
-  # * the request body of a valid call to that endpoint.
+  # This class is responsible for encapsulating the operation of publishing a
+  # new property in Roomorama, using its +publish+ API.
   #
   # Usage
   #
+  #   property  = Roomorama::Property.new("identifier")
   #   operation = Roomorama::Client::Operations::Publish.new(property)
   #   roomorama_client.perform(operation)
   class Publish

@@ -1,18 +1,17 @@
 class Roomorama::Client::Operations
 
-  # +Roomorama::Client::Operations::Publish+
+  # +Roomorama::Client::Operations::Diff+
   #
-  # This class is responsible for encapsulating the logic of serializing a property's
-  # attributes in a format that is understandable by the publish call of Roomorama's
-  # API. Following the protocol expected by the API client, this operation specifies:
-  #
-  # * the HTTP method of the API call to be performed (POST)
-  # * the endpoint of the API call
-  # * the request body of a valid call to that endpoint.
+  # This class is responsible for encapsulating the operation of applying a
+  # +diff+ to a property, using Roomorama's API. It receives a
+  # +Roomorama::Diff+ parameter as input and generates an operation that
+  # can be used with +Roomorama::Client+ to apply a set of changes to
+  # a property.
   #
   # Usage
   #
-  #   operation = Roomorama::Client::Operations::Publish.new(property)
+  #   diff      = Romorama::Diff.new("property_identifier")
+  #   operation = Roomorama::Client::Operations::diff.new(diff)
   #   roomorama_client.perform(operation)
   class Diff
 
