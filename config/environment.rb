@@ -4,9 +4,10 @@ require "hanami/setup"
 require_relative "../lib/concierge"
 
 apps = {
-  api: %w(api),
-  web: %w(web),
-  all: %w(api web)
+  api:     %w(api),
+  web:     %w(web),
+  workers: %w(workers),
+  all:     %w(api web workers)
 }
 
 unless apps.keys.include?(Concierge.app)
