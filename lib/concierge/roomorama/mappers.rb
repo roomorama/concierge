@@ -2,7 +2,7 @@ module Roomorama
 
   # +Roomorama::Mappers+
   #
-  # Implements image and availabily mappers that are shared between Roomorama's
+  # Implements image and availability mappers that are shared between Roomorama's
   # properties and units.
   module Mappers
     def map_images(place)
