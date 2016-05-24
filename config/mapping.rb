@@ -33,3 +33,11 @@ collection :reservations do
   attribute :guests,      Integer
   attribute :code,        String
 end
+
+collection :suppliers do
+  entity     Supplier
+  repository SupplierRepository
+
+  attribute :id,   Integer
+  attribute :name, String
+end
