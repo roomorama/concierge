@@ -42,7 +42,7 @@ module Concierge
     end
 
     CONNECTION_TIMEOUT = 10
-    SUCCESSFUL_STATUSES = [200, 201]
+    SUCCESSFUL_STATUSES = [200, 201, 202]
 
     attr_reader :url, :username, :password
 
@@ -77,6 +77,13 @@ module Concierge
       with_error_handling do |conn|
         conn.headers.merge!(headers)
         conn.post(path, params)
+      end
+    end
+
+    def put(path, params = {}, headers = {})
+      with_error_handling do |conn|
+        conn.headers.merge!(headers)
+        conn.put(path, params)
       end
     end
 
