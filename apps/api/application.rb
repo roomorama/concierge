@@ -14,8 +14,7 @@ module API
         'support',
         'controllers',
         'views',
-        'use_cases',
-        'suppliers'
+        'use_cases'
       ]
 
       routes 'config/routes'
