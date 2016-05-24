@@ -21,7 +21,15 @@ Hanami::Model.migration do
       )
 
       context.augment(message)
-      error.context = context.to_h
+      attributes = context.to_h
+
+      # deletes Concierge version and host from the payload, since these fields
+      # would be inaccurate. Their abscence indicates to the presenter that
+      # this is a legacy error.
+      attributes.delete(:version)
+      attributes.delete(:host)
+
+      error.context = attributes
 
       ExternalErrorRepository.update(error)
     end
