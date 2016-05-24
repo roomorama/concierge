@@ -4,7 +4,7 @@ module Roomorama
 
   # +Roomorama::Client+
   #
-  # This is a thin Roomorama client. Currently, it is supposed ot support only
+  # This is a thin Roomorama client. Currently, it is supposed to support only
   # Roomorama's +publish+ API - that is, the +publish+ and +diff+ set of endpoints.
   #
   # This class, however, has no knowledge of such operations, and is able to perform
