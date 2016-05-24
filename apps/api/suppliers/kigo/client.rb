@@ -46,7 +46,7 @@ module Kigo
         operation:   operation,
         supplier:    SUPPLIER_NAME,
         code:        result.error.code,
-        context:     { todo: "changeme" },
+        context:     API.context.to_h,
         message:     "DEPRECATED",
         happened_at: Time.now
       })

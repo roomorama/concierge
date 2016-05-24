@@ -28,6 +28,7 @@ RSpec.shared_examples "external error reporting" do
     expect(error.operation).to eq "quote"
     expect(error.supplier).to eq supplier_name
     expect(error.code).to eq failure.code
+    expect(error.context).to be_a Concierge::SafeAccessHash
     expect(error.happened_at).to be_a Time
   end
 
