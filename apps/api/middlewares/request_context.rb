@@ -65,6 +65,14 @@ module API
       # criteria, and transforms the name to the conventional, capitalised notation,
       # instead of the full-caps representation used by default in the +env+ hash.
       #
+      # Also, according to Rack's specification:
+      #
+      #   > The environment must not contain the keys HTTP_CONTENT_TYPE or HTTP_CONTENT_LENGTH
+      #   > (use the versions without HTTP_).
+      #
+      # Therefore, apart from entries with keys starting with +HTTP_+, this method
+      # also scans those two specific keys to check if they were given.
+      #
       # Example
       #
       #   # env
@@ -83,7 +91,17 @@ module API
 
         Hash[headers.map { |header, value|
           [header.sub(/^HTTP_/, "").split("_").map(&:capitalize).join("-"), value]
-        }]
+        }].tap do |http_headers|
+
+          # include specific headers which do not respect the +HTTP_+ prefix rule.
+          if env["CONTENT_TYPE"]
+            http_headers["Content-Type"] = env["CONTENT_TYPE"]
+          end
+
+          if env["CONTENT_LENGTH"]
+            http_headers["Content-Length"] = env["CONTENT_LENGTH"]
+          end
+        end
       end
 
       def request_body

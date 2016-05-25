@@ -31,9 +31,10 @@ RSpec.describe API::Middlewares::RequestContext do
       timestamp:   Time.now,
       http_method: "POST",
       headers: {
-        "Host"          => "concierge.roomorama.com",
-        "Connection"    => "keep-alive",
-        "Cache-Control" => "max-age=0"
+        "Host"           => "concierge.roomorama.com",
+        "Connection"     => "keep-alive",
+        "Cache-Control"  => "max-age=0",
+        "Content-Length" => "27"
       },
       body: request_body,
       path: "/jtb/quote"
