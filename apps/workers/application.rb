@@ -4,6 +4,7 @@ module Workers
       root __dir__
 
       load_paths << [
+        "comparison",
         "suppliers"
       ]
 
