@@ -38,8 +38,10 @@ collection :suppliers do
   entity     Supplier
   repository SupplierRepository
 
-  attribute :id,   Integer
-  attribute :name, String
+  attribute :id,         Integer
+  attribute :name,       String
+  attribute :created_at, Time
+  attribute :updated_at, Time
 end
 
 collection :hosts do
@@ -51,4 +53,6 @@ collection :hosts do
   attribute :identifier,   String
   attribute :username,     String
   attribute :access_token, String
+  attribute :created_at,   Time
+  attribute :updated_at,   Time
 end

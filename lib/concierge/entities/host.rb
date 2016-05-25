@@ -15,5 +15,5 @@
 class Host
   include Hanami::Entity
 
-  attributes :id, :supplier_id, :identifier, :username, :access_token
+  attributes :id, :supplier_id, :identifier, :username, :access_token, :created_at, :updated_at
 end
