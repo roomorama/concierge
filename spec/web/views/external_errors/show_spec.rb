@@ -118,6 +118,18 @@ RSpec.describe Web::Views::ExternalErrors::Show do
         %(  &quot;key&quot;: &quot;value&quot;\n\n) +
         %(})
     end
+
+    it "doubles the line breaks for XML content and escapes the content" do
+      content = "" +
+        %(<response>\n) +
+        %(  <status>200</status>\n) +
+        %(</response>)
+
+      expect(view.pretty_print(content, "text/xml")).to eq "" +
+        %(&lt;response&gt;\n\n) +
+        %(  &lt;status&gt;200&lt;&#x2F;status&gt;\n\n) +
+        %(&lt;&#x2F;response&gt;)
+    end
   end
 
   describe "#format_timestamp" do

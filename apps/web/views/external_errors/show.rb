@@ -101,9 +101,20 @@ module Web::Views::ExternalErrors
         # uses the +pretty+ and +indent+ options provided by +Yajl::Encoder+ to
         # format the parsed JSON. Generates two line breaks per line to make
         # the final content more readable.
-        Yajl::Encoder.encode(parsed.value, pretty: true, indent: "  ").gsub("\n", "\n\n")
-      else
+        Yajl::Encoder.encode(parsed.value, pretty: true, indent: " " * 2).gsub("\n", "\n\n")
 
+      when XML
+        # pretty printing XML is not reliable using Ruby's default +REXML+ library.
+        # Specially since most of the XML presented by Concierge will be resulting
+        # from SOAP requests/responses. Such XML payloads typically contain
+        # namespaces that are not recognised by the parser which in turn refuses to
+        # pretty print the XML content.
+        #
+        # Therefore, adopt a best effort approach of doubling the newlines for
+        # improved readability.
+        content.gsub("\n", "\n\n")
+
+      else
         # if the content-type is not supported, return the +content+ given
         # without modification.
         content
