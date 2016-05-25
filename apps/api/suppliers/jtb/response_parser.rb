@@ -160,6 +160,14 @@ module JTB
       mismatch(message, caller)
     end
 
+    def unsuccessful_response
+      label   = "Non-successful Response"
+      message = "The response indicated errors while processing the request. Check " +
+        "the `errors` field."
+
+      report_message(label, message, caller)
+    end
+
     def no_field(field_name)
       message = "Expected field `#{field_name}` to be defined, but it was not."
       mismatch(message, caller)
@@ -174,9 +182,20 @@ module JTB
       API.context.augment(response_mismatch)
     end
 
+    def report_message(label, message, backtrace)
+      message = Concierge::Context::Message.new(
+        label:     label,
+        message:   message,
+        backtrace: backtrace
+      )
+
+      API.context.augment(message)
+    end
+
     def handle_error(response)
       code = response.get("error_info.@code")
       if code
+        unsuccessful_response
         Result.error(error_code(code))
       else
         no_field("error_info.@code")
