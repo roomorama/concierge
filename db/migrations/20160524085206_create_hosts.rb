@@ -8,6 +8,9 @@ Hanami::Model.migration do
       column :username,     String,  null: false
       column :access_token, String,  null: false
 
+      column :created_at, Time, null: false
+      column :updated_at, Time, null: false
+
       # we want to be able to quickly find hosts for a given supplier
       index :supplier_id
 
