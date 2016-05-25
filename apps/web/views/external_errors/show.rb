@@ -125,6 +125,19 @@ module Web::Views::ExternalErrors
       end
     end
 
+    # Searches for occurrences of text wrapped in backticks, and rewrite the string
+    # to include +code+ tags, so that they are property formatted when displaying
+    # a message
+    #
+    # Example
+    #
+    #   str = "Check the `errors` field, inside `response`, for details."
+    #   monospace(str) # =>
+    #     "Check the <code>errors</code> field, inside <code>response</code>, for details."
+    def monospace(str)
+      _raw str.gsub(/`([^`]*)`/, '<code>\1</code>')
+    end
+
     # formats the timestamp of a an +event+, expected to be a +Concierge::SafeAccessHash+
     # to a format which includes the timezone, for clarity.
     def format_timestamp(event)

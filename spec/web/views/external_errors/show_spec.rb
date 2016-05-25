@@ -132,6 +132,19 @@ RSpec.describe Web::Views::ExternalErrors::Show do
     end
   end
 
+  describe "#monospace" do
+    it "wraps code tags for all text in backticks" do
+      str = "Check the `errors` field, inside `response`, for details."
+      expect(view.monospace(str)).to eq "Check the <code>errors</code> field, " +
+        "inside <code>response</code>, for details."
+    end
+
+    it "leaves the content untouched if there is no content in backticks" do
+      str = "Check the errors field, inside response, for details."
+      expect(view.monospace(str)).to eq str
+    end
+  end
+
   describe "#format_timestamp" do
     it "formats the timestamp, including the timezone code" do
       attributes[:context][:events].first[:timestamp] = Time.new("2016", "05", "25", "19", "32", "51", "+08:00").to_s
