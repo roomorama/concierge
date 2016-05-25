@@ -1,14 +1,8 @@
 <div class="error-event">
-  <div class="error-time clearfix">
-    <div class="error-clock"><%= image "clock-icon.png" %></div>
-    <div class="error-timestamp"><%= format_timestamp(event) %></div>
-  </div>
+  <%= render partial: "external_errors/events/timestamp", locals: { event: event } %>
 
   <h3>Incoming Request</h3>
-
-  <p>
-    It all started when a new request was received by Concierge:
-  </p>
+  <p>It all started when a new request was received by Concierge:</p>
 
   <div class="code-block">
     <p><%= event[:http_method] %> <%= event[:path] %></p>
