@@ -37,6 +37,10 @@ module Concierge
       result
     end
 
+    def ==(other)
+      to_h == other.to_h
+    end
+
     def to_h
       @hash.to_h
     end
