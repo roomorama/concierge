@@ -56,3 +56,15 @@ collection :hosts do
   attribute :created_at,   Time
   attribute :updated_at,   Time
 end
+
+collection :properties do
+  entity     Property
+  repository PropertyRepository
+
+  attribute :id,         Integer
+  attribute :identifier, String
+  attribute :host_id,    Integer
+  attribute :data,       JSON
+  attribute :created_at, Time
+  attribute :updated_at, Time
+end
