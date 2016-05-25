@@ -1,3 +1,6 @@
+require "rexml/document"
+require "rexml/formatters/pretty"
+
 module Web::Views::ExternalErrors
 
   # +Web::Views::ExternalErrors::Show+
@@ -101,7 +104,7 @@ module Web::Views::ExternalErrors
         # uses the +pretty+ and +indent+ options provided by +Yajl::Encoder+ to
         # format the parsed JSON. Generates two line breaks per line to make
         # the final content more readable.
-        Yajl::Encoder.encode(parsed.value, pretty: true, indent: " " * 2).gsub("\n", "\n\n")
+        double_line_breaks Yajl::Encoder.encode(parsed.value, pretty: true, indent: " " * 2)
 
       when XML
         # pretty printing XML is not reliable using Ruby's default +REXML+ library.
@@ -110,9 +113,10 @@ module Web::Views::ExternalErrors
         # namespaces that are not recognised by the parser which in turn refuses to
         # pretty print the XML content.
         #
-        # Therefore, adopt a best effort approach of doubling the newlines for
-        # improved readability.
-        content.gsub("\n", "\n\n")
+        # Therefore, adopt a best effort approach of trying to parse the content
+        # using that library and, if not possible, fallback to just doubling the
+        # line breaks for improved readability.
+        pretty_print_xml(content) || double_line_breaks(content)
 
       else
         # if the content-type is not supported, return the +content+ given
@@ -129,8 +133,31 @@ module Web::Views::ExternalErrors
 
     private
 
+    def pretty_print_xml(content)
+      doc = REXML::Document.new(content)
+
+      indent = 2
+      formatter = REXML::Formatters::Pretty.new(indent)
+      formatter.compact = 2
+
+      # the +formatter+ expects an +IO+ like object
+      output = StringIO.new
+
+      formatter.write(doc, output)
+
+      output.rewind
+      double_line_breaks output.read
+    rescue REXML::ParseException
+      # if the parsing of the XML fails, return +nil+ and fallback
+      # to doubling line breaks
+    end
+
     def context
       error.context
+    end
+
+    def double_line_breaks(str)
+      str.gsub("\n", "\n\n")
     end
   end
 end
