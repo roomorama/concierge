@@ -21,7 +21,7 @@ RSpec.describe Web::Views::ExternalErrors::Index do
   def generate_error(id)
     double(
       id:          id,
-      operation:   id.odd? ? "quote_price" : "booking",
+      operation:   id.odd? ? "quote" : "booking",
       supplier:    "Supplier#{id}",
       code:        "error_#{id}",
       happened_at: Time.now - id * 24 * 60 * 60 # +id+ days ago
