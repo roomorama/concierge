@@ -12,10 +12,42 @@ module Roomorama
       end
     end
 
-    attr_accessor :identifier, :url, :caption, :position
+    ATTRIBUTES = [:identifier, :url, :caption, :position]
+    attr_accessor *ATTRIBUTES
+
+    # allows the creation of an instance of +Roomorama::Image+ through
+    # a hash of attributes. Useful when loading serialized representations
+    # of images from the database.
+    def self.load(attributes)
+      instance = new(attributes[:identifier])
+
+      ATTRIBUTES.each do |attr|
+        if attributes[attr]
+          instance[attr] = attributes[attr]
+        end
+      end
+
+      instance
+    end
 
     def initialize(identifier)
       @identifier = identifier
+    end
+
+    # allows the setting of specific attributes, using a Hash-like syntax.
+    # Unknown attributes are ignored.
+    #
+    # Example
+    #
+    #   image = Roomorama::Image.new("img1")
+    #   image[:caption] = "Swimming Pool"
+    #   image.caption # => "Swimming Pool"
+    #   image[:unknown] = "Attribute" # => no effect
+    def []=(name, value)
+      if ATTRIBUTES.include?(name)
+        setter = [name, "="].join
+        public_send(setter, value)
+      end
     end
 
     # validate the presence and format of the +identifier+ and +url+ attributes.
