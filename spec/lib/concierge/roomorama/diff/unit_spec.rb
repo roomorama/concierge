@@ -21,6 +21,20 @@ RSpec.describe Roomorama::Diff::Unit do
     expect(subject.description).to be_nil
   end
 
+  describe "#[]=" do
+    it "allows setting unit attributes to the diff" do
+      expect(subject.title).to be_nil
+      subject[:title] = "New Title"
+      expect(subject.title).to eq "New Title"
+    end
+
+    it "ignores unknow attributes" do
+      expect {
+        subject[:unknown] = "attribute"
+      }.not_to raise_error
+    end
+  end
+
   describe "#erase" do
     it "causes the attribute to be serialized even if blank" do
       subject.title = "New Title"

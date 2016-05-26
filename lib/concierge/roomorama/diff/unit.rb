@@ -15,11 +15,7 @@ class Roomorama::Diff
       end
     end
 
-    attr_accessor :title, :description, :nightly_rate, :weekly_rate, :monthly_rate,
-      :number_of_bedrooms, :number_of_units, :identifier, :number_of_bathrooms,
-      :floor, :number_of_double_beds, :number_of_single_beds, :number_of_sofa_beds,
-      :surface, :surface_unit, :amenities, :max_guests, :minimum_stay, :smoking_allowed,
-      :pets_allowed, :tax_rate, :extra_guest_surcharge, :disabled
+    attr_accessor *Roomorama::Unit::ATTRIBUTES
 
     include Roomorama::Mappers
 
@@ -32,6 +28,14 @@ class Roomorama::Diff
       @identifier    = identifier
       @image_changes = ChangeSet.new([], [], [])
       @erased        = []
+    end
+
+    # allows setting attributes using a Hash-like syntax.
+    def []=(attr, value)
+      if Roomorama::Unit::ATTRIBUTES.include?(attr.to_sym)
+        setter = [attr, "="].join
+        public_send(setter, value)
+      end
     end
 
     # A unit diff needs a valid identifier.
