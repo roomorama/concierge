@@ -1,4 +1,6 @@
 require_relative "mappers"
+require_relative "property"
+require_relative "unit"
 
 module Roomorama
 
@@ -13,20 +15,7 @@ module Roomorama
       end
     end
 
-    attr_accessor :type, :title, :address, :postal_code, :city, :description,
-      :number_of_bedrooms, :max_guests, :minimum_stay, :nightly_rate,
-      :weekly_rate, :monthly_rate, :default_to_available, :availabilities,
-      :identifier, :subtype, :apartment_number, :neighborhood, :country_code,
-      :lat, :lng, :number_of_bathrooms, :floor, :number_of_double_beds,
-      :number_of_single_beds, :number_of_sofa_beds, :surface, :surface_unit,
-      :amenities, :multi_unit, :smoking_allowed, :pets_allowed, :check_in_instructions,
-      :check_in_time, :check_out_time, :currency, :security_deposit_amount,
-      :security_deposit_type, :security_deposit_currency_code, :tax_rate,
-      :extra_charges, :rate_base_max_guests, :extra_guest_surcharge,
-      :cancellation_policy, :services_cleaning, :services_cleaning_rate,
-      :services_cleaning_required, :services_airport_pickup, :services_car_rental,
-      :services_car_rental_rate, :services_airport_pickup_rate, :services_concierge,
-      :services_concierge_rate, :disabled, :instant_booking
+    attr_accessor *Roomorama::Property::ATTRIBUTES
 
     include Roomorama::Mappers
 
@@ -40,6 +29,14 @@ module Roomorama
       @image_changes = ChangeSet.new([], [], [])
       @unit_changes  = ChangeSet.new([], [], [])
       @erased        = []
+    end
+
+    # allows setting attributes to the diff using a Hash-like syntax.
+    def []=(attr, value)
+      if Roomorama::Property::ATTRIBUTES.include?(attr)
+        setter = [attr, "="].join
+        public_send(setter, value)
+      end
     end
 
     # allows the caller to specify that a given attribute was erased in the diff.
