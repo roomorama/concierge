@@ -52,8 +52,8 @@ module Roomorama
       scrub_collection(changes)
     end
 
-    def scrub(data)
-      data.delete_if { |_, value| value.to_s.empty? }
+    def scrub(data, erased = [])
+      data.delete_if { |key, value| value.to_s.empty? && !erased.include?(key.to_s) }
     end
 
     def scrub_collection(data)
