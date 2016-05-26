@@ -1,0 +1,12 @@
+<div class="error-event">
+  <%= render partial: "external_errors/events/timestamp", locals: { event: event } %>
+
+  <h3>JSON Parse Error</h3>
+
+  <p>There was an error parsing content that was expected to be JSON. The error
+     message reported while parsing was:</p>
+
+  <div class="code-block">
+    <p><%= event[:message] %></p>
+  </div>
+</div>
