@@ -1,0 +1,22 @@
+<div class="error-event">
+  <%= render partial: "external_errors/events/timestamp", locals: { event: event } %>
+
+
+  <h3>Unrecognised Event</h3>
+
+  <%
+    if event[:type].nil?
+      description = "was <code>nil</code>"
+    elsif event[:type].to_s.strip.empty?
+      description = "was a blank string"
+    else
+      description = "was equal to <code>#{event[:type]}</code>, which is not supported by Concierge"
+    end
+  %>
+
+  <p>
+    Unfortunately, this indicates a glitch in the data collection system. The <code>event</code>
+    field <%= description %>. Please notify <code>developers@roomorama.com</code> of such occurence,
+    providing a link to this page.
+  </p>
+</div>
