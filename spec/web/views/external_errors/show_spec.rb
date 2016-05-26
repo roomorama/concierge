@@ -82,6 +82,13 @@ RSpec.describe Web::Views::ExternalErrors::Show do
 
       expect(view.partial_path(event)).to eq "external_errors/events/unrecognised_event"
     end
+
+    it "can find a proper partial for every supported event type" do
+      (view.class::SUPPORTED_TYPES + %w(unrecognised_event)).each do |type|
+        path = Web::Application.configuration.root.join("templates", "external_errors", "events", "_#{type}.html.erb").to_s
+        expect(File).to be_exists(path), "No partial found for event type #{type}"
+      end
+    end
   end
 
   describe "#syntax_highlight_class" do
