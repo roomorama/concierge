@@ -32,8 +32,8 @@ module Web::Views::ExternalErrors
     ]
 
     # content-type declarations, as specified by HTTP headers.
-    JSON = "application/json"
-    XML  = "text/xml"
+    JSON = %r(application/json)
+    XML  = %r(text/xml)
 
     # checks if the current +error+ is a legacy error report. Legacy errors
     # happened before the introduction of +Concierge::Context+ and therefore

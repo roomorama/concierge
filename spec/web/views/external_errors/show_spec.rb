@@ -130,6 +130,16 @@ RSpec.describe Web::Views::ExternalErrors::Show do
         %(  &lt;status&gt;200&lt;&#x2F;status&gt;\n\n) +
         %(&lt;&#x2F;response&gt;)
     end
+
+    it "is able to match the content type even with extra parameters" do
+      content = { key: "value" }.to_json
+      pretty  = view.pretty_print(content, "application/json; charset=utf-8")
+
+      expect(pretty).to eq "" +
+        %({\n\n) +
+        %(  &quot;key&quot;: &quot;value&quot;\n\n) +
+        %(})
+    end
   end
 
   describe "#monospace" do
