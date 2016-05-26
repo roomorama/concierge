@@ -3,61 +3,66 @@ module Workers::Comparison
   # +Workers::Comparison::Image+
   #
   # This class performs a comparison between two list of images. This is
-  # necessary when updating image information related to a proeperty or unit.
+  # necessary when updating image information related to a property or unit.
   #
   # Usage
   #
   #   original = [
-  #     {
+  #     Roomorama::Image.load({
   #       identifier: "img1",
   #       url:        "https://www.example.org/image1",
   #       caption:    "Barbecue Pit"
-  #     },
-  #     {
+  #     }),
+  #     Roomorama::Image.load({
   #       identifier: "img2",
   #       url:        "https://www.example.org/image2",
   #       caption:    "Swimming Pool"
-  #     },
-  #     {
+  #     }),
+  #     Roomorama::Image.load({
   #       identifier: "img3",
   #       url:        "https://www.example.org/image3"
-  #     }
+  #     })
   #   ]
   #   new = [
-  #     {
+  #     Roomorama::Image.load({
   #       identifier: "img1",
   #       url:        "https://www.example.org/image1",
   #       caption:    "Barbecue Pit"
   #     },
-  #     {
+  #     Roomorama::Image.load({
   #       identifier: "img3",
   #       url:        "https://www.example.org/image3",
   #       caption:    "Foosball Table"
   #     },
-  #     {
+  #     Roomorama::Image.load({
   #       identifier: "img4",
   #       url:        "https://www.example.org/image4",
   #       caption:    "Entrance"
-  #     }
+  #     })
   #   ]
   #   comparison = Workers::Comparison::Image.new(original, new)
   #   comparison.extract_diff
   #   # => {
   #     create: [
-  #       {
+  #       Roomorama::Image.create({
   #         identifier: "img4",
   #         url:        "https://www.example.org/image4",
   #         caption:    "Entrance"
-  #       }
+  #       })
   #     ],
   #     update: [
-  #       {
+  #       Roomorama::Diff::Image.load({
   #         identifier: "img3",
   #         caption:    "Foosball Table"
-  #       }
+  #       })
   #     ],
   #     delete: ["img2"]
   #   }
+  #
+  # The output above means that the +extract_diff+ method returns a hash where the +create+
+  # entry is a collection of +Roomorama::Image+ objects; the +update+ entry is
+  # a collection of +Roomorama::Diff::Image+ objects and the +delete+ entry is a collection
+  # of image identifiers (+String+).
   class Image
 
     attr_reader :original, :new
@@ -105,14 +110,14 @@ module Workers::Comparison
       #    differ, then the new caption is added to the list of changes. Only
       #    image caption changes are supported by Roomorama's diff API.
       common_images.each do |identifier|
-        original_caption = original_index[identifier][:caption]
-        new_caption      = new_index[identifier][:caption]
+        original_caption = original_index[identifier].caption
+        new_caption      = new_index[identifier].caption
 
         if original_caption != new_caption
-          diff[:update] << safe_access({
-            identifier: identifier,
-            caption:    new_caption
-          })
+          image_diff         = Roomorama::Diff::Image.new(identifier)
+          image_diff.caption = new_caption
+
+          diff[:update] << image_diff
         end
       end
 
@@ -134,7 +139,7 @@ module Workers::Comparison
     end
 
     def index(images)
-      Hash[images.map { |image| [image[:identifier], image] }]
+      Hash[images.map { |image| [image.identifier, image] }]
     end
 
     def keys(hash)
