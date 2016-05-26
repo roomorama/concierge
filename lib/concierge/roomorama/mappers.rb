@@ -12,6 +12,9 @@ module Roomorama
     # check the publish API documentation for a description of the format
     # expected by the availabilities field.
     def map_availabilities(place)
+      # availabilities are not required when loading a property from the database.
+      return if place.calendar.empty?
+
       sorted_dates = place.calendar.keys.map { |date| Date.parse(date) }.sort
       min_date     = sorted_dates.min
       max_date     = sorted_dates.max

@@ -25,6 +25,10 @@ class Roomorama::Client::Operations
     def initialize(property)
       @property = property
       property.validate!
+
+      # when publishing properties, an initial set of availabilities
+      # must be provided
+      property.require_calendar!
     end
 
     def endpoint
