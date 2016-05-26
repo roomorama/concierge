@@ -144,7 +144,7 @@ RSpec.describe Concierge::HTTPClient do
           method:       http_method,
           url:          [url, "/"].join,
           query_string: http_method == :get ? "" : nil,
-          headers:      { "User-Agent" => "Faraday v0.9.2" },
+          headers:      { "User-Agent" => "Roomorama/Concierge #{Concierge::VERSION}" },
           body:         http_method == :get ? nil : {}
         })
 
