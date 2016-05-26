@@ -23,6 +23,7 @@ module Web::Views::ExternalErrors
       Concierge::Context::CacheMiss::CONTEXT_TYPE,
       Concierge::Context::IncomingRequest::CONTEXT_TYPE,
       Concierge::Context::JSONParsingError::CONTEXT_TYPE,
+      Concierge::Context::ResponseMismatch::CONTEXT_TYPE,
       Concierge::Context::Message::CONTEXT_TYPE,
       Concierge::Context::NetworkFailure::CONTEXT_TYPE,
       Concierge::Context::NetworkRequest::CONTEXT_TYPE,
@@ -32,8 +33,8 @@ module Web::Views::ExternalErrors
     ]
 
     # content-type declarations, as specified by HTTP headers.
-    JSON = %r(application/json)
-    XML  = %r(text/xml)
+    JSON = %r(json)
+    XML  = %r(xml)
 
     # checks if the current +error+ is a legacy error report. Legacy errors
     # happened before the introduction of +Concierge::Context+ and therefore
