@@ -32,13 +32,22 @@ module Roomorama
 
     ChangeSet = Struct.new(:created, :updated, :deleted)
 
-    attr_reader :image_changes, :unit_changes
+    attr_reader :image_changes, :unit_changes, :erased
 
     # identifier - the identifier on the supplier system. Required attribute
     def initialize(identifier)
-      @identifier   = identifier
+      @identifier    = identifier
       @image_changes = ChangeSet.new([], [], [])
       @unit_changes  = ChangeSet.new([], [], [])
+      @erased        = []
+    end
+
+    # allows the caller to specify that a given attribute was erased in the diff.
+    # By default, the +scrub+ method removes all +nil+ entries from the resulting
+    # Hash when +to_h+ is invoked. However, if +erase+ was called for a specific
+    # attribute, that attribute will be set to +nil+ when +to_h+ is called.
+    def erase(attr)
+      erased << attr.to_s
     end
 
     def add_image(image)
@@ -160,7 +169,7 @@ module Roomorama
         data[:units] = mapped_unit_changes
       end
 
-      scrub(data)
+      scrub(data, erased)
     end
   end
 

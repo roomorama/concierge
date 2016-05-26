@@ -21,6 +21,19 @@ RSpec.describe Roomorama::Diff do
     expect(subject.description).to be_nil
   end
 
+  describe "#erase" do
+    it "causes the attribute to be serialized even if blank" do
+      subject.title = "New Title"
+      subject.erase(:tax_rate)
+
+      expect(subject.to_h).to eq({
+        identifier: "JPN123",
+        title:      "New Title",
+        tax_rate:   nil
+      })
+    end
+  end
+
   describe "#add_image" do
     let(:image) { Roomorama::Image.new("ID123") }
 
