@@ -1,0 +1,11 @@
+<div class="error-event">
+  <%= render partial: "external_errors/events/timestamp", locals: { event: event } %>
+
+  <h3>Network Failure</h3>
+  <p>Unfortunately, there was a failure at the network level when performing the
+      request, which could not be completed. The error message was:</p>
+
+  <div class="code-block">
+    <%= event[:message] %>
+  </div>
+</div>
