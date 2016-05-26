@@ -30,22 +30,53 @@ module Roomorama
       end
     end
 
-    attr_accessor :title, :description, :nightly_rate, :weekly_rate, :monthly_rate,
+    # allows the creation of a new instance of +Roomorama::Unit+ through a
+    # hash of attributes. Useful when loading data from the database into
+    # a valid object instance.
+    #
+    # Creates associated images.
+    def self.load(attributes)
+      instance = new(attributes[:identifier])
+
+      ATTRIBUTES.each do |attr|
+        if attributes[attr]
+          instance[attr] = attributes[attr]
+        end
+      end
+
+      Array(attributes[:images]).each do |image|
+        instance.add_image(Roomorama::Image.load(image))
+      end
+
+      instance
+    end
+
+    ATTRIBUTES = [:title, :description, :nightly_rate, :weekly_rate, :monthly_rate,
       :number_of_bedrooms, :number_of_units, :identifier, :number_of_bathrooms,
       :floor, :number_of_double_beds, :number_of_single_beds, :number_of_sofa_beds,
       :surface, :surface_unit, :amenities, :max_guests, :minimum_stay, :smoking_allowed,
-      :pets_allowed, :tax_rate, :extra_guest_surcharge, :disabled
+      :pets_allowed, :tax_rate, :extra_guest_surcharge, :disabled]
+
+    attr_accessor *ATTRIBUTES
 
     # identifier - the identifier on the supplier system. Required attribute
     def initialize(identifier)
       @identifier = identifier
     end
 
+    # allows the caller to set unit attributes using a Hash-like syntax.
+    # Ignores unknown attributes.
+    def []=(name, value)
+      if ATTRIBUTES.include?(name)
+        setter = [name, "="].join
+        public_send(setter, value)
+      end
+    end
+
     # validates that all required fields for a unit are present. A unit needs:
     #
     # * a non-empty identifier
     # * a list of images
-    # * a set of availabilities.
     #
     # If any of the validations above fail, this method will raise a
     # +Roomorama::Unit::ValidationError+ exception. If all
@@ -55,7 +86,15 @@ module Roomorama
         raise ValidationError.new("identifier is not given or empty")
       elsif images.empty?
         raise ValidationError.new("no images")
-      elsif calendar.empty?
+      else
+        true
+      end
+    end
+
+    # ensures there is a non-empty availabilities calendar. Raises an exception
+    # (+Roomorama::Unit::ValidationError+) in case the calendar is empty.
+    def require_calendar!
+      if calendar.empty?
         raise ValidationError.new("no availabilities")
       else
         true

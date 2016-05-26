@@ -21,6 +21,118 @@ RSpec.describe Roomorama::Property do
     expect(subject.description).to be_nil
   end
 
+  describe ".load" do
+    let(:attributes) {
+      {
+        title: "Studio Apartment in Chicago",
+        max_guests: 2,
+        nightly_rate: 100,
+
+        images: [
+          {
+            identifier: "img1",
+            url:        "https://www.example.org/img1",
+            caption:    "Barbecue Pit"
+          }
+        ],
+
+        units: [
+          {
+            identifier:      "unit1",
+            title:           "Unit 1",
+            number_of_units: 2,
+
+            images: [
+              {
+                identifier: "unit1img1",
+                url:        "https://www.example.org/unit1img1",
+              },
+              {
+                identifier: "unit1img2",
+                url:        "https://www.example.org/unit1img2",
+              }
+            ]
+          },
+          {
+            identifier:      "unit2",
+            title:           "Unit 2",
+
+            images: [
+              {
+                identifier: "unit2img1",
+                url:        "https://www.example.org/unit2img1",
+              }
+            ]
+          }
+        ]
+      }
+    }
+
+    it "creates a new property with associated images and units" do
+      property = described_class.load(attributes)
+      expect(property).to be_a Roomorama::Property
+
+      expect(property.title).to eq "Studio Apartment in Chicago"
+      expect(property.max_guests).to eq 2
+      expect(property.nightly_rate).to eq 100
+      expect(property).to be_multi_unit
+
+      images = property.images
+      expect(images.size).to eq 1
+
+      image = images.first
+      expect(image.identifier).to eq "img1"
+      expect(image.url).to eq "https://www.example.org/img1"
+      expect(image.caption).to eq "Barbecue Pit"
+
+      units = property.units
+      expect(units.size).to eq 2
+
+      unit = units.first
+      expect(unit.identifier).to eq "unit1"
+      expect(unit.title).to eq "Unit 1"
+      expect(unit.number_of_units).to eq 2
+
+      images = unit.images
+      expect(images.size).to eq 2
+
+      image = images.first
+      expect(image.identifier).to eq "unit1img1"
+      expect(image.url).to eq "https://www.example.org/unit1img1"
+
+      image = images.last
+      expect(image.identifier).to eq "unit1img2"
+      expect(image.url).to eq "https://www.example.org/unit1img2"
+
+      unit = units.last
+      expect(unit.identifier).to eq "unit2"
+      expect(unit.title).to eq "Unit 2"
+
+      images = unit.images
+      expect(images.size).to eq 1
+
+      image = images.first
+      expect(image.identifier).to eq "unit2img1"
+      expect(image.url).to eq "https://www.example.org/unit2img1"
+
+      expect(property.to_h).to eq attributes.merge(instant_booking: false, multi_unit: true)
+    end
+  end
+
+  describe "#[]=" do
+    it "sets attributes to the given value" do
+      expect(subject.title).to be_nil
+      subject[:title] = "Apartment in Las Vegas"
+      expect(subject.title).to eq "Apartment in Las Vegas"
+    end
+
+    it "ignores the method call in case the attribute is unknown" do
+      expect {
+        subject[:unknown] = "attribute"
+      }.not_to raise_error
+    end
+  end
+
   describe "#multi_unit!" do
     it "converts the property to multi unit" do
       expect(subject).not_to be_multi_unit
@@ -133,15 +245,59 @@ RSpec.describe Roomorama::Property do
       }.to raise_error Roomorama::Property::ValidationError
     end
 
-    it "is invalid if there are no availabilities for the property" do
+    it "is valid if all required parameters are present" do
+      expect(subject.validate!).to be
+    end
+
+    it "is valid if there are no availabilities for the property" do
       allow(subject).to receive(:calendar) { {} }
+      expect(subject.validate!).to be
+    end
+  end
+
+  describe "#require_calendar!" do
+    before do
+      image = Roomorama::Image.new("IMG1")
+      image.url = "https://wwww.example.org/image1.png"
+      subject.add_image(image)
+
+      subject.update_calendar({
+        "2016-05-22" => true,
+        "2015-05-28" => true
+      })
+
+      unit = Roomorama::Unit.new("unit1")
+      unit.title = "Unit 1"
+
+      image = Roomorama::Image.new("UNIT1IMG1")
+      image.url = "https://wwww.example.org/unit1/image1.png"
+      unit.add_image(image)
+
+      unit.update_calendar({
+        "2016-05-22" => true,
+        "2015-05-28" => true
+      })
+
+      subject.add_unit(unit)
+    end
+
+    it "is valid if the property has a non-empty availabilities calendar" do
+      expect(subject.require_calendar!).to be
+    end
+
+    it "is invalid if there are no availabilities" do
+      allow(subject).to receive(:calendar) { {} }
+
       expect {
-        subject.validate!
+        subject.require_calendar!
       }.to raise_error Roomorama::Property::ValidationError
     end
 
-    it "is valid if all required parameters are present" do
-      expect(subject.validate!).to be
+    it "is invalid if one of the units has an empty availabilities calendar" do
+      allow(subject.units.first).to receive(:calendar) { {} }
+      expect {
+        subject.require_calendar!
+      }.to raise_error Roomorama::Unit::ValidationError
     end
   end
 

@@ -21,6 +21,39 @@ RSpec.describe Roomorama::Image do
     expect(subject.caption).to be_nil
   end
 
+  describe ".load" do
+    let(:attributes) {
+      {
+        identifier: "img1",
+        url:        "https://www.example.org/img1",
+        caption:    "Swimming Pool"
+      }
+    }
+
+    it "generates a new instance of Image with the given attributes" do
+      image = described_class.load(attributes)
+
+      expect(image).to be_a Roomorama::Image
+      expect(image.identifier).to eq "img1"
+      expect(image.url).to eq "https://www.example.org/img1"
+      expect(image.caption).to eq "Swimming Pool"
+    end
+  end
+
+  describe "#[]=" do
+    it "sets the given attribute if it exists" do
+      expect(subject.caption).to be_nil
+      subject[:caption] = "Swimming Pool"
+      expect(subject.caption).to eq "Swimming Pool"
+    end
+
+    it "ignores the call if the attribute is unknown" do
+      expect {
+        subject[:invalid] = "foo"
+      }.not_to raise_error
+    end
+  end
+
   describe "#validate!" do
     it "ensures there is a valid image identifier" do
       subject.identifier = nil

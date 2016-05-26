@@ -21,6 +21,70 @@ RSpec.describe Roomorama::Unit do
     expect(subject.description).to be_nil
   end
 
+  describe ".load" do
+    let(:attributes) {
+      {
+        title:        "Studio Apartment in Rio",
+        nightly_rate: 100,
+        minimum_stay: 2,
+      }
+
+      it "creates a new instance setting the passed attributes" do
+        unit = described_class.load(attributes)
+
+        expect(unit).to be_a Roomorama::Unit
+        expect(unit.title).to eq "Studio Apartment"
+        expect(unit.nightly_rate).to eq 100
+        expect(unit.minimum_stay).to eq 2
+      end
+
+      it "is able to create associated images" do
+        attributes[:images] = [
+          {
+            identifier: "img1",
+            url:        "https://www.example.org/img1",
+            caption:    "Swimming Pool"
+          },
+          {
+            identifier: "img2",
+            url:        "https://www.example.org/img1"
+          }
+        ]
+
+        unit = described_class.load(attributes)
+        expect(unit).to be_a Roomorama::Unit
+
+        images = unit.images
+        expect(images).to be_a Array
+        expect(images.size).to eq 2
+
+        image = images.first
+        expect(image.identifier).to eq "img1"
+        expect(image.identifier).to eq "https://www.example.org/img1"
+        expect(image.identifier).to eq "Swimming Pool"
+
+        image = images.last
+        expect(image.identifier).to eq "img2"
+        expect(image.identifier).to eq "https://www.example.org/img2"
+      end
+    }
+  end
+
+  describe "#[]=" do
+    it "allows setting specific parameters" do
+      expect(subject.title).to be_nil
+
+      subject[:title] = "Studio Apartment"
+      expect(subject.title).to eq "Studio Apartment"
+    end
+
+    it "ignores unknown parameters" do
+      expect {
+        subject[:unknown] = "attribute"
+      }.not_to raise_error
+    end
+  end
+
   describe "#add_image" do
     let(:image) { Roomorama::Image.new("ID123") }
 
@@ -83,15 +147,33 @@ RSpec.describe Roomorama::Unit do
       }.to raise_error Roomorama::Unit::ValidationError
     end
 
-    it "is invalid if there are no availabilities for the unit" do
-      allow(subject).to receive(:calendar) { {} }
-      expect {
-        subject.validate!
-      }.to raise_error Roomorama::Unit::ValidationError
-    end
-
     it "is valid if all required parameters are present" do
       expect(subject.validate!).to be
+    end
+
+    it "valid if there are no availabilities for the unit" do
+      allow(subject).to receive(:calendar) { {} }
+      expect(subject.validate!).to be
+    end
+  end
+
+  describe "#require_calendar!" do
+    before do
+      subject.update_calendar({
+        "2016-05-22" => true,
+        "2015-05-28" => true
+      })
+    end
+
+    it "is valid in case there is a non-empty availabilities calendar" do
+      expect(subject.require_calendar!).to be
+    end
+
+    it "is invalid in case the availabilities calendar is empty" do
+      allow(subject).to receive(:calendar) { {} }
+      expect {
+        subject.require_calendar!
+      }.to raise_error  Roomorama::Unit::ValidationError
     end
   end
 
