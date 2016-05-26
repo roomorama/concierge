@@ -89,7 +89,7 @@ module Concierge
 
     def get(path, params = {}, headers = {})
       with_error_handling do |conn|
-        conn.headers.merge(DEFAULT_HEADERS).merge!(headers)
+        conn.headers.merge!(DEFAULT_HEADERS).merge!(headers)
         announce_request(:get, path, params, conn.headers)
         conn.get(path, params)
       end
@@ -97,7 +97,7 @@ module Concierge
 
     def post(path, params = {}, headers = {})
       with_error_handling do |conn|
-        conn.headers.merge(DEFAULT_HEADERS).merge!(headers)
+        conn.headers.merge!(DEFAULT_HEADERS).merge!(headers)
         announce_request(:post, path, params, conn.headers)
         conn.post(path, params)
       end
