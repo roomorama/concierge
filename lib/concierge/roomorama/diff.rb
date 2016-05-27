@@ -90,6 +90,17 @@ module Roomorama
       end
     end
 
+    # checks whether or not any changes were applied to this diff instance.
+    #
+    # diff = Roomorama::Diff.new("propertyID")
+    # diff.empty? # => true
+    #
+    # diff.title = "New Title"
+    # diff.empty? # => false
+    def empty?
+      to_h.tap { |changes| changes.delete(:identifier) }.empty?
+    end
+
     def calendar
       @calendar ||= {}
     end

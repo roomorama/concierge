@@ -163,6 +163,25 @@ RSpec.describe Roomorama::Diff do
     end
   end
 
+  describe "#empty?" do
+    it "is empty if no changes to meta attributes were applied" do
+      expect(subject).to be_empty
+    end
+
+    it "is not empty if one attribute is changed" do
+      subject.title = "New Title"
+      expect(subject).not_to be_empty
+    end
+
+    it "is not empty if images were added" do
+      image = Roomorama::Image.new("img")
+      image.url = "https://www.example.org/img.png"
+      subject.add_image(image)
+
+      expect(subject).not_to be_empty
+    end
+  end
+
   describe "#validate!" do
     it "is invalid if the identifier is not given" do
       subject.identifier = nil
