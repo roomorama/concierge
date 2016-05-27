@@ -28,7 +28,11 @@ module Workers::Comparison
     # have the +[]=+ method, allowing attributes to be set using a Hash-like syntax;
     # respond to the +erase+ method, indicating that an attribute should be +nil+ when
     # serialized, causing it to be erased.
+    #
+    # Returns a boolean indicating whether or not there were any changes applied.
     def apply_to(diff)
+
+      changed = false
 
       # 1. find attributes which map to scalar values (i.e., removes Arrays and Hashes).
       original_attributes = meta_keys(original)
@@ -43,11 +47,13 @@ module Workers::Comparison
       # 3. for each attribute present only on the new instance, we set the +diff+
       #    to the content of the new object.
       added_meta.each do |attr|
+        changed    = true
         diff[attr] = new.public_send(atr)
       end
 
       # 4. for each attribute that was orignally set but is not anymore, we +erase+ it
       removed_meta.each do |attr|
+        changed = true
         diff.erase(attr)
       end
 
@@ -59,9 +65,12 @@ module Workers::Comparison
         new_attr      = new.public_send(attr)
 
         if original_attr != new_attr
+          changed = true
           diff[attr] = new_attr
         end
       end
+
+      changed
     end
 
     private
