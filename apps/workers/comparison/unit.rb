@@ -80,13 +80,11 @@ module Workers::Comparison
         diff.add_image(image)
       end
 
-      # 5. Apply changes to images, if any
       Array(comparison[:update]).each do |image_diff|
         changed = true
         diff.change_image(image_diff)
       end
 
-      # 6. delete images, if any
       Array(comparison[:delete]).each do |identifier|
         changed = true
         diff.delete_image(identifier)

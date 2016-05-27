@@ -20,8 +20,6 @@ RSpec.describe Workers::Comparison::Unit do
 
   let(:unit_two) {
     Roomorama::Unit.new("unit2").tap do |unit|
-      unit.title = "Unit 2"
-
       unit.title       = "Unit 2"
       unit.description = "Sea View"
       unit.floor       = 4
