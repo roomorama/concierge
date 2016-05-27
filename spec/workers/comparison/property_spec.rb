@@ -55,6 +55,16 @@ RSpec.describe Workers::Comparison::Property do
 
   subject { described_class.new(original, new) }
 
+  describe "#initialize" do
+    it "does not allow the comparison of different properties" do
+      original.identifier = "invalid"
+
+      expect {
+        described_class.new(original, new)
+      }.to raise_error Workers::Comparison::Property::DifferentIdentifiersError
+    end
+  end
+
   describe "#extract_diff" do
     it "generates a diff including changed attributes and images" do
       diff = subject.extract_diff
