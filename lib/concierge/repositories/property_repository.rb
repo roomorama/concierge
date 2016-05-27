@@ -13,6 +13,12 @@ class PropertyRepository
     query.count
   end
 
+  # filters properties that belong to a given +host+, which is expected to be
+  # a persisted instance of +Host+.
+  def self.from_host(host)
+    query { where(host_id: host.id) }
+  end
+
   # returns the +Property+ that matches the given identifier (i.e., the identication
   # of the property from the supplier's point of view.)
   #
