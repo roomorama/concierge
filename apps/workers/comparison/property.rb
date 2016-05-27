@@ -19,12 +19,20 @@ module Workers::Comparison
   # property images and units (as well as unit images, in turn)
   class Property
 
+    class DifferentIdentifiersError < StandardError
+      def initialize(original, new)
+        super("Cannot compare properties with different identifiers. Received #{original} and #{new}")
+      end
+    end
+
     attr_reader :original, :new
 
     # +original+ and +new+ are expected to be instances of +Roomorama::Property+
     def initialize(original, new)
       @original = original
       @new      = new
+
+      ensure_same_identifier!
     end
 
     # generates the +Roomorama::Diff+ instance that represents the difference
@@ -81,6 +89,15 @@ module Workers::Comparison
 
       Array(comparison[:delete]).each do |identifier|
         diff.delete_unit(identifier)
+      end
+    end
+
+    # guarantees that two different properties (identified by different +identifier+s)
+    # will not be mistakenly compared. In case invalid parameters are sent, fail early
+    # and raise an error.
+    def ensure_same_identifier!
+      if original.identifier != new.identifier
+        raise DifferentIdentifiersError.new(original.identifier, new.identifier)
       end
     end
 
