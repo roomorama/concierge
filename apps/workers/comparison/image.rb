@@ -145,9 +145,5 @@ module Workers::Comparison
     def keys(hash)
       hash.to_h.keys.sort
     end
-
-    def safe_access(hash)
-      Concierge::SafeAccessHash.new(hash)
-    end
   end
 end
