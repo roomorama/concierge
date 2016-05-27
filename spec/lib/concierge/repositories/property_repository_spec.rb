@@ -20,6 +20,19 @@ RSpec.describe PropertyRepository do
     end
   end
 
+  describe ".from_host" do
+    let(:host)    { double(id: 2) }
+    let!(:valid)   { create_property(host_id: 2) }
+    let!(:invalid) { create_property(host_id: 4) }
+
+    it "filters properties to those belonging to a given host" do
+      properties = described_class.from_host(host).to_a
+
+      expect(properties.size).to eq 1
+      expect(properties.first).to eq valid
+    end
+  end
+
   describe ".identified_by" do
     it "returns the property identified by the given argument" do
       create_property
