@@ -19,6 +19,9 @@ module API
     # app to understand how it fits the request lifecycle.
     attr_accessor :context
   end
+
+  # initializes +API.context+ to a new instance on boot so that the context
+  # is explorable on console sessions, as well as during test execution.
   API.context = Concierge::Context.new
 
   class Application < Hanami::Application
