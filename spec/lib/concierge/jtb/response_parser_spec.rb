@@ -46,9 +46,17 @@ RSpec.describe JTB::ResponseParser do
 
     it 'fails if invalid request' do
       response = parse read_fixture('jtb/invalid_request.json')
-      result   = subject.parse_rate_plan(response, params)
+      result = nil
+
+      expect {
+        result = subject.parse_rate_plan(response, params)
+      }.to change { API.context.events.size }
+
       expect(result).not_to be_success
       expect(result.error.code).to eq :invalid_request
+
+      event = API.context.events.last
+      expect(event.to_h[:type]).to eq "generic_message"
     end
 
     it 'fails if unit not found' do
@@ -61,6 +69,7 @@ RSpec.describe JTB::ResponseParser do
     it 'recognises the response with single rate plan response' do
       response = parse(read_fixture("jtb/single_rate_plan_response.json"))
       result   = subject.parse_rate_plan(response, params)
+
       expect(result).to be_success
       expect(result.value).to be_a JTB::RatePlan
     end

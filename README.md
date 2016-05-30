@@ -83,6 +83,14 @@ The caching functionality provided by Concierge - `Concierge::Cache` already mak
 use of such feature and therefore no changes are needed if the database is only
 used for caching.
 
+### API Context
+
+During a request cycle, many events might happen: network calls (requests and responses),
+cache lookups, SOAP operations, among others. Concierge defines the concept of the `context`
+of a call being the set of events that happened in the lifecycle of a request. Data about
+such events is collected so that, in the ocurrence of an error (that is, an `external error`),
+events data can be serialized and later displayed in the `web` app for analysis.
+
 ### Quoting bookings
 
 To add the capability of quoting a booking for a new supplier, create a new controller

@@ -7,6 +7,7 @@ RSpec.describe ExternalErrorRepository do
       supplier:    "SupplierA",
       code:        "http_error",
       message:     "Network Failure",
+      context:     { type: "network_failure" },
       happened_at: Time.now
     }
   }

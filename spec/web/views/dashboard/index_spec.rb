@@ -49,6 +49,6 @@ RSpec.describe Web::Views::Dashboard::Index do
 
   it "shows the error message in case Concierge is not healthy" do
     concierge_responds_with { [500, application_json, "Something went wrong"] }
-    expect(rendered).to include %(<strong>Error:</strong> <code>http_status_500 - Something went wrong</code>)
+    expect(rendered).to include %(<strong>Error:</strong> <code>http_status_500</code>)
   end
 end

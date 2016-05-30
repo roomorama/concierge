@@ -1,0 +1,31 @@
+<div class="error-event">
+  <%= render partial: "external_errors/events/timestamp", locals: { event: event } %>
+
+  <h3>Network Response</h3>
+  <p>
+    As a response of the previous call, the server responded with status
+    <code><%= event[:status] %></code> and the following response headers:
+  </p>
+
+  <div class="code-block">
+    <% event[:headers].to_h.each do |header, value| %>
+      <% name = header.split("-").map(&:capitalize).join("-") %>
+      <p><strong><%= name %>:</strong> <%= value.strip %></p>
+    <% end %>
+  </div>
+
+  <% if event[:body] %>
+    <p>Response body:</p>
+
+    <%
+      content_type = event[:headers] && event[:headers]["Content-Type"]
+      css_class    = syntax_highlight_class(content_type)
+    %>
+
+    <%# breaks the indentiation here so that the code will be displayed properly,
+        since the +pre+ tag does not ignore the white spaces %>
+    <pre class="<%= css_class %> code-block">
+<%= pretty_print(event[:body], content_type) %>
+    </pre>
+  <% end %>
+</div>

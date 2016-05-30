@@ -1,0 +1,7 @@
+<div class="error-event">
+  <%= render partial: "external_errors/events/timestamp", locals: { event: event } %>
+
+  <h3>Cache Miss</h3>
+
+  <p>There was a cache lookup for the key <code><%= event[:key] %></code>, but it missed.</p>
+</div>

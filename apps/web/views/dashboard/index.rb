@@ -25,7 +25,7 @@ module Web::Views::Dashboard
     def error_message
       unless concierge.response.success?
         error = concierge.response.error
-        html.code [error.code, " - ", error.message].join
+        html.code error.code
       end
     end
 

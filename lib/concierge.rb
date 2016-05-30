@@ -1,4 +1,6 @@
 require 'hanami/model'
+require_relative "concierge/entities/ext/pg_json"
+
 Dir["#{ __dir__ }/concierge/**/*.rb"].sort.each { |file| require_relative file }
 
 Hanami::Model.configure do

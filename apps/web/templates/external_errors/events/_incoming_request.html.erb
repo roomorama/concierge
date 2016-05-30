@@ -1,0 +1,30 @@
+<div class="error-event">
+  <%= render partial: "external_errors/events/timestamp", locals: { event: event } %>
+
+  <h3>Incoming Request</h3>
+  <p>It all started when a new request was received by Concierge:</p>
+
+  <div class="code-block">
+    <p><%= event[:http_method] %> <%= event[:path] %></p>
+
+    <% event[:headers].to_h.each do |header, value| %>
+      <p><strong><%= header %>:</strong> <%= value.strip %></p>
+    <% end %>
+  </div>
+
+  <% if event[:body] %>
+    <p>Request body, after translation to Concierge's API format:</p>
+
+    <%
+      content_type = (event[:headers] && event[:headers]["Content-Type"])
+      css_class    = syntax_highlight_class(content_type)
+    %>
+
+<%# breaks the indentiation here so that the code will be displayed properly,
+    since the +pre+ tag does not ignore the white spaces %>
+    <pre class="<%= css_class %> code-block">
+<%= pretty_print(event[:body], content_type) %>
+    </pre>
+  <% end %>
+
+</div>

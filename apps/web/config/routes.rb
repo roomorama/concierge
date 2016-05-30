@@ -1,2 +1,3 @@
 get "/",       to: "dashboard#index",       as: :root
-get "/errors", to: "external_errors#index", as: :external_errors
+
+resources :errors, only: [:index, :show], controller: "external_errors"

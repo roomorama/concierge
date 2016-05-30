@@ -26,10 +26,7 @@ module Web::Controllers
     # since no dynamic content is necessary, and returns it back to the
     # caller.
     def render_500_template
-      context  = binding
-      path     = Hanami.root.join("apps", "web", "templates", "500.html.erb").to_s
-      template = ERB.new(File.read(path)).result(context)
-
+      template = Web::Controllers::TemplateRenderer.new("500.html.erb").render
       status 500, template
     end
   end

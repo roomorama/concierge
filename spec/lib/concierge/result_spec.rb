@@ -7,21 +7,17 @@ RSpec.describe Result do
 
   describe ".error" do
     it "creates a new Result instance with the error information given" do
-      subject = described_class.error(:failed, "failed to perform operation")
+      subject = described_class.error(:failed)
 
       expect(subject).to be_a Result
       expect(subject.error.code).to eq :failed
-      expect(subject.error.message).to eq "failed to perform operation"
     end
   end
 
   describe "#error" do
     it "is able to store an error associated with an operation" do
       subject.error.code = :invalid_operation
-      subject.error.message = "Tried to perform invalid operation"
-
       expect(subject.error.code).to eq :invalid_operation
-      expect(subject.error.message).to eq "Tried to perform invalid operation"
     end
   end
 

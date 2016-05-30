@@ -6,6 +6,7 @@ RSpec.describe UseCases::ExternalErrorCreation do
       operation:   "quote",
       supplier:    "SupplierA",
       code:        "http_error",
+      context:     { type: "network_failure" },
       message:     "Network Failure",
       happened_at: Time.now
     }
@@ -14,7 +15,7 @@ RSpec.describe UseCases::ExternalErrorCreation do
   describe "#perform" do
     subject { described_class.new(parameters) }
 
-    [:operation, :supplier, :code, :message, :happened_at].each do |required_attr|
+    [:operation, :supplier, :code, :context, :message, :happened_at].each do |required_attr|
       it "is a no-op in case parameter #{required_attr} is not given" do
         parameters.delete(required_attr)
 

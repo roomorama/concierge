@@ -1,0 +1,30 @@
+<div class="error-event">
+  <%= render partial: "external_errors/events/timestamp", locals: { event: event } %>
+
+  <h3>Cache Hit</h3>
+
+  <p>There was a cache lookup for the key <code><%= event[:key] %></code>, and it
+     was a hit. The value retrieved from the cache was:</p>
+
+   <% css_class = syntax_highlight_class(event[:content_type]) %>
+
+  <%# breaks the indentiation here so that the code will be displayed properly,
+      since the +pre+ tag does not ignore the white spaces %>
+  <%
+    if event[:content_type] == "json"
+      # if the event is of JSON type, the serialization of the +context+ field
+      # into a +Concierge::SafeAccessHash+ instance causes +event[:value]+ to
+      # be an instance of that same class. That would cause problems when trying
+      # to pretty print a JSON content.
+      #
+      # Therefore, transform the hash into a proper JSON string in such cases
+      # so as to allow proper recognition and formatting.
+      value = event[:value].to_h.to_json
+    else
+      value = event[:value]
+    end
+  %>
+  <pre class="<%= css_class %> code-block">
+<%= pretty_print(value, event[:content_type]) %>
+  </pre>
+</div>

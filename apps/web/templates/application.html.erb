@@ -19,7 +19,7 @@
           </a>
 
           <ul class="pure-menu-list">
-            <li class="pure-menu-item"><%= link_to "External Errors", routes.external_errors_path, class: "pure-menu-link" %></li>
+            <li class="pure-menu-item"><%= link_to "External Errors", routes.errors_path, class: "pure-menu-link" %></li>
           </ul>
         </div>
       </div>
@@ -35,5 +35,12 @@
         <%= yield %>
       </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/github.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+
+    <%= javascript "syntax_highlight" %>
   </body>
 </html>

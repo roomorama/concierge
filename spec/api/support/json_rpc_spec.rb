@@ -27,36 +27,56 @@ RSpec.describe API::Support::JSONRPC do
 
         expect(result).not_to be_success
         expect(result.error.code).to eq :invalid_json_representation
-        expect(result.error.message).to match /invalid json/
       end
 
-      it "returns a propert error if the response ID does not match the request ID" do
+      it "returns a proper error if the response ID does not match the request ID" do
         stub_call(:post, url) { build_response({ "id" => "111111111111" }.to_json) }
-        result = subject.invoke("anyMethod")
+        result = nil
+
+        expect {
+          result = subject.invoke("anyMethod")
+        }.to change { API.context.events.size }
 
         expect(result).not_to be_success
         expect(result.error.code).to eq :json_rpc_response_ids_do_not_match
-        expect(result.error.message).to eq "Expected: 888888888888, Actual: 111111111111"
+
+        event = API.context.events.last
+        expect(event.to_h[:type]).to eq "generic_message"
+        expect(event.to_h[:label]).to eq "JSON-RPC Failure"
       end
 
       it "wraps the response error if any" do
         stub_call(:post, url) {
           build_response({ "id" => request_id, "error" => { "code" => "-32602", "message" => "Something went wrong"  } }.to_json)
         }
-        result = subject.invoke("anyMethod")
+        result = nil
+
+        expect {
+          result = subject.invoke("anyMethod")
+        }.to change { API.context.events.size }
 
         expect(result).not_to be_success
         expect(result.error.code).to eq :json_rpc_response_has_errors
-        expect(result.error.message).to eq "-32602 - Something went wrong"
+
+        event = API.context.events.last
+        expect(event.to_h[:type]).to eq "generic_message"
+        expect(event.to_h[:label]).to eq "JSON-RPC Failure"
       end
 
       it "returns an error if there is no `error` or `result` elements" do
         stub_call(:post, url) { build_response({ "id" => request_id }.to_json) }
-        result = subject.invoke("anyMethod")
+        result = nil
+
+        expect {
+          result = subject.invoke("anyMethod")
+        }.to change { API.context.events.size }
 
         expect(result).not_to be_success
         expect(result.error.code).to eq :invalid_json_rpc_response
-        expect(result.error.message).to eq %({"id"=>888888888888})
+
+        event = API.context.events.last
+        expect(event.to_h[:type]).to eq "generic_message"
+        expect(event.to_h[:label]).to eq "JSON-RPC Failure"
       end
     end
 

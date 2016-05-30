@@ -1,0 +1,17 @@
+<div class="error-event">
+  <%= render partial: "external_errors/events/timestamp", locals: { event: event } %>
+
+  <h3>Response Mismatch</h3>
+
+  <p><%= monospace(event[:message]) %></p>
+
+  <% if event[:backtrace] && !event[:backtrace].empty? %>
+    <p>Follows the backtrace of the notification:</p>
+
+    <div class="code-block">
+      <% event[:backtrace].each do |entry| %>
+        <p><%= entry %></p>
+      <% end %>
+    </div>
+  <% end %>
+</div>

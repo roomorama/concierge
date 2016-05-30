@@ -23,7 +23,7 @@
     <tbody>
       <% external_errors.each do |error| %>
         <tr>
-          <td><%= error.id %></td>
+          <td><%= error_link(error) %></td>
           <td><%= error.operation %></td>
           <td><%= error.supplier %></td>
           <td><%= error.code %></td>

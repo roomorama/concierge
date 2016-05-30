@@ -16,5 +16,12 @@ module Web::Views::ExternalErrors
     def format_time(error)
       error.happened_at.strftime("%B %d, %Y at %H:%M")
     end
+
+    # receives an instance of +ExternalError+ and generates a link to the
+    # +show+ page of that error.
+    def error_link(error)
+      name = ["#", error.id].join
+      link_to name, routes.error_path(error.id)
+    end
   end
 end

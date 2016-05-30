@@ -14,6 +14,7 @@ module UseCases
     attribute :supplier,    presence: true
     attribute :code,        presence: true
     attribute :message,     presence: true
+    attribute :context,     presence: true
     attribute :happened_at, presence: true
 
     # Creates a new entry on the +external_errors+ database table. If one of the

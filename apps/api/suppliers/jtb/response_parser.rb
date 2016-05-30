@@ -36,7 +36,10 @@ module JTB
     def parse_rate_plan(response, params)
       response = Concierge::SafeAccessHash.new(response)
 
-      return unrecognised_response(response) unless response[:ga_hotel_avail_rs]
+      unless response[:ga_hotel_avail_rs]
+        no_field(:ga_hotel_avail_rs)
+        return unrecognised_response(response)
+      end
 
       errors = response[:ga_hotel_avail_rs][:errors]
       return handle_error(errors) if errors
@@ -55,17 +58,25 @@ module JTB
 
     def parse_booking(response)
       response = Concierge::SafeAccessHash.new(response)
-      return unrecognised_response(response) unless response[:ga_hotel_res_rs]
+      unless response[:ga_hotel_res_rs]
+        no_field(:ga_hotel_res_rs)
+        return unrecognised_response(response)
+      end
 
       errors = response[:ga_hotel_res_rs][:errors]
       return handle_error(errors) if errors
 
       booking = response.get('ga_hotel_res_rs.hotel_reservations.hotel_reservation')
-      return unrecognised_response(response) unless booking
+      unless booking
+        no_field("ga_hotel_res_rs.hotel_reservations.hotel_reservation")
+        return unrecognised_response(response)
+      end
+
       if booking[:@res_status] == 'OK'
         Result.new(booking[:unique_id][:@id])
       else
-        Result.error(:fail_booking, response)
+        non_successful_booking
+        Result.error(:fail_booking)
       end
     end
 
@@ -139,14 +150,55 @@ module JTB
     end
 
     def unrecognised_response(response)
-      Result.error(:unrecognised_response, response)
+      Result.error(:unrecognised_response)
+    end
+
+    def non_successful_booking
+      message = "JTB indicated the booking not to have been performed successfully." +
+        " The `@res_status` field was supposed to be equal to `OK`, but it was not."
+
+      mismatch(message, caller)
+    end
+
+    def unsuccessful_response
+      label   = "Non-successful Response"
+      message = "The response indicated errors while processing the request. Check " +
+        "the `errors` field."
+
+      report_message(label, message, caller)
+    end
+
+    def no_field(field_name)
+      message = "Expected field `#{field_name}` to be defined, but it was not."
+      mismatch(message, caller)
+    end
+
+    def mismatch(message, backtrace)
+      response_mismatch = Concierge::Context::ResponseMismatch.new(
+        message:   message,
+        backtrace: backtrace
+      )
+
+      API.context.augment(response_mismatch)
+    end
+
+    def report_message(label, message, backtrace)
+      message = Concierge::Context::Message.new(
+        label:     label,
+        message:   message,
+        backtrace: backtrace
+      )
+
+      API.context.augment(message)
     end
 
     def handle_error(response)
       code = response.get("error_info.@code")
       if code
-        Result.error(error_code(code), response)
+        unsuccessful_response
+        Result.error(error_code(code))
       else
+        no_field("error_info.@code")
         unrecognised_response(response)
       end
     end

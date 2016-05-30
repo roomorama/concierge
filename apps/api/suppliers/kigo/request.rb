@@ -66,7 +66,25 @@ module Kigo
     def to_integer(str, error_code)
       Result.new(Integer(str))
     rescue ArgumentError => err
-      Result.error(error_code, err.message)
+      non_numerical_property_id(str)
+      Result.error(error_code)
+    end
+
+    def non_numerical_property_id(id)
+      label   = "Invalid Kigo Property ID"
+      message = "Expected a numerical Kigo property ID, but received instead `#{id}`."
+
+      report_message(label, message, caller)
+    end
+
+    def report_message(label, message, backtrace)
+      generic_message = Concierge::Context::Message.new(
+        label:     label,
+        message:   message,
+        backtrace: backtrace
+      )
+
+      API.context.augment(generic_message)
     end
 
   end
