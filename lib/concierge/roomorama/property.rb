@@ -40,11 +40,13 @@ module Roomorama
       end
 
       Array(attributes[:images]).each do |image|
-        instance.add_image(Roomorama::Image.load(image))
+        data = Concierge::SafeAccessHash.new(image)
+        instance.add_image(Roomorama::Image.load(data))
       end
 
       Array(attributes[:units]).each do |unit|
-        instance.add_unit(Roomorama::Unit.load(unit))
+        data = Concierge::SafeAccessHash.new(unit)
+        instance.add_unit(Roomorama::Unit.load(data))
       end
 
       instance
