@@ -64,7 +64,7 @@ collection :properties do
   attribute :id,         Integer
   attribute :identifier, String
   attribute :host_id,    Integer
-  attribute :data,       JSON
+  attribute :data,       Concierge::PGJSON
   attribute :created_at, Time
   attribute :updated_at, Time
 end
