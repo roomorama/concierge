@@ -63,7 +63,8 @@ module JTB
         operation:   operation,
         supplier:    SUPPLIER_NAME,
         code:        result.error.code,
-        message:     result.error.message,
+        message:     "DEPRECATED",
+        context:     API.context.to_h,
         happened_at: Time.now
       })
     end

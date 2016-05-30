@@ -88,18 +88,21 @@ module API::Support
         code    = json_response["error"]["code"]
         message = json_response["error"]["message"]
 
-        return Result.error(:json_rpc_response_has_errors, [code, message].join(" - "))
+        non_successful_json_rpc_response
+        return Result.error(:json_rpc_response_has_errors)
       end
 
       if json_response.has_key?("result")
         Result.new(json_response["result"])
       else
-        Result.error(:invalid_json_rpc_response, json_response.to_s)
+        invalid_json_rpc_response
+        Result.error(:invalid_json_rpc_response)
       end
     end
 
     def wrong_response_id(expected, actual)
-      Result.error(:json_rpc_response_ids_do_not_match, "Expected: #{expected}, Actual: #{actual}")
+      json_rpc_response_ids_do_not_match
+      Result.error(:json_rpc_response_ids_do_not_match)
     end
 
     def http
@@ -118,6 +121,31 @@ module API::Support
       end
 
       payload
+    end
+
+    def non_successful_json_rpc_response
+      message = "The JSON-RPC response payload contains errors. Check the `errors` field for more information."
+      report_message(message, caller)
+    end
+
+    def invalid_json_rpc_response
+      message = "The returned JSON-RPC payload is not valid. The `result` field is not present."
+      report_message(message, caller)
+    end
+
+    def json_rpc_response_ids_do_not_match
+      message = "The JSON-RPC response payload contains an invalid `id`, which does not match the request `id`."
+      report_message(message, caller)
+    end
+
+    def report_message(message, backtrace)
+      generic_message = Concierge::Context::Message.new(
+        label:     "JSON-RPC Failure",
+        message:   message,
+        backtrace: backtrace
+      )
+
+      API.context.augment(generic_message)
     end
 
     # generates a 12-digits long random number

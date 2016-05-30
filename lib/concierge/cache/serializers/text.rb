@@ -15,6 +15,10 @@ class Concierge::Cache
         Result.new(value.to_s)
       end
 
+      def content_type
+        "text"
+      end
+
     end
   end
 end

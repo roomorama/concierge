@@ -33,4 +33,8 @@ RSpec.configure do |config|
       example.run
     end
   end
+
+  config.before(:each) do
+    API.context = Concierge::Context.new
+  end
 end

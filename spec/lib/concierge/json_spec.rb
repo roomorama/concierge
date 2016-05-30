@@ -17,5 +17,16 @@ RSpec.describe Concierge::JSON do
       expect(result).not_to be_success
       expect(result.error.code).to eq :invalid_json_representation
     end
+
+    it "anounces parse errors" do
+      error = Struct.new(:message).new
+
+      Concierge::Announcer.on(Concierge::JSON::PARSING_ERROR) do |message|
+        error.message = message
+      end
+
+      json_decode("invalid-json")
+      expect(error.message).to match /lexical error: invalid char in json text/
+    end
   end
 end

@@ -36,10 +36,17 @@ RSpec.describe Kigo::Request do
 
     it "fails if the property ID is not numerical" do
       params[:property_id] = "KG-123"
-      result = subject.build_compute_pricing(params)
+      result = nil
+
+      expect {
+        result = subject.build_compute_pricing(params)
+      }.to change { API.context.events.size }
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :invalid_property_id
+
+      event = API.context.events.last
+      expect(event.to_h[:type]).to eq "generic_message"
     end
   end
 

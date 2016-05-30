@@ -77,7 +77,7 @@ RSpec.describe JTB::Price do
     end
 
     it 'fails if gets bad response' do
-      allow(subject).to receive(:best_rate_plan) { Result.error(:some_error, 'Message') }
+      allow(subject).to receive(:best_rate_plan) { Result.error(:some_error) }
 
       result = subject.best_rate_plan(params)
       expect(result).to be_a Result

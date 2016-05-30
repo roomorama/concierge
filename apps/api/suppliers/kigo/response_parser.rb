@@ -35,14 +35,20 @@ module Kigo
 
       if payload["API_RESULT_CODE"] == "E_OK"
         reply = payload["API_REPLY"]
-        return unrecognised_response(response) unless reply
+        unless reply
+          no_field("API_REPLY")
+          return unrecognised_response(response)
+        end
 
         currency = reply["CURRENCY"]
         fees     = reply["FEES_AMOUNT"]
         total    = reply["TOTAL_AMOUNT"]
 
-        if !currency || !fees || !total
-          return unrecognised_response(response)
+        { "CURRENCY" => currency, "FEES_AMOUNT" => fees, "TOTAL_AMOUNT" => total }.each do |key, value|
+          if !value
+            no_field(value)
+            return unrecognised_response(response)
+          end
         end
 
         quotation.available = true
@@ -61,7 +67,8 @@ module Kigo
         quotation.available = false
         Result.new(quotation)
       else
-        Result.error(:quote_call_failed, payload.to_s)
+        non_successful_result_code
+        Result.error(:quote_call_failed)
       end
     end
 
@@ -77,7 +84,28 @@ module Kigo
     end
 
     def unrecognised_response(response)
-      Result.error(:unrecognised_response, response.to_s)
+      Result.error(:unrecognised_response)
+    end
+
+    def non_successful_result_code
+      message = "The `API_RESULT_CODE` obtained was not equal to `E_OK`. Check Kigo's " +
+        "API documentation for an explanation for the `API_RESULT_CODE` returned."
+
+      mismatch(message, caller)
+    end
+
+    def no_field(name)
+      message = "Response does not contain mandatory field `#{name}`."
+      mismatch(message, caller)
+    end
+
+    def mismatch(message, backtrace)
+      response_mismatch = Concierge::Context::ResponseMismatch.new(
+        message:   message,
+        backtrace: backtrace
+      )
+
+      API.context.augment(response_mismatch)
     end
   end
 

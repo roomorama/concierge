@@ -14,10 +14,14 @@ RSpec.describe Web::Views::ExternalErrors::Index do
     end
   end
 
+  it "renders a link to the show page of an error" do
+    expect(rendered).to include %(<a href="/errors/1">#1</a>)
+  end
+
   def generate_error(id)
     double(
       id:          id,
-      operation:   id.odd? ? "quote_price" : "booking",
+      operation:   id.odd? ? "quote" : "booking",
       supplier:    "Supplier#{id}",
       code:        "error_#{id}",
       happened_at: Time.now - id * 24 * 60 * 60 # +id+ days ago

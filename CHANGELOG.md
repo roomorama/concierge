@@ -4,12 +4,16 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
-## [0.2.2] - 2016-05-23
-### Changed
-- fixed a bug on JTB's response parser when a unit has only one rate plan
+## [0.3.0] - 2016-05-30
+### Added
+- `Concierge::Context`, tracking of events on API requests, reporting on the `web` app for external errors.
 
+## [0.2.2] - 2016-05-23
 ### Added
 - checking exceeded stay length for JTB
+
+### Changed
+- fixed a bug on JTB's response parser when a unit has only one rate plan
 
 ## [0.2.1] - 2016-05-20
 ### Changed

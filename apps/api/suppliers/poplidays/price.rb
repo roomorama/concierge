@@ -67,8 +67,8 @@ module Poplidays
         # no support for on-request properties. Only properties with instant confirmation
         # should exist on Roomorama.
         if availability["requestOnly"] == true
-          message = ["Property ID: ", params[:property_id], ". Attempted stay:\n", availability.to_s].join
-          return Result.error(:unsupported_on_request_property, message)
+          no_instant_confirmation
+          return Result.error(:unsupported_on_request_property)
         end
 
         mandatory_services = retrieve_mandatory_services(params[:property_id])
@@ -92,6 +92,7 @@ module Poplidays
     def check_availability(calendar, check_in, check_out)
       availabilities = calendar["availabilities"]
       unless availabilities.is_a? Array
+        no_availabilities_collection
         return unrecognised_response(calendar)
       end
 
@@ -121,6 +122,7 @@ module Poplidays
         if payload.key?("mandatoryServicesPrice")
           Result.new(payload["mandatoryServicesPrice"])
         else
+          no_mandatory_services_data
           unrecognised_response(payload)
         end
       end
@@ -133,11 +135,7 @@ module Poplidays
         response = result.value
         Result.new(response.body)
       else
-        # augment the upstream error message by adding the endpoint which caused
-        # the failure. Useful in this scenario where two endpoints are involved
-        # in the price calculation.
-        message = [result.error.message, " - ", endpoint].join
-        Result.error(result.error.code, message)
+        result
       end
     end
 
@@ -186,7 +184,37 @@ module Poplidays
     end
 
     def unrecognised_response(response)
-      Result.error(:unrecognised_response, response.to_s)
+      Result.error(:unrecognised_response)
+    end
+
+    def no_instant_confirmation
+      message = "On request properties are not supported in the Poplidays integration. " +
+        "The `requestOnly` field was set to `true`, meaning the booking requires host confirmation."
+
+      mismatch(message, caller)
+    end
+
+    def no_availabilities_collection
+      message = "Expected a collection of availability information under the " +
+        "`availabilities` field, none was found."
+
+      mismatch(message, caller)
+    end
+
+    def no_mandatory_services_data
+      message = "Expected to find the price for mandatory services under the " +
+        "`mandatoryServicesPrice`, but none was found."
+
+      mismatch(message, caller)
+    end
+
+    def mismatch(message, backtrace)
+      response_mismatch = Concierge::Context::ResponseMismatch.new(
+        message:   message,
+        backtrace: backtrace
+      )
+
+      API.context.augment(response_mismatch)
     end
   end
 
