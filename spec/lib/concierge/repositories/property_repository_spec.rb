@@ -49,6 +49,15 @@ RSpec.describe PropertyRepository do
     end
   end
 
+  describe ".only" do
+    it "selects only the attribute given" do
+      3.times { |n| create_property(identifier: "prop#{n}") }
+
+      identifiers = described_class.only(:identifier).map(&:identifier)
+      expect(identifiers).to eq ["prop0", "prop1", "prop2"]
+    end
+  end
+
   private
 
   def create_property(overrides = {})
