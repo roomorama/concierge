@@ -19,11 +19,11 @@ class PropertyRepository
     query { where(host_id: host.id) }
   end
 
-  # returns the +Property+ that matches the given identifier (i.e., the identication
+  # looks for the +Property+ that matches the given identifier (i.e., the identication
   # of the property from the supplier's point of view.)
   #
-  # Returns +nil+ if there is no property with the given identifier.
+  # Returns a collection of properties whose identifier match the given string.
   def self.identified_by(identifier)
-    query { where(identifier: identifier) }.first
+    query { where(identifier: identifier) }
   end
 end
