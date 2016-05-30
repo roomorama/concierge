@@ -48,7 +48,7 @@ module Workers::Comparison
       #    to the content of the new object.
       added_meta.each do |attr|
         changed    = true
-        diff[attr] = new.public_send(atr)
+        diff[attr] = new.public_send(attr)
       end
 
       # 4. for each attribute that was orignally set but is not anymore, we +erase+ it
