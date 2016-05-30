@@ -37,15 +37,15 @@ RSpec.describe PropertyRepository do
     it "returns the property identified by the given argument" do
       create_property
 
-      error = described_class.identified_by("PROP1")
+      error = described_class.identified_by("PROP1").first
       expect(error).to be_a Property
       expect(error.identifier).to eq "PROP1"
     end
 
-    it "is nil in case there is no entry that matches the given identifier" do
+    it "is empty in case there is no entry that matches the given identifier" do
       create_property
 
-      expect(described_class.identified_by("invalid")).to be_nil
+      expect(described_class.identified_by("invalid").to_a).to eq []
     end
   end
 
