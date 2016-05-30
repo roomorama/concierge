@@ -26,4 +26,9 @@ class PropertyRepository
   def self.identified_by(identifier)
     query { where(identifier: identifier) }
   end
+
+  # changes the +select+ clause to include only the column wit the name given.
+  def self.only(column)
+    query { select(column) }
+  end
 end
