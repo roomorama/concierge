@@ -44,7 +44,7 @@ module AtLeisure
         operation:   operation,
         supplier:    SUPPLIER_NAME,
         code:        result.error.code,
-        context:     API.context.to_h,
+        context:     Concierge.context.to_h,
         message:     "DEPRECATED",
         happened_at: Time.now
       })

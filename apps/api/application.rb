@@ -6,23 +6,6 @@ require_relative "middlewares/roomorama_webhook"
 require_relative "middlewares/request_context"
 
 module API
-  class << self
-
-    # the +context+ variable on the +API+ module holds the current request
-    # context. It is initialized to an instance of +Concierge::Context+ at
-    # the +API::Middlewares::RequestContext+ middleware and from there, the
-    # context is augmented as the request is processed.
-    #
-    # See the documentation of the +Concierge::Context+ class for more
-    # information, as well as usages of this variable throughout the +api+
-    # app to understand how it fits the request lifecycle.
-    attr_accessor :context
-  end
-
-  # initializes +API.context+ to a new instance on boot so that the context
-  # is explorable on console sessions, as well as during test execution.
-  API.context = Concierge::Context.new
-
   class Application < Hanami::Application
     configure do
       root __dir__

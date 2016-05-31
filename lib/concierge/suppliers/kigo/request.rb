@@ -84,7 +84,7 @@ module Kigo
         backtrace: backtrace
       )
 
-      API.context.augment(generic_message)
+      Concierge.context.augment(generic_message)
     end
 
   end

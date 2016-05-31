@@ -40,12 +40,12 @@ RSpec.describe Kigo::Request do
 
       expect {
         result = subject.build_compute_pricing(params)
-      }.to change { API.context.events.size }
+      }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :invalid_property_id
 
-      event = API.context.events.last
+      event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "generic_message"
     end
   end

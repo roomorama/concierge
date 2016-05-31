@@ -35,12 +35,12 @@ RSpec.describe API::Support::JSONRPC do
 
         expect {
           result = subject.invoke("anyMethod")
-        }.to change { API.context.events.size }
+        }.to change { Concierge.context.events.size }
 
         expect(result).not_to be_success
         expect(result.error.code).to eq :json_rpc_response_ids_do_not_match
 
-        event = API.context.events.last
+        event = Concierge.context.events.last
         expect(event.to_h[:type]).to eq "generic_message"
         expect(event.to_h[:label]).to eq "JSON-RPC Failure"
       end
@@ -53,12 +53,12 @@ RSpec.describe API::Support::JSONRPC do
 
         expect {
           result = subject.invoke("anyMethod")
-        }.to change { API.context.events.size }
+        }.to change { Concierge.context.events.size }
 
         expect(result).not_to be_success
         expect(result.error.code).to eq :json_rpc_response_has_errors
 
-        event = API.context.events.last
+        event = Concierge.context.events.last
         expect(event.to_h[:type]).to eq "generic_message"
         expect(event.to_h[:label]).to eq "JSON-RPC Failure"
       end
@@ -69,12 +69,12 @@ RSpec.describe API::Support::JSONRPC do
 
         expect {
           result = subject.invoke("anyMethod")
-        }.to change { API.context.events.size }
+        }.to change { Concierge.context.events.size }
 
         expect(result).not_to be_success
         expect(result.error.code).to eq :invalid_json_rpc_response
 
-        event = API.context.events.last
+        event = Concierge.context.events.last
         expect(event.to_h[:type]).to eq "generic_message"
         expect(event.to_h[:label]).to eq "JSON-RPC Failure"
       end
