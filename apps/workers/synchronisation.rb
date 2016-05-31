@@ -11,7 +11,7 @@ module Workers
   # Usage
   #
   #   host = Host.last
-  #   sync = +Workers::Synchronisation.new(host)
+  #   sync = Workers::Synchronisation.new(host)
   #
   #   property = Roomorama::Property.new("id1")
   #   # supplier API is called, property is built

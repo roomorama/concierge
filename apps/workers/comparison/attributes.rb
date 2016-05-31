@@ -51,7 +51,7 @@ module Workers::Comparison
         diff[attr] = new.public_send(attr)
       end
 
-      # 4. for each attribute that was orignally set but is not anymore, we +erase+ it
+      # 4. for each attribute that was originally set but is not anymore, we +erase+ it
       removed_meta.each do |attr|
         changed = true
         diff.erase(attr)
