@@ -14,12 +14,12 @@ RSpec.describe Kigo::ResponseParser do
 
       expect {
         result = subject.compute_pricing(request_params, response)
-      }.to change { API.context.events.size }
+      }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :quote_call_failed
 
-      event = API.context.events.last
+      event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
     end
 
@@ -36,12 +36,12 @@ RSpec.describe Kigo::ResponseParser do
 
       expect {
         result = subject.compute_pricing(request_params, response)
-      }.to change { API.context.events.size }
+      }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unrecognised_response
 
-      event = API.context.events.last
+      event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
     end
 
@@ -51,12 +51,12 @@ RSpec.describe Kigo::ResponseParser do
 
       expect {
         result = subject.compute_pricing(request_params, response)
-      }.to change { API.context.events.size }
+      }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unrecognised_response
 
-      event = API.context.events.last
+      event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
     end
 

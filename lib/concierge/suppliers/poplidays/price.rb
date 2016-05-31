@@ -214,7 +214,7 @@ module Poplidays
         backtrace: backtrace
       )
 
-      API.context.augment(response_mismatch)
+      Concierge.context.augment(response_mismatch)
     end
   end
 

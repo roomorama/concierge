@@ -50,12 +50,12 @@ RSpec.describe JTB::ResponseParser do
 
       expect {
         result = subject.parse_rate_plan(response, params)
-      }.to change { API.context.events.size }
+      }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :invalid_request
 
-      event = API.context.events.last
+      event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "generic_message"
     end
 

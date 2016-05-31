@@ -145,7 +145,7 @@ module API::Support
         backtrace: backtrace
       )
 
-      API.context.augment(generic_message)
+      Concierge.context.augment(generic_message)
     end
 
     # generates a 12-digits long random number
