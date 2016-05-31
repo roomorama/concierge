@@ -1,9 +1,7 @@
 require "spec_helper"
 
 RSpec.describe SupplierRepository do
-  let(:supplier_attributes) {
-    { name: "Supplier A" }
-  }
+  include Support::Factories
 
   describe ".count" do
     it "is zero when there are no records in the database" do
@@ -29,14 +27,5 @@ RSpec.describe SupplierRepository do
       create_supplier
       expect(described_class.named("Supplier X")).to be_nil
     end
-  end
-
-  private
-
-  def create_supplier(overrides = {})
-    attributes = supplier_attributes.merge(overrides)
-    supplier = Supplier.new(attributes)
-
-    described_class.create(supplier)
   end
 end
