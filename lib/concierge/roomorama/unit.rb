@@ -45,7 +45,8 @@ module Roomorama
       end
 
       Array(attributes[:images]).each do |image|
-        instance.add_image(Roomorama::Image.load(image))
+        data = Concierge::SafeAccessHash.new(image)
+        instance.add_image(Roomorama::Image.load(data))
       end
 
       instance
