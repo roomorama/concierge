@@ -1,13 +1,7 @@
 require "spec_helper"
 
 RSpec.describe PropertyRepository do
-  let(:property_attributes) {
-    {
-      identifier: "PROP1",
-      host_id:    1,
-      data:       { title: "Studio Apartment in Madrid" },
-    }
-  }
+  include Support::Factories
 
   describe ".count" do
     it "is zero when there are no records in the database" do
@@ -21,9 +15,9 @@ RSpec.describe PropertyRepository do
   end
 
   describe ".from_host" do
-    let(:host)    { double(id: 2) }
-    let!(:valid)   { create_property(host_id: 2) }
-    let!(:invalid) { create_property(host_id: 4) }
+    let(:host)     { create_host }
+    let!(:valid)   { create_property(host_id: host.id) }
+    let!(:invalid) { create_property(host_id: create_host.id) }
 
     it "filters properties to those belonging to a given host" do
       properties = described_class.from_host(host).to_a
@@ -56,14 +50,5 @@ RSpec.describe PropertyRepository do
       identifiers = described_class.only(:identifier).map(&:identifier)
       expect(identifiers).to eq ["prop0", "prop1", "prop2"]
     end
-  end
-
-  private
-
-  def create_property(overrides = {})
-    attributes = property_attributes.merge(overrides)
-    property   = Property.new(attributes)
-
-    described_class.create(property)
   end
 end

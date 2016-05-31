@@ -1,17 +1,9 @@
 require "spec_helper"
 
 RSpec.describe Workers::Router do
-  let(:host) {
-    host = Host.new(
-      supplier_id:  1,
-      identifier:   "supplier1",
-      username:     "supplier",
-      access_token: "abc123"
-    )
+  include Support::Factories
 
-    HostRepository.create(host)
-  }
-
+  let(:host) { create_host }
   let(:roomorama_property) {
     Roomorama::Property.new("prop1").tap do |property|
       property.title        = "Studio Apartment"
@@ -74,17 +66,6 @@ RSpec.describe Workers::Router do
 
       operation = subject.dispatch(roomorama_property)
       expect(operation).to be_nil
-    end
-
-    def create_property(overrides = {})
-      attributes = {
-        identifier: "prop1",
-        host_id: host.id,
-        data: { title: "Test property" }
-      }.merge(overrides)
-
-      property = Property.new(attributes)
-      PropertyRepository.create(property)
     end
   end
 end
