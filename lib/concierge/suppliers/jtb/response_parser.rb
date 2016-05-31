@@ -179,7 +179,7 @@ module JTB
         backtrace: backtrace
       )
 
-      API.context.augment(response_mismatch)
+      Concierge.context.augment(response_mismatch)
     end
 
     def report_message(label, message, backtrace)
@@ -189,7 +189,7 @@ module JTB
         backtrace: backtrace
       )
 
-      API.context.augment(message)
+      Concierge.context.augment(message)
     end
 
     def handle_error(response)

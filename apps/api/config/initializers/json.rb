@@ -3,5 +3,5 @@ Concierge::Announcer.on(Concierge::JSON::PARSING_ERROR) do |error_message|
     message: error_message
   )
 
-  API.context.augment(parse_error)
+  Concierge.context.augment(parse_error)
 end

@@ -39,7 +39,7 @@ module Poplidays
         supplier:    SUPPLIER_NAME,
         code:        result.error.code,
         message:     "DEPRECATED",
-        context:     API.context.to_h,
+        context:     Concierge.context.to_h,
         happened_at: Time.now
       })
     end

@@ -20,13 +20,13 @@ RSpec.describe API::Middlewares::RequestContext do
   it "initializes the request context and includes request information" do
     allow(Time).to receive(:now) { Time.new("2016", "05", "21") }
 
-    previous_context = API.context
+    previous_context = Concierge.context
     expect(post("/jtb/quote", headers)).to eq upstream_response
 
-    expect(API.context).to be_a Concierge::Context
-    expect(API.context.object_id).not_to eq previous_context.object_id
-    expect(API.context.events.size).to eq 1
-    expect(API.context.events.first.to_h).to eq({
+    expect(Concierge.context).to be_a Concierge::Context
+    expect(Concierge.context.object_id).not_to eq previous_context.object_id
+    expect(Concierge.context.events.size).to eq 1
+    expect(Concierge.context.events.first.to_h).to eq({
       type:        "incoming_request",
       timestamp:   Time.now,
       http_method: "POST",

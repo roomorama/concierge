@@ -36,12 +36,12 @@ RSpec.describe Poplidays::Price do
 
       expect {
         result = subject.quote(params)
-      }.to change { API.context.events.size }
+      }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unrecognised_response
 
-      event = API.context.events.last
+      event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
     end
 
@@ -53,12 +53,12 @@ RSpec.describe Poplidays::Price do
 
       expect {
         result = subject.quote(params)
-      }.to change { API.context.events.size }
+      }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unrecognised_response
 
-      event = API.context.events.last
+      event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
     end
 
@@ -78,12 +78,12 @@ RSpec.describe Poplidays::Price do
 
       expect {
         result = subject.quote(params)
-      }.to change { API.context.events.size }
+      }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unsupported_on_request_property
 
-      event = API.context.events.last
+      event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
     end
 

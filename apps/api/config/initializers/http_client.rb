@@ -12,7 +12,7 @@ Concierge::Announcer.on(Concierge::HTTPClient::ON_REQUEST) do |http_method, url,
     body:         body
   )
 
-  API.context.augment(network_request)
+  Concierge.context.augment(network_request)
 end
 
 Concierge::Announcer.on(Concierge::HTTPClient::ON_RESPONSE) do |status, headers, body|
@@ -22,7 +22,7 @@ Concierge::Announcer.on(Concierge::HTTPClient::ON_RESPONSE) do |status, headers,
     body:    body
   )
 
-  API.context.augment(network_response)
+  Concierge.context.augment(network_response)
 end
 
 Concierge::Announcer.on(Concierge::HTTPClient::ON_FAILURE) do |message|
@@ -30,5 +30,5 @@ Concierge::Announcer.on(Concierge::HTTPClient::ON_FAILURE) do |message|
     message: message
   )
 
-  API.context.augment(network_failure)
+  Concierge.context.augment(network_failure)
 end
