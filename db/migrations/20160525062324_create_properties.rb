@@ -2,9 +2,9 @@ Hanami::Model.migration do
   change do
     create_table :properties do
       primary_key :id
+      foreign_key :host_id, :hosts, on_delete: :set_null, null: false
 
       column :identifier, String,  null: false
-      column :host_id,    Integer, null: false
       column :data,       JSON,    null: false
 
       column :created_at, Time,    null: false

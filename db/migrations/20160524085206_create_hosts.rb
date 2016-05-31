@@ -3,7 +3,8 @@ Hanami::Model.migration do
     create_table :hosts do
       primary_key :id
 
-      column :supplier_id,  Integer, null: false
+      foreign_key :supplier_id,  :suppliers, on_delete: :set_null, null: false
+
       column :identifier,   String,  null: false
       column :username,     String,  null: false
       column :access_token, String,  null: false
