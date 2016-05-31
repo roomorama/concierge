@@ -21,6 +21,33 @@ RSpec.describe Roomorama::Diff do
     expect(subject.description).to be_nil
   end
 
+  describe "#[]=" do
+    it "allows setting attributes to the diff" do
+      expect(subject.title).to be_nil
+      subject[:title] = "New Title"
+      expect(subject.title).to eq "New Title"
+    end
+
+    it "ignores unknown attributes" do
+      expect {
+        subject[:unknown] = "attribute"
+      }.not_to raise_error
+    end
+  end
+
+  describe "#erase" do
+    it "causes the attribute to be serialized even if blank" do
+      subject.title = "New Title"
+      subject.erase(:tax_rate)
+
+      expect(subject.to_h).to eq({
+        identifier: "JPN123",
+        title:      "New Title",
+        tax_rate:   nil
+      })
+    end
+  end
+
   describe "#add_image" do
     let(:image) { Roomorama::Image.new("ID123") }
 
@@ -133,6 +160,25 @@ RSpec.describe Roomorama::Diff do
       expect(subject.update_calendar(calendar)).to be
 
       expect(subject.calendar).to eq({ "2016-05-22" => true, "2016-05-25" => true })
+    end
+  end
+
+  describe "#empty?" do
+    it "is empty if no changes to meta attributes were applied" do
+      expect(subject).to be_empty
+    end
+
+    it "is not empty if one attribute is changed" do
+      subject.title = "New Title"
+      expect(subject).not_to be_empty
+    end
+
+    it "is not empty if images were added" do
+      image = Roomorama::Image.new("img")
+      image.url = "https://www.example.org/img.png"
+      subject.add_image(image)
+
+      expect(subject).not_to be_empty
     end
   end
 

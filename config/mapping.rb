@@ -33,3 +33,38 @@ collection :reservations do
   attribute :guests,      Integer
   attribute :code,        String
 end
+
+collection :suppliers do
+  entity     Supplier
+  repository SupplierRepository
+
+  attribute :id,         Integer
+  attribute :name,       String
+  attribute :created_at, Time
+  attribute :updated_at, Time
+end
+
+collection :hosts do
+  entity     Host
+  repository HostRepository
+
+  attribute :id,           Integer
+  attribute :supplier_id,  Integer
+  attribute :identifier,   String
+  attribute :username,     String
+  attribute :access_token, String
+  attribute :created_at,   Time
+  attribute :updated_at,   Time
+end
+
+collection :properties do
+  entity     Property
+  repository PropertyRepository
+
+  attribute :id,         Integer
+  attribute :identifier, String
+  attribute :host_id,    Integer
+  attribute :data,       Concierge::PGJSON
+  attribute :created_at, Time
+  attribute :updated_at, Time
+end

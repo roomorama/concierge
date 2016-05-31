@@ -1,5 +1,4 @@
 require 'hanami/helpers'
-require 'hanami/assets'
 require_relative "middlewares/health_check"
 require_relative "middlewares/request_logging"
 require_relative "middlewares/authentication"
@@ -32,8 +31,7 @@ module API
         'support',
         'controllers',
         'views',
-        'use_cases',
-        'suppliers'
+        'use_cases'
       ]
 
       routes 'config/routes'

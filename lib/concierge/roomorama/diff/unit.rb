@@ -15,22 +15,27 @@ class Roomorama::Diff
       end
     end
 
-    attr_accessor :title, :description, :nightly_rate, :weekly_rate, :monthly_rate,
-      :number_of_bedrooms, :number_of_units, :identifier, :number_of_bathrooms,
-      :floor, :number_of_double_beds, :number_of_single_beds, :number_of_sofa_beds,
-      :surface, :surface_unit, :amenities, :max_guests, :minimum_stay, :smoking_allowed,
-      :pets_allowed, :tax_rate, :extra_guest_surcharge, :disabled
+    attr_accessor *Roomorama::Unit::ATTRIBUTES
 
     include Roomorama::Mappers
 
     ChangeSet = Struct.new(:created, :updated, :deleted)
 
-    attr_reader :image_changes
+    attr_reader :image_changes, :erased
 
     # identifier - the identifier on the supplier system. Required attribute
     def initialize(identifier)
-      @identifier = identifier
+      @identifier    = identifier
       @image_changes = ChangeSet.new([], [], [])
+      @erased        = []
+    end
+
+    # allows setting attributes using a Hash-like syntax.
+    def []=(attr, value)
+      if Roomorama::Unit::ATTRIBUTES.include?(attr.to_sym)
+        setter = [attr, "="].join
+        public_send(setter, value)
+      end
     end
 
     # A unit diff needs a valid identifier.
@@ -40,6 +45,14 @@ class Roomorama::Diff
       else
         true
       end
+    end
+
+    # allows the caller to specify that a given attribute was erased in the diff.
+    # By default, the +scrub+ method removes all +nil+ entries from the resulting
+    # Hash when +to_h+ is invoked. However, if +erase+ was called for a specific
+    # attribute, that attribute will be set to +nil+ when +to_h+ is called.
+    def erase(attr)
+      erased << attr.to_s
     end
 
     def add_image(image)
@@ -105,7 +118,7 @@ class Roomorama::Diff
         data[:availabilities] = map_availabilities(self)
       end
 
-      scrub(data)
+      scrub(data, erased)
     end
   end
 

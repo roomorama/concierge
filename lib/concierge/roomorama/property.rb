@@ -30,7 +30,29 @@ module Roomorama
       end
     end
 
-    attr_accessor :type, :title, :address, :postal_code, :city, :description,
+    def self.load(attributes)
+      instance = new(attributes[:identifier])
+
+      ATTRIBUTES.each do |attr|
+        if attributes[attr]
+          instance[attr] = attributes[attr]
+        end
+      end
+
+      Array(attributes[:images]).each do |image|
+        data = Concierge::SafeAccessHash.new(image)
+        instance.add_image(Roomorama::Image.load(data))
+      end
+
+      Array(attributes[:units]).each do |unit|
+        data = Concierge::SafeAccessHash.new(unit)
+        instance.add_unit(Roomorama::Unit.load(data))
+      end
+
+      instance
+    end
+
+    ATTRIBUTES = [:type, :title, :address, :postal_code, :city, :description,
       :number_of_bedrooms, :max_guests, :minimum_stay, :nightly_rate,
       :weekly_rate, :monthly_rate, :default_to_available, :availabilities,
       :identifier, :subtype, :apartment_number, :neighborhood, :country_code,
@@ -43,11 +65,20 @@ module Roomorama
       :cancellation_policy, :services_cleaning, :services_cleaning_rate,
       :services_cleaning_required, :services_airport_pickup, :services_car_rental,
       :services_car_rental_rate, :services_airport_pickup_rate, :services_concierge,
-      :services_concierge_rate, :disabled, :instant_booking
+      :services_concierge_rate, :disabled, :instant_booking]
+
+    attr_accessor *ATTRIBUTES
 
     # identifier - the identifier on the supplier system. Required attribute
     def initialize(identifier)
       @identifier = identifier
+    end
+
+    def []=(name, value)
+      if ATTRIBUTES.include?(name)
+        setter = [name, "="].join
+        public_send(setter, value)
+      end
     end
 
     def multi_unit!
@@ -86,7 +117,6 @@ module Roomorama
     #
     # * a non-empty identifier
     # * a list of images
-    # * a set of availabilities.
     #
     # Note that the validations performed here are basic validations performed in
     # order to avoid making API calls to Roomorama when it is possible to know in
@@ -103,9 +133,24 @@ module Roomorama
         raise ValidationError.new("identifier is not given or empty")
       elsif images.empty?
         raise ValidationError.new("no images")
-      elsif calendar.empty?
+      else
+        true
+      end
+    end
+
+    # enforces that the property have a non-empty availabilities calendar
+    # (necessary when publishing a property).
+    #
+    # Raises a +Roomorama::Property::ValidationError+ in case the calendar
+    # is empty, or +true+ otherwise.
+    #
+    # If the property has any units, calendar is required for each of them
+    # as well.
+    def require_calendar!
+      if calendar.empty?
         raise ValidationError.new("no availabilities")
       else
+        units.each(&:require_calendar!)
         true
       end
     end

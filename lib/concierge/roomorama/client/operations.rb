@@ -16,6 +16,12 @@ class Roomorama::Client
       Diff.new(property_diff)
     end
 
+    # Performs a +disable+ operation, removing the property with the given
+    # identifiers on Roomorama.
+    def self.disable(identifiers)
+      Disable.new(identifiers)
+    end
+
   end
 
 end
