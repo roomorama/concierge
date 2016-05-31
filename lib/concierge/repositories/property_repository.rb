@@ -19,7 +19,7 @@ class PropertyRepository
     query { where(host_id: host.id) }
   end
 
-  # looks for the +Property+ that matches the given identifier (i.e., the identication
+  # looks for the +Property+ that matches the given identifier (i.e., the identification
   # of the property from the supplier's point of view.)
   #
   # Returns a collection of properties whose identifier match the given string.

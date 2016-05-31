@@ -2,11 +2,11 @@ module Workers
 
   # +Workers::Router+
   #
-  # This class is reponsible of determining what operation, if any, should be
+  # This class is responsible for determining what operation, if any, should be
   # performed for a given property that was received from a supplier.
   #
   # Example
-  #   property = Romorama::Property.new("property1")
+  #   property = Roomorama::Property.new("property1")
   #   # supplier API is called and +property+ is populated
   #   host = Host.last
   #   router = Workers::Router.new(host)
