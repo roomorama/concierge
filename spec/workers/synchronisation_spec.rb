@@ -1,17 +1,9 @@
 require "spec_helper"
 
 RSpec.describe Workers::Synchronisation do
-  let(:host) {
-    host = Host.new(
-      supplier_id:  1,
-      identifier:   "supplier1",
-      username:     "supplier",
-      access_token: "abc123"
-    )
+  include Support::Factories
 
-    HostRepository.create(host)
-  }
-
+  let(:host) { create_host }
   let(:roomorama_property) {
     Roomorama::Property.new("prop1").tap do |property|
       property.title        = "Studio Apartment"
@@ -68,7 +60,7 @@ RSpec.describe Workers::Synchronisation do
     end
 
     it "enqueues a disable operation with non-processed identifiers" do
-      create_property(identifier: "prop1", data: { identifier: "prop1" })
+      create_property(identifier: "prop1", host_id: host.id, data: { identifier: "prop1" })
       create_property(identifier: "prop2", host_id: host.id + 1)
       create_property(identifier: "prop3", host_id: host.id)
 
@@ -87,17 +79,6 @@ RSpec.describe Workers::Synchronisation do
       operation = operations.last
       expect(operation).to be_a Roomorama::Client::Operations::Disable
       expect(operation.identifiers).to eq ["prop3"]
-    end
-
-    def create_property(overrides = {})
-      attributes = {
-        identifier: "prop1",
-        host_id: host.id,
-        data: { title: "Test property" }
-      }.merge(overrides)
-
-      property = Property.new(attributes)
-      PropertyRepository.create(property)
     end
   end
 end

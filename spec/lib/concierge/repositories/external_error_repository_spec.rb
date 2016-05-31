@@ -1,16 +1,7 @@
 require "spec_helper"
 
 RSpec.describe ExternalErrorRepository do
-  let(:external_error_attributes) {
-    {
-      operation:   "quote",
-      supplier:    "SupplierA",
-      code:        "http_error",
-      message:     "Network Failure",
-      context:     { type: "network_failure" },
-      happened_at: Time.now
-    }
-  }
+  include Support::Factories
 
   describe ".count" do
     it "is zero when there are no records in the database" do
@@ -18,7 +9,7 @@ RSpec.describe ExternalErrorRepository do
     end
 
     it "increases when new records are added" do
-      create_error
+      create_external_error
       expect(described_class.count).to eq 1
     end
   end
@@ -29,8 +20,8 @@ RSpec.describe ExternalErrorRepository do
     end
 
     it "returns the most recent external error" do
-      create_error(supplier: "Old Supplier")
-      create_error(supplier: "New Supplier")
+      create_external_error(supplier: "Old Supplier", happened_at: Time.now)
+      create_external_error(supplier: "New Supplier", happened_at: Time.now + 10)
 
       error = described_class.most_recent
       expect(error).to be_a ExternalError
@@ -40,8 +31,8 @@ RSpec.describe ExternalErrorRepository do
 
   describe ".paginate" do
     before do
-      create_error(happened_at: Time.now - 24 * 60 * 60)
-      create_error(supplier: "SupplierB")
+      create_external_error(happened_at: Time.now - 24 * 60 * 60)
+      create_external_error(supplier: "SupplierB")
     end
 
     it "uses the defaults in case the parameters given are nil" do
@@ -68,14 +59,5 @@ RSpec.describe ExternalErrorRepository do
       collection = described_class.paginate(page: 2).to_a
       expect(collection.size).to eq 0
     end
-  end
-
-  private
-
-  def create_error(overrides = {})
-    attributes = external_error_attributes.merge(overrides)
-    error = ExternalError.new(attributes)
-
-    described_class.create(error)
   end
 end
