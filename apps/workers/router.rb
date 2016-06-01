@@ -26,7 +26,7 @@ module Workers
     # cannot be loaded back into a +Roomorama::Property+ instance.
     class InvalidSerializedDataError < StandardError
       def initialize(property)
-        super("Property ##{property.id} has a `data` that cannot be loaded.")
+        super("Property ##{property.id} has a `data` field that cannot be loaded.")
       end
     end
 

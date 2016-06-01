@@ -59,7 +59,7 @@ module Roomorama
     rescue Roomorama::Error => err
       data = {
         error:      err.message,
-        attributes: attributes
+        attributes: attributes.to_h
       }
 
       Result.error(:missing_required_data, data)
