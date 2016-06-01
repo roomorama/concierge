@@ -30,6 +30,11 @@ module Roomorama
       end
     end
 
+    # creates a +Roomorama::Property+ instance from a Hash of +attributes+ given.
+    # This method returns a +Result+ instance wrapping the corresponding instance
+    # of +Roomorama::Property+ when successful. In case there are validation errors
+    # (lack of identifiers, mostly), this method will return an unsuccessful +Result+
+    # instance.
     def self.load(attributes)
       instance = new(attributes[:identifier])
 
@@ -49,7 +54,9 @@ module Roomorama
         instance.add_unit(Roomorama::Unit.load(data))
       end
 
-      instance
+      Result.new(instance)
+    rescue Roomorama::Error
+      Result.error(:missing_required_data)
     end
 
     ATTRIBUTES = [:type, :title, :address, :postal_code, :city, :description,
