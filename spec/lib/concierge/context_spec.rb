@@ -33,6 +33,8 @@ RSpec.describe Concierge::Context do
     )
   }
 
+  subject { described_class.new(type: "spec") }
+
   describe "#augment" do
     it "includes the given event to the list of events of the context" do
       subject.augment(incoming_request)
@@ -53,6 +55,7 @@ RSpec.describe Concierge::Context do
       expect(subject.to_h).to eq({
         version: Concierge::VERSION,
         host:    Socket.gethostname,
+        type:    "spec",
         events: [
           {
             type:        "incoming_request",

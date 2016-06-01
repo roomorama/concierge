@@ -9,7 +9,7 @@ RSpec.describe Workers::Synchronisation do
       property.title        = "Studio Apartment"
       property.description  = "Largest Apartment in New York"
       property.nightly_rate = 100
-      property.weekly_rate  =  200
+      property.weekly_rate  = 200
       property.monthly_rate = 300
 
       image = Roomorama::Image.new("img1")
@@ -36,38 +36,102 @@ RSpec.describe Workers::Synchronisation do
 
   subject { described_class.new(host) }
 
-  describe "#push" do
-    it "includes the property in the list of processed properties" do
-      subject.push(roomorama_property)
-      expect(subject.processed).to eq %w(prop1)
-    end
+  describe "#start" do
+    it "pushes the property to processing if there are no errors" do
+      operation = nil
+      expect(subject).to receive(:enqueue) { |op| operation = op }
 
-    it "enqueues a publish operation" do
-      expect(subject).to receive(:enqueue)
-      operation = subject.push(roomorama_property)
-
+      subject.start("prop1") { Result.new(roomorama_property) }
       expect(operation).to be_a Roomorama::Client::Operations::Publish
       expect(operation.property).to eq roomorama_property
+    end
+
+    context "error handling" do
+      let(:errors) { [] }
+      before do
+        Concierge::Announcer.on(Concierge::Errors::EXTERNAL_ERROR) do |params|
+          errors << params
+        end
+      end
+
+      it "announces an error if the property returned does not pass validations" do
+        roomorama_property.images.first.identifier = nil
+        subject.start("prop1") { Result.new(roomorama_property) }
+
+        expect(errors.size).to eq 1
+        error = errors.first
+        expect(error[:operation]).to eq  "sync"
+        expect(error[:supplier]).to eq "Supplier A"
+        expect(error[:code]).to eq :missing_data
+        expect(error[:message]).to eq "DEPRECATED"
+
+        context = error[:context]
+        expect(context[:version]).to eq  Concierge::VERSION
+        expect(context[:host]).to eq Socket.gethostname
+        expect(context[:type]).to eq "batch"
+        expect(context[:events].first[:type]).to eq "sync_process"
+        expect(context[:events].first[:identifier]).to eq "prop1"
+        expect(context[:events].first[:host_id]).to eq host.id
+        expect(context[:events].last[:error_message]).to eq "Invalid image object: identifier was not given, or is empty"
+        expect(context[:events].last[:attributes]).to eq roomorama_property.to_h
+      end
+
+      it "announces an error if the property failed to be processed" do
+        subject.start("prop1") { Result.error(:http_status_404) }
+
+        expect(errors.size).to eq 1
+        error = errors.first
+        expect(error[:operation]).to eq "sync"
+        expect(error[:supplier]).to eq "Supplier A"
+        expect(error[:code]).to eq :http_status_404
+        expect(error[:message]).to eq "DEPRECATED"
+
+        context = error[:context]
+        expect(context[:version]).to eq Concierge::VERSION
+        expect(context[:type]).to eq "batch"
+        expect(context[:events].size).to eq 1
+        expect(context[:events].first[:type]).to eq "sync_process"
+        expect(context[:events].first[:host_id]).to eq host.id
+        expect(context[:events].first[:identifier]).to eq "prop1"
+      end
     end
   end
 
   describe "#finish!" do
     it "does nothing if all known properties were processed" do
-      subject.push(roomorama_property)
+      subject.start("prop1") { Result.new(roomorama_property) }
       expect(subject).not_to receive(:enqueue)
 
       subject.finish!
     end
 
+    it "does nothing if the synchronisation fails halfway" do
+      subject.start("prop1") { Result.new(roomorama_property) }
+      subject.start("prop2") { Result.error(:http_status_500) }
+      subject.start("prop3") { Result.new(roomorama_property) }
+
+      expect(subject).not_to receive(:enqueue)
+      subject.finish!
+    end
+
     it "enqueues a disable operation with non-processed identifiers" do
-      create_property(identifier: "prop1", host_id: host.id, data: { identifier: "prop1" })
+      data = {
+        identifier: "prop1",
+        images: [
+          {
+            identifier: "img1",
+            url:        "https://www.example.org/img1.png"
+          }
+        ]
+      }
+      create_property(identifier: "prop1", host_id: host.id, data: data)
       create_property(identifier: "prop2", host_id: host.id + 1)
       create_property(identifier: "prop3", host_id: host.id)
 
       operations = []
       expect(subject).to receive(:enqueue) { |arg| operations << arg }.twice
 
-      subject.push(roomorama_property)
+      subject.start("prop1") { Result.new(roomorama_property) }
       subject.finish!
 
       expect(operations.size).to eq 2
