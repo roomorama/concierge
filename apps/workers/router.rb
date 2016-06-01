@@ -19,6 +19,17 @@ module Workers
   # the corresponding +Roomorama::Client::Operations::Diff+ operation is
   # returned.
   class Router
+
+    # +Workers::Router::InvalidSerializedDataError+
+    #
+    # This error is raised when data in Concierge's database for a given property
+    # cannot be loaded back into a +Roomorama::Property+ instance.
+    class InvalidSerializedDataError < StandardError
+      def initialize(property)
+        super("Property ##{property.id} has a `data` that cannot be loaded.")
+      end
+    end
+
     attr_reader :host
 
     # host - a +Host+ instance, representing the host that owns the properties
@@ -57,11 +68,23 @@ module Workers
 
     def calculate_diff(existing, new)
       original = Roomorama::Property.load(existing.data)
-      Comparison::Property.new(original, new).extract_diff
+      ensure_valid_data!(original, existing)
+
+      Comparison::Property.new(original.value, new).extract_diff
     end
 
     def publish_op(property)
       Roomorama::Client::Operations.publish(property)
+    end
+
+    # in case the +Result+ returned from calling +Roomorama::Property.load+ with
+    # data from the database results in a non-sucessful result, we raise a hard
+    # error, since this is a scenario that should not happen. The error message
+    # includes the property +id+ so that further investigation is possible.
+    def ensure_valid_data!(result, property)
+      unless result.success?
+        raise InvalidSerializedDataError.new(property)
+      end
     end
 
   end

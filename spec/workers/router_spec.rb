@@ -53,11 +53,23 @@ RSpec.describe Workers::Router do
     end
 
     it "enqueues a diff operation if there is a property with the same identifier for the same host" do
-      data = Roomorama::Client::Operations.publish(roomorama_property).request_data.merge!(title: "Different title")
+      data = roomorama_property.to_h.merge!(title: "Different title")
       create_property(host_id: host.id, identifier: roomorama_property.identifier, data: data)
       operation = subject.dispatch(roomorama_property)
 
       expect(operation).to be_a Roomorama::Client::Operations::Diff
+    end
+
+    it "raises an error if the database contains unrecognisable data" do
+      data = roomorama_property.to_h.tap do |attributes|
+        attributes[:images].first.merge!(identifier: nil)
+      end
+
+      create_property(host_id: host.id, identifier: roomorama_property.identifier, data: data)
+
+      expect {
+        subject.dispatch(roomorama_property)
+      }.to raise_error Workers::Router::InvalidSerializedDataError
     end
 
     it "does not enqueue any operation if there is no difference between the existing property and the new one" do
