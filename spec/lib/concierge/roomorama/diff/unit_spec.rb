@@ -59,14 +59,6 @@ RSpec.describe Roomorama::Diff::Unit do
       expect(subject.add_image(image)).to be
       expect(subject.image_changes.created).to include image
     end
-
-    it "rejects invalid image objects" do
-      image.url = nil
-
-      expect {
-        subject.add_image(image)
-      }.to raise_error Roomorama::Image::ValidationError
-    end
   end
 
   describe "#change_image" do
@@ -79,13 +71,6 @@ RSpec.describe Roomorama::Diff::Unit do
     it "adds the image diff to the list of image changes" do
       expect(subject.change_image(image_diff)).to be
       expect(subject.image_changes.updated).to eq [image_diff]
-    end
-
-    it "rejects invalid image diff objects" do
-      image_diff.caption = nil
-      expect {
-        subject.change_image(image_diff)
-      }.to raise_error Roomorama::Diff::Image::ValidationError
     end
   end
 
@@ -115,6 +100,25 @@ RSpec.describe Roomorama::Diff::Unit do
       expect {
         subject.validate!
       }.to raise_error Roomorama::Diff::Unit::ValidationError
+    end
+
+    it "rejects invalid image objects" do
+      image = Roomorama::Image.new("IMG1")
+      subject.add_image(image)
+
+      expect {
+        subject.validate!
+      }.to raise_error Roomorama::Image::ValidationError
+    end
+
+    it "rejects invalid image diff objects" do
+      image_diff = Roomorama::Diff::Image.new("IMG1")
+      image_diff.caption = nil
+      subject.change_image(image_diff)
+
+      expect {
+        subject.validate!
+      }.to raise_error Roomorama::Diff::Image::ValidationError
     end
 
     it "is valid if all required parameters are present" do

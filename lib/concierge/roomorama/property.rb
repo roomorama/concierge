@@ -54,6 +54,7 @@ module Roomorama
         instance.add_unit(Roomorama::Unit.load(data))
       end
 
+      instance.validate!
       Result.new(instance)
     rescue Roomorama::Error => err
       data = {
@@ -110,13 +111,10 @@ module Roomorama
     end
 
     def add_image(image)
-      image.validate!
       images << image
     end
 
     def add_unit(unit)
-      unit.validate!
-
       multi_unit!
       units << unit
     end
@@ -146,6 +144,9 @@ module Roomorama
       elsif images.empty?
         raise ValidationError.new("no images")
       else
+        images.each(&:validate!)
+        units.each(&:validate!)
+
         true
       end
     end
