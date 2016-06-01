@@ -24,8 +24,9 @@ RSpec.describe Roomorama::Property do
   describe ".load" do
     let(:attributes) {
       {
-        title: "Studio Apartment in Chicago",
-        max_guests: 2,
+        identifier:   "prop1",
+        title:        "Studio Apartment in Chicago",
+        max_guests:   2,
         nightly_rate: 100,
 
         images: [
@@ -179,14 +180,6 @@ RSpec.describe Roomorama::Property do
       expect(subject.add_image(image)).to be
       expect(subject.images).to include image
     end
-
-    it "rejects invalid image objects" do
-      image.url = nil
-
-      expect {
-        subject.add_image(image)
-      }.to raise_error Roomorama::Image::ValidationError
-    end
   end
 
   describe "#add_unit" do
@@ -210,13 +203,6 @@ RSpec.describe Roomorama::Property do
       subject.add_unit(unit)
 
       expect(subject).to be_multi_unit
-    end
-
-    it "validates added units" do
-      unit.images.clear
-      expect {
-        subject.add_unit(unit)
-      }.to raise_error Roomorama::Unit::ValidationError
     end
   end
 
@@ -242,6 +228,18 @@ RSpec.describe Roomorama::Property do
       image.url = "https://wwww.example.org/image2.png"
       subject.add_image(image)
 
+      unit = Roomorama::Unit.new("UNIT1")
+      unit.title = "Largest Unit"
+      image = Roomorama::Image.new("UNIT1_IMG2")
+      image.url = "https://wwww.example.org/unit1/image2.png"
+      unit.add_image(image)
+
+      unit.update_calendar({
+        "2016-05-22" => true,
+        "2015-05-28" => true
+      })
+      subject.add_unit(unit)
+
       subject.update_calendar({
         "2016-05-22" => true,
         "2015-05-28" => true
@@ -260,6 +258,22 @@ RSpec.describe Roomorama::Property do
       expect {
         subject.validate!
       }.to raise_error Roomorama::Property::ValidationError
+    end
+
+    it "rejects invalid image objects" do
+      subject.images.first.url = nil
+
+      expect {
+        subject.validate!
+      }.to raise_error Roomorama::Image::ValidationError
+    end
+
+    it "validates units" do
+      subject.units.first.identifier = nil
+
+      expect {
+        subject.validate!
+      }.to raise_error Roomorama::Unit::ValidationError
     end
 
     it "is valid if all required parameters are present" do

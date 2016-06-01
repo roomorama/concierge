@@ -48,12 +48,10 @@ module Roomorama
     end
 
     def add_image(image)
-      image.validate!
       image_changes.created << image
     end
 
     def change_image(image_diff)
-      image_diff.validate!
       image_changes.updated << image_diff
     end
 
@@ -62,14 +60,11 @@ module Roomorama
     end
 
     def add_unit(unit)
-      unit.validate!
       @multi_unit = true
-
       unit_changes.created << unit
     end
 
     def change_unit(unit_diff)
-      unit_diff.validate!
       unit_changes.updated << unit_diff
     end
 
@@ -86,6 +81,13 @@ module Roomorama
       if identifier.to_s.empty?
         raise ValidationError.new("identifier is required")
       else
+        [image_changes.created,
+         image_changes.updated,
+         unit_changes.created,
+         unit_changes.updated].each do |collection|
+          collection.each(&:validate!)
+        end
+
         true
       end
     end
