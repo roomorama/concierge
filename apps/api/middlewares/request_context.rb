@@ -31,7 +31,7 @@ module API
       private
 
       def initialize_context
-        Concierge.context = Concierge::Context.new
+        Concierge.context = Concierge::Context.new(type: "api")
       end
 
       def augment_context
