@@ -69,7 +69,11 @@ RSpec.describe Roomorama::Property do
     }
 
     it "creates a new property with associated images and units" do
-      property = described_class.load(attributes)
+      result = described_class.load(attributes)
+      expect(result).to be_a Result
+      expect(result).to be_success
+
+      property = result.value
       expect(property).to be_a Roomorama::Property
 
       expect(property.title).to eq "Studio Apartment in Chicago"
@@ -116,6 +120,15 @@ RSpec.describe Roomorama::Property do
       expect(image.url).to eq "https://www.example.org/unit2img1"
 
       expect(property.to_h).to eq attributes.merge(instant_booking: false, multi_unit: true)
+    end
+
+    it "returns an unsuccessful result in case there is missing data"  do
+      attributes[:images].first.delete(:identifier)
+      result = described_class.load(attributes)
+
+      expect(result).to be_a Result
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :missing_required_data
     end
   end
 
