@@ -10,7 +10,7 @@ RSpec.describe Web::Views::ExternalErrors::Show do
       happed_at: Time.now - 2 * 24 * 60 * 60 # 2 days ago
     }
   }
-  let(:context) { Concierge::Context.new }
+  let(:context) { Concierge::Context.new(type: "api") }
 
   let(:event) {
     Concierge::Context::Message.new(
