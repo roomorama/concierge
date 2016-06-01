@@ -7,10 +7,20 @@ RSpec.describe Result do
 
   describe ".error" do
     it "creates a new Result instance with the error information given" do
-      subject = described_class.error(:failed)
+      data    = { message: "Something went wrong" }
+      subject = described_class.error(:failed, data)
 
       expect(subject).to be_a Result
       expect(subject.error.code).to eq :failed
+      expect(subject.error.data).to eq({ message: "Something went wrong" })
+    end
+
+    it "accepts an error with only code information" do
+      subject = described_class.error(:error)
+
+      expect(subject).to be_a Result
+      expect(subject.error.code).to eq :error
+      expect(subject.error.data).to be_nil
     end
   end
 
