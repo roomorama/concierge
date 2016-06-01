@@ -55,8 +55,13 @@ module Roomorama
       end
 
       Result.new(instance)
-    rescue Roomorama::Error
-      Result.error(:missing_required_data)
+    rescue Roomorama::Error => err
+      data = {
+        error:      err.message,
+        attributes: attributes
+      }
+
+      Result.error(:missing_required_data, data)
     end
 
     ATTRIBUTES = [:type, :title, :address, :postal_code, :city, :description,
