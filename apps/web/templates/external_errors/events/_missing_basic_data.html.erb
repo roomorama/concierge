@@ -1,0 +1,27 @@
+<div class="error-event">
+  <%= render partial: "external_errors/events/timestamp", locals: { event: event } %>
+
+  <h3>Missing Basic Property Data</h3>
+  <p>Concierge detected that basic information required for property publishing
+    was missing, and therefore the property was not sent to Roomorama's API.</p>
+
+  <p>The error message when parsing the data for the property was:</p>
+
+  <div class="code-block">
+    <%= event[:error_message] %>
+  </div>
+
+  <p>The formatted data for this property was:</p>
+
+  <%
+    content_type = "application/json"
+    css_class    = syntax_highlight_class(content_type)
+  %>
+
+<%# breaks the indentiation here so that the code will be displayed properly,
+    since the +pre+ tag does not ignore the white spaces %>
+  <pre class="<%= css_class %> code-block">
+<%= pretty_print(event[:attributes].to_h.to_json, content_type) %>
+  </pre>
+
+</div>
