@@ -34,10 +34,8 @@ module Workers
 end
 
 # as the +workers+ application is not mounted as a Rack app when the application
-# boots, we need to manually require the files under +apps/workers+ as well as
-# preload the app (so that Hanami will be internally consistent.)
+# boots, we need to manually require the files under +apps/workers+.
 #
 # This file will only be required if +CONCIERGE_APP+ is set to either +workers+
 # or +all+ (development/test environments.)
 Dir["./apps/workers/**/*.rb"].sort.each { |f| require f }
-Workers::Application.preload!
