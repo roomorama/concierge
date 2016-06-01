@@ -147,11 +147,12 @@ module Workers
 
     def announce_failure(result)
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-        operation: "sync",
-        supplier:  SupplierRepository.find(host.supplier_id).name,
-        code:      result.error.code,
-        message:   "DEPRECATED",
-        context:   Concierge.context.to_h
+        operation:   "sync",
+        supplier:    SupplierRepository.find(host.supplier_id).name,
+        code:        result.error.code,
+        message:     "DEPRECATED",
+        context:     Concierge.context.to_h,
+        happened_at: Time.now,
       })
     end
 

@@ -47,52 +47,43 @@ RSpec.describe Workers::Synchronisation do
     end
 
     context "error handling" do
-      let(:errors) { [] }
-      before do
-        Concierge::Announcer.on(Concierge::Errors::EXTERNAL_ERROR) do |params|
-          errors << params
-        end
-      end
-
       it "announces an error if the property returned does not pass validations" do
         roomorama_property.images.first.identifier = nil
         subject.start("prop1") { Result.new(roomorama_property) }
 
-        expect(errors.size).to eq 1
-        error = errors.first
-        expect(error[:operation]).to eq  "sync"
-        expect(error[:supplier]).to eq "Supplier A"
-        expect(error[:code]).to eq :missing_data
-        expect(error[:message]).to eq "DEPRECATED"
+        error = ExternalErrorRepository.last
+        expect(error.operation).to eq  "sync"
+        expect(error.supplier).to eq "Supplier A"
+        expect(error.code).to eq "missing_data"
+        expect(error.message).to eq "DEPRECATED"
 
-        context = error[:context]
+        context = error.context
         expect(context[:version]).to eq  Concierge::VERSION
         expect(context[:host]).to eq Socket.gethostname
         expect(context[:type]).to eq "batch"
-        expect(context[:events].first[:type]).to eq "sync_process"
-        expect(context[:events].first[:identifier]).to eq "prop1"
-        expect(context[:events].first[:host_id]).to eq host.id
-        expect(context[:events].last[:error_message]).to eq "Invalid image object: identifier was not given, or is empty"
-        expect(context[:events].last[:attributes]).to eq roomorama_property.to_h
+        expect(context[:events].first["type"]).to eq "sync_process"
+        expect(context[:events].first["identifier"]).to eq "prop1"
+        expect(context[:events].first["host_id"]).to eq host.id
+        expect(context[:events].last["error_message"]).to eq "Invalid image object: identifier was not given, or is empty"
+        expect(context[:events].last["attributes"].keys).to eq roomorama_property.to_h.keys.map(&:to_s)
       end
 
       it "announces an error if the property failed to be processed" do
         subject.start("prop1") { Result.error(:http_status_404) }
 
-        expect(errors.size).to eq 1
-        error = errors.first
-        expect(error[:operation]).to eq "sync"
-        expect(error[:supplier]).to eq "Supplier A"
-        expect(error[:code]).to eq :http_status_404
-        expect(error[:message]).to eq "DEPRECATED"
+        error = ExternalErrorRepository.last
+        expect(error.operation).to eq "sync"
+        expect(error.supplier).to eq "Supplier A"
+        expect(error.code).to eq "http_status_404"
+        expect(error.message).to eq "DEPRECATED"
 
-        context = error[:context]
+        context = error.context
         expect(context[:version]).to eq Concierge::VERSION
         expect(context[:type]).to eq "batch"
         expect(context[:events].size).to eq 1
-        expect(context[:events].first[:type]).to eq "sync_process"
-        expect(context[:events].first[:host_id]).to eq host.id
-        expect(context[:events].first[:identifier]).to eq "prop1"
+        expect(context[:events].first["type"]).to eq "sync_process"
+        expect(context[:events].first["host_id"]).to eq host.id
+        expect(context[:events].first["identifier"]).to eq "prop1"
       end
     end
   end
