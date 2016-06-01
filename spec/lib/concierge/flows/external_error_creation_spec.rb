@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe UseCases::ExternalErrorCreation do
+RSpec.describe Concierge::Flows::ExternalErrorCreation do
   let(:parameters) {
     {
       operation:   "quote",
