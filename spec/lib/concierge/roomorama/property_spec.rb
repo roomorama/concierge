@@ -129,6 +129,10 @@ RSpec.describe Roomorama::Property do
       expect(result).to be_a Result
       expect(result).not_to be_success
       expect(result.error.code).to eq :missing_required_data
+      expect(result.error.data).to eq({
+        error:      "Invalid image object: identifier was not given, or is empty",
+        attributes: attributes
+      })
     end
   end
 
