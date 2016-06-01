@@ -43,6 +43,10 @@ class Roomorama::Diff
       if identifier.to_s.empty?
         raise ValidationError.new("identifier is not given or empty")
       else
+        [image_changes.created, image_changes.updated].each do |collection|
+          collection.each(&:validate!)
+        end
+
         true
       end
     end
@@ -56,12 +60,10 @@ class Roomorama::Diff
     end
 
     def add_image(image)
-      image.validate!
       image_changes.created << image
     end
 
     def change_image(image_diff)
-      image_diff.validate!
       image_changes.updated << image_diff
     end
 

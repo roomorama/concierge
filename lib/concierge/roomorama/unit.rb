@@ -88,6 +88,8 @@ module Roomorama
       elsif images.empty?
         raise ValidationError.new("no images")
       else
+        images.each(&:validate!)
+
         true
       end
     end
@@ -103,7 +105,6 @@ module Roomorama
     end
 
     def add_image(image)
-      image.validate!
       images << image
     end
 

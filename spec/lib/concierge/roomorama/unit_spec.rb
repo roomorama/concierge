@@ -96,14 +96,6 @@ RSpec.describe Roomorama::Unit do
       expect(subject.add_image(image)).to be
       expect(subject.images).to include image
     end
-
-    it "rejects invalid image objects" do
-      image.url = nil
-
-      expect {
-        subject.add_image(image)
-      }.to raise_error Roomorama::Image::ValidationError
-    end
   end
 
   describe "#update_calendar" do
@@ -145,6 +137,14 @@ RSpec.describe Roomorama::Unit do
       expect {
         subject.validate!
       }.to raise_error Roomorama::Unit::ValidationError
+    end
+
+    it "rejects invalid image objects" do
+      subject.images.first.url = nil
+
+      expect {
+        subject.validate!
+      }.to raise_error Roomorama::Image::ValidationError
     end
 
     it "is valid if all required parameters are present" do
