@@ -47,7 +47,7 @@ module Workers
     end
 
     def queue_url
-      @queue_url ||= sqs.get_queue_url(queue_name: credentials.queue_name)
+      @queue_url ||= sqs.get_queue_url(queue_name: credentials.queue_name).queue_url
     end
 
   end
