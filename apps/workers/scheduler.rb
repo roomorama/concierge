@@ -4,11 +4,8 @@ module Workers
   #
   # This class is responsible for checking which hosts should be synchronised
   # (i.e., the +next_run_at+ column is either +nil+ or in a time in the past),
-  # and asynchronously trigger their import process to kick-in.
-  #
-  # The import process is assumed to be listening to the +sync.<supplier-name>+
-  # event via +Concierge::Announcer+. The subscribed handler for that event
-  # receives one parameter, the +Host+ instance to be synchronised.
+  # and enqueue the correspondent message to the queue to start the
+  # synchronisation process.
   #
   # This scheduler logs its work using a +logger+ instance given on initialization.
   # By default, its output is placed on +log/scheduler.log+. Activity on which
@@ -26,14 +23,11 @@ module Workers
     end
 
     # queries the +hosts+ table to identify which host should be synchronised,
-    # triggering, asynchronously, the related event.
+    # enqueueing messages if necessary.
     def trigger_pending!
       HostRepository.pending_synchronisation.each do |host|
-        supplier  = SupplierRepository.find(host.supplier_id)
-        broadcast = ["sync", ".", supplier.name].join
-
         log_event(host)
-        Concierge::Announcer.trigger_async(broadcast, host)
+        enqueue(host)
       end
     end
 
@@ -43,11 +37,27 @@ module Workers
       Logger.new(LOG_PATH)
     end
 
+    def enqueue(host)
+      element = Workers::Queue::Element.new(
+        operation: "sync",
+        data:      { host_id: host.id }
+      )
+
+      queue.add(element)
+    end
+
     def log_event(host)
       message = "action=%s host.username=%s host.identifier=%s" %
         ["sync", host.username, host.identifier]
 
       logger.info(message)
+    end
+
+    def queue
+      @queue ||= begin
+        credentials = Concierge::Credentials.for("sqs")
+        Workers::Queue.new(credentials)
+      end
     end
 
   end

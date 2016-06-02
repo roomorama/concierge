@@ -76,7 +76,7 @@ module Workers
     # finishes the synchronisation process. This method should only be called
     # when all properties from the host have already been processed (through
     # the use of +start+). It checks which properties need to be disabled,
-    # and enqueues the corresponding job.
+    # and processes the corresponding operations.
     #
     # Note that if one of the properties processed failed (i.e., returned a
     # non-successful +Result+), then this process will not disable all properties
@@ -89,7 +89,7 @@ module Workers
       purge = all_identifiers - processed
 
       unless purge.empty?
-        enqueue(disable_op(purge))
+        run_operation(disable_op(purge))
       end
     end
 
@@ -100,13 +100,13 @@ module Workers
     # it is able to know which properties should be disabled.
     #
     # It uses +Workers::Router+ to determine which operation should be
-    # performed on the property, if any, and enqueues it for execution.
+    # performed on the property, if any, and runs it.
     def push(property)
       processed << property.identifier
 
       router.dispatch(property).tap do |operation|
         if operation
-          enqueue(operation)
+          run_operation(operation)
         end
       end
     end
@@ -136,6 +136,10 @@ module Workers
       false
     end
 
+    def run_operation(operation)
+      # Workers::OperationRunner.new(operation).perform
+    end
+
     def missing_data(message, attributes)
       missing_data = Concierge::Context::MissingBasicData.new(
         error_message: message,
@@ -154,10 +158,6 @@ module Workers
         context:     Concierge.context.to_h,
         happened_at: Time.now,
       })
-    end
-
-    def enqueue(operation)
-      # next chapter
     end
 
     def all_identifiers

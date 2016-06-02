@@ -39,7 +39,7 @@ RSpec.describe Workers::Synchronisation do
   describe "#start" do
     it "pushes the property to processing if there are no errors" do
       operation = nil
-      expect(subject).to receive(:enqueue) { |op| operation = op }
+      expect(subject).to receive(:run_operation) { |op| operation = op }
 
       subject.start("prop1") { Result.new(roomorama_property) }
       expect(operation).to be_a Roomorama::Client::Operations::Publish
@@ -91,7 +91,7 @@ RSpec.describe Workers::Synchronisation do
   describe "#finish!" do
     it "does nothing if all known properties were processed" do
       subject.start("prop1") { Result.new(roomorama_property) }
-      expect(subject).not_to receive(:enqueue)
+      expect(subject).not_to receive(:run_operation)
 
       subject.finish!
     end
@@ -101,7 +101,7 @@ RSpec.describe Workers::Synchronisation do
       subject.start("prop2") { Result.error(:http_status_500) }
       subject.start("prop3") { Result.new(roomorama_property) }
 
-      expect(subject).not_to receive(:enqueue)
+      expect(subject).not_to receive(:run_operation)
       subject.finish!
     end
 
@@ -120,7 +120,7 @@ RSpec.describe Workers::Synchronisation do
       create_property(identifier: "prop3", host_id: host.id)
 
       operations = []
-      expect(subject).to receive(:enqueue) { |arg| operations << arg }.twice
+      expect(subject).to receive(:run_operation) { |arg| operations << arg }.twice
 
       subject.start("prop1") { Result.new(roomorama_property) }
       subject.finish!
