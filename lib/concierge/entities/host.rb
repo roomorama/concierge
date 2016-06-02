@@ -12,8 +12,11 @@
 # * +username+     - the username of the user account on Roomorama. Present only
 #                    for identification purposes.
 # * +access_token+ - the API access token used to identify the host on Roomorama's API.
+# * +next_run_at+  - a timestamp indicating when the properties belonging to this
+#                    host should be synchronised next.
 class Host
   include Hanami::Entity
 
-  attributes :id, :supplier_id, :identifier, :username, :access_token, :created_at, :updated_at
+  attributes :id, :supplier_id, :identifier, :username, :access_token,
+    :next_run_at, :created_at, :updated_at
 end
