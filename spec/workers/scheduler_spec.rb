@@ -29,14 +29,14 @@ RSpec.describe Workers::Scheduler do
         HostRepository.update(host)
       end
 
-      expect(Concierge::Announcer).not_to receive(:trigger_async)
+      expect(subject).not_to receive(:enqueue)
       subject.trigger_pending!
 
       expect(logger.messages).to eq []
     end
 
     it "triggers only new hosts and hosts that are pending" do
-      expect(Concierge::Announcer).to receive(:trigger_async).twice
+      expect(subject).to receive(:enqueue).twice
       subject.trigger_pending!
 
       expect(logger.messages).to eq [

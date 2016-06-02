@@ -17,7 +17,7 @@ RSpec.describe Workers::Queue do
     it "enqueues the message on SQS if the argument is valid" do
       sqs = subject.send(:sqs)
       allow(sqs).to receive(:get_queue_url).with(queue_name: "concierge-test") {
-        "https://www.example.org/concierge-queue"
+        double(queue_url: "https://www.example.org/concierge-queue")
       }
 
       expect(sqs).to receive(:send_message).with({
