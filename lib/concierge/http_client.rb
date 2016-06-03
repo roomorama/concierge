@@ -113,7 +113,7 @@ module Concierge
     def delete(path, params = {}, headers = {})
       with_error_handling do |conn|
         conn.headers.merge!(DEFAULT_HEADERS).merge!(headers)
-        conn.delete(path, params)
+        conn.delete(path) { |req| req.body = params }
       end
     end
 
