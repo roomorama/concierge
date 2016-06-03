@@ -27,6 +27,7 @@ module Workers
     def trigger_pending!
       HostRepository.pending_synchronisation.each do |host|
         log_event(host)
+        update_timestamp(host)
         enqueue(host)
       end
     end
@@ -35,6 +36,16 @@ module Workers
 
     def default_logger
       Logger.new(LOG_PATH)
+    end
+
+    # updates the timestamp for next synchronisation to avoid enqueueing the same
+    # hosts multiple times unnecessarily. If the synchronisation is performed
+    # successfully by the worker, this timestamp is advanced again.
+    def update_timestamp(host)
+      three_hours_from_now = Time.now + 3 * 60 * 60
+      host.next_run_at = three_hours_from_now
+
+      HostRepository.update(host)
     end
 
     def enqueue(host)

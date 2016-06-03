@@ -43,6 +43,12 @@ RSpec.describe Workers::Scheduler do
         "action=sync host.username=pending_host host.identifier=host2",
         "action=sync host.username=new_host host.identifier=host1",
       ]
+
+      new_reloaded = HostRepository.find(new_host.id)
+      pending_reloaded = HostRepository.find(pending_host.id)
+
+      expect(new_reloaded.next_run_at > Time.now).to eq true
+      expect(pending_reloaded.next_run_at > Time.now).to eq true
     end
   end
 end
