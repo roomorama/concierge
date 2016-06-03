@@ -110,7 +110,7 @@ RSpec.describe Roomorama::Client do
 
       expect_any_instance_of(Concierge::HTTPClient).to receive(:post).with(
         "/v1.0/host/publish",
-        serialized_property,
+        serialized_property.to_json,
         headers
       ).once
 
