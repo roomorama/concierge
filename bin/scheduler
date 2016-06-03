@@ -1,0 +1,53 @@
+#!/usr/bin/env ruby
+
+# ./bin/scheduler
+#
+# This is a daemon process that runs in the background and checks for hosts
+# that need to be synchronised with Roomorama (via the +next_run_at+ column).
+#
+# If a host needs to be synchronised, this will enqueue a job on SQS that will
+# be picked up by the worker and synchronised via API calls.
+
+require "./config/environment"
+
+# checks for the existence of a PID file. If there is one, there is already one
+# scheduler process running and there should not be another.
+pid = ENV["CONCIERGE_SCHEDULER_PID"] || "/tmp/_concierge_scheduler.pid"
+if File.exists?(pid)
+  raise "PID file at #{pid} exists. Check if the process is currently running or delete this file."
+end
+
+# how often the scheduler should check for hosts to be synchronised.
+check_interval = ENV["CONCIERGE_SCHEDULER_INTERVAL"] || 3
+
+# save the current stdin in a file descriptor so that we can print a message
+# back to the user even after becoming a daemon process.
+old_stdin      = File.open($stdin.dup.fileno, File::RDWR)
+
+unlink_pid = -> { File.unlink(pid) if File.exists?(pid) }
+
+# if we receive SIGQUIT or SIGTERM (graceful process termination), we remove
+# the PID file, allowing a new process to be started.
+%w(QUIT TERM).each do |signal|
+  Signal.trap(signal) { unlink_pid.call }
+end
+
+at_exit { unlink_pid.call }
+
+# become a daemon. The first argument (+true+), tells Ruby not to +chdir+
+# into the root directory, since that causes weird permission issues.
+Process.daemon(true)
+
+old_stdin.puts "Forked to background. PID: #{Process.pid}"
+File.write(pid, Process.pid)
+
+# the shared scheduler instance
+scheduler = Workers::Scheduler.new
+
+$0 = "Roomorama/Concierge: scheduler"
+
+# the main daemon loop: check for changes and sleep for the specified interval.
+loop do
+  scheduler.trigger_pending!
+  sleep(check_interval)
+end
