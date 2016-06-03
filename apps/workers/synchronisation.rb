@@ -106,7 +106,7 @@ module Workers
 
       router.dispatch(property).tap do |operation|
         if operation
-          run_operation(operation)
+          run_operation(operation, property)
         end
       end
     end
@@ -136,8 +136,9 @@ module Workers
       false
     end
 
-    def run_operation(operation)
-      # Workers::OperationRunner.new(operation).perform
+    def run_operation(operation, *args)
+      result = Workers::OperationRunner.new(host).perform(operation, *args)
+      announce_failure(result) unless result.success?
     end
 
     def missing_data(message, attributes)
