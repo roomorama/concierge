@@ -50,7 +50,7 @@ module Roomorama
       http.public_send(
         operation.request_method,
         operation.endpoint,
-        json_encode(operation.request_data),
+        operation.request_data,
         headers
       )
     end
