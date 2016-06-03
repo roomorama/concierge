@@ -105,8 +105,15 @@ module Concierge
 
     def put(path, params = {}, headers = {})
       with_error_handling do |conn|
-        conn.headers.merge!(headers)
+        conn.headers.merge!(DEFAULT_HEADERS).merge!(headers)
         conn.put(path, params)
+      end
+    end
+
+    def delete(path, params = {}, headers = {})
+      with_error_handling do |conn|
+        conn.headers.merge!(DEFAULT_HEADERS).merge!(headers)
+        conn.delete(path, params)
       end
     end
 
