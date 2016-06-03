@@ -1,11 +1,11 @@
 require "spec_helper"
 
-RSpec.describe Workers::OperationRunner::Publish do
+RSpec.describe Workers::OperationRunner::Diff do
   include Support::Factories
   include Support::HTTPStubbing
   include Support::Fixtures
 
-  let(:endpoint) { "https://api.roomorama.com/v1.0/host/publish" }
+  let(:endpoint) { "https://api.roomorama.com/v1.0/host/apply" }
   let(:host) { create_host }
   let(:roomorama_property) {
     Roomorama::Property.new("prop1").tap do |property|
@@ -37,13 +37,35 @@ RSpec.describe Workers::OperationRunner::Publish do
     end
   }
 
-  let(:operation) { Roomorama::Client::Operations.publish(roomorama_property) }
+  let(:diff) {
+    Roomorama::Diff.new("prop1").tap do |diff|
+      diff.title = "New Title for property"
+    end
+  }
+
+  let(:operation) { Roomorama::Client::Operations.diff(diff) }
 
   subject { described_class.new(host, operation) }
 
+  before do
+    # before running the tests, create the corresponding database record since
+    # this is an update call.
+    property = Property.new(
+      identifier: roomorama_property.identifier,
+      host_id:    host.id,
+      data:       roomorama_property.to_h.tap { |h| h.delete(:availabilities) }
+    )
+
+    PropertyRepository.create(property)
+
+    # set back the title to the new one, since the instance received by the
+    # +described_class+ represents the new version of the property.
+    roomorama_property.title = "New Title for property"
+  end
+
   describe "#perform" do
     it "returns the underlying network problem, if any" do
-      stub_call(:post, endpoint) { raise Faraday::TimeoutError }
+      stub_call(:put, endpoint) { raise Faraday::TimeoutError }
       result = subject.perform(roomorama_property)
 
       expect(result).to be_a Result
@@ -52,7 +74,7 @@ RSpec.describe Workers::OperationRunner::Publish do
     end
 
     it "saves the context information" do
-      stub_call(:post, endpoint) { raise Faraday::TimeoutError }
+      stub_call(:put, endpoint) { raise Faraday::TimeoutError }
 
       expect {
         subject.perform(roomorama_property)
@@ -63,7 +85,7 @@ RSpec.describe Workers::OperationRunner::Publish do
     end
 
     it "is unsuccessful if the API call fails" do
-      stub_call(:post, endpoint) { [422, {}, read_fixture("roomorama/invalid_type.json")] }
+      stub_call(:put, endpoint) { [422, {}, read_fixture("roomorama/invalid_type.json")] }
       result = nil
 
       expect {
@@ -76,7 +98,7 @@ RSpec.describe Workers::OperationRunner::Publish do
     end
 
     it "returns the persisted property in a Result if successful" do
-      stub_call(:post, endpoint) { [201, {}, [""]] }
+      stub_call(:put, endpoint) { [202, {}, [""]] }
       result = subject.perform(roomorama_property)
 
       expect(result).to be_a Result
@@ -88,6 +110,7 @@ RSpec.describe Workers::OperationRunner::Publish do
       expect(property.host_id).to eq host.id
       data = roomorama_property.to_h.tap { |h| h.delete(:availabilities) }
       expect(property.data.to_h.keys).to eq data.keys.map(&:to_s)
+      expect(property.data[:title]).to eq "New Title for property"
     end
   end
 end
