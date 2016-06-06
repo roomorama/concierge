@@ -28,4 +28,19 @@ RSpec.describe Workers::Queue do
       subject.add(element)
     end
   end
+
+  describe "#poll" do
+    it "invokes the corresponding method from the SQS client" do
+      sqs = subject.send(:sqs)
+      allow(sqs).to receive(:get_queue_url).with(queue_name: "concierge-test") {
+        double(queue_url: "https://www.example.org/concierge-queue")
+      }
+
+      poller = double
+      expect(Aws::SQS::QueuePoller).to receive(:new).with("https://www.example.org/concierge-queue", client: sqs) { poller }
+      expect(poller).to receive(:poll)
+
+      subject.poll
+    end
+  end
 end

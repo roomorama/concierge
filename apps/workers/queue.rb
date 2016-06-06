@@ -36,6 +36,13 @@ module Workers
       )
     end
 
+    # wraps the logic behind polling an SQS queue by receiving each message
+    # and yielding it back to the caller, which receives only the message
+    # body.
+    def poll
+      queue_poller.poll { |message| yield message.body }
+    end
+
     private
 
     def sqs
@@ -44,6 +51,10 @@ module Workers
         access_key_id:     credentials.access_key_id,
         secret_access_key: credentials.secret_access_key
       )
+    end
+
+    def queue_poller
+      @queue_poller ||= Aws::SQS::QueuePoller.new(queue_url, client: sqs)
     end
 
     def queue_url
