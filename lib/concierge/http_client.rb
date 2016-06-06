@@ -106,6 +106,7 @@ module Concierge
     def put(path, params = {}, headers = {})
       with_error_handling do |conn|
         conn.headers.merge!(DEFAULT_HEADERS).merge!(headers)
+        announce_request(:put, path, params, conn.headers)
         conn.put(path, params)
       end
     end
@@ -113,6 +114,7 @@ module Concierge
     def delete(path, params = {}, headers = {})
       with_error_handling do |conn|
         conn.headers.merge!(DEFAULT_HEADERS).merge!(headers)
+        announce_request(:delete, path, params, conn.headers)
         conn.delete(path) { |req| req.body = params }
       end
     end
