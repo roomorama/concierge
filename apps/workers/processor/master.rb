@@ -139,13 +139,18 @@ class Workers::Processor
     # suddenly aborted. When the operation is done and a signal has been received,
     # the process is terminated as soon as the message is finished processing.
     def worker_loop
-      queue.poll do |message|
-        exit!(0) if @killed
+      queue.before_poll do |*args|
+        throw :stop_polling if @killed
+      end
 
+      queue.poll do |message|
         busy do
           Workers::Processor.new(message.body).process!
         end
       end
+
+      # this should be reached only through +stop_polling+ and +@killed+.
+      exit!(0)
     rescue => err
       # if there is any error while processing a message on the queue, report
       # it to Rollbar and keep working on messages.
