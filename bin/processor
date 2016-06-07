@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+
+# bin/processor
+#
+# This file sets up a daemon process to run the master processor process,
+# configuring a PID file to guarantee there will not be multiple instances
+# of the master process running simultaneously.
+#
+# No command line arguments are required, but the +CONCIERGE_PROCESSORS_PID_PATH+
+# and the +CONCIERGE_WORKERS_PREFORK+ environment variables are expected
+# to be set.
+
+require "./config/environment"
+Hanami::Application.preload!
+
+# read the path to the PID file (expected to be absolute), and if the file is
+# already present, halt the process.
+pid_path = ENV["CONCIERGE_PROCESSORS_PID_PATH"]
+if File.exists?(pid_path)
+  raise "Pid file exists at #{pid_path}. Processor already running?"
+end
+
+# keeps a copy of the current STDIN so that we can write feedback to the terminal
+# after becoming a daemon process, where the stdin/stdout streams are set to
+# /dev/null
+old_stdin = File.open(STDIN.fileno, File::RDWR).dup
+
+# when the process is finished, remove the PID file, allowing the processor
+# to be started again.
+at_exit { File.unlink(pid_path) }
+
+# become a daemon process.
+Process.daemon(true)
+
+# write the current process ID to +pid+ file.
+File.write(pid_path, $$)
+
+prefork = ENV["CONCIERGE_WORKERS_PREFORK"].to_i
+old_stdin.puts "Forked to background, pid #{$$}. Creating #{prefork} workers"
+
+Workers::Processor::Master.new(prefork: prefork).load!
