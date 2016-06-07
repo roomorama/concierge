@@ -74,7 +74,7 @@ RSpec.shared_examples "performing booking parameters validations" do |controller
   def call(controller, params)
     response = controller.call(params)
     # Wrap Rack data structure for an HTTP response
-    Shared::QuoteResponse.new(
+    Support::ResponseWrapper.new(
       response[0],
       response[1],
       JSON.parse(response[2].first)
