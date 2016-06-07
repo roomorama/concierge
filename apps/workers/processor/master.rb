@@ -112,6 +112,10 @@ class Workers::Processor
       else
         # children process:
 
+        # store the identifier so that the process name can be easily updated
+        # if needed later
+        @identifier = n
+
         # 1. sets up signal handlers for the worker processes
         setup_worker_signals
 
@@ -175,7 +179,16 @@ class Workers::Processor
     def setup_worker_signals
       %w(INT TERM QUIT).each do |signal|
         trap(signal) do
+          # 1. updates the name so that an analysis tool can see that the signal
+          #    was received and the process is aware of its termination
+          setup_name "Worker #{@identifier} - terminating"
+
+          # 2. if the process is not currently processing any request, finish
+          #    immediately
           exit!(0) unless @busy
+
+          # 3. if the process is currently processing a request, mark it as killed
+          #    so that the process can terminate when the processing is done.
           @killed = true
         end
       end
