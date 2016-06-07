@@ -1,0 +1,31 @@
+{
+  "BookingNumber": 175607953,
+  "MyAccountLoginURL": "https://www.belvilla.nl/mijn-belvilla",
+  "PaymentURL": "https://customerpayment.leisure-ict.net/srv/customerpayment/payment.htm?R=0x000000000278b800&Huovnr=175607953",
+  "FirstTermDateTime": "2016-06-14T04:52:23.354+02:00",
+  "FirstTermAmount": 169,
+  "SecondTermDateTime": "2016-06-27T04:52:23.354+02:00",
+  "SecondTermAmount": 826.68,
+  "PaymentMethods": [
+    {
+      "Method": "iDEAL / ABN AMRO",
+      "Amount": 169,
+      "Costs": 0,
+      "URL": "https://www.leisure-ict.net/srv/payment/request.htm?pm=li060D0A58012O2C1E1K2O4L454Y4I5O6I3F4V4G4M00435C315J6M3L5B485O6I304Y3J60673W5E4A4C033B5K445K6Q42503U5M0Z3M5U4N6D6Y424Z3Q610Y494G3656695B4W465M"
+    },
+    {
+      "Method": "iDEAL / ASN",
+      "Amount": 169,
+      "Costs": 0,
+      "URL": "https://www.leisure-ict.net/srv/payment/request.htm?pm=mn0Y0P6T63081R1F2H0Y3F4L4I4R4O6B0F47573V5H07364F444X093L5O415U01415Q3V5F72434H3D5F6L425K4H5D6W4P614M5Y0E4Y613R5G0X3G5A3Q6E0R4F53475Y6L4Q5R4D4P"
+    },
+    {
+      "Method": "iDEAL / van Lanschotbank",
+      "Amount": 169,
+      "Costs": 0,
+      "URL": "https://www.leisure-ict.net/srv/payment/request.htm?pm=bi0V0I5W4Z0Q211E2G1E3S4P3W4V526I0B44502Y4D0P3G4E435D0M3P524568083X5N3O4I5Y4L4R3C5E714F5O3V5H064W5X4J5R6Q3X6H415F0W3W5O3U5S0V4T5A435V6E3T4N4V4Z"
+    }
+  ],
+  "WebPartnerCommissionBase": 0,
+  "WebpartnerBookingCode": "My-code"
+}

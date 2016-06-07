@@ -22,7 +22,7 @@ module API::Controllers::Params
     param :customer do
       param :first_name,  type: String, presence: true
       param :last_name,   type: String, presence: true
-      param :email,       type: String
+      param :email,       type: String, presence: true
       param :phone,       type: String
       param :address,     type: String
       param :postal_code, type: String
