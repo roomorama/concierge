@@ -198,7 +198,10 @@ RSpec.describe Workers::Synchronisation do
       error = ExternalErrorRepository.last
       expect(error.context[:type]).to eq "batch"
       expect(error.context[:events].map { |h| h["type"] }).to eq(
-        ["sync_process", "network_response", "network_response"]
+        # 2 cycles of network_request/network_response: first to make an
+        # update, the second to disable a property, triggering the +500+
+        # error set up at the beginning of this example.
+        ["sync_process", "network_request", "network_response", "network_request", "network_response"]
       )
     end
   end
