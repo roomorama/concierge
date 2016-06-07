@@ -25,30 +25,56 @@ class Workers::Processor
   # +N+ is the worker number.
   class Master
 
-    attr_reader :workers, :prefork
+    # the context on which the process is running. Duplicates the program
+    # name and arguments so that it can re-exec itself when necessary.
+    # Heavily inspired on Unicorn's implementation of the same feature.
+    CONTEXT = {
+      progname: $0.dup,
+      argv:     ARGV.map(&:dup)
+    }
 
-    # prefork - the number of worker processes to fork.
-    def initialize(prefork:)
-      @prefork = prefork
-      @workers = {}
-      @reapers = 0
+    CONTEXT[:cwd] = begin
+      env = File.stat(pwd = ENV['PWD'])
+      dir = File.stat(Dir.pwd)
+      env.ino == dir.ino && env.dev == dir.dev ? pwd : Dir.pwd
+    rescue
+      Dir.pwd
+    end
+
+    attr_reader :workers, :prefork, :pid_path
+
+    # prefork  - the number of worker processes to fork.
+    # pid_path - the path where to write a PID file, to control that no two
+    #            processors are executed at the same time.
+    def initialize(prefork:, pid_path:)
+      @prefork  = prefork
+      @pid_path = pid_path
+      @workers  = {}
+      @reapers  = 0
+      @reexec   = false
+
+      check_pid_path!
     end
 
     # creates worker processes, sets them up and waits for signals/dead children
     # to recreate.
     def load!
-      # 1. set up handlers for SIGINT, SIGTERM and SIGQUIT
+      # 1. writes the PID of the running process to a file located at the +pid_path+
+      #    given on initialization
+      write_pid_file
+
+      # 2. set up handlers for SIGINT, SIGTERM and SIGQUIT
       setup_signals
 
-      # 2. updates its own identification as the Master process
+      # 3. updates its own identification as the Master process
       setup_name("Master")
 
-      # 3. Creates workers, as declared on initialization
+      # 4. Creates workers, as declared on initialization
       prefork.times do |n|
         create_worker(n+1)
       end
 
-      # 4. Master loop: waits for dead children, and recreates them, updating
+      # 5. Master loop: waits for dead children, and recreates them, updating
       #    the +workers+ data structure which maps worker identifiers to
       #    process IDs.
       loop do
@@ -59,6 +85,10 @@ class Workers::Processor
 
     private
 
+    def write_pid_file
+      File.write(pid_path, $$)
+    end
+
     # handles SIGINT, SIGTERM and SIGQUIT to:
     #
     # 1. reap all workers
@@ -66,6 +96,9 @@ class Workers::Processor
     #
     # This is performed by the master process. Children, worker processes
     # use +setup_worker_signals+.
+    #
+    # If the master process receives an +USR2+ signal, it re-execs itself
+    # so as to get the latest changes (to be triggered by a deployment script.)
     def setup_signals
       %w(INT TERM QUIT).each do |signal|
         trap(signal) do
@@ -73,8 +106,19 @@ class Workers::Processor
 
           unless @reapers > 1
             reap_workers
+            File.unlink(pid_path)
+
             exit(0)
           end
+        end
+      end
+
+      trap "USR2" do
+        # avoid re-execing in case a previous signal was already sent.
+        unless @reexecing
+          @reexecing = true
+          reap_workers
+          reexec
         end
       end
     end
@@ -171,6 +215,28 @@ class Workers::Processor
       @busy = false
     end
 
+    # re-execs itself, so as to load the newest version of the application.
+    def reexec
+      # 1. renames the PID file, so that if the forked, re-execed child
+      #    runs first, it will not fail assuming the processor is already running.
+      new_path = [pid_path, ".old"].join
+      File.rename(pid_path, new_path)
+
+      if fork
+        # parent: remove the PID file of the old master, and finishes
+        # (running hooks)
+        File.unlink(new_path)
+        exit(0)
+      else
+        # children: changes current directory to that of the original master
+        # process, then re-execs itself.
+        Dir.chdir(CONTEXT[:cwd])
+
+        command = [CONTEXT[:progname]].concat(CONTEXT[:argv])
+        exec(*command)
+      end
+    end
+
     # for worker process, if a deadly signal is received, we:
     #
     # - exit immediately if there is no message being processed;
@@ -211,7 +277,13 @@ class Workers::Processor
     end
 
     def setup_name(label)
-      $0 = "Roomorama/Concierge Processor::#{label}"
+      $0 = [File.basename(CONTEXT[:progname]), label].concat(CONTEXT[:argv]).join(' ')
+    end
+
+    def check_pid_path!
+      if File.exists?(pid_path)
+        raise "PID file located at #{pid_path} already exists. Processor already running?"
+      end
     end
   end
 end
