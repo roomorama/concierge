@@ -19,8 +19,8 @@ class Workers::OperationRunner
       @operation = operation
     end
 
-    # performs an API call to delete the propreties on Roomorama. If that is
-    # successful, proceeds to delete the properties on the dabase.
+    # performs an API call to delete the properties on Roomorama. If that is
+    # successful, proceeds to delete the properties on the database.
     #
     # Returns a +Result+ instance wrapping a single boolean value in case
     # the entire process is successful.
