@@ -52,7 +52,7 @@ module Workers
     # If there is an implementation listening for this event, it will be
     # processed.
     #
-    # Returns a +Result+ instace with any potential error.
+    # Returns a +Result+ instance with any potential error.
     def process!
       return message unless message.success?
       element = Concierge::SafeAccessHash.new(message.value)
