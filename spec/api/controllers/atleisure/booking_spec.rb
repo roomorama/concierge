@@ -13,6 +13,7 @@ RSpec.describe API::Controllers::AtLeisure::Booking do
       check_in:    "2016-03-22",
       check_out:   "2016-03-24",
       guests:      2,
+      subtotal:    300,
       customer:    {
         first_name:  "Alex",
         last_name:   "Black",

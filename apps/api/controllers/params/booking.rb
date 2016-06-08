@@ -17,6 +17,7 @@ module API::Controllers::Params
     param :check_in,    presence: true, type: String, format: DATE_FORMAT
     param :check_out,   presence: true, type: String, format: DATE_FORMAT
     param :guests,      presence: true, type: Integer
+    param :subtotal,    presence: true, type: Integer
 
     param :extra
     param :customer do
