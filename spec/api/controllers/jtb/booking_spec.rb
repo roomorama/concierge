@@ -3,6 +3,7 @@ require_relative "../shared/booking_validations"
 
 
 RSpec.describe API::Controllers::JTB::Booking do
+  include Support::HTTPStubbing
 
   let(:multi_unit_params) {
     {
@@ -37,11 +38,4 @@ RSpec.describe API::Controllers::JTB::Booking do
     expect(response.body["errors"]["unit_id"]).to eq ["unit_id is required"]
   end
 
-  def parse_response(rack_response)
-    Support::ResponseWrapper.new(
-      rack_response[0],
-      rack_response[1],
-      JSON.parse(rack_response[2].first)
-    )
-  end
 end

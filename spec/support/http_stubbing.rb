@@ -40,6 +40,15 @@ module Support
     def stubs
       @_stubs ||= Faraday::Adapter::Test::Stubs.new
     end
+
+    ResponseWrapper = Struct.new(:status, :headers, :body)
+    def parse_response(rack_response)
+      ResponseWrapper.new(
+          rack_response[0],
+          rack_response[1],
+          JSON.parse(rack_response[2].first)
+      )
+    end
   end
 
 end

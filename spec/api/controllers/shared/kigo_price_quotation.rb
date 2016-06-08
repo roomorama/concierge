@@ -50,7 +50,7 @@ RSpec.shared_examples "Kigo price quotation" do
   end
 
   def parse_response(rack_response)
-    Support::ResponseWrapper.new(
+    Support::HTTPStubbing::ResponseWrapper.new(
       rack_response[0],
       rack_response[1],
       JSON.parse(rack_response[2].first)

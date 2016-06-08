@@ -83,13 +83,4 @@ RSpec.describe API::Controllers::Poplidays::Quote do
     end
 
   end
-
-  def parse_response(rack_response)
-    Support::ResponseWrapper.new(
-      rack_response[0],
-      rack_response[1],
-      JSON.parse(rack_response[2].first)
-    )
-  end
-
 end

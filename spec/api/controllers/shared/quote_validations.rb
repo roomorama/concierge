@@ -81,7 +81,7 @@ RSpec.shared_examples "performing parameter validations" do |controller_generato
     response = controller.call(params)
 
     # Wrap Rack data structure for an HTTP response
-    Support::ResponseWrapper.new(
+    Support::HTTPStubbing::ResponseWrapper.new(
       response[0],
       response[1],
       JSON.parse(response[2].first)

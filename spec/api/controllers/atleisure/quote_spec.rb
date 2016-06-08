@@ -72,14 +72,6 @@ RSpec.describe API::Controllers::AtLeisure::Quote do
 
   end
 
-  def parse_response(rack_response)
-    Support::ResponseWrapper.new(
-      rack_response[0],
-      rack_response[1],
-      JSON.parse(rack_response[2].first)
-    )
-  end
-
   def jsonrpc_fixture(name)
     {
       id: 888888888888,
