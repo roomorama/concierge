@@ -45,10 +45,9 @@ module AtLeisure
       result = AtLeisure::Booking.new(credentials).book(params)
 
       if result.success?
-        reservation = result.value
-
-        # workaround to keep booking code for reservation. Returns reservation
-        database.create(reservation)
+        result.value.tap do |reservation|
+          database.create(reservation) # workaround to keep booking code for reservation
+        end
       else
         announce_error("booking", result)
         Reservation.new(errors: { booking: "Could not create booking with remote supplier" })
