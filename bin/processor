@@ -13,10 +13,6 @@
 require "./config/environment"
 Hanami::Application.preload!
 
-# read the path to the PID file (expected to be absolute), and if the file is
-# already present, halt the process.
-pid_path = ENV["CONCIERGE_PROCESSORS_PID_PATH"]
-
 # keeps a copy of the current STDIN so that we can write feedback to the terminal
 # after becoming a daemon process, where the stdin/stdout streams are set to
 # /dev/null
@@ -28,4 +24,4 @@ Process.daemon(true)
 prefork = ENV["CONCIERGE_WORKERS_PREFORK"].to_i
 old_stdin.puts "Forked to background, pid #{$$}. Creating #{prefork} workers"
 
-Workers::Processor::Master.new(prefork: prefork, pid_path: pid_path).load!
+Workers::Processor::Master.new(prefork: prefork).load!

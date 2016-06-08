@@ -41,40 +41,32 @@ class Workers::Processor
       Dir.pwd
     end
 
-    attr_reader :workers, :prefork, :pid_path
+    attr_reader :workers, :prefork
 
-    # prefork  - the number of worker processes to fork.
-    # pid_path - the path where to write a PID file, to control that no two
-    #            processors are executed at the same time.
-    def initialize(prefork:, pid_path:)
+    # prefork - the number of worker processes to fork.
+    #           processors are executed at the same time.
+    def initialize(prefork:)
       @prefork  = prefork
-      @pid_path = pid_path
       @workers  = {}
       @reapers  = 0
       @reexec   = false
-
-      check_pid_path!
     end
 
     # creates worker processes, sets them up and waits for signals/dead children
     # to recreate.
     def load!
-      # 1. writes the PID of the running process to a file located at the +pid_path+
-      #    given on initialization
-      write_pid_file
-
-      # 2. set up handlers for SIGINT, SIGTERM and SIGQUIT
+      # 1. set up handlers for SIGINT, SIGTERM and SIGQUIT
       setup_signals
 
-      # 3. updates its own identification as the Master process
+      # 2. updates its own identification as the Master process
       setup_name("Master")
 
-      # 4. Creates workers, as declared on initialization
+      # 3. Creates workers, as declared on initialization
       prefork.times do |n|
         create_worker(n+1)
       end
 
-      # 5. Master loop: waits for dead children, and recreates them, updating
+      # 4. Master loop: waits for dead children, and recreates them, updating
       #    the +workers+ data structure which maps worker identifiers to
       #    process IDs.
       loop do
@@ -84,10 +76,6 @@ class Workers::Processor
     end
 
     private
-
-    def write_pid_file
-      File.write(pid_path, $$)
-    end
 
     # handles SIGINT, SIGTERM and SIGQUIT to:
     #
@@ -106,8 +94,6 @@ class Workers::Processor
 
           unless @reapers > 1
             reap_workers
-            File.unlink(pid_path)
-
             exit(0)
           end
         end
@@ -217,15 +203,7 @@ class Workers::Processor
 
     # re-execs itself, so as to load the newest version of the application.
     def reexec
-      # 1. renames the PID file, so that if the forked, re-execed child
-      #    runs first, it will not fail assuming the processor is already running.
-      new_path = [pid_path, ".old"].join
-      File.rename(pid_path, new_path)
-
       if fork
-        # parent: remove the PID file of the old master, and finishes
-        # (running hooks)
-        File.unlink(new_path)
         exit(0)
       else
         # children: changes current directory to that of the original master
@@ -278,12 +256,6 @@ class Workers::Processor
 
     def setup_name(label)
       $0 = [File.basename(CONTEXT[:progname]), label].concat(CONTEXT[:argv]).join(' ')
-    end
-
-    def check_pid_path!
-      if File.exists?(pid_path)
-        raise "PID file located at #{pid_path} already exists. Processor already running?"
-      end
     end
   end
 end
