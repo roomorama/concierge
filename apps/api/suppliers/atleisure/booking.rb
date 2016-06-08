@@ -26,6 +26,7 @@ module AtLeisure
     ENDPOINT                  = "https://placebookingv1.jsonrpc-partner.net/cgi/lars/jsonrpc-partner/jsonrpc.htm"
     DEFAULT_COUNTRY_CODE      = "SG"
     DEFAULT_CUSTOMER_LANGUAGE = "EN"
+    DEFAULT_EMAIL             = "atleisure@roomorama.com" # fake email to prevent AtLeisure sending emails
 
     attr_reader :credentials
 
@@ -96,9 +97,9 @@ module AtLeisure
         "WebsiteRentPrice"         => params[:subtotal],
         "CustomerSurname"          => params[:customer][:last_name],
         "CustomerInitials"         => params[:customer][:first_name],
-        "CustomerEmail"            => params[:customer][:email],
         "CustomerTelephone1Number" => params[:customer][:phone_number],
         "BookingOrOption"          => "Booking",
+        "CustomerEmail"            => DEFAULT_EMAIL,
         "CustomerCountry"          => DEFAULT_COUNTRY_CODE,
         "CustomerLanguage"         => DEFAULT_CUSTOMER_LANGUAGE,
         "NumberOfChildren"         => "0",
