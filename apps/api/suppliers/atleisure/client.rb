@@ -50,6 +50,7 @@ module AtLeisure
         # workaround to keep booking code for reservation. Returns reservation
         database.create(reservation)
       else
+        announce_error("booking", result)
         Reservation.new(errors: { booking: "Could not create booking with remote supplier" })
       end
     end
@@ -63,11 +64,11 @@ module AtLeisure
 
     def announce_error(operation, result)
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-          operation: operation,
-          supplier: SUPPLIER_NAME,
-          code: result.error.code,
-          context: API.context.to_h,
-          message: "DEPRECATED",
+          operation:   operation,
+          supplier:    SUPPLIER_NAME,
+          code:        result.error.code,
+          context:     API.context.to_h,
+          message:     "DEPRECATED",
           happened_at: Time.now
       })
     end

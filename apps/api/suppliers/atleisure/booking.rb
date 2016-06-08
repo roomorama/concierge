@@ -23,8 +23,8 @@ module AtLeisure
   # * +unrecognised_response+:           happens when the request was successful, but the format
   #                                      of the response is not compatible to this class' expectations.
   class Booking
-    ENDPOINT = "https://placebookingv1.jsonrpc-partner.net/cgi/lars/jsonrpc-partner/jsonrpc.htm"
-    DEFAULT_COUNTRY_CODE = "SG"
+    ENDPOINT                  = "https://placebookingv1.jsonrpc-partner.net/cgi/lars/jsonrpc-partner/jsonrpc.htm"
+    DEFAULT_COUNTRY_CODE      = "SG"
     DEFAULT_CUSTOMER_LANGUAGE = "EN"
 
     attr_reader :credentials
@@ -80,8 +80,8 @@ module AtLeisure
 
     def mismatch(message, backtrace)
       response_mismatch = Concierge::Context::ResponseMismatch.new(
-        message:   message,
-        backtrace: backtrace
+          message:   message,
+          backtrace: backtrace
       )
 
       API.context.augment(response_mismatch)
@@ -89,29 +89,29 @@ module AtLeisure
 
     def reservation_details(params)
       {
-          "HouseCode" => params[:property_id],
-          "ArrivalDate" => params[:check_in].to_s,
-          "DepartureDate" => params[:check_out].to_s,
-          "NumberOfAdults" => params[:guests],
-          "WebsiteRentPrice" => params[:subtotal],
-          "CustomerSurname" => params[:customer][:last_name],
-          "CustomerInitials" => params[:customer][:first_name],
-          "CustomerEmail" => params[:customer][:email],
+          "HouseCode"                => params[:property_id],
+          "ArrivalDate"              => params[:check_in].to_s,
+          "DepartureDate"            => params[:check_out].to_s,
+          "NumberOfAdults"           => params[:guests],
+          "WebsiteRentPrice"         => params[:subtotal],
+          "CustomerSurname"          => params[:customer][:last_name],
+          "CustomerInitials"         => params[:customer][:first_name],
+          "CustomerEmail"            => params[:customer][:email],
           "CustomerTelephone1Number" => params[:customer][:phone_number],
-          "BookingOrOption" => "Booking",
-          "CustomerCountry" => DEFAULT_COUNTRY_CODE,
-          "CustomerLanguage" => DEFAULT_CUSTOMER_LANGUAGE,
-          "NumberOfChildren" => "0",
-          "NumberOfBabies" => "0",
-          "NumberOfPets" => "0",
-          "Test" => credentials.test_mode
+          "BookingOrOption"          => "Booking",
+          "CustomerCountry"          => DEFAULT_COUNTRY_CODE,
+          "CustomerLanguage"         => DEFAULT_CUSTOMER_LANGUAGE,
+          "NumberOfChildren"         => "0",
+          "NumberOfBabies"           => "0",
+          "NumberOfPets"             => "0",
+          "Test"                     => credentials.test_mode
       }.merge!(authentication_params)
     end
 
     def authentication_params
       @authentication_params ||= {
-        "WebpartnerCode"     => credentials.username,
-        "WebpartnerPassword" => credentials.password
+          "WebpartnerCode"     => credentials.username,
+          "WebpartnerPassword" => credentials.password
       }
     end
 

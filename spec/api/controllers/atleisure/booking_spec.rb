@@ -9,21 +9,20 @@ RSpec.describe API::Controllers::AtLeisure::Booking do
   let(:endpoint) { AtLeisure::Booking::ENDPOINT }
   let(:params) {
     {
-        property_id: "A123",
-        unit_id: "xxx",
-        check_in: "2016-03-22",
-        check_out: "2016-03-24",
-        guests: 2,
-        customer: {
-            first_name: "Alex",
-            last_name: "Black",
-            country: "India",
-            city: "Mumbai",
-            address: "first street",
-            postal_code: "123123",
-            email: "test@example.com",
-            phone: "555-55-55",
-        }
+      property_id: "A123",
+      check_in:    "2016-03-22",
+      check_out:   "2016-03-24",
+      guests:      2,
+      customer:    {
+        first_name:  "Alex",
+        last_name:   "Black",
+        country:     "India",
+        city:        "Mumbai",
+        address:     "first street",
+        postal_code: "123123",
+        email:       "test@example.com",
+        phone:       "555-55-55",
+      }
     }
   }
 
@@ -65,11 +64,10 @@ RSpec.describe API::Controllers::AtLeisure::Booking do
   end
 
 
-
   def jsonrpc_fixture(name)
     {
-        id: 888888888888,
-        result: JSON.parse(read_fixture(name))
+      id:     888888888888,
+      result: JSON.parse(read_fixture(name))
     }.to_json
   end
 
