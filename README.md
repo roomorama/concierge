@@ -193,10 +193,6 @@ on `apps/api/config/environment_variables.yml`. Similarly, variables required on
 defined on `config/environment_variables.yml` will be required no matter what app
 is being booted.
 
-#### TODO
-
-* update `Savon` tests to avoid SOAP request
-
 *****
 
 Brought to you by [Roomorama](https://www.roomorama.com/).
