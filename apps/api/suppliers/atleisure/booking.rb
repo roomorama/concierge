@@ -104,7 +104,7 @@ module AtLeisure
           "NumberOfChildren" => "0",
           "NumberOfBabies" => "0",
           "NumberOfPets" => "0",
-          "Test" => test_mode?
+          "Test" => credentials.test_mode
       }.merge!(authentication_params)
     end
 
@@ -113,10 +113,6 @@ module AtLeisure
         "WebpartnerCode"     => credentials.username,
         "WebpartnerPassword" => credentials.password
       }
-    end
-
-    def test_mode?
-      Hanami.env != "production" ? "Yes" : "No"
     end
 
   end
