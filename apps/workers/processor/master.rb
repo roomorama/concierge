@@ -159,8 +159,17 @@ class Workers::Processor
         #    parent, since a worker process does not manages other workers.
         workers.clear
 
-        # 5. initiates the worker loop
+        # 5. prepares the queue for polling for incoming messages
+        prepare_queue
+
+        # 6. initiates the worker loop
         worker_loop
+      end
+    end
+
+    def prepare_queue
+      poller.before do |*|
+        throw :stop_polling if @killed
       end
     end
 
@@ -173,11 +182,7 @@ class Workers::Processor
     # suddenly aborted. When the operation is done and a signal has been received,
     # the process is terminated as soon as the message is finished processing.
     def worker_loop
-      queue.before_poll do |*args|
-        throw :stop_polling if @killed
-      end
-
-      queue.poll do |message|
+      poller.poll do |message|
         busy do
           Workers::Processor.new(message.body).process!
         end
@@ -252,6 +257,10 @@ class Workers::Processor
         credentials = Concierge::Credentials.for("sqs")
         Workers::Queue.new(credentials)
       end
+    end
+
+    def poller
+      @poller ||= queue.poller
     end
 
     def setup_name(label)
