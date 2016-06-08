@@ -33,33 +33,38 @@ RSpec.describe API::Controllers::AtLeisure::Booking do
 
     before do
       allow_any_instance_of(API::Support::JSONRPC).to receive(:request_id) { 888888888888 }
-      stub_call(:post, endpoint) { [200, {}, jsonrpc_fixture(fixture)] }
     end
 
     let(:response) { parse_response(described_class.new.call(params)) }
 
-    context "fail" do
-      let(:fixture) { "atleisure/unrecognized.json" }
 
-      it "returns an error message" do
+    it "returns proper error if external request failed" do
+      stub_call(:post, endpoint) { Faraday::ClientError }
 
-        expect(response.status).to eq 503
-        expect(response.body["status"]).to eq "error"
-        expect(response.body["errors"]["booking"]).to eq "Could not create booking with remote supplier"
-      end
+      expect(response.status).to eq 503
+      expect(response.body["status"]).to eq "error"
+      expect(response.body["errors"]["booking"]).to eq "Could not create booking with remote supplier"
     end
 
-    context "success" do
-      let(:fixture) { "atleisure/booking_success.json" }
-      let(:expected_code) { "175607953" } # from fixture
+    it "returns an error message go unrecognized response" do
+      unrecognized_response = jsonrpc_fixture("atleisure/unrecognized.json")
 
-      it "returns a booking code" do
-        response = parse_response(described_class.new.call(params))
+      stub_call(:post, endpoint) { [200, {}, unrecognized_response] }
 
-        expect(response.status).to eq 200
-        expect(response.body["status"]).to eq "ok"
-        expect(response.body["code"]).to eq expected_code
-      end
+      expect(response.status).to eq 503
+      expect(response.body["status"]).to eq "error"
+      expect(response.body["errors"]["booking"]).to eq "Could not create booking with remote supplier"
+    end
+
+    it "returns a booking code when successful booking" do
+      unrecognized_response = jsonrpc_fixture("atleisure/booking_success.json")
+      expected_code         = "175607953" # from fixture
+
+      stub_call(:post, endpoint) { [200, {}, unrecognized_response] }
+
+      expect(response.status).to eq 200
+      expect(response.body["status"]).to eq "ok"
+      expect(response.body["code"]).to eq expected_code
     end
   end
 
