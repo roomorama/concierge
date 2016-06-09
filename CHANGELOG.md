@@ -17,6 +17,9 @@ how this file is formatted and how the process works.
 ## Changed
 - fixed a bug with timezone formatting by using %z directive for strftime() instead of %Z
 
+### Changed
+- fixed a bug with exceptions on startup because of not created log directory.
+
 ## [0.3.0] - 2016-05-30
 ### Added
 - `Concierge::Context`, tracking of events on API requests, reporting on the `web` app for external errors.
