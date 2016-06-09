@@ -30,7 +30,15 @@ module Waytostay
     # Waytostay, a generic error message is sent back to the caller, and the failure
     # is logged.
     def quote(params)
-      result = oauth2_client.post(ENDPOINTS[:quote])
+      post_body = {
+        property_reference: params.fetch(:property_id),
+        arrival_date: params.fetch(:check_in),
+        departure_date: params.fetch(:check_out),
+        number_of_adults: params.fetch(:guests)
+      }
+      result = oauth2_client.post(ENDPOINTS[:quote],
+                                 body: post_body.to_json,
+                                 headers: headers)
 
       if result.success?
         result.value["property_id"] = params[:property_id]
@@ -64,6 +72,13 @@ module Waytostay
 
 
     private
+
+    def headers
+      {
+        "Content-Type"=>"application/json",
+        "Accept"=>"application/json"
+      }
+    end
 
     def announce_error(operation, result)
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
