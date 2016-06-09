@@ -37,7 +37,29 @@ module AtLeisure
       end
     end
 
+    # Always returns a +Reservation+.
+    # If an error happens in any step in the process of getting a response back from
+    # AtLeisure, a generic error message is sent back to the caller, and the failure
+    # is logged.
+    def book(params)
+      result = AtLeisure::Booking.new(credentials).book(params)
+
+      if result.success?
+        result.value.tap do |reservation|
+          database.create(reservation) # workaround to keep booking code for reservation
+        end
+      else
+        announce_error("booking", result)
+        Reservation.new(errors: { booking: "Could not create booking with remote supplier" })
+      end
+    end
+
     private
+
+    def database
+      @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
+    end
+
 
     def announce_error(operation, result)
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {

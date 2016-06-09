@@ -1,9 +1,5 @@
 require "spec_helper"
 
-module Shared
-  QuoteResponse = Struct.new(:status, :headers, :body)
-end
-
 RSpec.shared_examples "performing parameter validations" do |controller_generator:|
 
   it "is invalid without a property_id" do
@@ -85,7 +81,7 @@ RSpec.shared_examples "performing parameter validations" do |controller_generato
     response = controller.call(params)
 
     # Wrap Rack data structure for an HTTP response
-    Shared::QuoteResponse.new(
+    Support::HTTPStubbing::ResponseWrapper.new(
       response[0],
       response[1],
       JSON.parse(response[2].first)
