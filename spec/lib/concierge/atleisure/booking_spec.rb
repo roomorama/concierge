@@ -30,7 +30,7 @@ RSpec.describe AtLeisure::Booking do
   end
 
   subject { described_class.new(credentials) }
-  
+
   describe "#book" do
     let(:endpoint) { AtLeisure::Booking::ENDPOINT }
 
@@ -61,6 +61,43 @@ RSpec.describe AtLeisure::Booking do
       expect(reservation).to be_a Reservation
       expect(reservation.code).to eq expected_code
     end
+
+    context "reservation details" do
+
+      let(:expected_reservation_details) {
+        {
+          "HouseCode"                => "A123",
+          "ArrivalDate"              => "2016-03-22",
+          "DepartureDate"            => "2016-03-24",
+          "NumberOfAdults"           => 2,
+          "WebsiteRentPrice"         => 300,
+          "CustomerSurname"          => "Black",
+          "CustomerInitials"         => "Alex",
+          "CustomerTelephone1Number" => "555-55-55",
+          "BookingOrOption"          => "Booking",
+          "CustomerEmail"            => "atleisure@roomorama.com",
+          "CustomerCountry"          => "SG",
+          "CustomerLanguage"         => "EN",
+          "NumberOfChildren"         => "0",
+          "NumberOfBabies"           => "0",
+          "NumberOfPets"             => "0",
+          "Test"                     => "Yes",
+          "WebpartnerCode"           => "roomorama",
+          "WebpartnerPassword"       => "atleisure-roomorama"
+        }
+      }
+
+      it "sends correct reservation details to partner" do
+
+        expect_any_instance_of(API::Support::JSONRPC).to receive(:invoke).
+          with("PlaceBookingV1", expected_reservation_details).
+          and_return(Result.new('any'))
+
+        subject.book(params)
+      end
+
+    end
+
 
     def stub_with_fixture(name)
       atleisure_response = JSON.parse(read_fixture(name))

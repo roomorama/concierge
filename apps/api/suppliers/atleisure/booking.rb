@@ -97,7 +97,7 @@ module AtLeisure
         "WebsiteRentPrice"         => params[:subtotal],
         "CustomerSurname"          => params[:customer][:last_name],
         "CustomerInitials"         => params[:customer][:first_name],
-        "CustomerTelephone1Number" => params[:customer][:phone_number],
+        "CustomerTelephone1Number" => params[:customer][:phone],
         "BookingOrOption"          => "Booking",
         "CustomerEmail"            => DEFAULT_EMAIL,
         "CustomerCountry"          => DEFAULT_COUNTRY_CODE,
