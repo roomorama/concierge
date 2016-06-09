@@ -7,6 +7,7 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Added
 - `AtLeisure::Booking`, implemented booking with partner
+- Synchronisation process architecture, including many utility classes.
 
 ## Changed
 - fixed a bug with timezone formatting by using %z directive for strftime() instead of %Z
