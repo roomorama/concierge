@@ -61,7 +61,7 @@ RSpec.describe API::Support::OAuth2Client do
         }
       end
 
-      it { expect(subject.value).to be_a(Result) }
+      it { expect(subject).to be_a(Result) }
       it { expect(subject).to be_success }
     end
 
@@ -101,7 +101,7 @@ RSpec.describe API::Support::OAuth2Client do
         }
       end
 
-      it { expect(subject.value).to be_a(Result) }
+      it { expect(subject).to be_a(Result) }
       it { expect(subject).to be_success }
     end
 
