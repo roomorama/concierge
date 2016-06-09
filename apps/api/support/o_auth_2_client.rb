@@ -32,6 +32,32 @@ module API::Support
       @options = options
     end
 
+
+    # Make a GET request with the client's access_token
+    #
+    def get(path, opts = {}, &block)
+      response_with_error_handling do
+        access_token.get(path, opts, &block)
+      end
+    end
+
+    # Make a POST request with the client's access_token
+    #
+    def post(path, opts = {}, &block)
+      response_with_error_handling do
+        access_token.post(path, opts, &block)
+      end
+    end
+
+    def oauth_client
+      @oauth_client ||= OAuth2::Client.new(options.fetch(:id),
+                                  options.fetch(:secret),
+                                  token_url: options.fetch(:token_url, "/oauth/token"),
+                                  site: options.fetch(:base_url))
+    end
+
+    private
+
     # Fetch the access token from cache by id.
     # TODO: - Expire the cache according to the returned token's expire_at.
     #         Currently we request for a new token every 1 day, arbitrarily
@@ -46,46 +72,14 @@ module API::Support
 
       # If cache is hit, we need to parse result into an +OAuth2::AccessToken+ object
       @access_token = OAuth2::AccessToken.from_hash(oauth_client, JSON.parse(token_result.value)) unless token_result.nil?
-    rescue OAuth2::Error => err
-
     end
 
-    # Make a GET request with the client's access_token
-    #
-    def get(path, opts = {}, &block)
-      with_error_handling do
-        access_token.get(path, opts, &block)
-      end
-    end
-
-    # Make a POST request with the client's access_token
-    #
-    def post(path, opts = {}, &block)
-      with_error_handling do
-        access_token.post(path, opts, &block)
-      end
-    end
-
-    def oauth_client
-      @oauth_client ||= OAuth2::Client.new(options.fetch(:id),
-                                  options.fetch(:secret),
-                                  token_url: options.fetch(:token_url, "/oauth/token"),
-                                  site: options.fetch(:base_url))
-    end
-
-    private
-
-    def with_error_handling
+    def response_with_error_handling
       response = yield
-      if Concierge::HTTPClient::SUCCESSFUL_STATUSES.include?(response.status)
-        Result.new(json_decode(response.body))
-      else
-        announce_error(response.error)
-        Result.error(:"http_status_#{respoesn.status}")
-      end
+      Result.new(json_decode(response.body))
     rescue OAuth2::Error => err
       announce_error(err)
-      Result.error(err.code)
+      Result.error(:"http_status_#{err.response.status}")
     rescue Faraday::TimeoutError => err
       announce_error(err)
       Result.error(:connection_timeout)
@@ -100,6 +94,9 @@ module API::Support
       Result.error(:network_failure)
     end
 
+    def announce_error(error)
+      Concierge::Announcer.trigger("oauth2_client.on_failure", error.message)
+    end
 
     def cache
       @cache ||= Concierge::Cache.new(namespace: "oauth2")
