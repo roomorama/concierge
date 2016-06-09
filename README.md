@@ -193,6 +193,33 @@ on `apps/api/config/environment_variables.yml`. Similarly, variables required on
 defined on `config/environment_variables.yml` will be required no matter what app
 is being booted.
 
+### Getting Concierge up and running
+
+Clone the project
+
+    $ git clone git@github.com:roomorama/concierge.git
+
+Install dependencies
+
+    $ bundle
+
+Make a copy of environment configuration example file
+
+    $ cp .env.example .env
+
+Set correct `CONCIERGE_DATABASE_URL` and other environment variables
+  
+    CONCIERGE_DATABASE_URL="postgres://username:password@0.0.0.0:5432/concierge_development"
+
+Create database & apply migrations
+
+    $ bundle exec hanami db create
+    $ bundle exec hanami db migrate
+
+Start Concierge!
+
+    $ hanami server
+
 *****
 
 Brought to you by [Roomorama](https://www.roomorama.com/).
