@@ -17,6 +17,8 @@ class Workers::Queue
       end
     end
 
+    attr_reader :queue_url, :client
+
     # queue_url - a String containing the URL to the queue to be monitored
     # client    - an +Aws::SQS::Client+ instance
     def initialize(queue_url, client)
@@ -53,7 +55,7 @@ class Workers::Queue
     private
 
     def poller
-      @poller ||= Aws::SQS::QueuePoller.new(queue_url, client)
+      @poller ||= Aws::SQS::QueuePoller.new(queue_url, client: client)
     end
 
     # ensures that the given +object+ is a valid instance of +Result+. Necessary to
