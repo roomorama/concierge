@@ -4,6 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## Unreleased
+### Added
+- `AtLeisure::Booking`, implemented booking with partner
+
 ## [0.3.0] - 2016-05-30
 ### Added
 - `Concierge::Context`, tracking of events on API requests, reporting on the `web` app for external errors.
