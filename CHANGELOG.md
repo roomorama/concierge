@@ -10,6 +10,9 @@ how this file is formatted and how the process works.
 - Master process does not crash if child worker was manually killed.
 - Fixed a bug with exceptions on startup because of not created log directory.
 
+### Added
+- `API::Support::OAuth2Client`, a wrapper around oauth2 calls, caching access token and returning +Response+ objects
+
 ## [0.4.0] - 2016-06-13
 ### Added
 - `AtLeisure::Booking`, implemented booking with partner
