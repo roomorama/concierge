@@ -65,7 +65,7 @@ RSpec.describe API::Controllers::AtLeisure::Booking do
       }.by(1)
 
       external_error = ExternalErrorRepository.first
-      
+
       expect(external_error.operation).to eq "booking"
       expect(external_error.supplier).to eq "AtLeisure"
       expect(external_error.code).to eq "unrecognised_response"
