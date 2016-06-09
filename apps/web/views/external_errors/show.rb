@@ -140,9 +140,9 @@ module Web::Views::ExternalErrors
     end
 
     # formats the timestamp of a an +event+, expected to be a +Concierge::SafeAccessHash+
-    # to a format which includes the timezone, for clarity.
+    # to a format which includes the timezone offset, for clarity.
     def format_timestamp(event)
-      Time.parse(event[:timestamp]).strftime("%T (%Z)")
+      Time.parse(event[:timestamp]).strftime("%T (%z)")
     end
 
     private
