@@ -47,7 +47,7 @@ RSpec.describe API::Controllers::AtLeisure::Booking do
       expect(response.body["errors"]["booking"]).to eq "Could not create booking with remote supplier"
     end
 
-    it "returns an error message go unrecognized response" do
+    it "returns an error message with unrecognized response" do
       unrecognized_response = jsonrpc_fixture("atleisure/unrecognized.json")
 
       stub_call(:post, endpoint) { [200, {}, unrecognized_response] }
@@ -57,11 +57,25 @@ RSpec.describe API::Controllers::AtLeisure::Booking do
       expect(response.body["errors"]["booking"]).to eq "Could not create booking with remote supplier"
     end
 
-    it "returns a booking code when successful booking" do
-      unrecognized_response = jsonrpc_fixture("atleisure/booking_success.json")
-      expected_code         = "175607953" # from fixture
+    it "creates external error record in database" do
+      stub_call(:post, endpoint) { [200, {}, jsonrpc_fixture("atleisure/unrecognized.json")] }
 
-      stub_call(:post, endpoint) { [200, {}, unrecognized_response] }
+      expect { parse_response(described_class.new.call(params)) }.to change {
+        ExternalErrorRepository.count
+      }.by(1)
+
+      external_error = ExternalErrorRepository.first
+      
+      expect(external_error.operation).to eq "booking"
+      expect(external_error.supplier).to eq "AtLeisure"
+      expect(external_error.code).to eq "unrecognised_response"
+    end
+
+    it "returns a booking code when successful booking" do
+      success_response = jsonrpc_fixture("atleisure/booking_success.json")
+      expected_code    = "175607953" # from fixture
+
+      stub_call(:post, endpoint) { [200, {}, success_response] }
 
       expect(response.status).to eq 200
       expect(response.body["status"]).to eq "ok"
