@@ -28,8 +28,12 @@ module API::Support
 
     attr_reader :options, :cache, :oauth_client
 
-    def initialize(options={})
+    def initialize(id:, secret:, base_url:, **options)
       @options = options
+      @oauth_client = OAuth2::Client.new(id,
+                                  secret,
+                                  token_url: options.fetch(:token_url, "/oauth/token"),
+                                  site: base_url)
     end
 
 
@@ -49,13 +53,6 @@ module API::Support
       end
     end
 
-    def oauth_client
-      @oauth_client ||= OAuth2::Client.new(options.fetch(:id),
-                                  options.fetch(:secret),
-                                  token_url: options.fetch(:token_url, "/oauth/token"),
-                                  site: options.fetch(:base_url))
-    end
-
     private
 
     # Fetch the access token from cache by id.
@@ -65,7 +62,7 @@ module API::Support
     def access_token
       return @access_token unless @access_token.nil?
 
-      token_result = cache.fetch(options.fetch(:id), freshness: 60 * 60 * 24 ) do
+      token_result = cache.fetch(oauth_client.id, freshness: 60 * 60 * 24 ) do
         @access_token = oauth_client.client_credentials.get_token
         Result.new(@access_token.to_hash.to_json)
       end

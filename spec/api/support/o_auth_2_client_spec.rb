@@ -6,10 +6,10 @@ RSpec.describe API::Support::OAuth2Client do
   include Support::HTTPStubbing
 
   let(:credentials) { Concierge::Credentials.for("waytostay") }
-  let(:client) { described_class.new({id: credentials[:client_id],
-                                      secret: credentials[:client_secret],
-                                      token_url: credentials[:token_url],
-                                      base_url: credentials[:url]}) }
+  let(:client) { described_class.new(id: credentials[:client_id],
+                                     secret: credentials[:client_secret],
+                                     base_url: credentials[:url],
+                                     token_url: credentials[:token_url]) }
 
   before do
     client.oauth_client.connection = stub_call( :post,
@@ -31,10 +31,10 @@ RSpec.describe API::Support::OAuth2Client do
     end
 
     context "with invalid credentials" do
-      let(:client) { described_class.new({id: "invalid",
+      let(:client) { described_class.new(id: "invalid_id",
                                       secret: credentials[:client_secret],
-                                      token_url: "/invalid_credentials",
-                                      base_url: credentials[:url]}) }
+                                      base_url: credentials[:url],
+                                      token_url: "/invalid_credentials") }
       before do
         client.oauth_client.connection = stub_call( :post,
                                                    credentials[:url] + "/invalid_credentials") {
@@ -42,9 +42,7 @@ RSpec.describe API::Support::OAuth2Client do
             read_fixture("waytostay/invalid_credentials.json")]
         }
       end
-      it "should raise error with meaningful code and message" do
-        expect{subject}.to raise_error(OAuth2::Error)
-      end
+      it { expect{subject}.to raise_error(OAuth2::Error) }
     end
   end
 
