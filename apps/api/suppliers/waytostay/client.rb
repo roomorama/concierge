@@ -49,6 +49,16 @@ module Waytostay
       end
     end
 
+    def oauth2_client
+      @oauth2_client ||= API::Support::OAuth2Client.new(id: credentials[:client_id],
+                                                        secret: credentials[:client_secret],
+                                                        base_url: credentials[:url],
+                                                        token_url: credentials[:token_url])
+    end
+
+
+    private
+
     def quote_params_from json
         details = json["booking_details"]
         {
@@ -62,16 +72,6 @@ module Waytostay
           available: true,
         }
     end
-
-    def oauth2_client
-      @oauth2_client ||= API::Support::OAuth2Client.new(id: credentials[:client_id],
-                                                        secret: credentials[:client_secret],
-                                                        base_url: credentials[:url],
-                                                        token_url: credentials[:token_url])
-    end
-
-
-    private
 
     def headers
       {
