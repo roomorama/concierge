@@ -78,9 +78,9 @@ RSpec.describe AtLeisure::Booking do
           "CustomerEmail"            => "test@example.com",
           "CustomerCountry"          => "SG",
           "CustomerLanguage"         => "EN",
-          "NumberOfChildren"         => "0",
-          "NumberOfBabies"           => "0",
-          "NumberOfPets"             => "0",
+          "NumberOfChildren"         => 0,
+          "NumberOfBabies"           => 0,
+          "NumberOfPets"             => 0,
           "Test"                     => "Yes",
           "WebpartnerCode"           => "roomorama",
           "WebpartnerPassword"       => "atleisure-roomorama"

@@ -101,9 +101,9 @@ module AtLeisure
         "BookingOrOption"          => "Booking",
         "CustomerCountry"          => DEFAULT_COUNTRY_CODE,
         "CustomerLanguage"         => DEFAULT_CUSTOMER_LANGUAGE,
-        "NumberOfChildren"         => "0",
-        "NumberOfBabies"           => "0",
-        "NumberOfPets"             => "0",
+        "NumberOfChildren"         => 0,
+        "NumberOfBabies"           => 0,
+        "NumberOfPets"             => 0,
         "Test"                     => credentials.test_mode
       }.merge!(authentication_params)
     end
