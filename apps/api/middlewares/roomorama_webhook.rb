@@ -89,6 +89,7 @@ module API
             check_in:    payload.get("inquiry.check_in"),
             check_out:   payload.get("inquiry.check_out"),
             guests:      payload.get("inquiry.num_guests"),
+            subtotal:    payload.get("inquiry.subtotal"),
             customer: {
               first_name: payload.get("inquiry.user.first_name"),
               last_name:  payload.get("inquiry.user.last_name"),
