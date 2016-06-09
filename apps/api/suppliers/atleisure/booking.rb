@@ -20,8 +20,8 @@ module AtLeisure
   #
   # Possible errors at this stage are:
   #
-  # * +unrecognised_response+:           happens when the request was successful, but the format
-  #                                      of the response is not compatible to this class' expectations.
+  # * +unrecognised_response+: happens when the request was successful, but the format
+  #                            of the response is not compatible to this class' expectations.
   class Booking
     ENDPOINT                  = "https://placebookingv1.jsonrpc-partner.net/cgi/lars/jsonrpc-partner/jsonrpc.htm"
     DEFAULT_COUNTRY_CODE      = "SG"
