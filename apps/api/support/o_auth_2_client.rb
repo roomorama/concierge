@@ -73,7 +73,7 @@ module API::Support
 
     def response_with_error_handling
       response = yield
-      Result.new(json_decode(response.body))
+      json_decode(response.body)
     rescue OAuth2::Error => err
       announce_error(err)
       Result.error(:"http_status_#{err.response.status}")
