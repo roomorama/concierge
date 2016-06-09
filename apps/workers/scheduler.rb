@@ -35,7 +35,7 @@ module Workers
     private
 
     def default_logger
-      Logger.new(LOG_PATH)
+      ::Logger.new(LOG_PATH)
     end
 
     # updates the timestamp for next synchronisation to avoid enqueueing the same
