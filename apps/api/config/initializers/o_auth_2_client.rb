@@ -1,5 +1,5 @@
 # subscribes to +Concierge::Announcer+ events published by the
-# +API::Support::HTTPClient+ class.  See that class documentation,
+# +API::Support::OAuth2Client+ class.  See that class documentation,
 # as well that of the classes under +Concierge::Context+ to understand
 # the rationale.
 
@@ -31,4 +31,23 @@ Concierge::Announcer.on(API::Support::OAuth2Client::ON_FAILURE) do |message|
   )
 
   API.context.augment(network_failure)
+end
+
+Concierge::Announcer.on(API::Support::OAuth2Client::ON_TOKEN_REQUEST) do |site, id, secret, strategy|
+  token_request = Concierge::Context::TokenRequest.new(
+    site: site,
+    client_id: id,
+    client_secret: secret,
+    strategy: strategy
+  )
+
+  API.context.augment(token_request)
+end
+
+Concierge::Announcer.on(API::Support::OAuth2Client::ON_TOKEN_RECEIVED) do |token_hash|
+  token_received = Concierge::Context::TokenReceived.new(
+    token_hash: token_hash
+  )
+
+  API.context.augment(token_received)
 end
