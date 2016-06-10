@@ -7,6 +7,8 @@ module API::Support
   # This class wraps OAuth2 client functionalities(from gem oauth2)
   # with error handling(by +Result+ class)
   #
+  # Strategy defaults to OAuth2 by client credentials. @see http://tools.ietf.org/html/draft-ietf-oauth-v2-15#section-4.4
+  #
   # The return of every network related operation from this class is an instance of the +Result+ object.
   # This allows the caller to determine if the call was successful and, in case it was not,
   # handle the error accordingly.
@@ -15,7 +17,10 @@ module API::Support
   #
   #   client = API::Support::OAuth2Client.new(id: "id",
   #                                           secret: "secret",
-  #                                           base_url: "https://url")
+  #                                           base_url: "https://url",
+  #                                           token_url: "/oauth/token",
+  #                                           authorize_url: "/oauth/authorize" # only for :authorize strategy
+  #                                           strategy: :client_credentials)
   #   result = client.get(endpoint)
   #   if result.success?
   #     process_response(result.value)
@@ -28,12 +33,15 @@ module API::Support
 
     attr_reader :options, :cache, :oauth_client
 
-    def initialize(id:, secret:, base_url:, **options)
+    def initialize(id:, secret:, base_url:, token_url:, **options)
       @options = options
+      oauth_options = {
+        token_url: token_url,
+        site: base_url
+      }.merge options
       @oauth_client = OAuth2::Client.new(id,
                                   secret,
-                                  token_url: options.fetch(:token_url, "/oauth/token"),
-                                  site: base_url)
+                                  **oauth_options)
     end
 
 
@@ -63,7 +71,8 @@ module API::Support
       return @access_token unless @access_token.nil?
 
       token_result = cache.fetch(oauth_client.id, freshness: 60 * 60 * 24 ) do
-        @access_token = oauth_client.client_credentials.get_token
+        token_strategy = options.fetch(:strategy, :client_credentials)
+        @access_token = oauth_client.public_send(token_strategy).get_token
         Result.new(@access_token.to_hash.to_json)
       end
 
