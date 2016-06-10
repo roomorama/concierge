@@ -64,20 +64,20 @@ RSpec.describe API::Support::OAuth2Client do
       it { expect(subject).to be_success }
     end
 
-    {
-      http_status_404: lambda { [404, {}, "Not found"] },
-      http_status_401: lambda { [401, {}, "Not authorized"] },
-    }.each do |code, error|
-      context "when error #{code} occur" do
+    [
+      { code: :http_status_404, response: lambda { [404, {}, "Not found"]}},
+      { code: :http_status_401, response: lambda { [401, {}, "Not authorized"]}},
+    ].each do |error|
+      context "when error #{error[:code]} occur" do
         before do
           client.oauth_client.connection = stub_call(:get,
                                                      credentials[:url] + endpoint,
-                                                     &error)
+                                                     &error[:response])
         end
-        it "should return a result with error coded #{code}" do
+        it "should return a result with error coded #{error[:code]}" do
           expect(subject).to_not be_success
           expect(subject.error).to_not be_nil
-          expect(subject.error.code).to eq code
+          expect(subject.error.code).to eq error[:code]
         end
       end
     end
@@ -105,21 +105,21 @@ RSpec.describe API::Support::OAuth2Client do
       it { expect(subject).to be_success }
     end
 
-    {
-      http_status_404: lambda { [404, {}, "Not found"] },
-      http_status_401: lambda { [401, {}, "Not authorized"] },
-      http_status_415: lambda { [415, {}, "{\"type\":\"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html\",\"title\":\"Unsupported Media Type\",\"status\":415,\"detail\":\"Invalid content-type specified\"}"] },
-    }.each do |code, error|
-      context "when error #{code} occur" do
+    [
+      { code: :http_status_404, response: lambda { [404, {}, "Not found"]}},
+      { code: :http_status_401, response: lambda { [401, {}, "Not authorized"]}},
+      { code: :http_status_415, response: lambda { [415, {}, "{\"type\":\"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html\",\"title\":\"Unsupported Media Type\",\"status\":415,\"detail\":\"Invalid content-type specified\"}"]}},
+    ].each do |error|
+      context "when error #{error[:code]} occur" do
         before do
           client.oauth_client.connection = stub_call(:post,
                                                      credentials[:url] + endpoint,
-                                                     &error)
+                                                     &error[:response])
         end
-        it "should return a result with error coded #{code}" do
+        it "should return a result with error coded #{error[:code]}" do
           expect(subject).to_not be_success
           expect(subject.error).to_not be_nil
-          expect(subject.error.code).to eq code
+          expect(subject.error.code).to eq error[:code]
         end
       end
     end

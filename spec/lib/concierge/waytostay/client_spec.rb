@@ -23,13 +23,23 @@ RSpec.describe Waytostay::Client do
   describe '#quote' do
     subject { supplier_client.quote(params) }
     it_behaves_like "supplier quote method" do
-      let(:test) { "world" }
       let(:quote_url) { supplier_client.credentials[:url] + described_class::ENDPOINTS[:quote] }
       let(:stub_successful_quote) { lambda {
         supplier_client.oauth2_client.oauth_client.connection =
           stub_call(:post,
                     quote_url) {
             [200, {}, success_response]
+          }
+      }}
+      let(:supplier_quote_errors){[
+        { code: 422, response: read_fixture('waytostay/bookings/quote.unavailable.json')},
+        { code: 422, response: read_fixture('waytostay/bookings/quote.cutoff.json')},
+      ]}
+      let(:stub_unsuccessful_quote){ lambda{|error|
+        supplier_client.oauth2_client.oauth_client.connection =
+          stub_call(:post,
+                    quote_url) {
+            [error[:code], {}, error[:respones]]
           }
       }}
     end
