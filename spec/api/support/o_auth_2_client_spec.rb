@@ -12,7 +12,7 @@ RSpec.describe API::Support::OAuth2Client do
                                      token_url: credentials[:token_url]) }
 
   before do
-    client.oauth_client.connection = stub_call( :post,
+    client.oauth_client.connection = stub_call(:post,
                                                credentials[:url] + credentials[:token_url] ) {
       [200, {'Content-Type'=>'application/json'},
         read_fixture("waytostay#{credentials[:token_url]}.json")]
@@ -24,7 +24,6 @@ RSpec.describe API::Support::OAuth2Client do
 
     context "when successful" do
       it "should be a valid access_token" do
-        subject
         expect(subject).to be_a(OAuth2::AccessToken)
         expect(subject.token).to be_a(String)
       end
@@ -36,7 +35,7 @@ RSpec.describe API::Support::OAuth2Client do
                                       base_url: credentials[:url],
                                       token_url: "/invalid_credentials") }
       before do
-        client.oauth_client.connection = stub_call( :post,
+        client.oauth_client.connection = stub_call(:post,
                                                    credentials[:url] + "/invalid_credentials") {
           [400, {'Content-Type'=>'application/json'},
             read_fixture("waytostay/invalid_credentials.json")]
@@ -72,7 +71,8 @@ RSpec.describe API::Support::OAuth2Client do
       context "when error #{code} occur" do
         before do
           client.oauth_client.connection = stub_call(:get,
-                                     credentials[:url] + endpoint, &error)
+                                                     credentials[:url] + endpoint,
+                                                     &error)
         end
         it "should return a result with error coded #{code}" do
           expect(subject).to_not be_success
@@ -113,7 +113,8 @@ RSpec.describe API::Support::OAuth2Client do
       context "when error #{code} occur" do
         before do
           client.oauth_client.connection = stub_call(:post,
-                                     credentials[:url] + endpoint, &error)
+                                                     credentials[:url] + endpoint,
+                                                     &error)
         end
         it "should return a result with error coded #{code}" do
           expect(subject).to_not be_success

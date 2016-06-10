@@ -5,8 +5,12 @@ RSpec.describe Waytostay::Client do
   include Support::Fixtures
 
   before do
-    Concierge::Cache.new(namespace:"oauth2").fetch(supplier_client.credentials[:client_id]) do
-      Result.new "{\"token_type\":\"BEARER\",\"scope\":null,\"access_token\":\"test_token\",\"refresh_token\":null,\"expires_at\":1465467451}"
+    Concierge::Cache.new(namespace:"oauth2").
+      fetch(supplier_client.credentials[:client_id],
+            serializer: Concierge::Cache::Serializers::JSON.new) do
+      Result.new({"token_type"=>"BEARER",
+                  "access_token"=>"test_token",
+                  "expires_at"=>1465467451})
     end
   end
   let(:supplier_client) { described_class.new }

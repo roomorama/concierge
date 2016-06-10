@@ -50,27 +50,26 @@ module Waytostay
     end
 
     def oauth2_client
-      @oauth2_client ||= API::Support::OAuth2Client.new(id: credentials[:client_id],
-                                                        secret: credentials[:client_secret],
-                                                        base_url: credentials[:url],
-                                                        token_url: credentials[:token_url])
+      @oauth2_client ||= API::Support::OAuth2Client.new(id: credentials.client_id,
+                                                        secret: credentials.client_secret,
+                                                        base_url: credentials.url,
+                                                        token_url: credentials.token_url)
     end
-
 
     private
 
     def quote_params_from json
-        details = json["booking_details"]
-        {
-          property_id: json["property_id"],
-          check_in: details["arrival_date"],
-          check_out: details["departure_date"],
-          guests: details["number_of_adults"], #should we add infants?
-          fee: details["price"]["pricing_summary"]["agency"]["commission_amount"],
-          total: details["price"]["pricing_summary"]["final_price"],
-          currency: details["price"]["currency"],
-          available: true,
-        }
+      details = json["booking_details"]
+      {
+        property_id: json["property_id"],
+        check_in: details["arrival_date"],
+        check_out: details["departure_date"],
+        guests: details["number_of_adults"], #should we add infants?
+        fee: details["price"]["pricing_summary"]["agency"]["commission_amount"],
+        total: details["price"]["pricing_summary"]["final_price"],
+        currency: details["price"]["currency"],
+        available: true,
+      }
     end
 
     def headers
