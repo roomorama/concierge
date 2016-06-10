@@ -25,7 +25,7 @@ module Concierge
     # for a given supplier.
     class MissingSupplierError < StandardError
       def initialize(supplier)
-        super(%<No credential information for supplier "#{supplier}">)
+        super(%<No credential information for entity "#{supplier}">)
       end
     end
 
@@ -35,7 +35,7 @@ module Concierge
     # is either not defined or empty.
     class MissingCredentialError < StandardError
       def initialize(supplier, missing_credential)
-        super(%<Missing credential "#{missing_credential}" for supplier #{supplier}>)
+        super(%<Missing credential "#{missing_credential}" for entity #{supplier}>)
       end
     end
 

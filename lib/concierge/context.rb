@@ -23,8 +23,8 @@ module Concierge
   class Context
     attr_reader :data, :events
 
-    def initialize
-      @data   = initial_data
+    def initialize(type:)
+      @data   = initial_data(type)
       @events = []
     end
 
@@ -45,11 +45,13 @@ module Concierge
     private
 
     # adds initial metadata on the payload. Stores the running version
-    # of Concierge as well as the server handling the request.
-    def initial_data
+    # of Concierge, the server handling the request, as well as the
+    # type of request being processed (API - default - or batch processing.)
+    def initial_data(type)
       {
         version: Concierge::VERSION,
-        host:    Socket.gethostname
+        host:    Socket.gethostname,
+        type:    type
       }
     end
 

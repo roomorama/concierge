@@ -1,0 +1,8 @@
+# This file lists all suppliers integrated through Concierge.
+#
+# These are loaded into the database via the +suppliers:load+ rake task. After
+# the suppliers are imported into the database, it becomes possible create new
+# hosts for such suppliers, and start the integration process.
+#
+# Only suppliers for which the full integration flow is completed should be
+# added here (properties synchronisation as well as webhooks.)

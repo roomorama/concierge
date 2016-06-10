@@ -14,7 +14,7 @@ class ExternalErrorRepository
   # returns the most recent +ExternalError+ instance added to the database.
   # If the table is empty, this method returns +nil+.
   def self.most_recent
-    scope = query { order(:happened_at).limit(1) }
+    scope = query { reverse_order(:happened_at).limit(1) }
     scope.to_a.first
   end
 

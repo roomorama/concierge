@@ -10,7 +10,7 @@ Concierge::Announcer.on(Concierge::Cache::CACHE_HIT) do |key, value, content_typ
     content_type: content_type
   )
 
-  API.context.augment(cache_hit)
+  Concierge.context.augment(cache_hit)
 end
 
 Concierge::Announcer.on(Concierge::Cache::CACHE_MISS) do |key|
@@ -18,5 +18,5 @@ Concierge::Announcer.on(Concierge::Cache::CACHE_MISS) do |key|
     key: key
   )
 
-  API.context.augment(cache_miss)
+  Concierge.context.augment(cache_miss)
 end

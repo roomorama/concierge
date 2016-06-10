@@ -16,6 +16,8 @@ gem 'patron', '~> 0.5'
 gem 'yajl-ruby', '~> 1.2', require: 'yajl'
 gem 'savon'
 gem 'rollbar', '~> 2.8'
+gem 'aws-sdk', '~> 2.3'
+gem 'whenever', '~> 0.9', require: false
 
 group :test do
   gem 'rspec', '~> 3.4.0'

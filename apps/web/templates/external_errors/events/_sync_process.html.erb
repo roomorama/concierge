@@ -1,0 +1,16 @@
+<div class="error-event">
+  <%= render partial: "external_errors/events/timestamp", locals: { event: event } %>
+
+  <h3>Process Started</h3>
+
+  <%
+    host = HostRepository.find(event[:host_id])
+    if host
+      description = "<code>#{host.username}</code> (identifier: <code>#{host.identifier}</code>)"
+    else
+      description = "of ID <code>#{host.id}</code>, no longer in the database"
+    end
+  %>
+  <p>The synchronisation process started for property <code><%= event[:identifier] %></code>,
+    from host <%= description %>.</p>
+</div>

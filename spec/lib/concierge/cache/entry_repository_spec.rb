@@ -1,13 +1,7 @@
 require "spec_helper"
 
 RSpec.describe Concierge::Cache::EntryRepository do
-  let(:cache_entry_attributes) {
-    {
-      key: "supplier.quote.price_call",
-      value: { price: 250.0 }.to_json,
-      updated_at: Time.now
-    }
-  }
+  include Support::Factories
 
   describe ".count" do
     it "is zero when there are no records in the database" do
@@ -52,12 +46,5 @@ RSpec.describe Concierge::Cache::EntryRepository do
       expect(entry).to be_a Concierge::Cache::Entry
       expect(entry.key).to eq "the.key"
     end
-  end
-
-  def create_cache_entry(overrides = {})
-    attributes = cache_entry_attributes.merge(overrides)
-    entry = Concierge::Cache::Entry.new(attributes)
-
-    described_class.create(entry)
   end
 end
