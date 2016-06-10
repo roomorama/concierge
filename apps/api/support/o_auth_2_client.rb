@@ -37,6 +37,8 @@ module API::Support
     ON_REQUEST  = "oauth2_client.on_request"
     ON_RESPONSE = "oauth2_client.on_response"
     ON_FAILURE  = "oauth2_client.on_failure"
+    ON_TOKEN_REQUEST = "oauth2_client.on_token_request"
+    ON_TOKEN_RECEIVED = "oauth2_client.on_token_received"
 
     # by default, include a self identifying +User-Agent+ HTTP header so that
     # later analysis can pinpoint the running version of Concierge (and also
@@ -101,7 +103,9 @@ module API::Support
 
       token_result = cache.fetch(oauth_client.id, freshness: one_day, serializer: json_serializer ) do
         token_strategy = options.fetch(:strategy, :client_credentials)
+        Concierge::Announcer.trigger(ON_TOKEN_REQUEST, oauth_client.site, oauth_client.id, oauth_client.secret, token_strategy)
         @access_token = oauth_client.public_send(token_strategy).get_token
+        Concierge::Announcer.trigger(ON_TOKEN_RECEIVED, access_token.to_hash)
         Result.new(@access_token.to_hash)
       end
 
