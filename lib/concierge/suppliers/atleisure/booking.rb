@@ -84,7 +84,7 @@ module AtLeisure
         backtrace: backtrace
       )
 
-      API.context.augment(response_mismatch)
+      Concierge.context.augment(response_mismatch)
     end
 
     def reservation_details(params)
