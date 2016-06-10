@@ -30,7 +30,7 @@ module API::Support
   #
   class OAuth2Client
 
-    attr_reader :options, :cache, :oauth_client
+    attr_reader :options, :oauth_client
 
     def initialize(id:, secret:, base_url:, token_url:, **options)
       @options = options
