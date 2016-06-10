@@ -29,7 +29,6 @@ module API::Support
   #   end
   #
   class OAuth2Client
-    include Concierge::JSON
 
     attr_reader :options, :cache, :oauth_client
 
@@ -70,19 +69,19 @@ module API::Support
     def access_token
       return @access_token unless @access_token.nil?
 
-      token_result = cache.fetch(oauth_client.id, freshness: 60 * 60 * 24 ) do
+      token_result = cache.fetch(oauth_client.id, freshness: one_day, serializer: json_serializer ) do
         token_strategy = options.fetch(:strategy, :client_credentials)
         @access_token = oauth_client.public_send(token_strategy).get_token
-        Result.new(@access_token.to_hash.to_json)
+        Result.new(@access_token.to_hash)
       end
 
       # If cache is hit, we need to parse result into an +OAuth2::AccessToken+ object
-      @access_token = OAuth2::AccessToken.from_hash(oauth_client, JSON.parse(token_result.value)) unless token_result.nil?
+      @access_token = OAuth2::AccessToken.from_hash(oauth_client, token_result.value) unless token_result.nil?
     end
 
     def response_with_error_handling
       response = yield
-      json_decode(response.body)
+      json_serializer.decode(response.body)
     rescue OAuth2::Error => err
       announce_error(err)
       Result.error(:"http_status_#{err.response.status}")
@@ -106,6 +105,14 @@ module API::Support
 
     def cache
       @cache ||= Concierge::Cache.new(namespace: "oauth2")
+    end
+
+    def one_day
+      60 * 60 * 24
+    end
+
+    def json_serializer
+      @serializer ||= Concierge::Cache::Serializers::JSON.new
     end
   end
 end
