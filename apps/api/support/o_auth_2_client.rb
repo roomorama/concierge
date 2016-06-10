@@ -32,6 +32,20 @@ module API::Support
 
     attr_reader :options, :oauth_client
 
+    # events that are published via +Concierge::Announcer+ and that can be listened
+    # independently.
+    ON_REQUEST  = "oauth2_client.on_request"
+    ON_RESPONSE = "oauth2_client.on_response"
+    ON_FAILURE  = "oauth2_client.on_failure"
+
+    # by default, include a self identifying +User-Agent+ HTTP header so that
+    # later analysis can pinpoint the running version of Concierge (and also
+    # removes the default +Faraday+ User Agent configuration which is not
+    # ideal.)
+    DEFAULT_HEADERS = {
+      "User-Agent" => "Roomorama/Concierge #{Concierge::VERSION}"
+    }
+
     def initialize(id:, secret:, base_url:, token_url:, **options)
       @options = options
       oauth_options = {
@@ -45,17 +59,33 @@ module API::Support
 
 
     # Make a GET request with the client's access_token
+    # Example
+    #   client.get("/ping",
+    #               params:{message:"Hello World"},
+    #               headers: {'Content-Type'=>'application/json'}
+    #   )
     #
     def get(path, opts = {}, &block)
       response_with_error_handling do
+        opts[:headers] ||= {}
+        opts[:headers].merge!(DEFAULT_HEADERS)
+        announce_request(:get, path, opts[:params], opts[:headers])
         access_token.get(path, opts, &block)
       end
     end
 
     # Make a POST request with the client's access_token
+    # Example:
+    #   client.post("/ping",
+    #               body:{message:"Hello World"}.to_json,
+    #               headers: {'Content-Type'=>'application/json'}
+    #   )
+    #
     #
     def post(path, opts = {}, &block)
       response_with_error_handling do
+        opts[:headers].merge!(DEFAULT_HEADERS)
+        announce_request(:post, path, opts[:params], opts[:headers])
         access_token.post(path, opts, &block)
       end
     end
@@ -81,26 +111,24 @@ module API::Support
 
     def response_with_error_handling
       response = yield
+      # No errors raised, the response is successful
+      Concierge::Announcer.trigger(ON_RESPONSE, response.status, response.headers, response.body)
       json_serializer.decode(response.body)
     rescue OAuth2::Error => err
-      announce_error(err)
+      Concierge::Announcer.trigger(ON_FAILURE, err.message)
       Result.error(:"http_status_#{err.response.status}", err.response.body)
     rescue Faraday::TimeoutError => err
-      announce_error(err)
+      Concierge::Announcer.trigger(ON_FAILURE, err.message)
       Result.error(:connection_timeout)
     rescue Faraday::ConnectionFailed => err
-      announce_error(err)
+      Concierge::Announcer.trigger(ON_FAILURE, err.message)
       Result.error(:connection_failed)
     rescue Faraday::SSLError => err
-      announce_error(err)
+      Concierge::Announcer.trigger(ON_FAILURE, err.message)
       Result.error(:ssl_error)
     rescue Faraday::Error => err
-      announce_error(err)
+      Concierge::Announcer.trigger(ON_FAILURE, err.message)
       Result.error(:network_failure)
-    end
-
-    def announce_error(error)
-      Concierge::Announcer.trigger("oauth2_client.on_failure", error.message)
     end
 
     def cache
@@ -113,6 +141,20 @@ module API::Support
 
     def json_serializer
       @serializer ||= Concierge::Cache::Serializers::JSON.new
+    end
+
+    def announce_request(method, path, params, headers)
+      # if this is a GET request, +params+ is interpreted to be a query string,
+      # and is properly represented as such below. For other HTTP methods,
+      # the given parameters are sent in the request body.
+      if method == :get
+        query_string = URI.encode_www_form(params)
+      else
+        body = params
+      end
+
+      full_url = [oauth_client.site, path].join
+      Concierge::Announcer.trigger(ON_REQUEST, method, full_url, query_string, headers, body)
     end
   end
 end
