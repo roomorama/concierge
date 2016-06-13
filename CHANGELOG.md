@@ -7,6 +7,7 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Changed
 - Check-in/check-out dates consistency validation on quote/booking calls.
+- Master process does not crash if child worker was manually killed.
 
 ## [0.4.0] - 2016-06-13
 ### Added
