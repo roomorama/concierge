@@ -30,7 +30,7 @@ class Concierge::Context
     def initialize(token_type:, access_token:, expires_at:)
       @token_type = token_type
       @access_token = truncate(access_token)
-      @expires_at = expires_at
+      @expires_at = Time.at expires_at
       @timestamp  = Time.now
     end
 
