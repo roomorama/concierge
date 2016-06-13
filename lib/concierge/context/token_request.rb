@@ -38,19 +38,19 @@ class Concierge::Context
 
     def to_h
       {
-        type:        CONTEXT_TYPE,
-        timestamp:   timestamp,
-        site: site,
-        client_id: client_id,
+        type:          CONTEXT_TYPE,
+        timestamp:     timestamp,
+        site:          site,
+        client_id:     client_id,
         client_secret: client_secret,
-        strategy: strategy
+        strategy:      strategy
       }
     end
 
     private
 
-    def truncate secret
-      return "#{secret[0..3]}..."
+    def truncate(secret)
+      secret[0..3] + "..."
     end
 
   end
