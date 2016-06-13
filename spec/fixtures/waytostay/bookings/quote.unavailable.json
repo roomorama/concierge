@@ -1,0 +1,7 @@
+{
+  "error_code": "006001",
+  "type": "http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html",
+  "title": "Unprocessable Entity",
+  "status": 422,
+  "detail": "Apartment is not available for the selected dates."
+}
