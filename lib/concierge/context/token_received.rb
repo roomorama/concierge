@@ -10,11 +10,11 @@ class Concierge::Context
   #
   # Usage
   #
-  #   request = Concierge::Context::TokenReceived.new( token_hash:{
-  #     "token_type"=>"BEARER",
-  #     "access_token"=>"test_token",
-  #     "expires_at"=>1465467451
-  #   } )
+  #   request = Concierge::Context::TokenReceived.new(
+  #     token_type: "BEARER",
+  #     access_token: "test_token",
+  #     expires_at: 1465467451
+  #   )
   #
   # All named parameters on initialization are required. This class conforms to
   # the expected protocol of Concierge events, responding to the +to_h+ method,
@@ -23,28 +23,31 @@ class Concierge::Context
 
     # This is the content of events of the +type+ field of the event
     # registering network requests.
-    CONTEXT_TYPE = "token_request"
+    CONTEXT_TYPE = "token_received"
 
-    attr_reader :token_hash, :timestamp
+    attr_reader :token_type, :access_token, :expires_at, :timestamp
 
-    def initialize(token_hash:)
-      @token_hash = truncate_token(token_hash)
+    def initialize(token_type:, access_token:, expires_at:)
+      @token_type = token_type
+      @access_token = truncate(access_token)
+      @expires_at = expires_at
       @timestamp  = Time.now
     end
 
     def to_h
       {
-        type:       CONTEXT_TYPE,
-        timestamp:  timestamp,
-        token_hash: token_hash
+        type:         CONTEXT_TYPE,
+        timestamp:    timestamp,
+        token_type:   token_type,
+        access_token: access_token,
+        expires_at:   expires_at
       }
     end
 
-    # Truncates the token field in the hash
-    def truncate_token token_hash
-      hash = token_hash.dup
-      hash[:access_token] = hash[:access_token][0..3] + "..."
-      hash
+    private
+
+    def truncate(secret)
+      secret[0..3] + "..."
     end
 
   end
