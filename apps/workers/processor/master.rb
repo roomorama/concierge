@@ -115,7 +115,7 @@ class Workers::Processor
     # to terminate.)
     def reap_workers
       workers.each do |pid, _|
-        Process.kill("TERM", pid)
+        terminate(pid)
       end
 
       begin
@@ -127,6 +127,13 @@ class Workers::Processor
 
       # clean up the PID data structure for the worker processes
       workers.clear
+    end
+
+    def terminate(pid)
+      Process.kill("TERM", pid)
+    rescue Errno::ESRCH
+      # in case the process does not exist (was manually killed), ignore the
+      # error and keep terminating workers.
     end
 
     # creates a new worker process, identified by +n+, a number from
