@@ -44,7 +44,10 @@ module API::Controllers::Params
 
     # include checking for travel date errors when validating parameters
     def valid?
-      super && travel_dates.valid?
+      builtin_validations      = super
+      travel_dates_validations = travel_dates.valid?
+
+      builtin_validations && travel_dates_validations
     end
 
     private

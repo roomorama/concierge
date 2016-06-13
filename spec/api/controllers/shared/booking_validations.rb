@@ -29,6 +29,15 @@ RSpec.shared_examples "performing booking parameters validations" do |controller
     expect(response.body["errors"]["check_out"]).to eq ["check_out is required"]
   end
 
+  it "is invalid if the check-out date is before the check-in date" do
+    params[:check_out] = (Date.parse(params[:check_in]) - 1).to_s
+    response = call(controller_generator.call, params)
+
+    expect(response.status).to eq 422
+    expect(response.body["status"]).to eq "error"
+    expect(response.body["errors"]["check_out"]).to eq ["check_out needs to be after check-in"]
+  end
+
   it "is invalid without a number of guests" do
     params.delete(:guests)
     response = call(controller_generator.call, params)
