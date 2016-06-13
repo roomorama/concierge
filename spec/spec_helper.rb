@@ -35,6 +35,6 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    API.context = Concierge::Context.new
+    Concierge.context = Concierge::Context.new(type: "spec")
   end
 end

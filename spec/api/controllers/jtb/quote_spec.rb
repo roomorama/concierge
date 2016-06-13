@@ -3,6 +3,7 @@ require_relative "../shared/multi_unit_quote_validations"
 require_relative "../shared/external_error_reporting"
 
 RSpec.describe API::Controllers::JTB::Quote do
+  include Support::HTTPStubbing
   include Support::Fixtures
 
   it_behaves_like "performing multi unit parameter validations", controller_generator: -> { described_class.new }
@@ -49,11 +50,4 @@ RSpec.describe API::Controllers::JTB::Quote do
     allow_any_instance_of(JTB::Price).to receive(:remote_call) { Result.new(JSON.parse(read_fixture(fixture))) }
   end
 
-  def parse_response(rack_response)
-    Shared::QuoteResponse.new(
-      rack_response[0],
-      rack_response[1],
-      JSON.parse(rack_response[2].first)
-    )
-  end
 end

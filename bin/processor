@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+# bin/processor
+#
+# This file sets up a daemon process to run the master processor process,
+# configuring a PID file to guarantee there will not be multiple instances
+# of the master process running simultaneously.
+#
+# No command line arguments are required, but the +CONCIERGE_PROCESSORS_PID_PATH+
+# and the +CONCIERGE_WORKERS_PREFORK+ environment variables are expected
+# to be set.
+
+require "./config/environment"
+Hanami::Application.preload!
+
+prefork = ENV["CONCIERGE_WORKERS_PREFORK"].to_i
+Workers::Processor::Master.new(prefork: prefork).load!

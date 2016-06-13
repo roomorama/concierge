@@ -4,6 +4,14 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.4.0] - 2016-06-13
+### Added
+- `AtLeisure::Booking`, implemented booking with partner
+- Synchronisation process architecture, including many utility classes.
+
+## Changed
+- fixed a bug with timezone formatting by using %z directive for strftime() instead of %Z
+
 ## [0.3.0] - 2016-05-30
 ### Added
 - `Concierge::Context`, tracking of events on API requests, reporting on the `web` app for external errors.

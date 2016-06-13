@@ -31,7 +31,7 @@ module API
       private
 
       def initialize_context
-        API.context = Concierge::Context.new
+        Concierge.context = Concierge::Context.new(type: "api")
       end
 
       def augment_context
@@ -43,7 +43,7 @@ module API
           body:         request_body
         )
 
-        API.context.augment(incoming_request)
+        Concierge.context.augment(incoming_request)
       end
 
       def http_method

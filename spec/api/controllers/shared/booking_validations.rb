@@ -56,8 +56,17 @@ RSpec.shared_examples "performing booking parameters validations" do |controller
     expect(response.body["errors"]["check_out"]).to eq ["check_out: invalid format"]
   end
 
+  it "is invalid without subtotal" do
+    params.delete(:subtotal)
+    response = call(controller_generator.call, params)
+
+    expect(response.status).to eq 422
+    expect(response.body["status"]).to eq "error"
+    expect(response.body["errors"]["subtotal"]).to eq ["subtotal is required"]
+  end
+
   context "customer" do
-    %w(first_name last_name).map do |attribute|
+    %w(first_name last_name email).map do |attribute|
       it "is invalid without #{attribute}" do
         params[:customer].delete(attribute.to_sym)
         response = call(controller_generator.call, params)
@@ -68,13 +77,13 @@ RSpec.shared_examples "performing booking parameters validations" do |controller
       end
     end
   end
-  
+
   private
 
   def call(controller, params)
     response = controller.call(params)
     # Wrap Rack data structure for an HTTP response
-    Shared::QuoteResponse.new(
+    Support::HTTPStubbing::ResponseWrapper.new(
       response[0],
       response[1],
       JSON.parse(response[2].first)

@@ -204,4 +204,32 @@ RSpec.describe Concierge::HTTPClient do
     end
   end
 
+  describe "#put" do
+    it_behaves_like "handling errors", http_method: :put
+
+    it "returns the wrapped response object if successful" do
+      stub_call(:put, [url, "/put/endpoint"].join) { [202, {}, "Accepted"] }
+      result = subject.put("/put/endpoint")
+
+      expect(result).to be_success
+      response = result.value
+      expect(response).to be_a Faraday::Response
+      expect(response.body).to eq "Accepted"
+    end
+  end
+
+  describe "#delete" do
+    it_behaves_like "handling errors", http_method: :delete
+
+    it "returns the wrapped response object if successful" do
+      stub_call(:delete, [url, "/delete/endpoint"].join) { [202, {}, "Accepted"] }
+      result = subject.delete("/delete/endpoint")
+
+      expect(result).to be_success
+      response = result.value
+      expect(response).to be_a Faraday::Response
+      expect(response.body).to eq "Accepted"
+    end
+  end
+
 end

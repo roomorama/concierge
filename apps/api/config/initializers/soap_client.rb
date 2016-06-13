@@ -10,7 +10,7 @@ Concierge::Announcer.on(API::Support::SOAPClient::ON_REQUEST) do |endpoint, oper
     payload:   message
   )
 
-  API.context.augment(soap_request)
+  Concierge.context.augment(soap_request)
 end
 
 Concierge::Announcer.on(API::Support::SOAPClient::ON_RESPONSE) do |status, headers, body|
@@ -20,7 +20,7 @@ Concierge::Announcer.on(API::Support::SOAPClient::ON_RESPONSE) do |status, heade
     body:    body
   )
 
-  API.context.augment(soap_response)
+  Concierge.context.augment(soap_response)
 end
 
 Concierge::Announcer.on(API::Support::SOAPClient::ON_FAILURE) do |message, backtrace|
@@ -30,5 +30,5 @@ Concierge::Announcer.on(API::Support::SOAPClient::ON_FAILURE) do |message, backt
     backtrace: backtrace
   )
 
-  API.context.augment(soap_failure)
+  Concierge.context.augment(soap_failure)
 end

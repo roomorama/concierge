@@ -7,5 +7,6 @@ Vagrantfile
 .env.*
 .rspec
 .ruby-version
+.ruby-gemset
 /config/credentials/development.yml
 /log/*

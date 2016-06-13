@@ -10,6 +10,7 @@ RSpec.describe API::Support::SOAPClient do
     before(:all) { savon.mock! }
     after(:all) { savon.unmock! }
 
+    # todo: prevent remote request for savon calls
     # Have to set real endpoint, Savon sends request to check operations
     let(:endpoint) { 'https://trial-www.jtbgenesis.com/genesis2-demo/services/GA_HotelAvail_v2013' }
     let(:operation) { :gby010 }

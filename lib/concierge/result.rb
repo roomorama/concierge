@@ -15,12 +15,14 @@
 #     handle_error(error.code)
 #   end
 #
-# +Result::Error+ is an object that holds a representative error code. A code is
-# a unique representation of the error, that can be later used to identify
-# and group similar occurrences of errors.
+# +Result::Error+ is an object that holds a representative error code and an optional
+# descriptive +data+ field. A code is a unique representation of the error, that can
+# later be used to identify and group similar occurrences of errors; the +data+ field
+# might contain any type +T+ (or even be +nil+). Its use is optional and the caller might
+# choose to include extra data with the error or not.
 class Result
 
-  Error = Struct.new(:code)
+  Error = Struct.new(:code, :data)
 
   # Shortcut method for creating an error result object.
   #
@@ -29,11 +31,13 @@ class Result
   #   def method
   #     call_third_party
   #   rescue Partner::Error => e
-  #     Result.error(:partner_error)
+  #     data = { error_message: e.message }
+  #     Result.error(:partner_error, data)
   #   end
-  def self.error(code)
+  def self.error(code, data = nil)
     self.new.tap do |result|
       result.error.code = code
+      result.error.data = data
     end
   end
 
