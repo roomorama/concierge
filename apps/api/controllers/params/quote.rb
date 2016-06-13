@@ -18,7 +18,6 @@ module API::Controllers::Params
     param :check_out,   presence: true, type: String, format: DATE_FORMAT
     param :guests,      presence: true, type: Integer
 
-
     # Constructs a map of errors for the request.
     #
     # Example
@@ -29,31 +28,29 @@ module API::Controllers::Params
     # The keys for the returned hash are attribute names (see the +param+ declaration list above)
     # and the values for each key is a list of errors for the attribute.
     def error_messages
-      ErrorMessages.new(errors).generate
+      ErrorMessages.new(validation_errors).generate
     end
 
-    # Returns a +Date+ representation of the check-in date given in the call.
-    # If the parameter cannot be parsed to a valid date, this method will
-    # return +nil+.
-    def check_in_date
-      self[:check_in] && Date.parse(self[:check_in])
-    rescue ArgumentError
-      # check-in parameter is not a valid date
-    end
-
-    # Returns a +Date+ representation of the check-out date given in the call.
-    # If the parameter cannot be parsed to a valid date, this method will
-    # return +nil+.
-    def check_out_date
-      self[:check_out] && Date.parse(self[:check_out])
-    rescue ArgumentError
-      # check-out parameter is not a valid date
+    # gathers errors from the parameter declaration as well as custom validations
+    # defined on the +API::Controllers::Params::TravelDates+ class.
+    def validation_errors
+      travel_dates.valid?
+      errors.each.to_a + travel_dates.errors
     end
 
     def stay_length
-      if check_in_date && check_out_date
-        check_out_date - check_in_date
-      end
+      travel_dates.stay_length
+    end
+
+    # include checking for travel date errors when validating parameters
+    def valid?
+      super && travel_dates.valid?
+    end
+
+    private
+
+    def travel_dates
+      @travel_dates ||= TravelDates.new(self[:check_in], self[:check_out])
     end
 
   end
