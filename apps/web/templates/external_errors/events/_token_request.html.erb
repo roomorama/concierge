@@ -1,0 +1,14 @@
+<div class="error-event">
+  <%= render partial: "external_errors/events/timestamp", locals: { event: event } %>
+
+  <h3>OAuth2 Access Token Request</h3>
+
+  <p>There was a request for an OAuth2 access token to <code><%= event[:site] %></code> using:</p>
+
+  <div class="code-block">
+    <p>Client ID: <%= event[:client_id] %></p>
+    <p>Client Secret: <%= event[:client_secret] %></p>
+    <p>Strategy: <%= event[:strategy] %></p>
+  </div>
+
+</div>
