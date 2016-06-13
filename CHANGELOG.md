@@ -8,6 +8,7 @@ how this file is formatted and how the process works.
 ### Changed
 - Check-in/check-out dates consistency validation on quote/booking calls.
 - Master process does not crash if child worker was manually killed.
+- Fixed a bug with exceptions on startup because of not created log directory.
 
 ## [0.4.0] - 2016-06-13
 ### Added
@@ -16,9 +17,6 @@ how this file is formatted and how the process works.
 
 ## Changed
 - fixed a bug with timezone formatting by using %z directive for strftime() instead of %Z
-
-### Changed
-- fixed a bug with exceptions on startup because of not created log directory.
 
 ## [0.3.0] - 2016-05-30
 ### Added
