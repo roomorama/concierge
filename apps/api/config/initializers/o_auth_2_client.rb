@@ -12,7 +12,7 @@ Concierge::Announcer.on(API::Support::OAuth2Client::ON_REQUEST) do |http_method,
     body:         body
   )
 
-  API.context.augment(network_request)
+  Concierge.context.augment(network_request)
 end
 
 Concierge::Announcer.on(API::Support::OAuth2Client::ON_RESPONSE) do |status, headers, body|
@@ -22,7 +22,7 @@ Concierge::Announcer.on(API::Support::OAuth2Client::ON_RESPONSE) do |status, hea
     body:    body
   )
 
-  API.context.augment(network_response)
+  Concierge.context.augment(network_response)
 end
 
 Concierge::Announcer.on(API::Support::OAuth2Client::ON_FAILURE) do |message|
@@ -30,7 +30,7 @@ Concierge::Announcer.on(API::Support::OAuth2Client::ON_FAILURE) do |message|
     message: message
   )
 
-  API.context.augment(network_failure)
+  Concierge.context.augment(network_failure)
 end
 
 # Receives a +OAuth2::Client+ object
@@ -40,7 +40,7 @@ Concierge::Announcer.on(API::Support::OAuth2Client::ON_TOKEN_REQUEST) do |client
                                                        client_secret: client.secret,
                                                        strategy: strategy)
 
-  API.context.augment(token_request)
+  Concierge.context.augment(token_request)
 end
 
 # Receives a +OAuth2::AccessToken+ object
@@ -49,5 +49,5 @@ Concierge::Announcer.on(API::Support::OAuth2Client::ON_TOKEN_RECEIVED) do |acces
                                                          expires_at: access_token.expires_at,
                                                          params: access_token.params)
 
-  API.context.augment(token_received)
+  Concierge.context.augment(token_received)
 end

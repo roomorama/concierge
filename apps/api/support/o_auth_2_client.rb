@@ -86,7 +86,8 @@ module API::Support
     #
     def post(path, opts = {}, &block)
       response_with_error_handling do
-        opts[:headers].merge!(DEFAULT_HEADERS)
+        opts[:headers] ||= {}
+        opts[:headers].merge! DEFAULT_HEADERS
         announce_request(:post, path, opts[:params], opts[:headers])
         access_token.post(path, opts, &block)
       end
@@ -152,6 +153,7 @@ module API::Support
       # and is properly represented as such below. For other HTTP methods,
       # the given parameters are sent in the request body.
       if method == :get
+        params ||= {}
         query_string = URI.encode_www_form(params)
       else
         body = params
