@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative '../shared/suppliers/client_spec'
+require_relative '../shared/client_spec'
 
 RSpec.describe Waytostay::Client do
   include Support::Fixtures
