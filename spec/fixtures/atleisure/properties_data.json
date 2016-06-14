@@ -1,0 +1,694 @@
+[
+  {
+    "HouseCode": "XX-1234-05",
+    "BasicInformationV3": {
+      "Name": "Test huis - @Leisure TEST HUIS",
+      "MaxNumberOfPersons": 8,
+      "ExceedNumberOfBabies": 2,
+      "NumberOfPets": 2,
+      "NumberOfStars": 1,
+      "DimensionM2": 90,
+      "ZipPostalCode": "4960",
+      "Country": "BE",
+      "Region": "LUIK",
+      "Brands": null,
+      "CreationDate": "2013-11-05",
+      "WGS84Longitude": 6.055755,
+      "WGS84Latitude": 50.452158,
+      "OptionsAllowed": "Yes",
+      "HolidayPark": null,
+      "EnqeCount": 0,
+      "EnqePoints": 0,
+      "NumberOfBedrooms": 7,
+      "NumberOfBathrooms": 6,
+      "SkiArea": null
+    },
+    "MediaV2": [
+      {
+        "Type": "Photos",
+        "TypeContents": [
+          {
+            "SequenceNumber": 1,
+            "Tag": "ExteriorSummer",
+            "Versions": [
+              {
+                "Height": 400,
+                "Width": 600,
+                "URL": "cdn.leisure-group.net/photo/web/600x400/211498_lsr_2013110590534673451.jpg"
+              },
+              {
+                "Height": 220,
+                "Width": 330,
+                "URL": "cdn.leisure-group.net/photo/web/330x220/211498_lsr_2013110590534673451.jpg"
+              },
+              {
+                "Height": 170,
+                "Width": 255,
+                "URL": "cdn.leisure-group.net/photo/web/255x170/211498_lsr_2013110590534673451.jpg"
+              },
+              {
+                "Height": 110,
+                "Width": 165,
+                "URL": "cdn.leisure-group.net/photo/web/165x110/211498_lsr_2013110590534673451.jpg"
+              },
+              {
+                "Height": 90,
+                "Width": 135,
+                "URL": "cdn.leisure-group.net/photo/web/135x90/211498_lsr_2013110590534673451.jpg"
+              },
+              {
+                "Height": 84,
+                "Width": 126,
+                "URL": "cdn.leisure-group.net/photo/web/126x84/211498_lsr_2013110590534673451.jpg"
+              },
+              {
+                "Height": 68,
+                "Width": 102,
+                "URL": "cdn.leisure-group.net/photo/web/102x68/211498_lsr_2013110590534673451.jpg"
+              },
+              {
+                "Height": 40,
+                "Width": 60,
+                "URL": "cdn.leisure-group.net/photo/web/60x40/211498_lsr_2013110590534673451.jpg"
+              }
+            ]
+          },
+          {
+            "SequenceNumber": 2,
+            "Tag": "HallReception",
+            "Versions": [
+              {
+                "Height": 1365,
+                "Width": 2048,
+                "URL": "cdn.leisure-group.net/photo/web/2048x1365/211498_lsr_2015123189806283924.jpg"
+              },
+              {
+                "Height": 683,
+                "Width": 1024,
+                "URL": "cdn.leisure-group.net/photo/web/1024x683/211498_lsr_2015123189806283924.jpg"
+              },
+              {
+                "Height": 500,
+                "Width": 750,
+                "URL": "cdn.leisure-group.net/photo/web/750x500/211498_lsr_2015123189806283924.jpg"
+              },
+              {
+                "Height": 400,
+                "Width": 600,
+                "URL": "cdn.leisure-group.net/photo/web/600x400/211498_lsr_2015123189806283924.jpg"
+              },
+              {
+                "Height": 220,
+                "Width": 330,
+                "URL": "cdn.leisure-group.net/photo/web/330x220/211498_lsr_2015123189806283924.jpg"
+              },
+              {
+                "Height": 170,
+                "Width": 255,
+                "URL": "cdn.leisure-group.net/photo/web/255x170/211498_lsr_2015123189806283924.jpg"
+              },
+              {
+                "Height": 110,
+                "Width": 165,
+                "URL": "cdn.leisure-group.net/photo/web/165x110/211498_lsr_2015123189806283924.jpg"
+              },
+              {
+                "Height": 90,
+                "Width": 135,
+                "URL": "cdn.leisure-group.net/photo/web/135x90/211498_lsr_2015123189806283924.jpg"
+              },
+              {
+                "Height": 84,
+                "Width": 126,
+                "URL": "cdn.leisure-group.net/photo/web/126x84/211498_lsr_2015123189806283924.jpg"
+              },
+              {
+                "Height": 68,
+                "Width": 102,
+                "URL": "cdn.leisure-group.net/photo/web/102x68/211498_lsr_2015123189806283924.jpg"
+              },
+              {
+                "Height": 40,
+                "Width": 60,
+                "URL": "cdn.leisure-group.net/photo/web/60x40/211498_lsr_2015123189806283924.jpg"
+              },
+              {
+                "Height": 1536,
+                "Width": 2048,
+                "URL": "cdn.leisure-group.net/photo/web/2048x1536/211498_lsr_2015123189806283924.jpg"
+              },
+              {
+                "Height": 768,
+                "Width": 1024,
+                "URL": "cdn.leisure-group.net/photo/web/1024x768/211498_lsr_2015123189806283924.jpg"
+              },
+              {
+                "Height": 500,
+                "Width": 667,
+                "URL": "cdn.leisure-group.net/photo/web/667x500/211498_lsr_2015123189806283924.jpg"
+              },
+              {
+                "Height": 400,
+                "Width": 533,
+                "URL": "cdn.leisure-group.net/photo/web/533x400/211498_lsr_2015123189806283924.jpg"
+              },
+              {
+                "Height": 220,
+                "Width": 293,
+                "URL": "cdn.leisure-group.net/photo/web/293x220/211498_lsr_2015123189806283924.jpg"
+              },
+              {
+                "Height": 170,
+                "Width": 227,
+                "URL": "cdn.leisure-group.net/photo/web/227x170/211498_lsr_2015123189806283924.jpg"
+              },
+              {
+                "Height": 110,
+                "Width": 147,
+                "URL": "cdn.leisure-group.net/photo/web/147x110/211498_lsr_2015123189806283924.jpg"
+              },
+              {
+                "Height": 90,
+                "Width": 120,
+                "URL": "cdn.leisure-group.net/photo/web/120x90/211498_lsr_2015123189806283924.jpg"
+              },
+              {
+                "Height": 84,
+                "Width": 112,
+                "URL": "cdn.leisure-group.net/photo/web/112x84/211498_lsr_2015123189806283924.jpg"
+              },
+              {
+                "Height": 68,
+                "Width": 91,
+                "URL": "cdn.leisure-group.net/photo/web/91x68/211498_lsr_2015123189806283924.jpg"
+              },
+              {
+                "Height": 40,
+                "Width": 53,
+                "URL": "cdn.leisure-group.net/photo/web/53x40/211498_lsr_2015123189806283924.jpg"
+              }
+            ]
+          },
+          {
+            "SequenceNumber": 3,
+            "Tag": "HallReception",
+            "Versions": [
+              {
+                "Height": 500,
+                "Width": 750,
+                "URL": "cdn.leisure-group.net/photo/web/750x500/211498_lsr_2013110590535049228.jpg"
+              },
+              {
+                "Height": 400,
+                "Width": 600,
+                "URL": "cdn.leisure-group.net/photo/web/600x400/211498_lsr_2013110590535049228.jpg"
+              },
+              {
+                "Height": 220,
+                "Width": 330,
+                "URL": "cdn.leisure-group.net/photo/web/330x220/211498_lsr_2013110590535049228.jpg"
+              },
+              {
+                "Height": 170,
+                "Width": 255,
+                "URL": "cdn.leisure-group.net/photo/web/255x170/211498_lsr_2013110590535049228.jpg"
+              },
+              {
+                "Height": 110,
+                "Width": 165,
+                "URL": "cdn.leisure-group.net/photo/web/165x110/211498_lsr_2013110590535049228.jpg"
+              },
+              {
+                "Height": 90,
+                "Width": 135,
+                "URL": "cdn.leisure-group.net/photo/web/135x90/211498_lsr_2013110590535049228.jpg"
+              },
+              {
+                "Height": 84,
+                "Width": 126,
+                "URL": "cdn.leisure-group.net/photo/web/126x84/211498_lsr_2013110590535049228.jpg"
+              },
+              {
+                "Height": 68,
+                "Width": 102,
+                "URL": "cdn.leisure-group.net/photo/web/102x68/211498_lsr_2013110590535049228.jpg"
+              },
+              {
+                "Height": 40,
+                "Width": 60,
+                "URL": "cdn.leisure-group.net/photo/web/60x40/211498_lsr_2013110590535049228.jpg"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "LanguagePackDEV4": {
+      "City": "Malmedy",
+      "SubCity": null,
+      "Description": null,
+      "DescriptionCreator": null,
+      "DescriptionCreationType": null,
+      "ShortDescription": "sdfg sdfg sd GSDF g sdfg sdfg sdf gsd fg sdf gd",
+      "ShortDescriptionCreator": "HomeOwner",
+      "ShortDescriptionCreationType": "Original",
+      "Remarks": "Die Einrichtung der Wohnung kann etwas anders sein als auf dem Foto. Der Komfort der Wohnungen ist jedoch so, wie beschrieben\nBadehandtücher (Strandtücher) sind nicht inklusive\nReservierungen für Gruppen oder Gesellschaften von Personen unter 21 Jahren sind dieses Jahr nicht möglich",
+      "LayoutSimple": "Parterre: (Wohnzimmer(Balkon))\n\nAußeneingang, Flur(Gemeinschaftliche Nutzung mit anderen Gästen), Küche(auf dem Gelände), Schlafzimmer, Schlafzimmer, Schlafzimmer(2x Doppelbett), Schlafzimmer(Doppelbett, Doppelbett, Bar(Esstheke)), Schlafzimmer(2x Bettnische (1 pers.)), Schlafzimmer, Schlafzimmer, Badezimmer, Badezimmer, Badezimmer, Badezimmer, DVD-Spieler, Balkon, Parkplatz",
+      "CostsOnSite": [
+        {
+          "Number": 10,
+          "Description": "Kaution",
+          "Value": "€ 500 (Sie bezahlen im Voraus, nicht vor Ort. Rückzahlung 7 Tage nach der Abreise)"
+        },
+        {
+          "Number": 20,
+          "Description": "Endreinigung",
+          "Value": "Verpflichtend: € 150"
+        },
+        {
+          "Number": 30,
+          "Description": "Haustiere",
+          "Value": "Max. 2; € 5/Tier/Nacht"
+        },
+        {
+          "Number": 41,
+          "Description": "Bettwäsche",
+          "Value": "Miete möglich, € 5 p.P./ Aufenthalt"
+        },
+        {
+          "Number": 42,
+          "Description": "Handtücher",
+          "Value": "Miete möglich, € 20 ppro Aufenthalt"
+        },
+        {
+          "Number": 43,
+          "Description": "Geschirrtücher",
+          "Value": "Miete möglich, € 24 pro Aufenthalt"
+        },
+        {
+          "Number": 50,
+          "Description": "Strom",
+          "Value": "€ 0,30/KwSt"
+        },
+        {
+          "Number": 60,
+          "Description": "Gas/Öl",
+          "Value": "€ 2/m3"
+        },
+        {
+          "Number": 65,
+          "Description": "WLAN",
+          "Value": "Nicht vorhanden"
+        },
+        {
+          "Number": 100,
+          "Description": "Kurtaxe",
+          "Value": "Keine"
+        },
+        {
+          "Number": 110,
+          "Description": "Catering",
+          "Value": "Mittagessen möglich; Abendessen möglich"
+        },
+        {
+          "Number": 120,
+          "Description": "Frühstück",
+          "Value": "Möglich"
+        }
+      ],
+      "GuestBook": [],
+      "HouseOwnerTip": null
+    },
+    "LanguagePackENV4": {
+      "City": "Malmedy",
+      "SubCity": null,
+      "Description": "£ sdfg sdfg sdf g sdg sd gsd fg sdg sdfg sd gsd g sd gs dg s",
+      "DescriptionCreator": "@Leisure",
+      "DescriptionCreationType": "Original",
+      "ShortDescription": "sdfg sdfg sd gsdf g sdfg sdfg sdf gsd fg sdf gd",
+      "ShortDescriptionCreator": "HomeOwner",
+      "ShortDescriptionCreationType": "Original",
+      "Remarks": "The interior of the accommodation can differ slightly from the pictures. However, the level of comfort is as described\nBath towels (beach towels) are not included\nReservations for groups of persons under 21  years of age are not permitted",
+      "LayoutSimple": "Ground floor: (Livingroom(balcony))\n\nEntrance, Hall(shared with other guests ), Kitchen(on the same premises), Bedroom, Bedroom, Bedroom(2x Double bed), Bedroom(Double bed, Double bed, bar(eating bar)), Bedroom(2x single boxbed), Bedroom, Bedroom, Bathroom, Bathroom, Bathroom, Bathroom, DVD player, balcony, parking",
+      "CostsOnSite": [
+        {
+          "Number": 10,
+          "Description": "Deposit",
+          "Value": "€ 500 (You will pay in advance, not on site, returned 7 days after departure)"
+        },
+        {
+          "Number": 20,
+          "Description": "Cleaning",
+          "Value": "Mandatory: € 150"
+        },
+        {
+          "Number": 30,
+          "Description": "Pets",
+          "Value": "Max. 2; € 5/Pet/Night"
+        },
+        {
+          "Number": 41,
+          "Description": "Bed linen",
+          "Value": "For rent, € 5 p.p./Stay"
+        },
+        {
+          "Number": 42,
+          "Description": "Bath towels",
+          "Value": "For rent, € 20 per Stay"
+        },
+        {
+          "Number": 43,
+          "Description": "Kitchen linen",
+          "Value": "For rent, € 24 per Stay"
+        },
+        {
+          "Number": 50,
+          "Description": "Electricity",
+          "Value": "€ 0,30/kWh"
+        },
+        {
+          "Number": 60,
+          "Description": "Gas/Oil",
+          "Value": "€ 2/m3"
+        },
+        {
+          "Number": 65,
+          "Description": "Wifi",
+          "Value": "Not available"
+        },
+        {
+          "Number": 100,
+          "Description": "Tourist tax",
+          "Value": "No"
+        },
+        {
+          "Number": 110,
+          "Description": "Catering",
+          "Value": "Lunch possible; Dinner possible"
+        },
+        {
+          "Number": 120,
+          "Description": "Breakfast",
+          "Value": "Possibility"
+        }
+      ],
+      "GuestBook": [],
+      "HouseOwnerTip": null
+    },
+    "PropertiesV1": [
+      {
+        "TypeNumber": 10,
+        "TypeContents": [
+          90
+        ]
+      },
+      {
+        "TypeNumber": 20,
+        "TypeContents": [
+          210
+        ]
+      },
+      {
+        "TypeNumber": 50,
+        "TypeContents": [
+          502
+        ]
+      },
+      {
+        "TypeNumber": 61,
+        "TypeContents": [
+          6150
+        ]
+      },
+      {
+        "TypeNumber": 65,
+        "TypeContents": [
+          6300
+        ]
+      }
+    ],
+    "LayoutExtendedV2": [
+      {
+        "Item": 200,
+        "SequenceNumber": 1,
+        "NumberOfItems": 1
+      },
+      {
+        "Item": 1005,
+        "SequenceNumber": 1,
+        "NumberOfItems": 1
+      },
+      {
+        "Item": 1010,
+        "SequenceNumber": 1,
+        "NumberOfItems": 1,
+        "Details": [
+          200
+        ]
+      },
+      {
+        "Item": 1015,
+        "SequenceNumber": 1,
+        "NumberOfItems": 1,
+        "ParentItem": 200,
+        "ParentSequenceNumber": 1
+      },
+      {
+        "Item": 1020,
+        "SequenceNumber": 1,
+        "NumberOfItems": 1,
+        "Details": [
+          260
+        ]
+      },
+      {
+        "Item": 1030,
+        "SequenceNumber": 1,
+        "NumberOfItems": 1
+      },
+      {
+        "Item": 1030,
+        "SequenceNumber": 2,
+        "NumberOfItems": 1
+      },
+      {
+        "Item": 1030,
+        "SequenceNumber": 3,
+        "NumberOfItems": 1
+      },
+      {
+        "Item": 1030,
+        "SequenceNumber": 4,
+        "NumberOfItems": 1
+      },
+      {
+        "Item": 1030,
+        "SequenceNumber": 5,
+        "NumberOfItems": 1
+      },
+      {
+        "Item": 1030,
+        "SequenceNumber": 6,
+        "NumberOfItems": 1
+      },
+      {
+        "Item": 1030,
+        "SequenceNumber": 7,
+        "NumberOfItems": 1
+      },
+      {
+        "Item": 1042,
+        "SequenceNumber": 7,
+        "NumberOfItems": 1
+      },
+      {
+        "Item": 1042,
+        "SequenceNumber": 9,
+        "NumberOfItems": 1
+      },
+      {
+        "Item": 1042,
+        "SequenceNumber": 10,
+        "NumberOfItems": 1
+      },
+      {
+        "Item": 1042,
+        "SequenceNumber": 999,
+        "NumberOfItems": 3
+      },
+      {
+        "Item": 10010,
+        "SequenceNumber": 1,
+        "NumberOfItems": 2,
+        "ParentItem": 1030,
+        "ParentSequenceNumber": 5
+      },
+      {
+        "Item": 10012,
+        "SequenceNumber": 1,
+        "NumberOfItems": 2,
+        "ParentItem": 1030,
+        "ParentSequenceNumber": 3
+      },
+      {
+        "Item": 10012,
+        "SequenceNumber": 2,
+        "NumberOfItems": 1,
+        "ParentItem": 1030,
+        "ParentSequenceNumber": 4
+      },
+      {
+        "Item": 10012,
+        "SequenceNumber": 3,
+        "NumberOfItems": 1,
+        "ParentItem": 1030,
+        "ParentSequenceNumber": 4
+      },
+      {
+        "Item": 10070,
+        "SequenceNumber": 1,
+        "NumberOfItems": 1
+      },
+      {
+        "Item": 10120,
+        "SequenceNumber": 1,
+        "NumberOfItems": 1,
+        "ParentItem": 1030,
+        "ParentSequenceNumber": 4,
+        "Details": [
+          482
+        ]
+      },
+      {
+        "Item": 10348,
+        "SequenceNumber": 1,
+        "NumberOfItems": 1
+      },
+      {
+        "Item": 10348,
+        "SequenceNumber": 2,
+        "NumberOfItems": 1,
+        "ParentItem": 1015,
+        "ParentSequenceNumber": 1
+      },
+      {
+        "Item": 10363,
+        "SequenceNumber": 1,
+        "NumberOfItems": 1
+      }
+    ],
+    "DistancesV2": [
+      {
+        "To": "Centre",
+        "Description": "",
+        "DistanceInKm": 11.0
+      },
+      {
+        "To": "Centre",
+        "Description": "Dorp",
+        "DistanceInKm": 1.0
+      },
+      {
+        "To": "Centre",
+        "Description": "Dorp4",
+        "DistanceInKm": 0.7
+      },
+      {
+        "To": "Forest",
+        "Description": "",
+        "DistanceInKm": 2.0
+      },
+      {
+        "To": "Forest",
+        "Description": "nice forest for walking",
+        "DistanceInKm": 1.4
+      },
+      {
+        "To": "Sea",
+        "Description": "Noordzee",
+        "DistanceInKm": 4.0
+      },
+      {
+        "To": "Lake",
+        "Description": "",
+        "DistanceInKm": 1.0
+      },
+      {
+        "To": "Foods",
+        "Description": "winkel",
+        "DistanceInKm": 6.0
+      },
+      {
+        "To": "GoOut",
+        "Description": "",
+        "DistanceInKm": 0.0
+      }
+    ],
+    "AvailabilityPeriodV1": [
+      {
+        "Quantity": 1,
+        "ArrivalDate": "2016-06-24",
+        "ArrivalTimeFrom": "16:00",
+        "ArrivalTimeUntil": "18:00",
+        "DepartureDate": "2016-06-26",
+        "DepartureTimeFrom": "19:00",
+        "DepartureTimeUntil": "20:00",
+        "OnRequest": "Yes",
+        "Price": 496,
+        "PriceExclDiscount": 496
+      },
+      {
+        "Quantity": 1,
+        "ArrivalDate": "2016-06-24",
+        "ArrivalTimeFrom": "16:00",
+        "ArrivalTimeUntil": "18:00",
+        "DepartureDate": "2016-07-10",
+        "DepartureTimeFrom": "19:00",
+        "DepartureTimeUntil": "20:00",
+        "OnRequest": "Yes",
+        "Price": 1769,
+        "PriceExclDiscount": 1769
+      },
+      {
+        "Quantity": 1,
+        "ArrivalDate": "2016-06-24",
+        "ArrivalTimeFrom": "16:00",
+        "ArrivalTimeUntil": "18:00",
+        "DepartureDate": "2016-07-11",
+        "DepartureTimeFrom": "09:00",
+        "DepartureTimeUntil": "10:00",
+        "OnRequest": "Yes",
+        "Price": 1812,
+        "PriceExclDiscount": 1812
+      },
+      {
+        "Quantity": 1,
+        "ArrivalDate": "2016-06-27",
+        "ArrivalTimeFrom": "16:00",
+        "ArrivalTimeUntil": "18:00",
+        "DepartureDate": "2016-07-01",
+        "DepartureTimeFrom": "09:00",
+        "DepartureTimeUntil": "10:00",
+        "OnRequest": "Yes",
+        "Price": 496,
+        "PriceExclDiscount": 496
+      },
+      {
+        "Quantity": 1,
+        "ArrivalDate": "2016-06-27",
+        "ArrivalTimeFrom": "16:00",
+        "ArrivalTimeUntil": "18:00",
+        "DepartureDate": "2016-07-03",
+        "DepartureTimeFrom": "19:00",
+        "DepartureTimeUntil": "20:00",
+        "OnRequest": "Yes",
+        "Price": 949,
+        "PriceExclDiscount": 949
+      }
+    ]
+  },
+  {
+    "HouseCode": "XX-1234-02",
+    "error": "HouseCode xx-1234-02 is unknown"
+  }
+]

@@ -1,0 +1,103 @@
+[
+  {
+    "Type": 50,
+    "Description": [
+      {
+        "Language": "NL",
+        "Description": "Verdiepingen"
+      },
+      {
+        "Language": "FR",
+        "Description": "Planchers"
+      },
+      {
+        "Language": "DE",
+        "Description": "Stockwerke"
+      },
+      {
+        "Language": "EN",
+        "Description": "Floors"
+      },
+      {
+        "Language": "IT",
+        "Description": "Piani"
+      },
+      {
+        "Language": "ES",
+        "Description": "Pisos"
+      },
+      {
+        "Language": "PL",
+        "Description": "Podłogi"
+      }
+    ],
+    "Items": [
+      {
+        "Number": 200,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Parterre"
+          },
+          {
+            "Language": "FR",
+            "Description": "Rez de chaussée"
+          },
+          {
+            "Language": "DE",
+            "Description": "Parterre"
+          },
+          {
+            "Language": "EN",
+            "Description": "Ground floor"
+          },
+          {
+            "Language": "IT",
+            "Description": "Piano terra"
+          },
+          {
+            "Language": "ES",
+            "Description": "Planta baja"
+          },
+          {
+            "Language": "PL",
+            "Description": "Parter"
+          }
+        ]
+      },
+      {
+        "Number": 208,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Tussenetage"
+          },
+          {
+            "Language": "FR",
+            "Description": "Entresol"
+          },
+          {
+            "Language": "DE",
+            "Description": "Zwischengeschoss"
+          },
+          {
+            "Language": "EN",
+            "Description": "Intermediate storey"
+          },
+          {
+            "Language": "IT",
+            "Description": "Mezzo piano"
+          },
+          {
+            "Language": "ES",
+            "Description": "Entresuelo"
+          },
+          {
+            "Language": "PL",
+            "Description": "Półpiętro"
+          }
+        ]
+      }
+    ]
+  }
+]
