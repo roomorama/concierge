@@ -41,7 +41,6 @@ module Waytostay
                                  headers: headers)
 
       if result.success?
-        result.value["property_id"] = params[:property_id]
         Quotation.new(quote_params_from(result.value))
       else
         announce_error("quote", result)
@@ -61,7 +60,7 @@ module Waytostay
     def quote_params_from json
       details = json["booking_details"]
       {
-        property_id: json["property_id"],
+        property_id: details["property_reference"],
         check_in: details["arrival_date"],
         check_out: details["departure_date"],
         guests: details["number_of_adults"], #should we add infants?
