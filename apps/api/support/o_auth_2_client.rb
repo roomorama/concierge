@@ -84,7 +84,7 @@ module API::Support
       json_serializer.decode(response.body)
     rescue OAuth2::Error => err
       announce_error(err)
-      Result.error(:"http_status_#{err.response.status}")
+      Result.error(:"http_status_#{err.response.status}", err.response.body)
     rescue Faraday::TimeoutError => err
       announce_error(err)
       Result.error(:connection_timeout)

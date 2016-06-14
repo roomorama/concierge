@@ -17,6 +17,7 @@ module Waytostay
     ENDPOINTS = {
       quote: "/bookings/quote",
     }
+    UNAVAILBLE_ERROR_MESSAGE = "Apartment is not available for the selected dates"
 
     attr_reader :credentials
 
@@ -42,6 +43,14 @@ module Waytostay
 
       if result.success?
         Quotation.new(quote_params_from(result.value))
+      elsif unavailable?(result)
+        Quotation.new({
+          property_id: params[:property_id],
+          check_in: params[:check_in],
+          check_out: params[:check_out],
+          guests: params[:guests],
+          available: false
+        })
       else
         announce_error("quote", result)
         Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
@@ -57,7 +66,11 @@ module Waytostay
 
     private
 
-    def quote_params_from json
+    def unavailable?(result)
+      result.error.data && result.error.data.include?(UNAVAILBLE_ERROR_MESSAGE)
+    end
+
+    def quote_params_from(json)
       details = json["booking_details"]
       {
         property_id: details["property_reference"],
