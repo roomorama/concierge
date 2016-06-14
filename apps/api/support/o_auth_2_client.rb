@@ -103,9 +103,9 @@ module API::Support
 
       token_result = cache.fetch(oauth_client.id, freshness: one_day, serializer: json_serializer ) do
         token_strategy = options.fetch(:strategy, :client_credentials)
-        Concierge::Announcer.trigger(ON_TOKEN_REQUEST, oauth_client.site, oauth_client.id, oauth_client.secret, token_strategy)
+        Concierge::Announcer.trigger(ON_TOKEN_REQUEST, oauth_client, token_strategy)
         @access_token = oauth_client.public_send(token_strategy).get_token
-        Concierge::Announcer.trigger(ON_TOKEN_RECEIVED, access_token.to_hash)
+        Concierge::Announcer.trigger(ON_TOKEN_RECEIVED, @access_token)
         Result.new(@access_token.to_hash)
       end
 
