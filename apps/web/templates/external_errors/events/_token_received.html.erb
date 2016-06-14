@@ -7,7 +7,7 @@
 
   <div class="code-block">
     <p>Access Token: <%= event[:access_token] %></p>
-    <p>Token Type: <%= event[:token_type] %></p>
+    <p>Received token params: <%= event[:params] %></p>
     <p>Expires at: <%= Time.parse(event[:expires_at]).strftime("%T (%Z)") %></p>
   </div>
 

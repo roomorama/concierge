@@ -1,11 +1,11 @@
 require "spec_helper"
 
 RSpec.describe Concierge::Context::TokenReceived do
-  let(:token_type) { "BEARER" }
+  let(:params) { {"token_type"=>"BEARER", "scope"=>"basic"} }
   let(:access_token) { "very_important_string" }
   let(:expires_at) { Time.now.to_i }
 
-  subject { described_class.new(token_type: token_type,
+  subject { described_class.new(params: params,
                                 access_token: access_token,
                                 expires_at: expires_at) }
 
@@ -16,7 +16,7 @@ RSpec.describe Concierge::Context::TokenReceived do
       expect(subject.to_h).to eq({
         type:      "token_received",
         timestamp: Time.now,
-        token_type:   token_type,
+        params:   params,
         access_token: "very...",
         expires_at:   Time.at(expires_at)
       })
