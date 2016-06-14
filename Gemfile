@@ -23,4 +23,5 @@ gem 'whenever', '~> 0.9', require: false
 group :test do
   gem 'rspec', '~> 3.4.0'
   gem 'database_cleaner', '~> 1.5'
+  gem 'byebug'
 end
