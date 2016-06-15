@@ -27,9 +27,9 @@ module Waytostay
     end
 
     def oauth2_client
-      @oauth2_client ||= API::Support::OAuth2Client.new(id: credentials.client_id,
-                                                        secret: credentials.client_secret,
-                                                        base_url: credentials.url,
+      @oauth2_client ||= API::Support::OAuth2Client.new(id:        credentials.client_id,
+                                                        secret:    credentials.client_secret,
+                                                        base_url:  credentials.url,
                                                         token_url: credentials.token_url)
     end
 

@@ -36,7 +36,7 @@ module API::Support
       @options = options
       oauth_options = {
         token_url: token_url,
-        site: base_url
+        site:      base_url
       }.merge options
       @oauth_client = OAuth2::Client.new(id,
                                   secret,
