@@ -8,7 +8,7 @@ namespace :suppliers do
     total = 0
 
     names.map do |name|
-      existing = Supplier.named(name)
+      existing = SupplierRepository.named(name)
 
       unless existing
         supplier = Supplier.new(name: name)
