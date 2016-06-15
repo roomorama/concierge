@@ -28,8 +28,8 @@ class Quotation
   attribute :check_out,   type: String
   attribute :guests,      type: Integer
   attribute :available,   type: Boolean
-  attribute :fee,         type: Integer
-  attribute :total,       type: Integer
+  attribute :fee,         type: Float
+  attribute :total,       type: Float
   attribute :currency,    type: String
   attribute :errors,      type: Hash
 
