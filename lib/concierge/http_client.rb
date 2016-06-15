@@ -65,7 +65,7 @@ module Concierge
       "User-Agent" => "Roomorama/Concierge #{Concierge::VERSION}"
     }
 
-    attr_reader :url, :username, :password
+    attr_reader :url, :options
 
     # Creates a new +API::Support::HTTPClient+ instance.
     #
@@ -80,7 +80,7 @@ module Concierge
     #   })
     def initialize(url, options = {})
       @url = url
-
+      @options = options
       if options[:basic_auth]
         basic_auth = options.fetch(:basic_auth)
         connection.basic_auth(basic_auth.fetch(:username), basic_auth.fetch(:password))
@@ -122,14 +122,13 @@ module Concierge
     private
 
     def connection
-      @connection ||= self.class._connection || Faraday.new(url: url, request: { timeout: CONNECTION_TIMEOUT }) do |f|
+      @connection ||= self.class._connection || Faraday.new(url: url, request: { timeout: options.fetch(:timeout, CONNECTION_TIMEOUT) }) do |f|
         f.adapter :patron
       end
     end
 
     def with_error_handling
       response   = yield(connection)
-      successful = true
       announce_response(response)
 
       if SUCCESSFUL_STATUSES.include?(response.status)

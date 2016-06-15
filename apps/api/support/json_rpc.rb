@@ -39,11 +39,11 @@ module API::Support
 
     PROTOCOL_VERSION = "2.0"
 
-    attr_reader :url, :endpoint, :path
+    attr_reader :url, :endpoint, :path, :options
 
-    def initialize(url)
+    def initialize(url, options = {})
       @url = url
-
+      @options = options
       uri = URI(url)
       @endpoint = [uri.scheme, "://", uri.host].join
       @path = uri.path
@@ -81,13 +81,10 @@ module API::Support
 
       json_response = parsed_data.value
       if json_response["id"] != request_id
-        return wrong_response_id(request_id, json_response["id"])
+        return wrong_response_id
       end
 
       if json_response.has_key?("error")
-        code    = json_response["error"]["code"]
-        message = json_response["error"]["message"]
-
         non_successful_json_rpc_response
         return Result.error(:json_rpc_response_has_errors)
       end
@@ -100,13 +97,13 @@ module API::Support
       end
     end
 
-    def wrong_response_id(expected, actual)
+    def wrong_response_id
       json_rpc_response_ids_do_not_match
       Result.error(:json_rpc_response_ids_do_not_match)
     end
 
     def http
-      @http_client ||= Concierge::HTTPClient.new(endpoint)
+      @http_client ||= Concierge::HTTPClient.new(endpoint, options.fetch(:client_options, {}))
     end
 
     def jsonrpc_payload(method, params)
