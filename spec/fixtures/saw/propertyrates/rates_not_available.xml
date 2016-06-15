@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<response>
+  <errors>
+    <error>
+      <code>3031</code>
+      <description>Rates are not available for this property.</description>
+    </error>
+  </errors>
+</response>
