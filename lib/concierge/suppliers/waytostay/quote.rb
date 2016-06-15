@@ -6,6 +6,14 @@ module Waytostay
 
     ENDPOINT = "/bookings/quote"
     UNAVAILBLE_ERROR_MESSAGE = "Apartment is not available for the selected dates"
+    REQUIRED_RESPONSE_KEYS = [
+      "booking_details.property_reference",
+      "booking_details.arrival_date",
+      "booking_details.departure_date",
+      "booking_details.number_of_adults",
+      "booking_details.price.pricing_summary.final_price",
+      "booking_details.price.currency"
+    ]
 
     # Always returns a +Quotation+.
     # If an error happens in any step in the process of getting a response back from
@@ -25,7 +33,7 @@ module Waytostay
       if result.success?
 
         response = Concierge::SafeAccessHash.new(result.value)
-        if recognised?(response)
+        if contains_all?(REQUIRED_RESPONSE_KEYS, response)
           Quotation.new(quote_params_from(response))
         else
           announce_error("quote", Result.error(:unrecognised_response))
@@ -54,25 +62,6 @@ module Waytostay
       result.error.data && result.error.data.include?(UNAVAILBLE_ERROR_MESSAGE)
     end
 
-    def recognised?(response)
-      required_fields = [
-        "booking_details.property_reference",
-        "booking_details.arrival_date",
-        "booking_details.departure_date",
-        "booking_details.number_of_adults",
-        "booking_details.price.pricing_summary.final_price",
-        "booking_details.price.currency"
-      ]
-      required_fields.all? { |key|
-        if response.get(key).nil?
-          announce_missing_field(key)
-          false
-        else
-          true
-        end
-      }
-    end
-
     # Returns the hash that can be plugged into Quotation initialization.
     # +response+ is a Concierge::SafeAccessHash
     #
@@ -88,12 +77,5 @@ module Waytostay
       }
     end
 
-    def announce_missing_field(key)
-      event = Concierge::Context::ResponseMismatch.new(
-        message:   "Response does not contain mandatory field `#{key}`.",
-        backtrace: caller
-      )
-      Concierge.context.augment(event)
-    end
   end
 end
