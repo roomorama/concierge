@@ -46,12 +46,13 @@ RSpec.describe Waytostay::Client do
     let(:success_waytostay_params) { booking_post_body.merge(property_reference: "1") }
     let(:malformed_response_waytostay_params) { booking_post_body.merge(property_reference: "2") }
     let(:malformed_request_waytostay_params) { booking_post_body.merge(property_reference: "21") }
+    let(:unavailable_waytostay_params) { booking_post_body.merge(property_reference: "22") }
     let(:timeout_waytostay_params) { booking_post_body.merge(property_reference: "3") }
     let(:booking_responses){[
       { code: 200, body: success_waytostay_params.to_json, response: read_fixture('waytostay/post.bookings.json')},
       { code: 200, body: malformed_response_waytostay_params.to_json, response: read_fixture('waytostay/post.bookings.malformed.json')},
       { code: 400, body: malformed_request_waytostay_params.to_json, response: read_fixture('waytostay/post.bookings.malformed_json.json')},
-      #{ code: 422, body: cutoff_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.cutoff.json')},
+      { code: 422, body: unavailable_waytostay_params.to_json, response: read_fixture('waytostay/post.bookings.unavailable.json')},
     ]}
 
     before do
@@ -73,7 +74,8 @@ RSpec.describe Waytostay::Client do
       let(:successful_code) { "KUFSHS" }
       let(:error_params_list) {[
         params.merge( { property_id: "2" } ),
-        params.merge( { property_id: "21" } )
+        params.merge( { property_id: "21" } ),
+        params.merge( { property_id: "22" } )
       ]}
     end
   end
