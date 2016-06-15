@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative '../shared/client_spec'
+require_relative '../shared/quote_spec'
 
 RSpec.describe Waytostay::Client do
   include Support::Fixtures
@@ -20,7 +20,7 @@ RSpec.describe Waytostay::Client do
 
   describe '#quote' do
 
-    let(:quote_url) { stubbed_client.credentials[:url] + described_class::ENDPOINTS[:quote] }
+    let(:quote_url) { stubbed_client.credentials[:url] + Waytostay::Quote::ENDPOINT }
     let(:success_waytostay_params){
       { property_reference: 10, arrival_date: Date.today + 10, departure_date: Date.today + 20, number_of_adults: 2 }
     }
