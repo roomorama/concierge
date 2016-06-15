@@ -1,5 +1,6 @@
 require 'spec_helper'
 require_relative '../shared/quote_spec'
+require_relative '../shared/book_spec'
 
 RSpec.describe Waytostay::Client do
   include Support::Fixtures
@@ -16,6 +17,64 @@ RSpec.describe Waytostay::Client do
   end
 
   subject(:stubbed_client) { described_class.new }
+
+  describe"#book" do
+    let(:quote_url) { stubbed_client.credentials[:url] + Waytostay::Book::ENDPOINT }
+    let(:params) {{
+      customer: {
+        email:      "user@test.com",
+        first_name: "john",
+        last_name:  "last",
+        phone:      "+12345678",
+      },
+      property_id:  "9234",
+      check_in:     "2016-06-10",
+      check_out:    "2016-06-15",
+      guests:       2
+    }}
+    let(:booking_post_body) {{
+      email_address:      params[:customer][:email],
+      name:               params[:customer][:first_name],
+      surname:            params[:customer][:last_name],
+      cell_phone:         params[:customer][:phone],
+      language:           Waytostay::Book::DEFAULT_CUSTOMER_LANGUAGE,
+      property_reference: params[:property_id],
+      arrival_date:       params[:check_in],
+      departure_date:     params[:check_out],
+      number_of_adults:   params[:guests]
+    }}
+    let(:success_waytostay_params) { booking_post_body.merge(property_reference: "1") }
+    let(:malformed_response_waytostay_params) { booking_post_body.merge(property_reference: "2") }
+    let(:timeout_waytostay_params) { booking_post_body.merge(property_reference: "3") }
+    let(:booking_responses){[
+      { code: 200, body: success_waytostay_params.to_json, response: read_fixture('waytostay/post.bookings.json')},
+      { code: 200, body: malformed_response_waytostay_params.to_json, response: read_fixture('waytostay/post.bookings.malformed.json')},
+      #{ code: 422, body: unavailable_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.unavailable.json')},
+      #{ code: 422, body: cutoff_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.cutoff.json')},
+    ]}
+
+    before do
+      booking_responses.each do |stub|
+        stubbed_client.oauth2_client.oauth_client.connection =
+          stub_call(:post, quote_url, body: stub[:body], strict: true) {
+            [stub[:code], {}, stub[:response]]
+          }
+      end
+      stubbed_client.oauth2_client.oauth_client.connection =
+        stub_call(:post, quote_url, body: timeout_waytostay_params.to_json, strict: true) {
+          raise Faraday::TimeoutError
+        }
+    end
+
+    it_behaves_like "supplier book method" do
+      let (:supplier_client) { stubbed_client }
+      let(:success_params) { params.merge( { property_id: "1" } ) }
+      let(:successful_code) { "KUFSHS" }
+      let(:error_params_list) {[
+        params.merge( { property_id: "2" } )
+      ]}
+    end
+  end
 
   describe "#quote" do
 
@@ -36,7 +95,7 @@ RSpec.describe Waytostay::Client do
     let(:timeout_waytostay_params){
       { property_reference: 30, arrival_date: Date.today + 10, departure_date: Date.today + 80, number_of_adults: 2 }
     }
-    let(:responses){[
+    let(:quote_responses){[
       { code: 200, body: success_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.json')},
       { code: 200, body: malformed_response_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.malformed.json')},
       { code: 422, body: unavailable_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.unavailable.json')},
@@ -44,9 +103,9 @@ RSpec.describe Waytostay::Client do
     ]}
 
     before do
-      responses.each do |stub|
+      quote_responses.each do |stub|
         stubbed_client.oauth2_client.oauth_client.connection =
-          stub_call(:post, quote_url, params: stub[:params], body: stub[:body], strict: true) {
+          stub_call(:post, quote_url, body: stub[:body], strict: true) {
             [stub[:code], {}, stub[:response]]
           }
       end
