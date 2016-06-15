@@ -42,6 +42,25 @@ module Waytostay
       }
     end
 
+    def contains_all?(required_fields, response)
+      required_fields.all? { |key|
+        if response.get(key).nil?
+          announce_missing_field(key)
+          false
+        else
+          true
+        end
+      }
+    end
+
+    def announce_missing_field(f)
+      event = Concierge::Context::ResponseMismatch.new(
+        message:   "Response does not contain mandatory field `#{f}`.",
+        backtrace: caller
+      )
+      Concierge.context.augment(event)
+    end
+
     def announce_error(operation, result)
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
         operation:   operation,
