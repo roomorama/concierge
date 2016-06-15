@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<response>
+  <errors>
+    <error>
+      <code>3025</code>
+      <description>Property price in different currency are not allowed to this affiliate. Please contact Serviced Apartments Worldwide for more detail on it.</description>
+    </error>
+  </errors>
+</response>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<response>
+  <errors>
+    <error>
+      <code>3023</code>
+      <description>This accommodation is on request only</description>
+    </error>
+  </errors>
+</response>
