@@ -4,7 +4,7 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
-## Unreleased
+## [0.4.1] - 2016-06-15
 ### Changed
 - Check-in/check-out dates consistency validation on quote/booking calls.
 - Master process does not crash if child worker was manually killed.
@@ -15,7 +15,7 @@ how this file is formatted and how the process works.
 - `AtLeisure::Booking`, implemented booking with partner
 - Synchronisation process architecture, including many utility classes.
 
-## Changed
+### Changed
 - fixed a bug with timezone formatting by using %z directive for strftime() instead of %Z
 
 ## [0.3.0] - 2016-05-30
