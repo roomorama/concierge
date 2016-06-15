@@ -42,12 +42,12 @@ RSpec.describe Waytostay::Client do
     before do
       responses.each do |stub|
         stubbed_client.oauth2_client.oauth_client.connection =
-          stub_call(:post, quote_url, params: stub[:params], body: stub[:body]) {
+          stub_call(:post, quote_url, params: stub[:params], body: stub[:body], strict: true) {
             [stub[:code], {}, stub[:response]]
           }
       end
       stubbed_client.oauth2_client.oauth_client.connection =
-        stub_call(:post, quote_url, body: timeout_waytostay_params.to_json) {
+        stub_call(:post, quote_url, body: timeout_waytostay_params.to_json, strict: true) {
           raise Faraday::TimeoutError
         }
     end
