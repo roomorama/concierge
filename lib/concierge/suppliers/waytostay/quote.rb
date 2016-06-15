@@ -23,8 +23,17 @@ module Waytostay
                                   headers: headers)
 
       if result.success?
-        Quotation.new(quote_params_from(result.value))
-      elsif unavailable?(result)
+
+        response = Concierge::SafeAccessHash.new(result.value)
+        if recognised?(response)
+          Quotation.new(quote_params_from(response))
+        else
+          announce_error("quote", Result.error(:unrecognised_response))
+          Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
+        end
+
+      elsif unavailable?(result) # for waytostay, unavailable is returned as a 422 error
+
         Quotation.new({
           property_id: params[:property_id],
           check_in:    params[:check_in],
@@ -32,6 +41,7 @@ module Waytostay
           guests:      params[:guests],
           available:   false
         })
+
       else
         announce_error("quote", result)
         Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
@@ -44,17 +54,46 @@ module Waytostay
       result.error.data && result.error.data.include?(UNAVAILBLE_ERROR_MESSAGE)
     end
 
-    def quote_params_from(json)
-      details = json["booking_details"]
+    def recognised?(response)
+      required_fields = [
+        "booking_details.property_reference",
+        "booking_details.arrival_date",
+        "booking_details.departure_date",
+        "booking_details.number_of_adults",
+        "booking_details.price.pricing_summary.final_price",
+        "booking_details.price.currency"
+      ]
+      required_fields.all? { |key|
+        if response.get(key).nil?
+          announce_missing_field(key)
+          false
+        else
+          true
+        end
+      }
+    end
+
+    # Returns the hash that can be plugged into Quotation initialization.
+    # +response+ is a Concierge::SafeAccessHash
+    #
+    def quote_params_from(response)
       {
-        property_id: details["property_reference"],
-        check_in:    details["arrival_date"],
-        check_out:   details["departure_date"],
-        guests:      details["number_of_adults"],
-        total:       details["price"]["pricing_summary"]["final_price"],
-        currency:    details["price"]["currency"],
+        property_id: response.get("booking_details.property_reference"),
+        check_in:    response.get("booking_details.arrival_date"),
+        check_out:   response.get("booking_details.departure_date"),
+        guests:      response.get("booking_details.number_of_adults"),
+        total:       response.get("booking_details.price.pricing_summary.final_price"),
+        currency:    response.get("booking_details.price.currency"),
         available:   true,
       }
+    end
+
+    def announce_missing_field(key)
+      event = Concierge::Context::ResponseMismatch.new(
+        message:   "Response does not contain mandatory field `#{key}`.",
+        backtrace: caller
+      )
+      Concierge.context.augment(event)
     end
   end
 end
