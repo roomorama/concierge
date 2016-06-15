@@ -3,9 +3,6 @@ require_relative "../shared/quote_validations"
 require_relative "../shared/external_error_reporting"
 
 RSpec.describe API::Controllers::Waytostay::Quote do
-  include Support::HTTPStubbing
-  include Support::Fixtures
-
   let(:params) {
     { property_id: "567", check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
   }
@@ -43,12 +40,12 @@ RSpec.describe API::Controllers::Waytostay::Quote do
 
     it "returns unavailable quotation when client returns so" do
       unavailable_quotation = Quotation.new({
-          property_id: params[:property_id],
-          check_in:    params[:check_in],
-          check_out:   params[:check_out],
-          guests:      params[:guests],
-          available:   false
-        })
+        property_id: params[:property_id],
+        check_in:    params[:check_in],
+        check_out:   params[:check_out],
+        guests:      params[:guests],
+        available:   false
+      })
       expect_any_instance_of(Waytostay::Client).to receive(:quote).and_return(unavailable_quotation)
 
       response = parse_response(subject)
