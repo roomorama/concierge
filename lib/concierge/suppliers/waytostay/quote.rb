@@ -51,7 +51,6 @@ module Waytostay
         check_in:    details["arrival_date"],
         check_out:   details["departure_date"],
         guests:      details["number_of_adults"],
-        fee:         details["price"]["pricing_summary"]["agency"]["commission_amount"],
         total:       details["price"]["pricing_summary"]["final_price"],
         currency:    details["price"]["currency"],
         available:   true,
