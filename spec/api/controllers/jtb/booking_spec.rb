@@ -11,6 +11,7 @@ RSpec.describe API::Controllers::JTB::Booking do
       unit_id:     "xxx",
       check_in:    "2016-03-22",
       check_out:   "2016-03-24",
+      subtotal:    250,
       guests:      2,
       customer:    {
         first_name:  "Alex",

@@ -19,6 +19,8 @@ class API::Controllers::Params::ErrorMessages
           messages[attr] << "#{attr} is required"
         when :format
           messages[attr] << "#{attr}: invalid format"
+        when :check_out_before_check_in
+          messages[attr] << "#{attr} needs to be after check-in"
         else
           messages[attr] << "#{attr} is invalid"
       end

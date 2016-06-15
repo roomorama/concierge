@@ -34,7 +34,24 @@ module API::Controllers::Params
     end
 
     def error_messages
-      ErrorMessages.new(errors).generate
+      ErrorMessages.new(validation_errors).generate
+    end
+
+    def validation_errors
+      errors.each.to_a + travel_dates.errors
+    end
+
+    def valid?
+      builtin_validations      = super
+      travel_dates_validations = travel_dates.valid?
+
+      builtin_validations && travel_dates_validations
+    end
+
+    private
+
+    def travel_dates
+      @travel_dates ||= TravelDates.new(self[:check_in], self[:check_out])
     end
   end
 
