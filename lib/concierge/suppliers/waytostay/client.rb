@@ -18,6 +18,7 @@ module Waytostay
     SUPPLIER_NAME = "Waytostay"
 
     include Waytostay::Quote
+    include Waytostay::Book
 
     attr_reader :credentials
 
