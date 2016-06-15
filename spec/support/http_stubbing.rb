@@ -27,11 +27,21 @@ module Support
       endpoint = [uri.scheme, "://", uri.host].join
       path     = uri.path
 
-      case http_method
-      when :get, :head, :delete, :options
-        stubs.public_send(http_method, path, options[:headers] || {}) { yield }
-      else # for :post, :put, :patch
-        stubs.public_send(http_method, path, options[:body] || {}, options[:headers] || {}) { yield }
+      if options[:strict]
+        # compares headers and body if given
+
+        case http_method
+        when :get, :head, :delete, :options
+          stubs.public_send(http_method, path, options[:headers] || {}) { yield }
+        else # for :post, :put, :patch
+          stubs.public_send(http_method, path, options[:body] || {}, options[:headers] || {}) { yield }
+        end
+
+      else
+        # ignores headers and body; stub response is returned if the method and path matches
+
+        stubs.public_send(http_method, path) { yield }
+
       end
 
       conn = Faraday.new(url: endpoint) do |f|
