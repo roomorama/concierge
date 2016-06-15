@@ -27,7 +27,12 @@ module Support
       endpoint = [uri.scheme, "://", uri.host].join
       path     = uri.path
 
-      stubs.public_send(http_method, path, options[:params] || options[:body]) { yield }
+      case http_method
+      when :get, :head, :delete, :options
+        stubs.public_send(http_method, path, options[:headers] || {}) { yield }
+      else # for :post, :put, :patch
+        stubs.public_send(http_method, path, options[:body] || {}, options[:headers] || {}) { yield }
+      end
 
       conn = Faraday.new(url: endpoint) do |f|
         f.adapter :test, stubs
