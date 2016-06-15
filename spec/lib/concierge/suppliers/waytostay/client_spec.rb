@@ -25,6 +25,9 @@ RSpec.describe Waytostay::Client do
     let(:success_waytostay_params){
       { property_reference: 10, arrival_date: Date.today + 10, departure_date: Date.today + 20, number_of_adults: 2 }
     }
+    let(:malformed_response_waytostay_params){
+      { property_reference: 11, arrival_date: Date.today + 10, departure_date: Date.today + 20, number_of_adults: 2 }
+    }
     let(:unavailable_waytostay_params){
       { property_reference: 20, arrival_date: Date.today + 10, departure_date: Date.today + 20, number_of_adults: 2 }
     }
@@ -36,6 +39,7 @@ RSpec.describe Waytostay::Client do
     }
     let(:responses){[
       { code: 200, body: success_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.json')},
+      { code: 200, body: malformed_response_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.malformed.json')},
       { code: 422, body: unavailable_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.unavailable.json')},
       { code: 422, body: cutoff_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.cutoff.json')},
     ]}
@@ -62,9 +66,17 @@ RSpec.describe Waytostay::Client do
         { property_id: 20, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2 }
       }
       let(:error_params) {[
+        { property_id: 11, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2 }, # malformed response
         { property_id: 30, check_in: Date.today + 1, check_out: Date.today + 10, guests: 2 }, # cutoff dates
         { property_id: 30, check_in: Date.today + 10, check_out: Date.today + 80, guests: 2 } # timeout
       ]}
+    end
+
+    it "should announce missing fields from response for malformed responses" do
+      quotation = stubbed_client.quote({ property_id: 11, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2 })
+      expect(quotation).not_to be_successful
+      event = Concierge.context.events.last
+      expect(event.to_h[:type]).to eq "response_mismatch"
     end
   end
 end
