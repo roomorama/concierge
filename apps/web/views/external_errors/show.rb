@@ -31,7 +31,9 @@ module Web::Views::ExternalErrors
       Concierge::Context::SOAPRequest::CONTEXT_TYPE,
       Concierge::Context::SOAPResponse::CONTEXT_TYPE,
       Concierge::Context::SyncProcess::CONTEXT_TYPE,
-      Concierge::Context::MissingBasicData::CONTEXT_TYPE
+      Concierge::Context::MissingBasicData::CONTEXT_TYPE,
+      Concierge::Context::TokenRequest::CONTEXT_TYPE,
+      Concierge::Context::TokenReceived::CONTEXT_TYPE,
     ]
 
     # content-type declarations, as specified by HTTP headers.
@@ -141,10 +143,10 @@ module Web::Views::ExternalErrors
       _raw str.gsub(/`([^`]*)`/, '<code>\1</code>')
     end
 
-    # formats the timestamp of a an +event+, expected to be a +Concierge::SafeAccessHash+
-    # to a format which includes the timezone offset, for clarity.
-    def format_timestamp(event)
-      Time.parse(event[:timestamp]).strftime("%T (%z)")
+    # formats the timestamp of format "2016-05-25 19:32:51 +0800"
+    # to a format which includes the timezone, for clarity.
+    def format_timestamp(timestamp)
+      Time.parse(timestamp).strftime("%T (%z)")
     end
 
     private

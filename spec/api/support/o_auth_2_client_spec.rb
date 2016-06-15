@@ -49,7 +49,7 @@ RSpec.describe API::Support::OAuth2Client do
 
     let(:endpoint) { "/ping" }
 
-    subject { client.get(endpoint) }
+    subject { client.get(endpoint, params:{page:1} ) }
 
     context "when successful" do
       before do
