@@ -13,10 +13,10 @@ module Waytostay
     # is logged.
     def quote(params)
       post_body = {
-        property_reference: params.fetch(:property_id),
-        arrival_date:       params.fetch(:check_in),
-        departure_date:     params.fetch(:check_out),
-        number_of_adults:   params.fetch(:guests)
+        property_reference: params[:property_id],
+        arrival_date:       params[:check_in],
+        departure_date:     params[:check_out],
+        number_of_adults:   params[:guests]
       }
       result = oauth2_client.post(ENDPOINT,
                                   body: post_body.to_json,
