@@ -1,5 +1,6 @@
 module Workers::Suppliers
   class AtLeisure
+    BATCH_SIZE = 100
 
     attr_reader :synchronisation, :host, :failed
 
@@ -11,7 +12,7 @@ module Workers::Suppliers
     def perform
       result = importer.fetch_properties
       if result.success?
-        grouped_properties = result.value
+        grouped_properties = result.value.each_slice(BATCH_SIZE)
         grouped_properties.each do |properties|
           fetch_data_and_process(properties)
         end
