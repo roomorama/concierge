@@ -14,11 +14,10 @@ RSpec.describe Waytostay::Client do
                   "expires_at"   => 1465467451})
     end
   end
-  let(:fail_response) { read_fixture('waytostay/invalid_request.json') }
 
   subject(:stubbed_client) { described_class.new }
 
-  describe '#quote' do
+  describe "#quote" do
 
     let(:quote_url) { stubbed_client.credentials[:url] + Waytostay::Quote::ENDPOINT }
 
@@ -65,7 +64,7 @@ RSpec.describe Waytostay::Client do
       let(:unavailable_params) {
         { property_id: 20, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2 }
       }
-      let(:error_params) {[
+      let(:error_params_list) {[
         { property_id: 11, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2 }, # malformed response
         { property_id: 30, check_in: Date.today + 1, check_out: Date.today + 10, guests: 2 }, # cutoff dates
         { property_id: 30, check_in: Date.today + 10, check_out: Date.today + 80, guests: 2 } # timeout

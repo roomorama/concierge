@@ -1,4 +1,4 @@
-# Shared example for supplier quote method.
+# Shared example for supplier client's quote method.
 #
 # Some context variables required:
 #
@@ -38,7 +38,7 @@ RSpec.shared_examples "supplier quote method" do
 
   context "when errors occur" do
     it "returns the erred quotation" do
-      error_params.each do |params|
+      error_params_list.each do |params|
         quotation = supplier_client.quote(params)
         expect(quotation).not_to be_successful
         expect(quotation.errors[:quote]).to eq "Could not quote price with remote supplier"
