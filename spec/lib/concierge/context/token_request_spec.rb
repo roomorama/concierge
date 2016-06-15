@@ -15,8 +15,8 @@ RSpec.describe Concierge::Context::TokenRequest do
       allow(Time).to receive(:now) { Time.new("2016", "05", "21", "16", "15", "42") }
 
       expect(subject.to_h).to eq({
-        type:      "token_request",
-        timestamp: Time.now,
+        type:          "token_request",
+        timestamp:     Time.now,
         site:          site,
         client_id:     "test...",
         client_secret: "test...",

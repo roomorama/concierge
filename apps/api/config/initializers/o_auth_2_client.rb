@@ -35,19 +35,23 @@ end
 
 # Receives a +OAuth2::Client+ object
 Concierge::Announcer.on(API::Support::OAuth2Client::ON_TOKEN_REQUEST) do |client, strategy|
-  token_request = Concierge::Context::TokenRequest.new(site: client.site,
-                                                       client_id: client.id,
-                                                       client_secret: client.secret,
-                                                       strategy: strategy)
+  token_request = Concierge::Context::TokenRequest.new(
+    site:          client.site,
+    client_id:     client.id,
+    client_secret: client.secret,
+    strategy:      strategy
+  )
 
   Concierge.context.augment(token_request)
 end
 
 # Receives a +OAuth2::AccessToken+ object
 Concierge::Announcer.on(API::Support::OAuth2Client::ON_TOKEN_RECEIVED) do |access_token|
-  token_received = Concierge::Context::TokenReceived.new(access_token: access_token.token,
-                                                         expires_at: access_token.expires_at,
-                                                         params: access_token.params)
+  token_received = Concierge::Context::TokenReceived.new(
+    access_token: access_token.token,
+    expires_at:   access_token.expires_at,
+    params:       access_token.params
+  )
 
   Concierge.context.augment(token_received)
 end
