@@ -1,0 +1,67 @@
+module SAW
+  class Price
+    attr_reader :credentials, :payload_builder, :response_parser
+
+    def initialize(credentials, payload_builder: nil, response_parser: nil)
+      @credentials = credentials
+      @payload_builder = payload_builder || default_payload_builder
+      @response_parser = response_parser || default_response_parser
+    end
+
+    def quote(params)
+      payload = payload_builder.build_compute_pricing(params)
+      result = http.post(endpoint_for(:propertyrates), payload, content_type)
+
+      if result.success?
+        result_hash = response_parser.to_hash(result.value.body)
+
+        if valid_result?(result_hash)
+          property_rate = SAW::Mappers::PropertyRate.build(result_hash)
+          quotation = SAW::Mappers::Quotation.build(params, property_rate)
+        
+          Result.new(quotation)
+        else
+          error_result(result_hash)
+        end
+      else
+        result
+      end
+    end
+
+    private
+    def default_payload_builder
+      @payload_builder ||= SAW::PayloadBuilder.new(credentials)
+    end
+
+    def default_response_parser
+      @response_parser ||= SAW::ResponseParser.new
+    end
+
+    def http
+      @http_client ||= Concierge::HTTPClient.new(credentials.url)
+    end
+
+    def endpoint_for(method)
+      SAW::Endpoint.endpoint_for(method)
+    end
+
+    def content_type
+      { "Content-Type" => "application/xml" }
+    end
+
+    def valid_result?(hash)
+      hash["response"]["errors"].nil?
+    end
+
+    def error_result(hash)
+      error = hash.fetch("response")
+                  .fetch("errors")
+                  .fetch("error")
+
+      code = error.fetch("code")
+      data = error.fetch("description")
+
+      Result.error(code, data)
+    end
+  end
+end
