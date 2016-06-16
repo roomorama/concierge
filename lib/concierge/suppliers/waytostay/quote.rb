@@ -11,8 +11,8 @@ module Waytostay
       "booking_details.arrival_date",
       "booking_details.departure_date",
       "booking_details.number_of_adults",
-      "booking_details.price.pricing_summary.final_price",
-      "booking_details.price.currency"
+      "pricing.pricing_summary.gross_total",
+      "pricing.currency"
     ]
 
     # Always returns a +Quotation+.
@@ -73,8 +73,8 @@ module Waytostay
         check_in:    response.get("booking_details.arrival_date"),
         check_out:   response.get("booking_details.departure_date"),
         guests:      response.get("booking_details.number_of_adults"),
-        total:       response.get("booking_details.price.pricing_summary.final_price"),
-        currency:    response.get("booking_details.price.currency"),
+        total:       response.get("pricing.pricing_summary.gross_total"),
+        currency:    response.get("pricing.currency"),
         available:   true,
       }
     end
