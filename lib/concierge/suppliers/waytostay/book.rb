@@ -37,7 +37,7 @@ module Waytostay
           reservation.code = response.get("booking_reference")
           reservation
         else
-          announce_missing_fields(missing_keys)
+          augment_missing_fields(missing_keys)
           announce_error("booking", Result.error(:unrecognised_response))
           Reservation.new(errors: { booking: "Could not create booking with remote supplier" })
         end
