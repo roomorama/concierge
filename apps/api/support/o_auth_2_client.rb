@@ -111,7 +111,7 @@ module API::Support
       end
 
       # If cache is hit, we need to parse result into an +OAuth2::AccessToken+ object
-      @access_token = OAuth2::AccessToken.from_hash(oauth_client, token_result.value) unless token_result.nil?
+      @access_token = OAuth2::AccessToken.from_hash(oauth_client, token_result.value)
     end
 
     def response_with_error_handling
