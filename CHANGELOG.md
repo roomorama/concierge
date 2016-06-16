@@ -9,9 +9,17 @@ how this file is formatted and how the process works.
 - Check-in/check-out dates consistency validation on quote/booking calls.
 - Master process does not crash if child worker was manually killed.
 - Fixed a bug with exceptions on startup because of not created log directory.
+- HTTPStubbing supports matching by body and headers, by including `strict: true` option to `stub_call`
+- Quotation total and fee changed from int to float
 
 ### Added
-- `API::Support::OAuth2Client`, a wrapper around oauth2 calls, caching access token and returning +Response+ objects
+- `API::Support::OAuth2Client`, a wrapper around oauth2 calls, caching access token and returning +Result+ objects
+- `Context::TokenRequest` and `Context::TokenReceived` events, which is announced around Oauth2 token requests
+- Shared partner #quote and #book examples
+- `Waytostay::Client` which implements quoting and booking with partner
+- `waytostay#quote` and `waytostay#booking`, which calls the above client and respond accordingly
+- `byebug` for test/development debugging
+
 
 ## [0.4.0] - 2016-06-13
 ### Added
