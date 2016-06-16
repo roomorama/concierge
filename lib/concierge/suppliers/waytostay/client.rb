@@ -54,9 +54,9 @@ module Waytostay
       }
     end
 
-    def announce_missing_field(f)
+    def announce_missing_fields(fs)
       event = Concierge::Context::ResponseMismatch.new(
-        message:   "Response does not contain mandatory field `#{f}`.",
+        message:   "Response does not contain mandatory fields: `#{fs.join(", ")}`.",
         backtrace: caller
       )
       Concierge.context.augment(event)

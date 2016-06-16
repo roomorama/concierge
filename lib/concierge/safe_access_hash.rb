@@ -49,23 +49,11 @@ module Concierge
       to_h.to_s
     end
 
-    # Returns true if any keys are missing in the hash
-    # +keys+ should be an array of +string+
+    # Returns array of keys that do not have value in the hash
+    # Given +required_keys+ should be an array of +string+
     #
-    # This will yield each of the missing keys,
-    # so a block can be passed to handle each missing key.
-    #
-    def missing_any?(keys)
-      # Using `all?` to iterate through all keys
-      all_present = keys.all? { |key|
-        if self.get(key).nil?
-          yield key
-          false
-        else
-          true
-        end
-      }
-      !all_present
+    def missing_keys_from(required_keys)
+      required_keys.select{ |k| self.get(k).nil? }
     end
   end
 
