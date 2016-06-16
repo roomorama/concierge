@@ -16,6 +16,7 @@ module Waytostay
   class Client
 
     SUPPLIER_NAME = "Waytostay"
+    SUPPORTED_PAYMENT_METHOD = "full_payment"
 
     include Waytostay::Quote
     include Waytostay::Book
