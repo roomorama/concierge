@@ -33,7 +33,7 @@ module Web::Views::ExternalErrors
       Concierge::Context::SyncProcess::CONTEXT_TYPE,
       Concierge::Context::MissingBasicData::CONTEXT_TYPE,
       Concierge::Context::TokenRequest::CONTEXT_TYPE,
-      Concierge::Context::TokenReceived::CONTEXT_TYPE,
+      Concierge::Context::TokenReceived::CONTEXT_TYPE
     ]
 
     # content-type declarations, as specified by HTTP headers.
