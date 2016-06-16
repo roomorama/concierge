@@ -10,14 +10,15 @@ module AtLeisure
   #
   #   => #<Result:0x007ff5fc624dd8 @result=[{'HouseCode' => 'XX-12345-67', ...}, ...]
   class Importer
-
+    TIMEOUT          = 100 # seconds
     ENDPOINT_METHODS = {
       properties_list: "ListOfHousesV1",
       properties_data: "DataOfHousesV1",
       layout_items:    "ReferenceLayoutItemsV1"
     }
 
-    LAYERS = %w(BasicInformationV3 MediaV1 LanguagePackDEV3 LanguagePackENV3 LanguagePackESV3 PropertiesV1 LayoutExtendedV2 DistancesV1 AvailabilityPeriodV1 MinMaxPriceV1)
+    LAYERS = %w(BasicInformationV3 MediaV2 PropertiesV1 LayoutExtendedV2 AvailabilityPeriodV1)
+    LANGUAGE_LAYERS = %w(LanguagePackDEV4 LanguagePackENV3 LanguagePackESV3)
 
     attr_reader :credentials
 
@@ -39,7 +40,7 @@ module AtLeisure
 
     # fetches extended information for properties by their identifiers. Return result with list of properties with
     # additional data which were pointed in +layers+
-    def fetch_data(properties, layers: LAYERS)
+    def fetch_data(properties, layers: default_layers)
       params   = { 'HouseCodes' => identifiers(properties), 'Items' => Array(layers) }
       endpoint = ENDPOINT_METHODS.fetch(:properties_data)
 
@@ -50,7 +51,7 @@ module AtLeisure
 
     def client_for(method)
       endpoint = "https://#{method.downcase}.jsonrpc-partner.net/cgi/lars/jsonrpc-partner/jsonrpc.htm"
-      API::Support::JSONRPC.new(endpoint, client_options: { timeout: 30 })
+      API::Support::JSONRPC.new(endpoint, client_options: { timeout: TIMEOUT })
     end
 
     def authentication_params
@@ -62,6 +63,10 @@ module AtLeisure
 
     def identifiers(properties)
       properties.map { |property| property['HouseCode'] }
+    end
+
+    def default_layers
+      LAYERS + LANGUAGE_LAYERS
     end
 
   end
