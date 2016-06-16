@@ -28,10 +28,12 @@ RSpec.shared_examples "supplier book method" do
   context "when errors occur" do
     it "fails with generic error" do
       error_params_list.each do |params|
-        reservation = supplier_client.book(params)
-        expect(reservation).to be_a Reservation
-        expect(reservation).not_to be_successful
-        expect(reservation.errors).to eq({ booking: "Could not create booking with remote supplier" })
+        expect {
+          reservation = supplier_client.book(params)
+          expect(reservation).to be_a Reservation
+          expect(reservation).not_to be_successful
+          expect(reservation.errors).to eq({ booking: "Could not create booking with remote supplier" })
+        }.to change{ ExternalErrorRepository.count }.by 1
       end
     end
   end

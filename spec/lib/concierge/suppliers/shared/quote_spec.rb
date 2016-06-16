@@ -33,15 +33,20 @@ RSpec.shared_examples "supplier quote method" do
         expect(quotation.errors).to be_nil
         expect(quotation.available).to be false
       end
+      it "should not create an external error" do
+        expect{ quotation }.to_not change{ ExternalErrorRepository.count }
+      end
     end
   end
 
   context "when errors occur" do
     it "returns the erred quotation" do
       error_params_list.each do |params|
-        quotation = supplier_client.quote(params)
-        expect(quotation).not_to be_successful
-        expect(quotation.errors[:quote]).to eq "Could not quote price with remote supplier"
+        expect{
+          quotation = supplier_client.quote(params)
+          expect(quotation).not_to be_successful
+          expect(quotation.errors[:quote]).to eq "Could not quote price with remote supplier"
+        }.to change{ ExternalErrorRepository.count }.by 1
       end
     end
   end
