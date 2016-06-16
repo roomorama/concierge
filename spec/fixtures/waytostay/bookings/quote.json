@@ -1,125 +1,136 @@
 {
   "booking_details": {
-    "property_reference": "0150",
-    "arrival_date": "2016-03-14",
-    "departure_date": "2016-03-20",
-    "number_of_nights": 6,
+    "property_reference": "016111",
+    "arrival_date": "2016-07-14",
+    "departure_date": "2016-07-17",
+    "number_of_nights": 3,
     "number_of_adults": 2,
     "number_of_infants": 0,
-    "discount_code": null,
+    "promo_code": null,
     "services": null,
-    "cancellation_policy_name": "default",
-    "cancellation_policy_costs": [
-      {
-        "cost": 89.97,
-        "cancellation_policy_text": "If you cancel between you will receive a voucher to the value of 89.97 €.",
-        "from_date": "2015-12-14 16:42:32",
-        "to_date": "2016-03-14 23:59:59"
-      }
-    ],
-    "price": {
-      "payment_url": null,
-      "currency": "EUR",
-      "pricing_summary": {
-        "items": [
-          {
-            "name": "Night 14-03-2016",
-            "standard_price": 70,
-            "offer_price": 17.5,
-            "final_price": 52.5
-          },
-          {
-            "name": "Night 15-03-2016",
-            "standard_price": 70,
-            "offer_price": 17.5,
-            "final_price": 52.5
-          },
-          {
-            "name": "Night 16-03-2016",
-            "standard_price": 70,
-            "offer_price": 17.5,
-            "final_price": 52.5
-          },
-          {
-            "name": "Night 17-03-2016",
-            "standard_price": 70,
-            "offer_price": 17.5,
-            "final_price": 52.5
-          },
-          {
-            "name": "Night 18-03-2016",
-            "standard_price": 70,
-            "offer_price": 17.5,
-            "final_price": 52.5
-          },
-          {
-            "name": "Night 19-03-2016",
-            "standard_price": 70,
-            "offer_price": 17.5,
-            "final_price": 52.5
-          },
-          {
-            "name": "cleaning fee",
-            "standard_price": 65,
-            "offer_price": 16.25,
-            "final_price": 48.75
-          }
-        ],
-        "final_price": 363.75,
-        "vat": null,
-        "net_amount": null,
-        "agency":{
-          "commission_percent": 10,
-          "cancellation_commission_percent": 0,
-          "commissionable_amount": 363.75,
-          "non_commissionable_amount": 0,
-          "commission_vat_percent": 0,
-          "commission_amount": 36.38,
-          "payable_amount": 327.37
+    "cancellation_policy_terms": {
+      "cancellation_policy_name": "Waytostay standard",
+      "cancellation_policy_costs": [
+        {
+          "cost": 154.5,
+          "cancellation_policy_text": "If you cancel 15 days or more before the arrival date you will receive a voucher to the value of 154.5 GBP.",
+          "from_datetime": "2016-06-16 09:34:38",
+          "to_datetime": "2016-06-30 14:00:00"
+        },
+        {
+          "cost": 154.5,
+          "cancellation_policy_text": "If you cancel between 14 days up until 24 hours before your arrival date \u0026 your apartment\u2019s standard check in time (local time); you will receive a voucher to the value of 154.5 GBP. The other 154.5 GBP is for the apartment owner to compensate him\/her for losing the booking at such a short notice.",
+          "from_datetime": "2016-06-30 14:00:00",
+          "to_datetime": "2016-07-13 14:00:00"
+        },
+        {
+          "cost": 154.5,
+          "cancellation_policy_text": "In the event that the notification is received, less than the stipulated 24 hours, or in case of a no show on the day of arrival, 154.5 GBP will go to the apartment owner.",
+          "from_datetime": "2016-07-13 14:00:00",
+          "to_datetime": "2016-07-14 23:59:59"
         }
-      },
-      "customer_payment_summary": {
-        "payment_option": "partial_payment",
-        "paid": 0,
-        "payment_due": 89.97,
-        "upon_arrival": 273.78,
-        "payment_methods_on_arrival": [
-          {
-            "id": 1,
-            "name": "cash"
-          }
-        ],
-        "damage_deposit_amount": 200,
-        "damage_deposit_options": [
-          {
-            "id": 12,
-            "name": "cash"
-          }
-        ],
-        "tourist_tax": [
-          {
-            "included": false,
-            "rate": 0.72,
-            "rate_type": "per_person_per_night",
-            "from_age": 17,
-            "max_nights": 7
-          }
-        ]
-      }
-    },
-    "property": {
-      "name": "Sueño Miró",
-      "city": "Barcelona",
-      "url": "https://www.waytostay.com/en-000150",
-      "photo_url": "https://static.waytostay.com/media/apartments/513/8612/513861241fc78.jpg",
-      "payment_options": [
-        "partial_payment"
       ]
-    },
-    "_links": {
-      "self": {
-        "href": "https://apis.waytostay.com/bookings/quote"
-      }
     }
-  }
+  },
+  "pricing": {
+    "payment_url": null,
+    "currency": "GBP",
+    "pricing_summary": {
+      "items": [
+        {
+          "name": "Night 14-07-2016",
+          "standard_price": 186,
+          "offer_price": 0,
+          "final_price": 186
+        },
+        {
+          "name": "Night 15-07-2016",
+          "standard_price": 186,
+          "offer_price": 0,
+          "final_price": 186
+        },
+        {
+          "name": "Night 16-07-2016",
+          "standard_price": 186,
+          "offer_price": 0,
+          "final_price": 186
+        },
+        {
+          "name": "cleaning fee",
+          "standard_price": 15,
+          "offer_price": 0,
+          "final_price": 15
+        },
+        {
+          "name": "cleaning fee",
+          "standard_price": 30,
+          "offer_price": 0,
+          "final_price": 30
+        }
+      ],
+      "gross_total": 603,
+      "vat": null,
+      "net_amount": null,
+      "agency": {
+        "commission_percent": 7,
+        "commissionable_amount": 603,
+        "non_commissionable_amount": 0,
+        "commission_vat_percent": 0,
+        "commission_amount": 42.21,
+        "cancellation_commission_percent": 0,
+        "payable_amount": 112.29
+      }
+    },
+    "customer_payment_summary": {
+      "payment_option": "partial_payment",
+      "paid": 0,
+      "payment_due": 154.5,
+      "upon_arrival": 448.5,
+      "extra_creditcard_charge_percent": 3,
+      "payment_methods_on_arrival": [
+        {
+          "id": 1,
+          "name": "cash"
+        },
+        {
+          "id": 2,
+          "name": "visa"
+        },
+        {
+          "id": 3,
+          "name": "visa electron"
+        },
+        {
+          "id": 4,
+          "name": "amex"
+        },
+        {
+          "id": 5,
+          "name": "mastercard"
+        },
+        {
+          "id": 6,
+          "name": "maestro"
+        }
+      ],
+      "damage_deposit_amount": null,
+      "damage_deposit_options": null,
+      "tourist_tax": [
+
+      ]
+    }
+  },
+  "property": {
+    "name": "Chelsea Manson Gem",
+    "city": "London",
+    "url": "https:\/\/www.sandbox.waytostay.com:25443\/en-016111",
+    "photo_url": "https:\/\/static.sandbox.waytostay.com:25443\/media\/apartments\/574\/c017\/574c017ac1ea0.jpg",
+    "payment_options": [
+      "full_payment",
+      "partial_payment"
+    ]
+  },
+  "_links": [
+
+  ]
 }
