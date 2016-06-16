@@ -51,8 +51,9 @@ module Concierge
 
     # Returns true if any keys are missing in the hash
     # +keys+ should be an array of +string+
+    #
     # This will yield each of the missing keys,
-    # so a method block can be passed to handle it.
+    # so a block can be passed to handle each missing key.
     #
     def missing_any?(keys)
       # Using `all?` to iterate through all keys
