@@ -3,6 +3,8 @@ require_relative "../shared/quote_validations"
 require_relative "../shared/external_error_reporting"
 
 RSpec.describe API::Controllers::Waytostay::Quote do
+  include Support::HTTPStubbing
+
   let(:params) {
     { property_id: "567", check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
   }
