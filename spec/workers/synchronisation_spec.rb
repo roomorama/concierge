@@ -57,7 +57,6 @@ RSpec.describe Workers::Synchronisation do
         expect(error.operation).to eq  "sync"
         expect(error.supplier).to eq "Supplier A"
         expect(error.code).to eq "missing_data"
-        expect(error.message).to eq "DEPRECATED"
 
         context = error.context
         expect(context[:version]).to eq  Concierge::VERSION
@@ -77,7 +76,6 @@ RSpec.describe Workers::Synchronisation do
         expect(error.operation).to eq "sync"
         expect(error.supplier).to eq "Supplier A"
         expect(error.code).to eq "http_status_404"
-        expect(error.message).to eq "DEPRECATED"
 
         context = error.context
         expect(context[:version]).to eq Concierge::VERSION
