@@ -18,7 +18,7 @@ module AtLeisure
     }
 
     LAYERS = %w(BasicInformationV3 MediaV2 PropertiesV1 LayoutExtendedV2 AvailabilityPeriodV1)
-    LANGUAGE_LAYERS = %w(LanguagePackDEV4 LanguagePackENV3 LanguagePackESV3)
+    LANGUAGES = %w(en de es)
 
     attr_reader :credentials
 
@@ -67,6 +67,10 @@ module AtLeisure
 
     def default_layers
       LAYERS + LANGUAGE_LAYERS
+    end
+
+    def language_layers
+      LANGUAGES.map {|lang| "LanguagePack#{lang.upcase}V4"}
     end
 
   end

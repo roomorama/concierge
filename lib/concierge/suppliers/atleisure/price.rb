@@ -27,7 +27,7 @@ module AtLeisure
   #                                      automatic confirmation, this is an error.
   class Price
     ENDPOINT = "https://checkavailabilityv1.jsonrpc-partner.net/cgi/lars/jsonrpc-partner/jsonrpc.htm"
-
+    CURRENCY = "EUR"
     attr_reader :credentials
 
     def initialize(credentials)
@@ -91,7 +91,7 @@ module AtLeisure
         check_in:    params[:check_in].to_s,
         check_out:   params[:check_out].to_s,
         guests:      params[:guests],
-        currency:    "EUR"
+        currency:    CURRENCY
       )
     end
 
