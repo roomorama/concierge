@@ -10,7 +10,7 @@ module Waytostay
 
     # Always returns a +Reservation+.
     # If an error happens in any step in the process of getting a response back from
-    # JTB, a generic error message is sent back to the caller, and the failure
+    # Waytostay, a generic error message is sent back to the caller, and the failure
     # is logged.
     def book(params)
       post_body = {
