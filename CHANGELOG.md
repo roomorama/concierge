@@ -19,7 +19,7 @@ how this file is formatted and how the process works.
 - `Waytostay::Client` which implements quoting and booking with partner
 - `waytostay#quote` and `waytostay#booking`, which calls the above client and respond accordingly
 - `byebug` for test/development debugging
-- `Concierge::SafeAccessHash#missing_any?` utils method
+- `Concierge::SafeAccessHash#missing_keys_from?` utils method
 
 
 ## [0.4.0] - 2016-06-13
