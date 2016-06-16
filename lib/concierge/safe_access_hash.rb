@@ -49,6 +49,12 @@ module Concierge
       to_h.to_s
     end
 
+    # Returns array of keys that do not have value in the hash
+    # Given +required_keys+ should be an array of +string+
+    #
+    def missing_keys_from(required_keys)
+      required_keys.select{ |k| self.get(k).nil? }
+    end
   end
 
 end

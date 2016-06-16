@@ -1,0 +1,15 @@
+{
+
+  "booking_reference_malformed": "KUFSHSMALFORMED",
+
+  "_links": {
+
+    "self": {
+
+      "href": "https://apis.waytostay.com/bookings/KUFSHSMALFORMED"
+
+    }
+
+  }
+
+}

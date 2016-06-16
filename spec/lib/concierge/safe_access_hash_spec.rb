@@ -30,4 +30,20 @@ RSpec.describe Concierge::SafeAccessHash do
     other = described_class.new(hash)
     expect(subject == other).to eq true
   end
+
+  describe "#missing_keys_from" do
+
+    subject { described_class.new(hash).missing_keys_from(test_keys) }
+
+    context "when everything is present" do
+      let(:test_keys) { ["a", "c.d", "c.@strange key.deep_key"] }
+      it { expect(subject).to eq [] }
+    end
+
+    context "when some keys are not found" do
+      let(:test_keys) { ["a", "some.new_key", "some.other.new.key"] }
+      it { expect(subject).to eq ["some.new_key", "some.other.new.key"] }
+    end
+  end
+
 end

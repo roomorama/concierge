@@ -1,0 +1,14 @@
+<div class="error-event">
+  <%= render partial: "external_errors/events/timestamp", locals: { event: event } %>
+
+  <h3>OAuth2 Access Token Received</h3>
+
+  <p>Then a valid access_token was received:</p>
+
+  <div class="code-block">
+    <p>Access Token: <%= event[:access_token] %></p>
+    <p>Received token params: <%= event[:params] %></p>
+    <p>Expires at: <%= format_timestamp(event[:expires_at]) %></p>
+  </div>
+
+</div>
