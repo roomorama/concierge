@@ -4,11 +4,8 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
-## [0.4.1] - 2016-06-15
+## [Unreleased]
 ### Changed
-- Check-in/check-out dates consistency validation on quote/booking calls.
-- Master process does not crash if child worker was manually killed.
-- Fixed a bug with exceptions on startup because of not created log directory.
 - HTTPStubbing supports matching by body and headers, by including `strict: true` option to `stub_call`
 - Quotation total and fee changed from int to float
 
@@ -21,6 +18,11 @@ how this file is formatted and how the process works.
 - `byebug` for test/development debugging
 - `Concierge::SafeAccessHash#missing_keys_from?` utils method
 
+## [0.4.1] - 2016-06-15
+### Changed
+- Check-in/check-out dates consistency validation on quote/booking calls.
+- Master process does not crash if child worker was manually killed.
+- Fixed a bug with exceptions on startup because of not created log directory.
 
 ## [0.4.0] - 2016-06-13
 ### Added
