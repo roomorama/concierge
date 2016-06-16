@@ -31,13 +31,13 @@ module Waytostay
       if result.success?
         response = Concierge::SafeAccessHash.new(result.value)
 
-        if contains_all?(REQUIRED_RESPONSE_KEYS, response)
+        if response.missing_any?(REQUIRED_RESPONSE_KEYS) { |key| announce_missing_field(key) }
+          announce_error("booking", Result.error(:unrecognised_response))
+          Reservation.new(errors: { booking: "Could not create booking with remote supplier" })
+        else
           reservation = Reservation.new(params)
           reservation.code = response.get("booking_reference")
           reservation
-        else
-          announce_error("booking", Result.error(:unrecognised_response))
-          Reservation.new(errors: { booking: "Could not create booking with remote supplier" })
         end
 
       else

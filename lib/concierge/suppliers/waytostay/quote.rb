@@ -33,11 +33,11 @@ module Waytostay
       if result.success?
 
         response = Concierge::SafeAccessHash.new(result.value)
-        if contains_all?(REQUIRED_RESPONSE_KEYS, response)
-          Quotation.new(quote_params_from(response))
-        else
+        if response.missing_any?(REQUIRED_RESPONSE_KEYS) { |key| announce_missing_field(key) }
           announce_error("quote", Result.error(:unrecognised_response))
           Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
+        else
+          Quotation.new(quote_params_from(response))
         end
 
       elsif unavailable?(result) # for waytostay, unavailable is returned as a 422 error
