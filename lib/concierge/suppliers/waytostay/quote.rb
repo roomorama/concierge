@@ -37,7 +37,7 @@ module Waytostay
         if missing_keys.empty?
           Quotation.new(quote_params_from(response))
         else
-          announce_missing_fields(missing_keys)
+          augment_missing_fields(missing_keys)
           announce_error("quote", Result.error(:unrecognised_response))
           Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
         end
