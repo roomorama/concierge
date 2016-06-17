@@ -17,7 +17,7 @@ RSpec.describe Waytostay::Client do
   subject(:stubbed_client) { described_class.new }
 
   describe"#book" do
-    let(:quote_url) { stubbed_client.credentials[:url] + Waytostay::Book::ENDPOINT }
+    let(:quote_url) { stubbed_client.credentials[:url] + Waytostay::Book::ENDPOINT_BOOKING }
     let(:params) {{
       customer: {
         email:      "user@test.com",
@@ -52,29 +52,46 @@ RSpec.describe Waytostay::Client do
       { code: 400, body: malformed_request_waytostay_params.to_json, response: read_fixture('waytostay/post.bookings.malformed_json.json')},
       { code: 422, body: unavailable_waytostay_params.to_json, response: read_fixture('waytostay/post.bookings.unavailable.json')},
     ]}
+    let(:successful_code) { "KUFSHS" }
 
     before do
       booking_responses.each do |stub|
-        stubbed_client.oauth2_client.oauth_client.connection =
-          stub_call(:post, quote_url, body: stub[:body], strict: true) {
-            [stub[:code], {}, stub[:response]]
-          }
-      end
-      stubbed_client.oauth2_client.oauth_client.connection =
-        stub_call(:post, quote_url, body: timeout_waytostay_params.to_json, strict: true) {
-          raise Faraday::TimeoutError
+        stub_call(:post, quote_url, body: stub[:body], strict: true) {
+          [stub[:code], {}, stub[:response]]
         }
+      end
+      stub_call(:post, quote_url, body: timeout_waytostay_params.to_json, strict: true) {
+        raise Faraday::TimeoutError
+      }
+      # Need to assign the last stub call to be the oauth2 client connection.
+      # Stubbing confirmation success
+      stubbed_client.oauth2_client.oauth_client.connection = stub_call(
+        :post,
+        stubbed_client.credentials[:url] + stubbed_client.send(:confirmation_path, successful_code)
+      ) {
+        [200, {}, read_fixture("waytostay/bookings/#{successful_code}/confirmation.json")]
+      }
     end
 
     it_behaves_like "supplier book method" do
-      let (:supplier_client) { stubbed_client }
+      let(:supplier_client) { stubbed_client }
       let(:success_params) { params.merge( { property_id: "1" } ) }
-      let(:successful_code) { "KUFSHS" }
       let(:error_params_list) {[
         params.merge( { property_id: "2" } ),
         params.merge( { property_id: "21" } ),
         params.merge( { property_id: "22" } )
       ]}
+
+      it "should send 2 posts, book and confirm" do
+        expect_any_instance_of(API::Support::OAuth2Client).to receive(:post).twice.and_call_original
+        reservation = supplier_client.book(success_params)
+      end
+
+      it "should only send 1 post, book, when there're errors" do
+        expect_any_instance_of(API::Support::OAuth2Client).to receive(:post).once.and_call_original
+        reservation = supplier_client.book(error_params_list.first)
+      end
+
     end
   end
 
