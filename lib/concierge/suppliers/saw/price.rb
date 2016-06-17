@@ -1,4 +1,21 @@
 module SAW
+  # +SAW::Price+
+  #
+  # This class is responsible for wrapping the logic related to making a price
+  # quotation to SAW, parsing the response, and building the +Quotation+ object
+  # with the data returned from their API.
+  #
+  # Usage
+  #
+  #   result = SAW::Price.new(credentials).quote(stay_params)
+  #   if result.success?
+  #     process_quotation(result.value)
+  #   else
+  #     handle_error(result.error)
+  #   end
+  #
+  # The +quote+ method returns a +Result+ object that, when successful, encapsulates the
+  # resulting +Quotation+ object.
   class Price
     attr_reader :credentials, :payload_builder, :response_parser
 
@@ -8,6 +25,8 @@ module SAW
       @response_parser = response_parser || default_response_parser
     end
 
+    # Calls the SAW API method using the HTTP client.
+    # Returns a +Result+ object.
     def quote(params)
       payload = payload_builder.build_compute_pricing(params)
       result = http.post(endpoint_for(:propertyrates), payload, content_type)
