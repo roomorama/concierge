@@ -1,4 +1,6 @@
 require 'spec_helper'
+require_relative "../shared/book"
+require_relative "../shared/quote"
 
 RSpec.describe Waytostay::Client do
   include Support::Fixtures
