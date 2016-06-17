@@ -16,8 +16,8 @@ module Waytostay
     # Waytostay, a generic error message is sent back to the caller, and the failure
     # is logged.
     def book(params)
-      remote_book(params).tap do |res|
-        remote_confirm(res, params) if res.successful?
+      remote_book(params).tap do |reservation|
+        remote_confirm(reservation, params) if reservation.successful?
       end
     end
 
@@ -43,15 +43,14 @@ module Waytostay
     # Always returns a +Reservation+.
     def remote_confirm(reservation, params)
       result = oauth2_client.post(confirmation_path(reservation.code),
-                                  #body: {}.to_json, # waytostay asks for an empty body
                                   headers: headers)
       parse_reservation(result, params)
     end
 
     private
 
-    def confirmation_path code
-      return ENDPOINT_CONFIRMATION.gsub(/:booking_reference/, code)
+    def confirmation_path ref
+      return ENDPOINT_CONFIRMATION.gsub(/:booking_reference/, ref)
     end
 
     # Takes a +Result+ and returns a +Reservation+
