@@ -5,10 +5,6 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## [Unreleased]
-### Changed
-- HTTPStubbing supports matching by body and headers, by including `strict: true` option to `stub_call`
-- Quotation total and fee changed from int to float
-
 ### Added
 - `API::Support::OAuth2Client`, a wrapper around oauth2 calls, caching access token and returning +Result+ objects
 - `Context::TokenRequest` and `Context::TokenReceived` events, which is announced around Oauth2 token requests
@@ -17,6 +13,11 @@ how this file is formatted and how the process works.
 - `waytostay#quote` and `waytostay#booking`, which calls the above client and respond accordingly
 - `byebug` for test/development debugging
 - `Concierge::SafeAccessHash#missing_keys_from?` utils method
+
+### Changed
+- HTTPStubbing supports matching by body and headers, by including `strict: true` option to `stub_call`
+- Quotation total and fee changed from int to float
+- removed the `message` column from the `external_errors` table, as well as related code.
 
 ## [0.4.1] - 2016-06-15
 ### Changed

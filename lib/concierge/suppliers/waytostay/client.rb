@@ -67,7 +67,6 @@ module Waytostay
         operation:   operation,
         supplier:    SUPPLIER_NAME,
         code:        result.error.code,
-        message:     "DEPRECATED",
         context:     Concierge.context.to_h,
         happened_at: Time.now
       })
