@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+  <booking_ref_number>MTA66395</booking_ref_number>
+  <affiliate_booking_ref_number />
+  <status>Booked</status>
+  <booking_type>Booking Confirmation</booking_type>
+  <booking_message>Thank you for booking your accommodation with us, we always endeavour to give the best service possible.</booking_message>
+  <booking_pending_message />
+  <currency_note />
+  <paylater_note />
+  <customer>
+      <first_name>Test</first_name>
+      <last_name>User</last_name>
+      <phone>111-222-3333</phone>
+      <email>testuser@example.com</email>
+  </customer>
+  <arrival_detail>
+      <arrival_time />
+      <airline />
+      <flight_number />
+  </arrival_detail>
+  <property_detail>
+      <property_name>Adagio Brussels Centre Monnaie</property_name>
+      <address1>Address1</address1>
+      <address2>Address2</address2>
+      <city_region>Brussels</city_region>
+      <state_county />
+      <postalcode>1000</postalcode>
+      <checkin>06/06/2016</checkin>
+      <checkout>07/06/2016</checkout>
+      <nights>1</nights>
+      <currency_code>EUR</currency_code>
+      <flag_breakfast_included>N</flag_breakfast_included>
+      <apartments>                                                                                                                                   [5/170]
+          <property_accommodation>
+              <property_accommodation_name>Studio 2 people </property_accommodation_name>
+              <number_of_guest>1</number_of_guest>
+              <bed_type />
+              <guest_first_name>Test</guest_first_name>
+              <guest_last_name>User</guest_last_name>
+              <special_requirements />
+              <line_items>
+                  <line_item>
+                      <line_item_type>Average Nightly Net Rate</line_item_type>
+                      <price>109.65</price>
+                  </line_item>
+                  <line_item>
+                      <line_item_type>Sum of Nightly Net Rate</line_item_type>
+                      <price>109.65</price>
+                  </line_item>
+              </line_items>
+              <price>109.65</price>
+              <rate_plans>
+                  <rate_plan_code />
+                  <condition_type />
+                  <cancellation_policies />
+                  <booking_rules>
+                      <advanced_booking_days>
+                          <min_advanced_booking_days />
+                          <max_advanced_booking_days />
+                      </advanced_booking_days>
+                      <lengths_of_stay>
+                          <min_length_of_stay>1</min_length_of_stay>
+                          <max_length_of_stay />
+                      </lengths_of_stay>
+                  </booking_rules>
+              </rate_plans>
+          </property_accommodation>
+          <price>109.65</price>
+      </apartments>
+  </property_detail>
+</response>
