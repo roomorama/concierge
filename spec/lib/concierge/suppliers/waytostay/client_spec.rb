@@ -70,7 +70,7 @@ RSpec.describe Waytostay::Client do
       # Stubbing confirmation success
       stubbed_client.oauth2_client.oauth_client.connection = stub_call(
         :post,
-        stubbed_client.credentials[:url] + stubbed_client.send(:confirmation_path, successful_code)
+        stubbed_client.credentials[:url] + "/bookings/#{successful_code}/confirmation"
       ) {
         [200, {}, read_fixture("waytostay/bookings/#{successful_code}/confirmation.json")]
       }

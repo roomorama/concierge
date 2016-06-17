@@ -55,6 +55,13 @@ module Waytostay
       }
     end
 
+    # Substitute keys in the path template with values
+    def build_path(path_template, params)
+      params.inject(path_template) do |path, (key, value)|
+        path.gsub(":#{key}", value)
+      end
+    end
+
     def augment_missing_fields(fs)
       event = Concierge::Context::ResponseMismatch.new(
         message:   "Response does not contain mandatory fields: `#{fs.join(", ")}`.",

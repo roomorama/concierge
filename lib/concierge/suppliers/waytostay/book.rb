@@ -43,16 +43,14 @@ module Waytostay
 
     # Always returns a +Reservation+.
     def remote_confirm(reservation, params)
-      result = oauth2_client.post(confirmation_path(reservation.code),
-                                  headers: headers)
+      result = oauth2_client.post(
+        build_path(ENDPOINT_CONFIRMATION, booking_reference: reservation.code),
+        headers: headers
+      )
       parse_reservation(result, params)
     end
 
     private
-
-    def confirmation_path ref
-      return ENDPOINT_CONFIRMATION.gsub(/:booking_reference/, ref)
-    end
 
     # Takes a +Result+ and returns a +Reservation+
     #
