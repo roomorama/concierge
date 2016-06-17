@@ -1,4 +1,17 @@
 module SAW
+  # +SAW::Client+
+  #
+  # This class is a convenience class for the smaller classes under +SAW+.
+  # For now, it allows the caller to get price quotations.
+  #
+  # Usage
+  #
+  #   quotation = SAW::Client.new(credentials).quote(params)
+  #   if quotation.sucessful?
+  #     # ...
+  #   end
+  #
+  # For more information on how to interact with SAW, check the project Wiki.
   class Client
     SUPPLIER_NAME = "SAW"
 
@@ -8,7 +21,10 @@ module SAW
       @credentials = credentials
     end
 
-    # returns Quotation object (for both success and fail cases)
+    # Always returns a +Quotation+.
+    # If an error happens in any step in the process of getting a response back
+    # from SAW, a generic error message is sent back to the caller, and the
+    # failure is logged.
     def quote(params)
       result = SAW::Price.new(credentials).quote(params)
 
