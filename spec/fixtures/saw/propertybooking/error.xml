@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<response>
+  <errors>
+    <error>
+      <code>0000</code>
+      <description>Strange Test Error</description>
+    </error>
+  </errors>
+</response>

@@ -36,10 +36,35 @@ module SAW
       end
     end
 
+    # Always returns a +Reservation+.
+    # If an error happens in any step in the process of getting a response back
+    # from SAW, a generic error message is sent back to the caller, and the
+    # failure is logged.
+    def book(params)
+      result = SAW::Booking.new(credentials).book(params)
+
+      if result.success?
+        result.value.tap { |reservation| database.create(reservation) }
+      else
+        announce_error(:booking, result)
+        error_reservation
+      end
+    end
+
     private
+    def database
+      @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
+    end
+
     def error_quotation
       Quotation.new(
         errors: { quote: "Could not quote price with remote supplier" }
+      )
+    end
+
+    def error_reservation
+      Reservation.new(
+        errors: { booking: "Could not create booking with remote supplier" }
       )
     end
     
