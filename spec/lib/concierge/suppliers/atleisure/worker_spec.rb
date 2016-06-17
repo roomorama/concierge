@@ -1,9 +1,11 @@
 require 'spec_helper'
 
 RSpec.describe Workers::Suppliers::AtLeisure do
+  include Support::Fixtures
 
+  let(:properties_list) { JSON.parse(read_fixture('atleisure/properties_list.json')) }
+  let(:success_result) { Result.new(properties_list) }
   let(:host) { Host.new(identifier: 'superman', username: 'Clark') }
-  let(:success_result) { Result.new([{}]) }
 
   subject { described_class.new(host) }
 
