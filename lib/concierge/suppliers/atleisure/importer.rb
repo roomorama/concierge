@@ -66,7 +66,7 @@ module AtLeisure
     end
 
     def default_layers
-      LAYERS + LANGUAGE_LAYERS
+      LAYERS + language_layers
     end
 
     def language_layers
