@@ -88,7 +88,7 @@ module API::Support
       response_with_error_handling do
         opts[:headers] ||= {}
         opts[:headers].merge! DEFAULT_HEADERS
-        announce_request(:post, path, opts[:params], opts[:headers])
+        announce_request(:post, path, opts[:body], opts[:headers])
         access_token.post(path, opts, &block)
       end
     end
