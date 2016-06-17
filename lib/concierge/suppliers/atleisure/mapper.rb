@@ -12,7 +12,6 @@ module AtLeisure
       property.instant_booking!
 
       set_base_info
-      set_descriptions
       set_beds_count
       set_amenities
       set_images
@@ -23,8 +22,8 @@ module AtLeisure
     private
 
     def build_room(property_data)
-      @meta_data = property_data
-      @property  = Roomorama::Property.new(property_data['HouseCode'])
+      @meta_data          = property_data
+      @property           = Roomorama::Property.new(property_data['HouseCode'])
       @property.amenities = []
     end
 
@@ -33,13 +32,13 @@ module AtLeisure
       info_en = meta_data['LanguagePackENV4']
 
       property.title               = info['Name']
-      property.number_of_bedrooms     = info['NumberOfBedrooms']
+      property.description         = info_en['Description']
+      property.number_of_bedrooms  = info['NumberOfBedrooms']
       property.number_of_bathrooms = info['NumberOfBathrooms'].to_f
       property.surface             = info['DimensionM2']
       property.surface_unit        = 'metric'
       property.max_guests          = info['MaxNumberOfPersons']
-      property.pets_allowed         = info['NumberOfPets'] > 0
-      property.childrenwelcome     = info['ExceedNumberOfBabies'] > 0
+      property.pets_allowed        = info['NumberOfPets'] > 0
       property.currency            = Price::CURRENCY
 
       property.country_code = info['Country']
@@ -84,7 +83,7 @@ module AtLeisure
       property_items = meta_data['PropertiesV1'].detect { |data_hash| data_hash['TypeNumber'] == 50 }
       if property_items
         property.smoking_allowed = property_items['TypeContents'].include?(504)
-        property.amenities += ['wifi', 'internet'] if property_items['TypeContents'].include?(510) #wifi
+        property.amenities       += ['wifi', 'internet'] if property_items['TypeContents'].include?(510) #wifi
       end
     end
 
@@ -160,13 +159,6 @@ module AtLeisure
       end
     end
 
-    def set_descriptions
-      Importer::LANGUAGES.each do |lang|
-        info = meta_data.fetch("LanguagePack#{lang.upcase}V4")
-        property.send("description_#{lang}=", info['Description'])
-      end
-    end
-
     def set_images
       images = meta_data['MediaV2'][0]['TypeContents']
       images.each do |image|
@@ -188,9 +180,9 @@ module AtLeisure
 
       min_price = actual_periods.map(&:price).min
 
-      property.host_daily_price   = min_price
-      property.host_weekly_price  = min_price * 7
-      property.host_monthly_price = min_price * 30
+      property.nightly_rate = min_price
+      property.weekly_rate  = min_price * 7
+      property.monthly_rate = min_price * 30
 
       actual_periods.each do |period|
         period.dates.each do |date|
@@ -225,6 +217,7 @@ module AtLeisure
         laundry:          'dryer'
       }
     end
+
     AvailabilityPeriod = Struct.new(:period) do
 
       def check_in
