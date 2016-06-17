@@ -78,7 +78,9 @@ module Roomorama
       :cancellation_policy, :services_cleaning, :services_cleaning_rate,
       :services_cleaning_required, :services_airport_pickup, :services_car_rental,
       :services_car_rental_rate, :services_airport_pickup_rate, :services_concierge,
-      :services_concierge_rate, :disabled, :instant_booking]
+      :services_concierge_rate, :disabled, :instant_booking,
+      :childrenwelcome, :description_en, :description_de, :description_es,
+      :host_daily_price, :host_weekly_price, :host_monthly_price]
 
     attr_accessor *ATTRIBUTES
 
@@ -237,7 +239,14 @@ module Roomorama
         services_concierge:             services_concierge,
         services_concierge_rate:        services_concierge_rate,
         disabled:                       disabled,
-        instant_booking:                instant_booking?
+        instant_booking:                instant_booking?,
+        childrenwelcome:                childrenwelcome,
+        description_en:                 description_en,
+        description_de:                 description_de,
+        description_es:                 description_es,
+        host_daily_price:               host_daily_price,
+        host_weekly_price:              host_weekly_price,
+        host_monthly_price:             host_monthly_price
       }
 
       data[:images]         = map_images(self)
