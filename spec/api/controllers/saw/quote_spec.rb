@@ -38,7 +38,9 @@ RSpec.describe API::Controllers::SAW::Quote do
       result = controller.quote_price(request_params)
 
       expect(result.successful?).to be false
-      result.errors[:quote] = "Could not quote price with remote supplier"
+      expect(result.errors[:quote]).to eq(
+        "Could not quote price with remote supplier"
+      )
     end
   end
 
@@ -49,7 +51,9 @@ RSpec.describe API::Controllers::SAW::Quote do
       result = controller.quote_price(request_params)
 
       expect(result.successful?).to be false
-      result.errors[:quote] = "Could not quote price with remote supplier"
+      expect(result.errors[:quote]).to eq(
+        "Could not quote price with remote supplier"
+      )
     end
   end
 
@@ -60,7 +64,9 @@ RSpec.describe API::Controllers::SAW::Quote do
       result = controller.quote_price(request_params)
       
       expect(result.successful?).to be false
-      result.errors[:quote] = "Could not quote price with remote supplier"
+      expect(result.errors[:quote]).to eq(
+        "Could not quote price with remote supplier"
+      )
     end
   end
 
