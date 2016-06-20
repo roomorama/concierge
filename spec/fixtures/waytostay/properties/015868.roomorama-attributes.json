@@ -1,0 +1,52 @@
+{
+  "identifier":   "015868",
+  "title":        "Iris 5 Tempel",
+  "description":  "This is how we would describe our apartment in a few words:\r\nInside: Outside: \r\nOur apartment Iris 5 Tempel is located in the central and beautiful Tempelhof area.\r\nThe property is situated on the 1st floor (for US guests +1).\r\n\r\nIt’s a great place to discover Berlin and a comfortable place to come home to.\r\nAlso:\r\n- lowest price guarantee \r\n- secure payment, no hidden costs\r\n- amend, cancel and rebook with no extra fees\r\nCheck more specific info about our apartment below the page.\r\n\r\nQuestions or doubts? Please feel free to contact us.\r\n\r\nThe prices are an indication and can be a bit lower or higher because of discounts and seasonal adjustments.",
+  "type": "Apartment",
+  "country_code": "de",
+  "lat": 52.46871,
+  "lng": 13.38642,
+  "number_of_bedrooms": 4,
+  "number_of_bathrooms": 2,
+  "floor": "1st floor",
+  "number_of_double_beds": 2,
+  "number_of_single_beds": 4,
+  "number_of_sofa_beds": 2,
+  "surface": 118,
+  "surface_unit": "metric",
+  "amenities": [
+    "internet",
+    "tv",
+    "elevator",
+    "kitchen",
+    "wifi",
+    "bed_linen_and_towels"
+  ],
+  "max_guests":   11,
+  "minimum_stay": 2,
+  "multi_unit": false,
+  "smoking_allowed": false,
+  "pets_allowed": true,
+  "check_in_time": "15:00:00",
+  "check_out_time": "11:00:00",
+  "currency":  "EUR",
+  "default_to_available": true,
+  "cancellation_policy": "strict",
+  "services_cleaning": true,
+  "services_cleaning_rate": 75,
+  "services_cleaning_required": true,
+  "services_airport_pickup": false,
+  "services_car_rental": false,
+  "services_concierge": false,
+  "instant_booking": true,
+  "images": [
+    {
+      "identifier": "propimg1",
+      "url":        "https://www.example.org/unit1img1"
+    },
+    {
+      "identifier": "propimg2",
+      "url":        "https://www.example.org/unit1img2"
+    }
+  ]
+}

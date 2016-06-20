@@ -18,7 +18,58 @@ RSpec.describe Waytostay::Client do
 
   subject(:stubbed_client) { described_class.new }
 
-  describe"#book" do
+  describe "fetch_property" do
+    let(:property_id) { "015868" }
+    let(:property_url) { stubbed_client.credentials[:url] + "/properties/#{property_id}" }
+    before do
+      stubbed_client.oauth2_client.oauth_client.connection = stub_call(:get, property_url) {
+        [200, {}, read_fixture("waytostay/properties/#{property_id}.json")]
+      }
+    end
+
+    subject { stubbed_client.fetch_property(property_id) }
+    it "should return a Roomorama::Property" do
+      expected_room_load = Roomorama::Property.load(
+        Concierge::SafeAccessHash.new(
+          JSON.parse(read_fixture("waytostay/properties/#{property_id}.roomorama-attributes.json"))
+        )
+      )
+      room_without_images = expected_room_load.result.to_h
+      room_without_images[:images] = []
+      expect(subject.to_h).to match room_without_images
+    end
+  end
+
+  describe "parse_number_of_beds" do
+    subject { stubbed_client.send(:parse_number_of_beds, response) }
+    context "when there are single and double sofa beds" do
+      let(:response) {
+        Concierge::SafeAccessHash.new( "general" => {
+          "bedding_summary"=>[
+            "1 single sofa bed",
+            "2 double bed",
+            "4 single bed",
+            "1 double sofa bed"]}
+        )
+      }
+      it { expect(subject[:number_of_double_beds]).to eq 2 }
+      it { expect(subject[:number_of_single_beds]).to eq 4 }
+      it { expect(subject[:number_of_sofa_beds]).to eq 2 }
+    end
+    context "when there are no signle sofa beds" do
+      let(:response) {
+        Concierge::SafeAccessHash.new( "general" => {
+          "bedding_summary"=>[
+            "2 double bed",
+            "4 single bed",
+            "1 double sofa bed"]}
+        )
+      }
+      it { expect(subject[:number_of_sofa_beds]).to eq 1 }
+    end
+  end
+
+  describe "#book" do
     let(:book_url) { stubbed_client.credentials[:url] + Waytostay::Book::ENDPOINT_BOOKING }
     let(:params) {{
       customer: {
