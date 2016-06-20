@@ -95,7 +95,9 @@ RSpec.describe API::Support::OAuth2Client do
     context "when successful" do
       before do
         client.oauth_client.connection = stub_call(:post,
-                                                   credentials[:url] + endpoint ) {
+                                                   credentials[:url] + endpoint,
+                                                   body: {message: "Hello World"}.to_json,
+                                                   strict:true) {
           [201, {'Content-Type'=>'application/json'},
            read_fixture("waytostay#{endpoint}.post.json")]
         }

@@ -24,7 +24,8 @@ module Waytostay
         property_reference: params[:property_id],
         arrival_date:       params[:check_in],
         departure_date:     params[:check_out],
-        number_of_adults:   params[:guests]
+        number_of_adults:   params[:guests],
+        payment_option:     Waytostay::Client::SUPPORTED_PAYMENT_METHOD
       }
       result = oauth2_client.post(ENDPOINT,
                                   body: post_body.to_json,
@@ -75,7 +76,7 @@ module Waytostay
         guests:      response.get("booking_details.number_of_adults"),
         total:       response.get("pricing.pricing_summary.gross_total"),
         currency:    response.get("pricing.currency"),
-        available:   true,
+        available:   true
       }
     end
 

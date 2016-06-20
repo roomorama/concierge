@@ -1,4 +1,6 @@
 require 'spec_helper'
+require_relative "../shared/book"
+require_relative "../shared/quote"
 
 RSpec.describe Waytostay::Client do
   include Support::Fixtures
@@ -17,7 +19,7 @@ RSpec.describe Waytostay::Client do
   subject(:stubbed_client) { described_class.new }
 
   describe"#book" do
-    let(:quote_url) { stubbed_client.credentials[:url] + Waytostay::Book::ENDPOINT_BOOKING }
+    let(:book_url) { stubbed_client.credentials[:url] + Waytostay::Book::ENDPOINT_BOOKING }
     let(:params) {{
       customer: {
         email:      "user@test.com",
@@ -39,7 +41,8 @@ RSpec.describe Waytostay::Client do
       property_reference: params[:property_id],
       arrival_date:       params[:check_in],
       departure_date:     params[:check_out],
-      number_of_adults:   params[:guests]
+      number_of_adults:   params[:guests],
+      payment_option:     "full_payment"
     }}
     let(:success_waytostay_params) { booking_post_body.merge(property_reference: "1") }
     let(:malformed_response_waytostay_params) { booking_post_body.merge(property_reference: "2") }
@@ -56,11 +59,11 @@ RSpec.describe Waytostay::Client do
 
     before do
       booking_responses.each do |stub|
-        stub_call(:post, quote_url, body: stub[:body], strict: true) {
+        stub_call(:post, book_url, body: stub[:body], strict: true) {
           [stub[:code], {}, stub[:response]]
         }
       end
-      stub_call(:post, quote_url, body: timeout_waytostay_params.to_json, strict: true) {
+      stub_call(:post, book_url, body: timeout_waytostay_params.to_json, strict: true) {
         raise Faraday::TimeoutError
       }
       # Need to assign the last stub call to be the oauth2 client connection.
@@ -99,20 +102,27 @@ RSpec.describe Waytostay::Client do
 
     let(:quote_url) { stubbed_client.credentials[:url] + Waytostay::Quote::ENDPOINT }
 
+    let(:quote_post_body) {{
+      property_reference: "1",
+      arrival_date: Date.today + 10,
+      departure_date: Date.today + 20,
+      number_of_adults: 2,
+      payment_option: "full_payment",
+    }}
     let(:success_waytostay_params){
-      { property_reference: 10, arrival_date: Date.today + 10, departure_date: Date.today + 20, number_of_adults: 2 }
-    }
-    let(:malformed_response_waytostay_params){
-      { property_reference: 11, arrival_date: Date.today + 10, departure_date: Date.today + 20, number_of_adults: 2 }
+      quote_post_body.merge(property_reference: "1")
     }
     let(:unavailable_waytostay_params){
-      { property_reference: 20, arrival_date: Date.today + 10, departure_date: Date.today + 20, number_of_adults: 2 }
+      quote_post_body.merge(property_reference: "2")
+    }
+    let(:malformed_response_waytostay_params){
+      quote_post_body.merge(property_reference: "3")
     }
     let(:cutoff_waytostay_params){
-      { property_reference: 30, arrival_date: Date.today + 1, departure_date: Date.today + 10, number_of_adults: 2 }
+      quote_post_body.merge(property_reference: "4")
     }
     let(:timeout_waytostay_params){
-      { property_reference: 30, arrival_date: Date.today + 10, departure_date: Date.today + 80, number_of_adults: 2 }
+      quote_post_body.merge(property_reference: "5")
     }
     let(:quote_responses){[
       { code: 200, body: success_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.json')},
@@ -137,20 +147,20 @@ RSpec.describe Waytostay::Client do
     it_behaves_like "supplier quote method" do
       let (:supplier_client) { stubbed_client }
       let(:success_params) {
-        { property_id: 10, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2 }
+        { property_id: "1", check_in: Date.today + 10, check_out: Date.today + 20, guests: 2 }
       }
       let(:unavailable_params) {
-        { property_id: 20, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2 }
+        success_params.merge(property_id: "2")
       }
       let(:error_params_list) {[
-        { property_id: 11, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2 }, # malformed response
-        { property_id: 30, check_in: Date.today + 1, check_out: Date.today + 10, guests: 2 }, # cutoff dates
-        { property_id: 30, check_in: Date.today + 10, check_out: Date.today + 80, guests: 2 } # timeout
+        success_params.merge(property_id: "3"),
+        success_params.merge(property_id: "4"),
+        success_params.merge(property_id: "5")
       ]}
     end
 
     it "should announce missing fields from response for malformed responses" do
-      quotation = stubbed_client.quote({ property_id: 11, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2 })
+      quotation = stubbed_client.quote({ property_id: "3", check_in: Date.today + 10, check_out: Date.today + 20, guests: 2 })
       expect(quotation).not_to be_successful
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"

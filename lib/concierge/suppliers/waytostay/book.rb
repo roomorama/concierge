@@ -32,7 +32,8 @@ module Waytostay
         property_reference: params[:property_id],
         arrival_date:       params[:check_in],
         departure_date:     params[:check_out],
-        number_of_adults:   params[:guests]
+        number_of_adults:   params[:guests],
+        payment_option:     Waytostay::Client::SUPPORTED_PAYMENT_METHOD
       }
       result = oauth2_client.post(ENDPOINT_BOOKING,
                                   body: post_body.to_json,
