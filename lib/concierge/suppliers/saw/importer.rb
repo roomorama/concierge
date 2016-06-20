@@ -23,5 +23,10 @@ module SAW
         result.success? ? result.value : []
       end.flatten
     end
+
+    def fetch_detailed_property(property_id)
+      property_fetcher = Commands::DetailedPropertyFetcher.new(credentials)
+      property_fetcher.call(property_id)
+    end
   end
 end
