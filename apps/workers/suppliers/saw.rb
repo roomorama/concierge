@@ -8,7 +8,19 @@ module Workers::Suppliers
     end
 
     def perform
-      countries = importer.fetch_countries
+      result = importer.fetch_countries
+
+      if result.success?
+        countries = result.value
+      else
+        # TODO! 
+      end
+      
+      result = importer.fetch_properties_by_countries(countries)
+
+      if result.success?
+        basic_properties = result.value
+      end
 
       properties = []
 
