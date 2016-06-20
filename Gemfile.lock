@@ -153,6 +153,7 @@ DEPENDENCIES
   hanami-model (~> 0.5)
   iso_country_codes (~> 0.7.4)
   oauth2
+  iso_country_codes (~> 0.7.4)
   patron (~> 0.5)
   pg
   rack-handlers (~> 0.7)
