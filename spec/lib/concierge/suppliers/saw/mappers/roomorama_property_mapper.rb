@@ -47,6 +47,16 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
     property = described_class.build(basic_property, detailed_property)
     expect(property.multi_unit?).to eq(basic_property.multi_unit?)
   end
+  
+  it "adds instant_booking flag" do
+    property = described_class.build(basic_property, detailed_property)
+    expect(property.instant_booking?).to eq(true)
+  end
+  
+  it "adds default_to_available flag" do
+    property = described_class.build(basic_property, detailed_property)
+    expect(property.default_to_available).to eq(true)
+  end
     
   it "adds to result property needed attributes from basic property" do
     property = described_class.build(basic_property, detailed_property)

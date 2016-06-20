@@ -19,6 +19,9 @@ module SAW
         property.neighborhood = detailed_property.neighborhood
         property.address = detailed_property.address
         property.amenities = detailed_property.amenities
+        
+        property.default_to_available = true
+        property.instant_booking!
         # not_supported_amenities: detailed_property.not_supported_amenities
         property
       end
