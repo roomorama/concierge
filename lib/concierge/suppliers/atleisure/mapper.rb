@@ -22,7 +22,7 @@ module AtLeisure
     private
 
     def build_room(property_data)
-      @meta_data          = property_data
+      @meta_data          = Concierge::SafeAccessHash.new(property_data)
       @property           = Roomorama::Property.new(property_data['HouseCode'])
       @property.amenities = []
     end
@@ -48,47 +48,8 @@ module AtLeisure
       property.lng          = info['WGS84Longitude']
     end
 
-    def set_amenities
-      basic         = meta_data['LanguagePackENV4']
-      layout_simple = basic['LayoutSimple']
-
-      amenities_map.each do |key, value|
-        property.amenities << key.to_s if Array(value).any? { |v| layout_simple.include?(v) }
-      end
-
-      costs_on_site = basic['CostsOnSite']
-
-      deposit = costs_on_site.find { |cost| cost['Description'] == 'Deposit' }
-      if deposit && match = deposit['Value'].match(/\d+/)
-        property.security_deposit_amount        = match[0].to_i
-        property.security_deposit_type          = 'cash'
-        property.security_deposit_currency_code = Price::CURRENCY
-      end
-
-      bed_linen = costs_on_site.find { |cost| cost['Description'] == 'Bed linen' && cost['Value'] == 'Included' }
-      towels    = costs_on_site.find { |cost| cost['Bath towels'] == 'Bed linen' && cost['Value'] == 'Included' }
-      property.amenities << 'bed_linen_and_towels' if bed_linen && towels
-
-      cleaning = costs_on_site.find { |cost| cost['Description'] == 'Cleaning' }
-      if cleaning
-        property.services_cleaning = true
-        if cleaning['Value'] =~ /Obliged|Mandatory/
-          property.services_cleaning_required = true
-          property.services_cleaning_rate     = cleaning['Value'].match(/\d+/)[0]
-        end
-
-        property.amenities << 'free_cleaning' if cleaning['Value'] =~ /Included/
-      end
-
-      property_items = meta_data['PropertiesV1'].detect { |data_hash| data_hash['TypeNumber'] == 50 }
-      if property_items
-        property.smoking_allowed = property_items['TypeContents'].include?(504)
-        property.amenities       += ['wifi', 'internet'] if property_items['TypeContents'].include?(510) #wifi
-      end
-    end
-
     def set_beds_count
-      beds_layout = layout_items.find { |item| item.code == code_for(:beds) }
+      beds_layout = layout_items.find { |item| item.number == code_for(:beds) }
       double_beds = 0
       single_beds = 0
       sofa_beds   = 0
@@ -114,9 +75,17 @@ module AtLeisure
       property.number_of_sofa_beds   = sofa_beds
     end
 
+    def set_amenities
+      amenities_mapper.prepare(property, meta_data)
+    end
+
+    def amenities_mapper
+      AmenitiesMapper.new(layout_items)
+    end
+
     def set_property_type
       properties_array = meta_data['PropertiesV1']
-      room_type_hash   = properties_array.detect { |data_hash| data_hash['TypeNumber'] == 10 }
+      room_type_hash   = properties_array.find { |data_hash| data_hash['TypeNumber'] == 10 }
       room_type_number = room_type_hash['TypeContents'].first
 
       case room_type_number
@@ -176,7 +145,7 @@ module AtLeisure
 
     def set_price_and_availabilities
       periods        = meta_data['AvailabilityPeriodV1'].map { |period| AvailabilityPeriod.new(period) }
-      actual_periods = periods.select(&:actual?)
+      actual_periods = periods.select(&:valid?)
 
       min_price = actual_periods.map(&:price).min
 
@@ -202,72 +171,7 @@ module AtLeisure
       }.fetch(item)
     end
 
-    def amenities_map
-      {
-        airconditioning:  'airconditioning',
-        cabletv:          'TV',
-        elevator:         'lift',
-        gym:              'fitness',
-        wheelchairaccess: 'single bed adapted for disabled',
-        internet:         'internet',
-        kitchen:          'kitchen',
-        parking:          'parking',
-        pool:             ['swimmingpool', 'Poolhouse'],
-        tv:               'TV',
-        laundry:          'dryer'
-      }
-    end
 
-    AvailabilityPeriod = Struct.new(:period) do
-
-      def check_in
-        Date.parse(period['ArrivalDate'])
-      end
-
-      def check_out
-        Date.parse(period['DepartureDate'])
-      end
-
-      def dates
-        (check_in..check_out).to_a
-      end
-
-      def length
-        check_out - check_in
-      end
-
-      def price
-        period['Price'].to_f / dates.size
-      end
-
-      def actual?
-        period['OnRequest'] == 'No' && check_in > Date.today
-      end
-    end
-
-    LayoutItem = Struct.new(:data) do
-
-      def code
-        data['Type']
-      end
-
-      def name
-        find_en_description(data)
-      end
-
-      def items
-        @items ||= data['Items'].each_with_object({}) do |item, hash|
-          hash[item['Number']] = find_en_description(item)
-        end
-      end
-
-      private
-
-      # retrieves english name of some reference parameter
-      def find_en_description(item)
-        item['Description'].find { |d| d['Language'] == 'EN' }['Description']
-      end
-    end
   end
 end
 
