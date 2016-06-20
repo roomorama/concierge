@@ -72,6 +72,18 @@ module SAW
         </request>
       }
     end
+
+    def propertysearch_request(country:, property_id: nil)
+      %{
+        <request>
+          #{build_username_and_password}
+          <countryid>#{country}</countryid>
+          <number_of_guests>-1</number_of_guests>
+          <flag_free_sale>Y</flag_free_sale>
+          #{property_id ? build_property_container(property_id) : nil }
+        </request>
+      }
+    end
     
     private
     def build_username_and_password
@@ -86,6 +98,14 @@ module SAW
 
       %{
         <accommodation_typeid>#{accommodation_type_id}</accommodation_typeid>
+      }
+    end
+
+    def build_property_container(property_id)
+      %{
+        <properties>
+          <propertyid>#{property_id}</propertyid>
+        </properties> 
       }
     end
   end
