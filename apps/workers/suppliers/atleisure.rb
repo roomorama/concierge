@@ -1,8 +1,9 @@
 module Workers::Suppliers
   class AtLeisure
+    SUPPLIER_NAME = 'AtLeisure'
     BATCH_SIZE = 100
 
-    attr_reader :synchronisation, :host, :failed
+    attr_reader :synchronisation, :host
 
     def initialize(host)
       @host            = host
@@ -15,7 +16,7 @@ module Workers::Suppliers
         grouped_actual_properties(result.value).each do |properties|
           fetch_data_and_process(properties)
         end
-        synchronisation.finish! unless failed
+        synchronisation.finish!
       else
         announce_error('sync', result)
       end
@@ -37,7 +38,7 @@ module Workers::Suppliers
           synchronisation.start(property['HouseCode']) { mapper.prepare(property) }
         end
       else
-        @failed = true
+        synchronisation.failed!
         announce_error('sync', result)
       end
     end
@@ -47,7 +48,7 @@ module Workers::Suppliers
     end
 
     def credentials
-      Concierge::Credentials.for('AtLeisure')
+      Concierge::Credentials.for(SUPPLIER_NAME)
     end
 
     def mapper
@@ -57,10 +58,10 @@ module Workers::Suppliers
     def announce_error(operation, result)
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
         operation:   operation,
-        supplier:    'AtLeisure',
+        supplier:    SUPPLIER_NAME,
         code:        result.error.code,
-        message:     'DEPRECATED',
         context:     Concierge.context.to_h,
+        message:     'DEPRECATED',
         happened_at: Time.now
       })
     end
