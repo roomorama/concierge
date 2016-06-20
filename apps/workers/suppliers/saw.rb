@@ -34,11 +34,6 @@ module Workers::Suppliers
             detailed_property: detailed_property
           )
 
-          roomorama_property = Roomorama::Property.new(property.id)
-          roomorama_property.title = property.title
-          roomorama_property.instant_booking = true
-          # TODO: other fields
-
           # sync images
           # sync units
           # sync availabilities
