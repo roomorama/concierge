@@ -16,19 +16,28 @@ module Workers::Suppliers
         # TODO! 
       end
       
-      result = importer.fetch_properties_by_countries(countries)
-
-      if result.success?
-        basic_properties = result.value
-      else
-        # TODO! 
-      end
-
-      properties = []
+      properties = importer.fetch_properties_by_countries(countries)
 
       properties.each do |property|
-        synchronisation.start(property["id"]) do
-          roomorama_property = Roomorama::Property.new(property["id"])
+        synchronisation.start(property.id) do
+
+          result = importer.fetch_detailed_property(property.id)
+
+          if result.success?
+            detailed_property = result.value
+          else
+            # TODO!
+          end
+          
+          roomorama_property = SAW::Mappers::RoomoramaProperty.build(
+            property: property,
+            detailed_property: detailed_property
+          )
+
+          roomorama_property = Roomorama::Property.new(property.id)
+          roomorama_property.title = property.title
+          roomorama_property.instant_booking = true
+          # TODO: other fields
 
           # sync images
           # sync units
