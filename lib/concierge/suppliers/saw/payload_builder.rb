@@ -64,6 +64,14 @@ module SAW
         </request>
       }
     end
+
+    def build_countries_request
+      %{
+        <request>
+          #{build_username_and_password}
+        </request>
+      }
+    end
     
     private
     def build_username_and_password
