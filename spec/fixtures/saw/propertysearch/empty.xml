@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<response>
+  <errors>
+    <error>
+      <code>1007</code>
+      <description>No properties are available for the given search parameters</description>
+    </error>
+  </errors>
+</response>
