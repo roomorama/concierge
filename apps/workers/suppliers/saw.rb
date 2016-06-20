@@ -19,9 +19,9 @@ module Workers::Suppliers
       properties = importer.fetch_properties_by_countries(countries)
 
       properties.each do |property|
-        synchronisation.start(property.id) do
+        synchronisation.start(property.internal_id) do
 
-          result = importer.fetch_detailed_property(property.id)
+          result = importer.fetch_detailed_property(property.internal_id)
 
           if result.success?
             detailed_property = result.value
@@ -30,8 +30,8 @@ module Workers::Suppliers
           end
           
           roomorama_property = SAW::Mappers::RoomoramaProperty.build(
-            property: property,
-            detailed_property: detailed_property
+            property,
+            detailed_property
           )
 
           # sync images
