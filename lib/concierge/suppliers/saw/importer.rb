@@ -17,9 +17,10 @@ module SAW
       properties_fetcher.call(country)
     end
 
-    def fetch_properties_by_countries(counties)
+    def fetch_properties_by_countries(countries)
       countries.map do |country| 
-        fetch_properties_by_country(country)
+        result = fetch_properties_by_country(country)
+        result.success? ? result.value : []
       end.flatten
     end
   end

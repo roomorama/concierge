@@ -20,6 +20,8 @@ module Workers::Suppliers
 
       if result.success?
         basic_properties = result.value
+      else
+        # TODO! 
       end
 
       properties = []
