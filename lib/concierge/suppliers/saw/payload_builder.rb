@@ -85,6 +85,15 @@ module SAW
       }
     end
     
+    def propertydetail_request(property_id)
+      %{
+        <request>
+          #{build_username_and_password}
+          <propertyid>#{property_id}</propertyid>
+        </request>
+      }
+    end
+
     private
     def build_username_and_password
       %{
