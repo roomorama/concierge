@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+  <property id="2893">
+    <name>Outrigger Laguna Phuket Resort &amp; Villas</name>
+    <image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39050</image_url>
+    <country>Thailand</country>
+    <location>Golf Course</location>
+    <city_region>Phuket</city_region>
+    <checkin_time>3:00PM</checkin_time>
+    <checkout_time>11:00AM</checkout_time>
+    <phone>111111111</phone>
+    <fax>2222222</fax>
+    <email>reservations@mansleyapartments.com</email>
+    <postalcode>83110</postalcode>
+    <rooms/>
+    <flag_breakfast_included>N</flag_breakfast_included>
+    <cancellation_message>A cancellation period of 25 days applies</cancellation_message>
+    <cancellation_days>25</cancellation_days>
+    <our_rating>
+      <our_rating_value>10</our_rating_value>
+      <our_rating_description>SUPERIOR PLUS</our_rating_description>
+    </our_rating>
+    <customer_rating/>
+    <property_description>Villas provide private homes with kitchen, dining and living areas on lower floor and bedrooms on the upper floor.  Pool villas feature lap pools and Thai sala pavilions.
+
+Suites provide contemporary single-level and dual-level suites adjacent to the main reception, swimming pool, Kids Club, and Panache restaurant. Suites do not include a washing machine in the apartment.  
+
+Partake of all that Laguna Phuket provides, superb beaches, exquisite spas, exceptional dining, and simply great golf.
+
+If staying the night of 31st December there is a compulsory NYE Gala Dinner at THB 5,500.00 per adult and THB 2,750.00 per child up to the age of 12.
+
+Extra beds can be added to each apartment at an additional cost.</property_description>
+    <accommodations>
+      <accommodation_type id="-1">
+        <accommodation_name>All</accommodation_name>
+      </accommodation_type>
+      <accommodation_type id="95">
+        <accommodation_name>1-Bedroom</accommodation_name>
+      </accommodation_type>
+      <accommodation_type id="96">
+        <accommodation_name>2 Bedroom - 1 Bathroom</accommodation_name>
+      </accommodation_type>
+      <accommodation_type id="99">
+        <accommodation_name>3 Bedroom - 2 Bathroom</accommodation_name>
+      </accommodation_type>
+      <accommodation_type id="103">
+        <accommodation_name>4 Bedroom - 3 Bathroom</accommodation_name>
+      </accommodation_type>
+    </accommodations>
+    <beddingconfigurations>
+      <property_accommodation id="10252">
+        <property_accommodation_name>1 Bedroom Suite</property_accommodation_name>
+        <bed_types>
+          <bed_type id="12934">
+            <bed_type_name>Double Bed</bed_type_name>
+          </bed_type>
+        </bed_types>
+      </property_accommodation>
+      <property_accommodation id="10253">
+        <property_accommodation_name>2 Bedroom Suite</property_accommodation_name>
+        <bed_types>
+          <bed_type id="12935">
+            <bed_type_name>Double &amp; Twin</bed_type_name>
+          </bed_type>
+        </bed_types>
+      </property_accommodation>
+      <property_accommodation id="10255">
+        <property_accommodation_name>2 Bedroom Villa</property_accommodation_name>
+        <bed_types>
+          <bed_type id="12936">
+            <bed_type_name>Double &amp; Twin</bed_type_name>
+          </bed_type>
+        </bed_types>
+      </property_accommodation>
+      <property_accommodation id="10254">
+        <property_accommodation_name>3 Bedroom Pool Suite</property_accommodation_name>
+        <bed_types>
+          <bed_type id="12937">
+            <bed_type_name>Double &amp; Double &amp; Twin</bed_type_name>
+          </bed_type>
+        </bed_types>
+      </property_accommodation>
+      <property_accommodation id="10256">
+        <property_accommodation_name>3 Bedroom Pool Villa</property_accommodation_name>
+        <bed_types>
+          <bed_type id="12938">
+            <bed_type_name>Double &amp; Double &amp; Twin</bed_type_name>
+          </bed_type>
+        </bed_types>
+      </property_accommodation>
+      <property_accommodation id="10257">
+        <property_accommodation_name>4 Bedroom Pool Villa</property_accommodation_name>
+        <bed_types>
+          <bed_type id="12939">
+            <bed_type_name>Double &amp; Double &amp; Double &amp; Twin</bed_type_name>
+          </bed_type>
+        </bed_types>
+      </property_accommodation>
+    </beddingconfigurations>
+    <property_accommodations>
+      <accommodation_type id="95">
+        <accommodation_name>1-Bedroom</accommodation_name>
+        <property_accommodation id="10252">
+          <property_accommodation_name>1 Bedroom Suite</property_accommodation_name>
+        </property_accommodation>
+      </accommodation_type>
+      <accommodation_type id="96">
+        <accommodation_name>2 Bedroom - 1 Bathroom</accommodation_name>
+        <property_accommodation id="10253">
+          <property_accommodation_name>2 Bedroom Suite</property_accommodation_name>
+        </property_accommodation>
+        <property_accommodation id="10255">
+          <property_accommodation_name>2 Bedroom Villa</property_accommodation_name>
+        </property_accommodation>
+      </accommodation_type>
+      <accommodation_type id="99">
+        <accommodation_name>3 Bedroom - 2 Bathroom</accommodation_name>
+        <property_accommodation id="10254">
+          <property_accommodation_name>3 Bedroom Pool Suite</property_accommodation_name>
+        </property_accommodation>
+        <property_accommodation id="10256">
+          <property_accommodation_name>3 Bedroom Pool Villa</property_accommodation_name>
+        </property_accommodation>
+      </accommodation_type>
+      <accommodation_type id="103">
+        <accommodation_name>4 Bedroom - 3 Bathroom</accommodation_name>
+        <property_accommodation id="10257">
+          <property_accommodation_name>4 Bedroom Pool Villa</property_accommodation_name>
+        </property_accommodation>
+      </accommodation_type>
+    </property_accommodations>
+    <propertyimportantpoints/>
+    <facility_services>
+      <facility_service>24 Hour Emergency Contact</facility_service>
+      <facility_service>24 Hour Reception/Concierge</facility_service>
+      <facility_service>Air-Conditioning/Cooling</facility_service>
+      <facility_service>Alarm Clock</facility_service>
+      <facility_service>Answer Phones</facility_service>
+      <facility_service>Baby Amenities</facility_service>
+      <facility_service>Babysitting (On Request)</facility_service>
+      <facility_service>Bar</facility_service>
+      <facility_service>Bathroom Welcome Pack</facility_service>
+      <facility_service>BBQ</facility_service>
+      <facility_service>Breakfast Room</facility_service>
+      <facility_service>Burners / Hobs</facility_service>
+      <facility_service>Chauffeur Service (Extra Cost)</facility_service>
+      <facility_service>Childrens' Playground</facility_service>
+      <facility_service>Coffee Maker</facility_service>
+      <facility_service>Coffee Shop Nearby</facility_service>
+      <facility_service>Conference Facilities</facility_service>
+      <facility_service>Deposit Box</facility_service>
+      <facility_service>Digital TV</facility_service>
+      <facility_service>Direct Dial Telephone</facility_service>
+      <facility_service>Dry Cleaning (Extra Cost)</facility_service>
+      <facility_service>DVD Player</facility_service>
+      <facility_service>Fitness Centre On-Site</facility_service>
+      <facility_service>Freeview TV</facility_service>
+      <facility_service>Fridge / Freezer</facility_service>
+      <facility_service>Garden</facility_service>
+      <facility_service>Hairdryer</facility_service>
+      <facility_service>Ipod Docking Station</facility_service>
+      <facility_service>Iron and Ironing Board</facility_service>
+      <facility_service>Kettle</facility_service>
+      <facility_service>Laundry Facilities On-Site</facility_service>
+      <facility_service>Lift</facility_service>
+      <facility_service>Maid Service Daily</facility_service>
+      <facility_service>No Smoking Apartments/Rooms</facility_service>
+      <facility_service>Oven </facility_service>
+      <facility_service>Parking On-Site</facility_service>
+      <facility_service>Restaurant Nearby</facility_service>
+      <facility_service>Restaurant On-Site</facility_service>
+      <facility_service>Room Safe</facility_service>
+      <facility_service>Room Service</facility_service>
+      <facility_service>Shuttle Services</facility_service>
+      <facility_service>Sports Facilities</facility_service>
+      <facility_service>Supermarket On-Site</facility_service>
+      <facility_service>Swimming Pool Outdoors</facility_service>
+      <facility_service>Tea and Coffee</facility_service>
+      <facility_service>Toaster</facility_service>
+      <facility_service>Washing Machine / Dryer</facility_service>
+      <facility_service>WIFI Free of Charge</facility_service>
+      <facility_service>WIFI Reception Area Free of Charge</facility_service>
+      <facility_service>Work Place</facility_service>
+    </facility_services>
+    <local_attractions>
+      <local_attraction>Laguna Phuket Golf Club</local_attraction>
+    </local_attractions>
+    <image_gallery>
+      <image>
+        <title>1 Bedroom Suite</title>
+        <thumbnail_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=38990</thumbnail_image_url>
+        <large_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=38992</large_image_url>
+      </image>
+      <image>
+        <title>1 Bedroom Suite</title>
+        <thumbnail_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=38995</thumbnail_image_url>
+        <large_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=38997</large_image_url>
+      </image>
+      <image>
+        <title>1 Bedroom Suite</title>
+        <thumbnail_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39000</thumbnail_image_url>
+        <large_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39002</large_image_url>
+      </image>
+      <image>
+        <title>1 Bedroom Suite</title>
+        <thumbnail_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39005</thumbnail_image_url>
+        <large_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39007</large_image_url>
+      </image>
+      <image>
+        <title>2 Bedroom Suite</title>
+        <thumbnail_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39010</thumbnail_image_url>
+        <large_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39012</large_image_url>
+      </image>
+      <image>
+        <title>2 Bedroom Suite</title>
+        <thumbnail_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39015</thumbnail_image_url>
+        <large_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39017</large_image_url>
+      </image>
+      <image>
+        <title>2 Bedroom Suite</title>
+        <thumbnail_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39020</thumbnail_image_url>
+        <large_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39022</large_image_url>
+      </image>
+      <image>
+        <title>3 Bedroom Pool Suite</title>
+        <thumbnail_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39025</thumbnail_image_url>
+        <large_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39027</large_image_url>
+      </image>
+      <image>
+        <title>3 Bedroom Pool Suite</title>
+        <thumbnail_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39030</thumbnail_image_url>
+        <large_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39032</large_image_url>
+      </image>
+      <image>
+        <title>3 Bedroom Pool Suite</title>
+        <thumbnail_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39035</thumbnail_image_url>
+        <large_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39037</large_image_url>
+      </image>
+      <image>
+        <title>3 Bedroom Pool Suite</title>
+        <thumbnail_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39045</thumbnail_image_url>
+        <large_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39047</large_image_url>
+      </image>
+      <image>
+        <title>3 Bedroom Pool Suite</title>
+        <thumbnail_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39050</thumbnail_image_url>
+        <large_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39052</large_image_url>
+      </image>
+      <image>
+        <title>Outrigger Laguna Phuket Resort &amp; Villas</title>
+        <thumbnail_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39055</thumbnail_image_url>
+        <large_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39057</large_image_url>
+      </image>
+      <image>
+        <title>Outrigger Laguna Phuket Resort &amp; Villas</title>
+        <thumbnail_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39060</thumbnail_image_url>
+        <large_image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39062</large_image_url>
+      </image>
+    </image_gallery>
+    <map_location>
+      <latitude>8.00382</latitude>
+      <longitude>98.30736</longitude>
+      <full_address>Address1 Address2 Phuket Thailand</full_address>
+    </map_location>
+  </property>
+</response>
+
