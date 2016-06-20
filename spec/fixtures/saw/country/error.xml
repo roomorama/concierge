@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<response>
+  <errors>
+    <error>
+      <code>6004</code>
+      <description>The valid username or password tag is not supplied</description>
+    </error>
+  </errors>
+</response>
