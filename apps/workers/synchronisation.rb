@@ -114,6 +114,11 @@ module Workers
       save_sync_process
     end
 
+    # prevents finishing synchronisation
+    def failed!
+      @failed = true
+    end
+
     private
 
     # when a new property is pushed for synchronisation, this class register

@@ -38,7 +38,7 @@ RSpec.describe Workers::Suppliers::AtLeisure do
     end
 
     it 'doesnt finalize synchronisation with external error' do
-      expect(subject.synchronisation).to_not receive(:finish!)
+      expect(Roomorama::Client::Operations).to_not receive(:disable)
       subject.perform
     end
   end
