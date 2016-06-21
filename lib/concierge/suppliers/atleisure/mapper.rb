@@ -14,17 +14,21 @@ module AtLeisure
       set_base_info
       set_beds_count
       set_amenities
+      set_deposit
+      set_cleaning_service
+      set_additional_info
+      set_property_type
       set_images
       set_price_and_availabilities
+
       Result.new(property)
     end
 
     private
 
     def build_room(property_data)
-      @meta_data          = Concierge::SafeAccessHash.new(property_data)
-      @property           = Roomorama::Property.new(property_data['HouseCode'])
-      @property.amenities = []
+      @meta_data = Concierge::SafeAccessHash.new(property_data)
+      @property  = Roomorama::Property.new(property_data['HouseCode'])
     end
 
     def set_base_info
@@ -76,16 +80,46 @@ module AtLeisure
     end
 
     def set_amenities
-      amenities_mapper.prepare(property, meta_data)
+      property.amenities = amenities_mapper.map(meta_data)
     end
 
     def amenities_mapper
-      AmenitiesMapper.new(layout_items)
+      AmenitiesMapper.new
+    end
+
+    def set_deposit
+      deposit = find_cost('Deposit')
+      return unless deposit
+
+      if deposit['Payment'] == 'MandatoryDepositOnSite'
+        property.security_deposit_amount        = deposit['Amount'].to_i
+        property.security_deposit_type          = 'cash'
+        property.security_deposit_currency_code = Price::CURRENCY
+      end
+    end
+
+    def set_cleaning_service
+      cleaning = find_cost('Cleaning')
+      return unless cleaning
+
+      property.services_cleaning          = cleaning['Payment'] != 'None'
+      property.services_cleaning_required = cleaning['Payment'] == 'Mandatory'
+      property.services_cleaning_rate     = cleaning['Amount']
+
+      property.amenities << 'free_cleaning' if cleaning['Payment'] == 'Inclusive'
+    end
+
+    def set_additional_info
+      property_items = meta_data['PropertiesV1'].detect { |data_hash| data_hash['TypeNumber'] == code_for(:main_items) }
+      if property_items
+        property.smoking_allowed = property_items['TypeContents'].include?(code_for(:smoking_allowed))
+        property.amenities       += ['wifi', 'internet'] if property_items['TypeContents'].include?(code_for(:wifi))
+      end
     end
 
     def set_property_type
       properties_array = meta_data['PropertiesV1']
-      room_type_hash   = properties_array.find { |data_hash| data_hash['TypeNumber'] == 10 }
+      room_type_hash   = properties_array.find { |data_hash| data_hash['TypeNumber'] == code_for(:property_type) }
       room_type_number = room_type_hash['TypeContents'].first
 
       case room_type_number
@@ -130,12 +164,13 @@ module AtLeisure
 
     def set_images
       images = meta_data['MediaV2'][0]['TypeContents']
+
       images.each do |image|
         url        = image['Versions'][0]['URL'] # biggest
         identifier = url.split('/').last # filename
 
         roomorama_image = Roomorama::Image.new(identifier).tap do |i|
-          i.url     = url
+          i.url     = ['http://', url].join
           i.caption = image['Tag']
         end
 
@@ -162,15 +197,23 @@ module AtLeisure
 
     def code_for(item)
       {
-        floors:     50,
-        rooms:      100,
-        beds:       200,
-        room_items: 400,
-        kitchen:    500,
-        washing:    600
+        property_type:   10,
+        main_items:      50,
+        beds:            200,
+        room_items:      400,
+        smoking_allowed: 504,
+        wifi:            510
       }.fetch(item)
     end
 
+    def find_cost(name)
+      cost = meta_data['CostsOnSiteV1'].find { |cost| cost_description(cost) == name }
+      cost['Items'].first if cost
+    end
+
+    def cost_description(cost)
+      cost['TypeDescriptions'].find { |d| d['Language'] == 'EN' }['Description']
+    end
 
   end
 end

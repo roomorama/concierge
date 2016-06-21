@@ -51,10 +51,9 @@ RSpec.describe AtLeisure::Importer do
   describe '#fetch_data' do
     let(:endpoint) { 'https://dataofhousesv1.jsonrpc-partner.net/cgi/lars/jsonrpc-partner/jsonrpc.htm' }
     let(:result) { subject.fetch_data([]) }
-    let(:fixture) { jsonrpc_fixture('atleisure/properties_data.json') }
+    let(:fixture) { jsonrpc_fixture('atleisure/property_data.json') }
 
     it_behaves_like 'handling errors'
-    it_behaves_like 'success response'
   end
 
   private
