@@ -30,8 +30,9 @@ module Waytostay
 
     # Always returns a +Result+ wrapped +Roomorama::Property+.
     # If an error happens in any step in the process of getting a response back from
-    # Waytostay, a generic error message is sent back to the caller, and the failure
-    # is logged.
+    # Waytostay, a generic error message is sent back to the caller.
+    # No failure is logged. The failure anouncement should be done by caller. This
+    # method expected to be only ever called by +Workers:Synchronisation
     def fetch_property(ref)
       result = oauth2_client.get(
         build_path(ENDPOINT, property_reference: ref),
@@ -57,13 +58,10 @@ module Waytostay
           Result.new(property)
         else
           augment_missing_fields(missing_keys)
-          new_error = Result.error(:unrecognised_response)
-          announce_error("fetch", new_error)
-          new_error
+          Result.error(:unrecognised_response)
         end
 
       else
-        announce_error("fetch", result)
         result
       end
     end
