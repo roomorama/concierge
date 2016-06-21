@@ -39,27 +39,27 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
   end
     
   it "returns roomorama property entity" do
-    property = described_class.build(basic_property, detailed_property)
+    property = described_class.build(basic_property, detailed_property, [])
     expect(property).to be_a(Roomorama::Property)
   end
     
   it "adds multi-unit flag" do
-    property = described_class.build(basic_property, detailed_property)
+    property = described_class.build(basic_property, detailed_property, [])
     expect(property.multi_unit?).to eq(basic_property.multi_unit?)
   end
   
   it "adds instant_booking flag" do
-    property = described_class.build(basic_property, detailed_property)
+    property = described_class.build(basic_property, detailed_property, [])
     expect(property.instant_booking?).to eq(true)
   end
   
   it "adds default_to_available flag" do
-    property = described_class.build(basic_property, detailed_property)
+    property = described_class.build(basic_property, detailed_property, [])
     expect(property.default_to_available).to eq(true)
   end
     
   it "adds to result property needed attributes from basic property" do
-    property = described_class.build(basic_property, detailed_property)
+    property = described_class.build(basic_property, detailed_property, [])
 
     attributes = %i(
       type
@@ -81,7 +81,7 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
   end
     
   it "adds to result property needed attributes from detailed property" do
-    property = described_class.build(basic_property, detailed_property)
+    property = described_class.build(basic_property, detailed_property, [])
 
     attributes = %i(
       description
@@ -95,6 +95,34 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
 
     attributes.each do |attr|
       expect(property.send(attr)).to eq(detailed_property.send(attr))
+    end
+  end
+
+  context "while availabilities mapping" do
+    let(:availabilities) do
+      {
+        "2016-05-22" => true,
+        "2016-05-23" => true,
+        "2016-05-24" => false,
+        "2016-05-25" => true,
+      }
+    end
+
+    it "keeps calendar empty if there was no availabilities given" do
+      property = described_class.build(basic_property, detailed_property, [])
+      expect(property.calendar).to eq({})
+    end
+
+    it "adds calendar entries if there was availabilities provided" do
+      property = described_class.build(
+        basic_property,
+        detailed_property,
+        availabilities
+      )
+
+      expect(property.calendar).not_to eq({})
+      expect(property.calendar.size).to eq(availabilities.size)
+      expect(property.calendar).to eq(availabilities)
     end
   end
 end

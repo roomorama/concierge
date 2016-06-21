@@ -1,7 +1,7 @@
 module SAW
   module Mappers
     class RoomoramaProperty
-      def self.build(basic_property, detailed_property)
+      def self.build(basic_property, detailed_property, availabilities)
         property = Roomorama::Property.new(basic_property.internal_id)
         property.type = basic_property.type
         property.title = basic_property.title
@@ -22,8 +22,17 @@ module SAW
         
         property.default_to_available = true
         property.instant_booking!
+
+        set_availabilities!(property, availabilities)
         # not_supported_amenities: detailed_property.not_supported_amenities
         property
+      end
+
+      private
+      def self.set_availabilities!(property, availabilities)
+        availabilities.each do |date, status|
+          property.update_calendar(date => status)
+        end
       end
     end
   end
