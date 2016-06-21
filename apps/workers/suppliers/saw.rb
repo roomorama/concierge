@@ -29,15 +29,17 @@ module Workers::Suppliers
             # TODO!
           end
           
+          availability_calendar = SAW::Mappers::AvailabilityCalendar.build
+
           roomorama_property = SAW::Mappers::RoomoramaProperty.build(
             property,
-            detailed_property
+            detailed_property,
+            availability_calendar
           )
 
           # sync images
           # sync units
-          # sync availabilities
-
+          
           Result.new(roomorama_property)
         end
       end
