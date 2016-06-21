@@ -36,7 +36,7 @@ RSpec.describe Waytostay::Client do
       )
       room_without_images = expected_room_load.result.to_h
       room_without_images[:images] = []
-      expect(subject.to_h).to match room_without_images
+      expect(subject.result.to_h).to match room_without_images
     end
   end
 

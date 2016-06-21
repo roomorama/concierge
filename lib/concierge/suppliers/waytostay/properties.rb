@@ -28,7 +28,7 @@ module Waytostay
       [ "facilities_amenities.overview", "facilities_amenities.rooms", "payment.fees",
       "general.permissions", "services"]
 
-    # Always returns a +Roomorama::Property+.
+    # Always returns a +Result+ wrapped +Roomorama::Property+.
     # If an error happens in any step in the process of getting a response back from
     # Waytostay, a generic error message is sent back to the caller, and the failure
     # is logged.
@@ -50,20 +50,21 @@ module Waytostay
 
         missing_keys = response.missing_keys_from(REQUIRED_RESPONSE_KEYS)
         if missing_keys.empty?
-          Roomorama::Property.new(response.get("reference")).tap do |room|
-            property_attributes_from(response).each do |key, value|
-              room[key] = value if value
-            end
+          property = Roomorama::Property.new(response.get("reference"))
+          property_attributes_from(response).each do |key, value|
+            property[key] = value if value
           end
+          Result.new(property)
         else
           augment_missing_fields(missing_keys)
-          announce_error("fetch", Result.error(:unrecognised_response))
-          nil
+          new_error = Result.error(:unrecognised_response)
+          announce_error("fetch", new_error)
+          new_error
         end
 
       else
         announce_error("fetch", result)
-        nil
+        result
       end
     end
 
