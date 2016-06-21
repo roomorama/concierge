@@ -24,6 +24,7 @@ module SAW
         property.instant_booking!
 
         set_availabilities!(property, availabilities)
+        set_images!(property, detailed_property.images)
         # not_supported_amenities: detailed_property.not_supported_amenities
         property
       end
@@ -33,6 +34,10 @@ module SAW
         availabilities.each do |date, status|
           property.update_calendar(date => status)
         end
+      end
+
+      def self.set_images!(property, images)
+        images.each { |image| property.add_image(image) }
       end
     end
   end
