@@ -25,4 +25,5 @@ group :test do
   gem 'rspec', '~> 3.4.0'
   gem 'database_cleaner', '~> 1.5'
   gem 'byebug'
+  gem 'timecop', '~> 0.7'
 end
