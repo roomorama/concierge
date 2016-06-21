@@ -3,7 +3,9 @@ require 'spec_helper'
 RSpec.describe AtLeisure::Mapper do
   include Support::Fixtures
 
-  subject { described_class.new }
+  let(:layout_items) { JSON.parse(read_fixture('atleisure/layout_items.json')) }
+
+  subject { described_class.new(layout_items: layout_items) }
 
   describe '#prepare' do
     let(:property_data) { JSON.parse(read_fixture('atleisure/property_data.json')) }
