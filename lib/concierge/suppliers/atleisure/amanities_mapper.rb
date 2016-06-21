@@ -4,10 +4,10 @@ module AtLeisure
     def map(meta_data)
       amenities     = []
       basic         = meta_data['LanguagePackENV4']
-      layout_simple = basic['LayoutSimple']
+      layout_simple = basic['LayoutSimple'].downcase
 
       amenities_map.each do |key, value|
-        amenities << key.to_s if Array(value).any? { |v| layout_simple.downcase.include?(v) }
+        amenities << value if layout_simple.include?(key)
       end
 
       costs_on_site = basic['CostsOnSite']
@@ -24,19 +24,21 @@ module AtLeisure
 
     def amenities_map
       {
-        airconditioning:  'airconditioning',
-        cabletv:          'cable',
-        elevator:         'lift',
-        gym:              'fitness',
-        wheelchairaccess: 'single bed adapted for disabled',
-        internet:         'internet',
-        kitchen:          'kitchen',
-        balcony:          'balcony',
-        outdoor_space:    ['patio', 'garden'],
-        parking:          'parking',
-        pool:             ['swimming pool', 'poolhouse'],
-        tv:               'tv',
-        laundry:          'dryer'
+        'airconditioning'                 => 'airconditioning',
+        'cable'                           => 'cabletv',
+        'lift'                            => 'elevator',
+        'fitness'                         => 'gym',
+        'single bed adapted for disabled' => 'wheelchairaccess',
+        'internet'                        => 'internet',
+        'kitchen'                         => 'kitchen',
+        'balcony'                         => 'balcony',
+        'garden'                          => 'outdoor_space',
+        'patio'                           => 'outdoor_space',
+        'parking'                         => 'parking',
+        'poolhouse'                       => 'pool',
+        'swimming pool'                   => 'pool',
+        'tv'                              => 'tv',
+        'dryer'                           => 'laundry'
       }
     end
   end
