@@ -3,7 +3,7 @@ module SAW
     class DetailedProperty
       ALLOWED_FIELDS = [
         :internal_id, :type, :title, :description, :lat, :lon, :city,
-        :neighborhood, :address, :country, :amenities, :multi_unit,
+        :neighborhood, :address, :country, :amenities, :multi_unit, :images,
         :not_supported_amenities
       ]
 
@@ -11,7 +11,7 @@ module SAW
         # Returns property with correct mapping for Roomorama API
         # It does not initantiate new hash object every time, it applies
         # modifications for a given hash (to save the time)
-        def build(hash)
+        def build(hash, image_url_rewrite: false)
           attrs = hash.dup
 
           prepare_internal_id!(attrs)
@@ -19,6 +19,7 @@ module SAW
           prepare_title!(attrs)
           prepare_description!(attrs)
           prepare_address_information!(attrs)
+          prepare_images!(attrs, image_url_rewrite)
           prepare_supported_amenities!(attrs)
           prepare_not_supported_amenities!(attrs)
           add_multi_unit_flag!(attrs)
@@ -56,6 +57,13 @@ module SAW
           hash[:country]      = hash["country"]
           hash[:city]         = hash["city_region"]
           hash[:neighborhood] = hash["location"]
+        end
+
+        def prepare_images!(hash, image_url_rewrite)
+          hash[:images] = Mappers::RoomoramaImageSet.build(
+            hash,
+            image_url_rewrite
+          ) 
         end
 
         def prepare_supported_amenities!(hash)
