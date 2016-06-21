@@ -2,6 +2,12 @@ require "spec_helper"
 require "pry"
 
 RSpec.describe SAW::Mappers::RoomoramaProperty do
+  let(:property_images) do
+    [
+      Roomorama::Image.new("some-id")
+    ]
+  end
+
   let(:basic_property) do
     SAW::Entities::BasicProperty.new(
       internal_id: 1234,
@@ -34,6 +40,7 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
       address: 'Address',
       country: 'Thailand',
       amenities: ['wifi', 'breakfast'],
+      images: property_images,
       not_supported_amenities: ['foo', 'bar']
     )
   end
@@ -123,6 +130,30 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
       expect(property.calendar).not_to eq({})
       expect(property.calendar.size).to eq(availabilities.size)
       expect(property.calendar).to eq(availabilities)
+    end
+    
+    it "keeps images empty if there was no images given" do
+      detailed_property.images = []
+
+      property = described_class.build(
+        basic_property,
+        detailed_property,
+        availabilities
+      )
+
+      expect(property.images).to eq([])
+    end
+
+    it "adds images if there was images provided" do
+      property = described_class.build(
+        basic_property,
+        detailed_property,
+        availabilities
+      )
+
+      expect(property.images).not_to eq([])
+      expect(property.images.size).to eq(detailed_property.images.size)
+      expect(property.images).to eq(detailed_property.images)
     end
   end
 end

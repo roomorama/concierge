@@ -23,7 +23,14 @@ module SAW
       def build_property(result_hash)
         property_hash = result_hash["response"]["property"]
       
-        SAW::Mappers::DetailedProperty.build(property_hash)
+        SAW::Mappers::DetailedProperty.build(
+          property_hash,
+          image_url_rewrite: require_image_url_rewrite?
+        )
+      end
+
+      def require_image_url_rewrite?
+        credentials.url.start_with?('http://staging')
       end
 
       def to_array(something)
