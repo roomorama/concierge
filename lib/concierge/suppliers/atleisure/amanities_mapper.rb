@@ -34,7 +34,7 @@ module AtLeisure
         balcony:          'balcony',
         outdoor_space:    ['patio', 'garden'],
         parking:          'parking',
-        pool:             ['swimmingpool', 'poolhouse'],
+        pool:             ['swimming pool', 'poolhouse'],
         tv:               'tv',
         laundry:          'dryer'
       }
