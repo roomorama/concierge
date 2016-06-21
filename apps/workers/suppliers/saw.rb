@@ -37,7 +37,6 @@ module Workers::Suppliers
             availability_calendar
           )
 
-          # sync images
           # sync units
           
           Result.new(roomorama_property)
