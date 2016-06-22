@@ -31,9 +31,7 @@ module AtLeisure
     end
 
     def valid_payload?
-      return true if PayloadValidation.new(payload).valid?
-      augment_context
-      false
+      PayloadValidation.new(payload).valid?
     end
 
     def instant_bookable?
@@ -51,16 +49,6 @@ module AtLeisure
     def find_en(item)
       item['TypeDescriptions'].find { |desc| desc['Language'] == 'EN' }['Description']
     end
-
-    def augment_context
-      missing_basic_data = Concierge::Context::MissingBasicData.new(
-        error_message: 'invalid payload',
-        attributes:    payload
-      )
-
-      Concierge.context.augment(missing_basic_data)
-    end
-
   end
 end
 

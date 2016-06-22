@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe AtLeisure::PropertyValidation do
   include Support::Fixtures
 
-  describe '#valid' do
+  describe '#valid?' do
 
     %w(on_request_property property_with_mandatory_cost not_found).each do |failed_data|
       it "fails with #{failed_data}" do
