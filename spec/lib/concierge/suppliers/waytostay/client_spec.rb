@@ -38,7 +38,7 @@ RSpec.describe Waytostay::Client do
     end
   end
 
-  describe "fetch_property" do
+  describe "get_property" do
     let(:property_id) { "015868" }
     let(:property_url) { stubbed_client.credentials[:url] + "/properties/#{property_id}" }
     before do
@@ -47,7 +47,7 @@ RSpec.describe Waytostay::Client do
       }
     end
 
-    subject { stubbed_client.fetch_property(property_id) }
+    subject { stubbed_client.get_property(property_id) }
     it "should return a Roomorama::Property" do
       expected_room_load = Roomorama::Property.load(
         Concierge::SafeAccessHash.new(

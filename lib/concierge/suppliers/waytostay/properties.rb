@@ -33,7 +33,7 @@ module Waytostay
     # Waytostay, a generic error message is sent back to the caller.
     # No failure is logged. The failure anouncement should be done by caller. This
     # method expected to be only ever called by +Workers:Synchronisation
-    def fetch_property(ref)
+    def get_property(ref)
       result = oauth2_client.get(
         build_path(ENDPOINT, property_reference: ref),
         headers: headers
