@@ -72,12 +72,9 @@ module SAW
     end
 
     def error_result(hash)
-      error = hash.fetch("response")
-                  .fetch("errors")
-                  .fetch("error")
-
-      code = error.fetch("code")
-      data = error.fetch("description")
+      error = hash.get("response.errors.error")
+      code = error.get("code")
+      data = error.get("description")
 
       Result.error(code, data)
     end
