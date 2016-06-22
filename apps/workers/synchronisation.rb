@@ -27,14 +27,18 @@ module Workers
   #   sync.finish! # => non-processed properties are deleted at the end of the process.
   class Synchronisation
 
-    attr_reader :host, :router, :processed, :failed
+    PropertyCounters = Struct.new(:created, :updated, :deleted)
+
+    attr_reader :host, :router, :sync_record, :counters, :processed, :failed
 
     # host - an instance of +Host+.
     def initialize(host)
-      @host      = host
-      @router    = Workers::Router.new(host)
-      @processed = []
-      @failed    = false
+      @host        = host
+      @router      = Workers::Router.new(host)
+      @sync_record = create_sync_record(host)
+      @counters    = PropertyCounters.new(0, 0, 0)
+      @processed   = []
+      @failed      = false
     end
 
     # Indicates that the property with the given +identifier+ is being synchronised.
@@ -83,14 +87,13 @@ module Workers
     # on Roomorama (rationale: if a supplier faces an intermittent issue during
     # the synchronisation process, we do not want to disable all properties
     # as a consequence of that.)
+    #
+    # This also persists an entry on the +sync_processes+, registering the completion
+    # of the synchronisation process, with the number of properties created/updated/
+    # deleted, collected during the process.
     def finish!
-      return if failed
-
-      purge = all_identifiers - processed
-
-      unless purge.empty?
-        run_operation(disable_op(purge))
-      end
+      purge_properties
+      save_sync_process
     end
 
     private
@@ -107,11 +110,13 @@ module Workers
       router.dispatch(property).tap do |operation|
         if operation
           run_operation(operation, property)
+          update_counters(operation)
         end
       end
     end
 
     def failed!
+      sync_record.successful = false
       @failed = true
     end
 
@@ -134,6 +139,28 @@ module Workers
       missing_data(err.message, property.to_h)
       announce_failure(Result.error(:missing_data))
       false
+    end
+
+    def purge_properties
+      return if failed
+
+      purge = all_identifiers - processed
+
+      unless purge.empty?
+        run_operation(disable_op(purge))
+        counters.deleted = purge.size
+      end
+    end
+
+    def save_sync_process
+      database = Concierge::OptionalDatabaseAccess.new(SyncProcessRepository)
+
+      sync_record.properties_created = counters.created
+      sync_record.properties_updated = counters.updated
+      sync_record.properties_deleted = counters.deleted
+      sync_record.finished_at        = Time.now
+
+      database.create(sync_record)
     end
 
     def run_operation(operation, *args)
@@ -167,6 +194,23 @@ module Workers
 
     def disable_op(identifiers)
       Roomorama::Client::Operations.disable(identifiers)
+    end
+
+    def update_counters(operation)
+      case operation
+      when Roomorama::Client::Operations::Publish
+        counters.created += 1
+      when Roomorama::Client::Operations::Diff
+        counters.updated += 1
+      end
+    end
+
+    def create_sync_record(host)
+      SyncProcess.new(
+        host_id:    host.id,
+        started_at: Time.now,
+        successful: true
+      )
     end
 
   end

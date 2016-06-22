@@ -202,5 +202,70 @@ RSpec.describe Workers::Synchronisation do
         ["sync_process", "network_request", "network_response", "network_request", "network_response"]
       )
     end
+
+    it "creates a sync_process record when there is an error with the synchronisation" do
+      subject.start("prop1") { Result.new(roomorama_property) }
+      subject.start("prop2") { Result.error(:http_status_500) }
+      subject.start("prop3") {
+        # change the identifier so that it is recognised as a different property -
+        # therefore, two properties should be created.
+        roomorama_property.identifier = "prop3"
+        Result.new(roomorama_property)
+      }
+
+      expect {
+        subject.finish!
+      }.to change { SyncProcessRepository.count }.by(1)
+
+      sync = SyncProcessRepository.last
+      expect(sync).to be_a SyncProcess
+      expect(sync.host_id).to eq host.id
+      expect(sync.successful).to eq false
+      expect(sync.started_at).not_to be_nil
+      expect(sync.finished_at).not_to be_nil
+      expect(sync.properties_created).to eq 2
+      expect(sync.properties_updated).to eq 0
+      expect(sync.properties_deleted).to eq 0
+    end
+
+    it "registers updates and deletions when successful" do
+      stub_call(:delete, "https://api.roomorama.com/v1.0/host/disable")    { [200, {}, [""]] }
+
+      create_property(host_id: host.id, identifier: "prop1", data: roomorama_property.to_h)
+      create_property(host_id: host.id, identifier: "prop2", data: roomorama_property.to_h.merge!(identifier: "prop2"))
+      create_property(host_id: host.id, identifier: "prop3", data: roomorama_property.to_h.merge!(identifier: "prop3"))
+
+      # no changes
+      subject.start("prop1") { Result.new(roomorama_property) }
+
+      # update
+      subject.start("prop2") {
+        roomorama_property.identifier = "prop2"
+        roomorama_property.title = "Changed Title"
+        Result.new(roomorama_property)
+      }
+
+      # create
+      subject.start("prop4") {
+        roomorama_property.identifier = "prop4"
+        Result.new(roomorama_property)
+      }
+
+      # prop3 is not included - should be deleted
+      #
+      expect {
+        subject.finish!
+      }.to change { SyncProcessRepository.count }.by(1)
+
+      sync = SyncProcessRepository.last
+      expect(sync).to            be_a SyncProcess
+      expect(sync.host_id).to    eq   host.id
+      expect(sync.successful).to eq   true
+      expect(sync.started_at).not_to  be_nil
+      expect(sync.finished_at).not_to be_nil
+      expect(sync.properties_created).to eq 1
+      expect(sync.properties_updated).to eq 1
+      expect(sync.properties_deleted).to eq 1
+    end
   end
 end
