@@ -29,7 +29,7 @@ module Workers
 
     PropertyCounters = Struct.new(:created, :updated, :deleted)
 
-    attr_reader :host, :router, :sync_record, :counters, :processed, :failed
+    attr_reader :host, :router, :sync_record, :counters, :processed, :purge
 
     # host - an instance of +Host+.
     def initialize(host)
@@ -38,7 +38,7 @@ module Workers
       @sync_record = create_sync_record(host)
       @counters    = PropertyCounters.new(0, 0, 0)
       @processed   = []
-      @failed      = false
+      @purge       = true
     end
 
     # Indicates that the property with the given +identifier+ is being synchronised.
@@ -75,6 +75,24 @@ module Workers
         announce_failure(result)
         false
       end
+    end
+
+    # indicates that the synchronisation process failed. As a consequence:
+    #
+    # * no purging is done when +finish!+ is called.
+    # * the corresponding +sync_process+ record will indicate that this process
+    #   failed
+    def failed!
+      sync_record.successful = false
+      skip_purge!
+    end
+
+    # indicates that purging should not be performed when +finish!+ is called.
+    # Useful for synchronisation process that are customised and where the
+    # cleanup logic does not fit the flow expected by this class. Purging is
+    # then needs to be implemented separately by the supplier implementation.
+    def skip_purge!
+      @purge = false
     end
 
     # finishes the synchronisation process. This method should only be called
@@ -115,11 +133,6 @@ module Workers
       end
     end
 
-    def failed!
-      sync_record.successful = false
-      @failed = true
-    end
-
     def initialize_context(identifier)
       Concierge.context = Concierge::Context.new(type: "batch")
 
@@ -142,7 +155,7 @@ module Workers
     end
 
     def purge_properties
-      return if failed
+      return unless purge
 
       purge = all_identifiers - processed
 

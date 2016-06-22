@@ -122,20 +122,36 @@ RSpec.describe Workers::Synchronisation do
       stub_call(:put, "https://api.roomorama.com/v1.0/host/apply")    { [202, {}, [""]] }
     end
 
-    it "does nothing if all known properties were processed" do
+    it "does not purge if all known properties were processed" do
       subject.start("prop1") { Result.new(roomorama_property) }
       expect(subject).not_to receive(:run_operation)
 
       subject.finish!
     end
 
-    it "does nothing if the synchronisation fails halfway" do
+    it "does not purge if the synchronisation fails halfway" do
       subject.start("prop1") { Result.new(roomorama_property) }
       subject.start("prop2") { Result.error(:http_status_500) }
       subject.start("prop3") { Result.new(roomorama_property) }
 
       expect(subject).not_to receive(:run_operation)
       subject.finish!
+    end
+
+    it "does not purge if skip_purge! is invoked" do
+      create_property(host_id: host.id, identifier: "prop1", data: roomorama_property.to_h)
+      create_property(host_id: host.id, identifier: "prop2", data: roomorama_property.to_h.merge!(identifier: "prop2"))
+      create_property(host_id: host.id, identifier: "prop3", data: roomorama_property.to_h.merge!(identifier: "prop3"))
+
+      subject.skip_purge!
+      subject.start("prop1") { Result.new(roomorama_property) }
+
+      # properties +prop2+ and +prop3+ should be deleted if purging took place
+      prop2 = PropertyRepository.from_host(host).identified_by("prop2").first
+      expect(prop2).to be_a Property
+
+      prop3 = PropertyRepository.from_host(host).identified_by("prop3").first
+      expect(prop2).to be_a Property
     end
 
     it "enqueues a disable operation with non-processed identifiers" do
