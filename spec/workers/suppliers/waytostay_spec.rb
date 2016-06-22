@@ -17,7 +17,7 @@ RSpec.describe Workers::Suppliers::Waytostay do
   }}
   before do
     allow(subject.remote).to receive(:get_changes_since).and_return(changes)
-    # properties 001 and 002 is stubbed for remote calls,
+    # properties 001 and 002 is stubbed for remote fetches,
     # 003, 004 and 005 stubbed for concierge database
     allow(subject.remote).to receive(:get_property) do |ref|
       expect(["001", "002"]).to include ref

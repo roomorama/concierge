@@ -1,6 +1,6 @@
 module Waytostay
   #
-  # Handles all fetching from waytostay
+  # Handles the fetching of properties from waytostay
   #
   module Properties
 

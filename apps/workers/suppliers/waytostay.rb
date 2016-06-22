@@ -61,6 +61,8 @@ module Workers::Suppliers
 
     def last_synced_timestamp
       # TODO: Implement this. Pending higher level last_sync_time implementions
+      # TODO: Only get the last successful sync timestamp. Otherwise some changes
+      # for the failed properties would be missing
       nil
     end
 
