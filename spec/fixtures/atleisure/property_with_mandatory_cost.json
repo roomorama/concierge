@@ -801,53 +801,6 @@
       "NumberOfItems": 1
     }
   ],
-  "DistancesV2": [
-    {
-      "To": "Centre",
-      "Description": "",
-      "DistanceInKm": 11.0
-    },
-    {
-      "To": "Centre",
-      "Description": "Dorp",
-      "DistanceInKm": 1.0
-    },
-    {
-      "To": "Centre",
-      "Description": "Dorp4",
-      "DistanceInKm": 0.7
-    },
-    {
-      "To": "Forest",
-      "Description": "",
-      "DistanceInKm": 2.0
-    },
-    {
-      "To": "Forest",
-      "Description": "nice forest for walking",
-      "DistanceInKm": 1.4
-    },
-    {
-      "To": "Sea",
-      "Description": "Noordzee",
-      "DistanceInKm": 4.0
-    },
-    {
-      "To": "Lake",
-      "Description": "",
-      "DistanceInKm": 1.0
-    },
-    {
-      "To": "Foods",
-      "Description": "winkel",
-      "DistanceInKm": 6.0
-    },
-    {
-      "To": "GoOut",
-      "Description": "",
-      "DistanceInKm": 0.0
-    }
-  ],
   "AvailabilityPeriodV1": [
     {
       "Quantity": 1,

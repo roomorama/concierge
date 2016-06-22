@@ -2,10 +2,12 @@ require 'spec_helper'
 
 RSpec.describe Workers::Suppliers::AtLeisure do
   include Support::Fixtures
+  include Support::Factories
 
+  let(:supplier) { create_supplier }
+  let(:host) { create_host(supplier_id: supplier.id) }
   let(:properties_list) { JSON.parse(read_fixture('atleisure/properties_list.json')) }
   let(:success_result) { Result.new(properties_list) }
-  let(:host) { Host.new(identifier: 'superman', username: 'Clark') }
 
   subject { described_class.new(host) }
 
@@ -43,11 +45,36 @@ RSpec.describe Workers::Suppliers::AtLeisure do
     end
   end
 
-  it 'finalizes synchronisation if success' do
-    allow_any_instance_of(AtLeisure::Importer).to receive(:fetch_properties) { success_result }
-    allow(subject).to receive(:fetch_data_and_process) { [] }
+  context 'success' do
+    let(:layout_items) { JSON.parse(read_fixture('atleisure/layout_items.json')) }
+    let(:property_data) { JSON.parse(read_fixture('atleisure/property_data.json')) }
+    let(:invalid_property_data) { JSON.parse(read_fixture('atleisure/property_with_mandatory_cost.json')) }
 
-    expect(subject.synchronisation).to receive(:finish!)
-    subject.perform
+    before do
+      allow_any_instance_of(AtLeisure::Importer).to receive(:fetch_properties) { success_result }
+      allow_any_instance_of(AtLeisure::Importer).to receive(:fetch_layout_items) { Result.new(layout_items) }
+      allow_any_instance_of(AtLeisure::Importer).to receive(:fetch_data) { Result.new([property_data, invalid_property_data]) }
+    end
+
+    it 'finalizes synchronisation' do
+      expect(subject.synchronisation).to receive(:finish!)
+      subject.perform
+    end
+
+    it 'doesnt create property with unsuccessful publishing' do
+      allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.error('fail') }
+      expect {
+        subject.perform
+      }.to_not change { PropertyRepository.count }
+    end
+
+    it 'creates a property in database' do
+      allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
+      expect {
+        subject.perform
+      }.to change { PropertyRepository.count }.by(1)
+    end
+
   end
+
 end
