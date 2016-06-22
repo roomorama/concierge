@@ -13,7 +13,7 @@ module Workers::Suppliers
       if result.success?
         countries = result.value
       else
-        # TODO! 
+        announce_error('sync', result)
       end
       
       properties = importer.fetch_properties_by_countries(countries)
@@ -26,7 +26,7 @@ module Workers::Suppliers
           if result.success?
             detailed_property = result.value
           else
-            # TODO!
+            announce_error('sync', result)
           end
           
           availability_calendar = SAW::Mappers::AvailabilityCalendar.build
@@ -53,8 +53,17 @@ module Workers::Suppliers
     def credentials
       @credentials ||= Concierge::Credentials.for("SAW")
     end
-  end
 
+    def announce_error(operation, result)
+      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
+        operation:   operation,
+        supplier:    SUPPLIER_NAME,
+        code:        result.error.code,
+        context:     Concierge.context.to_h,
+        happened_at: Time.now
+      })
+    end
+  end
 end
 
 Concierge::Announcer.on("sync.SAW") do |host|
