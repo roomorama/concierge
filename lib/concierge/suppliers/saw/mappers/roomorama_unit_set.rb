@@ -13,21 +13,23 @@ module SAW
 
           if units
             units.map do |unit|
+
               u = Roomorama::Unit.new(unit.fetch("@id"))
               u.title = unit.fetch("property_accommodation_name")
               u.description = basic_property.description
               u.nightly_rate = basic_property.nightly_rate
               u.weekly_rate = basic_property.weekly_rate
               u.monthly_rate = basic_property.monthly_rate
-              u
+              u.number_of_units = 1
 
-              # {
-              #   type_id:         id,
-              #   type_name:       name,
-              #   bed_types:       nil, #find_bed_types(bed_configurations, unit.fetch("@id")),
-              #   number_of_rooms: 1,
-              #   number_of_units: 1
-              # }
+              bed_configuration = find_bed_types(bed_configurations, unit.fetch("@id"))
+
+              if bed_configuration
+                u.number_of_double_beds = bed_configuration.number_of_double_beds
+                u.number_of_single_beds = bed_configuration.number_of_single_beds
+                u.max_guests = bed_configuration.max_guests
+              end
+              u
             end
           else
             []
@@ -56,7 +58,7 @@ module SAW
         end
 
         if configuration
-          Mappers::BeddingConfiguration.build(
+          SAW::Mappers::BeddingConfiguration.build(
             configuration.fetch("bed_types")
           )
         else
