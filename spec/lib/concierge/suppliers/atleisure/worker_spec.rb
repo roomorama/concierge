@@ -57,6 +57,8 @@ RSpec.describe Workers::Suppliers::AtLeisure do
     end
 
     it 'finalizes synchronisation' do
+      allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
+
       expect(subject.synchronisation).to receive(:finish!)
       subject.perform
     end
