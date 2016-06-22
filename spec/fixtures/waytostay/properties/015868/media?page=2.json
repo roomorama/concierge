@@ -1,0 +1,53 @@
+{
+  "_links": {
+    "self": {
+      "href": "https://apis.sandbox.waytostay.com:25443/properties/015868/media?page=1"
+    },
+    "first": {
+      "href": "https://apis.sandbox.waytostay.com:25443/properties/015868/media"
+    },
+    "last": {
+      "href": "https://apis.sandbox.waytostay.com:25443/properties/015868/media?page=1"
+    }
+  },
+  "_embedded": {
+    "property_media": [
+      {
+        "id": 355482,
+        "url": "https://static.sandbox.waytostay.com:25443/media/apartments/570/3bd3/5703bd33d7cc2_extra_extra_large.JPG",
+        "original_name": "1-1 (12)5703bc6c147855703bd33d1746.JPG",
+        "size": "1440x1080",
+        "caption": "1-1 (12)5703bc6c147855703bd33d1746",
+        "order": 8,
+        "is_visible": true,
+        "type": "image",
+        "created_timestamp": 1459862844,
+        "_links": {
+          "self": {
+            "href": "https://apis.sandbox.waytostay.com:25443/properties/015868/media/355482"
+          }
+        }
+      },
+      {
+        "id": 355483,
+        "url": "https://static.sandbox.waytostay.com:25443/media/apartments/570/3bd3/5703bd3c85004_extra_extra_large.JPG",
+        "original_name": "1-1 (14)5703bc749518a5703bd3c7ea43.JPG",
+        "size": "1440x1080",
+        "caption": "1-1 (14)5703bc749518a5703bd3c7ea43",
+        "order": 9,
+        "is_visible": true,
+        "type": "image",
+        "created_timestamp": 1459862853,
+        "_links": {
+          "self": {
+            "href": "https://apis.sandbox.waytostay.com:25443/properties/015868/media/355483"
+          }
+        }
+      }
+    ]
+  },
+  "page_count": 2,
+  "page_size": 5,
+  "total_items": 7,
+  "page": 2
+}

@@ -29,14 +29,18 @@ module Workers::Suppliers
                              end
           next wrapped_property unless wrapped_property.success?
 
+          if changes[:media].include? property_ref
+            wrapped_property = @remote.update_media(wrapped_property.result)
+            next wrapped_property unless wrapped_property.success?
+          end
+
           if changes[:availability].include? property_ref
             wrapped_property = @remote.update_availabilities(wrapped_property.result)
             next wrapped_property unless wrapped_property.success?
           end
 
-          # TODO: daily prices
+          # TODO: rates, bookings
           # @remote.fetch_rates(property_ref) if changes[:rates].include property_ref
-          # fetch_media(property_ref) if changes[:media].include property_ref
 
           wrapped_property
         end

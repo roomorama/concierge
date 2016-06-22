@@ -5,6 +5,7 @@ require_relative "../shared/quote"
 RSpec.describe Waytostay::Client do
   include Support::Fixtures
   include Support::HTTPStubbing
+  include Support::Factories
 
   before do
     Concierge::Cache.new(namespace:"oauth2").
@@ -17,10 +18,11 @@ RSpec.describe Waytostay::Client do
   end
 
   subject(:stubbed_client) { described_class.new }
+  let(:base_url) { stubbed_client.credentials[:url] }
 
-  describe "get_changes_since" do
+  describe "#get_changes_since" do
     let(:timestamp) { 1466562548 }
-    let(:changes_url) { stubbed_client.credentials[:url] + Waytostay::Changes::ENDPOINT }
+    let(:changes_url) { base_url + Waytostay::Changes::ENDPOINT }
     before do
       stubbed_client.oauth2_client.oauth_client.connection =
         stub_call(:get, changes_url, params:{timestamp: timestamp}, strict: true) {
@@ -38,11 +40,40 @@ RSpec.describe Waytostay::Client do
     end
   end
 
-  describe "get_property" do
+  describe "#update_media" do
+
+    let!(:roomorama_property) { Roomorama::Property.load(
+        # use this because #load expects keys in symbols
+        Concierge::SafeAccessHash.new(
+          JSON.parse(read_fixture("waytostay/properties/015868.roomorama-attributes.json"))
+        )
+      ).result
+    }
+    let(:media_url) { "#{base_url}/properties/#{roomorama_property.identifier}/media" }
+
+    subject { stubbed_client.update_media(roomorama_property) }
+
+    before do
+      stubbed_client.oauth2_client.oauth_client.connection =
+        stub_call(:get, media_url + "?page=2", strict: true) {
+          [200, {}, read_fixture("waytostay/properties/015868/media?page=2.json")]
+        }
+      stubbed_client.oauth2_client.oauth_client.connection =
+        stub_call(:get, media_url, strict: true) {
+          [200, {}, read_fixture("waytostay/properties/015868/media.json")]
+        }
+    end
+    it { expect(subject).to be_success }
+    it { expect(subject.result.images.count).to eq(7) }
+    it { expect(subject.result.validate!).to eq true }
+
+  end
+
+  describe "#get_property" do
     let(:valid_property_id)           { "015868" }
     let(:inactive_property_id)        { "101" }
     let(:partial_payment_property_id) { "102" }
-    let(:property_url) { stubbed_client.credentials[:url] + "/properties/#{property_id}" }
+    let(:property_url) { "#{base_url}/properties/#{property_id}" }
     before do
       stubbed_client.oauth2_client.oauth_client.connection = stub_call(:get, property_url) {
         [200, {}, read_fixture("waytostay/properties/#{property_id}.json")]
@@ -76,7 +107,7 @@ RSpec.describe Waytostay::Client do
     end
   end
 
-  describe "parse_number_of_beds" do
+  describe "#parse_number_of_beds" do
     subject { stubbed_client.send(:parse_number_of_beds, response) }
     context "when there are single and double sofa beds" do
       let(:response) {
@@ -106,7 +137,7 @@ RSpec.describe Waytostay::Client do
   end
 
   describe "#book" do
-    let(:book_url) { stubbed_client.credentials[:url] + Waytostay::Book::ENDPOINT_BOOKING }
+    let(:book_url) { base_url + Waytostay::Book::ENDPOINT_BOOKING }
     let(:params) {{
       customer: {
         email:      "user@test.com",
@@ -157,7 +188,7 @@ RSpec.describe Waytostay::Client do
       # Stubbing confirmation success
       stubbed_client.oauth2_client.oauth_client.connection = stub_call(
         :post,
-        stubbed_client.credentials[:url] + "/bookings/#{successful_code}/confirmation"
+        "#{base_url}/bookings/#{successful_code}/confirmation"
       ) {
         [200, {}, read_fixture("waytostay/bookings/#{successful_code}/confirmation.json")]
       }
@@ -187,7 +218,7 @@ RSpec.describe Waytostay::Client do
 
   describe "#quote" do
 
-    let(:quote_url) { stubbed_client.credentials[:url] + Waytostay::Quote::ENDPOINT }
+    let(:quote_url) { base_url + Waytostay::Quote::ENDPOINT }
 
     let(:quote_post_body) {{
       property_reference: "1",
