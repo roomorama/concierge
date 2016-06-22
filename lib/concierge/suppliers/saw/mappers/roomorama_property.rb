@@ -25,6 +25,7 @@ module SAW
 
         set_availabilities!(property, availabilities)
         set_images!(property, detailed_property.images)
+        set_units!(property, basic_property, detailed_property)
         # not_supported_amenities: detailed_property.not_supported_amenities
         property
       end
@@ -38,6 +39,15 @@ module SAW
 
       def self.set_images!(property, images)
         images.each { |image| property.add_image(image) }
+      end
+
+      def self.set_units!(property, basic_property, detailed_property)
+        units = SAW::Mappers::RoomoramaUnitSet.build(
+          basic_property,
+          detailed_property
+        )
+
+        units.each { |unit| property.add_unit(unit) }
       end
     end
   end

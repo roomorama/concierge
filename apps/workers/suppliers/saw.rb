@@ -36,8 +36,6 @@ module Workers::Suppliers
             detailed_property,
             availability_calendar
           )
-
-          # sync units
           
           Result.new(roomorama_property)
         end

@@ -300,5 +300,19 @@ module SAW
       expect(property.images.size).to eq(14)
       expect(property.images).to all(be_kind_of(Roomorama::Image))
     end
+
+    it "adds bedding configurations" do
+      property = described_class.build(hash)
+
+      expect(property.bed_configurations).to eq(hash["beddingconfigurations"])
+    end
+    
+    it "adds property accomodations" do
+      property = described_class.build(hash)
+
+      expect(property.property_accommodations).to eq(
+        hash["property_accommodations"]
+      )
+    end
   end
 end
