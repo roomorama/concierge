@@ -3,6 +3,7 @@ require_relative 'book'
 require_relative 'changes'
 require_relative 'properties'
 require_relative 'media'
+require_relative 'availability'
 
 module Waytostay
   # +Waytostay::Client+
@@ -28,6 +29,7 @@ module Waytostay
     include Waytostay::Changes
     include Waytostay::Properties
     include Waytostay::Media
+    include Waytostay::Availability
 
     attr_reader :credentials
 
