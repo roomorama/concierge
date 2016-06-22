@@ -74,7 +74,6 @@ module SAW
         supplier:    SUPPLIER_NAME,
         code:        result.error.code,
         context:     Concierge.context.to_h,
-        message:     result.error.data,
         happened_at: Time.now
       }
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, info)
