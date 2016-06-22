@@ -4,7 +4,7 @@ module SAW
       ALLOWED_FIELDS = [
         :internal_id, :type, :title, :description, :lat, :lon, :city,
         :neighborhood, :address, :country, :amenities, :multi_unit, :images,
-        :not_supported_amenities
+        :not_supported_amenities, :bed_configurations, :property_accommodations
       ]
 
       class << self
@@ -22,6 +22,8 @@ module SAW
           prepare_images!(attrs, image_url_rewrite)
           prepare_supported_amenities!(attrs)
           prepare_not_supported_amenities!(attrs)
+          prepare_bed_configurations!(attrs)
+          prepare_property_accomodations!(attrs)
           add_multi_unit_flag!(attrs)
           keep_only_needed_fields!(attrs)
           
@@ -73,6 +75,14 @@ module SAW
         def prepare_not_supported_amenities!(hash)
           hash[:not_supported_amenities] = 
             convert_not_supported_amenities(hash)
+        end
+
+        def prepare_bed_configurations!(hash)
+          hash[:bed_configurations] = hash.fetch("beddingconfigurations")
+        end
+        
+        def prepare_property_accomodations!(hash)
+          hash[:property_accommodations] = hash["property_accommodations"]
         end
 
         def prepare_room_type!(hash)
