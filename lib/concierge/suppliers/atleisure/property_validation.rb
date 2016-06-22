@@ -1,10 +1,20 @@
 module AtLeisure
+  # +AtLeisure::PropertyValidation+
+  #
+  # This class responsible for properties validation.
+  # cases when property invalid:
+  #
+  #   * payload has error key - the property doesn't persist on AtLeisure side
+  #   * invalid payload       - if for some reasons AtLeisure API changed structure of data
+  #   * on request property   - doesn't support Roomorama
+  #   * deposit upfront       - doesn't support Roomorama
+  #
   class PropertyValidation
 
-    attr_reader :property
+    attr_reader :payload
 
-    def initialize(property)
-      @property = property
+    def initialize(payload)
+      @payload = payload
     end
 
     def valid?
@@ -17,17 +27,17 @@ module AtLeisure
     private
 
     def no_errors?
-      property['error'].nil?
+      payload['error'].nil?
     end
 
     def valid_payload?
-      return true if PayloadValidation.new(property).valid?
+      return true if PayloadValidation.new(payload).valid?
       augment_context
       false
     end
 
     def instant_bookable?
-      property['AvailabilityPeriodV1'].any? { |availability| availability['OnRequest'] == 'No' }
+      payload['AvailabilityPeriodV1'].any? { |availability| availability['OnRequest'] == 'No' }
     end
 
     def no_deposit_upfront?
@@ -35,7 +45,7 @@ module AtLeisure
     end
 
     def deposit
-      property['CostsOnSiteV1'].find { |cost| find_en(cost) == 'Deposit' }
+      payload['CostsOnSiteV1'].find { |cost| find_en(cost) == 'Deposit' }
     end
 
     def find_en(item)
@@ -45,7 +55,7 @@ module AtLeisure
     def augment_context
       missing_basic_data = Concierge::Context::MissingBasicData.new(
         error_message: 'invalid payload',
-        attributes: property
+        attributes:    payload
       )
 
       Concierge.context.augment(missing_basic_data)
