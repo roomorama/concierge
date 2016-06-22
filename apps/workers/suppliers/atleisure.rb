@@ -35,7 +35,7 @@ module Workers::Suppliers
       if result.success?
         properties_data = result.value
         properties_data.map do |property|
-          if verifier.verify(property)
+          if validator(property).valid?
             synchronisation.start(property['HouseCode']) { mapper.prepare(property) }
           end
         end
@@ -45,8 +45,8 @@ module Workers::Suppliers
       end
     end
 
-    def verifier
-      Verifier.new
+    def validator(property)
+      PropertyValidation.new(property)
     end
 
     def importer
