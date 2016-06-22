@@ -1,4 +1,14 @@
 module AtLeisure
+  # +AtLeisure::Mapper+
+  #
+  # This class responsible for setting data and performing data to Roomorama format
+  #
+  # ==== Attributes
+  #
+  # * +layout_items+ - list of references data
+  # * +property+     - +Roomorama::Property+ instance
+  # * +meta_data+    - hash based AtLeisure payload
+  #
   class Mapper
 
     attr_reader :layout_items, :property, :meta_data
@@ -7,6 +17,7 @@ module AtLeisure
       @layout_items = layout_items.map { |item| LayoutItem.new(item) }
     end
 
+    # manages data and returns the result with +Roomorama::Property+
     def prepare(property_data)
       build_room(property_data)
       property.instant_booking!
@@ -52,6 +63,7 @@ module AtLeisure
       property.lng          = info['WGS84Longitude']
     end
 
+    # payload presents beds size as different named items
     def set_beds_count
       beds_layout = layout_items.find { |item| item.number == code_for(:beds) }
       double_beds = 0
@@ -117,6 +129,15 @@ module AtLeisure
       end
     end
 
+    # sets type and subtype accordingly related code
+    #   "PropertiesV1": [
+    #       {
+    #         "TypeNumber": 10,
+    #         "TypeContents": [
+    #                         90
+    #                       ]
+    #       }, ...
+    # note that *TypeContents* always is an Array of codes
     def set_property_type
       properties_array = meta_data['PropertiesV1']
       room_type_hash   = properties_array.find { |data_hash| data_hash['TypeNumber'] == code_for(:property_type) }

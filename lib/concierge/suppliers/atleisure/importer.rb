@@ -17,6 +17,7 @@ module AtLeisure
       layout_items:    "ReferenceLayoutItemsV1"
     }
 
+    # each layer extends property's data accordingly its responsibility
     LAYERS = %w(BasicInformationV3 MediaV2 PropertiesV1 LayoutExtendedV2 AvailabilityPeriodV1 CostsOnSiteV1)
     LANGUAGES = %w(en de es)
 
@@ -26,13 +27,13 @@ module AtLeisure
       @credentials = credentials
     end
 
-    # this method retrieves the list of properties
+    # retrieves the list of properties
     def fetch_properties
       endpoint = ENDPOINT_METHODS.fetch(:properties_list)
       client_for(endpoint).invoke(endpoint, authentication_params)
     end
 
-    # fetches references information for properties. Return result with array
+    # fetches references information for properties. Return result with list of properties
     def fetch_layout_items
       endpoint = ENDPOINT_METHODS.fetch(:layout_items)
       client_for(endpoint).invoke(endpoint, authentication_params)

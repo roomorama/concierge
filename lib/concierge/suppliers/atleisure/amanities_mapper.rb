@@ -1,4 +1,7 @@
 module AtLeisure
+  # +AtLeisure::AmenitiesMapper+
+  #
+  # Represents AtLeisure property payload to Roomorama format
   class AmenitiesMapper
 
     def map(meta_data)

@@ -1,4 +1,7 @@
 module Workers::Suppliers
+  # +Workers::Suppliers::AtLeisure+
+  #
+  # Performs synchronisation with supplier
   class AtLeisure
     SUPPLIER_NAME = 'AtLeisure'
     BATCH_SIZE = 100
