@@ -130,14 +130,6 @@ module AtLeisure
     end
 
     # sets type and subtype accordingly related code
-    #   "PropertiesV1": [
-    #       {
-    #         "TypeNumber": 10,
-    #         "TypeContents": [
-    #                         90
-    #                       ]
-    #       }, ...
-    # note that *TypeContents* always is an Array of codes
     def set_property_type
       properties_array = meta_data['PropertiesV1']
       room_type_hash   = properties_array.find { |data_hash| data_hash['TypeNumber'] == code_for(:property_type) }

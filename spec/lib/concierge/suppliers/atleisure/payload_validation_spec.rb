@@ -11,13 +11,14 @@ RSpec.describe AtLeisure::PayloadValidation do
       payload.delete('MediaV2')
       validation = described_class.new(payload)
 
-      expect(validation).to receive(:augment_context).with(['MediaV2'])
+      expect(Concierge.context).to receive(:augment)
       expect(validation.valid?).to be false
     end
 
     it 'fails with missing keys' do
       validation = described_class.new(payload)
 
+      expect(Concierge.context).to_not receive(:augment)
       expect(validation.valid?).to be true
     end
   end
