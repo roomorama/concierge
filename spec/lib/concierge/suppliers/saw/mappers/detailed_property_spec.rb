@@ -4,7 +4,7 @@ module SAW
   RSpec.describe Mappers::DetailedProperty do
     let(:country_name) { 'Thailand' }
     let(:image_url_rewrite) { false }
-    let(:hash) do
+    let(:attributes) do
       {
         "name"=>"Outrigger Laguna Phuket Resort & Villas",
         "image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39050",
@@ -163,6 +163,10 @@ module SAW
       }
     end
 
+    let(:hash) do
+      Concierge::SafeAccessHash.new(attributes)
+    end
+
     it "returns detailed property entity" do
       property = described_class.build(hash)
       expect(property).to be_a(SAW::Entities::DetailedProperty)
@@ -210,7 +214,7 @@ module SAW
     end
     
     it "doesn't add breakfast to amenities if it's not available" do
-      hash["flag_breakfast_included"] = "N"
+      attributes["flag_breakfast_included"] = "N"
 
       property = described_class.build(hash)
       expect(property.amenities).to eq(
@@ -219,7 +223,7 @@ module SAW
     end
 
     it "adds breakfast to amenities if available" do
-      hash["flag_breakfast_included"] = "Y"
+      attributes["flag_breakfast_included"] = "Y"
 
       property = described_class.build(hash)
       expect(property.amenities).to eq(
@@ -228,14 +232,14 @@ module SAW
     end
     
     it "has empty amenities when facility services equal nil" do
-      hash["facility_services"] = nil
+      attributes["facility_services"] = nil
 
       property = described_class.build(hash)
       expect(property.amenities).to eq([])
     end
     
     it "has empty amenities when facility services equal {}" do
-      hash["facility_services"] = {}
+      attributes["facility_services"] = {}
 
       property = described_class.build(hash)
       expect(property.amenities).to eq([])

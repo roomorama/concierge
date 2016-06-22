@@ -12,17 +12,13 @@ module SAW
         private
 
         def parse_currency(hash)
-          hash.fetch("response")
-              .fetch("property")
-              .fetch("currency_code")
+          hash.get("response.property.currency_code")
         end
       
         def build_units(hash)
-          units = hash.fetch("response")
-                      .fetch("property")
-                      .fetch("apartments")
-                      .fetch("accommodation_type")
-                      .fetch("property_accommodation")
+          units = hash.get(
+            "response.property.apartments.accommodation_type.property_accommodation"
+          )
 
           to_array(units).map do |unit_hash|
             Entities::UnitRate.new(
@@ -33,14 +29,11 @@ module SAW
         end
 
         def parse_id(hash)
-          hash.fetch("@id").to_i
+          hash.get("@id").to_i
         end
 
         def parse_price(hash)
-          hash.fetch("price_detail")
-              .fetch("net")
-              .fetch("total_price")
-              .fetch("price")
+          hash.get("price_detail.net.total_price.price")
         end
     
         def to_array(something)
