@@ -17,7 +17,7 @@ module AtLeisure
       layout_items:    "ReferenceLayoutItemsV1"
     }
 
-    LAYERS = %w(BasicInformationV3 MediaV2 PropertiesV1 LayoutExtendedV2 AvailabilityPeriodV1)
+    LAYERS = %w(BasicInformationV3 MediaV2 PropertiesV1 LayoutExtendedV2 AvailabilityPeriodV1 CostsOnSiteV1)
     LANGUAGES = %w(en de es)
 
     attr_reader :credentials

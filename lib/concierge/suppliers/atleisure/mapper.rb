@@ -190,7 +190,7 @@ module AtLeisure
 
       actual_periods.each do |period|
         period.dates.each do |date|
-          property.update_calendar(date => true)
+          property.update_calendar(date.to_s => true)
         end
       end
     end
