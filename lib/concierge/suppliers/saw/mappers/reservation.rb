@@ -9,8 +9,7 @@ module SAW
 
       private
       def self.parse_reservation_code(hash)
-        hash.fetch("response")
-            .fetch("booking_ref_number")
+        hash.get("response.booking_ref_number")
       end
     end
   end

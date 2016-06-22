@@ -8,84 +8,80 @@ module SAW
       ]
 
       class << self
-        # Returns property with correct mapping for Roomorama API
-        # It does not initantiate new hash object every time, it applies
-        # modifications for a given hash (to save the time)
-        def build(hash, image_url_rewrite: false)
-          attrs = hash.dup
+        def build(attrs, image_url_rewrite: false)
+          new_hash = {}
 
-          prepare_internal_id!(attrs)
-          prepare_room_type!(attrs)
-          prepare_title!(attrs)
-          prepare_description!(attrs)
-          prepare_address_information!(attrs)
-          prepare_images!(attrs, image_url_rewrite)
-          prepare_supported_amenities!(attrs)
-          prepare_not_supported_amenities!(attrs)
-          prepare_bed_configurations!(attrs)
-          prepare_property_accomodations!(attrs)
-          add_multi_unit_flag!(attrs)
-          keep_only_needed_fields!(attrs)
-          
-          Entities::DetailedProperty.new(attrs)
+          copy_internal_id!(attrs, new_hash)
+          copy_title!(attrs, new_hash)
+          copy_description!(attrs, new_hash)
+          copy_address_information!(attrs, new_hash)
+          copy_images!(attrs, new_hash, image_url_rewrite)
+          copy_supported_amenities!(attrs, new_hash)
+          copy_not_supported_amenities!(attrs, new_hash)
+          copy_bed_configurations!(attrs, new_hash)
+          copy_property_accomodations!(attrs, new_hash)
+          add_multi_unit_flag!(new_hash)
+          add_room_type!(new_hash)
+          keep_only_needed_fields!(new_hash)
+
+          safe_hash = Concierge::SafeAccessHash.new(new_hash)
+          Entities::DetailedProperty.new(safe_hash)
         end
 
         private
 
         def keep_only_needed_fields!(hash)
-          hash.keep_if do |key, _|
-            ALLOWED_FIELDS.include?(key)
-          end
+          hash.keep_if { |key, _| ALLOWED_FIELDS.include?(key) }
         end
 
-        def prepare_internal_id!(hash)
-          hash[:internal_id] = hash.delete("@id").to_i
+        def copy_internal_id!(attrs, hash)
+          hash[:internal_id] = attrs.get("@id").to_i
         end
         
-        def prepare_title!(hash)
-          hash[:title] = hash.delete("name")
+        def copy_title!(attrs, hash)
+          hash[:title] = attrs.get("name")
         end
 
-        def prepare_description!(hash)
-          hash[:description] = hash.delete("property_description")
+        def copy_description!(attrs, hash)
+          hash[:description] = attrs.get("property_description")
         end
 
-        def prepare_address_information!(hash)
-          location_info = hash["map_location"]
+        def copy_address_information!(attrs, hash)
+          location_info = attrs.get("map_location")
 
-          hash[:address]      = location_info["full_address"]
-          hash[:lat]          = location_info["latitude"]
-          hash[:lon]          = location_info["longitude"]
-          hash[:country]      = hash["country"]
-          hash[:city]         = hash["city_region"]
-          hash[:neighborhood] = hash["location"]
+          hash[:address]      = location_info.get("full_address")
+          hash[:lat]          = location_info.get("latitude")
+          hash[:lon]          = location_info.get("longitude")
+          hash[:country]      = attrs.get("country")
+          hash[:city]         = attrs.get("city_region")
+          hash[:neighborhood] = attrs.get("location")
         end
 
-        def prepare_images!(hash, image_url_rewrite)
+        def copy_images!(attrs, hash, image_url_rewrite)
           hash[:images] = Mappers::RoomoramaImageSet.build(
-            hash,
+            attrs,
             image_url_rewrite
           ) 
         end
 
-        def prepare_supported_amenities!(hash)
-          hash[:amenities] = convert_amenities(hash)
+        def copy_supported_amenities!(attrs, hash)
+          hash[:amenities] = convert_amenities(attrs)
         end
         
-        def prepare_not_supported_amenities!(hash)
+        def copy_not_supported_amenities!(attrs, hash)
           hash[:not_supported_amenities] = 
-            convert_not_supported_amenities(hash)
+            convert_not_supported_amenities(attrs)
         end
 
-        def prepare_bed_configurations!(hash)
-          hash[:bed_configurations] = hash.fetch("beddingconfigurations")
+        def copy_bed_configurations!(attrs, hash)
+          hash[:bed_configurations] = attrs.get("beddingconfigurations")
         end
         
-        def prepare_property_accomodations!(hash)
-          hash[:property_accommodations] = hash["property_accommodations"]
+        def copy_property_accomodations!(attrs, hash)
+          hash[:property_accommodations] = attrs.get("property_accommodations")
         end
 
-        def prepare_room_type!(hash)
+        def add_room_type!(hash)
           hash[:type] = 'apartment'
         end
 
@@ -114,15 +110,15 @@ module SAW
         end
 
         def fetch_saw_amenities(hash)
-          facility_services = hash.fetch("facility_services", {})
+          facility_services = hash.get("facility_services")
           
           if facility_services
-            saw_amenities = Array(facility_services.fetch("facility_service", {}))
+            saw_amenities = Array(facility_services.get("facility_service"))
           else
             saw_amenities = []
           end
           
-          if hash['flag_breakfast_included'] == 'Y'
+          if hash.get('flag_breakfast_included') == 'Y'
             saw_amenities << 'Breakfast' 
           end
 
