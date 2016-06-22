@@ -21,7 +21,8 @@ module Workers::Suppliers
         end
         synchronisation.finish!
       else
-        announce_error('sync', result)
+        message = "Failed to perform the `#fetch_properties` operation"
+        announce_error(message, result)
       end
     end
 
@@ -34,7 +35,8 @@ module Workers::Suppliers
     end
 
     def fetch_data_and_process(properties)
-      result = importer.fetch_data(properties)
+      ids = identifiers(properties)
+      result = importer.fetch_data(ids)
       if result.success?
         properties_data = result.value
         properties_data.map do |property|
@@ -44,8 +46,13 @@ module Workers::Suppliers
         end
       else
         synchronisation.failed!
-        announce_error('sync', result)
+        message = "Failed to perform the `#fetch_data` operation, with identifiers: `#{ids}`"
+        announce_error(message, result)
       end
+    end
+
+    def identifiers(properties)
+      properties.map { |property| property['HouseCode'] }
     end
 
     def validator(property)
@@ -64,9 +71,17 @@ module Workers::Suppliers
       @mapper ||= ::AtLeisure::Mapper.new(layout_items: importer.fetch_layout_items.value)
     end
 
-    def announce_error(operation, result)
+    def announce_error(message, result)
+      message = {
+        label: 'Failed perform',
+        message: message,
+        backtrace: caller
+      }
+      context = Concierge::Context::Message.new(message)
+      Concierge.context.augment(context)
+
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-        operation:   operation,
+        operation:   'sync',
         supplier:    SUPPLIER_NAME,
         code:        result.error.code,
         context:     Concierge.context.to_h,

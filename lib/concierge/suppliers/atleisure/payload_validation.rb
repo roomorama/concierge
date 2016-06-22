@@ -29,13 +29,14 @@ module AtLeisure
     end
 
     def augment_context(missing_keys)
-      message = "The payload for the property did not meet minimum requirements for importing. Missing keys :#{missing_keys.join(', ')}"
-      missing_basic_data = Concierge::Context::MissingBasicData.new(
+      keys    = missing_keys.map { |key| "`#{key}`" }
+      message = "The payload for the property did not meet minimum requirements for importing. Missing keys: #{keys.join(', ')}"
+      context = Concierge::Context::MissingBasicData.new(
         error_message: message,
         attributes:    payload
       )
 
-      Concierge.context.augment(missing_basic_data)
+      Concierge.context.augment(context)
     end
   end
 end

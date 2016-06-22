@@ -41,8 +41,8 @@ module AtLeisure
 
     # fetches extended information for properties by their identifiers. Return result with list of properties with
     # additional data which were pointed in +layers+
-    def fetch_data(properties, layers: default_layers)
-      params   = { 'HouseCodes' => identifiers(properties), 'Items' => Array(layers) }
+    def fetch_data(identifiers, layers: default_layers)
+      params   = { 'HouseCodes' => identifiers, 'Items' => Array(layers) }
       endpoint = ENDPOINT_METHODS.fetch(:properties_data)
 
       client_for(endpoint).invoke(endpoint, params.merge(authentication_params))
@@ -60,10 +60,6 @@ module AtLeisure
         'WebpartnerCode'     => credentials.username,
         'WebpartnerPassword' => credentials.password
       }
-    end
-
-    def identifiers(properties)
-      properties.map { |property| property['HouseCode'] }
     end
 
     def default_layers
