@@ -83,6 +83,17 @@ module Waytostay
       attr.merge! parse_services(response)
       attr.merge! parse_number_of_beds(response)
       attr.merge! parse_amenities(response)
+
+      attr.merge! parse_disability(response)
+    end
+
+    def parse_disability(response)
+      payment_supported = response.get("payment.payment_options")
+                            .include?  Waytostay::Client::SUPPORTED_PAYMENT_METHOD
+      active = response.get("active")
+      {
+        disabled: !payment_supported || !active
+      }
     end
 
     def parse_floors(response)
