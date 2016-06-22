@@ -18,6 +18,26 @@ RSpec.describe Waytostay::Client do
 
   subject(:stubbed_client) { described_class.new }
 
+  describe "get_changes_since" do
+    let(:timestamp) { 1466562548 }
+    let(:changes_url) { stubbed_client.credentials[:url] + Waytostay::Changes::ENDPOINT }
+    before do
+      stubbed_client.oauth2_client.oauth_client.connection =
+        stub_call(:get, changes_url, params:{timestamp: timestamp}, strict: true) {
+          [200, {}, read_fixture("waytostay/changes?timestamp=#{timestamp}.json")]
+        }
+    end
+    subject { stubbed_client.get_changes_since(timestamp) }
+    it "should return hash of changes by categories" do
+      expect(subject[:properties]).to match ["000001"]
+      expect(subject[:media]).to match ["002"]
+      expect(subject[:availability]).to match ["003"]
+      expect(subject[:rates]).to match ["013064", "000001"]
+      expect(subject[:reviews]).to match ["003"]
+      expect(subject[:bookings]).to match []
+    end
+  end
+
   describe "fetch_property" do
     let(:property_id) { "015868" }
     let(:property_url) { stubbed_client.credentials[:url] + "/properties/#{property_id}" }

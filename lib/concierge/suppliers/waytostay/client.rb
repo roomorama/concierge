@@ -1,6 +1,7 @@
 require_relative 'quote'
 require_relative 'book'
 require_relative 'properties'
+require_relative 'changes'
 
 module Waytostay
   # +Waytostay::Client+
@@ -24,6 +25,7 @@ module Waytostay
     include Waytostay::Quote
     include Waytostay::Book
     include Waytostay::Properties
+    include Waytostay::Changes
 
     attr_reader :credentials
 
