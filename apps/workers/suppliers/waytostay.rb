@@ -20,11 +20,13 @@ module Workers::Suppliers
       uniq_properties_in(changes).each do |property_ref|
         synchronisation.start(property_ref) do
           wrapped_property = if changes[:properties].include? property_ref
-                       # get the updated property from supplier
-                       @remote.get_property(property_ref)
-                     else
-                       load_existing property_ref
-                     end
+                               # get the updated property from supplier
+                               @remote.get_property(property_ref)
+                             else
+                               # no changes on property attributes indicated, just
+                               # load one from db so we can attache other changes
+                               load_existing property_ref
+                             end
           next wrapped_property unless wrapped_property.success?
 
           if changes[:availability].include? property_ref
@@ -50,7 +52,7 @@ module Workers::Suppliers
     # The method returns ["a", "b", "c", "d"]
     #
     def uniq_properties_in(changes)
-      changes.values.reduce(&:concat).uniq
+      changes.values.reduce(&:+).uniq
     end
 
     def last_synced_timestamp
