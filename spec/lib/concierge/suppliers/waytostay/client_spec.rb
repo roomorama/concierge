@@ -29,12 +29,12 @@ RSpec.describe Waytostay::Client do
     end
     subject { stubbed_client.get_changes_since(timestamp) }
     it "should return hash of changes by categories" do
-      expect(subject[:properties]).to match ["000001"]
-      expect(subject[:media]).to match ["002"]
+      expect(subject[:properties]).to   match ["000001"]
+      expect(subject[:media]).to        match ["002"]
       expect(subject[:availability]).to match ["003"]
-      expect(subject[:rates]).to match ["013064", "000001"]
-      expect(subject[:reviews]).to match ["003"]
-      expect(subject[:bookings]).to match []
+      expect(subject[:rates]).to        match ["013064", "000001"]
+      expect(subject[:reviews]).to      match ["003"]
+      expect(subject[:bookings]).to     match []
     end
   end
 
@@ -50,7 +50,7 @@ RSpec.describe Waytostay::Client do
     subject { stubbed_client.get_property(property_id) }
     it "should return a Roomorama::Property" do
       expected_room_load = Roomorama::Property.load(
-        Concierge::SafeAccessHash.new(
+        Concierge::SafeAccessHash.new( # use this because #load expects keys in symbols
           JSON.parse(read_fixture("waytostay/properties/#{property_id}.roomorama-attributes.json"))
         )
       )
