@@ -46,7 +46,7 @@ module Workers::Suppliers
     end
 
     def validator(property)
-      PropertyValidation.new(property)
+      ::AtLeisure::PropertyValidation.new(property)
     end
 
     def importer

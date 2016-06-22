@@ -10,7 +10,7 @@ module AtLeisure
   #
   #   => #<Result:0x007ff5fc624dd8 @result=[{'HouseCode' => 'XX-12345-67', ...}, ...]
   class Importer
-    TIMEOUT          = 100 # seconds
+    TIMEOUT          = 1000 # seconds
     ENDPOINT_METHODS = {
       properties_list: "ListOfHousesV1",
       properties_data: "DataOfHousesV1",
