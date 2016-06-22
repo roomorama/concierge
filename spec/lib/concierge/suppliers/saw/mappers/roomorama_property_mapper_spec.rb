@@ -8,8 +8,8 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
     ]
   end
 
-  let(:basic_property) do
-    SAW::Entities::BasicProperty.new(
+  let(:basic_property_attributes) do
+    {
       internal_id: 1234,
       type: 'apartment',
       title: 'Title Basic',
@@ -24,11 +24,11 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
       city: 'City Basic',
       neighborhood: 'Neighborhood Basic',
       multi_unit: true
-    )
+    }
   end
 
-  let(:detailed_property) do
-    SAW::Entities::DetailedProperty.new(
+  let(:detailed_property_attributes) do
+    {
       internal_id: 9876,
       type: 'house',
       title: 'Title Detailed',
@@ -42,7 +42,15 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
       amenities: ['wifi', 'breakfast'],
       images: property_images,
       not_supported_amenities: ['foo', 'bar']
-    )
+    }
+  end
+
+  let(:basic_property) do
+    SAW::Entities::BasicProperty.new(basic_property_attributes)
+  end
+
+  let(:detailed_property) do
+    SAW::Entities::DetailedProperty.new(detailed_property_attributes)
   end
     
   it "returns roomorama property entity" do
@@ -154,6 +162,72 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
       expect(property.images).not_to eq([])
       expect(property.images.size).to eq(detailed_property.images.size)
       expect(property.images).to eq(detailed_property.images)
+    end
+
+    it "keeps units empty if there was no bed_configurations and accommodations" do
+      property = described_class.build(
+        basic_property,
+        detailed_property,
+        availabilities
+      )
+
+      expect(property.units).to eq([])
+    end
+
+    context "when detailed_property has units information" do
+      let(:attributes) do
+        detailed_property_attributes.merge(
+          {
+            bed_configurations: {
+              "property_accommodation"=>
+                [{"property_accommodation_name"=>"1 Bedroom Suite", "bed_types"=>{"bed_type"=>{"bed_type_name"=>"Double Bed", "@id"=>"12934"}}, "@id"=>"10252"},
+                 {"property_accommodation_name"=>"2 Bedroom Suite", "bed_types"=>{"bed_type"=>{"bed_type_name"=>"Double & Twin", "@id"=>"12935"}}, "@id"=>"10253"},
+                 {"property_accommodation_name"=>"2 Bedroom Villa", "bed_types"=>{"bed_type"=>{"bed_type_name"=>"Double & Twin", "@id"=>"12936"}}, "@id"=>"10255"},
+                 {"property_accommodation_name"=>"3 Bedroom Pool Suite",
+                  "bed_types"=>{"bed_type"=>{"bed_type_name"=>"Double & Double & Twin", "@id"=>"12937"}},
+                  "@id"=>"10254"},
+                 {"property_accommodation_name"=>"3 Bedroom Pool Villa",
+                  "bed_types"=>{"bed_type"=>{"bed_type_name"=>"Double & Double & Twin", "@id"=>"12938"}},
+                  "@id"=>"10256"},
+                 {"property_accommodation_name"=>"4 Bedroom Pool Villa",
+                  "bed_types"=>{"bed_type"=>{"bed_type_name"=>"Double & Double & Double & Twin", "@id"=>"12939"}},
+                  "@id"=>"10257"}
+                ]
+            },
+            property_accommodations: {
+              "accommodation_type"=>
+                [{"accommodation_name"=>"1-Bedroom", "property_accommodation"=>{"property_accommodation_name"=>"1 Bedroom Suite", "@id"=>"10252"}, "@id"=>"95"},
+                 {"accommodation_name"=>"2 Bedroom - 1 Bathroom",
+                  "property_accommodation"=>
+                   [{"property_accommodation_name"=>"2 Bedroom Suite", "@id"=>"10253"}, {"property_accommodation_name"=>"2 Bedroom Villa", "@id"=>"10255"}],
+                  "@id"=>"96"},
+                 {"accommodation_name"=>"3 Bedroom - 2 Bathroom",
+                  "property_accommodation"=>
+                   [{"property_accommodation_name"=>"3 Bedroom Pool Suite", "@id"=>"10254"}, {"property_accommodation_name"=>"3 Bedroom Pool Villa", "@id"=>"10256"}],
+                  "@id"=>"99"},
+                 {"accommodation_name"=>"4 Bedroom - 3 Bathroom",
+                  "property_accommodation"=>{"property_accommodation_name"=>"4 Bedroom Pool Villa", "@id"=>"10257"},
+                  "@id"=>"103"}
+                ]
+            }
+          }
+        )
+      end
+
+      let(:detailed_property_with_units) do
+        SAW::Entities::DetailedProperty.new(attributes)
+      end
+
+      it "adds units" do
+        property = described_class.build(
+          basic_property,
+          detailed_property_with_units,
+          availabilities
+        )
+
+        expect(property.units).not_to eq([])
+        expect(property.units).to all(be_kind_of(Roomorama::Unit))
+      end
     end
   end
 end

@@ -3,6 +3,7 @@ module SAW
     class DetailedProperty
       attr_reader :internal_id, :type, :title, :description, :lat, :lon, :city,
                   :neighborhood, :address, :country, :amenities,
+                  :bed_configurations, :property_accommodations,
                   :not_supported_amenities
 
       def initialize(attrs = {})
@@ -18,6 +19,8 @@ module SAW
         @country                 = attrs[:country]
         @amenities               = attrs[:amenities]
         @images                  = attrs[:images]
+        @bed_configurations      = attrs[:bed_configurations]
+        @property_accommodations = attrs[:property_accommodations]
         @not_supported_amenities = attrs[:not_supported_amenities]
         @multi_unit              = attrs[:multi_unit]
       end
