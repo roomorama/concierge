@@ -69,7 +69,7 @@ module SAW
     end
 
     def valid_result?(hash)
-      hash["response"]["errors"].nil?
+      hash.get("response.errors").nil?
     end
 
     def error_result(hash)
