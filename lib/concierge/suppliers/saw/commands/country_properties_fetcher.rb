@@ -3,7 +3,7 @@ module SAW
     class CountryPropertiesFetcher < BaseFetcher
       def call(country)
         payload = payload_builder.propertysearch_request(country: country.id)
-        result = http.post(endpoint(:propertysearch), payload, content_type)
+        result = http.post(endpoint(:property_search), payload, content_type)
 
         if result.success?
           result_hash = response_parser.to_hash(result.value.body)
