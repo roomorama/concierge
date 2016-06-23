@@ -51,6 +51,19 @@ RSpec.describe API::Controllers::SAW::Booking do
       "Could not create booking with remote supplier"
     )
   end
+  
+  context "when response from the SAW api is not well-formed xml" do
+    it "returns a reservation with an appropriate error" do
+      mock_request(:propertybooking, :bad_xml)
+
+      reservation = controller.create_booking(request_params)
+      
+      expect(reservation.successful?).to be false
+      expect(reservation.errors[action]).to eq(
+        "Could not create booking with remote supplier"
+      )
+    end
+  end
 
   private
   def mock_request(endpoint, filename)

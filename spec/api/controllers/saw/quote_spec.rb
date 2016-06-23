@@ -69,6 +69,19 @@ RSpec.describe API::Controllers::SAW::Quote do
     end
   end
 
+  context "when response from the SAW api is not well-formed xml" do
+    it "returns a quotation with an appropriate error" do
+      mock_request(:propertyrates, :bad_xml)
+
+      quotation = controller.quote_price(request_params)
+      
+      expect(quotation.successful?).to be false
+      expect(quotation.errors[:quote]).to eq(
+        "Could not quote price with remote supplier"
+      )
+    end
+  end
+
   private
   def mock_request(endpoint, filename)
     stub_data = read_fixture("saw/#{endpoint}/#{filename}.xml")
