@@ -1,5 +1,4 @@
 require "spec_helper"
-require "pry"
 
 RSpec.describe SAW::Commands::DetailedPropertyFetcher do
   include Support::HTTPStubbing

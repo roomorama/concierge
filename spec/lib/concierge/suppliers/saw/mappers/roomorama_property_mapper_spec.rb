@@ -1,5 +1,4 @@
 require "spec_helper"
-require "pry"
 
 RSpec.describe SAW::Mappers::RoomoramaProperty do
   let(:property_images) do
