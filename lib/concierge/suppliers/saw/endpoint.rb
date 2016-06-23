@@ -1,4 +1,8 @@
 module SAW
+  # +SAW::Endpoint+
+  #
+  # This class provides mapping between internal endpoint names and 
+  # corresponding SAW API urls.
   class Endpoint
     ENDPOINTS = {
       countries:        "xml/country.aspx",
@@ -10,6 +14,8 @@ module SAW
       property_booking: "xml/propertybooking.aspx"
     }
 
+    # Returns a URL part for a given endpoint by its system name
+    # Raises exception in case if endpoint could not be found
     def self.endpoint_for(api_method)
       ENDPOINTS.fetch(api_method)
     end
