@@ -27,27 +27,27 @@ RSpec.describe API::Controllers::SAW::Booking do
   let(:controller) { described_class.new }
   let(:action) { :booking }
 
-  it "returns result object if booking request is completed successfully" do
+  it "returns reservation object if booking request is completed successfully" do
     mock_request(:propertybooking, :success)
     
-    result = controller.create_booking(request_params)
+    reservation = controller.create_booking(request_params)
     
-    expect(result.successful?).to be true
-    expect(result).to be_kind_of(Reservation)
-    expect(result.property_id).to eq(request_params[:property_id])
-    expect(result.unit_id).to eq(request_params[:unit_id])
-    expect(result.check_in).to eq(request_params[:check_in])
-    expect(result.check_out).to eq(request_params[:check_out])
-    expect(result.code).to eq('MTA66395')
+    expect(reservation.successful?).to be true
+    expect(reservation).to be_kind_of(Reservation)
+    expect(reservation.property_id).to eq(request_params[:property_id])
+    expect(reservation.unit_id).to eq(request_params[:unit_id])
+    expect(reservation.check_in).to eq(request_params[:check_in])
+    expect(reservation.check_out).to eq(request_params[:check_out])
+    expect(reservation.code).to eq('MTA66395')
   end
 
-  it "returns an error if booking request fails" do
+  it "returns an error reservation if booking request fails" do
     mock_request(:propertybooking, :error)
     
-    result = controller.create_booking(request_params)
+    reservation = controller.create_booking(request_params)
   
-    expect(result.successful?).to be false
-    expect(result.errors[action]).to eq(
+    expect(reservation.successful?).to be false
+    expect(reservation.errors[action]).to eq(
       "Could not create booking with remote supplier"
     )
   end
