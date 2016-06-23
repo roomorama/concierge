@@ -29,7 +29,7 @@ module SAW
     # Returns a +Result+ object.
     def quote(params)
       payload = payload_builder.build_compute_pricing(params)
-      result = http.post(endpoint_for(:propertyrates), payload, content_type)
+      result = http.post(endpoint_for(:property_rates), payload, content_type)
 
       if result.success?
         result_hash = response_parser.to_hash(result.value.body)
