@@ -22,48 +22,48 @@ RSpec.describe API::Controllers::SAW::Quote do
   it "performs successful request returning Quotation object" do
     mock_request(:propertyrates, :success)
 
-    result = controller.quote_price(request_params)
+    quotation = controller.quote_price(request_params)
 
-    expect(result.successful?).to be true
-    expect(result).to be_kind_of(Quotation)
-    expect(result.total).to eq(641)
-    expect(result.currency).to eq('EUR')
+    expect(quotation.successful?).to be true
+    expect(quotation).to be_kind_of(Quotation)
+    expect(quotation.total).to eq(641)
+    expect(quotation.currency).to eq('EUR')
   end
       
   context "when property is on request only" do
-    it "returns a result with appropriate error" do
+    it "returns a quotation with an appropriate error" do
       mock_request(:propertyrates, :request_only)
 
-      result = controller.quote_price(request_params)
+      quotation = controller.quote_price(request_params)
 
-      expect(result.successful?).to be false
-      expect(result.errors[:quote]).to eq(
+      expect(quotation.successful?).to be false
+      expect(quotation.errors[:quote]).to eq(
         "Could not quote price with remote supplier"
       )
     end
   end
 
   context "when given wrong currency" do
-    it "returns a result with appropriate error" do
+    it "returns a quotation with an appropriate error" do
       mock_request(:propertyrates, :currency_error)
       
-      result = controller.quote_price(request_params)
+      quotation = controller.quote_price(request_params)
 
-      expect(result.successful?).to be false
-      expect(result.errors[:quote]).to eq(
+      expect(quotation.successful?).to be false
+      expect(quotation.errors[:quote]).to eq(
         "Could not quote price with remote supplier"
       )
     end
   end
 
   context "when property has no available rates" do
-    it "returns a result with appropriate error" do
+    it "returns a quotation with an appropriate error" do
       mock_request(:propertyrates, :rates_not_available)
 
-      result = controller.quote_price(request_params)
+      quotation = controller.quote_price(request_params)
       
-      expect(result.successful?).to be false
-      expect(result.errors[:quote]).to eq(
+      expect(quotation.successful?).to be false
+      expect(quotation.errors[:quote]).to eq(
         "Could not quote price with remote supplier"
       )
     end
