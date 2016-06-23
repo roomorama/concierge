@@ -1,6 +1,10 @@
 module SAW
+  # +SAW::PayloadBuilder+
+  #
+  # This class builds XML payloads for all SAW endpoints.
   class PayloadBuilder
     
+    # Need to fetch all available accomodations
     DEFAULT_ACCOMODATION_TYPE = -1
     
     def initialize(credentials)
