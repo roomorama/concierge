@@ -122,39 +122,6 @@ module SAW
             {"title"=>"1 Bedroom Suite",
              "thumbnail_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=38995",
              "large_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=38997"},
-            {"title"=>"1 Bedroom Suite",
-             "thumbnail_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39000",
-             "large_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39002"},
-            {"title"=>"1 Bedroom Suite",
-             "thumbnail_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39005",
-             "large_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39007"},
-            {"title"=>"2 Bedroom Suite",
-             "thumbnail_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39010",
-             "large_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39012"},
-            {"title"=>"2 Bedroom Suite",
-             "thumbnail_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39015",
-             "large_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39017"},
-            {"title"=>"2 Bedroom Suite",
-             "thumbnail_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39020",
-             "large_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39022"},
-            {"title"=>"3 Bedroom Pool Suite",
-             "thumbnail_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39025",
-             "large_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39027"},
-            {"title"=>"3 Bedroom Pool Suite",
-             "thumbnail_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39030",
-             "large_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39032"},
-            {"title"=>"3 Bedroom Pool Suite",
-             "thumbnail_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39035",
-             "large_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39037"},
-            {"title"=>"3 Bedroom Pool Suite",
-             "thumbnail_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39045",
-             "large_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39047"},
-            {"title"=>"3 Bedroom Pool Suite",
-             "thumbnail_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39050",
-             "large_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39052"},
-            {"title"=>"Outrigger Laguna Phuket Resort & Villas",
-             "thumbnail_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39055",
-             "large_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39057"},
             {"title"=>"Outrigger Laguna Phuket Resort & Villas",
              "thumbnail_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39060",
              "large_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39062"}]},
@@ -301,8 +268,23 @@ module SAW
       property = described_class.build(hash)
 
       expect(property.images).to be_kind_of(Array)
-      expect(property.images.size).to eq(14)
+      expect(property.images.size).to eq(3)
       expect(property.images).to all(be_kind_of(Roomorama::Image))
+
+      images = property.images.sort_by(&:identifier)
+      url_prefix = "http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?"
+
+      image = images.find { |i| i.identifier == "18a2054d50d80faccd697db4e77dd1e8" }
+      expect(image.caption).to eq("Outrigger Laguna Phuket Resort & Villas")
+      expect(image.url).to eq("#{url_prefix}ImageInstanceId=39062")
+      
+      image = images.find { |i| i.identifier == "afba570fdc566cadcd9ec428e38c0256" }
+      expect(image.caption).to eq("1 Bedroom Suite")
+      expect(image.url).to eq("#{url_prefix}ImageInstanceId=38992")
+      
+      image = images.find { |i| i.identifier == "b2a73c895dd9d3e6acd88e2a8a0ec66b" }
+      expect(image.caption).to eq("1 Bedroom Suite")
+      expect(image.url).to eq("#{url_prefix}ImageInstanceId=38997")
     end
 
     it "adds bedding configurations" do
