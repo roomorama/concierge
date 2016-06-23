@@ -1,5 +1,4 @@
 require "spec_helper"
-require "pry"
 require_relative "../shared/quote_validations"
 require_relative "../shared/external_error_reporting"
 
