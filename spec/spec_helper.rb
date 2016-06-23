@@ -1,6 +1,7 @@
 ENV['HANAMI_ENV'] ||= 'test'
 
 require_relative '../config/environment'
+require 'pry'
 Hanami::Application.preload!
 
 Dir[__dir__ + '/support/**/*.rb'].each { |f| require f }

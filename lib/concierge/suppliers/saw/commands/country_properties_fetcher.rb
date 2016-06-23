@@ -21,7 +21,7 @@ module SAW
 
       private
       def build_properties(properties_hash, country)
-        properties = properties_hash["response"]["properties"]["property"]
+        properties = properties_hash.get("response.properties.property")
 
         if properties
           to_array(properties).map do |prop|
