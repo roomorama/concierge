@@ -21,7 +21,7 @@ module SAW
 
       private
       def build_property(result_hash)
-        property_hash = result_hash["response"]["property"]
+        property_hash = result_hash.get("response.property")
       
         SAW::Mappers::DetailedProperty.build(
           property_hash,

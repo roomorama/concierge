@@ -21,10 +21,10 @@ module SAW
 
       private
       def build_countries(countries_hash)
-        countries = countries_hash["response"]["countries"]
+        countries = countries_hash.get("response.countries")
       
         if countries
-          to_array(countries["country"]).map do |hash|
+          to_array(countries.get("country")).map do |hash|
             SAW::Mappers::Country.build(hash)
           end
         else
