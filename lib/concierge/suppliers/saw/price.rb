@@ -69,15 +69,22 @@ module SAW
     end
 
     def valid_result?(hash)
-      hash.get("response.errors").nil?
+      if hash.get("response")
+        hash.get("response.errors").nil?
+      else
+        false
+      end
     end
 
     def error_result(hash)
-      error = hash.get("response.errors.error")
-      code = error.get("code")
-      data = error.get("description")
-
-      Result.error(code, data)
+      if hash.get("response.errors")
+        code = hash.get("response.errors.error.code")
+        data = hash.get("response.errors.error.description")
+        
+        Result.error(code, data)
+      else
+        Result.error(:unrecognised_response)
+      end
     end
   end
 end
