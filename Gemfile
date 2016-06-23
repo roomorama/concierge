@@ -20,7 +20,6 @@ gem 'rollbar', '~> 2.8'
 gem 'aws-sdk', '~> 2.3'
 gem 'whenever', '~> 0.9', require: false
 gem 'iso_country_codes', '~> 0.7.4'
-gem 'pry'
 
 group :test do
   gem 'rspec', '~> 3.4.0'
