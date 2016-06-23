@@ -1,6 +1,5 @@
 require "spec_helper"
 require "timecop"
-require "pry"
 
 RSpec.describe SAW::Mappers::AvailabilityCalendar do
   before { Timecop.freeze(Time.local(2015,1,10)) }

@@ -1,5 +1,4 @@
 require "spec_helper"
-require "pry"
 
 RSpec.describe SAW::Importer do
   include Support::HTTPStubbing
