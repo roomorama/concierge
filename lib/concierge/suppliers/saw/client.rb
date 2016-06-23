@@ -26,7 +26,7 @@ module SAW
     # from SAW, a generic error message is sent back to the caller, and the
     # failure is logged.
     def quote(params)
-      result = SAW::Price.new(credentials).quote(params)
+      result = SAW::Commands::PriceFetcher.new(credentials).call(params)
 
       if result.success?
         result.value
@@ -41,7 +41,7 @@ module SAW
     # from SAW, a generic error message is sent back to the caller, and the
     # failure is logged.
     def book(params)
-      result = SAW::Booking.new(credentials).book(params)
+      result = SAW::Commands::Booking.new(credentials).call(params)
 
       if result.success?
         result.value.tap { |reservation| database.create(reservation) }
