@@ -3,6 +3,7 @@ require "spec_helper"
 RSpec.describe SAW::Commands::DetailedPropertyFetcher do
   include Support::HTTPStubbing
   include Support::Fixtures
+  include Support::SAW::MockRequest
 
   let(:credentials) { Concierge::Credentials.for("SAW") }
   let(:subject) { described_class.new(credentials) }
@@ -22,15 +23,5 @@ RSpec.describe SAW::Commands::DetailedPropertyFetcher do
 
     result = subject.call(1) 
     expect(result.success?).to be false
-  end
-
-  private
-  def mock_request(endpoint, filename)
-    stub_data = read_fixture("saw/#{endpoint}/#{filename}.xml")
-    stub_call(:post, endpoint_for(endpoint)) { [200, {}, stub_data] }
-  end
-
-  def endpoint_for(method)
-    "http://staging.servicedapartmentsworldwide.net/xml/#{method}.aspx"
   end
 end
