@@ -2,22 +2,21 @@ module SAW
   module Mappers
     class RoomoramaImageSet
       def self.build(hash, image_url_rewrite)
-        image_gallery = hash["image_gallery"]
+        images = hash.get("image_gallery.image")
         
-        if image_gallery
-          images = image_gallery['image']
-          
-          to_array(images).map { |h| build_image(h, image_url_rewrite) }
-        else
-          []
+        return [] unless images
+        
+        to_array(images).map do |h| 
+          safe_hash = Concierge::SafeAccessHash.new(h)
+          build_image(safe_hash, image_url_rewrite)
         end
       end
 
       def self.build_image(hash, image_url_rewrite)
-        url = hash.fetch("large_image_url").to_s
-        title = hash.fetch("title").to_s.strip
+        url = hash.get("large_image_url").to_s
+        title = hash.get("title").to_s.strip
 
-        identifier = hash["id"] || Digest::MD5.hexdigest(url)
+        identifier = hash.get("id") || Digest::MD5.hexdigest(url)
         image = Roomorama::Image.new(identifier)
         image.url = Converters::URLRewriter.build(url, rewrite: image_url_rewrite)
         image.caption = title
