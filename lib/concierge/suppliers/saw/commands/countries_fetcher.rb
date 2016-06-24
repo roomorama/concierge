@@ -23,12 +23,11 @@ module SAW
       def build_countries(countries_hash)
         countries = countries_hash.get("response.countries")
       
-        if countries
-          to_array(countries.get("country")).map do |hash|
-            SAW::Mappers::Country.build(hash)
-          end
-        else
-          []
+        return [] unless countries
+        
+        to_array(countries.get("country")).map do |hash|
+          safe_hash = Concierge::SafeAccessHash.new(hash)
+          SAW::Mappers::Country.build(safe_hash)
         end
       end
 
