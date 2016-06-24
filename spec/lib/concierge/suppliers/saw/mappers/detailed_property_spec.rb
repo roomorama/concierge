@@ -114,20 +114,23 @@ module SAW
             "WIFI Reception Area Free of Charge",
             "Work Place"]},
         "local_attractions"=>{"local_attraction"=>"Laguna Phuket Golf Club"},
-        "image_gallery"=>
-         {"image"=>
-           [{"title"=>"1 Bedroom Suite",
-             "thumbnail_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=38990",
-             "large_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=38992"},
-            {"title"=>"1 Bedroom Suite",
-             "thumbnail_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=38995",
-             "large_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=38997"},
-            {"title"=>"Outrigger Laguna Phuket Resort & Villas",
-             "thumbnail_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39060",
-             "large_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39062"}]},
+        "image_gallery"=> image_gallery_attributes,
         "map_location"=>{"latitude"=>"8.00382", "longitude"=>"98.30736", "full_address"=>"Address1 Address2 Phuket Thailand"},
         "@id"=>"2893"
       }
+    end
+
+    let(:image_gallery_attributes) do
+      {"image"=>
+        [{"title"=>"1 Bedroom Suite",
+          "thumbnail_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=38990",
+          "large_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=38992"},
+         {"title"=>"1 Bedroom Suite",
+          "thumbnail_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=38995",
+          "large_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=38997"},
+         {"title"=>"Outrigger Laguna Phuket Resort & Villas",
+          "thumbnail_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39060",
+          "large_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39062"}]}
     end
 
     let(:hash) do
@@ -264,27 +267,49 @@ module SAW
       expect(property.multi_unit?).to be_truthy
     end
 
-    it "adds images" do
-      property = described_class.build(hash)
+    context "while parsing and mapping images to property" do
+      it "adds images" do
+        property = described_class.build(hash)
 
-      expect(property.images).to be_kind_of(Array)
-      expect(property.images.size).to eq(3)
-      expect(property.images).to all(be_kind_of(Roomorama::Image))
+        expect(property.images).to be_kind_of(Array)
+        expect(property.images.size).to eq(3)
+        expect(property.images).to all(be_kind_of(Roomorama::Image))
 
-      images = property.images.sort_by(&:identifier)
-      url_prefix = "http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?"
+        images = property.images.sort_by(&:identifier)
+        url_prefix = "http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?"
 
-      image = images.find { |i| i.identifier == "18a2054d50d80faccd697db4e77dd1e8" }
-      expect(image.caption).to eq("Outrigger Laguna Phuket Resort & Villas")
-      expect(image.url).to eq("#{url_prefix}ImageInstanceId=39062")
+        image = images.find { |i| i.identifier == "18a2054d50d80faccd697db4e77dd1e8" }
+        expect(image.caption).to eq("Outrigger Laguna Phuket Resort & Villas")
+        expect(image.url).to eq("#{url_prefix}ImageInstanceId=39062")
+        
+        image = images.find { |i| i.identifier == "afba570fdc566cadcd9ec428e38c0256" }
+        expect(image.caption).to eq("1 Bedroom Suite")
+        expect(image.url).to eq("#{url_prefix}ImageInstanceId=38992")
+        
+        image = images.find { |i| i.identifier == "b2a73c895dd9d3e6acd88e2a8a0ec66b" }
+        expect(image.caption).to eq("1 Bedroom Suite")
+        expect(image.url).to eq("#{url_prefix}ImageInstanceId=38997")
+      end
       
-      image = images.find { |i| i.identifier == "afba570fdc566cadcd9ec428e38c0256" }
-      expect(image.caption).to eq("1 Bedroom Suite")
-      expect(image.url).to eq("#{url_prefix}ImageInstanceId=38992")
+      context 'when only one image available' do
+        let(:image_gallery_attributes) do
+          {
+            "image"=>{
+              "title"=>"1 Bedroom Suite",
+              "thumbnail_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=38990",
+              "large_image_url"=>"http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=38992"
+            }
+          }
+        end
       
-      image = images.find { |i| i.identifier == "b2a73c895dd9d3e6acd88e2a8a0ec66b" }
-      expect(image.caption).to eq("1 Bedroom Suite")
-      expect(image.url).to eq("#{url_prefix}ImageInstanceId=38997")
+        it "adds images" do
+          property = described_class.build(hash)
+
+          expect(property.images).to be_kind_of(Array)
+          expect(property.images.size).to eq(1)
+          expect(property.images).to all(be_kind_of(Roomorama::Image))
+        end
+      end
     end
 
     it "adds bedding configurations" do
