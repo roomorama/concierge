@@ -4,8 +4,8 @@ module SAW
       class << self
         def build(hash)
           Entities::Country.new(
-            id: hash["@id"],
-            name: hash["country_name"]
+            id: hash.get("@id"),
+            name: hash.get("country_name")
           )
         end
       end
