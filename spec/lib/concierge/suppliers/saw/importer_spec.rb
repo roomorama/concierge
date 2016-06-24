@@ -3,7 +3,7 @@ require "spec_helper"
 RSpec.describe SAW::Importer do
   include Support::HTTPStubbing
   include Support::Fixtures
-  
+  include Support::SAW::MockRequest
 
   let(:credentials) { Concierge::Credentials.for("SAW") }
   let(:subject) { described_class.new(credentials) }
@@ -26,15 +26,5 @@ RSpec.describe SAW::Importer do
       properties = subject.fetch_properties_by_countries(countries_result.value)
       expect(properties.size).to eq(20)
     end
-  end
-  
-  private
-  def mock_request(endpoint, filename)
-    stub_data = read_fixture("saw/#{endpoint}/#{filename}.xml")
-    stub_call(:post, endpoint_for(endpoint)) { [200, {}, stub_data] }
-  end
-
-  def endpoint_for(method)
-    "http://staging.servicedapartmentsworldwide.net/xml/#{method}.aspx"
   end
 end
