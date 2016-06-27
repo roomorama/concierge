@@ -43,4 +43,15 @@ RSpec.describe SAW::Commands::CountriesFetcher do
     expect(results.success?).to be false
     expect(countries).to be_nil
   end
+  
+  context "when response from the SAW api is not well-formed xml" do
+    it "returns a result with an appropriate error" do
+      mock_bad_xml_request(:country)
+
+      result = subject.call
+    
+      expect(result.success?).to be false
+      expect(result.error.code).to eq(:unrecognised_response)
+    end
+  end
 end
