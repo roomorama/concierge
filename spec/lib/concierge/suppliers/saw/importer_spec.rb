@@ -55,4 +55,17 @@ RSpec.describe SAW::Importer do
       expect(properties.size).to eq(20)
     end
   end
+  
+  describe "fetch_detailed_property" do
+    let(:property_id) { 'fake' }
+
+    it "returns a result with detailed property" do
+      mock_request(:propertydetail, :success)
+    
+      property_result = subject.fetch_detailed_property(property_id)
+      property = property_result.value
+
+      expect(property).to be_kind_of(SAW::Entities::DetailedProperty)
+    end
+  end
 end
