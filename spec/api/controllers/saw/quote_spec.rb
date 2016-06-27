@@ -70,7 +70,7 @@ RSpec.describe API::Controllers::SAW::Quote do
 
   context "when response from the SAW api is not well-formed xml" do
     it "returns a quotation with an appropriate error" do
-      mock_request(:propertyrates, :bad_xml)
+      mock_bad_xml_request(:propertyrates)
 
       quotation = controller.quote_price(request_params)
       

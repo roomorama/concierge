@@ -6,6 +6,11 @@ module Support
         stub_call(:post, endpoint_for(endpoint)) { [200, {}, stub_data] }
       end
 
+      def mock_bad_xml_request(endpoint)
+        stub_data = read_fixture("saw/bad_xml.xml")
+        stub_call(:post, endpoint_for(endpoint)) { [200, {}, stub_data] }
+      end
+
       def endpoint_for(method)
         "http://staging.servicedapartmentsworldwide.net/xml/#{method}.aspx"
       end
