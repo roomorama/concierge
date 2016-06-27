@@ -35,7 +35,7 @@ module Workers
     def initialize(host)
       @host        = host
       @router      = Workers::Router.new(host)
-      @sync_record = create_sync_record(host)
+      @sync_record = init_sync_record(host)
       @counters    = PropertyCounters.new(0, 0, 0)
       @processed   = []
       @purge       = true
@@ -218,7 +218,7 @@ module Workers
       end
     end
 
-    def create_sync_record(host)
+    def init_sync_record(host)
       SyncProcess.new(
         host_id:    host.id,
         started_at: Time.now,
