@@ -75,7 +75,7 @@ module Waytostay
       attr.merge!({
         surface_unit:         "metric",
         default_to_available: true,
-        cancellation_policy:  "strict", #TODO: review cancellation policy
+        cancellation_policy:  "strict",
         instant_booking:      true
       })
       attr.merge! parse_floors(response)
