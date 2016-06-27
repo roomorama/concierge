@@ -68,3 +68,19 @@ collection :properties do
   attribute :created_at, Time
   attribute :updated_at, Time
 end
+
+collection :sync_processes do
+  entity     SyncProcess
+  repository SyncProcessRepository
+
+  attribute :id,                 Integer
+  attribute :host_id,            Integer
+  attribute :started_at,         Time
+  attribute :finished_at,        Time
+  attribute :successful,         Boolean
+  attribute :properties_created, Integer
+  attribute :properties_updated, Integer
+  attribute :properties_deleted, Integer
+  attribute :created_at,         Time
+  attribute :updated_at,         Time
+end
