@@ -23,7 +23,12 @@ module Support
       attributes = {
         identifier: "PROP1",
         host_id:    create_host.id,
-        data:       { title: "Studio Apartment in Madrid" },
+        data:       {
+          title: "Studio Apartment in Madrid",
+          images: [
+            { identifier: "PROP1IMAGE", url: "https://www.example.org/image.png" }
+          ]
+        },
       }.merge(overrides)
 
       property   = Property.new(attributes)

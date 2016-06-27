@@ -70,7 +70,7 @@ module Workers::Suppliers
     #
     def load_existing ref
       existing = PropertyRepository.from_host(host).identified_by(ref).first
-      Roomorama::Property.load(existing.data)
+      Roomorama::Property.load(existing.data.merge(identifier: ref))
     end
 
   end

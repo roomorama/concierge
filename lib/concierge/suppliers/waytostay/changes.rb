@@ -30,9 +30,9 @@ module Waytostay
             properties: response.get("properties.reference"),
             media: response.get("properties_media.reference"),
             availability: response.get("properties_availability.reference"),
-            rates: response.get("properties_rates.reference"),
-            reviews: response.get("properties_reviews.reference"),
-            bookings: response.get("bookings.reference"),
+            # rates: response.get("properties_rates.reference"), #TODO: remove this commented field when full calendar sync is implemented
+            # reviews: response.get("properties_reviews.reference"), #TODO: remove this comented field when booking sync is implemented
+            # bookings: response.get("bookings.reference"), #TODO: remove this comented field when booking sync is implemented
           }
         else
           augment_missing_fields(missing_keys)
