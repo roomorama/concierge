@@ -51,7 +51,8 @@ module API
           "/kigo"        => ENV["ROOMORAMA_SECRET_KIGO"],
           "/atleisure"   => ENV["ROOMORAMA_SECRET_ATLEISURE"],
           "/poplidays"   => ENV["ROOMORAMA_SECRET_POPLIDAYS"],
-          "/waytostay"   => ENV["ROOMORAMA_SECRET_WAYTOSTAY"]
+          "/waytostay"   => ENV["ROOMORAMA_SECRET_WAYTOSTAY"],
+          "/saw"         => ENV["ROOMORAMA_SECRET_SAW"]
         }
 
         attr_reader :mapping
