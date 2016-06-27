@@ -13,12 +13,12 @@ module AtLeisure
     end
 
     def valid?
-      missing_generic_keys? && images_key? && property_type_key?
+      includes_generic_keys && images_key? && property_type_key?
     end
 
     private
 
-    def missing_generic_keys?
+    def includes_generic_keys
       missing_keys = required_keys - payload.keys
       if missing_keys.empty?
         true
