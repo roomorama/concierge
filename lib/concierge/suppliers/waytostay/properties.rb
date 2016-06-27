@@ -151,8 +151,8 @@ module Waytostay
     def parse_amenities(response)
       roomorama_amenities = []
       amenities = response.get("facilities_amenities.overview")
-      AMENITIES_MAPPINGS.each do |amenity, key|
-         if amenities.any? { |a| a["name"]==key && a["checked"] }
+      AMENITIES_MAPPINGS.each do |amenity, wts_amenity_name|
+         if amenities.any? { |a| a["name"]==wts_amenity_name && a["checked"] }
            roomorama_amenities << amenity.to_s
          end
       end
@@ -188,7 +188,7 @@ module Waytostay
         "tv":                   "TV",
         "parking":              "Parking",
         "airconditioning":      "Air conditioning",
-        "laundry":              ["Washing machine"],
+        "laundry":              "Washing machine",
         "pool":                 "Swimming pool",
         "elevator":             "Lift",
         "balcony":              "Balcony",
