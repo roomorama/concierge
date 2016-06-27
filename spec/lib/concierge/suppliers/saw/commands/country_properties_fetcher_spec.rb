@@ -26,6 +26,17 @@ RSpec.describe SAW::Commands::CountryPropertiesFetcher do
       expect(result.success?).to be false
     end
   end
+  
+  context "when response from the SAW api is not well-formed xml" do
+    it "returns a result with an appropriate error" do
+      mock_bad_xml_request(:propertysearch)
+
+      result = subject.call(country)
+    
+      expect(result.success?).to be false
+      expect(result.error.code).to eq(:unrecognised_response)
+    end
+  end
 
   context "when response is success" do
     before do
