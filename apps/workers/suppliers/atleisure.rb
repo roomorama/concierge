@@ -73,7 +73,7 @@ module Workers::Suppliers
 
     def announce_error(message, result)
       message = {
-        label: 'Failed perform',
+        label: 'Synchronisation Failure',
         message: message,
         backtrace: caller
       }

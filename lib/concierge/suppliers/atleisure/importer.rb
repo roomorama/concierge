@@ -67,7 +67,7 @@ module AtLeisure
     end
 
     def language_layers
-      LANGUAGES.map {|lang| "LanguagePack#{lang.upcase}V4"}
+      LANGUAGES.map { |lang| "LanguagePack#{lang.upcase}V4" }
     end
 
   end
