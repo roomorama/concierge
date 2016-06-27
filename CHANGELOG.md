@@ -32,6 +32,7 @@ how this file is formatted and how the process works.
 - `waytostay#quote` and `waytostay#booking`, which calls the above client and respond accordingly
 - `byebug` for test/development debugging
 - `Concierge::SafeAccessHash#missing_keys_from?` utils method
+- `Concierge::SafeAccessHash#merge` utils method
 - `SyncProcess` entity and database, recording every synchronisation process run on Concierge.
 - `SyncProcess#last_successful_sync_for_host` returns the last successful SyncProcess entity for a host
 
