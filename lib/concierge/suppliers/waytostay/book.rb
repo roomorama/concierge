@@ -4,10 +4,10 @@ module Waytostay
   #
   module Book
 
-    ENDPOINT_BOOKING = "/bookings"
-    ENDPOINT_CONFIRMATION = "/bookings/:booking_reference/confirmation"
-    DEFAULT_CUSTOMER_LANGUAGE = "EN"
-    REQUIRED_RESPONSE_KEYS = [ "booking_reference" ]
+    ENDPOINT_BOOKING = "/bookings".freeze
+    ENDPOINT_CONFIRMATION = "/bookings/:booking_reference/confirmation".freeze
+    DEFAULT_CUSTOMER_LANGUAGE = "EN".freeze
+    REQUIRED_RESPONSE_KEYS = [ "booking_reference" ].freeze
 
     # Books and immediately confirms the waytostay booking
     #

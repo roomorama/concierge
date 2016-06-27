@@ -4,7 +4,7 @@ module Waytostay
   #
   module Properties
 
-    ENDPOINT = "/properties/:property_reference"
+    ENDPOINT = "/properties/:property_reference".freeze
 
     FIELD_MAPPINGS = {
         identifier:          "reference",
@@ -22,11 +22,11 @@ module Waytostay
         check_in_time:       "general.checkin_time",
         check_out_time:      "general.checkout_time",
         currency:            "payment.currency",
-      }
+      }.freeze
 
-    REQUIRED_RESPONSE_KEYS = FIELD_MAPPINGS.values +
+    REQUIRED_RESPONSE_KEYS = (FIELD_MAPPINGS.values +
       [ "facilities_amenities.overview", "facilities_amenities.rooms", "payment.fees",
-      "general.permissions", "services"]
+      "general.permissions", "services"]).freeze
 
     # Always returns a +Result+ wrapped +Roomorama::Property+.
     # If an error happens in any step in the process of getting a response back from

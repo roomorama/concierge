@@ -3,8 +3,8 @@ module Waytostay
   # Handles the fetching of images from Waytostay
   #
   module Media
-    ENDPOINT = "/properties/:property_reference/media"
-    REQUIRED_RESPONSE_KEYS = [ "_embedded.property_media" ]
+    ENDPOINT = "/properties/:property_reference/media".freeze
+    REQUIRED_RESPONSE_KEYS = [ "_embedded.property_media" ].freeze
 
     # Return a +Result+ wrapping a +Roomorama::Property+ instance, attaching
     # any images available from Waytostay.

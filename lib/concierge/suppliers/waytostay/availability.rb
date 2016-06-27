@@ -3,8 +3,8 @@ module Waytostay
   # Handles the fetching of availability
   #
   module Availability
-    ENDPOINT = "/properties/:property_reference/availability"
-    REQUIRED_RESPONSE_KEYS = [ "_embedded.properties_availability", "_links" ]
+    ENDPOINT = "/properties/:property_reference/availability".freeze
+    REQUIRED_RESPONSE_KEYS = [ "_embedded.properties_availability", "_links" ].freeze
 
     def update_availabilities(roomorama_property)
       first_page_path = build_path(ENDPIONT, property_reference: roomorama_property.identifier)

@@ -4,10 +4,10 @@ module Waytostay
   #
   module Changes
 
-    ENDPOINT = "/changes"
+    ENDPOINT = "/changes".freeze
     REQUIRED_RESPONSE_KEYS = [ "properties.reference", "properties_media.reference",
       "properties_availability.reference", "properties_rates.reference",
-      "properties_reviews.reference", "bookings.reference" ]
+      "properties_reviews.reference", "bookings.reference" ].freeze
 
     # Returns a hash of properties ref that changed, looking like:
     #   { properties: ["a", "b", "c"], media: ["c", "d"] }

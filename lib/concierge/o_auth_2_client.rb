@@ -36,11 +36,11 @@ module Concierge
 
     # events that are published via +Concierge::Announcer+ and that can be listened
     # independently.
-    ON_REQUEST  = "oauth2_client.on_request"
-    ON_RESPONSE = "oauth2_client.on_response"
-    ON_FAILURE  = "oauth2_client.on_failure"
-    ON_TOKEN_REQUEST  = "oauth2_client.on_token_request"
-    ON_TOKEN_RECEIVED = "oauth2_client.on_token_received"
+    ON_REQUEST  = "oauth2_client.on_request".freeze
+    ON_RESPONSE = "oauth2_client.on_response".freeze
+    ON_FAILURE  = "oauth2_client.on_failure".freeze
+    ON_TOKEN_REQUEST = "oauth2_client.on_token_request".freeze
+    ON_TOKEN_RECEIVED = "oauth2_client.on_token_received".freeze
 
     # by default, include a self identifying +User-Agent+ HTTP header so that
     # later analysis can pinpoint the running version of Concierge (and also
@@ -48,7 +48,7 @@ module Concierge
     # ideal.)
     DEFAULT_HEADERS = {
       "User-Agent" => "Roomorama/Concierge #{Concierge::VERSION}"
-    }
+    }.freeze
 
     def initialize(id:, secret:, base_url:, token_url:, **options)
       @options = options
