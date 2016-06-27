@@ -7,9 +7,10 @@ module AtLeisure
     attr_reader :check_in, :check_out, :price
 
     def initialize(period)
-      @check_in  = Date.parse(period['ArrivalDate'])
-      @check_out = Date.parse(period['DepartureDate'])
-      @price     = period['Price'].to_f
+      @check_in   = Date.parse(period['ArrivalDate'])
+      @check_out  = Date.parse(period['DepartureDate'])
+      @price      = period['Price'].to_f
+      @on_request = period['OnRequest'] == 'Yes'
     end
 
     def dates
@@ -21,7 +22,11 @@ module AtLeisure
     end
 
     def valid?
-      check_in > Date.today
+      check_in > Date.today && !on_request?
+    end
+
+    def on_request?
+      @on_request
     end
   end
 end

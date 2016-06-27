@@ -15,7 +15,7 @@ RSpec.describe AtLeisure::PayloadValidation do
       expect(validation.valid?).to be false
     end
 
-    it 'fails with missing keys' do
+    it 'is success' do
       validation = described_class.new(payload)
 
       expect(Concierge.context).to_not receive(:augment)

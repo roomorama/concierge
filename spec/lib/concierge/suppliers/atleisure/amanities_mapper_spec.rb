@@ -13,7 +13,7 @@ RSpec.describe AtLeisure::AmenitiesMapper do
       fixture_amenities = ['kitchen', 'balcony', 'parking']
 
       expect(amenities).to be_a Array
-      expect(amenities).to include *fixture_amenities
+      expect(amenities).to eq fixture_amenities
     end
   end
 end

@@ -19,7 +19,7 @@ module AtLeisure
       towels    = costs_on_site.find { |cost| cost['Bath towels'] == 'Bed linen' && cost['Value'] == 'Included' }
       amenities << 'bed_linen_and_towels' if bed_linen && towels
 
-      amenities
+      amenities.compact.uniq
     end
 
 

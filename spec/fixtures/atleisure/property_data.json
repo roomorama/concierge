@@ -810,7 +810,7 @@
       "DepartureDate": "2017-12-11",
       "DepartureTimeFrom": "09:00",
       "DepartureTimeUntil": "10:00",
-      "OnRequest": "No",
+      "OnRequest": "Yes",
       "Price": 681,
       "PriceExclDiscount": 681
     },
@@ -822,45 +822,9 @@
       "DepartureDate": "2017-12-15",
       "DepartureTimeFrom": "09:00",
       "DepartureTimeUntil": "10:00",
-      "OnRequest": "No",
+      "OnRequest": "Yes",
       "Price": 868,
       "PriceExclDiscount": 868
-    },
-    {
-      "Quantity": 1,
-      "ArrivalDate": "2017-12-04",
-      "ArrivalTimeFrom": "16:00",
-      "ArrivalTimeUntil": "18:00",
-      "DepartureDate": "2017-12-17",
-      "DepartureTimeFrom": "19:00",
-      "DepartureTimeUntil": "20:00",
-      "OnRequest": "No",
-      "Price": 1129,
-      "PriceExclDiscount": 1129
-    },
-    {
-      "Quantity": 1,
-      "ArrivalDate": "2017-12-04",
-      "ArrivalTimeFrom": "16:00",
-      "ArrivalTimeUntil": "18:00",
-      "DepartureDate": "2017-12-18",
-      "DepartureTimeFrom": "09:00",
-      "DepartureTimeUntil": "10:00",
-      "OnRequest": "No",
-      "Price": 1124,
-      "PriceExclDiscount": 1124
-    },
-    {
-      "Quantity": 1,
-      "ArrivalDate": "2017-12-04",
-      "ArrivalTimeFrom": "16:00",
-      "ArrivalTimeUntil": "18:00",
-      "DepartureDate": "2017-12-22",
-      "DepartureTimeFrom": "09:00",
-      "DepartureTimeUntil": "10:00",
-      "OnRequest": "No",
-      "Price": 1302,
-      "PriceExclDiscount": 1302
     },
     {
       "Quantity": 1,
@@ -942,7 +906,7 @@
       "DepartureDate": "2017-12-28",
       "DepartureTimeFrom": "09:00",
       "DepartureTimeUntil": "10:00",
-      "OnRequest": "No",
+      "OnRequest": "Yes",
       "Price": 1334,
       "PriceExclDiscount": 1334
     },
