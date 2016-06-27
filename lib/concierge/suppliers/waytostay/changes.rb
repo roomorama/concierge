@@ -1,4 +1,3 @@
-# TODO: handle pagination
 module Waytostay
   #
   # Handles all things booking related for waytostay
