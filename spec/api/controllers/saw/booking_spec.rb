@@ -55,7 +55,7 @@ RSpec.describe API::Controllers::SAW::Booking do
   
   context "when response from the SAW api is not well-formed xml" do
     it "returns a reservation with an appropriate error" do
-      mock_request(:propertybooking, :bad_xml)
+      mock_bad_xml_request(:propertybooking)
 
       reservation = controller.create_booking(request_params)
       
