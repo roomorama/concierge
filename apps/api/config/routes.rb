@@ -11,7 +11,7 @@ post '/atleisure/booking', to: 'at_leisure#booking'
 post '/waytostay/booking', to: 'waytostay#booking'
 post '/kigo/booking',        to: 'kigo#booking'
 post '/kigo/legacy/booking', to: 'kigo/legacy#booking'
-post '/saw/booking',       to: 'saw#booking'
+post '/saw/booking',         to: 's_a_w#booking'
 
 post 'waytostay/cancel',   to: 'waytostay#cancel'
 
