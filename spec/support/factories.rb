@@ -6,6 +6,19 @@ module Support
   # entities. For each method, a set of defaults is assumed, which can be
   # overwritten by passing a hash of attributes to each of them.
   module Factories
+    def create_sync_process(overrides = {})
+      attributes  = {
+        started_at: Time.now - 10 * 60, # 10 minutes ago
+        finished_at: Time.now,
+        properties_created: 1,
+        properties_updated: 1,
+        properties_deleted: 1
+      }.merge(overrides)
+
+      process = SyncProcess.new(attributes)
+      SyncProcessRepository.create(process)
+    end
+
     def create_property(overrides = {})
       attributes = {
         identifier: "PROP1",
