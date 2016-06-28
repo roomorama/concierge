@@ -6,6 +6,8 @@ module API::Controllers::SAW
   # Performs booking quotations for properties from SAW.
   class Quote
     include API::Controllers::Quote
+    
+    params API::Controllers::Params::MultiUnitQuote
 
     # Make price (property rate) request 
     #
