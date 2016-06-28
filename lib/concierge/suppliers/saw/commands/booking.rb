@@ -42,13 +42,13 @@ module SAW
       private
       def build_payload(params)
         payload_builder.build_booking_request(
-          property_id:   params[:property_id],
-          unit_id:       params[:unit_id],
-          currency_code: params[:currency_code],
-          check_in:      params[:check_in],
-          check_out:     params[:check_out],
-          num_guests:    params[:guests],
-          total:         params[:subtotal],
+          property_id:   params.get("property_id"),
+          unit_id:       params.get("unit_id"),
+          currency_code: params.get("currency_code"),
+          check_in:      params.get("check_in"),
+          check_out:     params.get("check_out"),
+          num_guests:    params.get("guests"),
+          total:         params.get("subtotal"),
           user: {
             first_name:  params.get("customer.first_name"),
             last_name:   params.get("customer.last_name"),
