@@ -38,20 +38,20 @@ module API::Controllers::Params
     end
 
     def validation_errors
-      errors.each.to_a + travel_dates.errors
+      errors.each.to_a + date_comparison.errors
     end
 
     def valid?
-      builtin_validations      = super
-      travel_dates_validations = travel_dates.valid?
+      builtin_validations = super
+      date_validations    = date_comparison.valid?
 
-      builtin_validations && travel_dates_validations
+      builtin_validations && date_validations
     end
 
     private
 
-    def travel_dates
-      @travel_dates ||= TravelDates.new(self[:check_in], self[:check_out])
+    def date_comparison
+      @date_comparison ||= DateComparison.new(check_in: self[:check_in], check_out: self[:check_out])
     end
   end
 
