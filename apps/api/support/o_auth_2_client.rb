@@ -120,7 +120,8 @@ module API::Support
       Concierge::Announcer.trigger(ON_RESPONSE, response.status, response.headers, response.body)
       json_serializer.decode(response.body)
     rescue OAuth2::Error => err
-      Concierge::Announcer.trigger(ON_FAILURE, err.message)
+      response = err.response
+      Concierge::Announcer.trigger(ON_RESPONSE, response.status, response.headers, response.body)
       Result.error(:"http_status_#{err.response.status}", err.response.body)
     rescue Faraday::TimeoutError => err
       Concierge::Announcer.trigger(ON_FAILURE, err.message)
