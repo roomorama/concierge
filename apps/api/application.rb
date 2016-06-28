@@ -4,7 +4,7 @@ require_relative "middlewares/request_logging"
 require_relative "middlewares/authentication"
 require_relative "middlewares/roomorama_webhook"
 require_relative "middlewares/request_context"
-require_relative 'views/accept_json'
+require_relative "views/accept_json"
 
 module API
   class Application < Hanami::Application
