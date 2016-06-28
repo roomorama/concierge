@@ -1,0 +1,15 @@
+{
+
+  "booking_reference": "KUFSHS",
+
+  "_links": {
+
+    "self": {
+
+      "href": "https://apis.waytostay.com/bookings/KUFSHS"
+
+    }
+
+  }
+
+}

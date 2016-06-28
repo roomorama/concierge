@@ -10,14 +10,14 @@ RSpec.describe API::Support::SOAPClient do
     before(:all) { savon.mock! }
     after(:all) { savon.unmock! }
 
-    # todo: prevent remote request for savon calls
-    # Have to set real endpoint, Savon sends request to check operations
     let(:endpoint) { 'https://trial-www.jtbgenesis.com/genesis2-demo/services/GA_HotelAvail_v2013' }
     let(:operation) { :gby010 }
     let(:succeed_response) { read_fixture('jtb/GA_HotelAvailRS.xml') }
     subject { described_class.new(options(endpoint)) }
 
     it 'returns result' do
+      allow(HTTPI).to receive(:get) { HTTPI::Response.new(200, {}, read_fixture('jtb/wsdl_response.xml')) }
+
       savon.expects(operation).with(message: :any).returns(succeed_response)
       result = subject.call(operation)
       expect(result).to be_a Result
@@ -26,6 +26,8 @@ RSpec.describe API::Support::SOAPClient do
     end
 
     it "announces request and response" do
+      allow(HTTPI).to receive(:get) { HTTPI::Response.new(200, {}, read_fixture('jtb/wsdl_response.xml')) }
+
       request  = Struct.new(:endpoint, :operation, :message).new
       response = Struct.new(:code, :headers, :body).new
 
@@ -56,6 +58,8 @@ RSpec.describe API::Support::SOAPClient do
     context 'handling errors' do
 
       it 'fails if wrong operation name' do
+        allow(HTTPI).to receive(:get) { HTTPI::Response.new(200, {}, "<concierge>true</concierge>") }
+
         operation = :wrong_name
         result    = subject.call(operation)
         expect(result).to be_a Result
@@ -67,7 +71,10 @@ RSpec.describe API::Support::SOAPClient do
         let(:wrong_endpoint) { 'https://trial-www.jtbgenesis.com/genesis2-demo/services/SomeMistake' }
         subject { described_class.new(options(wrong_endpoint)) }
 
+        before { allow(HTTPI).to receive(:get) { HTTPI::Response.new(404, {}, []) } }
+
         it 'returns result with 404 http error' do
+
           result = subject.call(operation)
           expect(result).to be_a Result
           expect(result).not_to be_success
@@ -95,10 +102,10 @@ RSpec.describe API::Support::SOAPClient do
 
   def options(endpoint)
     {
-        wsdl:                 endpoint + '?wsdl',
-        env_namespace:        :soapenv,
-        namespace_identifier: 'some namespace',
-        endpoint:             endpoint
+      wsdl:                 endpoint + '?wsdl',
+      env_namespace:        :soapenv,
+      namespace_identifier: 'some namespace',
+      endpoint:             endpoint
     }
 
   end

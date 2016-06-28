@@ -166,7 +166,7 @@ RSpec.describe Web::Views::ExternalErrors::Show do
     it "formats the timestamp, including the timezone offset" do
       attributes[:context][:events].first[:timestamp] = Time.new("2016", "05", "25", "19", "32", "51", "+08:00").to_s
 
-      expect(view.format_timestamp(error.context[:events].first)).to eq "19:32:51 (+0800)"
+      expect(view.format_timestamp(error.context[:events].first[:timestamp])).to eq "19:32:51 (+0800)"
     end
   end
 end

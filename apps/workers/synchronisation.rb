@@ -27,14 +27,18 @@ module Workers
   #   sync.finish! # => non-processed properties are deleted at the end of the process.
   class Synchronisation
 
-    attr_reader :host, :router, :processed, :failed
+    PropertyCounters = Struct.new(:created, :updated, :deleted)
+
+    attr_reader :host, :router, :sync_record, :counters, :processed, :purge
 
     # host - an instance of +Host+.
     def initialize(host)
-      @host      = host
-      @router    = Workers::Router.new(host)
-      @processed = []
-      @failed    = false
+      @host        = host
+      @router      = Workers::Router.new(host)
+      @sync_record = init_sync_record(host)
+      @counters    = PropertyCounters.new(0, 0, 0)
+      @processed   = []
+      @purge       = true
     end
 
     # Indicates that the property with the given +identifier+ is being synchronised.
@@ -73,6 +77,24 @@ module Workers
       end
     end
 
+    # indicates that the synchronisation process failed. As a consequence:
+    #
+    # * no purging is done when +finish!+ is called.
+    # * the corresponding +sync_process+ record will indicate that this process
+    #   failed
+    def failed!
+      sync_record.successful = false
+      skip_purge!
+    end
+
+    # indicates that purging should not be performed when +finish!+ is called.
+    # Useful for synchronisation process that are customised and where the
+    # cleanup logic does not fit the flow expected by this class. Purging is
+    # then needs to be implemented separately by the supplier implementation.
+    def skip_purge!
+      @purge = false
+    end
+
     # finishes the synchronisation process. This method should only be called
     # when all properties from the host have already been processed (through
     # the use of +start+). It checks which properties need to be disabled,
@@ -83,14 +105,13 @@ module Workers
     # on Roomorama (rationale: if a supplier faces an intermittent issue during
     # the synchronisation process, we do not want to disable all properties
     # as a consequence of that.)
+    #
+    # This also persists an entry on the +sync_processes+, registering the completion
+    # of the synchronisation process, with the number of properties created/updated/
+    # deleted, collected during the process.
     def finish!
-      return if failed
-
-      purge = all_identifiers - processed
-
-      unless purge.empty?
-        run_operation(disable_op(purge))
-      end
+      purge_properties
+      save_sync_process
     end
 
     private
@@ -107,12 +128,9 @@ module Workers
       router.dispatch(property).tap do |operation|
         if operation
           run_operation(operation, property)
+          update_counters(operation)
         end
       end
-    end
-
-    def failed!
-      @failed = true
     end
 
     def initialize_context(identifier)
@@ -136,6 +154,28 @@ module Workers
       false
     end
 
+    def purge_properties
+      return unless purge
+
+      purge = all_identifiers - processed
+
+      unless purge.empty?
+        run_operation(disable_op(purge))
+        counters.deleted = purge.size
+      end
+    end
+
+    def save_sync_process
+      database = Concierge::OptionalDatabaseAccess.new(SyncProcessRepository)
+
+      sync_record.properties_created = counters.created
+      sync_record.properties_updated = counters.updated
+      sync_record.properties_deleted = counters.deleted
+      sync_record.finished_at        = Time.now
+
+      database.create(sync_record)
+    end
+
     def run_operation(operation, *args)
       result = Workers::OperationRunner.new(host).perform(operation, *args)
       announce_failure(result) unless result.success?
@@ -155,7 +195,6 @@ module Workers
         operation:   "sync",
         supplier:    SupplierRepository.find(host.supplier_id).name,
         code:        result.error.code,
-        message:     "DEPRECATED",
         context:     Concierge.context.to_h,
         happened_at: Time.now,
       })
@@ -167,6 +206,23 @@ module Workers
 
     def disable_op(identifiers)
       Roomorama::Client::Operations.disable(identifiers)
+    end
+
+    def update_counters(operation)
+      case operation
+      when Roomorama::Client::Operations::Publish
+        counters.created += 1
+      when Roomorama::Client::Operations::Diff
+        counters.updated += 1
+      end
+    end
+
+    def init_sync_record(host)
+      SyncProcess.new(
+        host_id:    host.id,
+        started_at: Time.now,
+        successful: true
+      )
     end
 
   end
