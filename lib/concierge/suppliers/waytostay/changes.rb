@@ -15,7 +15,7 @@ module Waytostay
     # If an error happens in any step in the process of getting a response back from
     # Waytostay, +nil+ is returned, and failure is logged.
     #
-    def get_changes_since(last_synced_timestamp=nil)
+    def get_changes_since(last_synced_timestamp = nil)
       params = {timestamp: last_synced_timestamp} if last_synced_timestamp
       result = oauth2_client.get(ENDPOINT,
                                  params: params,
