@@ -15,6 +15,7 @@ how this file is formatted and how the process works.
 - `Concierge::SafeAccessHash#missing_keys_from?` utils method
 - `SyncProcess` entity and database, recording every synchronisation process run on Concierge.
 - Register HTTP response when OAuth2 errors happen.
+- Identify content-type more accurately on context view by normalizing header names.
 
 ### Changed
 - HTTPStubbing supports matching by body and headers, by including `strict: true` option to `stub_call`
