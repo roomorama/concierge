@@ -4,6 +4,25 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [Unreleased]
+### Added
+- `API::Support::OAuth2Client`, a wrapper around oauth2 calls, caching access token and returning +Result+ objects
+- `Context::TokenRequest` and `Context::TokenReceived` events, which is announced around Oauth2 token requests
+- Shared partner #quote and #book examples
+- `Waytostay::Client` which implements quoting and booking with partner
+- `waytostay#quote` and `waytostay#booking`, which calls the above client and respond accordingly
+- `byebug` for test/development debugging
+- `Concierge::SafeAccessHash#missing_keys_from?` utils method
+- `SyncProcess` entity and database, recording every synchronisation process run on Concierge.
+- `SyncProcess#last_successful_sync_for_host` returns the last successful SyncProcess entity for a host
+- Register HTTP response when OAuth2 errors happen.
+- Identify content-type more accurately on context view by normalizing header names.
+
+### Changed
+- HTTPStubbing supports matching by body and headers, by including `strict: true` option to `stub_call`
+- Quotation total and fee changed from int to float
+- removed the `message` column from the `external_errors` table, as well as related code.
+
 ## [0.4.1] - 2016-06-15
 ### Changed
 - Check-in/check-out dates consistency validation on quote/booking calls.

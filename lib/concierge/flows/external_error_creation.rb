@@ -13,7 +13,6 @@ module Concierge::Flows
     attribute :operation,   presence: true, inclusion: ExternalError::OPERATIONS
     attribute :supplier,    presence: true
     attribute :code,        presence: true
-    attribute :message,     presence: true
     attribute :context,     presence: true
     attribute :happened_at, presence: true
 

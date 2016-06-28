@@ -21,12 +21,11 @@
 # +supplier+    - the supplier with which the issue occurred.
 # +code+        - an error code.
 # +context+     - a data structure containing runtime information of the failure moment.
-# +message+     - a descriptive error message of the error. DEPRECATED
 # +happened_at+ - a timestamp indicating when the error happened.
 class ExternalError
   include Hanami::Entity
 
   OPERATIONS = %w(quote booking sync)
 
-  attributes :id, :operation, :supplier, :code, :context, :message, :happened_at
+  attributes :id, :operation, :supplier, :code, :context, :happened_at
 end

@@ -7,10 +7,24 @@
     <code><%= event[:status] %></code> and the following response headers:
   </p>
 
+  <%
+    # header names come in all formats and flavours, and the +normalized_headers+
+    # variable aims to represent all different combinations of headers names to
+    # a standardised convention - namely, capitalized names. Therefore, the following
+    # transformations occur:
+    #
+    #   "content-type" => "Content-Type"
+    #   "CONTENt-TyPe" => "Content-Type"
+    (normalized_headers = {}).tap do |headers|
+      event[:headers].to_h.each do |key, value|
+        headers[key.split("-").map(&:capitalize).join("-")] = value
+      end
+    end
+  %>
+
   <div class="code-block">
-    <% event[:headers].to_h.each do |header, value| %>
-      <% name = header.split("-").map(&:capitalize).join("-") %>
-      <p><strong><%= name %>:</strong> <%= value.strip %></p>
+    <% normalized_headers.each do |header, value| %>
+      <p><strong><%= header %>:</strong> <%= value.strip %></p>
     <% end %>
   </div>
 
@@ -18,7 +32,7 @@
     <p>Response body:</p>
 
     <%
-      content_type = event[:headers] && event[:headers]["Content-Type"]
+      content_type = normalized_headers["Content-Type"]
       css_class    = syntax_highlight_class(content_type)
     %>
 

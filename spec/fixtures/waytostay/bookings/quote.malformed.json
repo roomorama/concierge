@@ -1,0 +1,129 @@
+{
+  "booking_details": {
+    "property_reference": "0150",
+
+    "malformed_date": "2016-03-14",
+
+    "departure_date": "2016-03-20",
+    "number_of_nights": 6,
+
+    "malformed_field_number_of_adults": 2,
+
+    "number_of_infants": 0,
+    "discount_code": null,
+    "services": null,
+    "cancellation_policy_name": "default",
+    "cancellation_policy_costs": [
+      {
+        "cost": 89.97,
+        "cancellation_policy_text": "If you cancel between you will receive a voucher to the value of 89.97 €.",
+        "from_date": "2015-12-14 16:42:32",
+        "to_date": "2016-03-14 23:59:59"
+      }
+    ],
+    "price": {
+      "payment_url": null,
+      "currency": "EUR",
+      "pricing_summary": {
+        "items": [
+          {
+            "name": "Night 14-03-2016",
+            "standard_price": 70,
+            "offer_price": 17.5,
+            "final_price": 52.5
+          },
+          {
+            "name": "Night 15-03-2016",
+            "standard_price": 70,
+            "offer_price": 17.5,
+            "final_price": 52.5
+          },
+          {
+            "name": "Night 16-03-2016",
+            "standard_price": 70,
+            "offer_price": 17.5,
+            "final_price": 52.5
+          },
+          {
+            "name": "Night 17-03-2016",
+            "standard_price": 70,
+            "offer_price": 17.5,
+            "final_price": 52.5
+          },
+          {
+            "name": "Night 18-03-2016",
+            "standard_price": 70,
+            "offer_price": 17.5,
+            "final_price": 52.5
+          },
+          {
+            "name": "Night 19-03-2016",
+            "standard_price": 70,
+            "offer_price": 17.5,
+            "final_price": 52.5
+          },
+          {
+            "name": "cleaning fee",
+            "standard_price": 65,
+            "offer_price": 16.25,
+            "final_price": 48.75
+          }
+        ],
+        "final_price": 363.75,
+        "vat": null,
+        "net_amount": null,
+        "agency":{
+          "commission_percent": 10,
+          "cancellation_commission_percent": 0,
+          "commissionable_amount": 363.75,
+          "non_commissionable_amount": 0,
+          "commission_vat_percent": 0,
+          "commission_amount": 36.38,
+          "payable_amount": 327.37
+        }
+      },
+      "customer_payment_summary": {
+        "payment_option": "partial_payment",
+        "paid": 0,
+        "payment_due": 89.97,
+        "upon_arrival": 273.78,
+        "payment_methods_on_arrival": [
+          {
+            "id": 1,
+            "name": "cash"
+          }
+        ],
+        "damage_deposit_amount": 200,
+        "damage_deposit_options": [
+          {
+            "id": 12,
+            "name": "cash"
+          }
+        ],
+        "tourist_tax": [
+          {
+            "included": false,
+            "rate": 0.72,
+            "rate_type": "per_person_per_night",
+            "from_age": 17,
+            "max_nights": 7
+          }
+        ]
+      }
+    },
+    "property": {
+      "name": "Sueño Miró",
+      "city": "Barcelona",
+      "url": "https://www.waytostay.com/en-000150",
+      "photo_url": "https://static.waytostay.com/media/apartments/513/8612/513861241fc78.jpg",
+      "payment_options": [
+        "partial_payment"
+      ]
+    },
+    "_links": {
+      "self": {
+        "href": "https://apis.waytostay.com/bookings/quote"
+      }
+    }
+  }
+}

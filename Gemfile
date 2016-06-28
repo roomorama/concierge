@@ -12,6 +12,7 @@ gem 'unicorn', '~> 5.0'
 gem 'rack-handlers', '~> 0.7'
 gem 'faraday', '~> 0.9'
 gem 'patron', '~> 0.5'
+gem 'oauth2'
 
 gem 'yajl-ruby', '~> 1.2', require: 'yajl'
 gem 'savon'
@@ -22,4 +23,5 @@ gem 'whenever', '~> 0.9', require: false
 group :test do
   gem 'rspec', '~> 3.4.0'
   gem 'database_cleaner', '~> 1.5'
+  gem 'byebug'
 end
