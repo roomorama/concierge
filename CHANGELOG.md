@@ -4,7 +4,7 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
-## [Unreleased]
+## [0.4.2] - 2016-06-28
 ### Added
 - `API::Support::OAuth2Client`, a wrapper around oauth2 calls, caching access token and returning +Result+ objects
 - `Context::TokenRequest` and `Context::TokenReceived` events, which is announced around Oauth2 token requests
