@@ -19,10 +19,12 @@ how this file is formatted and how the process works.
 ### Changed
 - HTTPStubbing supports matching by body and headers, by including `strict: true` option to `stub_call`
 - Quotation total and fee changed from int to float
-- removed the `message` column from the `external_errors` table, as well as related code.
 - Register HTTP response when OAuth2 errors happen.
 - Identify content-type more accurately on context view by normalizing header names.
 - Ignore `price_check` event on webhooks, to avoid quoting stays twice.
+
+### Removed
+- removed the `message` column from the `external_errors` table, as well as related code.
 
 ## [0.4.1] - 2016-06-15
 ### Changed
