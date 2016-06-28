@@ -23,19 +23,9 @@ module JTB
     end
 
     # Always returns a +Quotation+.
-    # If an error happens in any step in the process of getting a response back from
-    # JTB, a generic error message is sent back to the caller, and the failure
-    # is logged.
     def quote(params)
-      return unavailable_quotation if params.stay_length > MAXIMUM_STAY_LENGTH
-      result = JTB::Price.new(credentials).quote(params)
-
-      if result.success?
-        result.value
-      else
-        announce_error("quote", result)
-        Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
-      end
+      return Result.new(unavailable_quotation) if params.stay_length > MAXIMUM_STAY_LENGTH
+      JTB::Price.new(credentials).quote(params)
     end
 
     # Always returns a +Reservation+.
