@@ -40,9 +40,35 @@ RSpec.describe Waytostay::Client do
     end
   end
 
+  describe "#update_availabilities" do
+    let(:roomorama_property) { Roomorama::Property.load(
+        # use this because #load expects keys in symbols
+        Concierge::SafeAccessHash.new(
+          JSON.parse(read_fixture("waytostay/properties/015868.roomorama-attributes.json"))
+        )
+      ).result
+    }
+    let(:availability_url) { "#{base_url}/properties/#{roomorama_property.identifier}/availability" }
+
+    subject { stubbed_client.update_availabilities(roomorama_property) }
+
+    before do
+      stubbed_client.oauth2_client.oauth_client.connection =
+        stub_call(:get, availability_url, struct: true) {
+          [200, {}, read_fixture("waytostay/properties/015868/availability.json")]
+        }
+      stubbed_client.oauth2_client.oauth_client.connection =
+        stub_call(:get, availability_url + "?page=2", struct: true) {
+          [200, {}, read_fixture("waytostay/properties/015868/availability?page=2.json")]
+        }
+    end
+    it { expect(subject).to be_success }
+    it { expect(subject.result.calendar["2018-07-02"]).to eq false }
+  end
+
   describe "#update_media" do
 
-    let!(:roomorama_property) { Roomorama::Property.load(
+    let(:roomorama_property) { Roomorama::Property.load(
         # use this because #load expects keys in symbols
         Concierge::SafeAccessHash.new(
           JSON.parse(read_fixture("waytostay/properties/015868.roomorama-attributes.json"))

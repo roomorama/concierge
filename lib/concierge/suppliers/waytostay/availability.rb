@@ -7,7 +7,7 @@ module Waytostay
     REQUIRED_RESPONSE_KEYS = [ "_embedded.properties_availability", "_links" ].freeze
 
     def update_availabilities(roomorama_property)
-      first_page_path = build_path(ENDPIONT, property_reference: roomorama_property.identifier)
+      first_page_path = build_path(ENDPOINT, property_reference: roomorama_property.identifier)
       update_availabilities_per_page(roomorama_property, first_page_path)
     end
 
@@ -19,9 +19,9 @@ module Waytostay
         response = Concierge::SafeAccessHash.new(result.value)
         missing_keys = response.missing_keys_from(REQUIRED_RESPONSE_KEYS)
         if missing_keys.empty?
-          response.get("_embedded_properties_availability").each do |entry|
+          response.get("_embedded.properties_availability").each do |entry|
             available = entry["status"] != "unavailable"
-            Date.parse(entry["start_date"]).upto to Date.parse(entry["end_date"]) do |date|
+            Date.parse(entry["start_date"]).upto Date.parse(entry["end_date"]) do |date|
               roomorama_property.update_calendar(date.to_s => available)
             end
           end
