@@ -1,6 +1,7 @@
 require 'spec_helper'
 require_relative "../shared/book"
 require_relative "../shared/quote"
+require_relative "properties"
 
 RSpec.describe Waytostay::Client do
   include Support::Fixtures
@@ -19,6 +20,8 @@ RSpec.describe Waytostay::Client do
 
   subject(:stubbed_client) { described_class.new }
   let(:base_url) { stubbed_client.credentials[:url] }
+
+  it_behaves_like "Waytostay property handler"
 
   describe "#get_changes_since" do
     let(:timestamp) { 1466562548 }
@@ -130,35 +133,6 @@ RSpec.describe Waytostay::Client do
     context "when property payment method is not supported" do
       let(:property_id) { inactive_property_id }
       it { expect(subject.result.disabled).to eq true }
-    end
-  end
-
-  describe "#parse_number_of_beds" do
-    subject { stubbed_client.send(:parse_number_of_beds, response) }
-    context "when there are single and double sofa beds" do
-      let(:response) {
-        Concierge::SafeAccessHash.new( "general" => {
-          "bedding_summary"=>[
-            "1 single sofa bed",
-            "2 double bed",
-            "4 single bed",
-            "1 double sofa bed"]}
-        )
-      }
-      it { expect(subject[:number_of_double_beds]).to eq 2 }
-      it { expect(subject[:number_of_single_beds]).to eq 4 }
-      it { expect(subject[:number_of_sofa_beds]).to eq 2 }
-    end
-    context "when there are no signle sofa beds" do
-      let(:response) {
-        Concierge::SafeAccessHash.new( "general" => {
-          "bedding_summary"=>[
-            "2 double bed",
-            "4 single bed",
-            "1 double sofa bed"]}
-        )
-      }
-      it { expect(subject[:number_of_sofa_beds]).to eq 1 }
     end
   end
 
