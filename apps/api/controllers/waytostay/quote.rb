@@ -5,11 +5,20 @@ module API::Controllers::Waytostay
   # API::Controllers::Waytostay::Quote
   #
   # Performs booking quotations for properties from Waytostay.
+  # If an error happens in any step in the process of getting a response back from
+  # Waytostay, a generic error message is sent back to the caller, and the failure
+  # is logged.
   class Quote
     include API::Controllers::Quote
 
     def quote_price(params)
-      Waytostay::Client.new.quote(params)
+      wrapped_quotation = Waytostay::Client.new.quote(params)
+      if wrapped_quotation.success?
+        wrapped_quotation.result
+      else
+        announce_error(wrapped_quotation, Waytostay::Client::SUPPLIER_NAME)
+        Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
+      end
     end
   end
 end

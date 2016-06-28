@@ -64,6 +64,17 @@ module API::Controllers
       response = { status: "error" }.merge!(errors: errors)
       json_encode(response)
     end
+
+    def announce_error(result)
+      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
+        operation:   "quote",
+        supplier:    SUPPLIER_NAME,
+        code:        result.error.code,
+        context:     Concierge.context.to_h,
+        happened_at: Time.now
+      })
+    end
+
   end
 
 end
