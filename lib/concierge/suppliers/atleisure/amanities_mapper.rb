@@ -32,7 +32,6 @@ module AtLeisure
         'lift'                            => 'elevator',
         'fitness'                         => 'gym',
         'single bed adapted for disabled' => 'wheelchairaccess',
-        'internet'                        => 'internet',
         'kitchen'                         => 'kitchen',
         'balcony'                         => 'balcony',
         'garden'                          => 'outdoor_space',
@@ -41,7 +40,8 @@ module AtLeisure
         'poolhouse'                       => 'pool',
         'swimming pool'                   => 'pool',
         'tv'                              => 'tv',
-        'dryer'                           => 'laundry'
+        'dryer'                           => 'laundry',
+        'washing machine'                 => 'laundry'
       }
     end
   end
