@@ -23,25 +23,19 @@ module Waytostay
     private
 
     def update_media_per_page(roomorama_property, page_path)
+      if page_path.nil?
+        return Result.new(roomorama_property) # return the result, this is the last page
+      end
+
       result = oauth2_client.get(page_path, headers: headers)
+
       if result.success?
         response = Concierge::SafeAccessHash.new(result.value)
         missing_keys = response.missing_keys_from(REQUIRED_RESPONSE_KEYS)
+
         if missing_keys.empty?
-          response.get("_embedded.property_media").each do |wts_media|
-            next if wts_media["type"] != "image"
-            identifier = Digest::MD5.hexdigest(wts_media["url"])
-            image = Roomorama::Image.new(identifier)
-            image.url = wts_media["url"]
-            image.caption = wts_media["caption"]
-            roomorama_property.add_image(image)
-          end
-          next_page_path = response.get("_links.next.href") # next page this is nil, this is the last iteration
-          if next_page_path
-            update_media_per_page(roomorama_property, next_page_path)
-          else
-            Result.new(roomorama_property) # return the result, this is the last page
-          end
+          parse_media!(response, roomorama_property)
+          update_media_per_page(roomorama_property, next_page_path(response))
         else
           augment_missing_fields(missing_keys)
           Result.error(:unrecognised_response)
@@ -49,6 +43,22 @@ module Waytostay
       else
         result
       end
+    end
+
+    def parse_media!(response, roomorama_property)
+      response.get("_embedded.property_media").each do |wts_media|
+        next if wts_media["type"] != "image"
+        identifier = Digest::MD5.hexdigest(wts_media["url"])
+        image = Roomorama::Image.new(identifier)
+        image.url = wts_media["url"]
+        image.caption = wts_media["caption"]
+        roomorama_property.add_image(image)
+      end
+    end
+
+    # return the link for the next page, or nil if it is the last page
+    def next_page_path response
+      response.get("_links.next.href")
     end
   end
 end
