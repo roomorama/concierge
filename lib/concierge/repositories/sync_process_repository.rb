@@ -12,13 +12,12 @@ class SyncProcessRepository
     query.count
   end
 
-  def self.last_successful_sync_for_host(host)
-    query {
+  def self.recent_successful_sync_for_host(host)
+    query do
       where(successful: true).
       where(host_id: host.id).
-      desc(:started_at).
-      limit(1)
-    }.first
+      desc(:started_at)
+    end
   end
 
 end
