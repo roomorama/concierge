@@ -7,7 +7,7 @@ RSpec.describe API::Controllers::SAW::Booking do
   include Support::Fixtures
   include Support::SAW::MockRequest
   
-  let(:request_params) do
+  let(:request_attributes) do
     {
       property_id: '1',
       unit_id: '9733',
@@ -25,6 +25,7 @@ RSpec.describe API::Controllers::SAW::Booking do
     }
   end
 
+  let(:request_params) { Concierge::SafeAccessHash.new(request_attributes) }
   let(:controller) { described_class.new }
   let(:action) { :booking }
 
