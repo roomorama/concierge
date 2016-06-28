@@ -7,6 +7,7 @@ module Workers::Suppliers
     def initialize(host)
       @host = host
       @synchronisation = Workers::Synchronisation.new(host)
+      synchronisation.skip_purge!
       @client = ::Waytostay::Client.new
     end
 
@@ -45,6 +46,8 @@ module Workers::Suppliers
           wrapped_property
         end
       end
+
+      synchronisation.finish!
     end
 
     private
