@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe API::Support::JSONRPC do
+RSpec.describe Concierge::JSONRPC do
   include Support::HTTPStubbing
 
   let(:url) { "https://api.roomorama.com/the/endpoint" }

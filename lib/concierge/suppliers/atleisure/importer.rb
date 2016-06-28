@@ -52,7 +52,7 @@ module AtLeisure
 
     def client_for(method)
       endpoint = "https://#{method.downcase}.jsonrpc-partner.net/cgi/lars/jsonrpc-partner/jsonrpc.htm"
-      API::Support::JSONRPC.new(endpoint, client_options: { timeout: TIMEOUT })
+      Concierge::JSONRPC.new(endpoint, client_options: { timeout: TIMEOUT })
     end
 
     def authentication_params

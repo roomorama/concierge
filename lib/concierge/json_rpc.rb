@@ -1,6 +1,6 @@
-module API::Support
+module Concierge
 
-  # +API::Support::JSONRPC
+  # +Concierge::JSONRPC
   #
   # This class is a client for the JSON-RPC 2.0 protocol.
   # Specification: http://www.jsonrpc.org/specification.
@@ -8,7 +8,7 @@ module API::Support
   # Usage
   #
   #   endpoint = "https://jsonrpc-server.example.org"
-  #   client = API::Support::JSONRPC.new(endpoint)
+  #   client = Concierge::JSONRPC.new(endpoint)
   #
   #   result = client.invoke("method", { arg1: "arg", arg2: "arg2" })
   #   if result.success?

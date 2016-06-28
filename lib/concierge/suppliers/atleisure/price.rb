@@ -100,7 +100,7 @@ module AtLeisure
     end
 
     def jsonrpc(endpoint)
-      API::Support::JSONRPC.new(endpoint)
+      Concierge::JSONRPC.new(endpoint)
     end
 
     def no_instant_confirmation

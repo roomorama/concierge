@@ -9,7 +9,7 @@ RSpec.describe AtLeisure::Importer do
   subject { described_class.new(credentials) }
 
   before do
-    allow_any_instance_of(API::Support::JSONRPC).to receive(:request_id) { 888888888888 }
+    allow_any_instance_of(Concierge::JSONRPC).to receive(:request_id) { 888888888888 }
   end
 
   shared_examples 'handling errors' do
