@@ -2,7 +2,7 @@ module SAW
   module Mappers
     class Quotation
       def self.build(params, property_rate)
-        requested_unit = property_rate.find_unit(params[:unit_id])
+        requested_unit = property_rate.find_unit(params[:unit_id].to_i)
 
         ::Quotation.new(
           property_id: params[:property_id],

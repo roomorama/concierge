@@ -3,7 +3,7 @@ module SAW
     class PropertyRate
       class << self
         def build(hash)
-          property_rate = Entities::PropertyRate.new(
+          Entities::PropertyRate.new(
             units: build_units(hash),
             currency: parse_currency(hash)
           )
@@ -21,9 +21,11 @@ module SAW
           )
 
           to_array(units).map do |unit_hash|
+            safe_hash = Concierge::SafeAccessHash.new(unit_hash)
+
             Entities::UnitRate.new(
-              id: parse_id(unit_hash),
-              price: parse_price(unit_hash)
+              id: parse_id(safe_hash),
+              price: parse_price(safe_hash)
             )
           end
         end
