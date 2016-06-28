@@ -8,6 +8,8 @@ module API::Controllers::SAW
   class Booking
     include API::Controllers::Booking
 
+    params API::Controllers::Params::MultiUnitBooking
+
     # Make property booking request 
     #
     # Usage
