@@ -12,12 +12,8 @@ module API::Controllers::Waytostay
     include API::Controllers::Quote
 
     def quote_price(params)
-      wrapped_quotation = Waytostay::Client.new.quote(params)
-      if wrapped_quotation.success?
-        wrapped_quotation.result
-      else
-        announce_error(wrapped_quotation, Waytostay::Client::SUPPLIER_NAME)
-        Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
+      rescue_with_generic_quotation Waytostay::Client::SUPPLIER_NAME do
+        Waytostay::Client.new.quote(params)
       end
     end
   end

@@ -13,7 +13,9 @@ module API::Controllers::JTB
 
     def quote_price(params)
       credentials = Concierge::Credentials.for("jtb")
-      JTB::Client.new(credentials).quote(params)
+      rescue_with_generic_quotation JTB::Client::SUPPLIER_NAME do
+        JTB::Client.new(credentials).quote(params)
+      end
     end
 
   end

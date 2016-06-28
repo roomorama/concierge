@@ -65,10 +65,20 @@ module API::Controllers
       json_encode(response)
     end
 
-    def announce_error(result)
+    def rescue_with_generic_quotation(supplier_name, &block)
+      wrapped_quotation = yield
+      if wrapped_quotation.success?
+        wrapped_quotation.result
+      else
+        announce_error(wrapped_quotation, supplier_name)
+        Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
+      end
+    end
+
+    def announce_error(result, supplier_name)
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
         operation:   "quote",
-        supplier:    SUPPLIER_NAME,
+        supplier:    supplier_name,
         code:        result.error.code,
         context:     Concierge.context.to_h,
         happened_at: Time.now
