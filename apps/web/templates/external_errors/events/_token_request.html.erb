@@ -5,10 +5,21 @@
 
   <p>There was a request for an OAuth2 access token to <code><%= event[:site] %></code> using:</p>
 
-  <div class="code-block">
-    <p>Client ID: <%= event[:client_id] %></p>
-    <p>Client Secret: <%= event[:client_secret] %></p>
-    <p>Strategy: <%= event[:strategy] %></p>
-  </div>
+  <table class="pure-table pure-table-horizontal">
+    <tbody>
+      <tr>
+        <td>Client ID</td>
+        <td><code><%= event[:client_id] %></code></td>
+      </tr>
+      <tr>
+        <td>Client Secret</td>
+        <td><code><%= event[:client_secret] %></code></td>
+      </tr>
+      <tr>
+        <td>Strategy</td>
+        <td><code><%= event[:strategy] %></code></td>
+      </tr>
+    </tbody>
+  </table>
 
 </div>
