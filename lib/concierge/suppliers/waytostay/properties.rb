@@ -84,10 +84,10 @@ module Waytostay
       attr.merge! parse_number_of_beds(response)
       attr.merge! parse_amenities(response)
 
-      attr.merge! parse_disability(response)
+      attr.merge! parse_property_state(response)
     end
 
-    def parse_disability(response)
+    def parse_property_state(response)
       payment_supported = response.get("payment.payment_options")
                             .include?  Waytostay::Client::SUPPORTED_PAYMENT_METHOD
       active = response.get("active")
@@ -108,9 +108,9 @@ module Waytostay
       {
         pets_allowed:     response.get("general.permissions.pets") == "allowed",
         smoking_allowed:  response.get("general.permissions.smoking") == "allowed",
-        parties_allowed:  response.get("general.permissions.parties") == "allowed",
-        children_allowed: response.get("general.permissions.children") == "allowed",
-        young_allowed:    response.get("general.permissions.young") == "allowed",
+        parties_allowed:  response.get("general.permissions.parties") == "allowed",  #ignored by roomorama
+        children_allowed: response.get("general.permissions.children") == "allowed", #ignored by roomorama
+        young_allowed:    response.get("general.permissions.young") == "allowed",    #ignored by roomorama
       }
     end
 

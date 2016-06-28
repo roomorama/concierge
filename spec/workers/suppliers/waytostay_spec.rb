@@ -14,11 +14,11 @@ RSpec.describe Workers::Suppliers::Waytostay do
     # bookings:     []
   }}
   before do
-    allow(subject.remote).to receive(:get_changes_since).and_return(changes)
+    allow(subject.client).to receive(:get_changes_since).and_return(changes)
 
-    # properties 001 and 002 is stubbed for remote fetches,
+    # properties 001 and 002 is stubbed for client fetches,
     # 003, 004 and 005 stubbed for concierge database
-    allow(subject.remote).to receive(:get_property) do |ref|
+    allow(subject.client).to receive(:get_property) do |ref|
       expect(["001", "002"]).to include ref
       Roomorama::Property.load(
         Concierge::SafeAccessHash.new(
@@ -31,7 +31,7 @@ RSpec.describe Workers::Suppliers::Waytostay do
     create_property(identifier: "005", host_id: host.id)
     create_property(identifier: "006", host_id: host.id)
 
-    allow(subject.remote).to receive(:update_media) do |property|
+    allow(subject.client).to receive(:update_media) do |property|
       property.drop_images!
       new_image = Roomorama::Image.new("#{property.identifier}_image")
       new_image.url = "http://www.example.org/image/#{property.identifier}"
@@ -39,7 +39,7 @@ RSpec.describe Workers::Suppliers::Waytostay do
       Result.new(property)
     end
 
-    allow(subject.remote).to receive(:update_availabilities) do |property|
+    allow(subject.client).to receive(:update_availabilities) do |property|
       Result.new(property)
     end
   end
