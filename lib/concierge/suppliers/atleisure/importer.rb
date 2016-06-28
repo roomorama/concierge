@@ -10,7 +10,7 @@ module AtLeisure
   #
   #   => #<Result:0x007ff5fc624dd8 @result=[{'HouseCode' => 'XX-12345-67', ...}, ...]
   class Importer
-    TIMEOUT          = 1000 # seconds
+    TIMEOUT          = 300 # seconds
     ENDPOINT_METHODS = {
       properties_list: "ListOfHousesV1",
       properties_data: "DataOfHousesV1",
@@ -19,7 +19,7 @@ module AtLeisure
 
     # each layer extends property's data accordingly its responsibility
     LAYERS = %w(BasicInformationV3 MediaV2 PropertiesV1 LayoutExtendedV2 AvailabilityPeriodV1 CostsOnSiteV1)
-    LANGUAGES = %w(en de es)
+    LANGUAGES = %w(en) # todo: for future support add de es locales
 
     attr_reader :credentials
 

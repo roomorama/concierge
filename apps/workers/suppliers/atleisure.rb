@@ -4,7 +4,7 @@ module Workers::Suppliers
   # Performs synchronisation with supplier
   class AtLeisure
     SUPPLIER_NAME = 'AtLeisure'
-    BATCH_SIZE = 100
+    BATCH_SIZE = 50
 
     attr_reader :synchronisation, :host
 
