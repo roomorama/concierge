@@ -49,8 +49,8 @@ module SAW
           <check_in>#{check_in}</check_in>
           <check_out>#{check_out}</check_out>
           <customer_detail>
-            <first_name>#{user.fetch(:firstname)}</first_name>
-            <last_name>#{user.fetch(:lastname)}</last_name>
+            <first_name>#{user.fetch(:first_name)}</first_name>
+            <last_name>#{user.fetch(:last_name)}</last_name>
             <phone>111-222-333</phone>
             <email>#{user.fetch(:email)}</email>
           </customer_detail>
@@ -58,8 +58,8 @@ module SAW
             <property_accommodation>
               <property_accommodationid>#{unit_id}</property_accommodationid>
               <number_of_guests>#{num_guests}</number_of_guests>
-              <guest_first_name>#{user.fetch(:firstname)}</guest_first_name>
-              <guest_last_name>#{user.fetch(:lastname)}</guest_last_name>
+              <guest_first_name>#{user.fetch(:first_name)}</guest_first_name>
+              <guest_last_name>#{user.fetch(:last_name)}</guest_last_name>
             </property_accommodation>
           </apartments>
           <flag_paylater>Y</flag_paylater>

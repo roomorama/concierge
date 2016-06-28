@@ -100,13 +100,13 @@ RSpec.describe SAW::PayloadBuilder do
         total: '123.45',
         num_guests: 1,
         user: {
-          firstname: 'Test',
-          lastname: 'User',
+          first_name: 'Test',
+          last_name: 'User',
           email: 'testuser@example.com'
         }
       }
     end
-
+    
     it 'embedds username and password to request' do
       response = to_hash(payload_builder.build_booking_request(payload))
 
@@ -153,8 +153,8 @@ RSpec.describe SAW::PayloadBuilder do
       last_name = customer_attrs.fetch("last_name")
       email = customer_attrs.fetch("email")
 
-      expect(first_name).to eq(payload.fetch(:user).fetch(:firstname))
-      expect(last_name).to eq(payload.fetch(:user).fetch(:lastname))
+      expect(first_name).to eq(payload.fetch(:user).fetch(:first_name))
+      expect(last_name).to eq(payload.fetch(:user).fetch(:last_name))
       expect(email).to eq(payload.fetch(:user).fetch(:email))
     end
 
@@ -170,8 +170,8 @@ RSpec.describe SAW::PayloadBuilder do
       last_name = guest_attrs.fetch("guest_last_name")
 
       expect(num_guests).to eq(payload.fetch(:num_guests).to_s)
-      expect(first_name).to eq(payload.fetch(:user).fetch(:firstname))
-      expect(last_name).to eq(payload.fetch(:user).fetch(:lastname))
+      expect(first_name).to eq(payload.fetch(:user).fetch(:first_name))
+      expect(last_name).to eq(payload.fetch(:user).fetch(:last_name))
     end
   end
   
