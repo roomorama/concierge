@@ -8,8 +8,7 @@ RSpec.describe SAW::PayloadBuilder do
     let(:payload) do
       {
         property_id: 1,
-        unit_id: 100,
-        currency_code: 'EUR',
+        unit_id: "-1",
         check_in: '02/06/2016',
         check_out: '03/06/2016',
         num_guests: 1
@@ -18,7 +17,7 @@ RSpec.describe SAW::PayloadBuilder do
 
     it 'raises an exception without params which are required by SAW api' do
       required_keys = %i(
-        property_id unit_id currency_code check_in check_out num_guests
+        property_id unit_id check_in check_out num_guests
       )
 
       required_keys.each do |key|
@@ -46,12 +45,10 @@ RSpec.describe SAW::PayloadBuilder do
       
       response_attrs = response.fetch("request")
 
-      currency_code = response_attrs.fetch("currency_code")
       property_id   = response_attrs.fetch("propertyid")
       check_in      = response_attrs.fetch("check_in")
       check_out     = response_attrs.fetch("check_out")
 
-      expect(currency_code).to eq(payload[:currency_code])
       expect(property_id).to eq(payload[:property_id].to_s)
       expect(check_in).to eq(payload[:check_in])
       expect(check_out).to eq(payload[:check_out])
@@ -76,7 +73,7 @@ RSpec.describe SAW::PayloadBuilder do
                                          .fetch("accommodation_type")
 
       id = accommodation_type.fetch("accommodation_typeid")
-      expect(id).to eq("100")
+      expect(id).to eq(payload_builder.class::ALL_ACCOMODATIONS_TYPE_CODE.to_s)
     end
 
     it "sets unit type to ALL when it's not provided" do
@@ -88,7 +85,7 @@ RSpec.describe SAW::PayloadBuilder do
                                          .fetch("accommodation_type")
 
       id = accommodation_type.fetch("accommodation_typeid")
-      expect(id).to eq(payload_builder.class::DEFAULT_ACCOMODATION_TYPE.to_s)
+      expect(id).to eq(payload_builder.class::ALL_ACCOMODATIONS_TYPE_CODE.to_s)
     end
   end
   

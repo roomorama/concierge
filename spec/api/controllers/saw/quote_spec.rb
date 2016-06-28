@@ -12,7 +12,6 @@ RSpec.describe API::Controllers::SAW::Quote do
       check_in: "2015-02-26",
       check_out: "2015-02-28",
       num_guests: 2,
-      currency_code: "USD"
     }
   end
 
@@ -78,6 +77,27 @@ RSpec.describe API::Controllers::SAW::Quote do
       expect(quotation.errors[:quote]).to eq(
         "Could not quote price with remote supplier"
       )
+    end
+  end
+
+  context "when there is multiple available units" do
+    it "performs successful request returning Quotation object for selected unit" do
+      request_params[:unit_id] = "9733"
+      mock_request(:propertyrates, :success_multiple_units)
+
+      quotation = controller.quote_price(request_params)
+
+      expect(quotation.successful?).to be true
+      expect(quotation).to be_kind_of(Quotation)
+      expect(quotation.total).to eq(72)
+      expect(quotation.currency).to eq('EUR')
+      
+      request_params[:unit_id] = "9734"
+      quotation = controller.quote_price(request_params)
+      expect(quotation.successful?).to be true
+      expect(quotation).to be_kind_of(Quotation)
+      expect(quotation.total).to eq(170)
+      expect(quotation.currency).to eq('EUR')
     end
   end
 end
