@@ -24,7 +24,7 @@ RSpec.describe API::Controllers::SAW::Quote do
 
     expect(quotation.successful?).to be true
     expect(quotation).to be_kind_of(Quotation)
-    expect(quotation.total).to eq(641)
+    expect(quotation.total).to eq(641.3)
     expect(quotation.currency).to eq('EUR')
   end
       
@@ -89,7 +89,7 @@ RSpec.describe API::Controllers::SAW::Quote do
 
       expect(quotation.successful?).to be true
       expect(quotation).to be_kind_of(Quotation)
-      expect(quotation.total).to eq(72)
+      expect(quotation.total).to eq(72.25)
       expect(quotation.currency).to eq('EUR')
       
       request_params[:unit_id] = "9734"
