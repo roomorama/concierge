@@ -90,3 +90,8 @@ module Workers::Suppliers
     end
   end
 end
+
+# listen supplier worker
+Concierge::Announcer.on("sync.AtLeisure") do |host|
+  Workers::Suppliers::AtLeisure.new(host).perform
+end
