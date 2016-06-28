@@ -2,16 +2,16 @@ module Workers::Suppliers
 
   class Waytostay
 
-    attr_reader :synchronisation, :host, :remote
+    attr_reader :synchronisation, :host, :client
 
     def initialize(host)
       @host = host
       @synchronisation = Workers::Synchronisation.new(host)
-      @remote = ::Waytostay::Client.new
+      @client = ::Waytostay::Client.new
     end
 
     def perform
-      changes = @remote.get_changes_since(last_synced_timestamp)
+      changes = client.get_changes_since(last_synced_timestamp)
 
       # waytostay client would already augment any error that occurs
       # when fetching changes. So we can return
@@ -21,7 +21,7 @@ module Workers::Suppliers
         synchronisation.start(property_ref) do
           wrapped_property = if changes[:properties].include? property_ref
                                # get the updated property from supplier
-                               @remote.get_property(property_ref)
+                               client.get_property(property_ref)
                              else
                                # no changes on property attributes indicated, just
                                # load one from db so we can attache other changes
@@ -30,17 +30,17 @@ module Workers::Suppliers
           next wrapped_property unless wrapped_property.success?
 
           if changes[:media].include? property_ref
-            wrapped_property = @remote.update_media(wrapped_property.result)
+            wrapped_property = client.update_media(wrapped_property.result)
             next wrapped_property unless wrapped_property.success?
           end
 
           if changes[:availability].include? property_ref
-            wrapped_property = @remote.update_availabilities(wrapped_property.result)
+            wrapped_property = client.update_availabilities(wrapped_property.result)
             next wrapped_property unless wrapped_property.success?
           end
 
           # TODO: rates, bookings
-          # @remote.fetch_rates(property_ref) if changes[:rates].include property_ref
+          # client.fetch_rates(property_ref) if changes[:rates].include property_ref
 
           wrapped_property
         end
@@ -60,7 +60,7 @@ module Workers::Suppliers
     end
 
     def last_synced_timestamp
-      most_recent = SyncProcessRepository.recent_successful_sync_for_host(@host).first
+      most_recent = SyncProcessRepository.recent_successful_sync_for_host(host).first
       most_recent&.started_at
     end
 
