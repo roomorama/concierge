@@ -35,7 +35,7 @@ RSpec.shared_examples "performing booking parameters validations" do |controller
 
     expect(response.status).to eq 422
     expect(response.body["status"]).to eq "error"
-    expect(response.body["errors"]["check_out"]).to eq ["check_out needs to be after check-in"]
+    expect(response.body["errors"]["check_out"]).to eq ["check_out needs to be after check_in"]
   end
 
   it "is invalid without a number of guests" do
