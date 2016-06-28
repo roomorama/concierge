@@ -1,6 +1,6 @@
 module Waytostay
   #
-  # Handles all things booking related for waytostay
+  # Handles all things changes related for waytostay
   #
   module Changes
 
