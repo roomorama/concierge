@@ -15,13 +15,14 @@ how this file is formatted and how the process works.
 - `Concierge::SafeAccessHash#missing_keys_from?` utils method
 - `SyncProcess` entity and database, recording every synchronisation process run on Concierge.
 - `SyncProcess#last_successful_sync_for_host` returns the last successful SyncProcess entity for a host
-- Register HTTP response when OAuth2 errors happen.
-- Identify content-type more accurately on context view by normalizing header names.
 
 ### Changed
 - HTTPStubbing supports matching by body and headers, by including `strict: true` option to `stub_call`
 - Quotation total and fee changed from int to float
 - removed the `message` column from the `external_errors` table, as well as related code.
+- Register HTTP response when OAuth2 errors happen.
+- Identify content-type more accurately on context view by normalizing header names.
+- Ignore `price_check` event on webhooks, to avoid quoting stays twice.
 
 ## [0.4.1] - 2016-06-15
 ### Changed

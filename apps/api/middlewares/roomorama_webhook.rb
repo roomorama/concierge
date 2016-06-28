@@ -219,7 +219,7 @@ module API
         event            = webhook_payload["event"]
 
         case event
-        when "price_check", "quote_instant", "checkout_instant"
+        when "quote_instant", "checkout_instant"
           concierge_request.quote(webhook_payload)
         when "booked_instant"
           concierge_request.booking(webhook_payload)
