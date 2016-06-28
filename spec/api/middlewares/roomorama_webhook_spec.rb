@@ -79,6 +79,16 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
         expect(post("/", headers)).to eq invalid_webhook
       end
     end
+
+    context "price_check event" do
+      before do
+        roomorama_webhook["event"] = "price_check"
+      end
+
+      it "is not recognized" do
+        expect(post("/", headers)).to eq invalid_webhook
+      end
+    end
   end
 
   describe "quoting bookings" do
