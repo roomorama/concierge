@@ -21,7 +21,7 @@ module SAW
       # Calls the SAW API method usung the HTTP client.
       # Returns a +Result+ object.
       def call(params)
-        payload = payload_builder.build_booking_request(params)
+        payload = build_payload(params)
         result = http.post(endpoint(:property_booking), payload, content_type)
 
         if result.success?
@@ -37,6 +37,24 @@ module SAW
         else
           result
         end
+      end
+
+      private
+      def build_payload(params)
+        payload_builder.build_booking_request(
+          property_id:   params[:property_id],
+          unit_id:       params[:unit_id],
+          currency_code: params[:currency_code],
+          check_in:      params[:check_in],
+          check_out:     params[:check_out],
+          num_guests:    params[:guests],
+          total:         params[:subtotal],
+          user: {
+            first_name:  params.get("customer.first_name"),
+            last_name:   params.get("customer.last_name"),
+            email:       params.get("customer.email")
+          }
+        )
       end
     end
   end
