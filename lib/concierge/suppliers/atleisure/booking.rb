@@ -27,6 +27,9 @@ module AtLeisure
     DEFAULT_COUNTRY_CODE      = "SG"
     DEFAULT_CUSTOMER_LANGUAGE = "EN"
 
+    # set default email to prevent emails to guest with confusing information
+    DEFAULT_USER_EMAIL        = "atleisure@roomorama.com"
+
     attr_reader :credentials
 
     def initialize(credentials)
@@ -96,7 +99,7 @@ module AtLeisure
         "WebsiteRentPrice"         => params[:subtotal],
         "CustomerSurname"          => params[:customer][:last_name],
         "CustomerInitials"         => params[:customer][:first_name],
-        "CustomerEmail"            => params[:customer][:email],
+        "CustomerEmail"            => DEFAULT_USER_EMAIL,
         "CustomerTelephone1Number" => params[:customer][:phone],
         "BookingOrOption"          => "Booking",
         "CustomerCountry"          => DEFAULT_COUNTRY_CODE,
