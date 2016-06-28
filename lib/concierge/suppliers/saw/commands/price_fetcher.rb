@@ -21,7 +21,7 @@ module SAW
       # Calls the SAW API method using the HTTP client.
       # Returns a +Result+ object.
       def call(params)
-        payload = payload_builder.build_compute_pricing(params)
+        payload = build_payload(params)
         result = http.post(endpoint(:property_rates), payload, content_type)
 
         if result.success?
@@ -38,6 +38,17 @@ module SAW
         else
           result
         end
+      end
+
+      private
+      def build_payload(params)
+        payload_builder.build_compute_pricing(
+          property_id:   params[:property_id],
+          unit_id:       params[:unit_id],
+          check_in:      params[:check_in],
+          check_out:     params[:check_out],
+          num_guests:    params[:guests]
+        )
       end
     end
   end
