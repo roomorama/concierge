@@ -8,8 +8,8 @@ module Ciirus
         filter_options = Ciirus::FilterOptions.new(property_id: params[:property_id])
         search_options = Ciirus::SearchOptions.new(quote: true)
         special_options = Ciirus::SpecialOptions.new
-        arrive_date = convert_date([:check_in])
-        depart_date = convert_date(params[:check_in])
+        arrive_date = convert_date(params[:check_in])
+        depart_date = convert_date(params[:check_out])
         message = xml_builder.properties(filter_options, search_options,
                                          special_options, arrive_date,
                                          depart_date)

@@ -31,9 +31,8 @@ module Ciirus
       end
 
       def options
-        endpoint = [credentials.url, ENDPOINT].join('/')
         {
-            wsdl:                 endpoint + '?wsdl',
+            wsdl:                 ENDPOINT + '?wsdl',
             env_namespace:        :soapenv,
             namespace_identifier: nil,
             open_timeout:         5,
