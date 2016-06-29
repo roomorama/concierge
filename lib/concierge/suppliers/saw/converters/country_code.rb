@@ -35,8 +35,7 @@ module SAW
 
         private
         def prepare_name(name)
-          overriden_name = CUSTOM_COUNTRY_NAMES_MAPPING[name]
-          overriden_name ? overriden_name : name
+          CUSTOM_COUNTRY_NAMES_MAPPING.fetch(name, name)
         end
       end
     end
