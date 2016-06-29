@@ -8,7 +8,7 @@ module Ciirus
     #  - operation_name - name of API method
     class BaseCommand
       VERSION = '15.025'
-      ENDPOINT = "http://xml.ciirus.com/CiirusXML.#{VERSION}.asmx"
+      PATH = "/CiirusXML.#{VERSION}.asmx"
 
       attr_reader :credentials
 
@@ -31,12 +31,11 @@ module Ciirus
       end
 
       def options
+        wsdl = "#{credentials.url}/#{PATH}?wsdl"
         {
-            wsdl:                 ENDPOINT + '?wsdl',
-            env_namespace:        :soapenv,
-            namespace_identifier: nil,
-            open_timeout:         5,
-            read_timeout:         10
+            wsdl:                 wsdl,
+            env_namespace:        :soap12,
+            namespace_identifier: nil
         }
       end
 

@@ -28,7 +28,7 @@ module Ciirus
       protected
 
       def operation_name
-        :GetProperties
+        :get_properties
       end
 
       private
