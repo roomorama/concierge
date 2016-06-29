@@ -1,6 +1,21 @@
 module SAW
   module Mappers
+    # +SAW::Mappers::RoomoramaImageSet+
+    #
+    # This class is responsible for building an array of images for the
+    # property. 
+    #
+    # Array of images includes +Roomorama::Image+ objects
     class RoomoramaImageSet
+      # Builds an array of property images
+      #
+      # Arguments:
+      #
+      #   * +hash+ [Concierge::SafeAccessHash] property hash with images
+      #                                        information
+      #   * +image_url_rewrite+ [Boolan] whether rewrite image URLs or not
+      #
+      # Returns [Array<Roomorama::Image] array of images
       def self.build(hash, image_url_rewrite)
         images = hash.get("image_gallery.image")
         

@@ -1,7 +1,28 @@
 module SAW
   module Mappers
+    # +SAW::Mappers::AvailabilityCalendar+
+    #
+    # This class is responsible for building an availability calendar of the
+    # property.
     class AvailabilityCalendar
       class << self
+        # Builds a Hash of property availability
+        # Availabilities are build for the next three months from the current
+        # time.
+        #
+        # Usage
+        #   
+        #   SAW::Mappers::AvailabilityCalendar.build
+        #   => {
+        #     "2016-06-29"=>true,
+        #     "2016-06-30"=>true,
+        #     "2016-07-01"=>true,
+        #     "2016-07-02"=>true,
+        #     ...
+        #   }
+        #
+        # Returns a +Hash+ with a key-value pairs where key is a date and value is 
+        # a flag whether property is available or not for that day.
         def build
           current_time = Time.now
 

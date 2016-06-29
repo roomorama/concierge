@@ -1,5 +1,33 @@
 module SAW
   module Entities
+    # +SAW::Entities::DetailedProperty+
+    #
+    # This entity corresponds to a detailed property that was fetched from the
+    # SAW API.
+    #
+    # +SAW::Entities::DetailedProperty+ is different from 
+    # +SAW::Entities::BasicProperty+: some of property attributes are different
+    #
+    # Attributes
+    #
+    # +internal_id+             - the ID of the property in SAW database
+    # +type+                    - room type
+    # +title+                   - the short title of the property
+    # +description+             - the description of the property
+    # +lon+                     - address longitude
+    # +lat+                     - address latitude
+    # +city+                    - city in which property located in
+    # +neighborhood+            - city neighborhood (region) in which property
+    #                             located in
+    # +address+                 - property address
+    # +country+                 - country
+    # +amenities+               - supported amenities
+    # +images+                  - supported images (photos)
+    # +bed_configurations+      - supported bed types configurations
+    # +property_accommodations+ - supported property accommodations
+    # +not_supported_amenities+ - list of not supported amenitites
+    # +multi_unit+              - boolean flag indicating that property is
+    #                             multi unit
     class DetailedProperty
       attr_reader :internal_id, :type, :title, :description, :lat, :lon, :city,
                   :neighborhood, :address, :country, :amenities,

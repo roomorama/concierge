@@ -1,6 +1,23 @@
 module SAW
   module Mappers
+    # +SAW::Mappers::RoomoramaProperty+
+    #
+    # This class is responsible for building a +Roomorama::Property+ object.
+    # Object initialization includes mapping of property attributes, rates,
+    # amenitites, availabilities, images, units.
     class RoomoramaProperty
+      # Bulds Roomorama::Property object
+      #
+      # Example
+      #
+      #   roomorama_property = SAW::Mappers::RoomoramaProperty.build(
+      #     property,
+      #     detailed_property,
+      #     availability_calendar
+      #   )
+      #   => Roomorama::Property object
+      #
+      # Returns [Roomorama::Property] Roomorama property
       def self.build(basic_property, detailed_property, availabilities)
         property = Roomorama::Property.new(basic_property.internal_id)
         property.type = basic_property.type

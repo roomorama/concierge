@@ -1,7 +1,19 @@
 module SAW
   module Mappers
+    # +SAW::Mappers::PropertyRate+
+    #
+    # This class is responsible for building a +SAW::Entities::PropertyRate+ 
+    # object from the hash which was fetched from the SAW API.
     class PropertyRate
       class << self
+        # Builds a property rate object
+        #
+        # Arguments:
+        #
+        #   * +hash+ [Concierge::SafeAccessHash] property rate object
+        #                                        attributes
+        #
+        # Returns [SAW::Entities::PropertyRate]
         def build(hash)
           Entities::PropertyRate.new(
             units: build_units(hash),

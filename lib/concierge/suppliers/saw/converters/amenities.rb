@@ -1,11 +1,25 @@
 module SAW
   module Converters
+    # +SAW::Converters::Amenities+
+    #
+    # This class is responsible for mapping amenitites between SAW and
+    # Roomorama APIs.
     class Amenities
       class << self
         # Converts SAW facility services to Roomorama amenities
+        #  
+        # Arguments
+        #   
+        #   * +facility_services+ [Array<String>] array with SAW amenities
         #
-        # @facility_services [Array<String>] array with SAW amenities
-        # @return [Array<String>] array with uniq supported amenitites
+        # Example
+        #   
+        #   SAW::Converters::Amenities.convert(
+        #     ["Broadband", "Parking (on site)"]
+        #   )
+        #   => ["internet", "parking"]
+        #
+        # Returns [Array<String>] array with uniq supported amenitites
         def convert(facility_services = [])
           roomorama_amenities = facility_services.map do |service_name|
             supported_amenities.fetch(service_name, nil)
@@ -22,8 +36,18 @@ module SAW
         # Facility services from array which are supported by API will not be
         # returned
         #
-        # @facility_services [Array<String>] array with SAW amenities
-        # @return [Array<String>] array with uniq unsupported amenitites
+        # Arguments
+        # 
+        #   * +facility_services+ [Array<String>] array with SAW amenities
+        #
+        # Example
+        #
+        #   SAW::Converters::Amenities.select_not_supported_amenities(
+        #     ["Broadband", "Foobar"]
+        #   )
+        #   => ["Foobar"]
+        #
+        # Returns [Array<String>] array with uniq unsupported amenitites
         def select_not_supported_amenities(facility_services = [])
           additional_amenities = []
 
@@ -38,14 +62,16 @@ module SAW
         # Returns a hash with mapping between SAW facility services and 
         # Roomorama API supported amenities
         #
-        # @example Get supported amenities hash
-        #   supported_amenities #=>
-        #     {
-        #       "Broadband": "internet",
-        #       "Digital TV": "tv"
-        #     }
+        # Example
         #
-        # @return [Hash] hash with key-value matched pairs
+        #   SAW::Converters::Amenities.supported_amenities
+        #
+        #   => {
+        #     "Broadband": "internet",
+        #     "Digital TV": "tv"
+        #   }
+        #
+        # Returns [Hash] hash with key-value matched pairs
         def supported_amenities
           @supported_amenities ||= load_supported_amenities
         end
