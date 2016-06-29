@@ -193,7 +193,7 @@ module AtLeisure
       periods        = meta_data['AvailabilityPeriodV1'].map { |period| AvailabilityPeriod.new(period) }
       actual_periods = periods.select(&:valid?)
 
-      min_price = actual_periods.map(&:price).min
+      min_price = actual_periods.map(&:daily_price).min
 
       property.nightly_rate = min_price
       property.weekly_rate  = min_price * 7
