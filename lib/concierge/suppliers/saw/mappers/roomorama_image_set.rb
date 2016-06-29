@@ -12,6 +12,7 @@ module SAW
         end
       end
 
+      private
       def self.build_image(hash, image_url_rewrite)
         url = hash.get("large_image_url").to_s
         title = hash.get("title").to_s.strip
