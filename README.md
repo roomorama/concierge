@@ -167,6 +167,49 @@ If there are errors during the execution of the `create_booking` method, the `Re
 object returned must include a non-empty `errors` list to be returned to the caller,
 which will receive a `503` HTTP status.
 
+### Fetching the availabilities calendar
+
+Roomorama should have an approximate availabilities calendar for each property that comes
+from an external supplier. This is accomplished by implementing the `pull_calendar` webhook
+for a supplier implementation on Concierge.
+
+Implementations that include calendar fetching should follow a structure like the one below:
+
+~~~ruby
+module API::Controllers::Supplier
+
+  class Calendar
+    include API::Controllers::Calendar
+
+    params API::Controllers::Params::Calendar
+
+    def pull_calendar(params)
+      Supplier::Client.new.pull_calendar(params)
+    end
+
+  end
+end
+~~~
+
+The implementation **must** include a `pull_calendar` method receiving a single
+argument, `params`. That is the interface expected by the controller that handles
+calendar fetching. Serialization to the data format expected by Roomorama's webhook
+is handled automatically if the format above is respected.
+
+The `pull_calendar` method:
+
+* **must** return a `Calendar` instance. See the documentation for that class for
+more information on the methods available.
+* receives a `API::Controllers::Params::Calendar` instance as argument, which includes
+the property identifier to be queried as well as the dates for which the calendar should
+be built.
+* does not raise an exception if the supplier API is unavailable or errors out or any
+network-related issue is happening.
+
+If there are errors during the execution of the `pull_calendar` method, the `Calendar`
+instance returned must include a non-empty `errors` list to be returned to the caller,
+which will receive a `503` HTTP status.
+
 ### Supplier Credentials
 
 Oftentimes, supplier APIs requires some form of authentication in order to authenticate
