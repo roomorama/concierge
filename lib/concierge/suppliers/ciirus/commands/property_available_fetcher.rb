@@ -12,7 +12,7 @@ module Ciirus
     #     result.value  # => true/false
     #   end
     #
-    # The +fetch+ method returns a +Result+ object that, when successful,
+    # The +call+ method returns a +Result+ object that, when successful,
     # encapsulates the boolean result.
     class PropertyAvailableFetcher < BaseCommand
 
@@ -22,7 +22,7 @@ module Ciirus
                                                     params[:check_out])
         result = remote_call(message)
         if result.success?
-          result_hash = response_parser.to_hash(result.value)
+          result_hash = to_safe_hash(result.value)
           if valid_result?(result_hash)
             property_rate = Ciirus::Mappers::PropertyAvailable.build(result_hash)
             Result.new(property_rate)
@@ -35,7 +35,7 @@ module Ciirus
       protected
 
       def operation_name
-        :IsPropertyAvailable
+        :is_property_available
       end
     end
   end

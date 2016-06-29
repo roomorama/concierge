@@ -60,6 +60,10 @@ module Ciirus
           Array(something)
         end
       end
+
+      def to_safe_hash(usual_hash)
+        Concierge::SafeAccessHash.new(usual_hash)
+      end
     end
   end
 end

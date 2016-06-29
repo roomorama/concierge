@@ -15,7 +15,7 @@ module Ciirus
                                          depart_date)
         result = remote_call(message)
         if result.success?
-          result_hash = response_parser.to_hash(result.value)
+          result_hash = to_safe_hash(result.value)
           if valid_result?(result_hash)
             quotation = Ciirus::Mappers::Quote.build(params, result_hash)
             Result.new(quotation)

@@ -20,7 +20,7 @@ module Ciirus
         message = xml_builder.property_rates(params[:property_id])
         result = remote_call(message)
         if result.success?
-          result_hash = response_parser.to_hash(result.value)
+          result_hash = to_safe_hash(result.value)
           if valid_result?(result_hash)
             property_rates = build_property_rates(result_hash)
             Result.new(property_rates)
@@ -33,7 +33,7 @@ module Ciirus
       protected
 
       def operation_name
-        :GetPropertyRates
+        :get_property_rates
       end
 
       private
