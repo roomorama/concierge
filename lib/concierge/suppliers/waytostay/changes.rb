@@ -9,11 +9,10 @@ module Waytostay
       "properties_availability.reference", "properties_rates.reference",
       "properties_reviews.reference", "bookings.reference" ].freeze
 
-    # Returns a hash of properties ref that changed, looking like:
+    # Returns a +Result+ wrapped hash of properties ref that changed, looking like:
     #   { properties: ["a", "b", "c"], media: ["c", "d"] }
     #
-    # If an error happens in any step in the process of getting a response back from
-    # Waytostay, +nil+ is returned, and failure is logged.
+    # Augments missing fields in the response if there are any
     #
     def get_changes_since(last_synced_timestamp = nil)
       params = {timestamp: last_synced_timestamp} if last_synced_timestamp
@@ -26,22 +25,20 @@ module Waytostay
 
         missing_keys = response.missing_keys_from(REQUIRED_RESPONSE_KEYS)
         if missing_keys.empty?
-          {
+          Result.new( {
             properties: response.get("properties.reference"),
             media: response.get("properties_media.reference"),
             availability: response.get("properties_availability.reference"),
             # rates: response.get("properties_rates.reference"), #TODO: remove this commented field when full calendar sync is implemented
             # reviews: response.get("properties_reviews.reference"), #TODO: remove this comented field when booking sync is implemented
             # bookings: response.get("bookings.reference"), #TODO: remove this comented field when booking sync is implemented
-          }
+          })
         else
           augment_missing_fields(missing_keys)
-          announce_error("changes", Result.error(:unrecognised_response))
-          nil
+          Result.error(:unrecognised_response)
         end
       else
-        announce_error("changes", result)
-        nil
+        result
       end
     end
 

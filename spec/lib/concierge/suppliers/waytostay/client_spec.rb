@@ -34,9 +34,9 @@ RSpec.describe Waytostay::Client do
     end
     subject { stubbed_client.get_changes_since(timestamp) }
     it "should return hash of changes by categories" do
-      expect(subject[:properties]).to   match ["000001"]
-      expect(subject[:media]).to        match ["002"]
-      expect(subject[:availability]).to match ["003"]
+      expect(subject.result[:properties]).to   match ["000001"]
+      expect(subject.result[:media]).to        match ["002"]
+      expect(subject.result[:availability]).to match ["003"]
       # expect(subject[:rates]).to        match ["013064", "000001"]
       # expect(subject[:reviews]).to      match ["003"]
       # expect(subject[:bookings]).to     match []
