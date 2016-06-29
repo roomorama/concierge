@@ -1,7 +1,19 @@
 module SAW
   module Mappers
+    # +SAW::Mappers::BeddingConfiguration+
+    #
+    # This class is responsible for building a
+    # +SAW::Entities::BeddingConfiguration+ object from the hash which was
+    # fetched from the SAW API.
     class BeddingConfiguration
       class << self
+        # Builds a bedding configuration object
+        #
+        # Arguments:
+        #
+        #   * +bedding_config+ [Hash] attributes
+        #
+        # Returns [SAW::Entities::BeddingConfiguration]
         def build(bedding_config)
           number_of_single_beds = 0
           number_of_double_beds = 0

@@ -1,5 +1,10 @@
 module SAW
   module Mappers
+    # +SAW::Mappers::DetailedProperty+
+    #
+    # This class is responsible for building a 
+    # +SAW::Entities::DetailedProperty+ object from the hash which was fetched
+    # from the SAW API.
     class DetailedProperty
       ALLOWED_FIELDS = [
         :internal_id, :type, :title, :description, :lat, :lon, :city,
@@ -8,6 +13,14 @@ module SAW
       ]
 
       class << self
+        # Builds a property
+        #
+        # Arguments:
+        #
+        #   * +attrs+ [Concierge::SafeAccessHash] property parameters
+        #   * +image_url_rewrite+ [Boolean] whether or not rewrite image URLs
+        #
+        # Returns [SAW::Entities::DetailedProperty]
         def build(attrs, image_url_rewrite: false)
           new_hash = {}
 

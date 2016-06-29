@@ -1,6 +1,25 @@
 module SAW
   module Commands
+    # +SAW::Commands::CountryPropertiesFetcher+
+    #
+    # This class is responsible for wrapping the logic related to fetching 
+    # properties from SAW, parsing the response, and building the +Result+ 
+    # object
+    #
+    # Usage
+    #
+    #   command = SAW::Commands::CountryPropertiesFetcher.new(credentials)
+    #   result = command.call(country)
     class CountryPropertiesFetcher < BaseFetcher
+      # Calls the SAW API method usung the HTTP client.
+      #
+      # Arguments
+      # 
+      #   * +country+ [SAW:Entities::Country] country to return properties from
+      #
+      # The +call+ method returns a +Result+ object that, when successful,
+      # encapsulates the array of resulting +SAW::Entities::BasicProperty+
+      # objects.
       def call(country)
         payload = payload_builder.propertysearch_request(country: country.id)
         result = http.post(endpoint(:property_search), payload, content_type)

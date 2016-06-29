@@ -8,18 +8,42 @@ module SAW
     #
     # Usage
     #
-    #   result = SAW::Booking.new(credentials).book(reservation_params)
+    #   command = SAW::Commands::Booking.new(credentials)
+    #   result = command.call(reservation_params)
+    #
     #   if result.success?
     #     process_reservation(result.value)
     #   else
     #     handle_error(result.error)
     #   end
-    #
-    # The +book+ method returns a +Result+ object that, when successful,
-    # encapsulates the resulting +Reservation+ object.
     class Booking < BaseFetcher
       # Calls the SAW API method usung the HTTP client.
-      # Returns a +Result+ object.
+      #
+      # Arguments
+      #
+      #   * +params+ [Concierge::SafeAccessHash] reservation parameters
+      #
+      # Reservation parameters are defined by the set of attributes from
+      # +API::Controllers::Params::MultiUnitBooking+ params object.
+      #
+      # +params+ object includes:
+      #
+      #   * +property_id+ 
+      #   * +unit_id+ 
+      #   * +check_in+
+      #   * +check_out+
+      #   * +guests+
+      #   * +subtotal+
+      #   * +customer+
+      # 
+      # +customer+ object includes:
+      #   
+      #   * +first_name+
+      #   * +last_name+
+      #   * +email+
+      #
+      # The +call+ method returns a +Result+ object that, when successful,
+      # encapsulates the resulting +Reservation+ object.
       def call(params)
         payload = build_payload(params)
         result = http.post(endpoint(:property_booking), payload, content_type)

@@ -1,5 +1,31 @@
 module SAW
   module Entities
+    # +SAW::Entities::BasicProperty+
+    #
+    # This entity corresponds to a property that was fetched from the SAW API
+    # 
+    # +SAW::Entities::BasicProperty+ is different from 
+    # +SAW::Entities::DetailedProperty+: some of property attributes are
+    # different
+    #
+    # Attributes
+    #
+    # +internal_id+   - the ID of the property in SAW database
+    # +type+          - room type
+    # +title+         - the short title of the property
+    # +description+   - the description of the property
+    # +lon+           - address longitude
+    # +lat+           - address latitude
+    # +city+          - city in which property located in
+    # +neighborhood+  - city neighborhood (region) in which property located in
+    # +country_code+  - code of the country in which property located in
+    # +currency_code+ - currency indicating that booking requests for this 
+    #                   property should be performed using exactly this
+    #                   currency
+    # +nightly_rate+  - rate needed to book this property per one night 
+    # +weekly_rate+   - rate needed to book this property per one week
+    # +monthly_rate+  - rate needed to book this property per one month
+    # +multi_unit+    - boolean flag indicating that property is multi unit
     class BasicProperty
       attr_reader :internal_id, :type, :title, :description, :lon, :lat,
                   :city, :neighborhood, :country_code, :currency_code,
