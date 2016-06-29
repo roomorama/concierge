@@ -5,8 +5,12 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## [Unreleased]
+### Added
+- Basis for the `pull_calendar` webhook, leaving out supplier-specific implementation.
+
 ### Changed
 - Waytostay treats a few cases as unavailable quotation, rather than an error
+- API related entities moved to `apps/api/entities`
 
 ## [0.4.2] - 2016-06-28
 ### Added
