@@ -1,6 +1,20 @@
 module SAW
   module Mappers
+    # +SAW::Mappers::RoomoramaUnitSet+
+    #
+    # This class is responsible for building an array of units for the
+    # property. 
+    #
+    # Array of units includes +Roomorama::Unit+ objects
     class RoomoramaUnitSet
+      # Builds an array of property units
+      #
+      # Arguments:
+      #
+      #   * +basic_property+ [SAW::Entities::BasicProperty]
+      #   * +detailed_property+ [SAW::Entities::DetailedProperty]
+      #
+      # Returns [Array<Roomorama::Unit] array of property units
       def self.build(basic_property, detailed_property)
         bed_configurations = fetch_bed_configurations(detailed_property.bed_configurations)
         property_accommodations = fetch_property_accommodations(detailed_property.property_accommodations)

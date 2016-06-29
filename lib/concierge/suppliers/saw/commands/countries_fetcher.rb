@@ -1,6 +1,24 @@
 module SAW
   module Commands
+    # +SAW::Commands::CountriesFetcher+
+    #
+    # This class is responsible for fetching list of countries from the SAW API
+    #
+    # Usage
+    #
+    #   command = SAW::Commands::CountriesFetcher.new(credentials)
+    #   result = command.call
+    #
+    #   if result.success?
+    #     countries = result.value
+    #   else
+    #     handle_error(result.error)
+    #   end
     class CountriesFetcher < BaseFetcher
+      # Calls the SAW API method usung the HTTP client.
+      #
+      # The +call+ method returns a +Result+ object that, when successful,
+      # encapsulates the resulting array of +SAW::Entities::Country+ objects.
       def call
         payload = payload_builder.build_countries_request
         result = http.post(endpoint(:countries), payload, content_type)
