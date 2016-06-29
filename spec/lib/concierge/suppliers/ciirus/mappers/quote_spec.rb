@@ -13,9 +13,13 @@ RSpec.describe Ciirus::Mappers::Quote do
     Concierge::SafeAccessHash.new(
       {
         get_properties_response: {
-          quote_excluding_tax: '3072.30',
-          quote_including_tax: '3440.98',
-          currency_code: 'USD'
+          get_properties_result: {
+            property_details: {
+              quote_excluding_tax: '3072.30',
+              quote_including_tax: '3440.98',
+              currency_code: 'USD'
+            }
+          }
         }
       }
     )

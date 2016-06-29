@@ -19,11 +19,11 @@ module Ciirus
         private
 
         def parse_total(hash)
-          hash.get('get_properties_response.quote_including_tax')
+          hash.get('get_properties_response.get_properties_result.property_details.quote_including_tax')
         end
 
         def parse_currency(hash)
-          hash.get('get_properties_response.currency_code')
+          hash.get('get_properties_response.get_properties_result.property_details.currency_code')
         end
       end
     end
