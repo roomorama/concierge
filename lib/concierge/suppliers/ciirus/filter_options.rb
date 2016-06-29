@@ -67,9 +67,6 @@ module Ciirus
         value = self.instance_variable_get("@#{method}")
         value || OPTIONS[method].default_value
       end
-
     end
-
   end
-
 end
