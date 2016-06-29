@@ -1,5 +1,9 @@
 module SAW
   module Mappers
+    # +SAW::Mappers::BasicProperty+
+    #
+    # This class is responsible for building a +SAW::Entities::BasicProperty+ 
+    # object from the hash which was fetched from the SAW API.
     class BasicProperty
       ALLOWED_FIELDS = [
         :internal_id, :title, :description, :lat, :lon, :city, :neighborhood,
@@ -8,9 +12,14 @@ module SAW
       ]
 
       class << self
-        # Returns property with correct mapping for Roomorama API
-        # It does not initantiate new hash object every time, it applies
-        # modifications for a given hash (to save the time)
+        # Builds a property
+        #
+        # Arguments:
+        #
+        #   * +hash+ [Hash] property parameters
+        #   * +country+ [SAW::Entities::Country] country of the property
+        #
+        # Returns [SAW::Entities::BasicProperty]
         def build(hash, country:)
           prepare_internal_id!(hash)
           prepare_room_type!(hash)

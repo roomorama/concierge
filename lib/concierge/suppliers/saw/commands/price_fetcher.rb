@@ -1,6 +1,6 @@
 module SAW
   module Commands
-    # +SAW::Price+
+    # +SAW::Commands::PriceFetcher+
     #
     # This class is responsible for wrapping the logic related to making a price
     # quotation to SAW, parsing the response, and building the +Quotation+ object
@@ -8,18 +8,34 @@ module SAW
     #
     # Usage
     #
-    #   result = SAW::Price.new(credentials).quote(stay_params)
+    #   command = SAW::Commands::PriceFetcher.new(credentials)
+    #   result = command.call(stay_params)
+    #
     #   if result.success?
     #     process_quotation(result.value)
     #   else
     #     handle_error(result.error)
     #   end
-    #
-    # The +quote+ method returns a +Result+ object that, when successful, encapsulates the
-    # resulting +Quotation+ object.
     class PriceFetcher < BaseFetcher
       # Calls the SAW API method using the HTTP client.
-      # Returns a +Result+ object.
+      # 
+      # Arguments
+      #
+      #   * +params+ [Concierge::SafeAccessHash] stay parameters
+      # 
+      # Stay parameters are defined by the set of attributes from
+      # +API::Controllers::Params::MultiUnitQuote+ params object.
+      #
+      # +params+ object includes:
+      #
+      #   * +property_id+ 
+      #   * +unit_id+ 
+      #   * +check_in+
+      #   * +check_out+
+      #   * +guests+
+      #
+      # The +call+ method returns a +Result+ object that, when successful, encapsulates the
+      # resulting +Quotation+ object.
       def call(params)
         payload = build_payload(params)
         result = http.post(endpoint(:property_rates), payload, content_type)

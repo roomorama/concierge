@@ -1,5 +1,7 @@
 module SAW
   module Converters
+    # +SAW::Converters::CountryCode+
+    #
     # This class acts as a facade between country codes converter library and
     # our source code for abstracting library's entities and using only needed 
     # part of the library API.
@@ -15,12 +17,16 @@ module SAW
 
       class << self
         # Returns country code by its name
+        #
+        # Arguments
+        #   * +name+ [String] name of the country 
         # 
-        # @example 
-        #   code_by_name("Korea, Republic of") #=> "KR"
+        # Example 
+        #
+        #   CountryCode.code_by_name("Korea, Republic of")
+        #   => "KR"
         # 
-        # @name [String] name of the country 
-        # @return [String] country code
+        # Returns [String] country code
         def code_by_name(name)
           standartized_name = prepare_name(name)
           country = IsoCountryCodes.search_by_name(standartized_name).first
