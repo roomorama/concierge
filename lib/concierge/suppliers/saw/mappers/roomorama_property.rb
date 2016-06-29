@@ -31,7 +31,10 @@ module SAW
         property.monthly_rate = basic_property.monthly_rate
         property.multi_unit! if basic_property.multi_unit?
         
-        property.description = detailed_property.description
+        property.description = description_with_additional_amenities(
+          detailed_property.description,
+          detailed_property.not_supported_amenities
+        )
         property.city = detailed_property.city
         property.neighborhood = detailed_property.neighborhood
         property.address = detailed_property.address
@@ -43,7 +46,6 @@ module SAW
         set_availabilities!(property, availabilities)
         set_images!(property, detailed_property.images)
         set_units!(property, basic_property, detailed_property)
-        # not_supported_amenities: detailed_property.not_supported_amenities
         property
       end
 
@@ -65,6 +67,28 @@ module SAW
         )
 
         units.each { |unit| property.add_unit(unit) }
+      end
+
+      def self.description_with_additional_amenities(description, amenities)
+        text = description.to_s.strip
+        text_amenities = formatted_additional_amenities(amenities)
+
+        description_parts = [text, text_amenities].reject(&:empty?)
+
+        if description_parts.any?
+          description_parts.join('. ')
+        else
+          nil
+        end
+      end
+
+      def self.formatted_additional_amenities(amenities)
+        if amenities.any?
+          text = 'Additional amenities: '
+          text += amenities.join(', ')
+        else
+          ""
+        end
       end
     end
   end
