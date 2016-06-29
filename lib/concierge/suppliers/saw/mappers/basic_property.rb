@@ -58,7 +58,6 @@ module SAW
         def prepare_address_information!(hash)
           location_info = hash["map_location"]
 
-          # hash[:address]      = location_info["full_address"]
           hash[:lat]          = location_info["latitude"]
           hash[:lon]          = location_info["longitude"]
           hash[:city]         = hash["city_region"]
