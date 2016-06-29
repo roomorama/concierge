@@ -5,8 +5,9 @@ module AtLeisure
   class AmenitiesMapper
 
     def map(meta_data)
-      amenities     = []
-      basic         = meta_data['LanguagePackENV4']
+      amenities = []
+      basic     = meta_data['LanguagePackENV4']
+      return amenities unless basic['LayoutSimple']
       layout_simple = basic['LayoutSimple'].downcase
 
       amenities_map.each do |key, value|

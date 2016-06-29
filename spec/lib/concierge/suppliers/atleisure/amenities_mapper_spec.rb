@@ -12,6 +12,20 @@ RSpec.describe AtLeisure::AmenitiesMapper do
           Bedroom(Double bed), Bedroom(Double bed), Bathroom(shower, washbasin, toilet))'
     }
 
+    it 'returns an empty array if nothing was mapped' do
+      property_data['LanguagePackENV4']['LayoutSimple'] = 'some strange text'
+      amenities = subject.map(property_data)
+
+      expect(amenities).to eq []
+    end
+
+    it 'returns an empty array without layout' do
+      property_data['LanguagePackENV4']['LayoutSimple'] = nil
+      amenities = subject.map(property_data)
+
+      expect(amenities).to eq []
+    end
+
     it 'sets proper amenities list' do
       property_data['LanguagePackENV4']['LayoutSimple'] = amenities_text
       amenities = subject.map(property_data)
