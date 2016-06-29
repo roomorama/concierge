@@ -109,26 +109,18 @@ RSpec.describe Waytostay::Client do
       number_of_adults: 2,
       payment_option: "full_payment",
     }}
-    let(:success_waytostay_params){
-      quote_post_body.merge(property_reference: "1")
-    }
-    let(:unavailable_waytostay_params){
-      quote_post_body.merge(property_reference: "2")
-    }
-    let(:malformed_response_waytostay_params){
-      quote_post_body.merge(property_reference: "3")
-    }
-    let(:cutoff_waytostay_params){
-      quote_post_body.merge(property_reference: "4")
-    }
-    let(:timeout_waytostay_params){
-      quote_post_body.merge(property_reference: "5")
-    }
+    let(:success_waytostay_params){ quote_post_body.merge(property_reference: "success") }
+    let(:unavailable_waytostay_params){ quote_post_body.merge(property_reference: "unavailable") }
+    let(:less_than_min_stay_waytostay_params){ quote_post_body.merge(property_reference: "less_than_min") }
+    let(:malformed_response_waytostay_params){ quote_post_body.merge(property_reference: "malformed_response") }
+    let(:cutoff_waytostay_params){ quote_post_body.merge(property_reference: "earlier_than_cutoff") }
+    let(:timeout_waytostay_params){ quote_post_body.merge(property_reference: "timeout") }
     let(:quote_responses){[
       { code: 200, body: success_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.json')},
       { code: 200, body: malformed_response_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.malformed.json')},
       { code: 422, body: unavailable_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.unavailable.json')},
       { code: 422, body: cutoff_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.cutoff.json')},
+      { code: 422, body: less_than_min_stay_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.less_than_min.json')},
     ]}
 
     before do
@@ -147,20 +139,21 @@ RSpec.describe Waytostay::Client do
     it_behaves_like "supplier quote method" do
       let (:supplier_client) { stubbed_client }
       let(:success_params) {
-        { property_id: "1", check_in: Date.today + 10, check_out: Date.today + 20, guests: 2 }
+        { property_id: "success", check_in: Date.today + 10, check_out: Date.today + 20, guests: 2 }
       }
-      let(:unavailable_params) {
-        success_params.merge(property_id: "2")
-      }
+      let(:unavailable_params_list) {[
+        success_params.merge(property_id: "unavailable"),
+        success_params.merge(property_id: "less_than_min"),
+        success_params.merge(property_id: "earlier_than_cutoff"),
+      ]}
       let(:error_params_list) {[
-        success_params.merge(property_id: "3"),
-        success_params.merge(property_id: "4"),
-        success_params.merge(property_id: "5")
+        success_params.merge(property_id: "malformed_response"),
+        success_params.merge(property_id: "timeout")
       ]}
     end
 
     it "should announce missing fields from response for malformed responses" do
-      quotation = stubbed_client.quote({ property_id: "3", check_in: Date.today + 10, check_out: Date.today + 20, guests: 2 })
+      quotation = stubbed_client.quote({ property_id: "malformed_response", check_in: Date.today + 10, check_out: Date.today + 20, guests: 2 })
       expect(quotation).not_to be_successful
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
