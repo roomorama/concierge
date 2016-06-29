@@ -5,7 +5,11 @@ module Waytostay
   module Quote
 
     ENDPOINT = "/bookings/quote"
-    UNAVAILBLE_ERROR_MESSAGE = "Apartment is not available for the selected dates"
+    UNAVAILBLE_ERROR_MESSAGES = [
+      "Apartment is not available for the selected dates",
+      "The minimum number of nights to book this apartment is",
+      "Cut off days restriction"
+    ].freeze
     REQUIRED_RESPONSE_KEYS = [
       "booking_details.property_reference",
       "booking_details.arrival_date",
@@ -62,7 +66,13 @@ module Waytostay
     private
 
     def unavailable?(result)
-      result.error.data && result.error.data.include?(UNAVAILBLE_ERROR_MESSAGE)
+      result.error.data && unavailable_error_message?(result.error.data)
+    end
+
+    def unavailable_error_message? message
+      UNAVAILBLE_ERROR_MESSAGES.any? { |err_msg|
+        message.include? err_msg
+      }
     end
 
     # Returns the hash that can be plugged into Quotation initialization.

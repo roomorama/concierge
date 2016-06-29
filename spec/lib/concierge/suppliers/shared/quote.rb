@@ -26,27 +26,29 @@ RSpec.shared_examples "supplier quote method" do
       end
     end
     context "and unavailable" do
-      let(:quotation) { supplier_client.quote(unavailable_params) }
-      it "returns the wrapped quotation" do
-        expect(quotation).to be_a Quotation
-        expect(quotation).to be_successful
-        expect(quotation.errors).to be_nil
-        expect(quotation.available).to be false
+      it "returns the wrapped quotation, and not create any ExternalError" do
+        unavailable_params_list.each do |params|
+          expect {
+            quotation = supplier_client.quote(params)
+            expect(quotation).to be_a Quotation
+            expect(quotation).to be_successful
+            expect(quotation.errors).to be_nil
+            expect(quotation.available).to be false
+          }.to_not change { ExternalErrorRepository.count }
+        end
       end
-      it "should not create an external error" do
-        expect{ quotation }.to_not change{ ExternalErrorRepository.count }
-      end
+
     end
   end
 
   context "when errors occur" do
     it "returns the erred quotation" do
       error_params_list.each do |params|
-        expect{
+        expect {
           quotation = supplier_client.quote(params)
           expect(quotation).not_to be_successful
           expect(quotation.errors[:quote]).to eq "Could not quote price with remote supplier"
-        }.to change{ ExternalErrorRepository.count }.by 1
+        }.to change { ExternalErrorRepository.count }.by 1
       end
     end
   end
