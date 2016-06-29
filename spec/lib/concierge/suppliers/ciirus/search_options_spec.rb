@@ -2,17 +2,17 @@ require 'spec_helper'
 
 RSpec.describe Ciirus::SearchOptions do
   it 'sets the default values' do
-    search = Ciirus::SearchOptions.new
+    search = described_class.new
     expect(search.top_x).to eq(0)
     expect(search.full_details).to eq(true)
     expect(search.quote).to eq(false)
     expect(search.pool_heat).to eq(false)
   end
 
-  describe '.to_xml' do
+  describe '#to_xml' do
 
     it 'generates the appropriate xml message' do
-      filter = Ciirus::SearchOptions.new(top_x: 3, full_details: false, quote: true, pool_heat: true)
+      filter = described_class.new(top_x: 3, full_details: false, quote: true, pool_heat: true)
       filter_xml = Nokogiri::XML::Builder.new do |xml|
         filter.to_xml(xml)
       end
