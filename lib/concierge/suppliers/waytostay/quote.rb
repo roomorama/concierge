@@ -69,7 +69,7 @@ module Waytostay
       result.error.data && unavailable_error_message?(result.error.data)
     end
 
-    def unavailable_error_message? message
+    def unavailable_error_message?(message)
       UNAVAILBLE_ERROR_MESSAGES.any? { |err_msg|
         message.include? err_msg
       }
