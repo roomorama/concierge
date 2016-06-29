@@ -10,6 +10,38 @@ RSpec.describe AtLeisure::Mapper do
   describe '#prepare' do
     let(:property_data) { JSON.parse(read_fixture('atleisure/property_data.json')) }
 
+    context 'images' do
+      let(:image) {
+        {
+          'SequenceNumber' => 1,
+          'Tag'            => 'ExteriorSummer',
+          'Versions'       => [
+            {
+              'Height' => 400,
+              'Width'  => 600,
+              'URL'    => 'cdn.leisure-group.net/photo/web/600x400/211498_lsr_2013110590534673451.jpg'
+            },
+            {
+              'Height' => 220,
+              'Width'  => 330,
+              'URL'    => 'cdn.leisure-group.net/photo/web/330x220/211498_lsr_2013110590534673451.jpg'
+            }
+          ]
+        }
+      }
+
+      it 'sets proper image data' do
+        property_data['MediaV2'][0]['TypeContents'] = [image]
+        property = subject.prepare(property_data).value
+
+        expect(property.images.size).to eq 1
+        image = property.images.first
+        expect(image.url).to eq 'http://cdn.leisure-group.net/photo/web/600x400/211498_lsr_2013110590534673451.jpg'
+        expect(image.identifier).to eq '211498_lsr_2013110590534673451.jpg'
+        expect(image.caption).to eq 'ExteriorSummer'
+      end
+
+    end
 
     context 'beds count' do
       let(:single_beds) { { 'Item' => 10002, 'NumberOfItems' => 2 } }
