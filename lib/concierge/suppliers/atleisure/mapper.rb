@@ -75,13 +75,11 @@ module AtLeisure
         num  = entry['NumberOfItems']
 
         case beds_layout.items[item]
-          when /double bed/, /queen size bed/
+          when /double/i, /2.pers/
             double_beds += num
-          when /sofa bed/
+          when /sofa/
             sofa_beds += num
-          when /bed\b/ # Doesn't match 'bedroom'
-            single_beds += num
-          when /sleeper/ # Sleepers are counted as beds
+          when /single/i, /1.pers/
             single_beds += num
         end
       end

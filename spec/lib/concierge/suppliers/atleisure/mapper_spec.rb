@@ -8,10 +8,25 @@ RSpec.describe AtLeisure::Mapper do
   subject { described_class.new(layout_items: layout_items) }
 
   describe '#prepare' do
-    let(:property_data)   { JSON.parse(read_fixture('atleisure/property_data.json')) }
+    let(:property_data) { JSON.parse(read_fixture('atleisure/property_data.json')) }
     let(:on_request_date) { '2017-12-04' }
-    let(:missed_date)     { '2017-10-04' }
-    let(:available_date)  { '2017-12-08' }
+    let(:missed_date) { '2017-10-04' }
+    let(:available_date) { '2017-12-08' }
+
+    context 'beds count' do
+      let(:single_beds) { { 'Item' => 10002, 'NumberOfItems' => 2 } }
+      let(:double_beds) { { 'Item' => 10012, 'NumberOfItems' => 3 } }
+      let(:sofa_beds)   { { 'Item' => 10008, 'NumberOfItems' => 1 } }
+
+      it 'calculates correct number of items' do
+        property_data['LayoutExtendedV2'] = [single_beds, double_beds, sofa_beds]
+        property = subject.prepare(property_data).value
+
+        expect(property.number_of_single_beds).to eq 2
+        expect(property.number_of_double_beds).to eq 3
+        expect(property.number_of_sofa_beds).to eq 1
+      end
+    end
 
     it 'returns the result with roomorama property accordingly provided data' do
       result = subject.prepare(property_data)
