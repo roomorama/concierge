@@ -12,10 +12,9 @@ module Workers::Suppliers
     end
 
     def perform
-      changes = client.get_changes_since(last_synced_timestamp)
-
-      # waytostay client would already augment any error that occurs
-      # when fetching changes. So we can return
+      changes = with_error_announcement({}) do # persists any error that occurs
+        client.get_changes_since(last_synced_timestamp)
+      end
       return if changes.empty?
 
       uniq_properties_in(changes).each do |property_ref|
@@ -51,6 +50,37 @@ module Workers::Suppliers
     end
 
     private
+
+
+    # Starts a new context, run the block that augments to context
+    # Then announce if any error was returned from the block
+    def with_error_announcement(default, &block)
+      initialize_overall_sync_context
+
+      result = block.call
+
+      if result.success?
+        result.result
+      else
+        Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
+          operation:   "sync",
+          supplier:    ::Waytostay::Client::SUPPLIER_NAME,
+          code:        result.error.code,
+          context:     Concierge.context.to_h,
+          happened_at: Time.now
+        })
+        default
+      end
+    end
+
+    def initialize_overall_sync_context
+      Concierge.context = Concierge::Context.new(type: "batch")
+      sync_process = Concierge::Context::SyncProcess.new(
+        host_id:    host.id,
+        identifier: nil
+      )
+      Concierge.context.augment(sync_process)
+    end
 
     # Flatten and compact the `changes` hash
     # `changes` is returned from waytostay client, looking something like:

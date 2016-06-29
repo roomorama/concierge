@@ -14,7 +14,7 @@ RSpec.describe Workers::Suppliers::Waytostay do
     # bookings:     []
   }}
   before do
-    allow(subject.client).to receive(:get_changes_since).and_return(changes)
+    allow(subject.client).to receive(:get_changes_since).and_return(Result.new(changes))
 
     # properties 001 and 002 is stubbed for client fetches,
     # 003, 004 and 005 stubbed for concierge database
@@ -47,11 +47,31 @@ RSpec.describe Workers::Suppliers::Waytostay do
   subject { described_class.new(host) }
 
   describe "perform" do
-    it "should start property attributes synchronisation" do
-      properties_to_update_count = 5 # 001 to 005. changes in 006 rates is not dispatched
-      expect(subject.synchronisation.router).to receive(:dispatch)
-        .exactly(properties_to_update_count).times
-      subject.perform
+
+    context "when successful" do
+      it "should start property attributes synchronisation" do
+        properties_to_update_count = 5 # 001 to 005. changes in 006 rates is not dispatched
+        expect(subject.synchronisation.router).to receive(:dispatch)
+          .exactly(properties_to_update_count).times
+        subject.perform
+      end
+    end
+
+    context "when there's error getting waytostay changes" do
+      before do
+        allow(subject.client).to receive(:get_changes_since) do
+          subject.client.send(:augment_missing_fields, ["expected_key"])
+          Result.error(:unrecognised_response)
+        end
+      end
+      it "should create external errors" do
+        expect {
+          subject.perform
+        }.to change { ExternalErrorRepository.count }.by 1
+        error = ExternalErrorRepository.last
+        expect(error.code).to eq "unrecognised_response"
+        expect(error.context[:events].last["label"]).to eq "Response Mismatch"
+      end
     end
   end
 end
