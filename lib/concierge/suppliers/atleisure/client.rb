@@ -3,7 +3,7 @@ module AtLeisure
   # +AtLeisure::Client+
   #
   # This class is a convenience class for the smaller classes under +AtLeisure+.
-  # For now, it allows the caller to get price quotations.
+  # For now, it allows the caller to get price quotations and create booking.
   #
   # Usage
   #

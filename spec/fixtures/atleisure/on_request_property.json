@@ -1,0 +1,99 @@
+{
+  "HouseCode": "XX-1234-05",
+  "BasicInformationV3": {
+    "Name": "Test huis - @Leisure TEST HUIS",
+    "MaxNumberOfPersons": 8,
+    "ExceedNumberOfBabies": 2,
+    "NumberOfPets": 2,
+    "NumberOfStars": 1,
+    "DimensionM2": 90,
+    "ZipPostalCode": "4960",
+    "Country": "BE",
+    "Region": "LUIK",
+    "Brands": null,
+    "CreationDate": "2013-11-05",
+    "WGS84Longitude": 6.055755,
+    "WGS84Latitude": 50.452158,
+    "OptionsAllowed": "Yes",
+    "HolidayPark": null,
+    "EnqeCount": 0,
+    "EnqePoints": 0,
+    "NumberOfBedrooms": 7,
+    "NumberOfBathrooms": 6,
+    "SkiArea": null
+  },
+  "AvailabilityPeriodV1": [
+    {
+      "Quantity": 1,
+      "ArrivalDate": "2016-06-20",
+      "ArrivalTimeFrom": "16:00",
+      "ArrivalTimeUntil": "18:00",
+      "DepartureDate": "2016-06-24",
+      "DepartureTimeFrom": "09:00",
+      "DepartureTimeUntil": "10:00",
+      "OnRequest": "Yes",
+      "Price": 418,
+      "PriceExclDiscount": 418
+    },
+    {
+      "Quantity": 1,
+      "ArrivalDate": "2016-06-20",
+      "ArrivalTimeFrom": "16:00",
+      "ArrivalTimeUntil": "18:00",
+      "DepartureDate": "2016-06-26",
+      "DepartureTimeFrom": "19:00",
+      "DepartureTimeUntil": "20:00",
+      "OnRequest": "Yes",
+      "Price": 872,
+      "PriceExclDiscount": 872
+    },
+    {
+      "Quantity": 1,
+      "ArrivalDate": "2016-06-20",
+      "ArrivalTimeFrom": "16:00",
+      "ArrivalTimeUntil": "18:00",
+      "DepartureDate": "2016-06-27",
+      "DepartureTimeFrom": "09:00",
+      "DepartureTimeUntil": "10:00",
+      "OnRequest": "Yes",
+      "Price": 917,
+      "PriceExclDiscount": 917
+    },
+    {
+      "Quantity": 1,
+      "ArrivalDate": "2016-06-20",
+      "ArrivalTimeFrom": "16:00",
+      "ArrivalTimeUntil": "18:00",
+      "DepartureDate": "2016-07-01",
+      "DepartureTimeFrom": "09:00",
+      "DepartureTimeUntil": "10:00",
+      "OnRequest": "Yes",
+      "Price": 1100,
+      "PriceExclDiscount": 1100
+    },
+    {
+      "Quantity": 1,
+      "ArrivalDate": "2016-06-20",
+      "ArrivalTimeFrom": "16:00",
+      "ArrivalTimeUntil": "18:00",
+      "DepartureDate": "2016-07-03",
+      "DepartureTimeFrom": "19:00",
+      "DepartureTimeUntil": "20:00",
+      "OnRequest": "Yes",
+      "Price": 1554,
+      "PriceExclDiscount": 1554
+    },
+    {
+      "Quantity": 1,
+      "ArrivalDate": "2016-06-20",
+      "ArrivalTimeFrom": "16:00",
+      "ArrivalTimeUntil": "18:00",
+      "DepartureDate": "2016-07-04",
+      "DepartureTimeFrom": "09:00",
+      "DepartureTimeUntil": "10:00",
+      "OnRequest": "Yes",
+      "Price": 1521,
+      "PriceExclDiscount": 1521
+    }
+  ]
+}

@@ -1,0 +1,1783 @@
+{
+  "HouseCode": "XX-1234-05",
+  "BasicInformationV3": {
+    "Name": "Test huis - @Leisure TEST HUIS",
+    "MaxNumberOfPersons": 8,
+    "ExceedNumberOfBabies": 2,
+    "NumberOfPets": 2,
+    "NumberOfStars": 1,
+    "DimensionM2": 90,
+    "ZipPostalCode": "4960",
+    "Country": "BE",
+    "Region": "LUIK",
+    "Brands": null,
+    "CreationDate": "2013-11-05",
+    "WGS84Longitude": 6.055755,
+    "WGS84Latitude": 50.452158,
+    "OptionsAllowed": "Yes",
+    "HolidayPark": null,
+    "EnqeCount": 0,
+    "EnqePoints": 0,
+    "NumberOfBedrooms": 7,
+    "NumberOfBathrooms": 6,
+    "SkiArea": null
+  },
+  "MediaV2": [
+    {
+      "Type": "Photos",
+      "TypeContents": [
+        {
+          "SequenceNumber": 1,
+          "Tag": "ExteriorSummer",
+          "Versions": [
+            {
+              "Height": 400,
+              "Width": 600,
+              "URL": "cdn.leisure-group.net/photo/web/600x400/211498_lsr_2013110590534673451.jpg"
+            },
+            {
+              "Height": 220,
+              "Width": 330,
+              "URL": "cdn.leisure-group.net/photo/web/330x220/211498_lsr_2013110590534673451.jpg"
+            },
+            {
+              "Height": 170,
+              "Width": 255,
+              "URL": "cdn.leisure-group.net/photo/web/255x170/211498_lsr_2013110590534673451.jpg"
+            },
+            {
+              "Height": 110,
+              "Width": 165,
+              "URL": "cdn.leisure-group.net/photo/web/165x110/211498_lsr_2013110590534673451.jpg"
+            },
+            {
+              "Height": 90,
+              "Width": 135,
+              "URL": "cdn.leisure-group.net/photo/web/135x90/211498_lsr_2013110590534673451.jpg"
+            },
+            {
+              "Height": 84,
+              "Width": 126,
+              "URL": "cdn.leisure-group.net/photo/web/126x84/211498_lsr_2013110590534673451.jpg"
+            },
+            {
+              "Height": 68,
+              "Width": 102,
+              "URL": "cdn.leisure-group.net/photo/web/102x68/211498_lsr_2013110590534673451.jpg"
+            },
+            {
+              "Height": 40,
+              "Width": 60,
+              "URL": "cdn.leisure-group.net/photo/web/60x40/211498_lsr_2013110590534673451.jpg"
+            }
+          ]
+        },
+        {
+          "SequenceNumber": 2,
+          "Tag": "HallReception",
+          "Versions": [
+            {
+              "Height": 1365,
+              "Width": 2048,
+              "URL": "cdn.leisure-group.net/photo/web/2048x1365/211498_lsr_2015123189806283924.jpg"
+            },
+            {
+              "Height": 683,
+              "Width": 1024,
+              "URL": "cdn.leisure-group.net/photo/web/1024x683/211498_lsr_2015123189806283924.jpg"
+            },
+            {
+              "Height": 500,
+              "Width": 750,
+              "URL": "cdn.leisure-group.net/photo/web/750x500/211498_lsr_2015123189806283924.jpg"
+            },
+            {
+              "Height": 400,
+              "Width": 600,
+              "URL": "cdn.leisure-group.net/photo/web/600x400/211498_lsr_2015123189806283924.jpg"
+            },
+            {
+              "Height": 220,
+              "Width": 330,
+              "URL": "cdn.leisure-group.net/photo/web/330x220/211498_lsr_2015123189806283924.jpg"
+            },
+            {
+              "Height": 170,
+              "Width": 255,
+              "URL": "cdn.leisure-group.net/photo/web/255x170/211498_lsr_2015123189806283924.jpg"
+            },
+            {
+              "Height": 110,
+              "Width": 165,
+              "URL": "cdn.leisure-group.net/photo/web/165x110/211498_lsr_2015123189806283924.jpg"
+            },
+            {
+              "Height": 90,
+              "Width": 135,
+              "URL": "cdn.leisure-group.net/photo/web/135x90/211498_lsr_2015123189806283924.jpg"
+            },
+            {
+              "Height": 84,
+              "Width": 126,
+              "URL": "cdn.leisure-group.net/photo/web/126x84/211498_lsr_2015123189806283924.jpg"
+            },
+            {
+              "Height": 68,
+              "Width": 102,
+              "URL": "cdn.leisure-group.net/photo/web/102x68/211498_lsr_2015123189806283924.jpg"
+            },
+            {
+              "Height": 40,
+              "Width": 60,
+              "URL": "cdn.leisure-group.net/photo/web/60x40/211498_lsr_2015123189806283924.jpg"
+            },
+            {
+              "Height": 1536,
+              "Width": 2048,
+              "URL": "cdn.leisure-group.net/photo/web/2048x1536/211498_lsr_2015123189806283924.jpg"
+            },
+            {
+              "Height": 768,
+              "Width": 1024,
+              "URL": "cdn.leisure-group.net/photo/web/1024x768/211498_lsr_2015123189806283924.jpg"
+            },
+            {
+              "Height": 500,
+              "Width": 667,
+              "URL": "cdn.leisure-group.net/photo/web/667x500/211498_lsr_2015123189806283924.jpg"
+            },
+            {
+              "Height": 400,
+              "Width": 533,
+              "URL": "cdn.leisure-group.net/photo/web/533x400/211498_lsr_2015123189806283924.jpg"
+            },
+            {
+              "Height": 220,
+              "Width": 293,
+              "URL": "cdn.leisure-group.net/photo/web/293x220/211498_lsr_2015123189806283924.jpg"
+            },
+            {
+              "Height": 170,
+              "Width": 227,
+              "URL": "cdn.leisure-group.net/photo/web/227x170/211498_lsr_2015123189806283924.jpg"
+            },
+            {
+              "Height": 110,
+              "Width": 147,
+              "URL": "cdn.leisure-group.net/photo/web/147x110/211498_lsr_2015123189806283924.jpg"
+            },
+            {
+              "Height": 90,
+              "Width": 120,
+              "URL": "cdn.leisure-group.net/photo/web/120x90/211498_lsr_2015123189806283924.jpg"
+            },
+            {
+              "Height": 84,
+              "Width": 112,
+              "URL": "cdn.leisure-group.net/photo/web/112x84/211498_lsr_2015123189806283924.jpg"
+            },
+            {
+              "Height": 68,
+              "Width": 91,
+              "URL": "cdn.leisure-group.net/photo/web/91x68/211498_lsr_2015123189806283924.jpg"
+            },
+            {
+              "Height": 40,
+              "Width": 53,
+              "URL": "cdn.leisure-group.net/photo/web/53x40/211498_lsr_2015123189806283924.jpg"
+            }
+          ]
+        },
+        {
+          "SequenceNumber": 3,
+          "Tag": "HallReception",
+          "Versions": [
+            {
+              "Height": 500,
+              "Width": 750,
+              "URL": "cdn.leisure-group.net/photo/web/750x500/211498_lsr_2013110590535049228.jpg"
+            },
+            {
+              "Height": 400,
+              "Width": 600,
+              "URL": "cdn.leisure-group.net/photo/web/600x400/211498_lsr_2013110590535049228.jpg"
+            },
+            {
+              "Height": 220,
+              "Width": 330,
+              "URL": "cdn.leisure-group.net/photo/web/330x220/211498_lsr_2013110590535049228.jpg"
+            },
+            {
+              "Height": 170,
+              "Width": 255,
+              "URL": "cdn.leisure-group.net/photo/web/255x170/211498_lsr_2013110590535049228.jpg"
+            },
+            {
+              "Height": 110,
+              "Width": 165,
+              "URL": "cdn.leisure-group.net/photo/web/165x110/211498_lsr_2013110590535049228.jpg"
+            },
+            {
+              "Height": 90,
+              "Width": 135,
+              "URL": "cdn.leisure-group.net/photo/web/135x90/211498_lsr_2013110590535049228.jpg"
+            },
+            {
+              "Height": 84,
+              "Width": 126,
+              "URL": "cdn.leisure-group.net/photo/web/126x84/211498_lsr_2013110590535049228.jpg"
+            },
+            {
+              "Height": 68,
+              "Width": 102,
+              "URL": "cdn.leisure-group.net/photo/web/102x68/211498_lsr_2013110590535049228.jpg"
+            },
+            {
+              "Height": 40,
+              "Width": 60,
+              "URL": "cdn.leisure-group.net/photo/web/60x40/211498_lsr_2013110590535049228.jpg"
+            }
+          ]
+        },
+        {
+          "SequenceNumber": 4,
+          "Tag": "BedRoom",
+          "Versions": [
+            {
+              "Height": 500,
+              "Width": 750,
+              "URL": "cdn.leisure-group.net/photo/web/750x500/211498_lsr_2013110590535493809.jpg"
+            },
+            {
+              "Height": 400,
+              "Width": 600,
+              "URL": "cdn.leisure-group.net/photo/web/600x400/211498_lsr_2013110590535493809.jpg"
+            },
+            {
+              "Height": 220,
+              "Width": 330,
+              "URL": "cdn.leisure-group.net/photo/web/330x220/211498_lsr_2013110590535493809.jpg"
+            },
+            {
+              "Height": 170,
+              "Width": 255,
+              "URL": "cdn.leisure-group.net/photo/web/255x170/211498_lsr_2013110590535493809.jpg"
+            },
+            {
+              "Height": 110,
+              "Width": 165,
+              "URL": "cdn.leisure-group.net/photo/web/165x110/211498_lsr_2013110590535493809.jpg"
+            },
+            {
+              "Height": 90,
+              "Width": 135,
+              "URL": "cdn.leisure-group.net/photo/web/135x90/211498_lsr_2013110590535493809.jpg"
+            },
+            {
+              "Height": 84,
+              "Width": 126,
+              "URL": "cdn.leisure-group.net/photo/web/126x84/211498_lsr_2013110590535493809.jpg"
+            },
+            {
+              "Height": 68,
+              "Width": 102,
+              "URL": "cdn.leisure-group.net/photo/web/102x68/211498_lsr_2013110590535493809.jpg"
+            },
+            {
+              "Height": 40,
+              "Width": 60,
+              "URL": "cdn.leisure-group.net/photo/web/60x40/211498_lsr_2013110590535493809.jpg"
+            }
+          ]
+        },
+        {
+          "SequenceNumber": 5,
+          "Tag": "BedRoom",
+          "Versions": [
+            {
+              "Height": 400,
+              "Width": 600,
+              "URL": "cdn.leisure-group.net/photo/web/600x400/211498_lsr_2013110590535907082.jpg"
+            },
+            {
+              "Height": 220,
+              "Width": 330,
+              "URL": "cdn.leisure-group.net/photo/web/330x220/211498_lsr_2013110590535907082.jpg"
+            },
+            {
+              "Height": 170,
+              "Width": 255,
+              "URL": "cdn.leisure-group.net/photo/web/255x170/211498_lsr_2013110590535907082.jpg"
+            },
+            {
+              "Height": 110,
+              "Width": 165,
+              "URL": "cdn.leisure-group.net/photo/web/165x110/211498_lsr_2013110590535907082.jpg"
+            },
+            {
+              "Height": 90,
+              "Width": 135,
+              "URL": "cdn.leisure-group.net/photo/web/135x90/211498_lsr_2013110590535907082.jpg"
+            },
+            {
+              "Height": 84,
+              "Width": 126,
+              "URL": "cdn.leisure-group.net/photo/web/126x84/211498_lsr_2013110590535907082.jpg"
+            },
+            {
+              "Height": 68,
+              "Width": 102,
+              "URL": "cdn.leisure-group.net/photo/web/102x68/211498_lsr_2013110590535907082.jpg"
+            },
+            {
+              "Height": 40,
+              "Width": 60,
+              "URL": "cdn.leisure-group.net/photo/web/60x40/211498_lsr_2013110590535907082.jpg"
+            }
+          ]
+        },
+        {
+          "SequenceNumber": 6,
+          "Tag": "BedRoom",
+          "Versions": [
+            {
+              "Height": 500,
+              "Width": 750,
+              "URL": "cdn.leisure-group.net/photo/web/750x500/211498_lsr_2013110590536289378.jpg"
+            },
+            {
+              "Height": 400,
+              "Width": 600,
+              "URL": "cdn.leisure-group.net/photo/web/600x400/211498_lsr_2013110590536289378.jpg"
+            },
+            {
+              "Height": 220,
+              "Width": 330,
+              "URL": "cdn.leisure-group.net/photo/web/330x220/211498_lsr_2013110590536289378.jpg"
+            },
+            {
+              "Height": 170,
+              "Width": 255,
+              "URL": "cdn.leisure-group.net/photo/web/255x170/211498_lsr_2013110590536289378.jpg"
+            },
+            {
+              "Height": 110,
+              "Width": 165,
+              "URL": "cdn.leisure-group.net/photo/web/165x110/211498_lsr_2013110590536289378.jpg"
+            },
+            {
+              "Height": 90,
+              "Width": 135,
+              "URL": "cdn.leisure-group.net/photo/web/135x90/211498_lsr_2013110590536289378.jpg"
+            },
+            {
+              "Height": 84,
+              "Width": 126,
+              "URL": "cdn.leisure-group.net/photo/web/126x84/211498_lsr_2013110590536289378.jpg"
+            },
+            {
+              "Height": 68,
+              "Width": 102,
+              "URL": "cdn.leisure-group.net/photo/web/102x68/211498_lsr_2013110590536289378.jpg"
+            },
+            {
+              "Height": 40,
+              "Width": 60,
+              "URL": "cdn.leisure-group.net/photo/web/60x40/211498_lsr_2013110590536289378.jpg"
+            }
+          ]
+        },
+        {
+          "SequenceNumber": 7,
+          "Tag": "GardenSummer",
+          "Versions": [
+            {
+              "Height": 500,
+              "Width": 750,
+              "URL": "cdn.leisure-group.net/photo/web/750x500/211498_lsr_2013110590537453022.jpg"
+            },
+            {
+              "Height": 400,
+              "Width": 600,
+              "URL": "cdn.leisure-group.net/photo/web/600x400/211498_lsr_2013110590537453022.jpg"
+            },
+            {
+              "Height": 220,
+              "Width": 330,
+              "URL": "cdn.leisure-group.net/photo/web/330x220/211498_lsr_2013110590537453022.jpg"
+            },
+            {
+              "Height": 170,
+              "Width": 255,
+              "URL": "cdn.leisure-group.net/photo/web/255x170/211498_lsr_2013110590537453022.jpg"
+            },
+            {
+              "Height": 110,
+              "Width": 165,
+              "URL": "cdn.leisure-group.net/photo/web/165x110/211498_lsr_2013110590537453022.jpg"
+            },
+            {
+              "Height": 90,
+              "Width": 135,
+              "URL": "cdn.leisure-group.net/photo/web/135x90/211498_lsr_2013110590537453022.jpg"
+            },
+            {
+              "Height": 84,
+              "Width": 126,
+              "URL": "cdn.leisure-group.net/photo/web/126x84/211498_lsr_2013110590537453022.jpg"
+            },
+            {
+              "Height": 68,
+              "Width": 102,
+              "URL": "cdn.leisure-group.net/photo/web/102x68/211498_lsr_2013110590537453022.jpg"
+            },
+            {
+              "Height": 40,
+              "Width": 60,
+              "URL": "cdn.leisure-group.net/photo/web/60x40/211498_lsr_2013110590537453022.jpg"
+            }
+          ]
+        },
+        {
+          "SequenceNumber": 8,
+          "Tag": "GardenSummer",
+          "Versions": [
+            {
+              "Height": 500,
+              "Width": 750,
+              "URL": "cdn.leisure-group.net/photo/web/750x500/211498_lsr_2013110590537066531.jpg"
+            },
+            {
+              "Height": 400,
+              "Width": 600,
+              "URL": "cdn.leisure-group.net/photo/web/600x400/211498_lsr_2013110590537066531.jpg"
+            },
+            {
+              "Height": 220,
+              "Width": 330,
+              "URL": "cdn.leisure-group.net/photo/web/330x220/211498_lsr_2013110590537066531.jpg"
+            },
+            {
+              "Height": 170,
+              "Width": 255,
+              "URL": "cdn.leisure-group.net/photo/web/255x170/211498_lsr_2013110590537066531.jpg"
+            },
+            {
+              "Height": 110,
+              "Width": 165,
+              "URL": "cdn.leisure-group.net/photo/web/165x110/211498_lsr_2013110590537066531.jpg"
+            },
+            {
+              "Height": 90,
+              "Width": 135,
+              "URL": "cdn.leisure-group.net/photo/web/135x90/211498_lsr_2013110590537066531.jpg"
+            },
+            {
+              "Height": 84,
+              "Width": 126,
+              "URL": "cdn.leisure-group.net/photo/web/126x84/211498_lsr_2013110590537066531.jpg"
+            },
+            {
+              "Height": 68,
+              "Width": 102,
+              "URL": "cdn.leisure-group.net/photo/web/102x68/211498_lsr_2013110590537066531.jpg"
+            },
+            {
+              "Height": 40,
+              "Width": 60,
+              "URL": "cdn.leisure-group.net/photo/web/60x40/211498_lsr_2013110590537066531.jpg"
+            }
+          ]
+        },
+        {
+          "SequenceNumber": 9,
+          "Tag": "GardenWinter",
+          "Versions": [
+            {
+              "Height": 500,
+              "Width": 750,
+              "URL": "cdn.leisure-group.net/photo/web/750x500/211498_lsr_2013110590536687866.jpg"
+            },
+            {
+              "Height": 400,
+              "Width": 600,
+              "URL": "cdn.leisure-group.net/photo/web/600x400/211498_lsr_2013110590536687866.jpg"
+            },
+            {
+              "Height": 220,
+              "Width": 330,
+              "URL": "cdn.leisure-group.net/photo/web/330x220/211498_lsr_2013110590536687866.jpg"
+            },
+            {
+              "Height": 170,
+              "Width": 255,
+              "URL": "cdn.leisure-group.net/photo/web/255x170/211498_lsr_2013110590536687866.jpg"
+            },
+            {
+              "Height": 110,
+              "Width": 165,
+              "URL": "cdn.leisure-group.net/photo/web/165x110/211498_lsr_2013110590536687866.jpg"
+            },
+            {
+              "Height": 90,
+              "Width": 135,
+              "URL": "cdn.leisure-group.net/photo/web/135x90/211498_lsr_2013110590536687866.jpg"
+            },
+            {
+              "Height": 84,
+              "Width": 126,
+              "URL": "cdn.leisure-group.net/photo/web/126x84/211498_lsr_2013110590536687866.jpg"
+            },
+            {
+              "Height": 68,
+              "Width": 102,
+              "URL": "cdn.leisure-group.net/photo/web/102x68/211498_lsr_2013110590536687866.jpg"
+            },
+            {
+              "Height": 40,
+              "Width": 60,
+              "URL": "cdn.leisure-group.net/photo/web/60x40/211498_lsr_2013110590536687866.jpg"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "LanguagePackENV4": {
+    "City": "Malmedy",
+    "SubCity": null,
+    "Description": "£ sdfg sdfg sdf g sdg sd gsd fg sdg sdfg sd gsd g sd gs dg s",
+    "DescriptionCreator": "@Leisure",
+    "DescriptionCreationType": "Original",
+    "ShortDescription": "sdfg sdfg sd gsdf g sdfg sdfg sdf gsd fg sdf gd",
+    "ShortDescriptionCreator": "HomeOwner",
+    "ShortDescriptionCreationType": "Original",
+    "Remarks": "The interior of the accommodation can differ slightly from the pictures. However, the level of comfort is as described\nBath towels (beach towels) are not included\nReservations for groups of persons under 21  years of age are not permitted",
+    "LayoutSimple": "Ground floor: (Livingroom(balcony))\n\nEntrance, Hall(shared with other guests ), Kitchen(on the same premises), Bedroom, Bedroom, Bedroom(2x Double bed), Bedroom(Double bed, Double bed, bar(eating bar)), Bedroom(2x single boxbed), Bedroom, Bedroom, Bathroom, Bathroom, Bathroom, Bathroom, DVD player, balcony, parking",
+    "CostsOnSite": [
+      {
+        "Number": 10,
+        "Description": "Deposit",
+        "Value": "€ 500 (You will pay in advance, not on site, returned 7 days after departure)"
+      },
+      {
+        "Number": 20,
+        "Description": "Cleaning",
+        "Value": "Mandatory: € 150"
+      },
+      {
+        "Number": 30,
+        "Description": "Pets",
+        "Value": "Max. 2; € 5/Pet/Night"
+      },
+      {
+        "Number": 41,
+        "Description": "Bed linen",
+        "Value": "For rent, € 5 p.p./Stay"
+      },
+      {
+        "Number": 42,
+        "Description": "Bath towels",
+        "Value": "For rent, € 20 per Stay"
+      },
+      {
+        "Number": 43,
+        "Description": "Kitchen linen",
+        "Value": "For rent, € 24 per Stay"
+      },
+      {
+        "Number": 50,
+        "Description": "Electricity",
+        "Value": "€ 0,30/kWh"
+      },
+      {
+        "Number": 60,
+        "Description": "Gas/Oil",
+        "Value": "€ 2/m3"
+      },
+      {
+        "Number": 65,
+        "Description": "Wifi",
+        "Value": "Not available"
+      },
+      {
+        "Number": 100,
+        "Description": "Tourist tax",
+        "Value": "No"
+      },
+      {
+        "Number": 110,
+        "Description": "Catering",
+        "Value": "Lunch possible; Dinner possible"
+      },
+      {
+        "Number": 120,
+        "Description": "Breakfast",
+        "Value": "Possibility"
+      }
+    ],
+    "GuestBook": [],
+    "HouseOwnerTip": null
+  },
+  "PropertiesV1": [
+    {
+      "TypeNumber": 10,
+      "TypeContents": [
+        90
+      ]
+    },
+    {
+      "TypeNumber": 20,
+      "TypeContents": [
+        210
+      ]
+    },
+    {
+      "TypeNumber": 50,
+      "TypeContents": [
+        502
+      ]
+    },
+    {
+      "TypeNumber": 61,
+      "TypeContents": [
+        6150
+      ]
+    },
+    {
+      "TypeNumber": 65,
+      "TypeContents": [
+        6300
+      ]
+    }
+  ],
+  "LayoutExtendedV2": [
+    {
+      "Item": 200,
+      "SequenceNumber": 1,
+      "NumberOfItems": 1
+    },
+    {
+      "Item": 1005,
+      "SequenceNumber": 1,
+      "NumberOfItems": 1
+    },
+    {
+      "Item": 1010,
+      "SequenceNumber": 1,
+      "NumberOfItems": 1,
+      "Details": [
+        200
+      ]
+    },
+    {
+      "Item": 1015,
+      "SequenceNumber": 1,
+      "NumberOfItems": 1,
+      "ParentItem": 200,
+      "ParentSequenceNumber": 1
+    },
+    {
+      "Item": 1020,
+      "SequenceNumber": 1,
+      "NumberOfItems": 1,
+      "Details": [
+        260
+      ]
+    },
+    {
+      "Item": 1030,
+      "SequenceNumber": 1,
+      "NumberOfItems": 1
+    },
+    {
+      "Item": 1030,
+      "SequenceNumber": 2,
+      "NumberOfItems": 1
+    },
+    {
+      "Item": 1030,
+      "SequenceNumber": 3,
+      "NumberOfItems": 1
+    },
+    {
+      "Item": 1030,
+      "SequenceNumber": 4,
+      "NumberOfItems": 1
+    },
+    {
+      "Item": 1030,
+      "SequenceNumber": 5,
+      "NumberOfItems": 1
+    },
+    {
+      "Item": 1030,
+      "SequenceNumber": 6,
+      "NumberOfItems": 1
+    },
+    {
+      "Item": 1030,
+      "SequenceNumber": 7,
+      "NumberOfItems": 1
+    },
+    {
+      "Item": 1042,
+      "SequenceNumber": 7,
+      "NumberOfItems": 1
+    },
+    {
+      "Item": 1042,
+      "SequenceNumber": 9,
+      "NumberOfItems": 1
+    },
+    {
+      "Item": 1042,
+      "SequenceNumber": 10,
+      "NumberOfItems": 1
+    },
+    {
+      "Item": 1042,
+      "SequenceNumber": 999,
+      "NumberOfItems": 3
+    },
+    {
+      "Item": 10010,
+      "SequenceNumber": 1,
+      "NumberOfItems": 2,
+      "ParentItem": 1030,
+      "ParentSequenceNumber": 5
+    },
+    {
+      "Item": 10012,
+      "SequenceNumber": 1,
+      "NumberOfItems": 2,
+      "ParentItem": 1030,
+      "ParentSequenceNumber": 3
+    },
+    {
+      "Item": 10012,
+      "SequenceNumber": 2,
+      "NumberOfItems": 1,
+      "ParentItem": 1030,
+      "ParentSequenceNumber": 4
+    },
+    {
+      "Item": 10012,
+      "SequenceNumber": 3,
+      "NumberOfItems": 1,
+      "ParentItem": 1030,
+      "ParentSequenceNumber": 4
+    },
+    {
+      "Item": 10070,
+      "SequenceNumber": 1,
+      "NumberOfItems": 1
+    },
+    {
+      "Item": 10120,
+      "SequenceNumber": 1,
+      "NumberOfItems": 1,
+      "ParentItem": 1030,
+      "ParentSequenceNumber": 4,
+      "Details": [
+        482
+      ]
+    },
+    {
+      "Item": 10348,
+      "SequenceNumber": 1,
+      "NumberOfItems": 1
+    },
+    {
+      "Item": 10348,
+      "SequenceNumber": 2,
+      "NumberOfItems": 1,
+      "ParentItem": 1015,
+      "ParentSequenceNumber": 1
+    },
+    {
+      "Item": 10363,
+      "SequenceNumber": 1,
+      "NumberOfItems": 1
+    }
+  ],
+  "AvailabilityPeriodV1": [
+    {
+      "Quantity": 1,
+      "ArrivalDate": "2016-07-04",
+      "ArrivalTimeFrom": "16:00",
+      "ArrivalTimeUntil": "18:00",
+      "DepartureDate": "2016-07-08",
+      "DepartureTimeFrom": "09:00",
+      "DepartureTimeUntil": "10:00",
+      "OnRequest": "Yes",
+      "Price": 496,
+      "PriceExclDiscount": 496
+    },
+    {
+      "Quantity": 1,
+      "ArrivalDate": "2017-12-22",
+      "ArrivalTimeFrom": "16:00",
+      "ArrivalTimeUntil": "18:00",
+      "DepartureDate": "2017-12-29",
+      "DepartureTimeFrom": "09:00",
+      "DepartureTimeUntil": "10:00",
+      "OnRequest": "No",
+      "Price": 801,
+      "PriceExclDiscount": 801
+    },
+    {
+      "Quantity": 1,
+      "ArrivalDate": "2017-12-22",
+      "ArrivalTimeFrom": "16:00",
+      "ArrivalTimeUntil": "18:00",
+      "DepartureDate": "2018-01-05",
+      "DepartureTimeFrom": "09:00",
+      "DepartureTimeUntil": "10:00",
+      "OnRequest": "No",
+      "Price": 1483,
+      "PriceExclDiscount": 1483
+    },
+    {
+      "Quantity": 1,
+      "ArrivalDate": "2017-12-29",
+      "ArrivalTimeFrom": "16:00",
+      "ArrivalTimeUntil": "18:00",
+      "DepartureDate": "2018-01-05",
+      "DepartureTimeFrom": "09:00",
+      "DepartureTimeUntil": "10:00",
+      "OnRequest": "No",
+      "Price": 801,
+      "PriceExclDiscount": 801
+    }
+  ],
+  "CostsOnSiteV1": [
+    {
+      "TypeNumber": 10,
+      "TypeDescriptions": [
+        {
+          "Language": "NL",
+          "Description": "Borgsom"
+        },
+        {
+          "Language": "FR",
+          "Description": "Caution"
+        },
+        {
+          "Language": "DE",
+          "Description": "Kaution"
+        },
+        {
+          "Language": "EN",
+          "Description": "Deposit"
+        },
+        {
+          "Language": "IT",
+          "Description": "Cauzione"
+        },
+        {
+          "Language": "ES",
+          "Description": "Fianza"
+        },
+        {
+          "Language": "PL",
+          "Description": "Depozyt"
+        }
+      ],
+      "Items": [
+        {
+          "ItemNumber": 10025,
+          "Payment": "MandatoryDepositUpFront",
+          "PaymentLocation": "Via@Leisure",
+          "Month": [],
+          "AddCostOnSiteToPresentPrice": "No",
+          "Unit": "Group/Stay",
+          "Amount": 500.00,
+          "Sentences": [
+            {
+              "Language": "NL",
+              "Sentence": "€ 500 (U betaalt vooraf, niet ter plaatse, terug 7 dagen na vertrek)"
+            },
+            {
+              "Language": "FR",
+              "Sentence": "€ 500 (Vous payez avant votre séjour, pas sur place, retour 7 jours après le séjour )"
+            },
+            {
+              "Language": "DE",
+              "Sentence": "€ 500 (Sie bezahlen im Voraus, nicht vor Ort. Rückzahlung 7 Tage nach der Abreise)"
+            },
+            {
+              "Language": "EN",
+              "Sentence": "€ 500 (You will pay in advance, not on site, returned 7 days after departure)"
+            },
+            {
+              "Language": "IT",
+              "Sentence": "€ 500 (Si paga in anticipo, non sul posto, rimborso entro 7 giorni dopo la partenza)"
+            },
+            {
+              "Language": "ES",
+              "Sentence": "€ 500 (Usted paga anticipadamente, no al llegar, que se devolverá en 7 días después de la salida)"
+            },
+            {
+              "Language": "PL",
+              "Sentence": "€ 500 (Platnosc nalezy dokonac z gory, nie na miejscu, zwrocona 7 dni od wyjazdu)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TypeNumber": 20,
+      "TypeDescriptions": [
+        {
+          "Language": "NL",
+          "Description": "Schoonmaak"
+        },
+        {
+          "Language": "FR",
+          "Description": "Nettoyage"
+        },
+        {
+          "Language": "DE",
+          "Description": "Endreinigung"
+        },
+        {
+          "Language": "EN",
+          "Description": "Cleaning"
+        },
+        {
+          "Language": "IT",
+          "Description": "Pulizia finale"
+        },
+        {
+          "Language": "ES",
+          "Description": "Limpieza final"
+        },
+        {
+          "Language": "PL",
+          "Description": "Sprzatanie"
+        }
+      ],
+      "Items": [
+        {
+          "ItemNumber": 20010,
+          "Payment": "Mandatory",
+          "PaymentLocation": "OnSite",
+          "Month": [],
+          "AddCostOnSiteToPresentPrice": "Yes",
+          "Unit": "Group/Stay",
+          "Amount": 150.00,
+          "Sentences": [
+            {
+              "Language": "NL",
+              "Sentence": "Verplicht: € 150"
+            },
+            {
+              "Language": "FR",
+              "Sentence": "Obligatoire: € 150"
+            },
+            {
+              "Language": "DE",
+              "Sentence": "Verpflichtend: € 150"
+            },
+            {
+              "Language": "EN",
+              "Sentence": "Mandatory: € 150"
+            },
+            {
+              "Language": "IT",
+              "Sentence": "Obbligatorio: € 150"
+            },
+            {
+              "Language": "ES",
+              "Sentence": "Obligado: € 150"
+            },
+            {
+              "Language": "PL",
+              "Sentence": "Obowiazkowo: € 150"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TypeNumber": 30,
+      "TypeDescriptions": [
+        {
+          "Language": "NL",
+          "Description": "Huisdieren"
+        },
+        {
+          "Language": "FR",
+          "Description": "Animaux"
+        },
+        {
+          "Language": "DE",
+          "Description": "Haustiere"
+        },
+        {
+          "Language": "EN",
+          "Description": "Pets"
+        },
+        {
+          "Language": "IT",
+          "Description": "Animali"
+        },
+        {
+          "Language": "ES",
+          "Description": "Mascotas"
+        },
+        {
+          "Language": "PL",
+          "Description": "Zwierzeta"
+        }
+      ],
+      "Items": [
+        {
+          "ItemNumber": 30050,
+          "Payment": "Mandatory",
+          "PaymentLocation": "OnSite",
+          "Month": [],
+          "AddCostOnSiteToPresentPrice": "Yes",
+          "Unit": "Pet/Night",
+          "Amount": 5.00,
+          "Sentences": [
+            {
+              "Language": "NL",
+              "Sentence": "Max. 2; € 5/dier/nacht"
+            },
+            {
+              "Language": "FR",
+              "Sentence": "Max. 2; € 5/Anim./Nuit"
+            },
+            {
+              "Language": "DE",
+              "Sentence": "Max. 2; € 5/Tier/Nacht"
+            },
+            {
+              "Language": "EN",
+              "Sentence": "Max. 2; € 5/Pet/Night"
+            },
+            {
+              "Language": "IT",
+              "Sentence": "Max. 2; € 5/animale/notte"
+            },
+            {
+              "Language": "ES",
+              "Sentence": "Max. 2; € 5/animal/noche"
+            },
+            {
+              "Language": "PL",
+              "Sentence": "Maks. 2; € 5/doba/zwierze"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TypeNumber": 41,
+      "TypeDescriptions": [
+        {
+          "Language": "NL",
+          "Description": "Bedlinnen"
+        },
+        {
+          "Language": "FR",
+          "Description": "Linge de maison"
+        },
+        {
+          "Language": "DE",
+          "Description": "Bettwäsche"
+        },
+        {
+          "Language": "EN",
+          "Description": "Bed linen"
+        },
+        {
+          "Language": "IT",
+          "Description": "Lenzuola"
+        },
+        {
+          "Language": "ES",
+          "Description": "Ropa de cama"
+        },
+        {
+          "Language": "PL",
+          "Description": "Posciel"
+        }
+      ],
+      "Items": [
+        {
+          "ItemNumber": 41050,
+          "Payment": "Optional",
+          "PaymentLocation": "OnSite",
+          "Month": [],
+          "AddCostOnSiteToPresentPrice": "No",
+          "Unit": "Person/Stay",
+          "Amount": 5.00,
+          "Sentences": [
+            {
+              "Language": "NL",
+              "Sentence": "Mogelijkheid tot huren, € 5 p.p./verblijf"
+            },
+            {
+              "Language": "FR",
+              "Sentence": "Possibilité de location, € 5 p.p./ Séjour"
+            },
+            {
+              "Language": "DE",
+              "Sentence": "Miete möglich, € 5 p.P./ Aufenthalt"
+            },
+            {
+              "Language": "EN",
+              "Sentence": "For rent, € 5 p.p./Stay"
+            },
+            {
+              "Language": "IT",
+              "Sentence": "Possibilità di affittare, € 5 p.p./soggiorno"
+            },
+            {
+              "Language": "ES",
+              "Sentence": "Posibilidad de alquilarla, € 5 p.p./ Estancia"
+            },
+            {
+              "Language": "PL",
+              "Sentence": "Mozliwosc wypozyczenia, € 5 os./pobyt"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TypeNumber": 42,
+      "TypeDescriptions": [
+        {
+          "Language": "NL",
+          "Description": "Badlinnen"
+        },
+        {
+          "Language": "FR",
+          "Description": "Serviettes de bain"
+        },
+        {
+          "Language": "DE",
+          "Description": "Handtücher"
+        },
+        {
+          "Language": "EN",
+          "Description": "Bath towels"
+        },
+        {
+          "Language": "IT",
+          "Description": "Asciugamani"
+        },
+        {
+          "Language": "ES",
+          "Description": "Toallas de baño"
+        },
+        {
+          "Language": "PL",
+          "Description": "Reczniki"
+        }
+      ],
+      "Items": [
+        {
+          "ItemNumber": 42055,
+          "Payment": "Optional",
+          "PaymentLocation": "OnSite",
+          "Month": [],
+          "AddCostOnSiteToPresentPrice": "No",
+          "Unit": "Group/Stay",
+          "Amount": 20.00,
+          "Sentences": [
+            {
+              "Language": "NL",
+              "Sentence": "Mogelijkheid tot huren, € 20/verblijf"
+            },
+            {
+              "Language": "FR",
+              "Sentence": "Possibilité de location, € 20 / Séjour"
+            },
+            {
+              "Language": "DE",
+              "Sentence": "Miete möglich, € 20 ppro Aufenthalt"
+            },
+            {
+              "Language": "EN",
+              "Sentence": "For rent, € 20 per Stay"
+            },
+            {
+              "Language": "IT",
+              "Sentence": "Possibilità di affittare, € 20 per soggiorno"
+            },
+            {
+              "Language": "ES",
+              "Sentence": "Posibilidad de alquilarla, € 20 / Estancia"
+            },
+            {
+              "Language": "PL",
+              "Sentence": "Mozliwosc wypozyczenia, € 20 pobyt"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TypeNumber": 43,
+      "TypeDescriptions": [
+        {
+          "Language": "NL",
+          "Description": "Keukenlinnen"
+        },
+        {
+          "Language": "FR",
+          "Description": "Torchons de cuisine"
+        },
+        {
+          "Language": "DE",
+          "Description": "Geschirrtücher"
+        },
+        {
+          "Language": "EN",
+          "Description": "Kitchen linen"
+        },
+        {
+          "Language": "IT",
+          "Description": "Biancheria da cucina"
+        },
+        {
+          "Language": "ES",
+          "Description": "Paños de cocina"
+        },
+        {
+          "Language": "PL",
+          "Description": "Obrusy, serwetki"
+        }
+      ],
+      "Items": [
+        {
+          "ItemNumber": 43055,
+          "Payment": "Optional",
+          "PaymentLocation": "OnSite",
+          "Month": [],
+          "AddCostOnSiteToPresentPrice": "No",
+          "Unit": "Group/Stay",
+          "Amount": 24.00,
+          "Sentences": [
+            {
+              "Language": "NL",
+              "Sentence": "Mogelijkheid tot huren, € 24/verblijf"
+            },
+            {
+              "Language": "FR",
+              "Sentence": "Possibilité de location, € 24 / Séjour"
+            },
+            {
+              "Language": "DE",
+              "Sentence": "Miete möglich, € 24 pro Aufenthalt"
+            },
+            {
+              "Language": "EN",
+              "Sentence": "For rent, € 24 per Stay"
+            },
+            {
+              "Language": "IT",
+              "Sentence": "Possibilità di affittare, € 24 / soggiorno"
+            },
+            {
+              "Language": "ES",
+              "Sentence": "Posibilidad de alquilarla, € 24 / Estancia"
+            },
+            {
+              "Language": "PL",
+              "Sentence": "Do wypozyczenia € 24 za pobyt"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TypeNumber": 50,
+      "TypeDescriptions": [
+        {
+          "Language": "NL",
+          "Description": "Elektriciteit"
+        },
+        {
+          "Language": "FR",
+          "Description": "Électricité"
+        },
+        {
+          "Language": "DE",
+          "Description": "Strom"
+        },
+        {
+          "Language": "EN",
+          "Description": "Electricity"
+        },
+        {
+          "Language": "IT",
+          "Description": "Elettricità/Energia"
+        },
+        {
+          "Language": "ES",
+          "Description": "Electricidad/Energía"
+        },
+        {
+          "Language": "PL",
+          "Description": "Elektrycznosc/Energia"
+        }
+      ],
+      "Items": [
+        {
+          "ItemNumber": 1002,
+          "Payment": "Mandatory",
+          "PaymentLocation": "OnSite",
+          "Month": [],
+          "AddCostOnSiteToPresentPrice": "No",
+          "Unit": "Group/KWH",
+          "Amount": 0.30,
+          "Sentences": [
+            {
+              "Language": "NL",
+              "Sentence": "€ 0,30/kWh"
+            },
+            {
+              "Language": "FR",
+              "Sentence": "€ 0,30/kWh"
+            },
+            {
+              "Language": "DE",
+              "Sentence": "€ 0,30/KwSt"
+            },
+            {
+              "Language": "EN",
+              "Sentence": "€ 0,30/kWh"
+            },
+            {
+              "Language": "IT",
+              "Sentence": "€ 0,30/kWh"
+            },
+            {
+              "Language": "ES",
+              "Sentence": "€ 0,30/kWh"
+            },
+            {
+              "Language": "PL",
+              "Sentence": "€ 0,30/kWh"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TypeNumber": 60,
+      "TypeDescriptions": [
+        {
+          "Language": "NL",
+          "Description": "Gas/Olie"
+        },
+        {
+          "Language": "FR",
+          "Description": "Gaz/Fioul"
+        },
+        {
+          "Language": "DE",
+          "Description": "Gas/Öl"
+        },
+        {
+          "Language": "EN",
+          "Description": "Gas/Oil"
+        },
+        {
+          "Language": "IT",
+          "Description": "Gas/Gasolio"
+        },
+        {
+          "Language": "ES",
+          "Description": "Gas/Gasóleo"
+        },
+        {
+          "Language": "PL",
+          "Description": "Gaz/Olej"
+        }
+      ],
+      "Items": [
+        {
+          "ItemNumber": 2002,
+          "Payment": "Mandatory",
+          "PaymentLocation": "OnSite",
+          "Month": [],
+          "AddCostOnSiteToPresentPrice": "No",
+          "Unit": "Group/M3",
+          "Amount": 2.00,
+          "Sentences": [
+            {
+              "Language": "NL",
+              "Sentence": "€ 2/m3"
+            },
+            {
+              "Language": "FR",
+              "Sentence": "€ 2/m3"
+            },
+            {
+              "Language": "DE",
+              "Sentence": "€ 2/m3"
+            },
+            {
+              "Language": "EN",
+              "Sentence": "€ 2/m3"
+            },
+            {
+              "Language": "IT",
+              "Sentence": "€ 2/m3"
+            },
+            {
+              "Language": "ES",
+              "Sentence": "€ 2/m3"
+            },
+            {
+              "Language": "PL",
+              "Sentence": "€ 2/m3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TypeNumber": 65,
+      "TypeDescriptions": [
+        {
+          "Language": "NL",
+          "Description": "Wifi"
+        },
+        {
+          "Language": "FR",
+          "Description": "Wifi"
+        },
+        {
+          "Language": "DE",
+          "Description": "WLAN"
+        },
+        {
+          "Language": "EN",
+          "Description": "Wifi"
+        },
+        {
+          "Language": "IT",
+          "Description": "Wifi"
+        },
+        {
+          "Language": "ES",
+          "Description": "Wifi"
+        },
+        {
+          "Language": "PL",
+          "Description": "Wifi"
+        }
+      ],
+      "Items": [
+        {
+          "ItemNumber": 6540,
+          "Payment": "None",
+          "PaymentLocation": "OnSite",
+          "Month": [],
+          "AddCostOnSiteToPresentPrice": "No",
+          "Unit": "Inapplicable",
+          "Amount": 0.00,
+          "Sentences": [
+            {
+              "Language": "NL",
+              "Sentence": "Niet aanwezig"
+            },
+            {
+              "Language": "FR",
+              "Sentence": "Inexistant"
+            },
+            {
+              "Language": "DE",
+              "Sentence": "Nicht vorhanden"
+            },
+            {
+              "Language": "EN",
+              "Sentence": "Not available"
+            },
+            {
+              "Language": "IT",
+              "Sentence": "Non Presente"
+            },
+            {
+              "Language": "ES",
+              "Sentence": "Inesistente"
+            },
+            {
+              "Language": "PL",
+              "Sentence": "Niedostepne"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TypeNumber": 100,
+      "TypeDescriptions": [
+        {
+          "Language": "NL",
+          "Description": "Toeristenbelasting"
+        },
+        {
+          "Language": "FR",
+          "Description": "Taxe de séjour"
+        },
+        {
+          "Language": "DE",
+          "Description": "Kurtaxe"
+        },
+        {
+          "Language": "EN",
+          "Description": "Tourist tax"
+        },
+        {
+          "Language": "IT",
+          "Description": "Tasse di soggiorno"
+        },
+        {
+          "Language": "ES",
+          "Description": "Impuestos por turismo"
+        },
+        {
+          "Language": "PL",
+          "Description": "Oplata klimatyczna"
+        }
+      ],
+      "Items": [
+        {
+          "ItemNumber": 60050,
+          "Payment": "None",
+          "PaymentLocation": "OnSite",
+          "Month": [],
+          "AddCostOnSiteToPresentPrice": "No",
+          "Unit": "Inapplicable",
+          "Amount": 0.00,
+          "Sentences": [
+            {
+              "Language": "NL",
+              "Sentence": "Geen"
+            },
+            {
+              "Language": "FR",
+              "Sentence": "Non"
+            },
+            {
+              "Language": "DE",
+              "Sentence": "Keine"
+            },
+            {
+              "Language": "EN",
+              "Sentence": "No"
+            },
+            {
+              "Language": "IT",
+              "Sentence": "No"
+            },
+            {
+              "Language": "ES",
+              "Sentence": "No"
+            },
+            {
+              "Language": "PL",
+              "Sentence": "Nie"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TypeNumber": 110,
+      "TypeDescriptions": [
+        {
+          "Language": "NL",
+          "Description": "Catering"
+        },
+        {
+          "Language": "FR",
+          "Description": "Catering"
+        },
+        {
+          "Language": "DE",
+          "Description": "Catering"
+        },
+        {
+          "Language": "EN",
+          "Description": "Catering"
+        },
+        {
+          "Language": "IT",
+          "Description": "Catering"
+        },
+        {
+          "Language": "ES",
+          "Description": "Catering"
+        },
+        {
+          "Language": "PL",
+          "Description": "Catering/Wyzywienie"
+        }
+      ],
+      "Items": [
+        {
+          "ItemNumber": 61030,
+          "Payment": "Optional",
+          "PaymentLocation": "OnSite",
+          "Month": [],
+          "AddCostOnSiteToPresentPrice": "No",
+          "Unit": "Inapplicable",
+          "Amount": 0.00,
+          "Sentences": [
+            {
+              "Language": "NL",
+              "Sentence": "Lunch mogelijk"
+            },
+            {
+              "Language": "FR",
+              "Sentence": "Déjeuner possible"
+            },
+            {
+              "Language": "DE",
+              "Sentence": "Mittagessen möglich"
+            },
+            {
+              "Language": "EN",
+              "Sentence": "Lunch possible"
+            },
+            {
+              "Language": "IT",
+              "Sentence": "Pranzo possibile"
+            },
+            {
+              "Language": "ES",
+              "Sentence": "Almuerzo posible"
+            },
+            {
+              "Language": "PL",
+              "Sentence": "Lunch mo?liwy"
+            }
+          ]
+        },
+        {
+          "ItemNumber": 61035,
+          "Payment": "Optional",
+          "PaymentLocation": "OnSite",
+          "Month": [],
+          "AddCostOnSiteToPresentPrice": "No",
+          "Unit": "Inapplicable",
+          "Amount": 0.00,
+          "Sentences": [
+            {
+              "Language": "NL",
+              "Sentence": "Diner mogelijk"
+            },
+            {
+              "Language": "FR",
+              "Sentence": "Dîner possible"
+            },
+            {
+              "Language": "DE",
+              "Sentence": "Abendessen möglich"
+            },
+            {
+              "Language": "EN",
+              "Sentence": "Dinner possible"
+            },
+            {
+              "Language": "IT",
+              "Sentence": "Cena possibile"
+            },
+            {
+              "Language": "ES",
+              "Sentence": "Cena posible"
+            },
+            {
+              "Language": "PL",
+              "Sentence": "Kolacja mo?liwe"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TypeNumber": 120,
+      "TypeDescriptions": [
+        {
+          "Language": "NL",
+          "Description": "Ontbijt"
+        },
+        {
+          "Language": "FR",
+          "Description": "Petit déjeuner"
+        },
+        {
+          "Language": "DE",
+          "Description": "Frühstück"
+        },
+        {
+          "Language": "EN",
+          "Description": "Breakfast"
+        },
+        {
+          "Language": "IT",
+          "Description": "Prima colazione"
+        },
+        {
+          "Language": "ES",
+          "Description": "Desayuno"
+        },
+        {
+          "Language": "PL",
+          "Description": "Sniadanie"
+        }
+      ],
+      "Items": [
+        {
+          "ItemNumber": 62030,
+          "Payment": "Optional",
+          "PaymentLocation": "OnSite",
+          "Month": [],
+          "AddCostOnSiteToPresentPrice": "No",
+          "Unit": "Inapplicable",
+          "Amount": 0.00,
+          "Sentences": [
+            {
+              "Language": "NL",
+              "Sentence": "Mogelijk"
+            },
+            {
+              "Language": "FR",
+              "Sentence": "Possibilité"
+            },
+            {
+              "Language": "DE",
+              "Sentence": "Möglich"
+            },
+            {
+              "Language": "EN",
+              "Sentence": "Possibility"
+            },
+            {
+              "Language": "IT",
+              "Sentence": "Opzionale"
+            },
+            {
+              "Language": "ES",
+              "Sentence": "Opcional"
+            },
+            {
+              "Language": "PL",
+              "Sentence": "Opcja"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

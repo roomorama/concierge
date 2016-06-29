@@ -26,7 +26,7 @@ RSpec.describe AtLeisure::Booking do
   }
 
   before do
-    allow_any_instance_of(API::Support::JSONRPC).to receive(:request_id) { 888888888888 }
+    allow_any_instance_of(Concierge::JSONRPC).to receive(:request_id) { 888888888888 }
   end
 
   subject { described_class.new(credentials) }
@@ -89,7 +89,7 @@ RSpec.describe AtLeisure::Booking do
 
       it "sends correct reservation details to partner" do
 
-        expect_any_instance_of(API::Support::JSONRPC).to receive(:invoke).
+        expect_any_instance_of(Concierge::JSONRPC).to receive(:invoke).
           with("PlaceBookingV1", expected_reservation_details).
           and_return(Result.new('any'))
 

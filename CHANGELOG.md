@@ -4,6 +4,14 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [Unreleased]
+### Added
+- Synchronisation with AtLeisure
+
+### Changed
+- moved `JSONRPC` to `lib` folder
+- customized timeout option for `HTTPClient` 
+
 ## [0.4.3] - 2016-06-29
 ### Changed
 - Waytostay treats a few cases as unavailable quotation, rather than an error

@@ -10,3 +10,4 @@ Vagrantfile
 .ruby-gemset
 /config/credentials/development.yml
 /log/*
+.byebug_history
