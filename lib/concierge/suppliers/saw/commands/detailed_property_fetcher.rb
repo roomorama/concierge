@@ -44,7 +44,7 @@ module SAW
       
         SAW::Mappers::DetailedProperty.build(
           property_hash,
-          image_url_rewrite: require_image_url_rewrite?
+          image_url_rewrite: credentials.url_rewrite
         )
       end
 

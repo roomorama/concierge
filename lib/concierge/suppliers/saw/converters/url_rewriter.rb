@@ -14,20 +14,14 @@ module SAW
         # Arguments
         #   
         #   * +url+ [String] original url coming from SAW API
-        #   * +rewrite+ [Boolean] boolean flag indicating whether convertion is
-        #   needed. false by default
         #
         # Usage
         #
-        #   URLRewriter.build("http://link.com/file.jpg", rewrite: true)
+        #   URLRewriter.build("http://link.com/file.jpg")
         #
         # Returns [String] rewritten url
-        def build(url, rewrite: false)
-          if rewrite
-            url.gsub(/\Ahttp:\/\/staging/, 'http://www')
-          else
-            url 
-          end
+        def build(url)
+          url.gsub(/\Ahttp:\/\/staging/, 'http://www')
         end
       end
     end
