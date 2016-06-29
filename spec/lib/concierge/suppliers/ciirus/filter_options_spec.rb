@@ -3,19 +3,19 @@ require 'spec_helper'
 RSpec.describe Ciirus::FilterOptions do
 
   it 'sets the default values' do
-    filter = Ciirus::FilterOptions.new(management_company_id: 123)
+    filter = described_class.new(management_company_id: 123)
     expect(filter.management_company_id).to eq(123)
     expect(filter.property_id).to eq(0)
   end
 
   it 'builds filter options with default values' do
-    filter = Ciirus::FilterOptions.new
+    filter = described_class.new
     expect(filter.filters.has_pool).to be(2)
     expect(filter.filters.has_spa).to be(2)
   end
 
   it 'builds filter options with the given values' do
-    filter = Ciirus::FilterOptions.new do |filters|
+    filter = described_class.new do |filters|
       filters.has_pool = 1
       filters.has_spa = 0
       filters.sleeps = 5
@@ -26,10 +26,10 @@ RSpec.describe Ciirus::FilterOptions do
     expect(filter.filters.sleeps).to be(5)
   end
 
-  describe '.to_xml' do
+  describe '#to_xml' do
 
     it 'generates the appropriate xml message' do
-      filter = Ciirus::FilterOptions.new(management_company_id: 123, property_id: 4435)
+      filter = described_class.new(management_company_id: 123, property_id: 4435)
       filter_xml = Nokogiri::XML::Builder.new do |xml|
         filter.to_xml(xml)
       end
