@@ -12,6 +12,7 @@ module API
       root __dir__
 
       load_paths << [
+        'entities',
         'support',
         'controllers',
         'views'

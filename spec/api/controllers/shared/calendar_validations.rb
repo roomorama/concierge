@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.shared_examples "performing parameter validations" do |controller_generator:|
+RSpec.shared_examples "performing pull-calendar parameter validations" do |controller_generator:|
 
   it "is invalid without a property_id" do
     valid_params.delete(:property_id)
@@ -11,63 +11,54 @@ RSpec.shared_examples "performing parameter validations" do |controller_generato
     expect(response.body["errors"]["property_id"]).to eq ["property_id is required"]
   end
 
-  it "is invalid without a check-in date" do
-    valid_params.delete(:check_in)
+  it "is invalid without a from_date" do
+    valid_params.delete(:from_date)
     response = call(controller_generator.call, valid_params)
 
     expect(response.status).to eq 422
     expect(response.body["status"]).to eq "error"
-    expect(response.body["errors"]["check_in"]).to eq ["check_in is required"]
+    expect(response.body["errors"]["from_date"]).to eq ["from_date is required"]
   end
 
-  it "is invalid without a check-out date" do
-    valid_params.delete(:check_out)
+  it "is invalid without a to_date" do
+    valid_params.delete(:to_date)
     response = call(controller_generator.call, valid_params)
 
     expect(response.status).to eq 422
     expect(response.body["status"]).to eq "error"
-    expect(response.body["errors"]["check_out"]).to eq ["check_out is required"]
+    expect(response.body["errors"]["to_date"]).to eq ["to_date is required"]
   end
 
-  it "is invalid if the check-out date is not after the check-in date" do
-    valid_params[:check_out] = (Date.parse(valid_params[:check_in]) - 1).to_s
+  it "is invalid if the to_date date is not after the from_date" do
+    valid_params[:to_date] = (Date.parse(valid_params[:from_date]) - 1).to_s
     response = call(controller_generator.call, valid_params)
 
     expect(response.status).to eq 422
     expect(response.body["status"]).to eq "error"
-    expect(response.body["errors"]["check_out"]).to eq ["check_out needs to be after check_in"]
+    expect(response.body["errors"]["to_date"]).to eq ["to_date needs to be after from_date"]
   end
 
-  it "is invalid without a number of guests" do
-    valid_params.delete(:guests)
+  it "is invalid if the from_date format is not correct" do
+    valid_params[:from_date] = "invalid-format"
     response = call(controller_generator.call, valid_params)
 
     expect(response.status).to eq 422
     expect(response.body["status"]).to eq "error"
-    expect(response.body["errors"]["guests"]).to eq ["guests is required"]
+    expect(response.body["errors"]["from_date"]).to eq ["from_date: invalid format"]
   end
 
-  it "is invalid if the check-in format is not correct" do
-    valid_params[:check_in] = "invalid-format"
+  it "is invalid if the to_date format is not correct" do
+    valid_params[:to_date] = "invalid-format"
     response = call(controller_generator.call, valid_params)
 
     expect(response.status).to eq 422
     expect(response.body["status"]).to eq "error"
-    expect(response.body["errors"]["check_in"]).to eq ["check_in: invalid format"]
-  end
-
-  it "is invalid if the check-out format is not correct" do
-    valid_params[:check_out] = "invalid-format"
-    response = call(controller_generator.call, valid_params)
-
-    expect(response.status).to eq 422
-    expect(response.body["status"]).to eq "error"
-    expect(response.body["errors"]["check_out"]).to eq ["check_out: invalid format"]
+    expect(response.body["errors"]["to_date"]).to eq ["to_date: invalid format"]
   end
 
   it "is valid if all parameters are correct" do
     controller = controller_generator.call
-    allow(controller).to receive(:quote_price) { Quotation.new(errors: []) }
+    allow(controller).to receive(:pull_calendar) { Calendar.new(errors: []) }
 
     response = call(controller, valid_params)
     expect(response.status).to eq 200
@@ -76,7 +67,7 @@ RSpec.shared_examples "performing parameter validations" do |controller_generato
 
   it "fails if the price quotation is not successful" do
     controller = controller_generator.call
-    allow(controller).to receive(:quote_price) { Quotation.new(errors: { failure: "Partner unavailable" }) }
+    allow(controller).to receive(:pull_calendar) { Calendar.new(errors: { failure: "Supplier unavailable" }) }
 
     response = call(controller, valid_params)
     expect(response.status).to eq 503

@@ -1,32 +1,28 @@
 module API::Controllers::Params
 
-  # +API::Controllers::Params::Quote
+  # +API::Controllers::Params::Calendar
   #
-  # Parameters declaration and validation for quoting booking stays. This is
-  # shared among all partner quoting calls, and ensures that required parameters
-  # are present and in an acceptable format.
+  # Parameters declaration and validation for getting the availabilities calendar
+  # for a given property. This is shared among all partner calendar calls, and
+  # ensures that required parameters are present and in an acceptable format.
   #
   # If the parameters given are not valid, quoting controllers that include this
   # module will return a 422 HTTP status, with a response payload that reports
   # the errors in the parameters.
-  class Quote < API::Action::Params
+  class Calendar < API::Action::Params
 
     DATE_FORMAT = /\d\d\d-\d\d-\d\d/
 
     param :property_id, presence: true, type: String
-    param :check_in,    presence: true, type: String, format: DATE_FORMAT
-    param :check_out,   presence: true, type: String, format: DATE_FORMAT
-    param :guests,      presence: true, type: Integer
+    param :from_date,   presence: true, type: String, format: DATE_FORMAT
+    param :to_date,     presence: true, type: String, format: DATE_FORMAT
 
     # Constructs a map of errors for the request.
     #
     # Example
     #
     #   action.error_messages
-    #   # => { property_id: ["property_id is required"], check_in: ["check_in: invalid format"] }
-    #
-    # The keys for the returned hash are attribute names (see the +param+ declaration list above)
-    # and the values for each key is a list of errors for the attribute.
+    #   # => { property_id: ["property_id is required"] }
     def error_messages
       ErrorMessages.new(validation_errors).generate
     end
@@ -38,22 +34,18 @@ module API::Controllers::Params
       errors.each.to_a + date_comparison.errors
     end
 
-    def stay_length
-      date_comparison.duration
-    end
-
     # include checking for travel date errors when validating parameters
     def valid?
       builtin_validations = super
       dates_validations   = date_comparison.valid?
 
-      builtin_validations && dates_validations
+      builtin_validations && dates_validation
     end
 
     private
 
     def date_comparison
-      @date_comparison ||= DateComparison.new(check_in: self[:check_in], check_out: self[:check_out])
+      @date_comparison ||= DateComparison.new(from_date: self[:from_date], to_date: self[:to_date])
     end
 
   end

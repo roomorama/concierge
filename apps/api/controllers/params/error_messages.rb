@@ -15,14 +15,15 @@ class API::Controllers::Params::ErrorMessages
       attr = error.attribute
 
       case error.validation
-        when :presence
-          messages[attr] << "#{attr} is required"
-        when :format
-          messages[attr] << "#{attr}: invalid format"
-        when :check_out_before_check_in
-          messages[attr] << "#{attr} needs to be after check-in"
-        else
-          messages[attr] << "#{attr} is invalid"
+      when :presence
+        messages[attr] << "#{attr} is required"
+      when :format
+        messages[attr] << "#{attr}: invalid format"
+      when /_before_/
+        after, before = error.validation.to_s.split("_before_")
+        messages[attr] << "#{after} needs to be after #{before}"
+      else
+        messages[attr] << "#{attr} is invalid"
       end
     end
 
