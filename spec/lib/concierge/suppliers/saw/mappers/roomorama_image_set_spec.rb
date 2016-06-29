@@ -41,6 +41,17 @@ module SAW
         "http://www.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=38992"
       )
     end
+    
+    it "keeps SAW url untouched" do
+      images = described_class.build(hash, false) 
+      
+      photo = images.first
+
+      expect(photo).to be_kind_of(Roomorama::Image)
+      expect(photo.url).to eq(
+        "http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=38992"
+      )
+    end
 
     it "returns empty array when no image_gallery attribute is there" do
       images = described_class.build(safe_hash({}), false) 
