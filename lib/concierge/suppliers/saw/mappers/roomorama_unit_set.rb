@@ -6,9 +6,6 @@ module SAW
         property_accommodations = fetch_property_accommodations(detailed_property.property_accommodations)
 
         property_accommodations.map do |hash|
-          id = hash["@id"]
-          name = hash["accommodation_name"]
-
           units = to_array(hash.fetch("property_accommodation"))
 
           if units
