@@ -40,7 +40,7 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
       country: 'Thailand',
       amenities: ['wifi', 'breakfast'],
       images: property_images,
-      not_supported_amenities: ['foo', 'bar']
+      not_supported_amenities: []
     }
   end
 
@@ -105,8 +105,6 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
       amenities
     )
     
-    #TODO: not_supported_amenities
-
     attributes.each do |attr|
       expect(property.send(attr)).to eq(detailed_property.send(attr))
     end
@@ -226,6 +224,64 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
 
         expect(property.units).not_to eq([])
         expect(property.units).to all(be_kind_of(Roomorama::Unit))
+      end
+    end
+    
+    describe "changes description to include additional amenities" do
+      it "adds additional amenities to description" do
+        detailed_property_attributes[:not_supported_amenities] = ["foo", "bar"]
+        
+        property = described_class.build(
+          basic_property,
+          detailed_property,
+          availabilities
+        )
+        
+        expect(property.description).to eq(
+          "Description Detailed. Additional amenities: foo, bar"
+        )
+      end
+    
+      it "adds only additional amenities to description when description is blank" do
+        variations = ["", " ", nil]
+
+        variations.each do |desc|
+          detailed_property_attributes[:description] = desc
+          detailed_property_attributes[:not_supported_amenities] = ["foo", "bar"]
+        
+          property = described_class.build(
+            basic_property,
+            detailed_property,
+            availabilities
+          )
+          
+          expect(property.description).to eq("Additional amenities: foo, bar")
+        end
+      end
+
+      it "doesn't add additional amenities to description when they are empty" do
+        detailed_property_attributes[:not_supported_amenities] = []
+          
+        property = described_class.build(
+          basic_property,
+          detailed_property,
+          availabilities
+        )
+
+        expect(property.description).to eq("Description Detailed")
+      end
+
+      it "keeps description empty when there is no additional amenities and original description" do
+        detailed_property_attributes[:description] = nil
+        detailed_property_attributes[:not_supported_amenities] = []
+        
+        property = described_class.build(
+          basic_property,
+          detailed_property,
+          availabilities
+        )
+
+        expect(property.description).to eq(nil)
       end
     end
   end
