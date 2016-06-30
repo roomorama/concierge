@@ -8,7 +8,7 @@ RSpec.describe Ciirus::Commands::QuoteFetcher do
   let(:credentials) do
     double(username: 'Foo',
            password: '123',
-           url: 'http://proxy.roomorama.com/ciirus')
+           url:      'http://proxy.roomorama.com/ciirus')
   end
 
   let(:params) do
@@ -22,6 +22,7 @@ RSpec.describe Ciirus::Commands::QuoteFetcher do
   after { savon.unmock! }
 
   let(:success_response) { read_fixture('ciirus/property_quote_response.xml') }
+  let(:empty_response) { read_fixture('ciirus/empty_property_quote_response.xml') }
   subject { described_class.new(credentials) }
 
   describe '#call' do
@@ -48,6 +49,19 @@ RSpec.describe Ciirus::Commands::QuoteFetcher do
       expect(quotation.currency).to eq('USD')
       expect(quotation.available).to be true
       expect(quotation.total).to eq(3440.98)
+    end
+
+    it 'returns unavailable quotation for empty response' do
+      savon.expects(:get_properties).with(message: :any).returns(empty_response)
+
+      result = subject.call(params)
+
+      quotation = result.value
+      expect(quotation.check_in).to eq('2016-05-01')
+      expect(quotation.check_out).to eq('2016-05-12')
+      expect(quotation.guests).to eq(3)
+      expect(quotation.property_id).to eq('38180')
+      expect(quotation.available).to be false
     end
   end
 end
