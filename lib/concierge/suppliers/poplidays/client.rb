@@ -21,14 +21,7 @@ module Poplidays
     # AtLeisure, a generic error message is sent back to the caller, and the failure
     # is logged.
     def quote(params)
-      result = Poplidays::Price.new.quote(params)
-
-      if result.success?
-        result.value
-      else
-        announce_error("quote", result)
-        Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
-      end
+      Poplidays::Price.new.quote(params)
     end
 
     private
