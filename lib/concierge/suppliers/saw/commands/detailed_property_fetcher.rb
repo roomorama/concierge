@@ -51,14 +51,6 @@ module SAW
       def require_image_url_rewrite?
         credentials.url.start_with?('http://staging')
       end
-
-      def to_array(something)
-        if something.is_a? Hash
-          [something]
-        else
-          Array(something)
-        end
-      end
     end
   end
 end
