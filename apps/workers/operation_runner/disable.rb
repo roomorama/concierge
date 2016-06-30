@@ -10,13 +10,15 @@ class Workers::OperationRunner
   #   the Concierge database.
   class Disable
 
-    attr_reader :host, :operation
+    attr_reader :host, :operation, :roomorama_client
 
     # host      - a +Host+ instance.
     # operation - a +Roomorama::Client::Operations::Disable+ instance
-    def initialize(host, operation)
-      @host      = host
-      @operation = operation
+    # client    - a +Roomorama::Client+ instance properly configured
+    def initialize(host, operation, client)
+      @host             = host
+      @operation        = operation
+      @roomorama_client = client
     end
 
     # performs an API call to delete the properties on Roomorama. If that is
@@ -38,10 +40,6 @@ class Workers::OperationRunner
       PropertyRepository.from_host(host).identified_by(identifiers).each do |property|
         PropertyRepository.delete(property)
       end
-    end
-
-    def roomorama_client
-      @roomorama_client ||= Roomorama::Client.new(host.access_token)
     end
 
   end

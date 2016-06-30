@@ -38,8 +38,9 @@ RSpec.describe Workers::OperationRunner::Publish do
   }
 
   let(:operation) { Roomorama::Client::Operations.publish(roomorama_property) }
+  let(:roomorama_client) { Roomorama::Client.new(host.access_token) }
 
-  subject { described_class.new(host, operation) }
+  subject { described_class.new(host, operation, roomorama_client) }
 
   describe "#perform" do
     it "returns the underlying network problem, if any" do

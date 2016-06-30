@@ -5,7 +5,7 @@ RSpec.describe Workers::OperationRunner::Diff do
   include Support::HTTPStubbing
   include Support::Fixtures
 
-  let(:endpoint) { "https://api.roomorama.com/v1.0/host/apply" }
+  let(:endpoint) { "https://api.staging.roomorama.com/v1.0/host/apply" }
   let(:host) { create_host }
   let(:roomorama_property) {
     Roomorama::Property.new("prop1").tap do |property|
@@ -44,8 +44,9 @@ RSpec.describe Workers::OperationRunner::Diff do
   }
 
   let(:operation) { Roomorama::Client::Operations.diff(diff) }
+  let(:roomorama_client) { Roomorama::Client.new(host.access_token) }
 
-  subject { described_class.new(host, operation) }
+  subject { described_class.new(host, operation, roomorama_client) }
 
   before do
     # before running the tests, create the corresponding database record since
