@@ -6,10 +6,10 @@ module Ciirus
         # to bool
         def build(hash)
           Entities::PropertyRate.new(
-            hash.get('from_date'),
-            hash.get('to_date'),
-            hash.get('min_nights_stay'),
-            hash.get('daily_rate')
+            hash[:from_date],
+            hash[:to_date],
+            hash[:min_nights_stay].to_i,
+            Float(hash[:daily_rate])
           )
         end
       end

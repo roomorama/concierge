@@ -43,7 +43,7 @@ module Ciirus
             'get_property_rates_response.get_property_rates_result.rate'
         )
         if rates
-          to_array(rates).map do |rate|
+          Array(rates).map do |rate|
             Ciirus::Mappers::PropertyRate.build(rate)
           end
         else
