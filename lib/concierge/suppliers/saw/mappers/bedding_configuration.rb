@@ -11,14 +11,14 @@ module SAW
         #
         # Arguments:
         #
-        #   * +bedding_config+ [Hash] attributes
+        #   * +bedding_config+ [Concierge::SafeAccessHash] attributes
         #
         # Returns [SAW::Entities::BeddingConfiguration]
         def build(bedding_config)
           number_of_single_beds = 0
           number_of_double_beds = 0
 
-          beds = to_array(bedding_config.fetch("bed_type"))
+          beds = bedding_config.get("bed_type")
           beds.each do |bed|
             single_count, double_count = detect_beds(bed)
             number_of_double_beds = number_of_double_beds + double_count
@@ -39,14 +39,6 @@ module SAW
           single_count = string.scan(/single/i).size + 2 * string.scan(/twin/i).size
 
           [single_count, double_count]
-        end
-
-        def to_array(something)
-          if something.is_a? Hash
-            [something]
-          else
-            Array(something)
-          end
         end
       end
     end

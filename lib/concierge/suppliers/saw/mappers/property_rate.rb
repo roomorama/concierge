@@ -32,7 +32,7 @@ module SAW
             "response.property.apartments.accommodation_type.property_accommodation"
           )
 
-          to_array(units).map do |unit_hash|
+          Array(units).map do |unit_hash|
             safe_hash = Concierge::SafeAccessHash.new(unit_hash)
 
             Entities::UnitRate.new(
@@ -48,14 +48,6 @@ module SAW
 
         def parse_price(hash)
           hash.get("price_detail.net.total_price.price")
-        end
-    
-        def to_array(something)
-          if something.is_a? Hash
-            [something]
-          else
-            Array(something)
-          end
         end
       end
     end
