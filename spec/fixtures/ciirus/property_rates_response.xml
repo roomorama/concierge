@@ -1,0 +1,20 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <soap:Body>
+    <GetPropertyRatesResponse xmlns="http://xml.ciirus.com/">
+      <GetPropertyRatesResult>
+        <Rate>
+          <FromDate>2014-06-27T00:00:00</FromDate>
+          <ToDate>2014-08-22T00:00:00</ToDate>
+          <MinNightsStay>3</MinNightsStay>
+          <DailyRate>157.50</DailyRate>
+        </Rate>
+        <Rate>
+          <FromDate>2014-08-23T00:00:00</FromDate>
+          <ToDate>2014-10-16T00:00:00</ToDate>
+          <MinNightsStay>3</MinNightsStay>
+          <DailyRate>141.43</DailyRate>
+        </Rate>
+      </GetPropertyRatesResult>
+    </GetPropertyRatesResponse>
+  </soap:Body>
+</soap:Envelope>
