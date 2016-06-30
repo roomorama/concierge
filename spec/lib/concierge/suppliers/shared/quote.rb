@@ -17,8 +17,11 @@ RSpec.shared_examples "supplier quote method" do
 
   context "when successful" do
     context "and available" do
-      let(:quotation) { supplier_client.quote(success_params) }
+      let(:quotation_result) { supplier_client.quote(success_params) }
       it "returns the wrapped quotation" do
+        expect(quotation_result).to be_success
+
+        quotation = quotation_result.value
         expect(quotation).to be_a Quotation
         expect(quotation).to be_successful
         expect(quotation.errors).to be_nil
@@ -26,29 +29,26 @@ RSpec.shared_examples "supplier quote method" do
       end
     end
     context "and unavailable" do
-      it "returns the wrapped quotation, and not create any ExternalError" do
+      it "returns the result wrapping quotation" do
         unavailable_params_list.each do |params|
-          expect {
-            quotation = supplier_client.quote(params)
-            expect(quotation).to be_a Quotation
-            expect(quotation).to be_successful
-            expect(quotation.errors).to be_nil
-            expect(quotation.available).to be false
-          }.to_not change { ExternalErrorRepository.count }
+          quotation_result = supplier_client.quote(params)
+          expect(quotation_result).to be_success
+
+          quotation = quotation_result.value
+          expect(quotation).to be_a Quotation
+          expect(quotation.errors).to be_nil
+          expect(quotation.available).to be false
         end
       end
-
     end
   end
 
   context "when errors occur" do
-    it "returns the erred quotation" do
+    it "returns the error result" do
       error_params_list.each do |params|
-        expect {
-          quotation = supplier_client.quote(params)
-          expect(quotation).not_to be_successful
-          expect(quotation.errors[:quote]).to eq "Could not quote price with remote supplier"
-        }.to change { ExternalErrorRepository.count }.by 1
+        quotation_result = supplier_client.quote(params)
+        expect(quotation_result).not_to be_success
+        expect(quotation_result.error).to_not be_nil
       end
     end
   end

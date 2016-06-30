@@ -154,7 +154,7 @@ RSpec.describe Waytostay::Client do
 
     it "should announce missing fields from response for malformed responses" do
       quotation = stubbed_client.quote({ property_id: "malformed_response", check_in: Date.today + 10, check_out: Date.today + 20, guests: 2 })
-      expect(quotation).not_to be_successful
+      expect(quotation).not_to be_success
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
     end
