@@ -8,9 +8,12 @@ how this file is formatted and how the process works.
 ### Added
 - Synchronisation with AtLeisure
 
+### Removed
+- removed `fee` field from `Quotation`. Fees should be included in the total.
+
 ### Changed
 - moved `JSONRPC` to `lib` folder
-- customized timeout option for `HTTPClient` 
+- customized timeout option for `HTTPClient`
 
 ## [0.4.3] - 2016-06-29
 ### Changed

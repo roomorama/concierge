@@ -46,7 +46,7 @@ RSpec.shared_examples "Kigo price quotation" do
     expect(response.body["check_out"]).to eq "2016-03-25"
     expect(response.body["guests"]).to eq 2
     expect(response.body["currency"]).to eq "EUR"
-    expect(response.body["total"]).to eq 570
+    expect(response.body["total"]).to eq 580.0
   end
 
   def parse_response(rack_response)
