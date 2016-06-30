@@ -23,8 +23,6 @@ RSpec.shared_examples "supplier quote method" do
 
         quotation = quotation_result.value
         expect(quotation).to be_a Quotation
-        expect(quotation).to be_successful
-        expect(quotation.errors).to be_nil
         expect(quotation.total > 0).to be_truthy
       end
     end
@@ -36,7 +34,6 @@ RSpec.shared_examples "supplier quote method" do
 
           quotation = quotation_result.value
           expect(quotation).to be_a Quotation
-          expect(quotation.errors).to be_nil
           expect(quotation.available).to be false
         end
       end

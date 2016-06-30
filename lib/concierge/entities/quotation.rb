@@ -13,8 +13,6 @@
 #   +available+:   whether or not the property is available for the given dates
 #   +total+:       the quoted price for the booking
 #   +currency+:    the currency used for the quotation
-#   +errors+:      if there were any errors during the quotation with the partner,
-#                  the errors will be listed here.
 #
 # The quotation is only successful if the +errors+ attribute is empty.
 class Quotation
@@ -29,9 +27,5 @@ class Quotation
   attribute :available,   type: Boolean
   attribute :total,       type: Float
   attribute :currency,    type: String
-  attribute :errors,      type: Hash
 
-  def successful?
-    Array(errors).empty?
-  end
 end
