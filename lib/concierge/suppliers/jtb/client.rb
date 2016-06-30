@@ -24,7 +24,7 @@ module JTB
 
     # Always returns a +Result+ wrapping a +Quotation+.
     def quote(params)
-      return Result.new(unavailable_quotation) if params.stay_length > MAXIMUM_STAY_LENGTH
+      return stay_too_long_error if params.stay_length > MAXIMUM_STAY_LENGTH
       JTB::Price.new(credentials).quote(params)
     end
 
@@ -61,8 +61,8 @@ module JTB
       @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
     end
 
-    def unavailable_quotation
-      Quotation.new(errors: { quote: "Maximum length of stay must be less than #{MAXIMUM_STAY_LENGTH} nights." })
+    def stay_too_long_error
+      Result.error(:stay_too_long, { quote: "Maximum length of stay must be less than #{MAXIMUM_STAY_LENGTH} nights." })
     end
 
   end

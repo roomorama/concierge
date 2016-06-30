@@ -14,23 +14,24 @@ RSpec.describe JTB::Client do
                                unit_id: 'JPN')
     }
 
-    it 'returns the wrapped quotation from JTB::Price when successful' do
+    it 'returns the result wrapping quotation from JTB::Price when successful' do
       successful_quotation = Quotation.new(total: 999)
       allow_any_instance_of(JTB::Price).to receive(:quote) { Result.new(successful_quotation) }
 
       quote = subject.quote(params)
-      expect(quote).to be_a Quotation
-      expect(quote.total).to eq 999
+      expect(quote).to be_success
+      expect(quote.value).to be_a Quotation
+      expect(quote.value.total).to eq 999
     end
 
-    it 'returns a quotation object with a generic error message on failure' do
+    it 'returns a result object on failure' do
       failed_operation = Result.error(:something_failed)
       allow_any_instance_of(JTB::Price).to receive(:quote) { failed_operation }
 
       quote = subject.quote(params)
-      expect(quote).to be_a Quotation
-      expect(quote).not_to be_successful
-      expect(quote.errors).to eq({ quote: "Could not quote price with remote supplier" })
+      expect(quote).to be_a Result
+      expect(quote).not_to be_success
+      expect(quote.error.data).to be_nil
     end
 
     context 'exceeded stay length' do
@@ -42,11 +43,11 @@ RSpec.describe JTB::Client do
       }
 
 
-      it 'returns a quotation object with a specific error message' do
+      it 'returns a error result object with a specific error message in data' do
         quote = subject.quote(params)
-        expect(quote).to be_a Quotation
-        expect(quote).not_to be_successful
-        expect(quote.errors).to eq({ quote: "Maximum length of stay must be less than 15 nights." })
+        expect(quote).to be_a Result
+        expect(quote).not_to be_success
+        expect(quote.error.data).to eq({ quote: "Maximum length of stay must be less than 15 nights." })
       end
     end
   end
