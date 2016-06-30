@@ -1,4 +1,5 @@
 require "spec_helper"
+require "concierge/result"
 require_relative "../shared/quote_validations"
 require_relative "../shared/external_error_reporting"
 
@@ -31,8 +32,7 @@ RSpec.describe API::Controllers::Waytostay::Quote do
     subject { described_class.new.call(params) }
 
     it "returns a proper error message if client returns quotation with error" do
-      erred_quotation = Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
-      expect_any_instance_of(Waytostay::Client).to receive(:quote).and_return(erred_quotation)
+      expect_any_instance_of(Waytostay::Client).to receive(:quote).and_return(Result.error(:network_error))
 
       response = parse_response(subject)
       expect(response.status).to eq 503
@@ -48,7 +48,7 @@ RSpec.describe API::Controllers::Waytostay::Quote do
         guests:      params[:guests],
         available:   false
       })
-      expect_any_instance_of(Waytostay::Client).to receive(:quote).and_return(unavailable_quotation)
+      expect_any_instance_of(Waytostay::Client).to receive(:quote).and_return(Result.new(unavailable_quotation))
 
       response = parse_response(subject)
       expect(response.status).to eq 200
@@ -72,7 +72,7 @@ RSpec.describe API::Controllers::Waytostay::Quote do
           currency:    "EUR",
           total:       56.78,
         })
-      expect_any_instance_of(Waytostay::Client).to receive(:quote).and_return(available_quotation)
+      expect_any_instance_of(Waytostay::Client).to receive(:quote).and_return(Result.new(available_quotation))
 
       response = parse_response(subject)
       expect(response.status).to eq 200

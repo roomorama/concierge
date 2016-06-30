@@ -32,6 +32,8 @@ module API::Controllers
   # +Quotation+ object, and the return status is 503.
   module Quote
 
+    ERROR_MESSAGE = "Could not quote price with remote supplier".freeze
+
     def self.included(base)
       base.class_eval do
         include API::Action
@@ -46,12 +48,14 @@ module API::Controllers
 
     def call(params)
       if params.valid?
-        @quotation = quote_price(params)
+        quotation_result = quote_price(params)
 
-        if quotation.successful?
+        if quotation_result.success?
+          @quotation = quotation_result.value
           self.body = API::Views::Quote.render(exposures)
         else
-          status 503, invalid_request(quotation.errors)
+          announce_error(quotation_result)
+          status 503, invalid_request( { quote: ERROR_MESSAGE } )
         end
       else
         status 422, invalid_request(params.error_messages)
@@ -65,17 +69,7 @@ module API::Controllers
       json_encode(response)
     end
 
-    def rescue_with_generic_quotation(supplier_name, &block)
-      wrapped_quotation = yield
-      if wrapped_quotation.success?
-        wrapped_quotation.result
-      else
-        announce_error(wrapped_quotation, supplier_name)
-        Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
-      end
-    end
-
-    def announce_error(result, supplier_name)
+    def announce_error(result)
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
         operation:   "quote",
         supplier:    supplier_name,
@@ -83,6 +77,14 @@ module API::Controllers
         context:     Concierge.context.to_h,
         happened_at: Time.now
       })
+    end
+
+    def quote_price(params)
+      raise NotImplementedError
+    end
+
+    def supplier_name
+      raise NotImplementedError
     end
 
   end

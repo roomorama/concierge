@@ -12,9 +12,12 @@ module API::Controllers::Waytostay
     include API::Controllers::Quote
 
     def quote_price(params)
-      rescue_with_generic_quotation Waytostay::Client::SUPPLIER_NAME do
-        Waytostay::Client.new.quote(params)
-      end
+      Waytostay::Client.new.quote(params)
+    end
+
+    def supplier_name
+      Waytostay::Client::SUPPLIER_NAME
     end
   end
 end
+
