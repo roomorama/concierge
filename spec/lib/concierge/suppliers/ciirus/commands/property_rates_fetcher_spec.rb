@@ -1,12 +1,8 @@
 require 'spec_helper'
-require 'savon/mock/spec_helper'
 
 RSpec.describe Ciirus::Commands::PropertyRatesFetcher do
   include Support::Fixtures
-  include Savon::SpecHelper
-
-  before { savon.mock! }
-  after { savon.unmock! }
+  include Support::SOAPStubbing
 
   let(:credentials) do
     double(username: 'Foo',
@@ -66,7 +62,7 @@ RSpec.describe Ciirus::Commands::PropertyRatesFetcher do
 
     context 'when many rates' do
       it 'returns array of rates' do
-        savon.expects(:get_property_rates).with(message: :any).returns(success_response)
+        stub_call(method: :get_property_rates, response: success_response)
 
         result = subject.call(params)
         rates = result.value
@@ -79,7 +75,7 @@ RSpec.describe Ciirus::Commands::PropertyRatesFetcher do
 
     context 'when one rate' do
       it 'returns array with a rate' do
-        savon.expects(:get_property_rates).with(message: :any).returns(one_rate_response)
+        stub_call(method: :get_property_rates, response: one_rate_response)
 
         result = subject.call(params)
         rates = result.value
@@ -91,7 +87,7 @@ RSpec.describe Ciirus::Commands::PropertyRatesFetcher do
     end
 
     it 'returns empty array for empty response' do
-      savon.expects(:get_property_rates).with(message: :any).returns(empty_response)
+      stub_call(method: :get_property_rates, response: empty_response)
 
       result = subject.call(params)
       rates = result.value
