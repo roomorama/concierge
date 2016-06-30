@@ -1,12 +1,8 @@
 require 'spec_helper'
-require 'savon/mock/spec_helper'
 
 RSpec.describe Ciirus::Commands::PropertyAvailableFetcher do
   include Support::Fixtures
-  include Savon::SpecHelper
-
-  before { savon.mock! }
-  after { savon.unmock! }
+  include Support::SOAPStubbing
 
   let(:credentials) do
     double(username: 'Foo',
@@ -39,7 +35,7 @@ RSpec.describe Ciirus::Commands::PropertyAvailableFetcher do
 
   describe '#call' do
     it 'returns property availability' do
-      savon.expects(:is_property_available).with(message: :any).returns(success_response)
+      stub_call(method: :is_property_available, response: success_response)
 
       result = subject.call(params)
 

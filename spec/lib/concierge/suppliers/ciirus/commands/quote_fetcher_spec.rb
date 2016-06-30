@@ -1,12 +1,8 @@
 require 'spec_helper'
-require 'savon/mock/spec_helper'
 
 RSpec.describe Ciirus::Commands::QuoteFetcher do
   include Support::Fixtures
-  include Savon::SpecHelper
-
-  before { savon.mock! }
-  after { savon.unmock! }
+  include Support::SOAPStubbing
 
   let(:credentials) do
     double(username: 'Foo',
@@ -38,7 +34,7 @@ RSpec.describe Ciirus::Commands::QuoteFetcher do
 
   describe '#call' do
     it 'returns success quotation' do
-      savon.expects(:get_properties).with(message: :any).returns(success_response)
+      stub_call(method: :get_properties, response: success_response)
 
       result = subject.call(params)
 
@@ -48,7 +44,7 @@ RSpec.describe Ciirus::Commands::QuoteFetcher do
     end
 
     it 'fills quotation with right attributes' do
-      savon.expects(:get_properties).with(message: :any).returns(success_response)
+      stub_call(method: :get_properties, response: success_response)
 
       result = subject.call(params)
 
@@ -63,7 +59,7 @@ RSpec.describe Ciirus::Commands::QuoteFetcher do
     end
 
     it 'returns unavailable quotation for empty response' do
-      savon.expects(:get_properties).with(message: :any).returns(empty_response)
+      stub_call(method: :get_properties, response: empty_response)
 
       result = subject.call(params)
 
