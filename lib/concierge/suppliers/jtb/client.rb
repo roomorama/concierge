@@ -35,13 +35,13 @@ module JTB
     def book(params)
       result = JTB::Booking.new(credentials).book(params)
       if result.success?
-        Reservation.new(params).tap do |reservation|
+        res = Reservation.new(params).tap do |reservation|
           reservation.code = result.value
-          database.create(reservation) # workaround to keep booking code for reservation
+          database.create(reservation) # workaround to keep reservation code
         end
+        Result.new(res)
       else
-        announce_error("booking", result)
-        Reservation.new(errors: { booking: 'Could not book property with remote supplier' })
+        result
       end
     end
 
