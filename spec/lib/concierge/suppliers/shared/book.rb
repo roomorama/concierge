@@ -20,7 +20,6 @@ RSpec.shared_examples "supplier book method" do
       expect(reservation_result).to be_success
       reservation = reservation_result.value
       expect(reservation).to be_a Reservation
-      expect(reservation).to be_successful
 
       expect(reservation.code).to be_a String
       expect(reservation.code).to eq successful_code
