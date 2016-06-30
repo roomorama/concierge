@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module SAW
   RSpec.describe Mappers::BeddingConfiguration do
-    let(:config) do
+    let(:config_attributes) do
       {
         "bed_type"=>[
           {
@@ -11,6 +11,8 @@ module SAW
         ]
       }
     end
+
+    let(:config) { Concierge::SafeAccessHash.new(config_attributes) }
 
     it "returns BeddingConfiguration entity" do
       entity = described_class.build(config)
@@ -21,7 +23,7 @@ module SAW
       variations = ["Single", "Single Bed", "single", "my single bed"]
 
       variations.each do |bed_name|
-        config["bed_type"] = [
+        config_attributes["bed_type"] = [
           "bed_type_name"=>bed_name, "@id"=>"13102"
         ]
         
@@ -36,7 +38,7 @@ module SAW
       variations = ["Double Bed", "Double", "double", "my double bed"]
 
       variations.each do |bed_name|
-        config["bed_type"] = [
+        config_attributes["bed_type"] = [
           "bed_type_name"=>bed_name, "@id"=>"13102"
         ]
         
@@ -51,7 +53,7 @@ module SAW
       variations = ["Twin", "twin"]
 
       variations.each do |bed_name|
-        config["bed_type"] = [
+        config_attributes["bed_type"] = [
           "bed_type_name"=>bed_name, "@id"=>"13102"
         ]
         
@@ -63,7 +65,7 @@ module SAW
     end
     
     it "handles combinations of different bed types correctly" do
-      config["bed_type"] = [
+      config_attributes["bed_type"] = [
         "bed_type_name"=>"Double & Double & Single", "@id"=>"13102"
       ]
       
@@ -74,7 +76,7 @@ module SAW
     end
     
     it "handles combinations of different bed types correctly" do
-      config["bed_type"] = [
+      config_attributes["bed_type"] = [
         "bed_type_name"=>"Double Bed & Twin", "@id"=>"13102"
       ]
       

@@ -21,7 +21,7 @@ module SAW
         
         return [] unless images
         
-        to_array(images).map do |h| 
+        Array(images).map do |h| 
           safe_hash = Concierge::SafeAccessHash.new(h)
           build_image(safe_hash, url_rewrite)
         end
@@ -44,14 +44,6 @@ module SAW
           Converters::URLRewriter.build(url)
         else
           url
-        end
-      end
-        
-      def self.to_array(something)
-        if something.is_a? Hash
-          [something]
-        else
-          Array(something)
         end
       end
     end
