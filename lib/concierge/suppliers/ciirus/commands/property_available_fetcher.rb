@@ -17,9 +17,11 @@ module Ciirus
     class PropertyAvailableFetcher < BaseCommand
 
       def call(params)
+        check_in = convert_date(params[:check_in])
+        check_out = convert_date(params[:check_out])
         message = xml_builder.is_property_available(params[:property_id],
-                                                    params[:check_in],
-                                                    params[:check_out])
+                                                    check_in,
+                                                    check_out)
         result = remote_call(message)
         if result.success?
           result_hash = to_safe_hash(result.value)
