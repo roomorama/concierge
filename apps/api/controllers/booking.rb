@@ -32,6 +32,8 @@ module API::Controllers
   # +Reservation+ object, and the return status is 503.
   module Booking
 
+    GENERIC_ERROR = "Could not create booking with remote supplier"
+
     def self.included(base)
       base.class_eval do
         include API::Action
@@ -46,12 +48,15 @@ module API::Controllers
 
     def call(params)
       if params.valid?
-        @reservation = create_booking(params)
+        reservation_result = create_booking(params)
 
-        if reservation.successful?
+        if reservation_result.success?
+          @reservation = reservation_result.value
           self.body = API::Views::Booking.render(exposures)
         else
-          status 503, invalid_request(reservation.errors)
+          announce_error(reservation_result)
+          error_message = reservation_result.error.data || { booking: GENERIC_ERROR }
+          status 503, invalid_request(error_message)
         end
       else
         status 422, invalid_request(params.error_messages)
@@ -63,6 +68,24 @@ module API::Controllers
     def invalid_request(errors)
       response = { status: "error" }.merge!(errors: errors)
       json_encode(response)
+    end
+
+    def announce_error(result)
+      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
+        operation:   "booking",
+        supplier:    supplier_name,
+        code:        result.error.code,
+        context:     Concierge.context.to_h,
+        happened_at: Time.now
+      })
+    end
+
+    def create_booking(params)
+      raise NotImplementedError
+    end
+
+    def supplier_name
+      raise NotImplementedError
     end
   end
 

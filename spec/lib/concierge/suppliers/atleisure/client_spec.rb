@@ -60,8 +60,10 @@ RSpec.describe AtLeisure::Client do
       successful_booking = Reservation.new(code: "XXX")
       allow_any_instance_of(AtLeisure::Booking).to receive(:book) { Result.new(successful_booking) }
 
-      reservation = subject.book(params)
+      reservation_result = subject.book(params)
+      expect(reservation_result).to be_success
 
+      reservation = reservation_result.value
       expect(reservation).to be_a Reservation
       expect(reservation.code).to eq "XXX"
     end
@@ -70,10 +72,9 @@ RSpec.describe AtLeisure::Client do
       failed_operation = Result.error(:something_failed)
       allow_any_instance_of(AtLeisure::Booking).to receive(:book) { failed_operation }
 
-      reservation = subject.book(params)
-      expect(reservation).to be_a Reservation
-      expect(reservation).not_to be_successful
-      expect(reservation.errors).to eq({ booking: "Could not create booking with remote supplier" })
+      reservation_result = subject.book(params)
+      expect(reservation_result).to_not be_success
+      expect(reservation_result.error).to_not be_nil
     end
   end
 end

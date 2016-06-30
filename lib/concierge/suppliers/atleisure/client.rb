@@ -36,15 +36,8 @@ module AtLeisure
     # is logged.
     def book(params)
       result = AtLeisure::Booking.new(credentials).book(params)
-
-      if result.success?
-        result.value.tap do |reservation|
-          database.create(reservation) # workaround to keep booking code for reservation
-        end
-      else
-        announce_error("booking", result)
-        Reservation.new(errors: { booking: "Could not create booking with remote supplier" })
-      end
+      database.create(result.value) if result.success? # workaround to keep booking code for reservation
+      result
     end
 
     private

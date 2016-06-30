@@ -16,7 +16,9 @@ RSpec.shared_examples "supplier book method" do
 
   context "when successful" do
     it 'returns reservation' do
-      reservation = supplier_client.book(success_params)
+      reservation_result = supplier_client.book(success_params)
+      expect(reservation_result).to be_success
+      reservation = reservation_result.value
       expect(reservation).to be_a Reservation
       expect(reservation).to be_successful
 
@@ -28,12 +30,9 @@ RSpec.shared_examples "supplier book method" do
   context "when errors occur" do
     it "fails with generic error" do
       error_params_list.each do |params|
-        expect {
-          reservation = supplier_client.book(params)
-          expect(reservation).to be_a Reservation
-          expect(reservation).not_to be_successful
-          expect(reservation.errors).to eq({ booking: "Could not create booking with remote supplier" })
-        }.to change{ ExternalErrorRepository.count }.by 1
+        reservation_result = supplier_client.book(params)
+        expect(reservation_result).to_not be_success
+        expect(reservation_result.error).to_not be_nil
       end
     end
   end

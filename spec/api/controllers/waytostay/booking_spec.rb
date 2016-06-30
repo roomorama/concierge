@@ -32,7 +32,7 @@ RSpec.describe API::Controllers::Waytostay::Booking do
     let(:response) { parse_response(described_class.new.call(params)) }
 
     it "returns proper error if external request failed" do
-      erred_reservation = Reservation.new(errors: { booking: "Could not create booking with remote supplier" })
+      erred_reservation = Result.error(:network_error)
       expect_any_instance_of(Waytostay::Client).to receive(:book).and_return(erred_reservation)
 
       expect(response.status).to eq 503
@@ -41,8 +41,8 @@ RSpec.describe API::Controllers::Waytostay::Booking do
     end
 
     it "returns a booking code when successful" do
-      reservation = Reservation.new(params)
-      reservation.code = "test_code"
+      reservation = Result.new(Reservation.new(params))
+      reservation.value.code = "test_code"
       expect_any_instance_of(Waytostay::Client).to receive(:book).and_return(reservation)
 
       expect(response.status).to eq 200

@@ -54,7 +54,7 @@ module API::Controllers
         else
           announce_error(quotation_result)
           error_message = quotation_result.error.data || {quote: GENERIC_ERROR}
-          status 503, invalid_request( error_message )
+          status 503, invalid_request(error_message)
         end
       else
         status 422, invalid_request(params.error_messages)
