@@ -17,19 +17,16 @@ module API::Controllers
   #     def create_booking(params)
   #       Partner::Client.new.book(params)
   #     end
+  #
+  #     def supplier_name
+  #       "partner"
+  #     end
   #   end
   #
-  # The only method this module expects to be implemented is a +create_booking+
-  # method. The +params+ argument given to it is an instance of +API::Controllers::Params::Booking+.
+  # The method this module expects to be implemented are:
+  # 1. +create_booking+
+  # 2. +supplier_name+
   #
-  # This method is only invoked in case validations were successful, meaning that partner
-  # implementations need not to care about presence and format of expected parameters
-  #
-  # The +create_booking+ is expected to return a +Reservation+ object, always. See the documentation
-  # of that class for further information.
-  #
-  # If the reservation is not successful, this method returns the errors declared in the returned
-  # +Reservation+ object, and the return status is 503.
   module Booking
 
     GENERIC_ERROR = "Could not create booking with remote supplier"
@@ -80,10 +77,25 @@ module API::Controllers
       })
     end
 
+    # Create booking with client
+    #
+    # The +params+ argument given to it is an instance of +API::Controllers::Params::Booking+.
+    #
+    # This method is only invoked in case validations were successful, meaning that partner
+    # implementations need not to care about presence and format of expected parameters
+    #
+    # Should return a +Result+ wrapping a +Reservation+ object
+    # See the documentation of those classes for further information.
+    #
+    # If the reservation is not successful, return the +Result+ with error,
+    # then the response status will be 503, with a generic quote error message.
+    #
     def create_booking(params)
       raise NotImplementedError
     end
 
+    # This is used when reporting errors from the supplier.
+    # Should return a string
     def supplier_name
       raise NotImplementedError
     end

@@ -86,6 +86,7 @@ module API::Controllers
     # implementations need not to care about presence and format of expected parameters
     #
     # Should return a +Result+ wrapping a +Quotation+ object.
+    # See the documentation of those classes for further information.
     #
     # If the quotation is not successful, return the +Result+ with error,
     # then the response status will be 503, with a generic quote error message.
