@@ -30,7 +30,7 @@ module API::Controllers
   #
   module Quote
 
-    ERROR_MESSAGE = "Could not quote price with remote supplier".freeze
+    GENERIC_ERROR = "Could not quote price with remote supplier".freeze
 
     def self.included(base)
       base.class_eval do
@@ -53,7 +53,8 @@ module API::Controllers
           self.body = API::Views::Quote.render(exposures)
         else
           announce_error(quotation_result)
-          status 503, invalid_request( { quote: ERROR_MESSAGE } )
+          error_message = quotation_result.error.data || {quote: GENERIC_ERROR}
+          status 503, invalid_request( error_message )
         end
       else
         status 422, invalid_request(params.error_messages)

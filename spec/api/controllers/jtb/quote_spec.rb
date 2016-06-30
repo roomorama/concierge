@@ -42,6 +42,17 @@ RSpec.describe API::Controllers::JTB::Quote do
       expect(response.body).not_to have_key("total")
     end
 
+    context "when stay length is > 15 days" do
+      let(:params) {
+        { property_id: "J123", unit_id: "123J", check_in: "2016-02-22", check_out: "2016-03-25", guests: 2 }
+      }
+      it "respond with the stay_too_long error" do
+        response = parse_response(subject.call(params))
+        expect(response.status).to eq 503
+        expect(response.body["errors"]).to eq({"quote"=>"Maximum length of stay must be less than 15 nights."})
+      end
+    end
+
   end
 
   private
