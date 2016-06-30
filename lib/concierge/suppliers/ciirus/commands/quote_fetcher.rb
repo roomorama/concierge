@@ -1,5 +1,21 @@
 module Ciirus
   module Commands
+    # +Ciirus::Commands::QuoteFetcher+
+    #
+    # This class is responsible for wrapping the logic related to making a price
+    # quotation to Ciirus, parsing the response, and building the +Quotation+ object
+    # with the data returned from their API.
+    #
+    # Usage
+    #
+    #   command = Ciirus::Commands::QuoteFetcher.new(credentials)
+    #   result = command.call(params)
+    #
+    #   if result.success?
+    #     result.value # Quotation instance
+    #   end
+    # The +call+ method returns a +Result+ object that, when successful,
+    # encapsulates the +Quotation+.
     class QuoteFetcher < BaseCommand
       ROOMORAMA_DATE_FORMAT = "%Y-%m-%d"
       CIIRUS_DATE_FORMAT = "%d %b %Y"

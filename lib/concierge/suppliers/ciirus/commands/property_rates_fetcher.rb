@@ -12,7 +12,7 @@ module Ciirus
     #     result.value
     #   end
     #
-    # The +fetch+ method returns a +Result+ object that, when successful,
+    # The +call+ method returns a +Result+ object that, when successful,
     # encapsulates the collection of +PropertyRate+.
     class PropertyRatesFetcher < BaseCommand
 
