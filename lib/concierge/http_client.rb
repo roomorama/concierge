@@ -67,7 +67,7 @@ module Concierge
 
     attr_reader :url, :options
 
-    # Creates a new +API::Support::HTTPClient+ instance.
+    # Creates a new +Concierge::HTTPClient+ instance.
     #
     # url     - the base URL to which upcoming requests will be performed.
     # options - a +Hash+ of options. Only +basic_auth+ is supported.

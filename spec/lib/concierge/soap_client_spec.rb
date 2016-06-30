@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'savon/mock/spec_helper'
 
-RSpec.describe API::Support::SOAPClient do
+RSpec.describe Concierge::SOAPClient do
   include Savon::SpecHelper
   include Support::Fixtures
 
@@ -31,13 +31,13 @@ RSpec.describe API::Support::SOAPClient do
       request  = Struct.new(:endpoint, :operation, :message).new
       response = Struct.new(:code, :headers, :body).new
 
-      Concierge::Announcer.on(API::Support::SOAPClient::ON_REQUEST) do |endpoint, operation, message|
+      Concierge::Announcer.on(Concierge::SOAPClient::ON_REQUEST) do |endpoint, operation, message|
         request.endpoint  = endpoint
         request.operation = operation
         request.message   = message
       end
 
-      Concierge::Announcer.on(API::Support::SOAPClient::ON_RESPONSE) do |code, headers, body|
+      Concierge::Announcer.on(Concierge::SOAPClient::ON_RESPONSE) do |code, headers, body|
         response.code    = code
         response.headers = headers
         response.body    = body
@@ -84,7 +84,7 @@ RSpec.describe API::Support::SOAPClient do
         it "announces the error" do
           error = Struct.new(:message, :backtrace).new
 
-          Concierge::Announcer.on(API::Support::SOAPClient::ON_FAILURE) do |message, backtrace|
+          Concierge::Announcer.on(Concierge::SOAPClient::ON_FAILURE) do |message, backtrace|
             error.message   = message
             error.backtrace = backtrace
           end

@@ -86,12 +86,12 @@ RSpec.describe Waytostay::Client do
       ]}
 
       it "should send 2 posts, book and confirm" do
-        expect_any_instance_of(API::Support::OAuth2Client).to receive(:post).twice.and_call_original
+        expect_any_instance_of(Concierge::OAuth2Client).to receive(:post).twice.and_call_original
         reservation = supplier_client.book(success_params)
       end
 
       it "should only send 1 post, book, when there're errors" do
-        expect_any_instance_of(API::Support::OAuth2Client).to receive(:post).once.and_call_original
+        expect_any_instance_of(Concierge::OAuth2Client).to receive(:post).once.and_call_original
         reservation = supplier_client.book(error_params_list.first)
       end
 

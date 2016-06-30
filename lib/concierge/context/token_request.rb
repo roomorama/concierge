@@ -3,7 +3,7 @@ class Concierge::Context
   # +Concierge::Context::TokenRequest+
   #
   # This class represents the event of an oauth2 token request
-  # being performed by +API::Support::OAuth2Client. This warrants
+  # being performed by +Concierge::OAuth2Client. This warrants
   # its own class of context because an oauth2 token request can
   # be of many different strategies, each having its own request
   # body and headers.

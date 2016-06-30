@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe API::Support::OAuth2Client do
+RSpec.describe Concierge::OAuth2Client do
 
   include Support::Fixtures
   include Support::HTTPStubbing

@@ -1,8 +1,8 @@
 require 'oauth2'
 
-module API::Support
+module Concierge
 
-  # +API::Support::OAuth2Client+
+  # +Concierge::OAuth2Client+
   #
   # This class wraps OAuth2 client functionalities(from gem oauth2)
   # with error handling(by +Result+ class)
@@ -15,12 +15,14 @@ module API::Support
   #
   # Usage
   #
-  #   client = API::Support::OAuth2Client.new(id: "id",
-  #                                           secret: "secret",
-  #                                           base_url: "https://url",
-  #                                           token_url: "/oauth/token",
-  #                                           authorize_url: "/oauth/authorize" # only for :authorize strategy
-  #                                           strategy: :client_credentials)
+  #   client = Concierge::OAuth2Client.new(
+  #     id: "id",
+  #     secret: "secret",
+  #     base_url: "https://url",
+  #     token_url: "/oauth/token",
+  #     authorize_url: "/oauth/authorize" # only for :authorize strategy
+  #     strategy: :client_credentials
+  #   )
   #   result = client.get(endpoint)
   #   if result.success?
   #     process_response(result.value)
@@ -37,7 +39,7 @@ module API::Support
     ON_REQUEST  = "oauth2_client.on_request"
     ON_RESPONSE = "oauth2_client.on_response"
     ON_FAILURE  = "oauth2_client.on_failure"
-    ON_TOKEN_REQUEST = "oauth2_client.on_token_request"
+    ON_TOKEN_REQUEST  = "oauth2_client.on_token_request"
     ON_TOKEN_RECEIVED = "oauth2_client.on_token_received"
 
     # by default, include a self identifying +User-Agent+ HTTP header so that
