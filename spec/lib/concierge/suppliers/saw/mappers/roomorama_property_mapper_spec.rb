@@ -45,11 +45,15 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
   end
 
   let(:basic_property) do
-    SAW::Entities::BasicProperty.new(basic_property_attributes)
+    SAW::Entities::BasicProperty.new(
+      Concierge::SafeAccessHash.new(basic_property_attributes)
+    )
   end
 
   let(:detailed_property) do
-    SAW::Entities::DetailedProperty.new(detailed_property_attributes)
+    SAW::Entities::DetailedProperty.new(
+      Concierge::SafeAccessHash.new(detailed_property_attributes)
+    )
   end
     
   it "returns roomorama property entity" do
@@ -212,7 +216,9 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
       end
 
       let(:detailed_property_with_units) do
-        SAW::Entities::DetailedProperty.new(attributes)
+        SAW::Entities::DetailedProperty.new(
+          Concierge::SafeAccessHash.new(attributes)
+        )
       end
 
       it "adds units" do
