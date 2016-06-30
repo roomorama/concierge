@@ -57,11 +57,15 @@ module SAW
     end
 
     let(:basic_property) do
-      SAW::Entities::BasicProperty.new(basic_property_attributes)
+      SAW::Entities::BasicProperty.new(
+        Concierge::SafeAccessHash.new(basic_property_attributes)
+      )
     end
 
     let(:detailed_property) do
-      SAW::Entities::DetailedProperty.new(detailed_property_attributes)
+      SAW::Entities::DetailedProperty.new(
+        Concierge::SafeAccessHash.new(detailed_property_attributes)
+      )
     end
 
     it "builds units" do
@@ -159,9 +163,11 @@ module SAW
 
       let(:detailed_property_with_accommodations) do
         SAW::Entities::DetailedProperty.new(
-          detailed_property_attributes.merge(
-            bedding_configurations: nil,
-            property_accommodations: units_hash.fetch("property_accommodations")
+          Concierge::SafeAccessHash.new(
+            detailed_property_attributes.merge(
+              bedding_configurations: nil,
+              property_accommodations: units_hash.fetch("property_accommodations")
+            )
           )
         )
       end
@@ -208,8 +214,10 @@ module SAW
 
       let(:detailed_property_with_beds) do
         SAW::Entities::DetailedProperty.new(
-          detailed_property_attributes.merge(
-            bed_configurations: bedding_configurations
+          Concierge::SafeAccessHash.new(
+            detailed_property_attributes.merge(
+              bed_configurations: bedding_configurations
+            )
           )
         )
       end
