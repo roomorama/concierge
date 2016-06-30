@@ -13,7 +13,10 @@ RSpec.describe Kigo::Client do
       successful_quotation = Quotation.new(total: 999)
       allow_any_instance_of(Kigo::Price).to receive(:quote) { Result.new(successful_quotation) }
 
-      quote = subject.quote(params)
+      quote_result = subject.quote(params)
+      expect(quote_result).to be_success
+
+      quote = quote_result.value
       expect(quote).to be_a Quotation
       expect(quote.total).to eq 999
     end
@@ -22,10 +25,12 @@ RSpec.describe Kigo::Client do
       failed_operation = Result.error(:something_failed)
       allow_any_instance_of(Kigo::Price).to receive(:quote) { failed_operation }
 
-      quote = subject.quote(params)
-      expect(quote).to be_a Quotation
-      expect(quote).not_to be_successful
-      expect(quote.errors).to eq({ quote: "Could not quote price with remote supplier" })
+      quote_result = subject.quote(params)
+      expect(quote_result).to_not be_success
+      expect(quote_result.error.code).to eq :something_failed
+
+      quote = quote_result.value
+      expect(quote).to be_nil
     end
   end
 end
