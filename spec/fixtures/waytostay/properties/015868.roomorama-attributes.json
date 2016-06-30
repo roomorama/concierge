@@ -6,6 +6,8 @@
   "country_code": "de",
   "lat": 52.46871,
   "lng": 13.38642,
+  "address": "Calle de la Dama de Elche 9",
+  "postal_code": "46023",
   "number_of_bedrooms": 4,
   "number_of_bathrooms": 2,
   "floor": "1st floor",

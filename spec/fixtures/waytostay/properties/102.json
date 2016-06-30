@@ -126,6 +126,10 @@
     "reviews": "https://www.sandbox.waytostay.com:25443/berlin-apartments/iris-5-tempel-15868/reviews/?orgid=1645"
   },
   "location": {
+    "address": {
+      "address": "Calle de la Dama de Elche 9",
+      "postcode": "46023"
+    },
     "country": {
       "iso": "de",
       "name": "Germany"

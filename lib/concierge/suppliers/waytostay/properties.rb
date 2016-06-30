@@ -14,6 +14,8 @@ module Waytostay
         country_code:        "location.country.iso",
         lat:                 "location.coord.lat",
         lng:                 "location.coord.lng",
+        address:             "location.address.address",
+        postal_code:         "location.address.postcode",
         number_of_bedrooms:  "general.bedrooms",
         number_of_bathrooms: "general.bathrooms",
         surface:             "general.sqm",
