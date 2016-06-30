@@ -8,6 +8,12 @@ how this file is formatted and how the process works.
 ### Added
 - Synchronisation with AtLeisure
 - Ability to enable or disable context tracking at certain points in time.
+- `Concierge::SafeAccessHash#merge` utils method
+- `waytostay#get_changes` returns changes from waytostay api
+- `waytostay#get_property` returns a roomorama property from waytostay api
+- `waytostay#update_media` sets images to all the new images from waytostay
+- `waytostay#update_availability` sets availability to all the new availability from waytostay
+- Waytostay synchronisation worker
 
 ### Removed
 - removed `fee` field from `Quotation`. Fees should be included in the total.
@@ -32,7 +38,6 @@ how this file is formatted and how the process works.
 - `waytostay#quote` and `waytostay#booking`, which calls the above client and respond accordingly
 - `byebug` for test/development debugging
 - `Concierge::SafeAccessHash#missing_keys_from?` utils method
-- `Concierge::SafeAccessHash#merge` utils method
 - `SyncProcess` entity and database, recording every synchronisation process run on Concierge.
 - `SyncProcess#last_successful_sync_for_host` returns the last successful SyncProcess entity for a host
 
