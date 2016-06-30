@@ -23,6 +23,19 @@ RSpec.describe SAW::Commands::CountriesFetcher do
       { id: "4", name: "France" },
     ])
   end
+  
+  it "returns results when there is only one country" do
+    mock_request(:country, :one)
+
+    results = subject.call
+    countries = results.value
+
+    expect(results.success?).to be true
+    expect(countries.size).to eq(1)
+    expect(countries.map {|c| { id: c.id, name: c.name }}).to eq([
+      { id: "1", name: "United States" }
+    ])
+  end
       
   it "returns an empty array when there is no countries" do
     mock_request(:country, :empty)
