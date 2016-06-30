@@ -12,10 +12,8 @@ module Workers::Suppliers
     end
 
     def perform
-      changes = with_error_announcement({}) do # persists any error that occurs
-        client.get_changes_since(last_synced_timestamp)
-      end
-      return if changes.empty?
+      changes = get_new_waytostay_changes
+      return if changes.nil?
 
       uniq_properties_in(changes).each do |property_ref|
         synchronisation.start(property_ref) do
@@ -51,26 +49,23 @@ module Workers::Suppliers
 
     private
 
-
     # Starts a new context, run the block that augments to context
     # Then announce if any error was returned from the block
-    def with_error_announcement(default, &block)
+    def get_new_waytostay_changes
       initialize_overall_sync_context
+      result = client.get_changes_since(last_synced_timestamp)
+      announce_error(result) unless result.success?
+      result.value
+    end
 
-      result = block.call
-
-      if result.success?
-        result.result
-      else
-        Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-          operation:   "sync",
-          supplier:    ::Waytostay::Client::SUPPLIER_NAME,
-          code:        result.error.code,
-          context:     Concierge.context.to_h,
-          happened_at: Time.now
-        })
-        default
-      end
+    def announce_error(result)
+      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
+        operation:   "sync",
+        supplier:    ::Waytostay::Client::SUPPLIER_NAME,
+        code:        result.error.code,
+        context:     Concierge.context.to_h,
+        happened_at: Time.now
+      })
     end
 
     def initialize_overall_sync_context
@@ -99,7 +94,7 @@ module Workers::Suppliers
 
     # Returns an existing +Roomorama::Property+
     #
-    def load_existing ref
+    def load_existing(ref)
       existing = PropertyRepository.from_host(host).identified_by(ref).first
       Roomorama::Property.load(existing.data.merge(identifier: ref))
     end

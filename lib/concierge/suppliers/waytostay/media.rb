@@ -28,20 +28,17 @@ module Waytostay
       end
 
       result = oauth2_client.get(page_path, headers: headers)
+      return result unless result.success?
 
-      if result.success?
-        response = Concierge::SafeAccessHash.new(result.value)
-        missing_keys = response.missing_keys_from(REQUIRED_RESPONSE_KEYS)
+      response = Concierge::SafeAccessHash.new(result.value)
+      missing_keys = response.missing_keys_from(REQUIRED_RESPONSE_KEYS)
 
-        if missing_keys.empty?
-          parse_media!(response, roomorama_property)
-          update_media_per_page(roomorama_property, next_page_path(response))
-        else
-          augment_missing_fields(missing_keys)
-          Result.error(:unrecognised_response)
-        end
+      if missing_keys.empty?
+        parse_media!(response, roomorama_property)
+        update_media_per_page(roomorama_property, next_page_path(response))
       else
-        result
+        augment_missing_fields(missing_keys)
+        Result.error(:unrecognised_response)
       end
     end
 
@@ -57,7 +54,7 @@ module Waytostay
     end
 
     # return the link for the next page, or nil if it is the last page
-    def next_page_path response
+    def next_page_path(response)
       response.get("_links.next.href")
     end
   end
