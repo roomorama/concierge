@@ -36,6 +36,17 @@ module Kigo
       Kigo::Price.new(credentials).quote(params)
     end
 
+    def book(params)
+      result = Kigo::Booking.new(credentials).book(params)
+
+      if result.success?
+        result.value
+      else
+        announce_error("booking", result)
+        Reservation.new(errors: { booking: 'Could not book property with remote supplier' })
+      end
+    end
+
     private
 
     def announce_error(operation, result)
