@@ -36,6 +36,8 @@ module Kigo
       Kigo::Price.new(credentials).quote(params)
     end
 
+    # Always returns a +Reservation+.
+    # Uses an instance +Kigo::Request+ to dictate parameters and endpoints.
     def book(params)
       result = Kigo::Booking.new(credentials).book(params)
 
