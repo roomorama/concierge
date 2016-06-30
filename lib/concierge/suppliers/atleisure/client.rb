@@ -27,14 +27,7 @@ module AtLeisure
     # AtLeisure, a generic error message is sent back to the caller, and the failure
     # is logged.
     def quote(params)
-      result = AtLeisure::Price.new(credentials).quote(params)
-
-      if result.success?
-        result.value
-      else
-        announce_error("quote", result)
-        Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
-      end
+      AtLeisure::Price.new(credentials).quote(params)
     end
 
     # Always returns a +Reservation+.
