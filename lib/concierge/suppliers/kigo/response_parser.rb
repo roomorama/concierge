@@ -53,8 +53,7 @@ module Kigo
 
         quotation.available = true
         quotation.currency  = currency
-        quotation.fee       = fees.to_i
-        quotation.total     = total.to_i
+        quotation.total     = total.to_i + fees.to_i
 
         Result.new(quotation)
       elsif payload["API_RESULT_CODE"] == "E_NOSUCH" && payload["API_RESULT_TEXT"] =~ /is not available for your selected period/

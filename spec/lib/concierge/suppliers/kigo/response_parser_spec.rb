@@ -83,8 +83,7 @@ RSpec.describe Kigo::ResponseParser do
       expect(quotation.guests).to eq 1
       expect(quotation.available).to eq true
       expect(quotation.currency).to eq "EUR"
-      expect(quotation.fee).to eq 0
-      expect(quotation.total).to eq 570
+      expect(quotation.total).to eq 580.0 # total + fee
     end
   end
 end
