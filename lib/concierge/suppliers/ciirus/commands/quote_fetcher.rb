@@ -17,8 +17,6 @@ module Ciirus
     # The +call+ method returns a +Result+ object that, when successful,
     # encapsulates the +Quotation+.
     class QuoteFetcher < BaseCommand
-      ROOMORAMA_DATE_FORMAT = "%Y-%m-%d"
-      CIIRUS_DATE_FORMAT = "%d %b %Y"
 
       def call(params)
         filter_options = Ciirus::FilterOptions.new(property_id: params[:property_id])
@@ -45,13 +43,6 @@ module Ciirus
 
       def operation_name
         :get_properties
-      end
-
-      private
-
-      # Converts date string to Ciirus expected format
-      def convert_date(date)
-        Date.strptime(date, ROOMORAMA_DATE_FORMAT).strftime(CIIRUS_DATE_FORMAT)
       end
     end
   end

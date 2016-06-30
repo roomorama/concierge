@@ -9,6 +9,8 @@ module Ciirus
     class BaseCommand
       VERSION = '15.025'
       PATH = "/CiirusXML.#{VERSION}.asmx"
+      ROOMORAMA_DATE_FORMAT = "%Y-%m-%d"
+      CIIRUS_DATE_FORMAT = "%d %b %Y"
 
       attr_reader :credentials
 
@@ -63,6 +65,11 @@ module Ciirus
 
       def to_safe_hash(usual_hash)
         Concierge::SafeAccessHash.new(usual_hash)
+      end
+
+      # Converts date string to Ciirus expected format
+      def convert_date(date)
+        Date.strptime(date, ROOMORAMA_DATE_FORMAT).strftime(CIIRUS_DATE_FORMAT)
       end
     end
   end
