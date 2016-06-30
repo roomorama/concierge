@@ -154,4 +154,17 @@ RSpec.describe SAW::Commands::CountryPropertiesFetcher do
       expect(multi_unit_values).to all(eq(true))
     end
   end
+
+  context "when there is only one property in response" do
+    before do
+      mock_request(:propertysearch, :single)
+    end
+
+    it "returns right number of properties" do
+      result = subject.call(country)
+
+      expect(result.success?).to be true
+      expect(result.value.size).to eq(1)
+    end
+  end
 end
