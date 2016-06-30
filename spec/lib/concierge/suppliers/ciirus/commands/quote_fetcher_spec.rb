@@ -5,10 +5,13 @@ RSpec.describe Ciirus::Commands::QuoteFetcher do
   include Support::Fixtures
   include Savon::SpecHelper
 
+  before { savon.mock! }
+  after { savon.unmock! }
+
   let(:credentials) do
     double(username: 'Foo',
            password: '123',
-           url:      'http://proxy.roomorama.com/ciirus')
+           url:      'http://example.org')
   end
 
   let(:params) do
@@ -18,12 +21,20 @@ RSpec.describe Ciirus::Commands::QuoteFetcher do
                                         guests: 3)
   end
 
-  before { savon.mock! }
-  after { savon.unmock! }
-
   let(:success_response) { read_fixture('ciirus/property_quote_response.xml') }
   let(:empty_response) { read_fixture('ciirus/empty_property_quote_response.xml') }
+  let(:wsdl) { read_fixture('ciirus/wsdl.xml') }
+
   subject { described_class.new(credentials) }
+
+  before do
+    # Replace remote call for wsdl with static wsdl
+    allow(subject).to receive(:options).and_wrap_original do |m, *args|
+      original = m.call
+      original[:wsdl] = wsdl
+      original
+    end
+  end
 
   describe '#call' do
     it 'returns success quotation' do
