@@ -43,17 +43,9 @@ module SAW
       
         return [] unless countries
         
-        to_array(countries.get("country")).map do |hash|
+        Array(countries.get("country")).map do |hash|
           safe_hash = Concierge::SafeAccessHash.new(hash)
           SAW::Mappers::Country.build(safe_hash)
-        end
-      end
-
-      def to_array(something)
-        if something.is_a? Hash
-          [something]
-        else
-          Array(something)
         end
       end
     end
