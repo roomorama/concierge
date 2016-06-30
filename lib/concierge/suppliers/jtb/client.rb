@@ -22,7 +22,7 @@ module JTB
       @credentials = credentials
     end
 
-    # Always returns a +Quotation+.
+    # Always returns a +Result+ wrapping a +Quotation+.
     def quote(params)
       return Result.new(unavailable_quotation) if params.stay_length > MAXIMUM_STAY_LENGTH
       JTB::Price.new(credentials).quote(params)
