@@ -56,6 +56,19 @@ module Kigo
       end
     end
 
-  end
 
+    # Kigo Legacy API requires all parameters required by Kigo's new
+    # Channels API, with the addition of two parameters:
+    #
+    # +RES_N_BABIES+: the number of babies.
+    def build_reservation_details(params)
+      result = builder.build_reservation_details(params)
+
+      if result.success?
+        Result.new(result.value.merge!("RES_N_BABIES" => 0))
+      else
+        result
+      end
+    end
+  end
 end

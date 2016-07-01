@@ -61,7 +61,43 @@ module Kigo
       end
     end
 
+    # Builds the required request parameters for a +createConfirmedReservation+ Kigo API call.
+    # Property identifiers are numerical in Kigo, and they must be sent as numbers.
+    # Sending identifiers as strings produces an error.
+    #
+    # Returns a +Result+ instance encapsulating the operation. Fails with code
+    # +invalid_property_id+ if the ID cannot be converted to an integer.
+    def build_reservation_details(params)
+      property_id_conversion = to_integer(params[:property_id], :invalid_property_id)
+
+      if property_id_conversion.success?
+        details = {
+          "PROP_ID"        => property_id_conversion.value,
+          "RES_CHECK_IN"   => params[:check_in],
+          "RES_CHECK_OUT"  => params[:check_out],
+          "RES_N_ADULTS"   => params[:guests],
+          "RES_N_CHILDREN" => 0,
+          "RES_COMMENT"    => "Booking made via Roomorama on #{Date.today}",
+          "RES_GUEST"      => guest_details(params[:customer])
+        }
+
+        Result.new(details)
+      else
+        property_id_conversion
+      end
+    end
+
     private
+
+    def guest_details(customer)
+      {
+        "RES_GUEST_EMAIL"     => customer[:email],
+        "RES_GUEST_PHONE"     => customer[:phone_number],
+        "RES_GUEST_COUNTRY"   => customer[:country],
+        "RES_GUEST_LASTNAME"  => customer[:last_name],
+        "RES_GUEST_FIRSTNAME" => customer[:first_name]
+      }
+    end
 
     def to_integer(str, error_code)
       Result.new(Integer(str))

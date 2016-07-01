@@ -52,5 +52,4 @@ RSpec.describe Kigo::LegacyRequest do
       expect(event.to_h[:type]).to eq "generic_message"
     end
   end
-
 end
