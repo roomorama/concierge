@@ -1,0 +1,7 @@
+{
+  "error_code": "008001",
+  "type": "http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html",
+  "title": "Unprocessable Entity",
+  "status": 422,
+  "detail": "Booking needs to be confirmed in order to be cancelled"
+}

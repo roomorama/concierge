@@ -4,14 +4,14 @@ module Waytostay
   #
   module Cancel
 
-    ENDPOINT = "bookings/:reservation_id/cancel"
+    ENDPOINT = "/bookings/:reservation_id/cancel"
     REQUIRED_RESPONSE_KEYS = [ "booking_reference" ]
 
     # Books and immediately confirms the waytostay booking
     #
     # Always returns a +Result+.
     def cancel(params)
-      cancellation_result = oauth2_client.post(ENDPOINT.gsub(:reservation_id, params.reservation_id),
+      cancellation_result = oauth2_client.post(ENDPOINT.gsub(":reservation_id", params[:reservation_id]),
                          headers: headers)
 
       return cancellation_result unless cancellation_result.success?
