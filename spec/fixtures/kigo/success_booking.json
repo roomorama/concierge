@@ -1,0 +1,11 @@
+{
+  "API_VERSION" : 1,
+  "API_REVISION" : 3,
+  "API_METHOD" : "createConfirmedReservation",
+  "API_CALL_ID" : "3bc3542f7130e6eca6b3b5dbd62e8030",
+  "API_RESULT_CODE" : "E_OK",
+  "API_RESULT_TEXT" : "",
+  "API_REPLY" : {
+    "RES_ID" : 24985
+  }
+}
