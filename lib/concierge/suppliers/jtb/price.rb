@@ -73,7 +73,7 @@ module JTB
     end
 
     def caller
-      @caller ||= API::Support::SOAPClient.new(options)
+      @caller ||= Concierge::SOAPClient.new(options)
     end
 
     def options

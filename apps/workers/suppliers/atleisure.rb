@@ -41,7 +41,14 @@ module Workers::Suppliers
         properties_data = result.value
         properties_data.map do |property|
           if validator(property).valid?
-            synchronisation.start(property['HouseCode']) { mapper.prepare(property) }
+            synchronisation.start(property['HouseCode']) {
+              # AtLeisure's API calls return with large result payloads while
+              # synchronising properties, therefore, event tracking is disabled
+              # while the property is parsed.
+              Concierge.context.disable!
+
+              mapper.prepare(property)
+            }
           end
         end
       else

@@ -1,6 +1,6 @@
-module API::Support
+module Concierge
 
-  # +API::Support::SOAPClient+
+  # +Concierge::SOAPClient+
   #
   # This SOAP client is designed with error handling.
   #
@@ -39,7 +39,7 @@ module API::Support
   #
   # Example
   #
-  #   client = API::Support::SOAPClient.new(wsdl: "https://example.com?wsdl")
+  #   client = Concierge::SOAPClient.new(wsdl: "https://example.com?wsdl")
   #   result = client.call(:operation_name, message: { *some data here* })
   #   if result.success?
   #     process_response(result.value)

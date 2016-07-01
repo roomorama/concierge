@@ -7,6 +7,7 @@ how this file is formatted and how the process works.
 ## [Unreleased]
 ### Added
 - Synchronisation with AtLeisure
+- Ability to enable or disable context tracking at certain points in time.
 
 ### Removed
 - removed `fee` field from `Quotation`. Fees should be included in the total.
