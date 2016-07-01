@@ -46,16 +46,6 @@ module Ciirus
         client.call(operation_name, message: message)
       end
 
-      def valid_result?(hash)
-        # TODO: implement after research error cases from Ciirus API
-        true
-      end
-
-      def error_result(hash)
-        # TODO: implement after research error cases from Ciirus API
-        true
-      end
-
       def to_safe_hash(usual_hash)
         Concierge::SafeAccessHash.new(usual_hash)
       end
