@@ -37,7 +37,8 @@ module Ciirus
         {
             wsdl:                 wsdl,
             env_namespace:        :soap12,
-            namespace_identifier: nil
+            namespace_identifier: nil,
+            soap_version:         2
         }
       end
 
@@ -62,6 +63,15 @@ module Ciirus
       # Converts date string to Ciirus expected format
       def convert_date(date)
         Date.strptime(date, ROOMORAMA_DATE_FORMAT).strftime(CIIRUS_DATE_FORMAT)
+      end
+
+      def mismatch(message, backtrace)
+        response_mismatch = Concierge::Context::ResponseMismatch.new(
+          message:   message,
+          backtrace: backtrace
+        )
+
+        Concierge.context.augment(response_mismatch)
       end
     end
   end
