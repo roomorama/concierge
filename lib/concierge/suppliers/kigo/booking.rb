@@ -5,7 +5,7 @@ module Kigo
   class Booking
     include Concierge::JSON
 
-    API_METHOD = "createConfirmedReservation"
+    API_METHOD = 'createConfirmedReservation'
 
     attr_reader :credentials, :request_handler, :response_parser
 
@@ -27,7 +27,18 @@ module Kigo
     #
     #   # => #<Result error=nil value=#<Reservation code='123'>>
     def book(params)
+      reservation_details = request_handler.build_reservation_details(params)
 
+      return reservation_details unless reservation_details.success?
+
+      endpoint = request_handler.endpoint_for(API_METHOD)
+      result   = http.post(endpoint, json_encode(reservation_details.value), { 'Content-Type' => 'application/json' })
+
+      if result.success?
+        response_parser.parse_reservation(params, result.value.body)
+      else
+        result
+      end
     end
 
     private

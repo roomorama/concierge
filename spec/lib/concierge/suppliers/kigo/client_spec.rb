@@ -38,7 +38,7 @@ RSpec.describe Kigo::Client do
   describe "#book" do
     let(:params) {
       {
-        property_id: 'A123',
+        property_id: '123',
         check_in:    '2016-03-22',
         check_out:   '2016-03-24',
         guests:      2,
