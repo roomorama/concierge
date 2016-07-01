@@ -8,3 +8,5 @@ post '/waytostay/quote',   to: 'waytostay#quote'
 post '/jtb/booking',       to: 'j_t_b#booking'
 post '/atleisure/booking', to: 'at_leisure#booking'
 post '/waytostay/booking', to: 'waytostay#booking'
+
+post 'waytostay/cancel',   to: 'waytostay#cancel'

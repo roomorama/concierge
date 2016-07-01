@@ -1,18 +1,18 @@
 require "spec_helper"
 
-RSpec.shared_examples "cancellation action" do
-
-  subject { call(controller, params) }
+RSpec.shared_examples "cancel action" do
 
   context "when supplier return +Result+ error, without data" do
 
+    before { expect(error_cases).to_not be_empty }
+
     it "returns a generic error message and create an ExternalError" do
-      expect(generic_error_params_list).to_not be_empty
-      generic_error_params_list.each do |params|
+      error_cases.each do |kase|
         expect {
-          expect(subject.status).to eq 503
-          expect(subject.body["status"]).to eq "error"
-          expect(subject.body["errors"]).to eq({ "cancellation" => "Could not cancell with remote supplier" })
+          response = call(described_class.new, kase[:params].dup)
+          expect(response.status).to eq 503
+          expect(response.body["status"]).to eq "error"
+          expect(response.body["errors"]).to eq kase[:error]
         }.to change { ExternalErrorRepository.count }.by 1
       end
     end
@@ -20,13 +20,14 @@ RSpec.shared_examples "cancellation action" do
 
   context "when supplier returns a successful +Result+" do
 
+    before { expect(success_cases).to_not be_empty }
+
     it "returns the cancelled reservation id" do
-      expect(success_params_list).to_not be_empty
       success_cases.each do |kase|
-        params = kase.params
-        expect(subject.status).to eq 200
+        response = call(described_class.new, kase[:params].dup)
+        expect(response.status).to eq 200
         expect(response.body["status"]).to eq "ok"
-        expect(response.body["cancelled_booking_id"]).to eq kase.cancelled_booking_id
+        expect(response.body["cancelled_reservation_id"]).to eq kase[:cancelled_reservation_id]
       end
     end
   end
