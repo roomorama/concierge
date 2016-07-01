@@ -26,30 +26,7 @@ module Ciirus
     # Ciirus, a generic error message is sent back to the caller, and the failure
     # is logged.
     def quote(params)
-      result = Ciirus::Commands::QuoteFetcher.new(credentials).call(params)
-
-      if result.success?
-        result.value
-      else
-        announce_error(:quote, result)
-        error_quotation
-      end
-    end
-
-    def announce_error(operation, result)
-      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-          operation:   operation,
-          supplier:    SUPPLIER_NAME,
-          code:        result.error.code,
-          context:     Concierge.context.to_h,
-          happened_at: Time.now
-      })
-    end
-
-    def error_quotation
-      Quotation.new(
-        errors: { quote: "Could not quote price with remote supplier" }
-      )
+      Ciirus::Commands::QuoteFetcher.new(credentials).call(params)
     end
   end
 end
