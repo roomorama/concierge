@@ -16,5 +16,9 @@ module API::Controllers::JTB
       JTB::Client.new(credentials).quote(params)
     end
 
+    def supplier_name
+      JTB::Client::SUPPLIER_NAME
+    end
+
   end
 end

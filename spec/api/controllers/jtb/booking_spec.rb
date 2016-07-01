@@ -30,13 +30,39 @@ RSpec.describe API::Controllers::JTB::Booking do
     let(:params) { multi_unit_params }
   end
 
-  it "is invalid without a unit_id" do
-    multi_unit_params.delete(:unit_id)
-    response = parse_response(subject.call(multi_unit_params))
+  describe "#call" do
+    it "is invalid without a unit_id" do
+      multi_unit_params.delete(:unit_id)
+      response = parse_response(subject.call(multi_unit_params))
 
-    expect(response.status).to eq 422
-    expect(response.body["status"]).to eq "error"
-    expect(response.body["errors"]["unit_id"]).to eq ["unit_id is required"]
+      expect(response.status).to eq 422
+      expect(response.body["status"]).to eq "error"
+      expect(response.body["errors"]["unit_id"]).to eq ["unit_id is required"]
+    end
+
+    it "returns an error with unrecognised response" do
+      allow_any_instance_of(JTB::Client).to receive(:book) {
+        Result.error(:unrecognised_response)
+      }
+      response = parse_response(subject.call(multi_unit_params))
+      expect(response.status).to eq 503
+      expect(response.body["status"]).to eq "error"
+      expect(response.body["errors"]).to eq( { "booking" => "Could not create booking with remote supplier" })
+    end
+
+    it "returns a booking code when successful booking" do
+      expected_code    = "953" #random
+      allow_any_instance_of(JTB::Client).to receive(:book) {
+        Result.new(Reservation.new(multi_unit_params).tap { |res|
+          res.code = expected_code
+        })
+      }
+
+      response = parse_response(subject.call(multi_unit_params))
+      expect(response.status).to eq 200
+      expect(response.body["status"]).to eq "ok"
+      expect(response.body["code"]).to eq expected_code
+    end
   end
 
 end

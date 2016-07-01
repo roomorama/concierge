@@ -11,5 +11,10 @@ module API::Controllers::Waytostay
     def quote_price(params)
       Waytostay::Client.new.quote(params)
     end
+
+    def supplier_name
+      Waytostay::Client::SUPPLIER_NAME
+    end
   end
 end
+

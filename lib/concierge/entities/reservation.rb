@@ -13,8 +13,6 @@
 #   +customer+:    a +Customer+ entity should keep customer's required info
 #   +code+:        is a booking identifier on the supplier side
 #   +extra+:       if for partner required extra options like credit card, payment type... it should be here.
-#   +errors+:      if there were any errors during the booking creation with the partner,
-#                  the errors will be listed here.
 #
 # The reservation is only successful if the +errors+ attribute is empty and +customer+ is successful.
 class Reservation
@@ -28,12 +26,6 @@ class Reservation
   attribute :guests,      type: Integer
   attribute :code,        type: String
   attribute :extra,       type: Hash
-  attribute :errors,      type: Hash
   attribute :customer,    type: Hash
-
-
-  def successful?
-    Array(errors).empty?
-  end
 
 end

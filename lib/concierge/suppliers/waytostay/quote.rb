@@ -19,10 +19,7 @@ module Waytostay
       "pricing.currency"
     ]
 
-    # Always returns a +Quotation+.
-    # If an error happens in any step in the process of getting a response back from
-    # Waytostay, a generic error message is sent back to the caller, and the failure
-    # is logged.
+    # Always returns a +Result+ which wraps a +Quotation+.
     def quote(params)
       post_body = {
         property_reference: params[:property_id],
@@ -40,26 +37,24 @@ module Waytostay
 
         missing_keys = response.missing_keys_from(REQUIRED_RESPONSE_KEYS)
         if missing_keys.empty?
-          Quotation.new(quote_params_from(response))
+          Result.new(Quotation.new(quote_params_from(response)))
         else
           augment_missing_fields(missing_keys)
-          announce_error("quote", Result.error(:unrecognised_response))
-          Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
+          Result.error(:unrecognised_response)
         end
 
       elsif unavailable?(result) # for waytostay, unavailable is returned as a 422 error
 
-        Quotation.new({
+        Result.new(Quotation.new({
           property_id: params[:property_id],
           check_in:    params[:check_in],
           check_out:   params[:check_out],
           guests:      params[:guests],
           available:   false
-        })
+        }))
 
       else
-        announce_error("quote", result)
-        Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
+        result
       end
     end
 

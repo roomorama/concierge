@@ -22,20 +22,10 @@ module JTB
       @credentials = credentials
     end
 
-    # Always returns a +Quotation+.
-    # If an error happens in any step in the process of getting a response back from
-    # JTB, a generic error message is sent back to the caller, and the failure
-    # is logged.
+    # Always returns a +Result+ wrapping a +Quotation+.
     def quote(params)
-      return unavailable_quotation if params.stay_length > MAXIMUM_STAY_LENGTH
-      result = JTB::Price.new(credentials).quote(params)
-
-      if result.success?
-        result.value
-      else
-        announce_error("quote", result)
-        Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
-      end
+      return stay_too_long_error if params.stay_length > MAXIMUM_STAY_LENGTH
+      JTB::Price.new(credentials).quote(params)
     end
 
     # Always returns a +Reservation+.
@@ -45,13 +35,13 @@ module JTB
     def book(params)
       result = JTB::Booking.new(credentials).book(params)
       if result.success?
-        Reservation.new(params).tap do |reservation|
+        res = Reservation.new(params).tap do |reservation|
           reservation.code = result.value
-          database.create(reservation) # workaround to keep booking code for reservation
+          database.create(reservation) # workaround to keep reservation code
         end
+        Result.new(res)
       else
-        announce_error("booking", result)
-        Reservation.new(errors: { booking: 'Could not book property with remote supplier' })
+        result
       end
     end
 
@@ -71,8 +61,8 @@ module JTB
       @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
     end
 
-    def unavailable_quotation
-      Quotation.new(errors: { quote: "Maximum length of stay must be less than #{MAXIMUM_STAY_LENGTH} nights." })
+    def stay_too_long_error
+      Result.error(:stay_too_long, { quote: "Maximum length of stay must be less than #{MAXIMUM_STAY_LENGTH} nights." })
     end
 
   end

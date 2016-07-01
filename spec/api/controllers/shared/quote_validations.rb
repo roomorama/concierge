@@ -67,7 +67,7 @@ RSpec.shared_examples "performing parameter validations" do |controller_generato
 
   it "is valid if all parameters are correct" do
     controller = controller_generator.call
-    allow(controller).to receive(:quote_price) { Quotation.new(errors: []) }
+    allow(controller).to receive(:quote_price) { Result.new(Quotation.new(errors: [])) }
 
     response = call(controller, valid_params)
     expect(response.status).to eq 200
@@ -76,12 +76,12 @@ RSpec.shared_examples "performing parameter validations" do |controller_generato
 
   it "fails if the price quotation is not successful" do
     controller = controller_generator.call
-    allow(controller).to receive(:quote_price) { Quotation.new(errors: { failure: "Partner unavailable" }) }
+    allow(controller).to receive(:quote_price) { Result.error(:network_failure) }
 
     response = call(controller, valid_params)
     expect(response.status).to eq 503
     expect(response.body["status"]).to eq "error"
-    expect(response.body["errors"]).to eq({ "failure" => "Partner unavailable" })
+    expect(response.body["errors"]).to eq({ "quote"  => "Could not quote price with remote supplier" })
   end
 
   private

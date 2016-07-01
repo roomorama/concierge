@@ -86,14 +86,7 @@ module Kigo
     # Always returns a +Quotation+.
     # Uses an instance +Kigo::Legacy::Request+ to dictate parameters and endpoints.
     def quote(params)
-      result = Kigo::Price.new(credentials, request_handler: request_handler).quote(params)
-
-      if result.success?
-        result.value
-      else
-        announce_error("quote", result)
-        Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
-      end
+      Kigo::Price.new(credentials, request_handler: request_handler).quote(params)
     end
 
     private

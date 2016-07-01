@@ -11,5 +11,9 @@ module API::Controllers::Waytostay
     def create_booking(params)
       Waytostay::Client.new.book(params)
     end
+
+    def supplier_name
+      Waytostay::Client::SUPPLIER_NAME
+    end
   end
 end
