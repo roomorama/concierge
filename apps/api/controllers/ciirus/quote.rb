@@ -19,5 +19,9 @@ module API::Controllers::Ciirus
       credentials = Concierge::Credentials.for("Ciirus")
       Ciirus::Client.new(credentials).quote(params)
     end
+
+    def supplier_name
+      Ciirus::Client::SUPPLIER_NAME
+    end
   end
 end
