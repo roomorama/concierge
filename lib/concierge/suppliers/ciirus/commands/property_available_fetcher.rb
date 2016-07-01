@@ -25,12 +25,8 @@ module Ciirus
         result = remote_call(message)
         if result.success?
           result_hash = to_safe_hash(result.value)
-          if valid_result?(result_hash)
-            property_rate = Ciirus::Mappers::PropertyAvailable.build(result_hash)
-            Result.new(property_rate)
-          else
-            error_result(result_hash)
-          end
+          property_rate = Ciirus::Mappers::PropertyAvailable.build(result_hash)
+          Result.new(property_rate)
         end
       end
 

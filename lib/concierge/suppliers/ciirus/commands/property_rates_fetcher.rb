@@ -21,12 +21,8 @@ module Ciirus
         result = remote_call(message)
         if result.success?
           result_hash = to_safe_hash(result.value)
-          if valid_result?(result_hash)
-            property_rates = build_property_rates(result_hash)
-            Result.new(property_rates)
-          else
-            error_result(result_hash)
-          end
+          property_rates = build_property_rates(result_hash)
+          Result.new(property_rates)
         end
       end
 
