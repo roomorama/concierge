@@ -19,11 +19,11 @@ module Support
       end
     end
 
-    # Stubs a given SOAP call
+    # Stubs a SOAP call to a given method with given message.
     #
     # Example
     #
-    #   stub_call(method: :get_properties, response: success_response)
+    #   stub_call(method: :get_properties, message: xml_string, response: stub_response)
     def stub_call(method:, message: :any, response:)
       savon.expects(method).with(message: message).returns(response)
     end
