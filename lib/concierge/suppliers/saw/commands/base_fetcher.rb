@@ -36,14 +36,35 @@ module SAW
       end
 
       def error_result(hash)
-        if hash.get("response.errors")
-          code = hash.get("response.errors.error.code")
-          data = hash.get("response.errors.error.description")
-          
-          Result.error(code, data)
+        code = hash.get("response.errors.error.code")
+        description = hash.get("response.errors.error.description")
+
+        if code && description
+          augment_with_error(code, description, caller)
+          Result.error(code)
         else
+          unrecognised_response_event(caller)
           Result.error(:unrecognised_response)
         end
+      end
+
+      def augment_with_error(code, description, backtrace)
+        message = "Response indicating the error `#{code}`, and description `#{description}`"
+        mismatch(message, backtrace)
+      end
+
+      def unrecognised_response_event(backtrace)
+        message = "Error response could not be recognised (no `code` or `description` fields)."
+        mismatch(message, backtrace)
+      end
+
+      def mismatch(message, backtrace)
+        response_mismatch = Concierge::Context::ResponseMismatch.new(
+          message: message,
+          backtrace: backtrace
+        )
+
+        Concierge.context.augment(response_mismatch)
       end
     end
   end
