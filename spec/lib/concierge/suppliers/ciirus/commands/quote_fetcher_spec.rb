@@ -19,6 +19,7 @@ RSpec.describe Ciirus::Commands::QuoteFetcher do
 
   let(:success_response) { read_fixture('ciirus/property_quote_response.xml') }
   let(:empty_response) { read_fixture('ciirus/empty_property_quote_response.xml') }
+  let(:error_response) { read_fixture('ciirus/error_property_quote_response.xml') }
   let(:wsdl) { read_fixture('ciirus/wsdl.xml') }
 
   subject { described_class.new(credentials) }
@@ -33,42 +34,55 @@ RSpec.describe Ciirus::Commands::QuoteFetcher do
   end
 
   describe '#call' do
-    it 'returns success quotation' do
-      stub_call(method: :get_properties, response: success_response)
+    context 'when xml response is correct' do
+      it 'returns success quotation' do
+        stub_call(method: :get_properties, response: success_response)
 
-      result = subject.call(params)
+        result = subject.call(params)
 
-      expect(result).to be_a Result
-      expect(result).to be_success
-      expect(result.value).to be_a Quotation
+        expect(result).to be_a Result
+        expect(result).to be_success
+        expect(result.value).to be_a Quotation
+      end
+
+      it 'fills quotation with right attributes' do
+        stub_call(method: :get_properties, response: success_response)
+
+        result = subject.call(params)
+
+        quotation = result.value
+        expect(quotation.check_in).to eq('2016-05-01')
+        expect(quotation.check_out).to eq('2016-05-12')
+        expect(quotation.guests).to eq(3)
+        expect(quotation.property_id).to eq('38180')
+        expect(quotation.currency).to eq('USD')
+        expect(quotation.available).to be true
+        expect(quotation.total).to eq(3440.98)
+      end
+
+      it 'returns unavailable quotation for empty response' do
+        stub_call(method: :get_properties, response: empty_response)
+
+        result = subject.call(params)
+
+        quotation = result.value
+        expect(quotation.check_in).to eq('2016-05-01')
+        expect(quotation.check_out).to eq('2016-05-12')
+        expect(quotation.guests).to eq(3)
+        expect(quotation.property_id).to eq('38180')
+        expect(quotation.available).to be false
+      end
     end
 
-    it 'fills quotation with right attributes' do
-      stub_call(method: :get_properties, response: success_response)
+    context 'when xml contains error message' do
+      it 'returns a result with error' do
+        stub_call(method: :get_properties, response: error_response)
 
-      result = subject.call(params)
+        result = subject.call(params)
 
-      quotation = result.value
-      expect(quotation.check_in).to eq('2016-05-01')
-      expect(quotation.check_out).to eq('2016-05-12')
-      expect(quotation.guests).to eq(3)
-      expect(quotation.property_id).to eq('38180')
-      expect(quotation.currency).to eq('USD')
-      expect(quotation.available).to be true
-      expect(quotation.total).to eq(3440.98)
-    end
-
-    it 'returns unavailable quotation for empty response' do
-      stub_call(method: :get_properties, response: empty_response)
-
-      result = subject.call(params)
-
-      quotation = result.value
-      expect(quotation.check_in).to eq('2016-05-01')
-      expect(quotation.check_out).to eq('2016-05-12')
-      expect(quotation.guests).to eq(3)
-      expect(quotation.property_id).to eq('38180')
-      expect(quotation.available).to be false
+        expect(result.success?).to be false
+        expect(result.error.code).to eq(:not_empty_error_msg)
+      end
     end
   end
 end

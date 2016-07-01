@@ -88,7 +88,7 @@
           <FullBeds>1</FullBeds>
           <QueenBeds>0</QueenBeds>
           <KingBeds>4</KingBeds>
-          <ErrorMsg></ErrorMsg>
+          <ErrorMsg>Some Error Here</ErrorMsg>
           <SpecialResponse>string</SpecialResponse>
         </PropertyDetails>
       </GetPropertiesResult>

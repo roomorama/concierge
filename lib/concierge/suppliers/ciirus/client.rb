@@ -21,7 +21,7 @@ module Ciirus
       @credentials = creadentials
     end
 
-    # Always returns a +Quotation+
+    # Returns a +Result+ wrapping +Quotation+ in success case.
     # If an error happens in any step in the process of getting a response back from
     # Ciirus, a generic error message is sent back to the caller, and the failure
     # is logged.
