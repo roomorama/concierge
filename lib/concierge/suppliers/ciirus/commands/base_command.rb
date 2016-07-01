@@ -29,7 +29,7 @@ module Ciirus
       end
 
       def client
-        @client ||= API::Support::SOAPClient.new(options)
+        @client ||= Concierge::SOAPClient.new(options)
       end
 
       def options
