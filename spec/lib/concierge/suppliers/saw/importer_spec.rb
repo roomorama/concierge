@@ -30,9 +30,6 @@ RSpec.describe SAW::Importer do
       properties_result = subject.fetch_properties_by_country(current_country)
       expect(properties_result.success?).to be false
       expect(properties_result.error.code).to eq("1007")
-      expect(properties_result.error.data).to eq(
-        "No properties are available for the given search parameters"
-      )
     end
   end
 
