@@ -71,15 +71,48 @@ module Kigo
       end
     end
 
+    # parses the response of a +createConfirmedReservation+ API call.
+    #
+    # Returns a +Result+ instance wrapping a +Reservation+ object
+    # in case the response is successful. Possible errors that could
+    # happen in this step are:
+    #
+    # +invalid_json_representation+: the response sent back is not a valid JSON.
+    # +booking_call_failed+:         the response status is not +E_OK+.
+    # +unrecognised_response+:       the response was successful, but the format cannot
+    #                                be parsed.
+    def parse_reservation(request_params, response)
+      decoded_payload = json_decode(response)
+      return decoded_payload unless decoded_payload.success?
+
+      payload = Concierge::SafeAccessHash.new(decoded_payload.value)
+      reservation = build_reservation(request_params)
+
+      if payload["API_RESULT_CODE"] == "E_OK"
+        code = payload.get("API_REPLY.RES_ID")
+        unless code
+          no_field("RES_ID")
+          return unrecognised_response
+        end
+
+        reservation.code = code
+        Result.new(reservation)
+      elsif payload["API_RESULT_CODE"] == "E_CONFLICT" && payload["API_RESULT_TEXT"] == "Dates not available"
+        Result.error(:unavailable_dates)
+      else
+        non_successful_result_code
+        Result.error(:booking_call_failed)
+      end
+    end
+
     private
 
+    def build_reservation(params)
+      Reservation.new(params)
+    end
+
     def build_quotation(params)
-      Quotation.new(
-        property_id: params[:property_id],
-        check_in:    params[:check_in],
-        check_out:   params[:check_out],
-        guests:      params[:guests],
-      )
+      Quotation.new(params)
     end
 
     def unrecognised_response
