@@ -23,7 +23,7 @@ module SAW
     #   comamnd = SAW::Client.new(credentials)
     #   result = command.quote(params)
     #
-    #   if result.sucessful?
+    #   if result.sucess?
     #     # ...
     #   end
     #
@@ -44,7 +44,7 @@ module SAW
     #   comamnd = SAW::Client.new(credentials)
     #   result = command.book(params)
     #
-    #   if result.sucessful?
+    #   if result.sucess?
     #     # ...
     #   end
     #
