@@ -27,13 +27,13 @@ module SAW
         property_accommodations.map do |hash|
           units = Array(safe_hash(hash).get("property_accommodation"))
           units.map do |unit_hash|
-            build_unit(unit_hash, basic_property, bed_configurations)
+            build_unit(unit_hash, basic_property, detailed_property, bed_configurations)
           end
         end.flatten
       end
 
       private
-      def self.build_unit(unit_hash, basic_property, bed_configurations)
+      def self.build_unit(unit_hash, basic_property, detailed_property, bed_configurations)
         unit = safe_hash(unit_hash)
 
         u = Roomorama::Unit.new(unit.get("@id"))
@@ -43,6 +43,8 @@ module SAW
         u.weekly_rate = basic_property.weekly_rate
         u.monthly_rate = basic_property.monthly_rate
         u.number_of_units = 1
+        
+        detailed_property.images.each { |image| u.add_image(image) }
 
         bed_configuration = find_bed_types(bed_configurations, unit.get("@id"))
 
