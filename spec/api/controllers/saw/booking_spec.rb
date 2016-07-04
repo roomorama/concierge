@@ -29,12 +29,15 @@ RSpec.describe API::Controllers::SAW::Booking do
   let(:controller) { described_class.new }
   let(:action) { :booking }
 
-  it "returns reservation object if booking request is completed successfully" do
+  it "returns result object with reservation if booking request is completed successfully" do
     mock_request(:propertybooking, :success)
     
-    reservation = controller.create_booking(request_params)
+    result = controller.create_booking(request_params)
     
-    expect(reservation.successful?).to be true
+    expect(result.success?).to be true
+    expect(result).to be_kind_of(Result)
+
+    reservation = result.value
     expect(reservation).to be_kind_of(Reservation)
     expect(reservation.property_id).to eq(request_params[:property_id])
     expect(reservation.unit_id).to eq(request_params[:unit_id])
@@ -46,24 +49,22 @@ RSpec.describe API::Controllers::SAW::Booking do
   it "returns an error reservation if booking request fails" do
     mock_request(:propertybooking, :error)
     
-    reservation = controller.create_booking(request_params)
-  
-    expect(reservation.successful?).to be false
-    expect(reservation.errors[action]).to eq(
-      "Could not create booking with remote supplier"
-    )
+    result = controller.create_booking(request_params)
+    
+    expect(result.success?).to be false
+    expect(result).to be_kind_of(Result)
+    expect(result.value).to be nil
   end
   
   context "when response from the SAW api is not well-formed xml" do
     it "returns a reservation with an appropriate error" do
       mock_bad_xml_request(:propertybooking)
 
-      reservation = controller.create_booking(request_params)
+      result = controller.create_booking(request_params)
       
-      expect(reservation.successful?).to be false
-      expect(reservation.errors[action]).to eq(
-        "Could not create booking with remote supplier"
-      )
+      expect(result.success?).to be false
+      expect(result).to be_kind_of(Result)
+      expect(result.value).to be nil
     end
   end
 end
