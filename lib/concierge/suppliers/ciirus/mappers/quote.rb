@@ -2,8 +2,8 @@ module Ciirus
   module Mappers
     class Quote
       class << self
-        # Maps hash representation of Ciirus API IsPropertyAvailable response
-        # to bool
+        # Maps hash representation of Ciirus API GetProperties response
+        # to Quotation
         def build(params, hash)
           quotation = ::Quotation.new(
             property_id: params[:property_id],
