@@ -2,9 +2,9 @@ require_relative "../cancel"
 
 module API::Controllers::Waytostay
 
-  # API::Controllers::Waytostay::Booking
+  # API::Controllers::Waytostay::Cancel
   #
-  # Performs create booking for properties from Waytostay.
+  # Cancels reservation from Waytostay.
   class Cancel
     include API::Controllers::Cancel
 
