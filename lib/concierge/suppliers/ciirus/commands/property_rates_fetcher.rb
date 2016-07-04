@@ -23,6 +23,8 @@ module Ciirus
           result_hash = to_safe_hash(result.value)
           property_rates = build_property_rates(result_hash)
           Result.new(property_rates)
+        else
+          result
         end
       end
 
