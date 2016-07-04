@@ -9,7 +9,7 @@ module Kigo
   # Usage
   #
   #   quotation = Kigo::Legacy.new(credentials).quote(stay_params)
-  #   if quotation.sucessful?
+  #   if quotation.successful?
   #     # ...
   #   end
   #

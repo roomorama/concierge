@@ -11,7 +11,7 @@ module Kigo
   #   parser.compute_pricing(request_params, response_body)
   #   # => #<Result error=nil value=Quotation>
   #
-  # See documentation of this class instace methods for their description
+  # See documentation of this class instance methods for their description
   # and possible errors.
   class ResponseParser
     include Concierge::JSON
@@ -37,7 +37,7 @@ module Kigo
         reply = payload["API_REPLY"]
         unless reply
           no_field("API_REPLY")
-          return unrecognised_response(response)
+          return unrecognised_response
         end
 
         currency = reply["CURRENCY"]
@@ -47,7 +47,7 @@ module Kigo
         { "CURRENCY" => currency, "FEES_AMOUNT" => fees, "TOTAL_AMOUNT" => total }.each do |key, value|
           if !value
             no_field(value)
-            return unrecognised_response(response)
+            return unrecognised_response
           end
         end
 
@@ -76,13 +76,13 @@ module Kigo
     def build_quotation(params)
       Quotation.new(
         property_id: params[:property_id],
-        check_in:    params[:check_in].to_s,
-        check_out:   params[:check_out].to_s,
+        check_in:    params[:check_in],
+        check_out:   params[:check_out],
         guests:      params[:guests],
       )
     end
 
-    def unrecognised_response(response)
+    def unrecognised_response
       Result.error(:unrecognised_response)
     end
 
