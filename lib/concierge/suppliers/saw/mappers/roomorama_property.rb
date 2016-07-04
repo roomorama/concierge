@@ -19,7 +19,7 @@ module SAW
       #
       # Returns [Roomorama::Property] Roomorama property
       def self.build(basic_property, detailed_property, availabilities)
-        property = Roomorama::Property.new(basic_property.internal_id)
+        property = Roomorama::Property.new(basic_property.internal_id.to_s)
         property.type = basic_property.type
         property.title = basic_property.title
         property.lat = basic_property.lat

@@ -68,6 +68,17 @@ module SAW
       )
     end
 
+    let(:images_attributes) do
+      [
+        { id: '1', url: 'www.example.com/1', caption: 'foo' },
+        { id: '2', url: 'www.example.com/2', caption: 'bar' }
+      ]
+    end
+
+    let(:images) do
+      images_attributes.map { |image_hash| Roomorama::Image.new(image_hash) }
+    end
+
     it "builds units" do
       units = described_class.build(basic_property, detailed_property)
       expect(units.size).to eq(5)
@@ -78,6 +89,32 @@ module SAW
         expect(created_unit).to be_kind_of(Roomorama::Unit)
         expect(created_unit.identifier).to eq(unit_info["@id"])
         expect(created_unit.title).to eq(unit_info["property_accommodation_name"])
+      end
+    end
+    
+    it "keeps units images empty if detailed_property has no images" do
+      units = described_class.build(basic_property, detailed_property)
+      expect(units.size).to eq(5)
+
+      units_info.each do |unit_info|
+        created_unit = units.detect { |u| u.identifier == unit_info["@id"] }
+
+        expect(created_unit).to be_kind_of(Roomorama::Unit)
+        expect(created_unit.images).to eq([])
+      end
+    end
+    
+    it "copies images to unit if detailed_property has images" do
+      detailed_property.images = images
+
+      units = described_class.build(basic_property, detailed_property)
+      expect(units.size).to eq(5)
+
+      units_info.each do |unit_info|
+        created_unit = units.detect { |u| u.identifier == unit_info["@id"] }
+
+        expect(created_unit).to be_kind_of(Roomorama::Unit)
+        expect(created_unit.images).to eq(images)
       end
     end
 

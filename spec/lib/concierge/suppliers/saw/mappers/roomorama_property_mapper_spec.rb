@@ -88,7 +88,7 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
       monthly_rate
     )
 
-    expect(property.identifier).to eq(basic_property.internal_id)
+    expect(property.identifier).to eq(basic_property.internal_id.to_s)
     expect(property.currency).to eq(basic_property.currency_code)
     expect(property.lat).to eq(basic_property.lat)
     expect(property.lng).to eq(basic_property.lon)
