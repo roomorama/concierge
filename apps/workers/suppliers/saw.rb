@@ -29,9 +29,9 @@ module Workers::Suppliers
             announce_error('sync', result)
           end
           
-          availability_calendar = SAW::Mappers::AvailabilityCalendar.build
+          availability_calendar = ::SAW::Mappers::AvailabilityCalendar.build
 
-          roomorama_property = SAW::Mappers::RoomoramaProperty.build(
+          roomorama_property = ::SAW::Mappers::RoomoramaProperty.build(
             property,
             detailed_property,
             availability_calendar
@@ -47,7 +47,7 @@ module Workers::Suppliers
     private
 
     def importer
-      @properties ||= SAW::Importer.new(credentials)
+      @properties ||= ::SAW::Importer.new(credentials)
     end
 
     def credentials
