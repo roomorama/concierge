@@ -13,5 +13,8 @@ module API::Controllers::Kigo::Legacy
       Kigo::Legacy.new(credentials).book(params)
     end
 
+    def supplier_name
+      Kigo::Legacy::SUPPLIER_NAME
+    end
   end
 end

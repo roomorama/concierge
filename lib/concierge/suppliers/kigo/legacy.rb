@@ -36,34 +36,17 @@ module Kigo
       Kigo::Price.new(credentials, request_handler: request_handler).quote(params)
     end
 
-    # Always returns a +Reservation+.
+    # Returns a +Result+ wrapping a +Reservation+.
+    # Returns a +Result+ with error if booking fails.
     # Uses an instance +Kigo::LegacyRequest+ to dictate parameters and endpoints.
     def book(params)
-      result = Kigo::Booking.new(credentials, request_handler: request_handler).book(params)
-
-      if result.success?
-        result.value
-      else
-        announce_error("booking", result)
-        Reservation.new(errors: { booking: 'Could not book property with remote supplier' })
-      end
+      Kigo::Booking.new(credentials, request_handler: request_handler).book(params)
     end
-
 
     private
 
     def request_handler
       LegacyRequest.new(credentials, Kigo::Request.new(credentials))
-    end
-
-    def announce_error(operation, result)
-      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-        operation:   operation,
-        supplier:    SUPPLIER_NAME,
-        code:        result.error.code,
-        context:     Concierge.context.to_h,
-        happened_at: Time.now
-      })
     end
   end
 

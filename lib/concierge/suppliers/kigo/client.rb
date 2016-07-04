@@ -36,29 +36,11 @@ module Kigo
       Kigo::Price.new(credentials).quote(params)
     end
 
-    # Always returns a +Reservation+.
+    # Returns a +Result+ wrapping a +Reservation+.
+    # Returns a +Result+ with error if booking fails.
     # Uses an instance +Kigo::Request+ to dictate parameters and endpoints.
     def book(params)
-      result = Kigo::Booking.new(credentials).book(params)
-
-      if result.success?
-        result.value
-      else
-        announce_error("booking", result)
-        Reservation.new(errors: { booking: 'Could not book property with remote supplier' })
-      end
-    end
-
-    private
-
-    def announce_error(operation, result)
-      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-        operation:   operation,
-        supplier:    SUPPLIER_NAME,
-        code:        result.error.code,
-        context:     Concierge.context.to_h,
-        happened_at: Time.now
-      })
+      Kigo::Booking.new(credentials).book(params)
     end
   end
 

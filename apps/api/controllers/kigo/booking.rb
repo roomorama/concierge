@@ -13,5 +13,9 @@ module API::Controllers::Kigo
       Kigo::Client.new(credentials).book(params)
     end
 
+    def supplier_name
+      Kigo::Client::SUPPLIER_NAME
+    end
+
   end
 end

@@ -32,8 +32,7 @@ RSpec.describe API::Controllers::Kigo::Booking do
     let(:response) { parse_response(described_class.new.call(params)) }
 
     it "returns proper error if external request failed" do
-      erred_reservation = Reservation.new(errors: { booking: "Could not create booking with remote supplier" })
-      expect_any_instance_of(Kigo::Client).to receive(:book).and_return(erred_reservation)
+      expect_any_instance_of(Kigo::Client).to receive(:book).and_return(Result.error(:any_error))
 
       expect(response.status).to eq 503
       expect(response.body["status"]).to eq "error"
@@ -43,7 +42,7 @@ RSpec.describe API::Controllers::Kigo::Booking do
     it "returns a booking code when successful" do
       reservation = Reservation.new(params)
       reservation.code = "test_code"
-      expect_any_instance_of(Kigo::Client).to receive(:book).and_return(reservation)
+      expect_any_instance_of(Kigo::Client).to receive(:book).and_return(Result.new(reservation))
 
       expect(response.status).to eq 200
       expect(response.body["status"]).to eq "ok"
