@@ -10,6 +10,7 @@ module AtLeisure
   # * +meta_data+    - hash based AtLeisure payload
   #
   class Mapper
+    CANCELLATION_POLICY = 'super_elite'
 
     attr_reader :layout_items, :property, :meta_data
 
@@ -55,6 +56,7 @@ module AtLeisure
       property.max_guests          = info['MaxNumberOfPersons']
       property.pets_allowed        = info['NumberOfPets'] > 0
       property.currency            = Price::CURRENCY
+      property.cancellation_policy  = CANCELLATION_POLICY
 
       property.country_code = info['Country']
       property.city         = info_en['City']

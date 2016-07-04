@@ -131,6 +131,7 @@ RSpec.describe AtLeisure::Mapper do
       expect(property.max_guests).to eq 8
       expect(property.pets_allowed).to eq true
       expect(property.currency).to eq 'EUR'
+      expect(property.cancellation_policy).to eq 'super_elite'
       expect(property.country_code).to eq 'BE'
       expect(property.city).to eq 'Malmedy'
       expect(property.postal_code).to eq '4960'
