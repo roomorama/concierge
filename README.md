@@ -116,7 +116,7 @@ module API::Controllers::Supplier
 end
 ~~~
 
-`quote_price` and `supplier_name` are only method whose implementation is necessary. You can assume
+`quote_price` and `supplier_name` are only methods whose implementation is necessary. You can assume
 that the parameters at this point were already validated, so required parameters
 will be present and valid.
 
@@ -159,7 +159,7 @@ module API::Controllers::Supplier
 end
 ~~~
 
-`create_booking` and `supplier_name` are only method whose implementation is necessary. You can assume
+`create_booking` and `supplier_name` are only methods whose implementation is necessary. You can assume
 that the parameters at this point were already validated, so required parameters
 will be present and valid.
 
