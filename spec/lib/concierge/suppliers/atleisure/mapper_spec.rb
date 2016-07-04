@@ -112,6 +112,12 @@ RSpec.describe AtLeisure::Mapper do
       end
     end
 
+    it 'sets short description if origin description blank' do
+      property_data['LanguagePackENV4']['Description'] = nil
+      property = subject.prepare(property_data).value
+
+      expect(property.description).to eq "sdfg sdfg sd gsdf g sdfg sdfg sdf gsd fg sdf gd"
+    end
 
     it 'returns the result with roomorama property accordingly provided data' do
       result = subject.prepare(property_data)

@@ -56,6 +56,7 @@ module AtLeisure
       property.max_guests          = info['MaxNumberOfPersons']
       property.pets_allowed        = info['NumberOfPets'] > 0
       property.currency            = Price::CURRENCY
+      property.description          = info_en['Description'] || info_en['ShortDescription']
       property.cancellation_policy  = CANCELLATION_POLICY
 
       property.country_code = info['Country']
