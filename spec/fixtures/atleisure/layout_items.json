@@ -1,0 +1,6820 @@
+[
+  {
+    "Type": 50,
+    "Description": [
+      {
+        "Language": "NL",
+        "Description": "Verdiepingen"
+      },
+      {
+        "Language": "FR",
+        "Description": "Planchers"
+      },
+      {
+        "Language": "DE",
+        "Description": "Stockwerke"
+      },
+      {
+        "Language": "EN",
+        "Description": "Floors"
+      },
+      {
+        "Language": "IT",
+        "Description": "Piani"
+      },
+      {
+        "Language": "ES",
+        "Description": "Pisos"
+      },
+      {
+        "Language": "PL",
+        "Description": "Podłogi"
+      }
+    ],
+    "Items": [
+      {
+        "Number": 200,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Parterre"
+          },
+          {
+            "Language": "FR",
+            "Description": "Rez de chaussée"
+          },
+          {
+            "Language": "DE",
+            "Description": "Parterre"
+          },
+          {
+            "Language": "EN",
+            "Description": "Ground floor"
+          },
+          {
+            "Language": "IT",
+            "Description": "Piano terra"
+          },
+          {
+            "Language": "ES",
+            "Description": "Planta baja"
+          },
+          {
+            "Language": "PL",
+            "Description": "Parter"
+          }
+        ]
+      },
+      {
+        "Number": 208,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Tussenetage"
+          },
+          {
+            "Language": "FR",
+            "Description": "Entresol"
+          },
+          {
+            "Language": "DE",
+            "Description": "Zwischengeschoss"
+          },
+          {
+            "Language": "EN",
+            "Description": "Intermediate storey"
+          },
+          {
+            "Language": "IT",
+            "Description": "Mezzo piano"
+          },
+          {
+            "Language": "ES",
+            "Description": "Entresuelo"
+          },
+          {
+            "Language": "PL",
+            "Description": "Półpiętro"
+          }
+        ]
+      },
+      {
+        "Number": 210,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Op de 1e etage"
+          },
+          {
+            "Language": "FR",
+            "Description": "Au 1er étage"
+          },
+          {
+            "Language": "DE",
+            "Description": "Im 1. Stock"
+          },
+          {
+            "Language": "EN",
+            "Description": "On 1st floor"
+          },
+          {
+            "Language": "IT",
+            "Description": "Al primo piano"
+          },
+          {
+            "Language": "ES",
+            "Description": "En la 1ª planta"
+          },
+          {
+            "Language": "PL",
+            "Description": "Na I piętrze"
+          }
+        ]
+      },
+      {
+        "Number": 212,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Op de 2e etage"
+          },
+          {
+            "Language": "FR",
+            "Description": "Au 2ème étage"
+          },
+          {
+            "Language": "DE",
+            "Description": "Im 2. Stock"
+          },
+          {
+            "Language": "EN",
+            "Description": "On 2nd floor"
+          },
+          {
+            "Language": "IT",
+            "Description": "Al secondo piano"
+          },
+          {
+            "Language": "ES",
+            "Description": "En la 2ª planta"
+          },
+          {
+            "Language": "PL",
+            "Description": "Na II piętrze"
+          }
+        ]
+      },
+      {
+        "Number": 214,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Op de 3e etage"
+          },
+          {
+            "Language": "FR",
+            "Description": "Au 3ème étage"
+          },
+          {
+            "Language": "DE",
+            "Description": "Im 3. Stock"
+          },
+          {
+            "Language": "EN",
+            "Description": "On 3rd floor"
+          },
+          {
+            "Language": "IT",
+            "Description": "Al terzo piano"
+          },
+          {
+            "Language": "ES",
+            "Description": "En la 3ª planta"
+          },
+          {
+            "Language": "PL",
+            "Description": "Na III piętrze"
+          }
+        ]
+      },
+      {
+        "Number": 216,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Op de 4e etage"
+          },
+          {
+            "Language": "FR",
+            "Description": "Au 4ème étage"
+          },
+          {
+            "Language": "DE",
+            "Description": "Im 4. Stock"
+          },
+          {
+            "Language": "EN",
+            "Description": "On 4th floor"
+          },
+          {
+            "Language": "IT",
+            "Description": "Al quarto piano"
+          },
+          {
+            "Language": "ES",
+            "Description": "En la 4ª planta"
+          },
+          {
+            "Language": "PL",
+            "Description": "Na IV piętrze"
+          }
+        ]
+      },
+      {
+        "Number": 218,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Op de 5e etage"
+          },
+          {
+            "Language": "FR",
+            "Description": "Au 5ème étage"
+          },
+          {
+            "Language": "DE",
+            "Description": "Im 5. Stock"
+          },
+          {
+            "Language": "EN",
+            "Description": "On 5th floor"
+          },
+          {
+            "Language": "IT",
+            "Description": "Al quinto piano"
+          },
+          {
+            "Language": "ES",
+            "Description": "En la 5ª planta"
+          },
+          {
+            "Language": "PL",
+            "Description": "Na V piętrze"
+          }
+        ]
+      },
+      {
+        "Number": 220,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Op de 6e etage"
+          },
+          {
+            "Language": "FR",
+            "Description": "Au 6ème étage"
+          },
+          {
+            "Language": "DE",
+            "Description": "Im 6. Stock"
+          },
+          {
+            "Language": "EN",
+            "Description": "On 6th floor"
+          },
+          {
+            "Language": "IT",
+            "Description": "Al sesto piano"
+          },
+          {
+            "Language": "ES",
+            "Description": "En la 6ª planta"
+          },
+          {
+            "Language": "PL",
+            "Description": "Na VI piątrze"
+          }
+        ]
+      },
+      {
+        "Number": 221,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Op de 7e etage"
+          },
+          {
+            "Language": "FR",
+            "Description": "Au 7ème étage"
+          },
+          {
+            "Language": "DE",
+            "Description": "Im 7. Stock"
+          },
+          {
+            "Language": "EN",
+            "Description": "On 7th floor"
+          },
+          {
+            "Language": "IT",
+            "Description": "Al settimo piano"
+          },
+          {
+            "Language": "ES",
+            "Description": "En la 7ª planta"
+          },
+          {
+            "Language": "PL",
+            "Description": "Na VI piątrze"
+          }
+        ]
+      },
+      {
+        "Number": 222,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Op de 8e etage"
+          },
+          {
+            "Language": "FR",
+            "Description": "Au 8ème étage"
+          },
+          {
+            "Language": "DE",
+            "Description": "Im 8. Stock"
+          },
+          {
+            "Language": "EN",
+            "Description": "On 8th floor"
+          },
+          {
+            "Language": "IT",
+            "Description": "Al ottavo piano"
+          },
+          {
+            "Language": "ES",
+            "Description": "En la 8ª planta"
+          },
+          {
+            "Language": "PL",
+            "Description": "Na VI piątrze"
+          }
+        ]
+      },
+      {
+        "Number": 223,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Op de 9e etage"
+          },
+          {
+            "Language": "FR",
+            "Description": "Au 9ème étage"
+          },
+          {
+            "Language": "DE",
+            "Description": "Im 9. Stock"
+          },
+          {
+            "Language": "EN",
+            "Description": "On 9th floor"
+          },
+          {
+            "Language": "IT",
+            "Description": "Al 9 piano"
+          },
+          {
+            "Language": "ES",
+            "Description": "En la 9ª planta"
+          },
+          {
+            "Language": "PL",
+            "Description": "Na 9 piątrze"
+          }
+        ]
+      },
+      {
+        "Number": 224,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Op de 10e etage"
+          },
+          {
+            "Language": "FR",
+            "Description": "Au 10ème étage"
+          },
+          {
+            "Language": "DE",
+            "Description": "Im 10. Stock"
+          },
+          {
+            "Language": "EN",
+            "Description": "On 10th floor"
+          },
+          {
+            "Language": "IT",
+            "Description": "Al 10 piano"
+          },
+          {
+            "Language": "ES",
+            "Description": "En la 10ª planta"
+          },
+          {
+            "Language": "PL",
+            "Description": "Na 10 piątrze"
+          }
+        ]
+      },
+      {
+        "Number": 225,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Op de 11e etage"
+          },
+          {
+            "Language": "FR",
+            "Description": "Au 11ème étage"
+          },
+          {
+            "Language": "DE",
+            "Description": "Im 11. Stock"
+          },
+          {
+            "Language": "EN",
+            "Description": "On 11th floor"
+          },
+          {
+            "Language": "IT",
+            "Description": "Al 11 piano"
+          },
+          {
+            "Language": "ES",
+            "Description": "En la 11ª planta"
+          },
+          {
+            "Language": "PL",
+            "Description": "Na 11 piątrze"
+          }
+        ]
+      },
+      {
+        "Number": 226,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Op de 12e etage"
+          },
+          {
+            "Language": "FR",
+            "Description": "Au 12ème étage"
+          },
+          {
+            "Language": "DE",
+            "Description": "Im 12. Stock"
+          },
+          {
+            "Language": "EN",
+            "Description": "On 12th floor"
+          },
+          {
+            "Language": "IT",
+            "Description": "Al 12 piano"
+          },
+          {
+            "Language": "ES",
+            "Description": "En la 12ª planta"
+          },
+          {
+            "Language": "PL",
+            "Description": "Na 12 piątrze"
+          }
+        ]
+      },
+      {
+        "Number": 227,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Op de 13e etage"
+          },
+          {
+            "Language": "FR",
+            "Description": "Au 13ème étage"
+          },
+          {
+            "Language": "DE",
+            "Description": "Im 13. Stock"
+          },
+          {
+            "Language": "EN",
+            "Description": "On 13th floor"
+          },
+          {
+            "Language": "IT",
+            "Description": "Al 13 piano"
+          },
+          {
+            "Language": "ES",
+            "Description": "En la 13ª planta"
+          },
+          {
+            "Language": "PL",
+            "Description": "Na 13 piątrze"
+          }
+        ]
+      },
+      {
+        "Number": 228,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Op de 14e etage"
+          },
+          {
+            "Language": "FR",
+            "Description": "Au 14ème étage"
+          },
+          {
+            "Language": "DE",
+            "Description": "Im 14. Stock"
+          },
+          {
+            "Language": "EN",
+            "Description": "On 14th floor"
+          },
+          {
+            "Language": "IT",
+            "Description": "Al 14 piano"
+          },
+          {
+            "Language": "ES",
+            "Description": "En la 14ª planta"
+          },
+          {
+            "Language": "PL",
+            "Description": "Na 14 piątrze"
+          }
+        ]
+      },
+      {
+        "Number": 229,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Op de 15e etage"
+          },
+          {
+            "Language": "FR",
+            "Description": "Au 15ème étage"
+          },
+          {
+            "Language": "DE",
+            "Description": "Im 15. Stock"
+          },
+          {
+            "Language": "EN",
+            "Description": "On 15th floor"
+          },
+          {
+            "Language": "IT",
+            "Description": "Al 15 piano"
+          },
+          {
+            "Language": "ES",
+            "Description": "En la 15ª planta"
+          },
+          {
+            "Language": "PL",
+            "Description": "Na 15 piątrze"
+          }
+        ]
+      },
+      {
+        "Number": 230,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Souterrain"
+          },
+          {
+            "Language": "FR",
+            "Description": "Sous-sol"
+          },
+          {
+            "Language": "DE",
+            "Description": "Souterrain"
+          },
+          {
+            "Language": "EN",
+            "Description": "Basement"
+          },
+          {
+            "Language": "IT",
+            "Description": "Seminterrato"
+          },
+          {
+            "Language": "ES",
+            "Description": "Sótano"
+          },
+          {
+            "Language": "PL",
+            "Description": "Piwnica"
+          }
+        ]
+      },
+      {
+        "Number": 232,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Kelder"
+          },
+          {
+            "Language": "FR",
+            "Description": "Cave"
+          },
+          {
+            "Language": "DE",
+            "Description": "Keller"
+          },
+          {
+            "Language": "EN",
+            "Description": "Basement"
+          },
+          {
+            "Language": "IT",
+            "Description": "Scantinato"
+          },
+          {
+            "Language": "ES",
+            "Description": "Sótano/ bodega"
+          },
+          {
+            "Language": "PL",
+            "Description": "Piwnica"
+          }
+        ]
+      },
+      {
+        "Number": 234,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Zolder"
+          },
+          {
+            "Language": "FR",
+            "Description": "Grenier"
+          },
+          {
+            "Language": "DE",
+            "Description": "Dachgeschoss"
+          },
+          {
+            "Language": "EN",
+            "Description": "Attic"
+          },
+          {
+            "Language": "IT",
+            "Description": "Mansarda/soffitta"
+          },
+          {
+            "Language": "ES",
+            "Description": "Piso abuhardillado"
+          },
+          {
+            "Language": "PL",
+            "Description": "Strych"
+          }
+        ]
+      },
+      {
+        "Number": 240,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Gastenverblijf Parterre"
+          },
+          {
+            "Language": "FR",
+            "Description": "Maison séparée Rez de chaussée"
+          },
+          {
+            "Language": "DE",
+            "Description": "Gästehaus  Erdgeschoss"
+          },
+          {
+            "Language": "EN",
+            "Description": "Guest house Ground floor"
+          },
+          {
+            "Language": "IT",
+            "Description": "Dependence per ospiti Piano terra"
+          },
+          {
+            "Language": "ES",
+            "Description": "Casa de invitados Planta baja"
+          },
+          {
+            "Language": "PL",
+            "Description": "Pensjonat na I piętrze"
+          }
+        ]
+      },
+      {
+        "Number": 242,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Gastenverblijf Op de 1e etage"
+          },
+          {
+            "Language": "FR",
+            "Description": "Maison séparée Au 1er étage"
+          },
+          {
+            "Language": "DE",
+            "Description": "Gästehaus Im 1. Stock"
+          },
+          {
+            "Language": "EN",
+            "Description": "Guest house On 1st floor"
+          },
+          {
+            "Language": "IT",
+            "Description": "Dependence per ospiti  Al primo piano"
+          },
+          {
+            "Language": "ES",
+            "Description": "Casa de invitados En la 1ª planta"
+          },
+          {
+            "Language": "PL",
+            "Description": "Pensjonat na II piętrze"
+          }
+        ]
+      },
+      {
+        "Number": 244,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Gastenverblijf Op de 2e etage"
+          },
+          {
+            "Language": "FR",
+            "Description": "Maison séparée  Au 2ème étage"
+          },
+          {
+            "Language": "DE",
+            "Description": "Gästehaus Im 2. Stock"
+          },
+          {
+            "Language": "EN",
+            "Description": "Guest house On 2nd floor"
+          },
+          {
+            "Language": "IT",
+            "Description": "Dependence per ospiti   Al secondo piano"
+          },
+          {
+            "Language": "ES",
+            "Description": "Casa de invitados  En la 2ª planta"
+          },
+          {
+            "Language": "PL",
+            "Description": "Pensjonat    Na II piętrze"
+          }
+        ]
+      },
+      {
+        "Number": 250,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Poolhouse"
+          },
+          {
+            "Language": "FR",
+            "Description": "Poolhouse"
+          },
+          {
+            "Language": "DE",
+            "Description": "Poolhouse"
+          },
+          {
+            "Language": "EN",
+            "Description": "Poolhouse"
+          },
+          {
+            "Language": "IT",
+            "Description": "Spogliatoio piscina"
+          },
+          {
+            "Language": "ES",
+            "Description": "Casa de la piscina"
+          },
+          {
+            "Language": "PL",
+            "Description": "Altanka przy basenie"
+          }
+        ]
+      },
+      {
+        "Number": 254,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Boot"
+          },
+          {
+            "Language": "FR",
+            "Description": "Bateau"
+          },
+          {
+            "Language": "DE",
+            "Description": "Boot"
+          },
+          {
+            "Language": "EN",
+            "Description": "Boat"
+          },
+          {
+            "Language": "IT",
+            "Description": "Barca"
+          },
+          {
+            "Language": "ES",
+            "Description": "Barco"
+          },
+          {
+            "Language": "PL",
+            "Description": "Łódka"
+          }
+        ]
+      },
+      {
+        "Number": 256,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Blokhut"
+          },
+          {
+            "Language": "FR",
+            "Description": "Chalet en bois"
+          },
+          {
+            "Language": "DE",
+            "Description": "Blockhaus"
+          },
+          {
+            "Language": "EN",
+            "Description": "Log cabin"
+          },
+          {
+            "Language": "IT",
+            "Description": "Casa di legno"
+          },
+          {
+            "Language": "ES",
+            "Description": "Cabaña de madera"
+          },
+          {
+            "Language": "PL",
+            "Description": "Dom z bali"
+          }
+        ]
+      },
+      {
+        "Number": 258,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "Huifkar"
+          },
+          {
+            "Language": "FR",
+            "Description": "Roulotte"
+          },
+          {
+            "Language": "DE",
+            "Description": "Planwagen"
+          },
+          {
+            "Language": "EN",
+            "Description": "Covered waggon"
+          },
+          {
+            "Language": "IT",
+            "Description": "Carro"
+          },
+          {
+            "Language": "ES",
+            "Description": "Carro con toldo"
+          },
+          {
+            "Language": "PL",
+            "Description": "Bryczka"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Type": 100,
+    "Description": [
+      {
+        "Language": "NL",
+        "Description": "Kamers"
+      },
+      {
+        "Language": "FR",
+        "Description": "Chambres"
+      },
+      {
+        "Language": "DE",
+        "Description": "Zimmer"
+      },
+      {
+        "Language": "EN",
+        "Description": "Rooms"
+      },
+      {
+        "Language": "IT",
+        "Description": "Camere"
+      },
+      {
+        "Language": "ES",
+        "Description": "Habitaciones"
+      },
+      {
+        "Language": "PL",
+        "Description": "pokoje"
+      }
+    ],
+    "Items": [
+      {
+        "Number": 1005,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "ingang"
+          },
+          {
+            "Language": "FR",
+            "Description": "Entrée"
+          },
+          {
+            "Language": "DE",
+            "Description": "Außeneingang"
+          },
+          {
+            "Language": "EN",
+            "Description": "Entrance"
+          },
+          {
+            "Language": "IT",
+            "Description": "entrata"
+          },
+          {
+            "Language": "ES",
+            "Description": "entrada"
+          },
+          {
+            "Language": "PL",
+            "Description": "entrance"
+          }
+        ]
+      },
+      {
+        "Number": 1010,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "hal"
+          },
+          {
+            "Language": "FR",
+            "Description": "entrée"
+          },
+          {
+            "Language": "DE",
+            "Description": "Flur"
+          },
+          {
+            "Language": "EN",
+            "Description": "Hall"
+          },
+          {
+            "Language": "IT",
+            "Description": "sala d'entrata"
+          },
+          {
+            "Language": "ES",
+            "Description": "recibidor"
+          },
+          {
+            "Language": "PL",
+            "Description": "hol"
+          }
+        ]
+      },
+      {
+        "Number": 1011,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "gang"
+          },
+          {
+            "Language": "FR",
+            "Description": "couloir"
+          },
+          {
+            "Language": "DE",
+            "Description": "Flur"
+          },
+          {
+            "Language": "EN",
+            "Description": "Corridor"
+          },
+          {
+            "Language": "IT",
+            "Description": "corridoio"
+          },
+          {
+            "Language": "ES",
+            "Description": "corredor"
+          },
+          {
+            "Language": "PL",
+            "Description": "korytarz"
+          }
+        ]
+      },
+      {
+        "Number": 1015,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "woonkamer"
+          },
+          {
+            "Language": "FR",
+            "Description": "living"
+          },
+          {
+            "Language": "DE",
+            "Description": "Wohnzimmer"
+          },
+          {
+            "Language": "EN",
+            "Description": "Livingroom"
+          },
+          {
+            "Language": "IT",
+            "Description": "soggiorno"
+          },
+          {
+            "Language": "ES",
+            "Description": "salón"
+          },
+          {
+            "Language": "PL",
+            "Description": "bawialnia"
+          }
+        ]
+      },
+      {
+        "Number": 1016,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "zitkamer"
+          },
+          {
+            "Language": "FR",
+            "Description": "salon"
+          },
+          {
+            "Language": "DE",
+            "Description": "Sitzecke"
+          },
+          {
+            "Language": "EN",
+            "Description": "Sitting room"
+          },
+          {
+            "Language": "IT",
+            "Description": "salotto"
+          },
+          {
+            "Language": "ES",
+            "Description": "sala de estar"
+          },
+          {
+            "Language": "PL",
+            "Description": "salon"
+          }
+        ]
+      },
+      {
+        "Number": 1017,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "eetkamer"
+          },
+          {
+            "Language": "FR",
+            "Description": "salle à manger"
+          },
+          {
+            "Language": "DE",
+            "Description": "Esszimmer"
+          },
+          {
+            "Language": "EN",
+            "Description": "Dining room"
+          },
+          {
+            "Language": "IT",
+            "Description": "sala da pranzo"
+          },
+          {
+            "Language": "ES",
+            "Description": "comedor"
+          },
+          {
+            "Language": "PL",
+            "Description": "jadalnia"
+          }
+        ]
+      },
+      {
+        "Number": 1018,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "televisiekamer"
+          },
+          {
+            "Language": "FR",
+            "Description": "chambre de télévision"
+          },
+          {
+            "Language": "DE",
+            "Description": "Fernsehzimmer"
+          },
+          {
+            "Language": "EN",
+            "Description": "Television room"
+          },
+          {
+            "Language": "IT",
+            "Description": "stanza televisione"
+          },
+          {
+            "Language": "ES",
+            "Description": "sala audiovisual"
+          },
+          {
+            "Language": "PL",
+            "Description": "pokój telewizyjny"
+          }
+        ]
+      },
+      {
+        "Number": 1020,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "keuken"
+          },
+          {
+            "Language": "FR",
+            "Description": "cuisine"
+          },
+          {
+            "Language": "DE",
+            "Description": "Küche"
+          },
+          {
+            "Language": "EN",
+            "Description": "Kitchen"
+          },
+          {
+            "Language": "IT",
+            "Description": "cucina separata"
+          },
+          {
+            "Language": "ES",
+            "Description": "cocina"
+          },
+          {
+            "Language": "PL",
+            "Description": "kuchnia"
+          }
+        ]
+      },
+      {
+        "Number": 1021,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "open keuken"
+          },
+          {
+            "Language": "FR",
+            "Description": "cuisine ouverte"
+          },
+          {
+            "Language": "DE",
+            "Description": "offene Küche"
+          },
+          {
+            "Language": "EN",
+            "Description": "Open plan kitchen"
+          },
+          {
+            "Language": "IT",
+            "Description": "angolo cottura"
+          },
+          {
+            "Language": "ES",
+            "Description": "cocina abierta"
+          },
+          {
+            "Language": "PL",
+            "Description": "otwarta kuchnia"
+          }
+        ]
+      },
+      {
+        "Number": 1024,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "woonkeuken"
+          },
+          {
+            "Language": "FR",
+            "Description": "cuisine-séjour"
+          },
+          {
+            "Language": "DE",
+            "Description": "Wohnküche"
+          },
+          {
+            "Language": "EN",
+            "Description": "Kitchen diner"
+          },
+          {
+            "Language": "IT",
+            "Description": "cucina abitabile"
+          },
+          {
+            "Language": "ES",
+            "Description": "cocina-comedor"
+          },
+          {
+            "Language": "PL",
+            "Description": "kuchnia z jadalnią"
+          }
+        ]
+      },
+      {
+        "Number": 1025,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "kitchenette"
+          },
+          {
+            "Language": "FR",
+            "Description": "kitchenette"
+          },
+          {
+            "Language": "DE",
+            "Description": "Kochnische"
+          },
+          {
+            "Language": "EN",
+            "Description": "Kitchenette"
+          },
+          {
+            "Language": "IT",
+            "Description": "cucinino / armadio cucina"
+          },
+          {
+            "Language": "ES",
+            "Description": "kitchenette"
+          },
+          {
+            "Language": "PL",
+            "Description": "mała kuchnia"
+          }
+        ]
+      },
+      {
+        "Number": 1028,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "woon/slaapkamer"
+          },
+          {
+            "Language": "FR",
+            "Description": "living/chambre à coucher"
+          },
+          {
+            "Language": "DE",
+            "Description": "Wohn-/Schlafzimmer"
+          },
+          {
+            "Language": "EN",
+            "Description": "Living/bedroom"
+          },
+          {
+            "Language": "IT",
+            "Description": "soggiorno / camera da letto"
+          },
+          {
+            "Language": "ES",
+            "Description": "salón-dormitorio"
+          },
+          {
+            "Language": "PL",
+            "Description": "salon z sypialnią"
+          }
+        ]
+      },
+      {
+        "Number": 1029,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "woon/eetkamer"
+          },
+          {
+            "Language": "FR",
+            "Description": "salon/salle à manger"
+          },
+          {
+            "Language": "DE",
+            "Description": "Wohn/Esszimmer"
+          },
+          {
+            "Language": "EN",
+            "Description": "Living/diningroom"
+          },
+          {
+            "Language": "IT",
+            "Description": "soggiorno/sala da pranzo"
+          },
+          {
+            "Language": "ES",
+            "Description": "salón-comedor"
+          },
+          {
+            "Language": "PL",
+            "Description": "salon z jadalnią"
+          }
+        ]
+      },
+      {
+        "Number": 1030,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "slaapkamer"
+          },
+          {
+            "Language": "FR",
+            "Description": "chambre à coucher"
+          },
+          {
+            "Language": "DE",
+            "Description": "Schlafzimmer"
+          },
+          {
+            "Language": "EN",
+            "Description": "Bedroom"
+          },
+          {
+            "Language": "IT",
+            "Description": "camera da letto"
+          },
+          {
+            "Language": "ES",
+            "Description": "dormitorio"
+          },
+          {
+            "Language": "PL",
+            "Description": "sypialnia"
+          }
+        ]
+      },
+      {
+        "Number": 1031,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "slaapkamer met badkamer"
+          },
+          {
+            "Language": "FR",
+            "Description": "chambre à coucher avec salle de bain"
+          },
+          {
+            "Language": "DE",
+            "Description": "Schlafzimmer mit Badezimmer"
+          },
+          {
+            "Language": "EN",
+            "Description": "Bedroom with bathroom"
+          },
+          {
+            "Language": "IT",
+            "Description": "camera da letto con bagno"
+          },
+          {
+            "Language": "ES",
+            "Description": "habitación con cuarto de baño"
+          },
+          {
+            "Language": "PL",
+            "Description": "sypialnia z łazienką"
+          }
+        ]
+      },
+      {
+        "Number": 1032,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "slaapcabine"
+          },
+          {
+            "Language": "FR",
+            "Description": "cabine"
+          },
+          {
+            "Language": "DE",
+            "Description": "Schlafkabine"
+          },
+          {
+            "Language": "EN",
+            "Description": "Cabin"
+          },
+          {
+            "Language": "IT",
+            "Description": "cabina letto"
+          },
+          {
+            "Language": "ES",
+            "Description": "cabina"
+          },
+          {
+            "Language": "PL",
+            "Description": "chata"
+          }
+        ]
+      },
+      {
+        "Number": 1033,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "slaapnis"
+          },
+          {
+            "Language": "FR",
+            "Description": "Coin nuit"
+          },
+          {
+            "Language": "DE",
+            "Description": "Schlafnische"
+          },
+          {
+            "Language": "EN",
+            "Description": "Sleeping cabin"
+          },
+          {
+            "Language": "IT",
+            "Description": "Alcova"
+          },
+          {
+            "Language": "ES",
+            "Description": "Nicho para dormir"
+          },
+          {
+            "Language": "PL",
+            "Description": "wnęka do spania"
+          }
+        ]
+      },
+      {
+        "Number": 1034,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "hut"
+          },
+          {
+            "Language": "FR",
+            "Description": "cabine dans un bateau"
+          },
+          {
+            "Language": "DE",
+            "Description": "Kabine"
+          },
+          {
+            "Language": "EN",
+            "Description": "Cabin"
+          },
+          {
+            "Language": "IT",
+            "Description": "cabina"
+          },
+          {
+            "Language": "ES",
+            "Description": "camarote"
+          },
+          {
+            "Language": "PL",
+            "Description": "chata"
+          }
+        ]
+      },
+      {
+        "Number": 1035,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "doorloop slaapkamer"
+          },
+          {
+            "Language": "FR",
+            "Description": "chambre en enfilade"
+          },
+          {
+            "Language": "DE",
+            "Description": "Verbindungsschlafzimmer"
+          },
+          {
+            "Language": "EN",
+            "Description": "Interconnecting bedroom"
+          },
+          {
+            "Language": "IT",
+            "Description": "camera da letto comunicante"
+          },
+          {
+            "Language": "ES",
+            "Description": "habitación contigua"
+          },
+          {
+            "Language": "PL",
+            "Description": "sypialnia przechodnia"
+          }
+        ]
+      },
+      {
+        "Number": 1036,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "doorloop kamer"
+          },
+          {
+            "Language": "FR",
+            "Description": "pièce de passage"
+          },
+          {
+            "Language": "DE",
+            "Description": "Durchgangszimmer"
+          },
+          {
+            "Language": "EN",
+            "Description": "Interconnecting room"
+          },
+          {
+            "Language": "IT",
+            "Description": "stanza intercomunicante"
+          },
+          {
+            "Language": "ES",
+            "Description": "interconnecting room"
+          },
+          {
+            "Language": "PL",
+            "Description": "interconnecting room"
+          }
+        ]
+      },
+      {
+        "Number": 1038,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "galerij slaapkamer"
+          },
+          {
+            "Language": "FR",
+            "Description": "chambre en mezzanine"
+          },
+          {
+            "Language": "DE",
+            "Description": "Galerieschlafzimmer"
+          },
+          {
+            "Language": "EN",
+            "Description": "Gallery bedroom"
+          },
+          {
+            "Language": "IT",
+            "Description": "camera da letto su soppalco"
+          },
+          {
+            "Language": "ES",
+            "Description": "habitación en galería"
+          },
+          {
+            "Language": "PL",
+            "Description": "sypialnia na antresoli"
+          }
+        ]
+      },
+      {
+        "Number": 1040,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "kinderslaapkamer"
+          },
+          {
+            "Language": "FR",
+            "Description": "chambre d'enfants"
+          },
+          {
+            "Language": "DE",
+            "Description": "Kinderschlafzimmer"
+          },
+          {
+            "Language": "EN",
+            "Description": "Children's bedroom"
+          },
+          {
+            "Language": "IT",
+            "Description": "cameretta per bambini"
+          },
+          {
+            "Language": "ES",
+            "Description": "dormitorio para niños"
+          },
+          {
+            "Language": "PL",
+            "Description": "sypialnia dla dzieci"
+          }
+        ]
+      },
+      {
+        "Number": 1042,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "badkamer"
+          },
+          {
+            "Language": "FR",
+            "Description": "salle de bains"
+          },
+          {
+            "Language": "DE",
+            "Description": "Badezimmer"
+          },
+          {
+            "Language": "EN",
+            "Description": "Bathroom"
+          },
+          {
+            "Language": "IT",
+            "Description": "stanza da bagno"
+          },
+          {
+            "Language": "ES",
+            "Description": "cuarto de baño"
+          },
+          {
+            "Language": "PL",
+            "Description": "łazienka"
+          }
+        ]
+      },
+      {
+        "Number": 1045,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "studeerkamer"
+          },
+          {
+            "Language": "FR",
+            "Description": "pièce d´etude"
+          },
+          {
+            "Language": "DE",
+            "Description": "Studierzimmer"
+          },
+          {
+            "Language": "EN",
+            "Description": "Study"
+          },
+          {
+            "Language": "IT",
+            "Description": "studio"
+          },
+          {
+            "Language": "ES",
+            "Description": "estudio"
+          },
+          {
+            "Language": "PL",
+            "Description": "study"
+          }
+        ]
+      },
+      {
+        "Number": 1110,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "toilet"
+          },
+          {
+            "Language": "FR",
+            "Description": "WC"
+          },
+          {
+            "Language": "DE",
+            "Description": "WC"
+          },
+          {
+            "Language": "EN",
+            "Description": "WC"
+          },
+          {
+            "Language": "IT",
+            "Description": "bagno piccolo"
+          },
+          {
+            "Language": "ES",
+            "Description": "aseo"
+          },
+          {
+            "Language": "PL",
+            "Description": "toaleta"
+          }
+        ]
+      },
+      {
+        "Number": 1112,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "sanitaire ruimte"
+          },
+          {
+            "Language": "FR",
+            "Description": "local sanitaire"
+          },
+          {
+            "Language": "DE",
+            "Description": "Sanitäranlagen"
+          },
+          {
+            "Language": "EN",
+            "Description": "sanitary facilities"
+          },
+          {
+            "Language": "IT",
+            "Description": "spogliatoio - locale docce"
+          },
+          {
+            "Language": "ES",
+            "Description": "local sanitario"
+          },
+          {
+            "Language": "PL",
+            "Description": "udogodnienia sanitarne"
+          }
+        ]
+      },
+      {
+        "Number": 1118,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "vide"
+          },
+          {
+            "Language": "FR",
+            "Description": "mezzanine"
+          },
+          {
+            "Language": "DE",
+            "Description": "Dachboden"
+          },
+          {
+            "Language": "EN",
+            "Description": "loft"
+          },
+          {
+            "Language": "IT",
+            "Description": "soppalco"
+          },
+          {
+            "Language": "ES",
+            "Description": "altillo"
+          },
+          {
+            "Language": "PL",
+            "Description": "strych"
+          }
+        ]
+      },
+      {
+        "Number": 1119,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "overloop"
+          },
+          {
+            "Language": "FR",
+            "Description": "palier"
+          },
+          {
+            "Language": "DE",
+            "Description": "Flur"
+          },
+          {
+            "Language": "EN",
+            "Description": "Landing"
+          },
+          {
+            "Language": "IT",
+            "Description": "corridoio"
+          },
+          {
+            "Language": "ES",
+            "Description": "distribuidor"
+          },
+          {
+            "Language": "PL",
+            "Description": "przystań"
+          }
+        ]
+      },
+      {
+        "Number": 1120,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "bibliotheek"
+          },
+          {
+            "Language": "FR",
+            "Description": "bibliothèque"
+          },
+          {
+            "Language": "DE",
+            "Description": "Bibliothek"
+          },
+          {
+            "Language": "EN",
+            "Description": "library"
+          },
+          {
+            "Language": "IT",
+            "Description": "biblioteca"
+          },
+          {
+            "Language": "ES",
+            "Description": "biblioteca"
+          },
+          {
+            "Language": "PL",
+            "Description": "biblioteka"
+          }
+        ]
+      },
+      {
+        "Number": 1122,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "wasruimte"
+          },
+          {
+            "Language": "FR",
+            "Description": "buanderie"
+          },
+          {
+            "Language": "DE",
+            "Description": "Waschraum"
+          },
+          {
+            "Language": "EN",
+            "Description": "laundry room"
+          },
+          {
+            "Language": "IT",
+            "Description": "lavanderia"
+          },
+          {
+            "Language": "ES",
+            "Description": "lavandería"
+          },
+          {
+            "Language": "PL",
+            "Description": "pralnia"
+          }
+        ]
+      },
+      {
+        "Number": 1130,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "speelkamer"
+          },
+          {
+            "Language": "FR",
+            "Description": "salle de jeux"
+          },
+          {
+            "Language": "DE",
+            "Description": "Spielraum"
+          },
+          {
+            "Language": "EN",
+            "Description": "games room"
+          },
+          {
+            "Language": "IT",
+            "Description": "sala giochi"
+          },
+          {
+            "Language": "ES",
+            "Description": "sala de juegos"
+          },
+          {
+            "Language": "PL",
+            "Description": "pokój gier"
+          }
+        ]
+      },
+      {
+        "Number": 1135,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "fitnessruimte"
+          },
+          {
+            "Language": "FR",
+            "Description": "salle de sport"
+          },
+          {
+            "Language": "DE",
+            "Description": "Fitnessraum"
+          },
+          {
+            "Language": "EN",
+            "Description": "fitness room"
+          },
+          {
+            "Language": "IT",
+            "Description": "palestra"
+          },
+          {
+            "Language": "ES",
+            "Description": "gimnasio"
+          },
+          {
+            "Language": "PL",
+            "Description": "pokój ze sprzętem do fitnesu"
+          }
+        ]
+      },
+      {
+        "Number": 1140,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "zaal"
+          },
+          {
+            "Language": "FR",
+            "Description": "salle"
+          },
+          {
+            "Language": "DE",
+            "Description": "Saal"
+          },
+          {
+            "Language": "EN",
+            "Description": "hall"
+          },
+          {
+            "Language": "IT",
+            "Description": "sala"
+          },
+          {
+            "Language": "ES",
+            "Description": "sala"
+          },
+          {
+            "Language": "PL",
+            "Description": "hol"
+          }
+        ]
+      },
+      {
+        "Number": 1145,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "recreatieruimte"
+          },
+          {
+            "Language": "FR",
+            "Description": "salle de jeux / salle de loisirs"
+          },
+          {
+            "Language": "DE",
+            "Description": "Freizeitraum"
+          },
+          {
+            "Language": "EN",
+            "Description": "recreation room"
+          },
+          {
+            "Language": "IT",
+            "Description": "sala recreativa"
+          },
+          {
+            "Language": "ES",
+            "Description": "salón de recreo"
+          },
+          {
+            "Language": "PL",
+            "Description": "pokój rekreacyjny"
+          }
+        ]
+      },
+      {
+        "Number": 1146,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "gemeenschappelijke ruimte"
+          },
+          {
+            "Language": "FR",
+            "Description": "salle commune"
+          },
+          {
+            "Language": "DE",
+            "Description": "Aufenthaltsraum"
+          },
+          {
+            "Language": "EN",
+            "Description": "common room"
+          },
+          {
+            "Language": "IT",
+            "Description": "sala comune"
+          },
+          {
+            "Language": "ES",
+            "Description": "sala comùn"
+          },
+          {
+            "Language": "PL",
+            "Description": "wspólny pokój"
+          }
+        ]
+      },
+      {
+        "Number": 1148,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "relaxruimte"
+          },
+          {
+            "Language": "FR",
+            "Description": "salle de relaxation"
+          },
+          {
+            "Language": "DE",
+            "Description": "Wellnessbereich"
+          },
+          {
+            "Language": "EN",
+            "Description": "relax area"
+          },
+          {
+            "Language": "IT",
+            "Description": "sala relax"
+          },
+          {
+            "Language": "ES",
+            "Description": "sala de relax"
+          },
+          {
+            "Language": "PL",
+            "Description": "strefa relaksu"
+          }
+        ]
+      },
+      {
+        "Number": 1150,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "sauna"
+          },
+          {
+            "Language": "FR",
+            "Description": "sauna"
+          },
+          {
+            "Language": "DE",
+            "Description": "Sauna"
+          },
+          {
+            "Language": "EN",
+            "Description": "sauna"
+          },
+          {
+            "Language": "IT",
+            "Description": "sauna"
+          },
+          {
+            "Language": "ES",
+            "Description": "sauna"
+          },
+          {
+            "Language": "PL",
+            "Description": "sauna"
+          }
+        ]
+      },
+      {
+        "Number": 1160,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "turks stoombad"
+          },
+          {
+            "Language": "FR",
+            "Description": "hammam"
+          },
+          {
+            "Language": "DE",
+            "Description": "türkisches Bad"
+          },
+          {
+            "Language": "EN",
+            "Description": "Turkish bath"
+          },
+          {
+            "Language": "IT",
+            "Description": "bagno turco"
+          },
+          {
+            "Language": "ES",
+            "Description": "hammam"
+          },
+          {
+            "Language": "PL",
+            "Description": "Łaźnia turecka"
+          }
+        ]
+      },
+      {
+        "Number": 1170,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "jacuzzi"
+          },
+          {
+            "Language": "FR",
+            "Description": "jacuzzi"
+          },
+          {
+            "Language": "DE",
+            "Description": "Whirlpool"
+          },
+          {
+            "Language": "EN",
+            "Description": "jacuzzi"
+          },
+          {
+            "Language": "IT",
+            "Description": "vasca idromassaggio"
+          },
+          {
+            "Language": "ES",
+            "Description": "jacuzzi"
+          },
+          {
+            "Language": "PL",
+            "Description": "jacuzzi"
+          }
+        ]
+      },
+      {
+        "Number": 1180,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "bijkeuken"
+          },
+          {
+            "Language": "FR",
+            "Description": "arrière-cuisine"
+          },
+          {
+            "Language": "DE",
+            "Description": "Spülküche"
+          },
+          {
+            "Language": "EN",
+            "Description": "utility room"
+          },
+          {
+            "Language": "IT",
+            "Description": "angolo lavanderia"
+          },
+          {
+            "Language": "ES",
+            "Description": "lavadero/cuarto de la colada"
+          },
+          {
+            "Language": "PL",
+            "Description": "pokój gospodarczy"
+          }
+        ]
+      },
+      {
+        "Number": 1190,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "serre/veranda"
+          },
+          {
+            "Language": "FR",
+            "Description": "serre/veranda"
+          },
+          {
+            "Language": "DE",
+            "Description": "Wintergarten"
+          },
+          {
+            "Language": "EN",
+            "Description": "sunroom/veranda"
+          },
+          {
+            "Language": "IT",
+            "Description": "giardino d’inverno/veranda"
+          },
+          {
+            "Language": "ES",
+            "Description": "invernadero/porche"
+          },
+          {
+            "Language": "PL",
+            "Description": "runroom/veranda"
+          }
+        ]
+      },
+      {
+        "Number": 1192,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "serre"
+          },
+          {
+            "Language": "FR",
+            "Description": "serre"
+          },
+          {
+            "Language": "DE",
+            "Description": "Wintergarten"
+          },
+          {
+            "Language": "EN",
+            "Description": "sunroom"
+          },
+          {
+            "Language": "IT",
+            "Description": "giardino d’inverno"
+          },
+          {
+            "Language": "ES",
+            "Description": "invernadero"
+          },
+          {
+            "Language": "PL",
+            "Description": "sunroom"
+          }
+        ]
+      },
+      {
+        "Number": 1194,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "veranda"
+          },
+          {
+            "Language": "FR",
+            "Description": "véranda"
+          },
+          {
+            "Language": "DE",
+            "Description": "porch"
+          },
+          {
+            "Language": "EN",
+            "Description": "veranda"
+          },
+          {
+            "Language": "IT",
+            "Description": "veranda"
+          },
+          {
+            "Language": "ES",
+            "Description": "porche"
+          },
+          {
+            "Language": "PL",
+            "Description": "veranda"
+          }
+        ]
+      },
+      {
+        "Number": 2900,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "berging"
+          },
+          {
+            "Language": "FR",
+            "Description": "remise"
+          },
+          {
+            "Language": "DE",
+            "Description": "Abstellraum"
+          },
+          {
+            "Language": "EN",
+            "Description": "storage room"
+          },
+          {
+            "Language": "IT",
+            "Description": "ripostiglio"
+          },
+          {
+            "Language": "ES",
+            "Description": "almacén/despensa"
+          },
+          {
+            "Language": "PL",
+            "Description": "składowania"
+          }
+        ]
+      },
+      {
+        "Number": 2950,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "kelder"
+          },
+          {
+            "Language": "FR",
+            "Description": "cave"
+          },
+          {
+            "Language": "DE",
+            "Description": "Keller"
+          },
+          {
+            "Language": "EN",
+            "Description": "basement"
+          },
+          {
+            "Language": "IT",
+            "Description": "cantina"
+          },
+          {
+            "Language": "ES",
+            "Description": "sótano"
+          },
+          {
+            "Language": "PL",
+            "Description": "piwnica"
+          }
+        ]
+      },
+      {
+        "Number": 3000,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "skiberging"
+          },
+          {
+            "Language": "FR",
+            "Description": "casier à skis"
+          },
+          {
+            "Language": "DE",
+            "Description": "Skiraum"
+          },
+          {
+            "Language": "EN",
+            "Description": "ski-storage"
+          },
+          {
+            "Language": "IT",
+            "Description": "ripostiglio per gli sci"
+          },
+          {
+            "Language": "ES",
+            "Description": "custodia de esquís"
+          },
+          {
+            "Language": "PL",
+            "Description": "przechowalnia nart"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Type": 200,
+    "Description": [
+      {
+        "Language": "NL",
+        "Description": "Bedden"
+      },
+      {
+        "Language": "FR",
+        "Description": "Lits"
+      },
+      {
+        "Language": "DE",
+        "Description": "Betten"
+      },
+      {
+        "Language": "EN",
+        "Description": "Beds"
+      },
+      {
+        "Language": "IT",
+        "Description": "Letti"
+      },
+      {
+        "Language": "ES",
+        "Description": "Camas"
+      },
+      {
+        "Language": "PL",
+        "Description": "Lozka"
+      }
+    ],
+    "Items": [
+      {
+        "Number": 10002,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "1-pers. bed"
+          },
+          {
+            "Language": "FR",
+            "Description": "lit 1 personne"
+          },
+          {
+            "Language": "DE",
+            "Description": "Einzelbett"
+          },
+          {
+            "Language": "EN",
+            "Description": "Single bed"
+          },
+          {
+            "Language": "IT",
+            "Description": "letto singolo"
+          },
+          {
+            "Language": "ES",
+            "Description": "cama individual"
+          },
+          {
+            "Language": "PL",
+            "Description": "łóżko 1-osobowe"
+          }
+        ]
+      },
+      {
+        "Number": 10004,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "1-pers. onderschuifbed"
+          },
+          {
+            "Language": "FR",
+            "Description": "lit tiroir pour 1 personne"
+          },
+          {
+            "Language": "DE",
+            "Description": "Einzelunterschiebebett"
+          },
+          {
+            "Language": "EN",
+            "Description": "Trundle bed 1 pers."
+          },
+          {
+            "Language": "IT",
+            "Description": "letto a scomparsa / scorrevole (1 pers.)"
+          },
+          {
+            "Language": "ES",
+            "Description": "cama nido (1 pers.)"
+          },
+          {
+            "Language": "PL",
+            "Description": "łóżko wysuwane 1-os."
+          }
+        ]
+      },
+      {
+        "Number": 10006,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "1-pers. vouwbed"
+          },
+          {
+            "Language": "FR",
+            "Description": "lit 1 personne pliant"
+          },
+          {
+            "Language": "DE",
+            "Description": "Einzelklappbett"
+          },
+          {
+            "Language": "EN",
+            "Description": "1 pers folding bed"
+          },
+          {
+            "Language": "IT",
+            "Description": "letto pieghevole (1 pers.)"
+          },
+          {
+            "Language": "ES",
+            "Description": "cama individual plegable"
+          },
+          {
+            "Language": "PL",
+            "Description": "łóżko składane 1-os. (polówka)"
+          }
+        ]
+      },
+      {
+        "Number": 10007,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "1-pers. bed aangepast voor invalide"
+          },
+          {
+            "Language": "FR",
+            "Description": "lit 1 personne adaptés pour les handicap"
+          },
+          {
+            "Language": "DE",
+            "Description": "Einzelbett angepasst für Behinderte"
+          },
+          {
+            "Language": "EN",
+            "Description": "single bed adapted for disabled"
+          },
+          {
+            "Language": "IT",
+            "Description": "letto singolo adattato per invalidi"
+          },
+          {
+            "Language": "ES",
+            "Description": "cama individual adaptada para inválidos"
+          },
+          {
+            "Language": "PL",
+            "Description": "łożko 1-osobowe zaadoptowane"
+          }
+        ]
+      },
+      {
+        "Number": 10008,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "1-pers. slaapbank"
+          },
+          {
+            "Language": "FR",
+            "Description": "divan-lit 1 personne"
+          },
+          {
+            "Language": "DE",
+            "Description": "Schlafcouch 1 Pers."
+          },
+          {
+            "Language": "EN",
+            "Description": "Single sofa bed"
+          },
+          {
+            "Language": "IT",
+            "Description": "divano/poltrona letto (1 pers.)"
+          },
+          {
+            "Language": "ES",
+            "Description": "sofá cama (1 pers.)"
+          },
+          {
+            "Language": "PL",
+            "Description": "sofa 1-osobowa"
+          }
+        ]
+      },
+      {
+        "Number": 10009,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "1-pers. kastbed"
+          },
+          {
+            "Language": "FR",
+            "Description": "1-pers. lit-armoire"
+          },
+          {
+            "Language": "DE",
+            "Description": "Schrankbett 1 Person"
+          },
+          {
+            "Language": "EN",
+            "Description": "1-pers. fold away bed"
+          },
+          {
+            "Language": "IT",
+            "Description": "armadio letto (1 pers.)"
+          },
+          {
+            "Language": "ES",
+            "Description": "cama armario (1 pers.)"
+          },
+          {
+            "Language": "PL",
+            "Description": "łóżko składane (do ściany) 1-os."
+          }
+        ]
+      },
+      {
+        "Number": 10010,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "1-pers. bedstee"
+          },
+          {
+            "Language": "FR",
+            "Description": "lit en alcove (1 pers.)"
+          },
+          {
+            "Language": "DE",
+            "Description": "Bettnische (1 pers.)"
+          },
+          {
+            "Language": "EN",
+            "Description": "single boxbed"
+          },
+          {
+            "Language": "IT",
+            "Description": "cuccetta (1 pers.)"
+          },
+          {
+            "Language": "ES",
+            "Description": "cama empotrada (1 pers.)"
+          },
+          {
+            "Language": "PL",
+            "Description": "materac 1-os."
+          }
+        ]
+      },
+      {
+        "Number": 10011,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "1-pers. hoogslaper"
+          },
+          {
+            "Language": "FR",
+            "Description": "1-pers. lit en hauteur"
+          },
+          {
+            "Language": "DE",
+            "Description": "Hochbett 1 Person"
+          },
+          {
+            "Language": "EN",
+            "Description": "1-pers. high sleeper"
+          },
+          {
+            "Language": "IT",
+            "Description": "letto rialzato (1 pers.)"
+          },
+          {
+            "Language": "ES",
+            "Description": "cama en alto (1 pers.)"
+          },
+          {
+            "Language": "PL",
+            "Description": "łóżko górne 1-os."
+          }
+        ]
+      },
+      {
+        "Number": 10012,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "2-pers. bed"
+          },
+          {
+            "Language": "FR",
+            "Description": "lit 2 personnes"
+          },
+          {
+            "Language": "DE",
+            "Description": "Doppelbett"
+          },
+          {
+            "Language": "EN",
+            "Description": "Double bed"
+          },
+          {
+            "Language": "IT",
+            "Description": "letto matrimoniale"
+          },
+          {
+            "Language": "ES",
+            "Description": "cama doble"
+          },
+          {
+            "Language": "PL",
+            "Description": "łóżko podwójne"
+          }
+        ]
+      },
+      {
+        "Number": 10013,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "2-pers. vouwbed"
+          },
+          {
+            "Language": "FR",
+            "Description": "lit 2 personnes pliant"
+          },
+          {
+            "Language": "DE",
+            "Description": "Doppelklappbett"
+          },
+          {
+            "Language": "EN",
+            "Description": "2 pers folding bed"
+          },
+          {
+            "Language": "IT",
+            "Description": "letto pieghevole (2 pers.)"
+          },
+          {
+            "Language": "ES",
+            "Description": "cama doble plegable"
+          },
+          {
+            "Language": "PL",
+            "Description": "łóżko składane 2-os."
+          }
+        ]
+      },
+      {
+        "Number": 10014,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "2-pers. slaapbank"
+          },
+          {
+            "Language": "FR",
+            "Description": "divan-lit  2 pers."
+          },
+          {
+            "Language": "DE",
+            "Description": "Doppelschlafcouch"
+          },
+          {
+            "Language": "EN",
+            "Description": "Double sofa bed"
+          },
+          {
+            "Language": "IT",
+            "Description": "divano letto (2 pers.)"
+          },
+          {
+            "Language": "ES",
+            "Description": "sofá cama (2 pers.)"
+          },
+          {
+            "Language": "PL",
+            "Description": "sofa 2-os."
+          }
+        ]
+      },
+      {
+        "Number": 10015,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "2-pers. kastbed"
+          },
+          {
+            "Language": "FR",
+            "Description": "2-pers. lit-armoire"
+          },
+          {
+            "Language": "DE",
+            "Description": "Schrankbett 2 Pers."
+          },
+          {
+            "Language": "EN",
+            "Description": "2-pers. fold away bed"
+          },
+          {
+            "Language": "IT",
+            "Description": "armadio letto (2 pers.)"
+          },
+          {
+            "Language": "ES",
+            "Description": "cama armario (2 pers.)"
+          },
+          {
+            "Language": "PL",
+            "Description": "łóżko składane (do ściany) 2-os."
+          }
+        ]
+      },
+      {
+        "Number": 10016,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "2 pers. bedstee"
+          },
+          {
+            "Language": "FR",
+            "Description": "lit breton (2 pers.)"
+          },
+          {
+            "Language": "DE",
+            "Description": "Bettnische 2 Pers."
+          },
+          {
+            "Language": "EN",
+            "Description": "double boxbed"
+          },
+          {
+            "Language": "IT",
+            "Description": "cuccetta (2 pers.)"
+          },
+          {
+            "Language": "ES",
+            "Description": "cama empotrada (2 pers.)"
+          },
+          {
+            "Language": "PL",
+            "Description": "materac 2-os."
+          }
+        ]
+      },
+      {
+        "Number": 10017,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "2-pers. hoogslaper"
+          },
+          {
+            "Language": "FR",
+            "Description": "2-pers. lit en hauteur"
+          },
+          {
+            "Language": "DE",
+            "Description": "Hochbett 2 Pers."
+          },
+          {
+            "Language": "EN",
+            "Description": "2-pers. high sleeper"
+          },
+          {
+            "Language": "IT",
+            "Description": "letto rialzato (2 pers.)"
+          },
+          {
+            "Language": "ES",
+            "Description": "cama en alto (2 pers.)"
+          },
+          {
+            "Language": "PL",
+            "Description": "łóżko piętrowe 2-os."
+          }
+        ]
+      },
+      {
+        "Number": 10018,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "stapelbed"
+          },
+          {
+            "Language": "FR",
+            "Description": "lits superposés"
+          },
+          {
+            "Language": "DE",
+            "Description": "Etagenbett"
+          },
+          {
+            "Language": "EN",
+            "Description": "Bunk bed"
+          },
+          {
+            "Language": "IT",
+            "Description": "letto a castello"
+          },
+          {
+            "Language": "ES",
+            "Description": "cama litera"
+          },
+          {
+            "Language": "PL",
+            "Description": "łóżko piętrowe"
+          }
+        ]
+      },
+      {
+        "Number": 10019,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "2-pers. onderschuifbed"
+          },
+          {
+            "Language": "FR",
+            "Description": "lit gigogne pour 2 personne"
+          },
+          {
+            "Language": "DE",
+            "Description": "Doppelunterschiebebett"
+          },
+          {
+            "Language": "EN",
+            "Description": "trundle bed (2 pers.)"
+          },
+          {
+            "Language": "IT",
+            "Description": "letto a scomparsa / scorrevole (2 pers.)"
+          },
+          {
+            "Language": "ES",
+            "Description": "cama nido (2 pers.)"
+          },
+          {
+            "Language": "PL",
+            "Description": "łóżko wysuwane 2-os."
+          }
+        ]
+      },
+      {
+        "Number": 10020,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "twijfelaar"
+          },
+          {
+            "Language": "FR",
+            "Description": "lit 2 personnes batard"
+          },
+          {
+            "Language": "DE",
+            "Description": "Französisches Bett"
+          },
+          {
+            "Language": "EN",
+            "Description": "small double bed"
+          },
+          {
+            "Language": "IT",
+            "Description": "letto una piazza e mezzo"
+          },
+          {
+            "Language": "ES",
+            "Description": "cama matrimonio"
+          },
+          {
+            "Language": "PL",
+            "Description": "łoże małżeńskie"
+          }
+        ]
+      },
+      {
+        "Number": 10021,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "3-pers. stapelbed"
+          },
+          {
+            "Language": "FR",
+            "Description": "3p. lits superposés"
+          },
+          {
+            "Language": "DE",
+            "Description": "Etagenbett 3 Pers."
+          },
+          {
+            "Language": "EN",
+            "Description": "3p. bunk bed"
+          },
+          {
+            "Language": "IT",
+            "Description": "letto a castello (3 pers.)"
+          },
+          {
+            "Language": "ES",
+            "Description": "cama litera (3 pers.)"
+          },
+          {
+            "Language": "PL",
+            "Description": "łóżko piętrowe 3-os."
+          }
+        ]
+      },
+      {
+        "Number": 10022,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "2-pers. bed of 2x1 pers. Bedden"
+          },
+          {
+            "Language": "FR",
+            "Description": "lit 2 personnes ou 2 lits de 1 personne"
+          },
+          {
+            "Language": "DE",
+            "Description": "Doppelbett oder 2 Einzelbetten"
+          },
+          {
+            "Language": "EN",
+            "Description": "double bed or 2 single beds"
+          },
+          {
+            "Language": "IT",
+            "Description": "letto matrimoniale o 2 letti singoli"
+          },
+          {
+            "Language": "ES",
+            "Description": "cama doble o 2 camas individuales"
+          },
+          {
+            "Language": "PL",
+            "Description": "łóżko podwójne czy 2 łóżka 1-osobowe"
+          }
+        ]
+      },
+      {
+        "Number": 10023,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "stapelbed of 2x1 pers. bedden"
+          },
+          {
+            "Language": "FR",
+            "Description": "lits superposés ou 2 lits de 1 personne"
+          },
+          {
+            "Language": "DE",
+            "Description": "Etagenbett oder 2 Einzelbetten"
+          },
+          {
+            "Language": "EN",
+            "Description": "bunk bed or 2 single beds"
+          },
+          {
+            "Language": "IT",
+            "Description": "letto a castello o 2 letti singoli"
+          },
+          {
+            "Language": "ES",
+            "Description": "cama litera o 2 camas individuales"
+          },
+          {
+            "Language": "PL",
+            "Description": "łóżko piętrowe czy 2 łóżka 1-osobowe"
+          }
+        ]
+      },
+      {
+        "Number": 10025,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "2-pers.king size bed"
+          },
+          {
+            "Language": "FR",
+            "Description": "lit 2 personnes grande taille"
+          },
+          {
+            "Language": "DE",
+            "Description": "Doppelbett king size"
+          },
+          {
+            "Language": "EN",
+            "Description": "King size double bed"
+          },
+          {
+            "Language": "IT",
+            "Description": "letto matrimoniale extra largo"
+          },
+          {
+            "Language": "ES",
+            "Description": "cama king-size"
+          },
+          {
+            "Language": "PL",
+            "Description": "łóżko o rozmiarze królewskim"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Type": 400,
+    "Description": [
+      {
+        "Language": "NL",
+        "Description": "Kamer items"
+      },
+      {
+        "Language": "FR",
+        "Description": "Points Salle"
+      },
+      {
+        "Language": "DE",
+        "Description": "Zimmer Items"
+      },
+      {
+        "Language": "EN",
+        "Description": "Room Items"
+      },
+      {
+        "Language": "IT",
+        "Description": "Articoli Camera"
+      },
+      {
+        "Language": "ES",
+        "Description": "Sala de artículos"
+      },
+      {
+        "Language": "PL",
+        "Description": "Przedmioty w pokoju"
+      }
+    ],
+    "Items": [
+      {
+        "Number": 10030,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "TV"
+          },
+          {
+            "Language": "FR",
+            "Description": "TV"
+          },
+          {
+            "Language": "DE",
+            "Description": "TV"
+          },
+          {
+            "Language": "EN",
+            "Description": "TV"
+          },
+          {
+            "Language": "IT",
+            "Description": "TV"
+          },
+          {
+            "Language": "ES",
+            "Description": "TV"
+          },
+          {
+            "Language": "PL",
+            "Description": "TV"
+          }
+        ]
+      },
+      {
+        "Number": 10036,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "eettafel"
+          },
+          {
+            "Language": "FR",
+            "Description": "table à manger"
+          },
+          {
+            "Language": "DE",
+            "Description": "Esstisch"
+          },
+          {
+            "Language": "EN",
+            "Description": "dining table"
+          },
+          {
+            "Language": "IT",
+            "Description": "tavolo da pranzo"
+          },
+          {
+            "Language": "ES",
+            "Description": "mesa de comedor"
+          },
+          {
+            "Language": "PL",
+            "Description": "Stół"
+          }
+        ]
+      },
+      {
+        "Number": 10040,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "open haard"
+          },
+          {
+            "Language": "FR",
+            "Description": "cheminée"
+          },
+          {
+            "Language": "DE",
+            "Description": "offener Kamin"
+          },
+          {
+            "Language": "EN",
+            "Description": "fireplace"
+          },
+          {
+            "Language": "IT",
+            "Description": "caminetto"
+          },
+          {
+            "Language": "ES",
+            "Description": "chimenea"
+          },
+          {
+            "Language": "PL",
+            "Description": "kominek"
+          }
+        ]
+      },
+      {
+        "Number": 10044,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "sfeerhaard"
+          },
+          {
+            "Language": "FR",
+            "Description": "feu ouvert décorative"
+          },
+          {
+            "Language": "DE",
+            "Description": "Dekokamin"
+          },
+          {
+            "Language": "EN",
+            "Description": "decorative fireplace"
+          },
+          {
+            "Language": "IT",
+            "Description": "caminetto decorativo"
+          },
+          {
+            "Language": "ES",
+            "Description": "chimenea decorativa"
+          },
+          {
+            "Language": "PL",
+            "Description": "ozdobny kominek"
+          }
+        ]
+      },
+      {
+        "Number": 10053,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "kachel"
+          },
+          {
+            "Language": "FR",
+            "Description": "poêle"
+          },
+          {
+            "Language": "DE",
+            "Description": "Ofen"
+          },
+          {
+            "Language": "EN",
+            "Description": "hearth"
+          },
+          {
+            "Language": "IT",
+            "Description": "stufa"
+          },
+          {
+            "Language": "ES",
+            "Description": "estufa"
+          },
+          {
+            "Language": "PL",
+            "Description": "kominek / palenisko"
+          }
+        ]
+      },
+      {
+        "Number": 10070,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "DVD-speler"
+          },
+          {
+            "Language": "FR",
+            "Description": "Lecteur DVD"
+          },
+          {
+            "Language": "DE",
+            "Description": "DVD-Spieler"
+          },
+          {
+            "Language": "EN",
+            "Description": "DVD player"
+          },
+          {
+            "Language": "IT",
+            "Description": "lettore DVD"
+          },
+          {
+            "Language": "ES",
+            "Description": "DVD"
+          },
+          {
+            "Language": "PL",
+            "Description": "odtwarzacz DVD"
+          }
+        ]
+      },
+      {
+        "Number": 10080,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "radio"
+          },
+          {
+            "Language": "FR",
+            "Description": "radio"
+          },
+          {
+            "Language": "DE",
+            "Description": "Radio"
+          },
+          {
+            "Language": "EN",
+            "Description": "radio"
+          },
+          {
+            "Language": "IT",
+            "Description": "radio"
+          },
+          {
+            "Language": "ES",
+            "Description": "radio"
+          },
+          {
+            "Language": "PL",
+            "Description": "radio"
+          }
+        ]
+      },
+      {
+        "Number": 10090,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "CD-speler"
+          },
+          {
+            "Language": "FR",
+            "Description": "Lecteur CD"
+          },
+          {
+            "Language": "DE",
+            "Description": "CD-Spieler"
+          },
+          {
+            "Language": "EN",
+            "Description": "CD player"
+          },
+          {
+            "Language": "IT",
+            "Description": "lettore CD"
+          },
+          {
+            "Language": "ES",
+            "Description": "CD"
+          },
+          {
+            "Language": "PL",
+            "Description": "odtwarzacz CD"
+          }
+        ]
+      },
+      {
+        "Number": 10095,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "stereo-installatie"
+          },
+          {
+            "Language": "FR",
+            "Description": "installation stéréo"
+          },
+          {
+            "Language": "DE",
+            "Description": "Stereoanlage"
+          },
+          {
+            "Language": "EN",
+            "Description": "stereo"
+          },
+          {
+            "Language": "IT",
+            "Description": "impianto stereo"
+          },
+          {
+            "Language": "ES",
+            "Description": "equipo de música"
+          },
+          {
+            "Language": "PL",
+            "Description": "stereo"
+          }
+        ]
+      },
+      {
+        "Number": 10120,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "bar"
+          },
+          {
+            "Language": "FR",
+            "Description": "bar"
+          },
+          {
+            "Language": "DE",
+            "Description": "Bar"
+          },
+          {
+            "Language": "EN",
+            "Description": "bar"
+          },
+          {
+            "Language": "IT",
+            "Description": "bar"
+          },
+          {
+            "Language": "ES",
+            "Description": "barra"
+          },
+          {
+            "Language": "PL",
+            "Description": "bar"
+          }
+        ]
+      },
+      {
+        "Number": 10610,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "gashaard"
+          },
+          {
+            "Language": "FR",
+            "Description": "poêle à gaz"
+          },
+          {
+            "Language": "DE",
+            "Description": "Gasofen"
+          },
+          {
+            "Language": "EN",
+            "Description": "gas stove"
+          },
+          {
+            "Language": "IT",
+            "Description": "caminetto a gas"
+          },
+          {
+            "Language": "ES",
+            "Description": "estufa de gas"
+          },
+          {
+            "Language": "PL",
+            "Description": "piecyk gazowy"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Type": 500,
+    "Description": [
+      {
+        "Language": "NL",
+        "Description": "Keuken items"
+      },
+      {
+        "Language": "FR",
+        "Description": "Articles de cuisine"
+      },
+      {
+        "Language": "DE",
+        "Description": "Küchen Items"
+      },
+      {
+        "Language": "EN",
+        "Description": "Kitchen Items"
+      },
+      {
+        "Language": "IT",
+        "Description": "Articoli da cucina"
+      },
+      {
+        "Language": "ES",
+        "Description": "Artículos de cocina"
+      },
+      {
+        "Language": "PL",
+        "Description": "Przedmioty kuchenne"
+      }
+    ],
+    "Items": [
+      {
+        "Number": 10125,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "houtfornuis"
+          },
+          {
+            "Language": "FR",
+            "Description": "cuisinière à bois"
+          },
+          {
+            "Language": "DE",
+            "Description": "Holzherd"
+          },
+          {
+            "Language": "EN",
+            "Description": "wood cookstove"
+          },
+          {
+            "Language": "IT",
+            "Description": "forno a legna"
+          },
+          {
+            "Language": "ES",
+            "Description": "horno de leña"
+          },
+          {
+            "Language": "PL",
+            "Description": "kuchenka na drewno"
+          }
+        ]
+      },
+      {
+        "Number": 10126,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "fornuis"
+          },
+          {
+            "Language": "FR",
+            "Description": "cuisinière"
+          },
+          {
+            "Language": "DE",
+            "Description": "Kochherd"
+          },
+          {
+            "Language": "EN",
+            "Description": "cooker"
+          },
+          {
+            "Language": "IT",
+            "Description": "cucina"
+          },
+          {
+            "Language": "ES",
+            "Description": "cocina"
+          },
+          {
+            "Language": "PL",
+            "Description": "gotowanie"
+          }
+        ]
+      },
+      {
+        "Number": 10128,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "koffiezetapparaat"
+          },
+          {
+            "Language": "FR",
+            "Description": "cafetière"
+          },
+          {
+            "Language": "DE",
+            "Description": "Kaffeemaschine"
+          },
+          {
+            "Language": "EN",
+            "Description": "coffee maker"
+          },
+          {
+            "Language": "IT",
+            "Description": "macchina per caffè americano"
+          },
+          {
+            "Language": "ES",
+            "Description": "cafetera electrica"
+          },
+          {
+            "Language": "PL",
+            "Description": "ekspres do kawy"
+          }
+        ]
+      },
+      {
+        "Number": 10130,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "oven"
+          },
+          {
+            "Language": "FR",
+            "Description": "four"
+          },
+          {
+            "Language": "DE",
+            "Description": "Backofen"
+          },
+          {
+            "Language": "EN",
+            "Description": "oven"
+          },
+          {
+            "Language": "IT",
+            "Description": "forno"
+          },
+          {
+            "Language": "ES",
+            "Description": "horno"
+          },
+          {
+            "Language": "PL",
+            "Description": "piekarnik"
+          }
+        ]
+      },
+      {
+        "Number": 10132,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "grill"
+          },
+          {
+            "Language": "FR",
+            "Description": "grill"
+          },
+          {
+            "Language": "DE",
+            "Description": "Grill"
+          },
+          {
+            "Language": "EN",
+            "Description": "grill"
+          },
+          {
+            "Language": "IT",
+            "Description": "grill"
+          },
+          {
+            "Language": "ES",
+            "Description": "grill"
+          },
+          {
+            "Language": "PL",
+            "Description": "grill"
+          }
+        ]
+      },
+      {
+        "Number": 10135,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "combimagnetron"
+          },
+          {
+            "Language": "FR",
+            "Description": "combi four/micro-onde"
+          },
+          {
+            "Language": "DE",
+            "Description": "Kombi-Mikrowelle"
+          },
+          {
+            "Language": "EN",
+            "Description": "combi microwave"
+          },
+          {
+            "Language": "IT",
+            "Description": "combi microonde"
+          },
+          {
+            "Language": "ES",
+            "Description": "horno-microondas"
+          },
+          {
+            "Language": "PL",
+            "Description": "wielofunkcyjna mikrofalówka"
+          }
+        ]
+      },
+      {
+        "Number": 10140,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "magnetron"
+          },
+          {
+            "Language": "FR",
+            "Description": "micro-ondes"
+          },
+          {
+            "Language": "DE",
+            "Description": "Mikrowelle"
+          },
+          {
+            "Language": "EN",
+            "Description": "microwave"
+          },
+          {
+            "Language": "IT",
+            "Description": "microonde"
+          },
+          {
+            "Language": "ES",
+            "Description": "microondas"
+          },
+          {
+            "Language": "PL",
+            "Description": "mikrofalówka"
+          }
+        ]
+      },
+      {
+        "Number": 10150,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "afwasmachine"
+          },
+          {
+            "Language": "FR",
+            "Description": "lave-vaisselle"
+          },
+          {
+            "Language": "DE",
+            "Description": "Geschirrspülmaschine"
+          },
+          {
+            "Language": "EN",
+            "Description": "dishwasher"
+          },
+          {
+            "Language": "IT",
+            "Description": "lavastoviglie"
+          },
+          {
+            "Language": "ES",
+            "Description": "lavavajillas"
+          },
+          {
+            "Language": "PL",
+            "Description": "zmywarka"
+          }
+        ]
+      },
+      {
+        "Number": 10156,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "koelkast"
+          },
+          {
+            "Language": "FR",
+            "Description": "réfrigérateur"
+          },
+          {
+            "Language": "DE",
+            "Description": "Kühlschrank"
+          },
+          {
+            "Language": "EN",
+            "Description": "refrigerator"
+          },
+          {
+            "Language": "IT",
+            "Description": "frigorifero"
+          },
+          {
+            "Language": "ES",
+            "Description": "refrigerador"
+          },
+          {
+            "Language": "PL",
+            "Description": "amerykański"
+          }
+        ]
+      },
+      {
+        "Number": 10160,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "vriezer"
+          },
+          {
+            "Language": "FR",
+            "Description": "congélateur"
+          },
+          {
+            "Language": "DE",
+            "Description": "Tiefkühlschrank"
+          },
+          {
+            "Language": "EN",
+            "Description": "freezer"
+          },
+          {
+            "Language": "IT",
+            "Description": "congelatore"
+          },
+          {
+            "Language": "ES",
+            "Description": "congelador"
+          },
+          {
+            "Language": "PL",
+            "Description": "zamrażalnik"
+          }
+        ]
+      },
+      {
+        "Number": 10165,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "koel-/vriescombinatie"
+          },
+          {
+            "Language": "FR",
+            "Description": "combi frigidaire/congélateur"
+          },
+          {
+            "Language": "DE",
+            "Description": "Kühl-/Gefrierkombination"
+          },
+          {
+            "Language": "EN",
+            "Description": "fridge freezer"
+          },
+          {
+            "Language": "IT",
+            "Description": "frigo con reparto freezer"
+          },
+          {
+            "Language": "ES",
+            "Description": "nevera-congelador"
+          },
+          {
+            "Language": "PL",
+            "Description": "lodówka z zamrażarką"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Type": 600,
+    "Description": [
+      {
+        "Language": "NL",
+        "Description": "Sanitair / Wassen"
+      },
+      {
+        "Language": "FR",
+        "Description": "Plomberie / Lavage"
+      },
+      {
+        "Language": "DE",
+        "Description": "Heizung / Waschen"
+      },
+      {
+        "Language": "EN",
+        "Description": "Plumbing / Washing"
+      },
+      {
+        "Language": "IT",
+        "Description": "Sanitari / Servizi"
+      },
+      {
+        "Language": "ES",
+        "Description": "Plomería / lavado"
+      },
+      {
+        "Language": "PL",
+        "Description": "Sanitaria / Pranie"
+      }
+    ],
+    "Items": [
+      {
+        "Number": 10170,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "wasdroger"
+          },
+          {
+            "Language": "FR",
+            "Description": "sèche-linge"
+          },
+          {
+            "Language": "DE",
+            "Description": "Wäschetrockner"
+          },
+          {
+            "Language": "EN",
+            "Description": "tumble dryer"
+          },
+          {
+            "Language": "IT",
+            "Description": "asciugatrice"
+          },
+          {
+            "Language": "ES",
+            "Description": "secadora"
+          },
+          {
+            "Language": "PL",
+            "Description": "suszarka do ubrań"
+          }
+        ]
+      },
+      {
+        "Number": 10180,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "ligbad"
+          },
+          {
+            "Language": "FR",
+            "Description": "baignoire"
+          },
+          {
+            "Language": "DE",
+            "Description": "Badewanne"
+          },
+          {
+            "Language": "EN",
+            "Description": "bath"
+          },
+          {
+            "Language": "IT",
+            "Description": "vasca da bagno"
+          },
+          {
+            "Language": "ES",
+            "Description": "bañera"
+          },
+          {
+            "Language": "PL",
+            "Description": "wanna"
+          }
+        ]
+      },
+      {
+        "Number": 10182,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "babybad"
+          },
+          {
+            "Language": "FR",
+            "Description": "babybath"
+          },
+          {
+            "Language": "DE",
+            "Description": "babybath"
+          },
+          {
+            "Language": "EN",
+            "Description": "babybath"
+          },
+          {
+            "Language": "IT",
+            "Description": "babybath"
+          },
+          {
+            "Language": "ES",
+            "Description": "babybath"
+          },
+          {
+            "Language": "PL",
+            "Description": "babybath"
+          }
+        ]
+      },
+      {
+        "Number": 10183,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "campingbedje"
+          },
+          {
+            "Language": "FR",
+            "Description": "lit de camp"
+          },
+          {
+            "Language": "DE",
+            "Description": "Reisebett"
+          },
+          {
+            "Language": "EN",
+            "Description": "foldabel Crib"
+          },
+          {
+            "Language": "IT",
+            "Description": "lettino pieghevole"
+          },
+          {
+            "Language": "ES",
+            "Description": "cuna plegable"
+          },
+          {
+            "Language": "PL",
+            "Description": "kemping łóżeczko"
+          }
+        ]
+      },
+      {
+        "Number": 10184,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "ledikant"
+          },
+          {
+            "Language": "FR",
+            "Description": "lit bébé"
+          },
+          {
+            "Language": "DE",
+            "Description": "Kinderbett"
+          },
+          {
+            "Language": "EN",
+            "Description": "crib of cot"
+          },
+          {
+            "Language": "IT",
+            "Description": "lettino con sponde"
+          },
+          {
+            "Language": "ES",
+            "Description": "cuna"
+          },
+          {
+            "Language": "PL",
+            "Description": "sanie szopka"
+          }
+        ]
+      },
+      {
+        "Number": 10185,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "bad of douche"
+          },
+          {
+            "Language": "FR",
+            "Description": "baignoire ou douche"
+          },
+          {
+            "Language": "DE",
+            "Description": "Badewanne oder Dusche"
+          },
+          {
+            "Language": "EN",
+            "Description": "bath or shower"
+          },
+          {
+            "Language": "IT",
+            "Description": "vasca da bagno o doccia"
+          },
+          {
+            "Language": "ES",
+            "Description": "bañera o ducha"
+          },
+          {
+            "Language": "PL",
+            "Description": "wanna lub pryc"
+          }
+        ]
+      },
+      {
+        "Number": 10190,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "bad met douche"
+          },
+          {
+            "Language": "FR",
+            "Description": "baignoire avec douche"
+          },
+          {
+            "Language": "DE",
+            "Description": "Badewanne mit Dusche"
+          },
+          {
+            "Language": "EN",
+            "Description": "bath with shower"
+          },
+          {
+            "Language": "IT",
+            "Description": "vasca da bagno con doccia"
+          },
+          {
+            "Language": "ES",
+            "Description": "bañera con ducha"
+          },
+          {
+            "Language": "PL",
+            "Description": "prysznic w wannie"
+          }
+        ]
+      },
+      {
+        "Number": 10200,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "bubbelbad"
+          },
+          {
+            "Language": "FR",
+            "Description": "bain bulles"
+          },
+          {
+            "Language": "DE",
+            "Description": "Whirlpool"
+          },
+          {
+            "Language": "EN",
+            "Description": "whirlpool"
+          },
+          {
+            "Language": "IT",
+            "Description": "vasca idromassaggio"
+          },
+          {
+            "Language": "ES",
+            "Description": "bañera de hidromasaje"
+          },
+          {
+            "Language": "PL",
+            "Description": "wanna z hydromasażem"
+          }
+        ]
+      },
+      {
+        "Number": 10205,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "hottub"
+          },
+          {
+            "Language": "FR",
+            "Description": "bain nordique"
+          },
+          {
+            "Language": "DE",
+            "Description": "Hottub"
+          },
+          {
+            "Language": "EN",
+            "Description": "hottub"
+          },
+          {
+            "Language": "IT",
+            "Description": "hottub"
+          },
+          {
+            "Language": "ES",
+            "Description": "hottub"
+          },
+          {
+            "Language": "PL",
+            "Description": "wanna spa"
+          }
+        ]
+      },
+      {
+        "Number": 10210,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "zitbad"
+          },
+          {
+            "Language": "FR",
+            "Description": "baignoire sabot"
+          },
+          {
+            "Language": "DE",
+            "Description": "Sitzbadewanne"
+          },
+          {
+            "Language": "EN",
+            "Description": "Hip bath"
+          },
+          {
+            "Language": "IT",
+            "Description": "vasca da bagno con seduta"
+          },
+          {
+            "Language": "ES",
+            "Description": "bañera de asiento"
+          },
+          {
+            "Language": "PL",
+            "Description": "nasiadówka (hip bath)"
+          }
+        ]
+      },
+      {
+        "Number": 10215,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "douche"
+          },
+          {
+            "Language": "FR",
+            "Description": "douche"
+          },
+          {
+            "Language": "DE",
+            "Description": "Dusche"
+          },
+          {
+            "Language": "EN",
+            "Description": "shower"
+          },
+          {
+            "Language": "IT",
+            "Description": "doccia"
+          },
+          {
+            "Language": "ES",
+            "Description": "ducha"
+          },
+          {
+            "Language": "PL",
+            "Description": "prysznic"
+          }
+        ]
+      },
+      {
+        "Number": 10220,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "stoomdouche"
+          },
+          {
+            "Language": "FR",
+            "Description": "douche à jets de vapeur"
+          },
+          {
+            "Language": "DE",
+            "Description": "Dampfdusche"
+          },
+          {
+            "Language": "EN",
+            "Description": "steam shower"
+          },
+          {
+            "Language": "IT",
+            "Description": "doccia-sauna"
+          },
+          {
+            "Language": "ES",
+            "Description": "ducha de vapor"
+          },
+          {
+            "Language": "PL",
+            "Description": "kabina prysznicowa parowa"
+          }
+        ]
+      },
+      {
+        "Number": 10225,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "massagedouche"
+          },
+          {
+            "Language": "FR",
+            "Description": "douche de massage"
+          },
+          {
+            "Language": "DE",
+            "Description": "Massagedusche"
+          },
+          {
+            "Language": "EN",
+            "Description": "massage shower"
+          },
+          {
+            "Language": "IT",
+            "Description": "doccia con massaggio"
+          },
+          {
+            "Language": "ES",
+            "Description": "ducha de hidromasaje"
+          },
+          {
+            "Language": "PL",
+            "Description": "prysznic z masażem"
+          }
+        ]
+      },
+      {
+        "Number": 10226,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "sunshower"
+          },
+          {
+            "Language": "FR",
+            "Description": "sunshower"
+          },
+          {
+            "Language": "DE",
+            "Description": "sunshower"
+          },
+          {
+            "Language": "EN",
+            "Description": "sunshower"
+          },
+          {
+            "Language": "IT",
+            "Description": "sunshower"
+          },
+          {
+            "Language": "ES",
+            "Description": "sunshower"
+          },
+          {
+            "Language": "PL",
+            "Description": "sunshower"
+          }
+        ]
+      },
+      {
+        "Number": 10230,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "jetstream"
+          },
+          {
+            "Language": "FR",
+            "Description": "douche à jets"
+          },
+          {
+            "Language": "DE",
+            "Description": "Jetstream"
+          },
+          {
+            "Language": "EN",
+            "Description": "jetstream"
+          },
+          {
+            "Language": "IT",
+            "Description": "idromassaggio"
+          },
+          {
+            "Language": "ES",
+            "Description": "hidromasaje"
+          },
+          {
+            "Language": "PL",
+            "Description": "jetstream"
+          }
+        ]
+      },
+      {
+        "Number": 10235,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "zonnebank / solarium"
+          },
+          {
+            "Language": "FR",
+            "Description": "banc solaire à UV / solarium"
+          },
+          {
+            "Language": "DE",
+            "Description": "Sonnenbank / Solarium"
+          },
+          {
+            "Language": "EN",
+            "Description": "tanning bed / solarium"
+          },
+          {
+            "Language": "IT",
+            "Description": "lettino raggi U.V.A."
+          },
+          {
+            "Language": "ES",
+            "Description": "lámpara de rayos UV"
+          },
+          {
+            "Language": "PL",
+            "Description": "solarium"
+          }
+        ]
+      },
+      {
+        "Number": 10237,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "infraroodsauna"
+          },
+          {
+            "Language": "FR",
+            "Description": "sauna infra rouge"
+          },
+          {
+            "Language": "DE",
+            "Description": "Infrarot Sauna"
+          },
+          {
+            "Language": "EN",
+            "Description": "infra-red sauna"
+          },
+          {
+            "Language": "IT",
+            "Description": "sauna ad infrarossi"
+          },
+          {
+            "Language": "ES",
+            "Description": "infra roja sauna"
+          },
+          {
+            "Language": "PL",
+            "Description": "sauna na podczerwień"
+          }
+        ]
+      },
+      {
+        "Number": 10238,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "sauna"
+          },
+          {
+            "Language": "FR",
+            "Description": "sauna"
+          },
+          {
+            "Language": "DE",
+            "Description": "Sauna"
+          },
+          {
+            "Language": "EN",
+            "Description": "sauna"
+          },
+          {
+            "Language": "IT",
+            "Description": "sauna"
+          },
+          {
+            "Language": "ES",
+            "Description": "sauna"
+          },
+          {
+            "Language": "PL",
+            "Description": "sauna"
+          }
+        ]
+      },
+      {
+        "Number": 10239,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "jacuzzi"
+          },
+          {
+            "Language": "FR",
+            "Description": "jacuzzi"
+          },
+          {
+            "Language": "DE",
+            "Description": "Jacuzzi"
+          },
+          {
+            "Language": "EN",
+            "Description": "jacuzzi"
+          },
+          {
+            "Language": "IT",
+            "Description": "jacuzzi"
+          },
+          {
+            "Language": "ES",
+            "Description": "jacuzzi"
+          },
+          {
+            "Language": "PL",
+            "Description": "jacuzzi"
+          }
+        ]
+      },
+      {
+        "Number": 10240,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "wastafel"
+          },
+          {
+            "Language": "FR",
+            "Description": "lavabo"
+          },
+          {
+            "Language": "DE",
+            "Description": "Waschbecken"
+          },
+          {
+            "Language": "EN",
+            "Description": "washbasin"
+          },
+          {
+            "Language": "IT",
+            "Description": "lavandino"
+          },
+          {
+            "Language": "ES",
+            "Description": "lavabo"
+          },
+          {
+            "Language": "PL",
+            "Description": "umywalka"
+          }
+        ]
+      },
+      {
+        "Number": 10250,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "toilet"
+          },
+          {
+            "Language": "FR",
+            "Description": "toilette"
+          },
+          {
+            "Language": "DE",
+            "Description": "Toilette"
+          },
+          {
+            "Language": "EN",
+            "Description": "toilet"
+          },
+          {
+            "Language": "IT",
+            "Description": "WC"
+          },
+          {
+            "Language": "ES",
+            "Description": "váter"
+          },
+          {
+            "Language": "PL",
+            "Description": "toaleta"
+          }
+        ]
+      },
+      {
+        "Number": 10253,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "bidet"
+          },
+          {
+            "Language": "FR",
+            "Description": "bidet"
+          },
+          {
+            "Language": "DE",
+            "Description": "Bidet"
+          },
+          {
+            "Language": "EN",
+            "Description": "bidet"
+          },
+          {
+            "Language": "IT",
+            "Description": "bidet"
+          },
+          {
+            "Language": "ES",
+            "Description": "bidet"
+          },
+          {
+            "Language": "PL",
+            "Description": "bidet"
+          }
+        ]
+      },
+      {
+        "Number": 10254,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "urinoir"
+          },
+          {
+            "Language": "FR",
+            "Description": "urinoir"
+          },
+          {
+            "Language": "DE",
+            "Description": "Urinal"
+          },
+          {
+            "Language": "EN",
+            "Description": "urinal"
+          },
+          {
+            "Language": "IT",
+            "Description": "urinatoio"
+          },
+          {
+            "Language": "ES",
+            "Description": "urinario"
+          },
+          {
+            "Language": "PL",
+            "Description": "pisuar"
+          }
+        ]
+      },
+      {
+        "Number": 10255,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "wasmachine"
+          },
+          {
+            "Language": "FR",
+            "Description": "lave-linge"
+          },
+          {
+            "Language": "DE",
+            "Description": "Waschmaschine"
+          },
+          {
+            "Language": "EN",
+            "Description": "washing machine"
+          },
+          {
+            "Language": "IT",
+            "Description": "lavatrice"
+          },
+          {
+            "Language": "ES",
+            "Description": "lavadora"
+          },
+          {
+            "Language": "PL",
+            "Description": "pralka"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Type": 700,
+    "Description": [
+      {
+        "Language": "NL",
+        "Description": "Rondom het huis"
+      },
+      {
+        "Language": "FR",
+        "Description": "Autour de la maison"
+      },
+      {
+        "Language": "DE",
+        "Description": "Rund um das Haus"
+      },
+      {
+        "Language": "EN",
+        "Description": "Around the house"
+      },
+      {
+        "Language": "IT",
+        "Description": "Intorno alla casa"
+      },
+      {
+        "Language": "ES",
+        "Description": "Alrededor de la casa"
+      },
+      {
+        "Language": "PL",
+        "Description": "Wokół domu"
+      }
+    ],
+    "Items": [
+      {
+        "Number": 1185,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "buitenkeuken"
+          },
+          {
+            "Language": "FR",
+            "Description": "cuisine d'été"
+          },
+          {
+            "Language": "DE",
+            "Description": "Außenzimmer"
+          },
+          {
+            "Language": "EN",
+            "Description": "outside kitchen"
+          },
+          {
+            "Language": "IT",
+            "Description": "cucina esterna"
+          },
+          {
+            "Language": "ES",
+            "Description": "cocina de verano"
+          },
+          {
+            "Language": "PL",
+            "Description": "altana przy basenie"
+          }
+        ]
+      },
+      {
+        "Number": 3100,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "garage"
+          },
+          {
+            "Language": "FR",
+            "Description": "garage"
+          },
+          {
+            "Language": "DE",
+            "Description": "Garage"
+          },
+          {
+            "Language": "EN",
+            "Description": "garage"
+          },
+          {
+            "Language": "IT",
+            "Description": "garage"
+          },
+          {
+            "Language": "ES",
+            "Description": "garaje"
+          },
+          {
+            "Language": "PL",
+            "Description": "garaż"
+          }
+        ]
+      },
+      {
+        "Number": 3200,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "carport"
+          },
+          {
+            "Language": "FR",
+            "Description": "abris pour voiture"
+          },
+          {
+            "Language": "DE",
+            "Description": "Carport"
+          },
+          {
+            "Language": "EN",
+            "Description": "carport"
+          },
+          {
+            "Language": "IT",
+            "Description": "posto auto coperto"
+          },
+          {
+            "Language": "ES",
+            "Description": "parking cubierto"
+          },
+          {
+            "Language": "PL",
+            "Description": "wiata samochodowa"
+          }
+        ]
+      },
+      {
+        "Number": 3300,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "aanlegsteiger"
+          },
+          {
+            "Language": "FR",
+            "Description": "débarcadère"
+          },
+          {
+            "Language": "DE",
+            "Description": "Anlegesteg"
+          },
+          {
+            "Language": "EN",
+            "Description": "jetty"
+          },
+          {
+            "Language": "IT",
+            "Description": "attracco imbarcazione privata"
+          },
+          {
+            "Language": "ES",
+            "Description": "embarcadero"
+          },
+          {
+            "Language": "PL",
+            "Description": "pomost"
+          }
+        ]
+      },
+      {
+        "Number": 3400,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "paardenstalling"
+          },
+          {
+            "Language": "FR",
+            "Description": "box pour chevaux"
+          },
+          {
+            "Language": "DE",
+            "Description": "Pferdestall"
+          },
+          {
+            "Language": "EN",
+            "Description": "stables"
+          },
+          {
+            "Language": "IT",
+            "Description": "stalla per cavalli"
+          },
+          {
+            "Language": "ES",
+            "Description": "establo"
+          },
+          {
+            "Language": "PL",
+            "Description": "stajnia"
+          }
+        ]
+      },
+      {
+        "Number": 10345,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "tuindeuren"
+          },
+          {
+            "Language": "FR",
+            "Description": "portes fenêtres"
+          },
+          {
+            "Language": "DE",
+            "Description": "Gartentüren"
+          },
+          {
+            "Language": "EN",
+            "Description": "french doors"
+          },
+          {
+            "Language": "IT",
+            "Description": "porta-finestra"
+          },
+          {
+            "Language": "ES",
+            "Description": "puertas a la terraza"
+          },
+          {
+            "Language": "PL",
+            "Description": "drzwi tarasowe"
+          }
+        ]
+      },
+      {
+        "Number": 10355,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "binnenplaats"
+          },
+          {
+            "Language": "FR",
+            "Description": "cour"
+          },
+          {
+            "Language": "DE",
+            "Description": "Hof"
+          },
+          {
+            "Language": "EN",
+            "Description": "courtyard"
+          },
+          {
+            "Language": "IT",
+            "Description": "cortile interno"
+          },
+          {
+            "Language": "ES",
+            "Description": "patio interior"
+          },
+          {
+            "Language": "PL",
+            "Description": "dziedziniec"
+          }
+        ]
+      },
+      {
+        "Number": 10357,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "dakterras"
+          },
+          {
+            "Language": "FR",
+            "Description": "terrasse sur le toit"
+          },
+          {
+            "Language": "DE",
+            "Description": "Dachterasse"
+          },
+          {
+            "Language": "EN",
+            "Description": "roof terrace"
+          },
+          {
+            "Language": "IT",
+            "Description": "terrazza sul tetto"
+          },
+          {
+            "Language": "ES",
+            "Description": "azotea"
+          },
+          {
+            "Language": "PL",
+            "Description": "taras na dachu"
+          }
+        ]
+      },
+      {
+        "Number": 10358,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "tuin"
+          },
+          {
+            "Language": "FR",
+            "Description": "jardin"
+          },
+          {
+            "Language": "DE",
+            "Description": "Garten"
+          },
+          {
+            "Language": "EN",
+            "Description": "garden"
+          },
+          {
+            "Language": "IT",
+            "Description": "giardino"
+          },
+          {
+            "Language": "ES",
+            "Description": "jardín"
+          },
+          {
+            "Language": "PL",
+            "Description": "ogród"
+          }
+        ]
+      },
+      {
+        "Number": 10360,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "tuinmeubilair"
+          },
+          {
+            "Language": "FR",
+            "Description": "meubles de jardin"
+          },
+          {
+            "Language": "DE",
+            "Description": "Gartenmöbel"
+          },
+          {
+            "Language": "EN",
+            "Description": "garden furniture"
+          },
+          {
+            "Language": "IT",
+            "Description": "mobili da giardino"
+          },
+          {
+            "Language": "ES",
+            "Description": "mobiliario de jardín"
+          },
+          {
+            "Language": "PL",
+            "Description": "meble ogrodowe"
+          }
+        ]
+      },
+      {
+        "Number": 10361,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "ligbedden"
+          },
+          {
+            "Language": "FR",
+            "Description": "transats"
+          },
+          {
+            "Language": "DE",
+            "Description": "Liegen"
+          },
+          {
+            "Language": "EN",
+            "Description": "lounger"
+          },
+          {
+            "Language": "IT",
+            "Description": "lettini sdraio"
+          },
+          {
+            "Language": "ES",
+            "Description": "tumbona"
+          },
+          {
+            "Language": "PL",
+            "Description": "lózka plazowe"
+          }
+        ]
+      },
+      {
+        "Number": 10362,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "BBQ"
+          },
+          {
+            "Language": "FR",
+            "Description": "BBQ"
+          },
+          {
+            "Language": "DE",
+            "Description": "Grill"
+          },
+          {
+            "Language": "EN",
+            "Description": "BBQ"
+          },
+          {
+            "Language": "IT",
+            "Description": "barbecue"
+          },
+          {
+            "Language": "ES",
+            "Description": "barbacoa"
+          },
+          {
+            "Language": "PL",
+            "Description": "grill"
+          }
+        ]
+      },
+      {
+        "Number": 10363,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "parking"
+          },
+          {
+            "Language": "FR",
+            "Description": "parking"
+          },
+          {
+            "Language": "DE",
+            "Description": "Parkplatz"
+          },
+          {
+            "Language": "EN",
+            "Description": "parking"
+          },
+          {
+            "Language": "IT",
+            "Description": "posto auto"
+          },
+          {
+            "Language": "ES",
+            "Description": "parking"
+          },
+          {
+            "Language": "PL",
+            "Description": "parking"
+          }
+        ]
+      },
+      {
+        "Number": 10366,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "vijver"
+          },
+          {
+            "Language": "FR",
+            "Description": "étang"
+          },
+          {
+            "Language": "DE",
+            "Description": "Teich"
+          },
+          {
+            "Language": "EN",
+            "Description": "pond"
+          },
+          {
+            "Language": "IT",
+            "Description": "stagno"
+          },
+          {
+            "Language": "ES",
+            "Description": "estanque"
+          },
+          {
+            "Language": "PL",
+            "Description": "staw"
+          }
+        ]
+      },
+      {
+        "Number": 10400,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "zwembad"
+          },
+          {
+            "Language": "FR",
+            "Description": "piscine"
+          },
+          {
+            "Language": "DE",
+            "Description": "Swimmingpool"
+          },
+          {
+            "Language": "EN",
+            "Description": "swimming pool"
+          },
+          {
+            "Language": "IT",
+            "Description": "piscina"
+          },
+          {
+            "Language": "ES",
+            "Description": "piscina"
+          },
+          {
+            "Language": "PL",
+            "Description": "basen"
+          }
+        ]
+      },
+      {
+        "Number": 10440,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "tennisbaan"
+          },
+          {
+            "Language": "FR",
+            "Description": "terrain de tennis"
+          },
+          {
+            "Language": "DE",
+            "Description": "Tennisplatz"
+          },
+          {
+            "Language": "EN",
+            "Description": "tennis court"
+          },
+          {
+            "Language": "IT",
+            "Description": "campo da tennis"
+          },
+          {
+            "Language": "ES",
+            "Description": "pista de tenis"
+          },
+          {
+            "Language": "PL",
+            "Description": "kort tenisowy"
+          }
+        ]
+      },
+      {
+        "Number": 10460,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "jeu de boules baan"
+          },
+          {
+            "Language": "FR",
+            "Description": "jeu de pétanque"
+          },
+          {
+            "Language": "DE",
+            "Description": "Bouleplatz"
+          },
+          {
+            "Language": "EN",
+            "Description": "jeu de boules"
+          },
+          {
+            "Language": "IT",
+            "Description": "campo da bocce"
+          },
+          {
+            "Language": "ES",
+            "Description": "campo para jugar a la petanca"
+          },
+          {
+            "Language": "PL",
+            "Description": "tor do kręgli"
+          }
+        ]
+      },
+      {
+        "Number": 10512,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "padelbaan"
+          },
+          {
+            "Language": "FR",
+            "Description": "court de paddle tennis"
+          },
+          {
+            "Language": "DE",
+            "Description": "Padeltennisplatz"
+          },
+          {
+            "Language": "EN",
+            "Description": "padel court"
+          },
+          {
+            "Language": "IT",
+            "Description": "campi di padel"
+          },
+          {
+            "Language": "ES",
+            "Description": "pista de pádel"
+          },
+          {
+            "Language": "PL",
+            "Description": "Kort do gry w padla"
+          }
+        ]
+      },
+      {
+        "Number": 10540,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "fietsen beschikbaar"
+          },
+          {
+            "Language": "FR",
+            "Description": "vélos à disposition"
+          },
+          {
+            "Language": "DE",
+            "Description": "Fahrräder vorhanden"
+          },
+          {
+            "Language": "EN",
+            "Description": "bicycle(s) available"
+          },
+          {
+            "Language": "IT",
+            "Description": "bici a disposizione"
+          },
+          {
+            "Language": "ES",
+            "Description": "dispone de bicicleta(s)"
+          },
+          {
+            "Language": "PL",
+            "Description": "rower(y)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Type": 750,
+    "Description": [
+      {
+        "Language": "NL",
+        "Description": "Kinderen"
+      },
+      {
+        "Language": "FR",
+        "Description": "Enfants"
+      },
+      {
+        "Language": "DE",
+        "Description": "Kinder"
+      },
+      {
+        "Language": "EN",
+        "Description": "Children"
+      },
+      {
+        "Language": "IT",
+        "Description": "Per bambini"
+      },
+      {
+        "Language": "ES",
+        "Description": "Los niños"
+      },
+      {
+        "Language": "PL",
+        "Description": "Dzieci"
+      }
+    ],
+    "Items": [
+      {
+        "Number": 10092,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "spelcomputer"
+          },
+          {
+            "Language": "FR",
+            "Description": "console de jeux"
+          },
+          {
+            "Language": "DE",
+            "Description": "Spielkonsole"
+          },
+          {
+            "Language": "EN",
+            "Description": "game computer"
+          },
+          {
+            "Language": "IT",
+            "Description": "console videogames"
+          },
+          {
+            "Language": "ES",
+            "Description": "consola de juegos"
+          },
+          {
+            "Language": "PL",
+            "Description": "konsola do gier"
+          }
+        ]
+      },
+      {
+        "Number": 10364,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "trampoline"
+          },
+          {
+            "Language": "FR",
+            "Description": "trampoline"
+          },
+          {
+            "Language": "DE",
+            "Description": "Trampolin"
+          },
+          {
+            "Language": "EN",
+            "Description": "trampoline"
+          },
+          {
+            "Language": "IT",
+            "Description": "tappeto elastico"
+          },
+          {
+            "Language": "ES",
+            "Description": "trampolín"
+          },
+          {
+            "Language": "PL",
+            "Description": "trampolina"
+          }
+        ]
+      },
+      {
+        "Number": 10470,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "zandbak"
+          },
+          {
+            "Language": "FR",
+            "Description": "bac à sable"
+          },
+          {
+            "Language": "DE",
+            "Description": "Sandkasten"
+          },
+          {
+            "Language": "EN",
+            "Description": "sandpit"
+          },
+          {
+            "Language": "IT",
+            "Description": "vasca della sabbia"
+          },
+          {
+            "Language": "ES",
+            "Description": "cajón de arena"
+          },
+          {
+            "Language": "PL",
+            "Description": "piaskownica"
+          }
+        ]
+      },
+      {
+        "Number": 10480,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "speeltoestellen"
+          },
+          {
+            "Language": "FR",
+            "Description": "jeux d' enfants/agrés"
+          },
+          {
+            "Language": "DE",
+            "Description": "Spielgeräte"
+          },
+          {
+            "Language": "EN",
+            "Description": "play area"
+          },
+          {
+            "Language": "IT",
+            "Description": "parco giochi"
+          },
+          {
+            "Language": "ES",
+            "Description": "zona infantíl"
+          },
+          {
+            "Language": "PL",
+            "Description": "plac zabaw"
+          }
+        ]
+      },
+      {
+        "Number": 10482,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "glijbaan"
+          },
+          {
+            "Language": "FR",
+            "Description": "toboggan"
+          },
+          {
+            "Language": "DE",
+            "Description": "Gleitbahn"
+          },
+          {
+            "Language": "EN",
+            "Description": "slide"
+          },
+          {
+            "Language": "IT",
+            "Description": "scivolo"
+          },
+          {
+            "Language": "ES",
+            "Description": "diapositiva"
+          },
+          {
+            "Language": "PL",
+            "Description": "zjeżdżalnia"
+          }
+        ]
+      },
+      {
+        "Number": 10490,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "tafeltennistafel"
+          },
+          {
+            "Language": "FR",
+            "Description": "tennis de table"
+          },
+          {
+            "Language": "DE",
+            "Description": "Tischtennisplatte"
+          },
+          {
+            "Language": "EN",
+            "Description": "table tennis"
+          },
+          {
+            "Language": "IT",
+            "Description": "ping pong"
+          },
+          {
+            "Language": "ES",
+            "Description": "mesa de ping-pong"
+          },
+          {
+            "Language": "PL",
+            "Description": "stół do ping-ponga"
+          }
+        ]
+      },
+      {
+        "Number": 10500,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "tafelvoetbal"
+          },
+          {
+            "Language": "FR",
+            "Description": "baby foot"
+          },
+          {
+            "Language": "DE",
+            "Description": "Tischfußball"
+          },
+          {
+            "Language": "EN",
+            "Description": "table football"
+          },
+          {
+            "Language": "IT",
+            "Description": "calcio balilla"
+          },
+          {
+            "Language": "ES",
+            "Description": "futbolín"
+          },
+          {
+            "Language": "PL",
+            "Description": "piłkarzyki"
+          }
+        ]
+      },
+      {
+        "Number": 10550,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "kinderbed"
+          },
+          {
+            "Language": "FR",
+            "Description": "lit bébé"
+          },
+          {
+            "Language": "DE",
+            "Description": "Kinderbett"
+          },
+          {
+            "Language": "EN",
+            "Description": "Cot"
+          },
+          {
+            "Language": "IT",
+            "Description": "lettino per bambini"
+          },
+          {
+            "Language": "ES",
+            "Description": "cuna"
+          },
+          {
+            "Language": "PL",
+            "Description": "łóżeczko dla małego dziecka"
+          }
+        ]
+      },
+      {
+        "Number": 10560,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "kinderstoel"
+          },
+          {
+            "Language": "FR",
+            "Description": "chaise d'enfant"
+          },
+          {
+            "Language": "DE",
+            "Description": "Hochstuhl"
+          },
+          {
+            "Language": "EN",
+            "Description": "high chair"
+          },
+          {
+            "Language": "IT",
+            "Description": "seggiolone"
+          },
+          {
+            "Language": "ES",
+            "Description": "trona"
+          },
+          {
+            "Language": "PL",
+            "Description": "krzesełko do karmienia"
+          }
+        ]
+      },
+      {
+        "Number": 10570,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "kinderbox"
+          },
+          {
+            "Language": "FR",
+            "Description": "parc d´enfant"
+          },
+          {
+            "Language": "DE",
+            "Description": "Kinderlaufstall"
+          },
+          {
+            "Language": "EN",
+            "Description": "playpen"
+          },
+          {
+            "Language": "IT",
+            "Description": "box bambino"
+          },
+          {
+            "Language": "ES",
+            "Description": "parque/ corralito"
+          },
+          {
+            "Language": "PL",
+            "Description": "kojec"
+          }
+        ]
+      },
+      {
+        "Number": 10572,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "traphekje"
+          },
+          {
+            "Language": "FR",
+            "Description": "barrière de sécurité enfants"
+          },
+          {
+            "Language": "DE",
+            "Description": "Treppenschutzgitter"
+          },
+          {
+            "Language": "EN",
+            "Description": "stair gate"
+          },
+          {
+            "Language": "IT",
+            "Description": "cancello di sicurezza scale"
+          },
+          {
+            "Language": "ES",
+            "Description": "valla de escaleras (de seguridad)"
+          },
+          {
+            "Language": "PL",
+            "Description": "bramka/barierka na schody"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Type": 800,
+    "Description": [
+      {
+        "Language": "NL",
+        "Description": "Business"
+      },
+      {
+        "Language": "FR",
+        "Description": "Business"
+      },
+      {
+        "Language": "DE",
+        "Description": "Business"
+      },
+      {
+        "Language": "EN",
+        "Description": "Business"
+      },
+      {
+        "Language": "IT",
+        "Description": "Business"
+      },
+      {
+        "Language": "ES",
+        "Description": "Business"
+      },
+      {
+        "Language": "PL",
+        "Description": "Business"
+      }
+    ],
+    "Items": [
+      {
+        "Number": 10270,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "vergaderingen"
+          },
+          {
+            "Language": "FR",
+            "Description": "réunions"
+          },
+          {
+            "Language": "DE",
+            "Description": "Sitzungen"
+          },
+          {
+            "Language": "EN",
+            "Description": "meetings"
+          },
+          {
+            "Language": "IT",
+            "Description": "sala riunioni"
+          },
+          {
+            "Language": "ES",
+            "Description": "reuniones"
+          },
+          {
+            "Language": "PL",
+            "Description": "spotkania"
+          }
+        ]
+      },
+      {
+        "Number": 10275,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "feesten"
+          },
+          {
+            "Language": "FR",
+            "Description": "fêtes"
+          },
+          {
+            "Language": "DE",
+            "Description": "Feste"
+          },
+          {
+            "Language": "EN",
+            "Description": "celebrations"
+          },
+          {
+            "Language": "IT",
+            "Description": "locale per feste"
+          },
+          {
+            "Language": "ES",
+            "Description": "fiestas"
+          },
+          {
+            "Language": "PL",
+            "Description": "uroczystości"
+          }
+        ]
+      },
+      {
+        "Number": 10280,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "recepties"
+          },
+          {
+            "Language": "FR",
+            "Description": "réceptions"
+          },
+          {
+            "Language": "DE",
+            "Description": "Empfänge"
+          },
+          {
+            "Language": "EN",
+            "Description": "receptions"
+          },
+          {
+            "Language": "IT",
+            "Description": "ricevimenti"
+          },
+          {
+            "Language": "ES",
+            "Description": "recepciones"
+          },
+          {
+            "Language": "PL",
+            "Description": "przyjęcia"
+          }
+        ]
+      },
+      {
+        "Number": 10300,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "overhead projector"
+          },
+          {
+            "Language": "FR",
+            "Description": "projecteur"
+          },
+          {
+            "Language": "DE",
+            "Description": "Overheadprojektor"
+          },
+          {
+            "Language": "EN",
+            "Description": "overhead projector"
+          },
+          {
+            "Language": "IT",
+            "Description": "proiettore"
+          },
+          {
+            "Language": "ES",
+            "Description": "retroproyector"
+          },
+          {
+            "Language": "PL",
+            "Description": "rzutnik"
+          }
+        ]
+      },
+      {
+        "Number": 10310,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "projectiescherm"
+          },
+          {
+            "Language": "FR",
+            "Description": "écran de projection"
+          },
+          {
+            "Language": "DE",
+            "Description": "Projektionswand"
+          },
+          {
+            "Language": "EN",
+            "Description": "projector screen"
+          },
+          {
+            "Language": "IT",
+            "Description": "schermo per proiettore"
+          },
+          {
+            "Language": "ES",
+            "Description": "pantalla de proyección"
+          },
+          {
+            "Language": "PL",
+            "Description": "ekran"
+          }
+        ]
+      },
+      {
+        "Number": 10312,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "flip-over"
+          },
+          {
+            "Language": "FR",
+            "Description": "flip-chart"
+          },
+          {
+            "Language": "DE",
+            "Description": "Flip-Chart"
+          },
+          {
+            "Language": "EN",
+            "Description": "flip-over"
+          },
+          {
+            "Language": "IT",
+            "Description": "flip-chart"
+          },
+          {
+            "Language": "ES",
+            "Description": "flip-chart"
+          },
+          {
+            "Language": "PL",
+            "Description": "flip-chart"
+          }
+        ]
+      },
+      {
+        "Number": 10313,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "whiteboard"
+          },
+          {
+            "Language": "FR",
+            "Description": "whiteboard"
+          },
+          {
+            "Language": "DE",
+            "Description": "Whiteboard"
+          },
+          {
+            "Language": "EN",
+            "Description": "whiteboard"
+          },
+          {
+            "Language": "IT",
+            "Description": "whiteboard"
+          },
+          {
+            "Language": "ES",
+            "Description": "whiteboard"
+          },
+          {
+            "Language": "PL",
+            "Description": "whiteboard"
+          }
+        ]
+      },
+      {
+        "Number": 10320,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "beamer"
+          },
+          {
+            "Language": "FR",
+            "Description": "projecteur PC (beamer)"
+          },
+          {
+            "Language": "DE",
+            "Description": "Beamer"
+          },
+          {
+            "Language": "EN",
+            "Description": "beamer"
+          },
+          {
+            "Language": "IT",
+            "Description": "beamer"
+          },
+          {
+            "Language": "ES",
+            "Description": "proyector"
+          },
+          {
+            "Language": "PL",
+            "Description": "rzutnik"
+          }
+        ]
+      },
+      {
+        "Number": 10600,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "dansvloer"
+          },
+          {
+            "Language": "FR",
+            "Description": "piste de danse"
+          },
+          {
+            "Language": "DE",
+            "Description": "Tanzfläche"
+          },
+          {
+            "Language": "EN",
+            "Description": "dance floor"
+          },
+          {
+            "Language": "IT",
+            "Description": "sala da ballo"
+          },
+          {
+            "Language": "ES",
+            "Description": "pista de baile"
+          },
+          {
+            "Language": "PL",
+            "Description": "parkiet do tańca"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Type": 999,
+    "Description": [
+      {
+        "Language": "NL",
+        "Description": "Overig"
+      },
+      {
+        "Language": "FR",
+        "Description": "Autres"
+      },
+      {
+        "Language": "DE",
+        "Description": "Übrigen"
+      },
+      {
+        "Language": "EN",
+        "Description": "Others"
+      },
+      {
+        "Language": "IT",
+        "Description": "Altro"
+      },
+      {
+        "Language": "ES",
+        "Description": "Demás"
+      },
+      {
+        "Language": "PL",
+        "Description": "Inne"
+      }
+    ],
+    "Items": [
+      {
+        "Number": 10340,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "skischoenverwarmers"
+          },
+          {
+            "Language": "FR",
+            "Description": "chauffage pour bottines de ski"
+          },
+          {
+            "Language": "DE",
+            "Description": "Skischuhheizung"
+          },
+          {
+            "Language": "EN",
+            "Description": "ski boots warmer"
+          },
+          {
+            "Language": "IT",
+            "Description": "asciugatore calzature e doposci"
+          },
+          {
+            "Language": "ES",
+            "Description": "secador de botas"
+          },
+          {
+            "Language": "PL",
+            "Description": "ogrzewacz do butów narciarskich"
+          }
+        ]
+      },
+      {
+        "Number": 10348,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "balkon"
+          },
+          {
+            "Language": "FR",
+            "Description": "balcon"
+          },
+          {
+            "Language": "DE",
+            "Description": "Balkon"
+          },
+          {
+            "Language": "EN",
+            "Description": "balcony"
+          },
+          {
+            "Language": "IT",
+            "Description": "balcone"
+          },
+          {
+            "Language": "ES",
+            "Description": "balcón"
+          },
+          {
+            "Language": "PL",
+            "Description": "balkon"
+          }
+        ]
+      },
+      {
+        "Number": 10349,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "balkon of terras"
+          },
+          {
+            "Language": "FR",
+            "Description": "balcon ou terrasse"
+          },
+          {
+            "Language": "DE",
+            "Description": "Balkon oder Terrasse"
+          },
+          {
+            "Language": "EN",
+            "Description": "balcony or terrace"
+          },
+          {
+            "Language": "IT",
+            "Description": "balcone o terrazza"
+          },
+          {
+            "Language": "ES",
+            "Description": "balcón o terraza"
+          },
+          {
+            "Language": "PL",
+            "Description": "balkon czy taras"
+          }
+        ]
+      },
+      {
+        "Number": 10353,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "verwarming"
+          },
+          {
+            "Language": "FR",
+            "Description": "chauffage"
+          },
+          {
+            "Language": "DE",
+            "Description": "Heizung"
+          },
+          {
+            "Language": "EN",
+            "Description": "heating"
+          },
+          {
+            "Language": "IT",
+            "Description": "riscaldamento"
+          },
+          {
+            "Language": "ES",
+            "Description": "calefacción"
+          },
+          {
+            "Language": "PL",
+            "Description": "centralne ogrzewanie"
+          }
+        ]
+      },
+      {
+        "Number": 10354,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "airconditioning"
+          },
+          {
+            "Language": "FR",
+            "Description": "climatisation"
+          },
+          {
+            "Language": "DE",
+            "Description": "Klimaanlage"
+          },
+          {
+            "Language": "EN",
+            "Description": "airconditioning"
+          },
+          {
+            "Language": "IT",
+            "Description": "aria condizionata"
+          },
+          {
+            "Language": "ES",
+            "Description": "aire acondicionado"
+          },
+          {
+            "Language": "PL",
+            "Description": "klimatyzacja"
+          }
+        ]
+      },
+      {
+        "Number": 10356,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "terras"
+          },
+          {
+            "Language": "FR",
+            "Description": "terrasse"
+          },
+          {
+            "Language": "DE",
+            "Description": "Terrasse"
+          },
+          {
+            "Language": "EN",
+            "Description": "patio"
+          },
+          {
+            "Language": "IT",
+            "Description": "terrazza"
+          },
+          {
+            "Language": "ES",
+            "Description": "terraza"
+          },
+          {
+            "Language": "PL",
+            "Description": "taras"
+          }
+        ]
+      },
+      {
+        "Number": 10359,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "fietsenberging"
+          },
+          {
+            "Language": "FR",
+            "Description": "garage à vélos"
+          },
+          {
+            "Language": "DE",
+            "Description": "Fahrradkeller"
+          },
+          {
+            "Language": "EN",
+            "Description": "bicycle storage"
+          },
+          {
+            "Language": "IT",
+            "Description": "deposito biciclette"
+          },
+          {
+            "Language": "ES",
+            "Description": "trastero para bicicletas"
+          },
+          {
+            "Language": "PL",
+            "Description": "przechowalnia rowerów"
+          }
+        ]
+      },
+      {
+        "Number": 10368,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "ligstoelen"
+          },
+          {
+            "Language": "FR",
+            "Description": "transats"
+          },
+          {
+            "Language": "DE",
+            "Description": "Liegestühle"
+          },
+          {
+            "Language": "EN",
+            "Description": "deckchairs"
+          },
+          {
+            "Language": "IT",
+            "Description": "sedie a sdraio"
+          },
+          {
+            "Language": "ES",
+            "Description": "hamacas"
+          },
+          {
+            "Language": "PL",
+            "Description": "leżak"
+          }
+        ]
+      },
+      {
+        "Number": 10370,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "parasol"
+          },
+          {
+            "Language": "FR",
+            "Description": "parasol"
+          },
+          {
+            "Language": "DE",
+            "Description": "Sonnenschirm"
+          },
+          {
+            "Language": "EN",
+            "Description": "Parasol"
+          },
+          {
+            "Language": "IT",
+            "Description": "parasole"
+          },
+          {
+            "Language": "ES",
+            "Description": "sombrilla"
+          },
+          {
+            "Language": "PL",
+            "Description": "parasol"
+          }
+        ]
+      },
+      {
+        "Number": 10372,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "alarm"
+          },
+          {
+            "Language": "FR",
+            "Description": "alarme"
+          },
+          {
+            "Language": "DE",
+            "Description": "Alarm"
+          },
+          {
+            "Language": "EN",
+            "Description": "alarm"
+          },
+          {
+            "Language": "IT",
+            "Description": "allarme"
+          },
+          {
+            "Language": "ES",
+            "Description": "alarma"
+          },
+          {
+            "Language": "PL",
+            "Description": "alarm"
+          }
+        ]
+      },
+      {
+        "Number": 10374,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "aankleedkussen"
+          },
+          {
+            "Language": "FR",
+            "Description": "matelas à langer"
+          },
+          {
+            "Language": "DE",
+            "Description": "Wickelauflage"
+          },
+          {
+            "Language": "EN",
+            "Description": "changing mat"
+          },
+          {
+            "Language": "IT",
+            "Description": "fasciatoio"
+          },
+          {
+            "Language": "ES",
+            "Description": "cambiador"
+          },
+          {
+            "Language": "PL",
+            "Description": "matę"
+          }
+        ]
+      },
+      {
+        "Number": 10510,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "biljart"
+          },
+          {
+            "Language": "FR",
+            "Description": "billard"
+          },
+          {
+            "Language": "DE",
+            "Description": "Billard"
+          },
+          {
+            "Language": "EN",
+            "Description": "billiards"
+          },
+          {
+            "Language": "IT",
+            "Description": "biliardo"
+          },
+          {
+            "Language": "ES",
+            "Description": "mesa de billar"
+          },
+          {
+            "Language": "PL",
+            "Description": "bilard"
+          }
+        ]
+      },
+      {
+        "Number": 10520,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "fitnesstoestellen"
+          },
+          {
+            "Language": "FR",
+            "Description": "appareils de gym"
+          },
+          {
+            "Language": "DE",
+            "Description": "Fitnessgeräte"
+          },
+          {
+            "Language": "EN",
+            "Description": "fitness equipment"
+          },
+          {
+            "Language": "IT",
+            "Description": "attrezzi da palestra"
+          },
+          {
+            "Language": "ES",
+            "Description": "aparatos de gimnasia"
+          },
+          {
+            "Language": "PL",
+            "Description": "wyposażenie do fitnessu"
+          }
+        ]
+      },
+      {
+        "Number": 10530,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "lift"
+          },
+          {
+            "Language": "FR",
+            "Description": "ascenseur"
+          },
+          {
+            "Language": "DE",
+            "Description": "Lift"
+          },
+          {
+            "Language": "EN",
+            "Description": "lift"
+          },
+          {
+            "Language": "IT",
+            "Description": "ascensore"
+          },
+          {
+            "Language": "ES",
+            "Description": "ascensor"
+          },
+          {
+            "Language": "PL",
+            "Description": "winda"
+          }
+        ]
+      },
+      {
+        "Number": 10535,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "kluis"
+          },
+          {
+            "Language": "FR",
+            "Description": "coffre fort"
+          },
+          {
+            "Language": "DE",
+            "Description": "Safe"
+          },
+          {
+            "Language": "EN",
+            "Description": "safety deposit box"
+          },
+          {
+            "Language": "IT",
+            "Description": "cassaforte"
+          },
+          {
+            "Language": "ES",
+            "Description": "caja fuerte"
+          },
+          {
+            "Language": "PL",
+            "Description": "sejf"
+          }
+        ]
+      },
+      {
+        "Number": 10580,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "hondenmand"
+          },
+          {
+            "Language": "FR",
+            "Description": "panier pour chien"
+          },
+          {
+            "Language": "DE",
+            "Description": "Hundekorb"
+          },
+          {
+            "Language": "EN",
+            "Description": "dog's mat"
+          },
+          {
+            "Language": "IT",
+            "Description": "cuccia per cane"
+          },
+          {
+            "Language": "ES",
+            "Description": "manta para perro"
+          },
+          {
+            "Language": "PL",
+            "Description": "mata dla psa"
+          }
+        ]
+      },
+      {
+        "Number": 10590,
+        "Description": [
+          {
+            "Language": "NL",
+            "Description": "hondenschaal"
+          },
+          {
+            "Language": "FR",
+            "Description": "écuelle pour chien"
+          },
+          {
+            "Language": "DE",
+            "Description": "Hundeschale"
+          },
+          {
+            "Language": "EN",
+            "Description": "dog's bowl"
+          },
+          {
+            "Language": "IT",
+            "Description": "ciotola per cane"
+          },
+          {
+            "Language": "ES",
+            "Description": "cuenco para perro"
+          },
+          {
+            "Language": "PL",
+            "Description": "miska dla psa"
+          }
+        ]
+      }
+    ]
+  }
+]

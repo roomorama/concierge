@@ -4,6 +4,21 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [Unreleased]
+### Added
+- Synchronisation with AtLeisure
+- Ability to enable or disable context tracking at certain points in time.
+
+### Removed
+- removed `fee` field from `Quotation`. Fees should be included in the total.
+- removed `errors` field from `Quotation` and `Reservation`
+- removed `successful?` method from `Quotation` and `Reservation`
+
+### Changed
+- moved `JSONRPC` to `lib` folder
+- customized timeout option for `HTTPClient`
+- all clients return `Result` for both `quote` and `book` methods
+
 ## [0.4.3] - 2016-06-29
 ### Changed
 - Waytostay treats a few cases as unavailable quotation, rather than an error

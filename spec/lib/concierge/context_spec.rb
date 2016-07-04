@@ -42,6 +42,35 @@ RSpec.describe Concierge::Context do
     end
   end
 
+  describe "enabling and disabling context tracking" do
+    it "is enabled by default" do
+      subject.augment(incoming_request)
+      subject.augment(network_failure)
+      expect(subject.events).to eq [incoming_request, network_failure]
+    end
+
+    it "does not augment the context if it is disabled" do
+      subject.augment(incoming_request)
+
+      subject.disable!
+      subject.augment(network_failure)
+
+      expect(subject.events).to eq [incoming_request]
+    end
+
+    it "is capable of enabling event tracking back again" do
+      subject.augment(incoming_request)
+
+      subject.disable!
+      subject.augment(network_failure)
+
+      subject.enable!
+      subject.augment(network_request)
+
+      expect(subject.events).to eq [incoming_request, network_request]
+    end
+  end
+
   describe "#to_h" do
     before do
       allow(Time).to receive(:now) { Time.new("2016", "05", "21") }

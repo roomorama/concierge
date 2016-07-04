@@ -13,5 +13,9 @@ module API::Controllers::AtLeisure
       AtLeisure::Client.new(credentials).quote(params)
     end
 
+    def supplier_name
+      AtLeisure::Client::SUPPLIER_NAME
+    end
+
   end
 end

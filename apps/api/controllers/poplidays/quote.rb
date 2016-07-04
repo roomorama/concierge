@@ -12,5 +12,9 @@ module API::Controllers::Poplidays
       Poplidays::Client.new.quote(params)
     end
 
+    def supplier_name
+      Poplidays::Client::SUPPLIER_NAME
+    end
+
   end
 end

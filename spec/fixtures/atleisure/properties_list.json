@@ -1,0 +1,65 @@
+[
+  {
+    "HouseCode": "AT-0522-01",
+    "Country": "AT",
+    "Region": "sal",
+    "ParkCode": "",
+    "Brands": [
+      {
+        "SequenceNumber": 1,
+        "Brand": "BV"
+      }
+    ],
+    "HouseType": "Chalet",
+    "SkiArea": "EURS",
+    "Pets": "yes",
+    "Pool": "no",
+    "MaxNumberOfPersons": 8,
+    "NumberOfStars": 2,
+    "WGS84Latitude": 47.366535,
+    "WGS84Longitude": 12.806517,
+    "RealOrTest": "Real"
+  },
+  {
+    "HouseCode": "AT-1020-06",
+    "Country": "AT",
+    "Region": "nie",
+    "ParkCode": "",
+    "Brands": [
+      {
+        "SequenceNumber": 1,
+        "Brand": "BV"
+      }
+    ],
+    "HouseType": "Apartment",
+    "SkiArea": "",
+    "Pets": "no",
+    "Pool": "no",
+    "MaxNumberOfPersons": 6,
+    "NumberOfStars": 3,
+    "WGS84Latitude": 48.220628,
+    "WGS84Longitude": 16.405955,
+    "RealOrTest": "Real"
+  },
+  {
+    "HouseCode": "AT-1020-07",
+    "Country": "AT",
+    "Region": "nie",
+    "ParkCode": "",
+    "Brands": [
+      {
+        "SequenceNumber": 1,
+        "Brand": "BV"
+      }
+    ],
+    "HouseType": "Apartment",
+    "SkiArea": "",
+    "Pets": "no",
+    "Pool": "no",
+    "MaxNumberOfPersons": 8,
+    "NumberOfStars": 3,
+    "WGS84Latitude": 48.220628,
+    "WGS84Longitude": 16.405955,
+    "RealOrTest": "Real"
+  }
+]

@@ -33,7 +33,7 @@ RSpec.describe API::Controllers::AtLeisure::Booking do
   describe "#call" do
 
     before do
-      allow_any_instance_of(API::Support::JSONRPC).to receive(:request_id) { 888888888888 }
+      allow_any_instance_of(Concierge::JSONRPC).to receive(:request_id) { 888888888888 }
     end
 
     let(:response) { parse_response(described_class.new.call(params)) }

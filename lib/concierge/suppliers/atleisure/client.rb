@@ -3,7 +3,7 @@ module AtLeisure
   # +AtLeisure::Client+
   #
   # This class is a convenience class for the smaller classes under +AtLeisure+.
-  # For now, it allows the caller to get price quotations.
+  # For now, it allows the caller to get price quotations and create booking.
   #
   # Usage
   #
@@ -27,14 +27,7 @@ module AtLeisure
     # AtLeisure, a generic error message is sent back to the caller, and the failure
     # is logged.
     def quote(params)
-      result = AtLeisure::Price.new(credentials).quote(params)
-
-      if result.success?
-        result.value
-      else
-        announce_error("quote", result)
-        Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
-      end
+      AtLeisure::Price.new(credentials).quote(params)
     end
 
     # Always returns a +Reservation+.
@@ -43,15 +36,8 @@ module AtLeisure
     # is logged.
     def book(params)
       result = AtLeisure::Booking.new(credentials).book(params)
-
-      if result.success?
-        result.value.tap do |reservation|
-          database.create(reservation) # workaround to keep booking code for reservation
-        end
-      else
-        announce_error("booking", result)
-        Reservation.new(errors: { booking: "Could not create booking with remote supplier" })
-      end
+      database.create(result.value) if result.success? # workaround to keep booking code for reservation
+      result
     end
 
     private

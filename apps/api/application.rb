@@ -12,7 +12,6 @@ module API
       root __dir__
 
       load_paths << [
-        'support',
         'controllers',
         'views'
       ]

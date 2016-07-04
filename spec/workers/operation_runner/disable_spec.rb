@@ -8,8 +8,9 @@ RSpec.describe Workers::OperationRunner::Disable do
   let(:host) { create_host }
   let(:identifiers) { ["prop1", "prop2"] }
   let(:operation) { Roomorama::Client::Operations.disable(identifiers) }
+  let(:roomorama_client) { Roomorama::Client.new(host.access_token) }
 
-  subject { described_class.new(host, operation) }
+  subject { described_class.new(host, operation, roomorama_client) }
 
   describe "#perform" do
     it "returns the underlying network problem, if any" do

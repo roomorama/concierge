@@ -86,12 +86,12 @@ RSpec.describe Waytostay::Client do
       ]}
 
       it "should send 2 posts, book and confirm" do
-        expect_any_instance_of(API::Support::OAuth2Client).to receive(:post).twice.and_call_original
+        expect_any_instance_of(Concierge::OAuth2Client).to receive(:post).twice.and_call_original
         reservation = supplier_client.book(success_params)
       end
 
       it "should only send 1 post, book, when there're errors" do
-        expect_any_instance_of(API::Support::OAuth2Client).to receive(:post).once.and_call_original
+        expect_any_instance_of(Concierge::OAuth2Client).to receive(:post).once.and_call_original
         reservation = supplier_client.book(error_params_list.first)
       end
 
@@ -154,7 +154,7 @@ RSpec.describe Waytostay::Client do
 
     it "should announce missing fields from response for malformed responses" do
       quotation = stubbed_client.quote({ property_id: "malformed_response", check_in: Date.today + 10, check_out: Date.today + 20, guests: 2 })
-      expect(quotation).not_to be_successful
+      expect(quotation).not_to be_success
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
     end

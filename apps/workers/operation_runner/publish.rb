@@ -14,13 +14,15 @@ class Workers::OperationRunner
   # to understand the reason of the occurrence.
   class Publish
 
-    attr_reader :host, :operation
+    attr_reader :host, :operation, :roomorama_client
 
     # host      - a +Host+ instance.
     # operation - a +Roomorama::Client::Operations::Publish+ instance
-    def initialize(host, operation)
-      @host      = host
-      @operation = operation
+    # client    - a +Roomorama::Client+ instance properly configured
+    def initialize(host, operation, client)
+      @host             = host
+      @operation        = operation
+      @roomorama_client = client
     end
 
     # executes the publishing action. Makes the API call and persists the property
@@ -53,10 +55,6 @@ class Workers::OperationRunner
       property.to_h.tap do |attributes|
         attributes.delete(:availabilities)
       end
-    end
-
-    def roomorama_client
-      @roomorama_client ||= Roomorama::Client.new(host.access_token)
     end
 
   end

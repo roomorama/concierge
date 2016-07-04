@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<response>
+  <errors>
+    <error>
+      <code>1001</code>
+      <description>Valid XML request is not suppllied.</description>
+    </error>
+  </errors>
+</response>

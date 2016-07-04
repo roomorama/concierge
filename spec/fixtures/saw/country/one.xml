@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+  <countries>
+    <country id="1">
+      <country_name>United States</country_name>	
+    </country>
+  </countries>
+</response>
