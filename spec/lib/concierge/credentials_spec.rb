@@ -61,7 +61,7 @@ RSpec.describe Concierge::Credentials do
 
       expect {
         Concierge::Credentials.validate_credentials!({
-          "supplier" => ["username", "password", "token"]
+          "supplier" => ["username", "password", "token", "test_mode"]
         })
       }.not_to raise_error
 
