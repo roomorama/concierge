@@ -60,6 +60,16 @@ RSpec.describe Ciirus::Commands::PropertyRatesFetcher do
       ]
     end
 
+    context 'when remote call internal error happened' do
+      it 'returns result with error' do
+        allow_any_instance_of(Savon::Client).to receive(:call) { raise Savon::Error }
+        result = subject.call(params)
+
+        expect(result).not_to be_success
+        expect(result.error.code).to eq :savon_error
+      end
+    end
+
     context 'when many rates' do
       it 'returns array of rates' do
         stub_call(method: :get_property_rates, response: success_response)

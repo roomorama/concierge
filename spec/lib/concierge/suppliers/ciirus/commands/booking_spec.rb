@@ -47,6 +47,17 @@ RSpec.describe Ciirus::Commands::Booking do
   end
 
   describe '#call' do
+
+    context 'when remote call internal error happened' do
+      it 'returns result with error' do
+        allow_any_instance_of(Savon::Client).to receive(:call) { raise Savon::Error }
+        result = subject.call(params)
+
+        expect(result).not_to be_success
+        expect(result.error.code).to eq :savon_error
+      end
+    end
+
     context 'when xml response is correct' do
       it 'returns success reservation' do
         stub_call(method: :make_booking, response: success_response)

@@ -36,6 +36,8 @@ module Ciirus
           else
             error_result(result_hash)
           end
+        else
+          result
         end
       end
 

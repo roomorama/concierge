@@ -27,6 +27,8 @@ module Ciirus
           result_hash = to_safe_hash(result.value)
           property_rate = Ciirus::Mappers::PropertyAvailable.build(result_hash)
           Result.new(property_rate)
+        else
+          result
         end
       end
 
