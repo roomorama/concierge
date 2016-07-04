@@ -7,8 +7,11 @@ module Support
   # SOAP stubbing method helpers for SOAP related specs.
   # The main goal is to encapsulate savon client used under the hood of
   # +API::Support::SOAPClient+ and don't use savon.mock!/unmock! directly
-  # in the tests
-  #
+  # in the tests.
+  # Be careful in tests when you set wsdl option of Savon.client with url. It actual
+  # do remote call. To avoid this behavior use static wsdl file:
+  # 
+  #   client = Savon.client(wsdl: read_fixture('ciirus/wsdl.xml'))
   module SOAPStubbing
     include Savon::SpecHelper
 
