@@ -47,17 +47,17 @@ module AtLeisure
       info    = meta_data['BasicInformationV3']
       info_en = meta_data['LanguagePackENV4']
 
-      property.title               = info['Name']
-      property.description         = info_en['Description']
-      property.number_of_bedrooms  = info['NumberOfBedrooms']
-      property.number_of_bathrooms = info['NumberOfBathrooms'].to_f
-      property.surface             = info['DimensionM2']
-      property.surface_unit        = 'metric'
-      property.max_guests          = info['MaxNumberOfPersons']
-      property.pets_allowed        = info['NumberOfPets'] > 0
-      property.currency            = Price::CURRENCY
+      property.title                = info['Name']
       property.description          = info_en['Description'] || info_en['ShortDescription']
+      property.number_of_bedrooms   = info['NumberOfBedrooms']
+      property.number_of_bathrooms  = info['NumberOfBathrooms'].to_f
+      property.surface              = info['DimensionM2']
+      property.surface_unit         = 'metric'
+      property.max_guests           = info['MaxNumberOfPersons']
+      property.pets_allowed         = info['NumberOfPets'] > 0
+      property.currency             = Price::CURRENCY
       property.cancellation_policy  = CANCELLATION_POLICY
+      property.default_to_available = false
 
       property.country_code = info['Country']
       property.city         = info_en['City']
@@ -197,7 +197,8 @@ module AtLeisure
       actual_periods = periods.select(&:valid?)
 
       min_price = actual_periods.map(&:daily_price).min
-
+      dates_size = actual_periods.map {|period| period.dates.size }
+      property.minimum_stay = dates_size.min
       property.nightly_rate = min_price
       property.weekly_rate  = min_price * 7
       property.monthly_rate = min_price * 30
