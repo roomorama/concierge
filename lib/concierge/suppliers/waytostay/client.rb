@@ -5,13 +5,6 @@ module Waytostay
   # This class is a convenience class for interacting with Waytostay.
   # OAuth2 is used as authentication.
   #
-  # Usage
-  #
-  #   quotation = Waytostay::Client.new(credentials).quote(stay_params)
-  #   if quotation.sucessful?
-  #     # ...
-  #   end
-  #
   # For more information on how to interact with Waytostay, check the project Wiki.
   class Client
 
