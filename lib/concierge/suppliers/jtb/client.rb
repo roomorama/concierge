@@ -47,16 +47,6 @@ module JTB
 
     private
 
-    def announce_error(operation, result)
-      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-        operation:   operation,
-        supplier:    SUPPLIER_NAME,
-        code:        result.error.code,
-        context:     Concierge.context.to_h,
-        happened_at: Time.now
-      })
-    end
-
     def database
       @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
     end
