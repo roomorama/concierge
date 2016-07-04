@@ -2,7 +2,7 @@ require_relative "../booking"
 
 module API::Controllers::SAW
 
-  # +API::Controllers::AtLeisure::Booking+
+  # +API::Controllers::SAW::Booking+
   #
   # Performs create booking for properties from SAW.
   class Booking
