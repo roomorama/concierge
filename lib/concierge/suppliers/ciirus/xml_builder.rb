@@ -60,6 +60,26 @@ module Ciirus
       message.doc.root.children.to_xml
     end
 
+    # Builds request message for make booking Ciirus API method.
+    # arrive_date and depart_date are dates in format 'dd MMM yyyy'
+    def make_booking(property_id, arrival_date, departure_date, guest)
+      message = builder.new(encoding: 'utf-8') do |xml|
+        xml.root do
+          build_credentials(xml)
+          xml.BD do
+            xml.ArrivalDate arrival_date
+            xml.DepartureDate departure_date
+            xml.PropertyID property_id
+            guest.to_xml(xml)
+            xml.PoolHeatRequired false
+            xml.xmlMsg
+            xml.jSonMsg
+          end
+        end
+      end
+      message.doc.root.children.to_xml
+    end
+
     private
 
     def builder

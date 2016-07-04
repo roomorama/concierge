@@ -46,4 +46,24 @@ RSpec.describe Ciirus::XMLBuilder do
 
     it { expect(message).to eq valid_request}
   end
+
+  describe '#make_booking' do
+    let(:property_id) { 10 }
+    let(:guest) do
+      Ciirus::BookingGuest.new('John Buttler',
+                               'my@email.com',
+                               'Long Island 123',
+                               '+3 675 45879')
+    end
+    let(:arrival_date) { '1 May 2016' }
+    let(:departure_date) { '10 May 2016' }
+    let(:valid_request) do
+      read_fixture('ciirus/valid_make_booking_request.xml')
+    end
+    let(:message) do
+      subject.make_booking(property_id, arrival_date, departure_date, guest)
+    end
+
+    it { expect(message).to eq valid_request }
+  end
 end
