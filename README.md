@@ -107,12 +107,16 @@ module API::Controllers::Supplier
     def quote_price(params)
       Supplier::Client.new.quote(params)
     end
+    
+    def supplier_name
+      Supplier::Client::SUPPLIER_NAME
+    end
 
   end
 end
 ~~~
 
-`quote_price` is the only method whose implementation is necessary. You can assume
+`quote_price` and `supplier_name` are only method whose implementation is necessary. You can assume
 that the parameters at this point were already validated, so required parameters
 will be present and valid.
 
@@ -121,11 +125,12 @@ for the supplier's API.
 
 Note that the `quote_price` method:
 
-* **must** return a `Quotation` object
+* **must** return a `Result` object wrapping a `Quotation` object when operation succeeds and return a `Result` object wrapping `nil` object when operation fails.
+
 * does not raise an exception if the supplier API is unavailable or errors out or any
 network-related issue is happening.
 
-If there are errors during the execution of the `quote_price` method, the `Quotation`
+If there are errors during the execution of the `quote_price` method, the `Result`
 object returned must include a non-empty `errors` list to be returned to the caller,
 which will receive a `503` HTTP status.
 
@@ -146,11 +151,15 @@ module API::Controllers::Supplier
       Supplier::Client.new.book(params)
     end
 
+    def supplier_name
+      Supplier::Client::SUPPLIER_NAME
+    end
+
   end
 end
 ~~~
 
-`create_booking` is the only method whose implementation is necessary. You can assume
+`create_booking` and `supplier_name` are only method whose implementation is necessary. You can assume
 that the parameters at this point were already validated, so required parameters
 will be present and valid.
 
@@ -159,11 +168,11 @@ for the supplier's API.
 
 Note that the `create_booking` method:
 
-* **must** return a `Reservation` object
+* **must** return a `Result` object wrapping a `Reservation` object when operation succeeds and return a `Result` object wrapping `nil` object when operation fails.
 * does not raise an exception if the supplier API is unavailable or errors out or any
 network-related issue is happening.
 
-If there are errors during the execution of the `create_booking` method, the `Reservation`
+If there are errors during the execution of the `create_booking` method, the `Result`
 object returned must include a non-empty `errors` list to be returned to the caller,
 which will receive a `503` HTTP status.
 
