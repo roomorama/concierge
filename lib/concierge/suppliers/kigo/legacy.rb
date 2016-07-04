@@ -6,13 +6,6 @@ module Kigo
   # similarity with the new Kigo Channels API, some properties can only
   # be queried against the old endpoints.
   #
-  # Usage
-  #
-  #   quotation = Kigo::Legacy.new(credentials).quote(stay_params)
-  #   if quotation.successful?
-  #     # ...
-  #   end
-  #
   # For more information on how to interact with Kigo Channels API and the Kigo
   # Legacy API, check the project Wiki.
   class Legacy
@@ -24,8 +17,21 @@ module Kigo
       @credentials = credentials
     end
 
-    # Always returns a +Quotation+.
-    # Uses an instance +Kigo::LegacyRequest+ to dictate parameters and endpoints.
+    # Quote prices
+    #
+    # If an error happens in any step in the process of getting a response back from
+    # Kigo, a generic error message is sent back to the caller, and the failure
+    # is logged.
+    #
+    # Usage
+    #
+    #   result = Kigo::Legacy.new(credentials).quote(stay_params)
+    #   if result.success?
+    #     # ...
+    #   end
+    #
+    # Returns a +Result+ wrapping a +Quotation+ when operation succeeds
+    # Returns a +Result+ wrapping a nil object when operation fails
     def quote(params)
       Kigo::Price.new(credentials, request_handler: request_handler).quote(params)
     end
