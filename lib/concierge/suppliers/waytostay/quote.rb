@@ -19,7 +19,14 @@ module Waytostay
       "pricing.currency"
     ]
 
-    # Always returns a +Result+ which wraps a +Quotation+.
+    # Quote prices
+    # 
+    # If an error happens in any step in the process of getting a response back from
+    # Waytostay, a generic error message is sent back to the caller, and the failure
+    # is logged.
+    #
+    # Returns a +Result+ wrapping a +Quotation+ when operation succeeds
+    # Returns a +Result+ wrapping a nil object when operation fails
     def quote(params)
       post_body = {
         property_reference: params[:property_id],

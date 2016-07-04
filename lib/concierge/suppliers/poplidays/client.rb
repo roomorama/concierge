@@ -5,21 +5,25 @@ module Poplidays
   # This class is a convenience class for the smaller classes under +Poplidays+.
   # For now, it allows the caller to get price quotations.
   #
-  # Usage
-  #
-  #   quotation = Poplidays::Client.new.quote(stay_params)
-  #   if quotation.sucessful?
-  #     # ...
-  #   end
-  #
   # For more information on how to interact with Poplidays, check the project Wiki.
   class Client
     SUPPLIER_NAME = "Poplidays"
 
-    # Always returns a +Quotation+.
+    # Quote prices
+    #
     # If an error happens in any step in the process of getting a response back from
-    # AtLeisure, a generic error message is sent back to the caller, and the failure
+    # Poplidays, a generic error message is sent back to the caller, and the failure
     # is logged.
+    #
+    # Usage
+    #
+    #   result = Poplidays::Client.new(credentials).quote(stay_params)
+    #   if result.success?
+    #     # ...
+    #   end
+    #
+    # Returns a +Result+ wrapping a +Quotation+ when operation succeeds
+    # Returns a +Result+ wrapping a nil object when operation fails
     def quote(params)
       Poplidays::Price.new.quote(params)
     end
