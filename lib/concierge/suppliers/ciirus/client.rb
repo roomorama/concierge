@@ -28,5 +28,22 @@ module Ciirus
     def quote(params)
       Ciirus::Commands::QuoteFetcher.new(credentials).call(params)
     end
+
+    # Returns a +Result+ wrapping +Reservation+ in success case.
+    # If an error happens in any step in the process of getting a response back from
+    # Ciirus, a generic error message is sent back to the caller, and the failure
+    # is logged.
+    def book(params)
+      Ciirus::Commands::Booking.new(credentials).call(params)
+      database.create(result.value) if result.success? # workaround to keep booking code for reservation
+      result
+    end
+
+    private
+
+    def database
+      @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
+    end
+
   end
 end
