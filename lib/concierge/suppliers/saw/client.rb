@@ -4,13 +4,6 @@ module SAW
   # This class is a convenience class for the smaller classes under +SAW+.
   # For now, it allows the caller to get price quotations.
   #
-  # Usage
-  #
-  #   quotation = SAW::Client.new(credentials).quote(params)
-  #   if quotation.sucessful?
-  #     # ...
-  #   end
-  #
   # For more information on how to interact with SAW, check the project Wiki.
   class Client
     SUPPLIER_NAME = "SAW"
@@ -21,62 +14,45 @@ module SAW
       @credentials = credentials
     end
 
-    # Always returns a +Quotation+.
+    # Quote SAW properties prices
     # If an error happens in any step in the process of getting a response back
-    # from SAW, a generic error message is sent back to the caller, and the
-    # failure is logged.
+    # from SAW, a result object with error is returned  
+    #
+    # Usage
+    #
+    #   comamnd = SAW::Client.new(credentials)
+    #   result = command.quote(params)
+    #
+    #   if result.sucessful?
+    #     # ...
+    #   end
+    #
+    # Returns a +Result+ wrapping a +Quotation+ when operation succeeds
+    # Returns a +Result+ wrapping a nil object when operation fails
     def quote(params)
-      result = SAW::Commands::PriceFetcher.new(credentials).call(params)
-
-      if result.success?
-        result.value
-      else
-        announce_error(:quote, result)
-        error_quotation
-      end
+      command = SAW::Commands::PriceFetcher.new(credentials)
+      command.call(params)
     end
 
-    # Always returns a +Reservation+.
+    # SAW properties booking.
+    #
     # If an error happens in any step in the process of getting a response back
-    # from SAW, a generic error message is sent back to the caller, and the
-    # failure is logged.
+    # from SAW, a result object with error is returned  
+    #
+    # Usage
+    #
+    #   comamnd = SAW::Client.new(credentials)
+    #   result = command.book(params)
+    #
+    #   if result.sucessful?
+    #     # ...
+    #   end
+    #
+    # Returns a +Result+ wrapping a +Reservation+ when operation succeeds
+    # Returns a +Result+ wrapping a nil object when operation fails
     def book(params)
-      result = SAW::Commands::Booking.new(credentials).call(params)
-
-      if result.success?
-        result.value.tap { |reservation| database.create(reservation) }
-      else
-        announce_error(:booking, result)
-        error_reservation
-      end
-    end
-
-    private
-    def database
-      @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
-    end
-
-    def error_quotation
-      Quotation.new(
-        errors: { quote: "Could not quote price with remote supplier" }
-      )
-    end
-
-    def error_reservation
-      Reservation.new(
-        errors: { booking: "Could not create booking with remote supplier" }
-      )
-    end
-    
-    def announce_error(operation, result)
-      info = {
-        operation:   operation,
-        supplier:    SUPPLIER_NAME,
-        code:        result.error.code,
-        context:     Concierge.context.to_h,
-        happened_at: Time.now
-      }
-      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, info)
+      command = SAW::Commands::Booking.new(credentials)
+      command.call(params)
     end
   end
 end

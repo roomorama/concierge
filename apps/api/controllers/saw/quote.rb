@@ -1,4 +1,5 @@
 require_relative "../quote"
+require_relative "../params/multi_unit_quote"
 
 module API::Controllers::SAW
   # API::Controllers::SAW::Quote
@@ -20,6 +21,10 @@ module API::Controllers::SAW
     def quote_price(params)
       credentials = Concierge::Credentials.for("SAW")
       SAW::Client.new(credentials).quote(params)
+    end
+    
+    def supplier_name
+      SAW::Client::SUPPLIER_NAME
     end
   end
 end
