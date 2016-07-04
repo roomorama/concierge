@@ -1,0 +1,12 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <soap:Body>
+    <MakeBookingResponse xmlns="http://xml.ciirus.com/">
+      <MakeBookingResult>
+        <BookingPlaced>true</BookingPlaced>
+        <ErrorMessage/>
+        <BookingID>873184</BookingID>
+        <TotalAmountIncludingTax>2858.850000</TotalAmountIncludingTax>
+      </MakeBookingResult>
+    </MakeBookingResponse>
+  </soap:Body>
+</soap:Envelope>

@@ -1,0 +1,12 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <soap:Body>
+    <MakeBookingResponse xmlns="http://xml.ciirus.com/">
+      <MakeBookingResult>
+        <BookingPlaced>false</BookingPlaced>
+        <ErrorMessage>Another reservation already exists overlapping your selected dates</ErrorMessage>
+        <BookingID>0</BookingID>
+        <TotalAmountIncludingTax>0</TotalAmountIncludingTax>
+      </MakeBookingResult>
+    </MakeBookingResponse>
+  </soap:Body>
+</soap:Envelope>
