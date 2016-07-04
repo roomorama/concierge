@@ -22,5 +22,9 @@ module API::Controllers::SAW
       credentials = Concierge::Credentials.for("SAW")
       SAW::Client.new(credentials).book(params)
     end
+
+    def supplier_name
+      SAW::Client::SUPPLIER_NAME
+    end
   end
 end

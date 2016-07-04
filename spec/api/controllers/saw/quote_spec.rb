@@ -20,9 +20,13 @@ RSpec.describe API::Controllers::SAW::Quote do
   it "performs successful request returning Quotation object" do
     mock_request(:propertyrates, :success)
 
-    quotation = controller.quote_price(request_params)
+    result = controller.quote_price(request_params)
+    
+    expect(result.success?).to be true
+    expect(result).to be_kind_of(Result)
+    expect(result.value).not_to be nil
 
-    expect(quotation.successful?).to be true
+    quotation = result.value
     expect(quotation).to be_kind_of(Quotation)
     expect(quotation.total).to eq(641.3)
     expect(quotation.currency).to eq('EUR')
@@ -32,12 +36,11 @@ RSpec.describe API::Controllers::SAW::Quote do
     it "returns a quotation with an appropriate error" do
       mock_request(:propertyrates, :request_only)
 
-      quotation = controller.quote_price(request_params)
-
-      expect(quotation.successful?).to be false
-      expect(quotation.errors[:quote]).to eq(
-        "Could not quote price with remote supplier"
-      )
+      result = controller.quote_price(request_params)
+      
+      expect(result.success?).to be false
+      expect(result).to be_kind_of(Result)
+      expect(result.value).to be nil
     end
   end
 
@@ -45,12 +48,11 @@ RSpec.describe API::Controllers::SAW::Quote do
     it "returns a quotation with an appropriate error" do
       mock_request(:propertyrates, :currency_error)
       
-      quotation = controller.quote_price(request_params)
-
-      expect(quotation.successful?).to be false
-      expect(quotation.errors[:quote]).to eq(
-        "Could not quote price with remote supplier"
-      )
+      result = controller.quote_price(request_params)
+      
+      expect(result.success?).to be false
+      expect(result).to be_kind_of(Result)
+      expect(result.value).to be nil
     end
   end
 
@@ -58,12 +60,11 @@ RSpec.describe API::Controllers::SAW::Quote do
     it "returns a quotation with an appropriate error" do
       mock_request(:propertyrates, :rates_not_available)
 
-      quotation = controller.quote_price(request_params)
+      result = controller.quote_price(request_params)
       
-      expect(quotation.successful?).to be false
-      expect(quotation.errors[:quote]).to eq(
-        "Could not quote price with remote supplier"
-      )
+      expect(result.success?).to be false
+      expect(result).to be_kind_of(Result)
+      expect(result.value).to be nil
     end
   end
 
@@ -71,12 +72,11 @@ RSpec.describe API::Controllers::SAW::Quote do
     it "returns a quotation with an appropriate error" do
       mock_bad_xml_request(:propertyrates)
 
-      quotation = controller.quote_price(request_params)
+      result = controller.quote_price(request_params)
       
-      expect(quotation.successful?).to be false
-      expect(quotation.errors[:quote]).to eq(
-        "Could not quote price with remote supplier"
-      )
+      expect(result.success?).to be false
+      expect(result).to be_kind_of(Result)
+      expect(result.value).to be nil
     end
   end
 
@@ -85,16 +85,23 @@ RSpec.describe API::Controllers::SAW::Quote do
       request_params[:unit_id] = "9733"
       mock_request(:propertyrates, :success_multiple_units)
 
-      quotation = controller.quote_price(request_params)
+      result = controller.quote_price(request_params)
+      expect(result.success?).to be true
+      expect(result).to be_kind_of(Result)
+      expect(result.value).not_to be nil
 
-      expect(quotation.successful?).to be true
+      quotation = result.value
       expect(quotation).to be_kind_of(Quotation)
       expect(quotation.total).to eq(72.25)
       expect(quotation.currency).to eq('EUR')
       
       request_params[:unit_id] = "9734"
-      quotation = controller.quote_price(request_params)
-      expect(quotation.successful?).to be true
+      result = controller.quote_price(request_params)
+      expect(result.success?).to be true
+      expect(result).to be_kind_of(Result)
+      expect(result.value).not_to be nil
+
+      quotation = result.value
       expect(quotation).to be_kind_of(Quotation)
       expect(quotation.total).to eq(170)
       expect(quotation.currency).to eq('EUR')
