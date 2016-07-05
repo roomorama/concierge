@@ -35,10 +35,10 @@ module Ciirus
       def options
         wsdl = "#{credentials.url}/#{PATH}?wsdl"
         {
-            wsdl:                 wsdl,
-            env_namespace:        :soap12,
-            namespace_identifier: nil,
-            soap_version:         2
+          wsdl:                 wsdl,
+          env_namespace:        :soap12,
+          namespace_identifier: nil,
+          soap_version:         2
         }
       end
 

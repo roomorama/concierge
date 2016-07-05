@@ -32,22 +32,22 @@ module Ciirus
       Filter = Struct.new(:filter_name, :default_value)
 
       OPTIONS = {
-          has_pool:          Filter.new('HasPool', 2),
-          has_spa:           Filter.new('HasSpa', 2),
-          private_fance:     Filter.new('PrivacyFence', 2),
-          communal_gym:      Filter.new('CommunalGym', 2),
-          has_games_room:    Filter.new('HasGamesRoom', 2),
-          is_gas_free:       Filter.new('IsGasFree', false),
-          sleeps:            Filter.new('Sleeps', 0),
-          property_class:    Filter.new('PropertyClass', 0),
-          conservation_view: Filter.new('ConservationView', 2),
-          bedrooms:          Filter.new('Bedrooms', 0),
-          water_view:        Filter.new('WaterView', 2),
-          lake_view:         Filter.new('LakeView', 2),
-          wifi:              Filter.new('WiFi', 2),
-          pets_allowed:      Filter.new('PetsAllowed', 2),
-          on_golf_course:    Filter.new('OnGolfCourse', 2),
-          south_facing_pool: Filter.new('SouthFacingPool', 2)
+        has_pool:          Filter.new('HasPool', 2),
+        has_spa:           Filter.new('HasSpa', 2),
+        private_fance:     Filter.new('PrivacyFence', 2),
+        communal_gym:      Filter.new('CommunalGym', 2),
+        has_games_room:    Filter.new('HasGamesRoom', 2),
+        is_gas_free:       Filter.new('IsGasFree', false),
+        sleeps:            Filter.new('Sleeps', 0),
+        property_class:    Filter.new('PropertyClass', 0),
+        conservation_view: Filter.new('ConservationView', 2),
+        bedrooms:          Filter.new('Bedrooms', 0),
+        water_view:        Filter.new('WaterView', 2),
+        lake_view:         Filter.new('LakeView', 2),
+        wifi:              Filter.new('WiFi', 2),
+        pets_allowed:      Filter.new('PetsAllowed', 2),
+        on_golf_course:    Filter.new('OnGolfCourse', 2),
+        south_facing_pool: Filter.new('SouthFacingPool', 2)
       }
 
       OPTIONS.keys.each do |key|

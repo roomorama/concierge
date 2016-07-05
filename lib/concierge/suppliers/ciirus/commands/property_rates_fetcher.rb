@@ -38,7 +38,7 @@ module Ciirus
 
       def build_property_rates(rates_hash)
         rates = rates_hash.get(
-            'get_property_rates_response.get_property_rates_result.rate'
+          'get_property_rates_response.get_property_rates_result.rate'
         )
         if rates
           Array(rates).map do |rate|

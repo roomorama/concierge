@@ -10,11 +10,7 @@ module Ciirus
   #   message = builder.is_property_available(request_params)
   #   message # => xml string
   class XMLBuilder
-    NAMESPACES = {
-        'xmlns:xsi'     => 'http://www.w3.org/2001/XMLSchema-instance',
-        'xmlns:xsd'     => 'http://www.w3.org/2001/XMLSchema',
-        'xmlns:soap12'  => 'http://www.w3.org/2003/05/soap-envelope'
-    }
+
     attr_reader :credentials
 
     def initialize(credentials)
