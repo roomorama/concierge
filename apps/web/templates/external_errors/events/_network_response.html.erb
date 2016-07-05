@@ -28,7 +28,7 @@
     <% end %>
   </div>
 
-  <% if event[:body] %>
+  <% unless event[:body].to_s.strip.empty? %>
     <p>Response body:</p>
 
     <%

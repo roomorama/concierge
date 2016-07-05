@@ -14,6 +14,7 @@ how this file is formatted and how the process works.
 - customized timeout option for `HTTPClient`
 - all clients return `Result` for both `quote` and `book` methods
 - fixed an issue when declaring boolean values on the `credentials.yml` file.
+- do not display response body on the `web` app if it is empty.
 
 ### Removed
 - removed `fee` field from `Quotation`. Fees should be included in the total.
