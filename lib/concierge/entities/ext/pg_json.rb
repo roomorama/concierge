@@ -19,9 +19,9 @@ module Concierge
   # database.
   class PGJSON < Hanami::Model::Coercer
 
-    # value - if present, expected to be a Ruby Hash.
+    # value - if present, expected to be a Ruby +Hash+ or a +Concierge::SafeAccessHash+.
     def self.dump(value)
-      Sequel.pg_json(value)
+      Sequel.pg_json(value.to_h)
     end
 
     def self.load(value)
