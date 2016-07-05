@@ -14,6 +14,17 @@ RSpec.describe ExternalErrorRepository do
     end
   end
 
+  describe ".update" do
+    it "allows an error to be updated and saved back to the database with proper JSON coercion" do
+      error = create_external_error(context: { events: [] })
+      error.context[:events] << "new-event"
+
+      expect {
+        ExternalErrorRepository.update(error)
+      }.not_to raise_error
+    end
+  end
+
   describe ".most_recent" do
     it "is nil when the table is empty" do
       expect(described_class.most_recent).to be_nil
