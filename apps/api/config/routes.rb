@@ -9,6 +9,7 @@ post '/ciirus/quote',      to: 'ciirus#quote'
 post '/jtb/booking',         to: 'j_t_b#booking'
 post '/atleisure/booking',   to: 'at_leisure#booking'
 post '/waytostay/booking',   to: 'waytostay#booking'
+post '/ciirus/booking',      to: 'ciirus#booking'
 post '/kigo/booking',        to: 'kigo#booking'
 post '/kigo/legacy/booking', to: 'kigo/legacy#booking'
 
