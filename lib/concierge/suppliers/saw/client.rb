@@ -68,7 +68,8 @@ module SAW
     #     # ...
     #   end
     #
-    # Returns a +Result+ wrapping a +Reservation+ when operation succeeds
+    # Returns a +Result+ wrapping a +String+ with booking id number when
+    # operation succeeds
     # Returns a +Result+ wrapping a nil object when operation fails
     def cancel(params)
       command = SAW::Commands::Cancel.new(credentials)
