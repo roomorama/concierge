@@ -53,5 +53,26 @@ module SAW
       command = SAW::Commands::Booking.new(credentials)
       command.call(params)
     end
+
+    # Cancels a given reservation_id
+    #
+    # Always returns a +Result+.
+    # Augments any error on the request context.
+    #
+    # Usage
+    #
+    #   client = SAW::Client.new(credentials)
+    #   result = client.cancel(params)
+    #
+    #   if result.sucess?
+    #     # ...
+    #   end
+    #
+    # Returns a +Result+ wrapping a +Reservation+ when operation succeeds
+    # Returns a +Result+ wrapping a nil object when operation fails
+    def cancel(params)
+      command = SAW::Commands::Cancel.new(credentials)
+      command.call(params[:reservation_id])
+    end
   end
 end

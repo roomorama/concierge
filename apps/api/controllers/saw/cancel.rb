@@ -2,9 +2,9 @@ require_relative "../cancel"
 
 module API::Controllers::SAW
 
-  # API::Controllers::SAW::Cancel
+  # +API::Controllers::SAW::Cancel+
   #
-  # Performs cancel reservations for properties from SAW.
+  # Cancels reservation from SAW.
   class Cancel
     include API::Controllers::Cancel
 

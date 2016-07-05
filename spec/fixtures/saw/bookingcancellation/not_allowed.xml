@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<response>
+  <errors>
+    <error>
+      <code>9008</code>
+      <description>Booking cancellation is not allowed for this booking.</description>
+    </error>
+  </errors>
+</response>
