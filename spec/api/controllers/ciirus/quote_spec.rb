@@ -17,8 +17,6 @@ RSpec.describe API::Controllers::Ciirus::Quote do
 
   let(:wsdl) { read_fixture('ciirus/wsdl.xml') }
 
-  subject { described_class.new(credentials) }
-
   before do
     # Replace remote call for wsdl with static wsdl
     allow_any_instance_of(Ciirus::Commands::QuoteFetcher).to receive(:options).and_wrap_original do |m, *args|
