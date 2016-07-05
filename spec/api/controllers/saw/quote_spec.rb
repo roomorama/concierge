@@ -1,18 +1,34 @@
 require "spec_helper"
+require_relative "../shared/quote_validations"
+require_relative "../shared/external_error_reporting"
 
 RSpec.describe API::Controllers::SAW::Quote do
   include Support::HTTPStubbing
   include Support::Fixtures
   include Support::SAW::MockRequest
   
-  let(:request_params) do
+  let(:params) do
     {
       property_id: 1,
       unit_id: 10612,
       check_in: "2015-02-26",
       check_out: "2015-02-28",
-      num_guests: 2,
+      guests: 2
     }
+  end
+  
+  it_behaves_like "performing parameter validations", controller_generator: -> { described_class.new } do
+    let(:valid_params) { params }
+  end
+  
+  it_behaves_like "external error reporting" do
+    let(:supplier_name) { "SAW" }
+    let(:endpoint) { endpoint_for(:propertyrates) }
+
+    def provoke_failure!
+      stub_call(:post, endpoint) { raise Faraday::TimeoutError }
+      Struct.new(:code).new("connection_timeout")
+    end
   end
 
   let(:controller) { described_class.new }
@@ -20,7 +36,7 @@ RSpec.describe API::Controllers::SAW::Quote do
   it "performs successful request returning Quotation object" do
     mock_request(:propertyrates, :success)
 
-    result = controller.quote_price(request_params)
+    result = controller.quote_price(params)
     
     expect(result.success?).to be true
     expect(result).to be_kind_of(Result)
@@ -36,7 +52,7 @@ RSpec.describe API::Controllers::SAW::Quote do
     it "returns a quotation with an appropriate error" do
       mock_request(:propertyrates, :request_only)
 
-      result = controller.quote_price(request_params)
+      result = controller.quote_price(params)
       
       expect(result.success?).to be false
       expect(result).to be_kind_of(Result)
@@ -48,7 +64,7 @@ RSpec.describe API::Controllers::SAW::Quote do
     it "returns a quotation with an appropriate error" do
       mock_request(:propertyrates, :currency_error)
       
-      result = controller.quote_price(request_params)
+      result = controller.quote_price(params)
       
       expect(result.success?).to be false
       expect(result).to be_kind_of(Result)
@@ -60,7 +76,7 @@ RSpec.describe API::Controllers::SAW::Quote do
     it "returns a quotation with an appropriate error" do
       mock_request(:propertyrates, :rates_not_available)
 
-      result = controller.quote_price(request_params)
+      result = controller.quote_price(params)
       
       expect(result.success?).to be false
       expect(result).to be_kind_of(Result)
@@ -72,7 +88,7 @@ RSpec.describe API::Controllers::SAW::Quote do
     it "returns a quotation with an appropriate error" do
       mock_bad_xml_request(:propertyrates)
 
-      result = controller.quote_price(request_params)
+      result = controller.quote_price(params)
       
       expect(result.success?).to be false
       expect(result).to be_kind_of(Result)
@@ -82,10 +98,10 @@ RSpec.describe API::Controllers::SAW::Quote do
 
   context "when there is multiple available units" do
     it "performs successful request returning Quotation object for selected unit" do
-      request_params[:unit_id] = "9733"
+      params[:unit_id] = "9733"
       mock_request(:propertyrates, :success_multiple_units)
 
-      result = controller.quote_price(request_params)
+      result = controller.quote_price(params)
       expect(result.success?).to be true
       expect(result).to be_kind_of(Result)
       expect(result.value).not_to be nil
@@ -95,8 +111,8 @@ RSpec.describe API::Controllers::SAW::Quote do
       expect(quotation.total).to eq(72.25)
       expect(quotation.currency).to eq('EUR')
       
-      request_params[:unit_id] = "9734"
-      result = controller.quote_price(request_params)
+      params[:unit_id] = "9734"
+      result = controller.quote_price(params)
       expect(result.success?).to be true
       expect(result).to be_kind_of(Result)
       expect(result.value).not_to be nil
