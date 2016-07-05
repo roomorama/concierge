@@ -43,14 +43,20 @@ module SAW
         property.default_to_available = true
         property.instant_booking!
 
+        set_units!(property, basic_property, detailed_property)
         set_availabilities!(property, availabilities)
         set_images!(property, detailed_property.images)
-        set_units!(property, basic_property, detailed_property)
         property
       end
 
       private
       def self.set_availabilities!(property, availabilities)
+        property.units.each do |unit|
+          availabilities.each do |date, status|
+            unit.update_calendar(date => status)
+          end
+        end
+          
         availabilities.each do |date, status|
           property.update_calendar(date => status)
         end
