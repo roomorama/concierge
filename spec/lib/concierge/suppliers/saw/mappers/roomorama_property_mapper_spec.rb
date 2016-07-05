@@ -231,6 +231,18 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
         expect(property.units).not_to eq([])
         expect(property.units).to all(be_kind_of(Roomorama::Unit))
       end
+
+      it "copies availabilities from property to every unit" do
+        property = described_class.build(
+          basic_property,
+          detailed_property_with_units,
+          availabilities
+        )
+
+        property.units.each do |unit|
+          expect(unit.calendar).to eq(property.calendar)
+        end
+      end
     end
     
     describe "changes description to include additional amenities" do
