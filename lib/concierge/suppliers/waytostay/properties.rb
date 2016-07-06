@@ -7,24 +7,24 @@ module Waytostay
     ENDPOINT = "/properties/:property_reference".freeze
 
     FIELD_MAPPINGS = {
-        identifier:          "reference",
-        title:               "general.name",
-        description:         "descriptions.description",
-        type:                "general.type",
-        country_code:        "location.country.iso",
-        lat:                 "location.coord.lat",
-        lng:                 "location.coord.lng",
-        address:             "location.address.address",
-        postal_code:         "location.address.postcode",
-        number_of_bedrooms:  "general.bedrooms",
-        number_of_bathrooms: "general.bathrooms",
-        surface:             "general.sqm",
-        max_guests:          "general.sleeps",
-        minimum_stay:        "general.min_stay_default",
-        check_in_time:       "general.checkin_time",
-        check_out_time:      "general.checkout_time",
-        currency:            "payment.currency",
-      }.freeze
+      identifier:          "reference",
+      title:               "general.name",
+      description:         "descriptions.description",
+      type:                "general.type",
+      country_code:        "location.country.iso",
+      lat:                 "location.coord.lat",
+      lng:                 "location.coord.lng",
+      address:             "location.address.address",
+      postal_code:         "location.address.postcode",
+      number_of_bedrooms:  "general.bedrooms",
+      number_of_bathrooms: "general.bathrooms",
+      surface:             "general.sqm",
+      max_guests:          "general.sleeps",
+      minimum_stay:        "general.min_stay_default",
+      check_in_time:       "general.checkin_time",
+      check_out_time:      "general.checkout_time",
+      currency:            "payment.currency",
+    }.freeze
 
     REQUIRED_RESPONSE_KEYS = (FIELD_MAPPINGS.values +
       [ "facilities_amenities.overview", "facilities_amenities.rooms", "payment.fees",
