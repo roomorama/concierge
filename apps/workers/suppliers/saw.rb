@@ -1,5 +1,9 @@
 module Workers::Suppliers
+  # +Workers::Suppliers::SAW+
+  #
+  # Performs synchronisation with supplier
   class SAW
+    SUPPLIER_NAME = 'SAW'
     attr_reader :synchronisation, :host
 
     def initialize(host)
@@ -13,7 +17,8 @@ module Workers::Suppliers
       if result.success?
         countries = result.value
       else
-        announce_error('sync', result)
+        message = "Failed to perform the `#fetch_countries` operation"
+        announce_error(message, result)
       end
       
       properties = importer.fetch_properties_by_countries(countries)
@@ -26,7 +31,8 @@ module Workers::Suppliers
           if result.success?
             detailed_property = result.value
           else
-            announce_error('sync', result)
+            message = "Failed to perform the `#fetch_detailed_property` operation"
+            announce_error(message, result)
           end
           
           availability_calendar = ::SAW::Mappers::AvailabilityCalendar.build
@@ -54,9 +60,16 @@ module Workers::Suppliers
       @credentials ||= Concierge::Credentials.for("SAW")
     end
 
-    def announce_error(operation, result)
+    def announce_error(message, result)
+      context = Concierge::Context::Message.new(
+        label: 'Synchronisation Failure',
+        message: message,
+        backtrace: caller
+      )
+      Concierge.context.augment(context)
+
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-        operation:   operation,
+        operation:   'sync',
         supplier:    SUPPLIER_NAME,
         code:        result.error.code,
         context:     Concierge.context.to_h,
