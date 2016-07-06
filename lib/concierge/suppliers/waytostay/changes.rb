@@ -1,6 +1,6 @@
 module Waytostay
   #
-  # Handles all things changes related for waytostay
+  # Calls and parse the /changes endpoint from waytostay
   #
   module Changes
 
@@ -14,7 +14,7 @@ module Waytostay
     #
     # Augments missing fields in the response if there are any
     #
-    def get_changes_since(last_synced_timestamp = nil)
+    def get_changes_since(last_synced_timestamp)
       params = {timestamp: last_synced_timestamp} if last_synced_timestamp
       result = oauth2_client.get(ENDPOINT,
                                  params: params,

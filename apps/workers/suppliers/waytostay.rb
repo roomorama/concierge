@@ -22,7 +22,7 @@ module Workers::Suppliers
                                client.get_property(property_ref)
                              else
                                # no changes on property attributes indicated, just
-                               # load one from db so we can attache other changes
+                               # load one from db so we can attach other changes
                                load_existing property_ref
                              end
           next wrapped_property unless wrapped_property.success?
@@ -33,6 +33,7 @@ module Workers::Suppliers
           end
 
           if changes[:availability].include? property_ref
+            # TODO: announce calendar sync event instead
             wrapped_property = client.update_availabilities(wrapped_property.result)
             next wrapped_property unless wrapped_property.success?
           end
