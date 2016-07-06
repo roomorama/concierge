@@ -2,8 +2,8 @@
 <response>
   <errors>
     <error>
-      <code>6004</code>
-      <description>The valid username or password tag is not supplied</description>
+      <code>9999</code>
+      <description>Custom Error</description>
     </error>
   </errors>
 </response>
