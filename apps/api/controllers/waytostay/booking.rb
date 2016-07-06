@@ -17,3 +17,4 @@ module API::Controllers::Waytostay
     end
   end
 end
+

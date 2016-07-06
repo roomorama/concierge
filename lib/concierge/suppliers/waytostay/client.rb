@@ -4,19 +4,13 @@ require_relative 'changes'
 require_relative 'properties'
 require_relative 'media'
 require_relative 'availability'
+require_relative 'cancel'
 
 module Waytostay
   # +Waytostay::Client+
   #
   # This class is a convenience class for interacting with Waytostay.
   # OAuth2 is used as authentication.
-  #
-  # Usage
-  #
-  #   quotation = Waytostay::Client.new(credentials).quote(stay_params)
-  #   if quotation.sucessful?
-  #     # ...
-  #   end
   #
   # For more information on how to interact with Waytostay, check the project Wiki.
   class Client
@@ -30,6 +24,7 @@ module Waytostay
     include Waytostay::Properties
     include Waytostay::Media
     include Waytostay::Availability
+    include Waytostay::Cancel
 
     attr_reader :credentials
 

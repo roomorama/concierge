@@ -5,13 +5,6 @@ module AtLeisure
   # This class is a convenience class for the smaller classes under +AtLeisure+.
   # For now, it allows the caller to get price quotations and create booking.
   #
-  # Usage
-  #
-  #   quotation = AtLeisure::Client.new(credentials).quote(stay_params)
-  #   if quotation.sucessful?
-  #     # ...
-  #   end
-  #
   # For more information on how to interact with AtLeisure, check the project Wiki.
   class Client
     SUPPLIER_NAME = "AtLeisure"
@@ -22,18 +15,40 @@ module AtLeisure
       @credentials = credentials
     end
 
-    # Always returns a +Quotation+.
+    # Quote prices
+    #
     # If an error happens in any step in the process of getting a response back from
     # AtLeisure, a generic error message is sent back to the caller, and the failure
     # is logged.
+    #
+    # Usage
+    #
+    #   result = AtLeisure::Client.new(credentials).quote(stay_params)
+    #   if result.success?
+    #     # ...
+    #   end
+    #
+    # Returns a +Result+ wrapping a +Quotation+ when operation succeeds
+    # Returns a +Result+ wrapping a nil object when operation fails
     def quote(params)
       AtLeisure::Price.new(credentials).quote(params)
     end
 
-    # Always returns a +Reservation+.
+    # Property bookings
+    #
     # If an error happens in any step in the process of getting a response back from
     # AtLeisure, a generic error message is sent back to the caller, and the failure
     # is logged.
+    #
+    # Usage
+    #
+    #   result = AtLeisure::Client.new(credentials).book(stay_params)
+    #   if result.success?
+    #     # ...
+    #   end
+    #
+    # Returns a +Result+ wrapping a +Reservation+ when operation succeeds
+    # Returns a +Result+ wrapping a nil object when operation fails
     def book(params)
       result = AtLeisure::Booking.new(credentials).book(params)
       database.create(result.value) if result.success? # workaround to keep booking code for reservation
@@ -46,16 +61,6 @@ module AtLeisure
       @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
     end
 
-
-    def announce_error(operation, result)
-      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-        operation:   operation,
-        supplier:    SUPPLIER_NAME,
-        code:        result.error.code,
-        context:     Concierge.context.to_h,
-        happened_at: Time.now
-      })
-    end
   end
 
 end

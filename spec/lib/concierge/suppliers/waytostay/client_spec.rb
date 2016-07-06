@@ -1,6 +1,7 @@
 require 'spec_helper'
 require_relative "../shared/book"
 require_relative "../shared/quote"
+require_relative "../shared/cancel"
 require_relative "properties"
 
 RSpec.describe Waytostay::Client do
@@ -205,12 +206,12 @@ RSpec.describe Waytostay::Client do
 
       it "should send 2 posts, book and confirm" do
         expect_any_instance_of(Concierge::OAuth2Client).to receive(:post).twice.and_call_original
-        reservation = supplier_client.book(success_params)
+        supplier_client.book(success_params)
       end
 
       it "should only send 1 post, book, when there're errors" do
         expect_any_instance_of(Concierge::OAuth2Client).to receive(:post).once.and_call_original
-        reservation = supplier_client.book(error_params_list.first)
+        supplier_client.book(error_params_list.first)
       end
 
     end
@@ -275,6 +276,30 @@ RSpec.describe Waytostay::Client do
       expect(quotation).not_to be_success
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
+    end
+  end
+
+  describe "#cancel" do
+    let(:cancel_url) { stubbed_client.credentials[:url] + Waytostay::Cancel::ENDPOINT }
+    let(:cancel_responses) {
+      [
+        { code: 422, id: "ABC", response: read_fixture('waytostay/bookings/KUFSHS/post.cancellation.not_confirmed.json')},
+        { code: 200, id: "KUFSHS", response: read_fixture('waytostay/bookings/KUFSHS/post.cancellation.json')}
+      ]
+    }
+    before do
+      cancel_responses.each do |stub|
+        url = cancel_url.gsub(":reservation_id", stub[:id])
+        stubbed_client.oauth2_client.oauth_client.connection =
+          stub_call(:post, url){
+            [stub[:code], {}, stub[:response]]
+          }
+      end
+    end
+    it_behaves_like "supplier cancel method" do
+      let(:supplier_client) { stubbed_client }
+      let(:success_params) { {reservation_id: "KUFSHS" }}
+      let(:error_params) { {reservation_id: "ABC" }}
     end
   end
 end

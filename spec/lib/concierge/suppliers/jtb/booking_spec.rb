@@ -40,6 +40,7 @@ RSpec.describe JTB::Booking do
     let(:fail_response) { parse_response('jtb/invalid_request.json') }
 
     it 'fails with bad response' do
+      allow_any_instance_of(JTB::Price).to receive(:best_rate_plan) { Result.new(rate_plan) }
       allow(subject).to receive(:remote_call) { Result.new(fail_response) }
 
       result = subject.book(params)

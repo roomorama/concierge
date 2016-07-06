@@ -15,15 +15,18 @@ how this file is formatted and how the process works.
 - `waytostay#update_availability` sets availability to all the new availability from waytostay
 - Waytostay synchronisation worker
 
-### Removed
-- removed `fee` field from `Quotation`. Fees should be included in the total.
-- removed `errors` field from `Quotation` and `Reservation`
-- removed `successful?` method from `Quotation` and `Reservation`
-
 ### Changed
 - moved `JSONRPC` to `lib` folder
 - customized timeout option for `HTTPClient`
 - all clients return `Result` for both `quote` and `book` methods
+- fixed an issue when declaring boolean values on the `credentials.yml` file.
+- do not display response body on the `web` app if it is empty.
+- fix issue when updating JSON fields using `Concierge::PGJSON`.
+
+### Removed
+- removed `fee` field from `Quotation`. Fees should be included in the total.
+- removed `errors` field from `Quotation` and `Reservation`
+- removed `successful?` method from `Quotation` and `Reservation`
 
 ## [0.4.3] - 2016-06-29
 ### Changed

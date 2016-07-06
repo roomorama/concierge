@@ -11,10 +11,12 @@ module Waytostay
 
     # Books and immediately confirms the waytostay booking
     #
-    # Always returns a +Reservation+.
     # If an error happens in any step in the process of getting a response back from
     # Waytostay, a generic error message is sent back to the caller, and the failure
     # is logged.
+    #
+    # Returns a +Result+ wrapping a +Reservation+ when operation succeeds
+    # Returns a +Result+ wrapping a nil object when operation fails
     def book(params)
       remote_book(params).tap do |result|
         remote_confirm(result.value, params) if result.success?
