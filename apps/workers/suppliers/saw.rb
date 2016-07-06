@@ -57,7 +57,7 @@ module Workers::Suppliers
     end
 
     def credentials
-      @credentials ||= Concierge::Credentials.for("SAW")
+      @credentials ||= Concierge::Credentials.for(SUPPLIER_NAME)
     end
 
     def announce_error(message, result)
