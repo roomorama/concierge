@@ -92,7 +92,7 @@ module Kigo
     def guest_details(customer)
       {
         "RES_GUEST_EMAIL"     => customer[:email],
-        "RES_GUEST_PHONE"     => customer[:phone_number],
+        "RES_GUEST_PHONE"     => customer[:phone].to_s,
         "RES_GUEST_COUNTRY"   => customer[:country],
         "RES_GUEST_LASTNAME"  => customer[:last_name],
         "RES_GUEST_FIRSTNAME" => customer[:first_name]

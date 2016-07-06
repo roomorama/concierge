@@ -43,10 +43,10 @@ RSpec.describe Kigo::Client do
         check_out:   '2016-03-24',
         guests:      2,
         customer:    {
-          first_name:   'Alex',
-          last_name:    'Black',
-          email:        'alex@black.com',
-          phone_number: '777-77-77'
+          first_name: 'Alex',
+          last_name:  'Black',
+          email:      'alex@black.com',
+          phone:      '777-77-77'
         }
       }
     }
@@ -56,8 +56,9 @@ RSpec.describe Kigo::Client do
       allow_any_instance_of(Kigo::Booking).to receive(:book) { Result.new(successful_reservation) }
 
       result = subject.book(params)
-      expect(result).to be_success
+      reservation = ReservationRepository.last
 
+      expect(result).to be_success
       expect(reservation.code).to eq '123'
     end
 

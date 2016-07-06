@@ -58,11 +58,11 @@ RSpec.describe Kigo::Request do
         check_out:   "2016-03-24",
         guests:      2,
         customer:    {
-          first_name:   "Alex",
-          last_name:    "Black",
-          email:        "alex@black.com",
-          phone_number: "123-123",
-          country:      "RU"
+          first_name: "Alex",
+          last_name:  "Black",
+          email:      "alex@black.com",
+          phone:      "123-123",
+          country:    "RU"
         }
       }
     }
