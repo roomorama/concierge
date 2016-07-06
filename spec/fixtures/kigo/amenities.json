@@ -1,0 +1,566 @@
+{
+  "AMENITY_CATEGORY": [
+    {
+      "AMENITY_CATEGORY_ID": 1,
+      "AMENITY_CATEGORY_LABEL": "Access"
+    },
+    {
+      "AMENITY_CATEGORY_ID": 2,
+      "AMENITY_CATEGORY_LABEL": "Clothing"
+    },
+    {
+      "AMENITY_CATEGORY_ID": 3,
+      "AMENITY_CATEGORY_LABEL": "Bedroom"
+    },
+    {
+      "AMENITY_CATEGORY_ID": 4,
+      "AMENITY_CATEGORY_LABEL": "Entertainment system"
+    },
+    {
+      "AMENITY_CATEGORY_ID": 5,
+      "AMENITY_CATEGORY_LABEL": "Communication"
+    },
+    {
+      "AMENITY_CATEGORY_ID": 6,
+      "AMENITY_CATEGORY_LABEL": "Kitchen"
+    },
+    {
+      "AMENITY_CATEGORY_ID": 7,
+      "AMENITY_CATEGORY_LABEL": "General"
+    },
+    {
+      "AMENITY_CATEGORY_ID": 8,
+      "AMENITY_CATEGORY_LABEL": "Bathroom"
+    },
+    {
+      "AMENITY_CATEGORY_ID": 9,
+      "AMENITY_CATEGORY_LABEL": "Authorizations"
+    },
+    {
+      "AMENITY_CATEGORY_ID": 10,
+      "AMENITY_CATEGORY_LABEL": "Unique property location"
+    }
+  ],
+  "AMENITY": [
+    {
+      "AMENITY_ID": 1,
+      "AMENITY_CATEGORY_ID": 1,
+      "AMENITY_LABEL": "Elevator"
+    },
+    {
+      "AMENITY_ID": 2,
+      "AMENITY_CATEGORY_ID": 1,
+      "AMENITY_LABEL": "Concierge"
+    },
+    {
+      "AMENITY_ID": 3,
+      "AMENITY_CATEGORY_ID": 1,
+      "AMENITY_LABEL": "Security code with Interphone"
+    },
+    {
+      "AMENITY_ID": 4,
+      "AMENITY_CATEGORY_ID": 1,
+      "AMENITY_LABEL": "Alarm"
+    },
+    {
+      "AMENITY_ID": 5,
+      "AMENITY_CATEGORY_ID": 1,
+      "AMENITY_LABEL": "Parking - garage"
+    },
+    {
+      "AMENITY_ID": 6,
+      "AMENITY_CATEGORY_ID": 1,
+      "AMENITY_LABEL": "Parking - private"
+    },
+    {
+      "AMENITY_ID": 7,
+      "AMENITY_CATEGORY_ID": 1,
+      "AMENITY_LABEL": "Parking - on-street"
+    },
+    {
+      "AMENITY_ID": 8,
+      "AMENITY_CATEGORY_ID": 1,
+      "AMENITY_LABEL": "Parking - trailer/RV/Boat parking"
+    },
+    {
+      "AMENITY_ID": 10,
+      "AMENITY_CATEGORY_ID": 1,
+      "AMENITY_LABEL": "Wheelchair"
+    },
+    {
+      "AMENITY_ID": 11,
+      "AMENITY_CATEGORY_ID": 2,
+      "AMENITY_LABEL": "Washing machine"
+    },
+    {
+      "AMENITY_ID": 12,
+      "AMENITY_CATEGORY_ID": 2,
+      "AMENITY_LABEL": "Dryer"
+    },
+    {
+      "AMENITY_ID": 13,
+      "AMENITY_CATEGORY_ID": 2,
+      "AMENITY_LABEL": "Washer/Dryer"
+    },
+    {
+      "AMENITY_ID": 14,
+      "AMENITY_CATEGORY_ID": 2,
+      "AMENITY_LABEL": "Iron"
+    },
+    {
+      "AMENITY_ID": 15,
+      "AMENITY_CATEGORY_ID": 2,
+      "AMENITY_LABEL": "Ironing board"
+    },
+    {
+      "AMENITY_ID": 16,
+      "AMENITY_CATEGORY_ID": 3,
+      "AMENITY_LABEL": "Bed linen provided"
+    },
+    {
+      "AMENITY_ID": 21,
+      "AMENITY_CATEGORY_ID": 4,
+      "AMENITY_LABEL": "Cable/Satellite TV"
+    },
+    {
+      "AMENITY_ID": 22,
+      "AMENITY_CATEGORY_ID": 4,
+      "AMENITY_LABEL": "TV"
+    },
+    {
+      "AMENITY_ID": 23,
+      "AMENITY_CATEGORY_ID": 4,
+      "AMENITY_LABEL": "DVD player"
+    },
+    {
+      "AMENITY_ID": 24,
+      "AMENITY_CATEGORY_ID": 4,
+      "AMENITY_LABEL": "VCR"
+    },
+    {
+      "AMENITY_ID": 25,
+      "AMENITY_CATEGORY_ID": 4,
+      "AMENITY_LABEL": "Video library"
+    },
+    {
+      "AMENITY_ID": 26,
+      "AMENITY_CATEGORY_ID": 4,
+      "AMENITY_LABEL": "Video game console"
+    },
+    {
+      "AMENITY_ID": 27,
+      "AMENITY_CATEGORY_ID": 4,
+      "AMENITY_LABEL": "Video game library"
+    },
+    {
+      "AMENITY_ID": 28,
+      "AMENITY_CATEGORY_ID": 4,
+      "AMENITY_LABEL": "Stereo"
+    },
+    {
+      "AMENITY_ID": 29,
+      "AMENITY_CATEGORY_ID": 4,
+      "AMENITY_LABEL": "I-Pod station"
+    },
+    {
+      "AMENITY_ID": 30,
+      "AMENITY_CATEGORY_ID": 4,
+      "AMENITY_LABEL": "CD Player"
+    },
+    {
+      "AMENITY_ID": 31,
+      "AMENITY_CATEGORY_ID": 4,
+      "AMENITY_LABEL": "Music library"
+    },
+    {
+      "AMENITY_ID": 32,
+      "AMENITY_CATEGORY_ID": 4,
+      "AMENITY_LABEL": "Video projector"
+    },
+    {
+      "AMENITY_ID": 33,
+      "AMENITY_CATEGORY_ID": 4,
+      "AMENITY_LABEL": "Pool table"
+    },
+    {
+      "AMENITY_ID": 34,
+      "AMENITY_CATEGORY_ID": 4,
+      "AMENITY_LABEL": "Ping pong table"
+    },
+    {
+      "AMENITY_ID": 35,
+      "AMENITY_CATEGORY_ID": 4,
+      "AMENITY_LABEL": "Foosball"
+    },
+    {
+      "AMENITY_ID": 36,
+      "AMENITY_CATEGORY_ID": 4,
+      "AMENITY_LABEL": "Air hockey"
+    },
+    {
+      "AMENITY_ID": 37,
+      "AMENITY_CATEGORY_ID": 5,
+      "AMENITY_LABEL": "Telephone"
+    },
+    {
+      "AMENITY_ID": 38,
+      "AMENITY_CATEGORY_ID": 5,
+      "AMENITY_LABEL": "Free long distance"
+    },
+    {
+      "AMENITY_ID": 39,
+      "AMENITY_CATEGORY_ID": 5,
+      "AMENITY_LABEL": "Cell phone"
+    },
+    {
+      "AMENITY_ID": 40,
+      "AMENITY_CATEGORY_ID": 5,
+      "AMENITY_LABEL": "Computer"
+    },
+    {
+      "AMENITY_ID": 41,
+      "AMENITY_CATEGORY_ID": 5,
+      "AMENITY_LABEL": "High-speed Internet"
+    },
+    {
+      "AMENITY_ID": 42,
+      "AMENITY_CATEGORY_ID": 5,
+      "AMENITY_LABEL": "WiFi"
+    },
+    {
+      "AMENITY_ID": 43,
+      "AMENITY_CATEGORY_ID": 6,
+      "AMENITY_LABEL": "Oven"
+    },
+    {
+      "AMENITY_ID": 44,
+      "AMENITY_CATEGORY_ID": 6,
+      "AMENITY_LABEL": "Microwave"
+    },
+    {
+      "AMENITY_ID": 45,
+      "AMENITY_CATEGORY_ID": 6,
+      "AMENITY_LABEL": "Stove"
+    },
+    {
+      "AMENITY_ID": 46,
+      "AMENITY_CATEGORY_ID": 6,
+      "AMENITY_LABEL": "Coffee maker"
+    },
+    {
+      "AMENITY_ID": 47,
+      "AMENITY_CATEGORY_ID": 6,
+      "AMENITY_LABEL": "Espresso machine"
+    },
+    {
+      "AMENITY_ID": 48,
+      "AMENITY_CATEGORY_ID": 6,
+      "AMENITY_LABEL": "Dishwasher"
+    },
+    {
+      "AMENITY_ID": 49,
+      "AMENITY_CATEGORY_ID": 6,
+      "AMENITY_LABEL": "Refrigerator"
+    },
+    {
+      "AMENITY_ID": 50,
+      "AMENITY_CATEGORY_ID": 6,
+      "AMENITY_LABEL": "Freezer"
+    },
+    {
+      "AMENITY_ID": 51,
+      "AMENITY_CATEGORY_ID": 6,
+      "AMENITY_LABEL": "Vitro ceramic"
+    },
+    {
+      "AMENITY_ID": 52,
+      "AMENITY_CATEGORY_ID": 6,
+      "AMENITY_LABEL": "Gas"
+    },
+    {
+      "AMENITY_ID": 53,
+      "AMENITY_CATEGORY_ID": 6,
+      "AMENITY_LABEL": "Fan / extractor"
+    },
+    {
+      "AMENITY_ID": 54,
+      "AMENITY_CATEGORY_ID": 6,
+      "AMENITY_LABEL": "Toaster"
+    },
+    {
+      "AMENITY_ID": 55,
+      "AMENITY_CATEGORY_ID": 6,
+      "AMENITY_LABEL": "Water kettle"
+    },
+    {
+      "AMENITY_ID": 56,
+      "AMENITY_CATEGORY_ID": 6,
+      "AMENITY_LABEL": "Ice machine"
+    },
+    {
+      "AMENITY_ID": 57,
+      "AMENITY_CATEGORY_ID": 6,
+      "AMENITY_LABEL": "Shared kitchen"
+    },
+    {
+      "AMENITY_ID": 58,
+      "AMENITY_CATEGORY_ID": 6,
+      "AMENITY_LABEL": "Kitchen utensils provided"
+    },
+    {
+      "AMENITY_ID": 59,
+      "AMENITY_CATEGORY_ID": 7,
+      "AMENITY_LABEL": "Balcony"
+    },
+    {
+      "AMENITY_ID": 60,
+      "AMENITY_CATEGORY_ID": 7,
+      "AMENITY_LABEL": "Patio/deck/Terrace"
+    },
+    {
+      "AMENITY_ID": 61,
+      "AMENITY_CATEGORY_ID": 7,
+      "AMENITY_LABEL": "Roofed Patio/deck/Terrace"
+    },
+    {
+      "AMENITY_ID": 62,
+      "AMENITY_CATEGORY_ID": 7,
+      "AMENITY_LABEL": "Roof-deck"
+    },
+    {
+      "AMENITY_ID": 63,
+      "AMENITY_CATEGORY_ID": 7,
+      "AMENITY_LABEL": "Air-conditioning"
+    },
+    {
+      "AMENITY_ID": 64,
+      "AMENITY_CATEGORY_ID": 7,
+      "AMENITY_LABEL": "Fans"
+    },
+    {
+      "AMENITY_ID": 65,
+      "AMENITY_CATEGORY_ID": 7,
+      "AMENITY_LABEL": "BBQ Grill"
+    },
+    {
+      "AMENITY_ID": 66,
+      "AMENITY_CATEGORY_ID": 7,
+      "AMENITY_LABEL": "Wood stove"
+    },
+    {
+      "AMENITY_ID": 67,
+      "AMENITY_CATEGORY_ID": 7,
+      "AMENITY_LABEL": "Sauna - private"
+    },
+    {
+      "AMENITY_ID": 68,
+      "AMENITY_CATEGORY_ID": 7,
+      "AMENITY_LABEL": "Sauna - shared"
+    },
+    {
+      "AMENITY_ID": 69,
+      "AMENITY_CATEGORY_ID": 7,
+      "AMENITY_LABEL": "Hot Tub - private"
+    },
+    {
+      "AMENITY_ID": 70,
+      "AMENITY_CATEGORY_ID": 7,
+      "AMENITY_LABEL": "Hot Tub - shared"
+    },
+    {
+      "AMENITY_ID": 71,
+      "AMENITY_CATEGORY_ID": 7,
+      "AMENITY_LABEL": "Pool - private"
+    },
+    {
+      "AMENITY_ID": 72,
+      "AMENITY_CATEGORY_ID": 7,
+      "AMENITY_LABEL": "Pool - shared"
+    },
+    {
+      "AMENITY_ID": 73,
+      "AMENITY_CATEGORY_ID": 7,
+      "AMENITY_LABEL": "Fireplace - Gas"
+    },
+    {
+      "AMENITY_ID": 74,
+      "AMENITY_CATEGORY_ID": 7,
+      "AMENITY_LABEL": "Fireplace - Wood"
+    },
+    {
+      "AMENITY_ID": 75,
+      "AMENITY_CATEGORY_ID": 8,
+      "AMENITY_LABEL": "Shower"
+    },
+    {
+      "AMENITY_ID": 76,
+      "AMENITY_CATEGORY_ID": 8,
+      "AMENITY_LABEL": "Bathtub"
+    },
+    {
+      "AMENITY_ID": 77,
+      "AMENITY_CATEGORY_ID": 8,
+      "AMENITY_LABEL": "Towels provided"
+    },
+    {
+      "AMENITY_ID": 78,
+      "AMENITY_CATEGORY_ID": 8,
+      "AMENITY_LABEL": "Hair dryer"
+    },
+    {
+      "AMENITY_ID": 79,
+      "AMENITY_CATEGORY_ID": 8,
+      "AMENITY_LABEL": "Separate WC"
+    },
+    {
+      "AMENITY_ID": 80,
+      "AMENITY_CATEGORY_ID": 8,
+      "AMENITY_LABEL": "Jacuzzi"
+    },
+    {
+      "AMENITY_ID": 81,
+      "AMENITY_CATEGORY_ID": 9,
+      "AMENITY_LABEL": "Smoking"
+    },
+    {
+      "AMENITY_ID": 82,
+      "AMENITY_CATEGORY_ID": 9,
+      "AMENITY_LABEL": "Children"
+    },
+    {
+      "AMENITY_ID": 83,
+      "AMENITY_CATEGORY_ID": 9,
+      "AMENITY_LABEL": "Pets"
+    },
+    {
+      "AMENITY_ID": 84,
+      "AMENITY_CATEGORY_ID": 10,
+      "AMENITY_LABEL": "Beachfront"
+    },
+    {
+      "AMENITY_ID": 85,
+      "AMENITY_CATEGORY_ID": 10,
+      "AMENITY_LABEL": "Beach view"
+    },
+    {
+      "AMENITY_ID": 86,
+      "AMENITY_CATEGORY_ID": 10,
+      "AMENITY_LABEL": "Oceanfront"
+    },
+    {
+      "AMENITY_ID": 87,
+      "AMENITY_CATEGORY_ID": 10,
+      "AMENITY_LABEL": "Ocean view"
+    },
+    {
+      "AMENITY_ID": 88,
+      "AMENITY_CATEGORY_ID": 10,
+      "AMENITY_LABEL": "Lakefront"
+    },
+    {
+      "AMENITY_ID": 89,
+      "AMENITY_CATEGORY_ID": 10,
+      "AMENITY_LABEL": "Lake view"
+    },
+    {
+      "AMENITY_ID": 90,
+      "AMENITY_CATEGORY_ID": 10,
+      "AMENITY_LABEL": "Waterfront"
+    },
+    {
+      "AMENITY_ID": 91,
+      "AMENITY_CATEGORY_ID": 10,
+      "AMENITY_LABEL": "Water view"
+    },
+    {
+      "AMENITY_ID": 92,
+      "AMENITY_CATEGORY_ID": 10,
+      "AMENITY_LABEL": "Mountain view"
+    },
+    {
+      "AMENITY_ID": 93,
+      "AMENITY_CATEGORY_ID": 10,
+      "AMENITY_LABEL": "City view"
+    },
+    {
+      "AMENITY_ID": 94,
+      "AMENITY_CATEGORY_ID": 10,
+      "AMENITY_LABEL": "Golf course front"
+    },
+    {
+      "AMENITY_ID": 95,
+      "AMENITY_CATEGORY_ID": 10,
+      "AMENITY_LABEL": "Golf course view"
+    },
+    {
+      "AMENITY_ID": 96,
+      "AMENITY_CATEGORY_ID": 10,
+      "AMENITY_LABEL": "Ski-in"
+    },
+    {
+      "AMENITY_ID": 97,
+      "AMENITY_CATEGORY_ID": 10,
+      "AMENITY_LABEL": "Ski-out"
+    },
+    {
+      "AMENITY_ID": 98,
+      "AMENITY_CATEGORY_ID": 7,
+      "AMENITY_LABEL": "Central heating"
+    },
+    {
+      "AMENITY_ID": 99,
+      "AMENITY_CATEGORY_ID": 3,
+      "AMENITY_LABEL": "Cot"
+    },
+    {
+      "AMENITY_ID": 100,
+      "AMENITY_CATEGORY_ID": 6,
+      "AMENITY_LABEL": "Highchair"
+    },
+    {
+      "AMENITY_ID": 102,
+      "AMENITY_CATEGORY_ID": 9,
+      "AMENITY_LABEL": "Smoking allowed outside"
+    },
+    {
+      "AMENITY_ID": 103,
+      "AMENITY_CATEGORY_ID": 7,
+      "AMENITY_LABEL": "Spa"
+    },
+    {
+      "AMENITY_ID": 104,
+      "AMENITY_CATEGORY_ID": 10,
+      "AMENITY_LABEL": "Riverfront"
+    },
+    {
+      "AMENITY_ID": 105,
+      "AMENITY_CATEGORY_ID": 10,
+      "AMENITY_LABEL": "River view"
+    },
+    {
+      "AMENITY_ID": 106,
+      "AMENITY_CATEGORY_ID": 7,
+      "AMENITY_LABEL": "Shared garden"
+    },
+    {
+      "AMENITY_ID": 107,
+      "AMENITY_CATEGORY_ID": 7,
+      "AMENITY_LABEL": "Private Garden"
+    },
+    {
+      "AMENITY_ID": 108,
+      "AMENITY_CATEGORY_ID": 10,
+      "AMENITY_LABEL": "Seafront"
+    },
+    {
+      "AMENITY_ID": 109,
+      "AMENITY_CATEGORY_ID": 10,
+      "AMENITY_LABEL": "Sea view"
+    },
+    {
+      "AMENITY_ID": 110,
+      "AMENITY_CATEGORY_ID": 4,
+      "AMENITY_LABEL": "Internet Enabled TV"
+    }
+  ]
+}
