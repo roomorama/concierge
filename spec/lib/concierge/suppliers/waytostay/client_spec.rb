@@ -1,6 +1,7 @@
 require 'spec_helper'
 require_relative "../shared/book"
 require_relative "../shared/quote"
+require_relative "../shared/cancel"
 
 RSpec.describe Waytostay::Client do
   include Support::Fixtures
@@ -157,6 +158,30 @@ RSpec.describe Waytostay::Client do
       expect(quotation).not_to be_success
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
+    end
+  end
+
+  describe "#cancel" do
+    let(:cancel_url) { stubbed_client.credentials[:url] + Waytostay::Cancel::ENDPOINT }
+    let(:cancel_responses) {
+      [
+        { code: 422, id: "ABC", response: read_fixture('waytostay/bookings/KUFSHS/post.cancellation.not_confirmed.json')},
+        { code: 200, id: "KUFSHS", response: read_fixture('waytostay/bookings/KUFSHS/post.cancellation.json')}
+      ]
+    }
+    before do
+      cancel_responses.each do |stub|
+        url = cancel_url.gsub(":reservation_id", stub[:id])
+        stubbed_client.oauth2_client.oauth_client.connection =
+          stub_call(:post, url){
+            [stub[:code], {}, stub[:response]]
+          }
+      end
+    end
+    it_behaves_like "supplier cancel method" do
+      let(:supplier_client) { stubbed_client }
+      let(:success_params) { {reservation_id: "KUFSHS" }}
+      let(:error_params) { {reservation_id: "ABC" }}
     end
   end
 end

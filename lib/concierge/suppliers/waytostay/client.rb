@@ -1,4 +1,5 @@
 require_relative 'quote'
+require_relative 'cancel'
 module Waytostay
   # +Waytostay::Client+
   #
@@ -13,6 +14,7 @@ module Waytostay
 
     include Waytostay::Quote
     include Waytostay::Book
+    include Waytostay::Cancel
 
     attr_reader :credentials
 
