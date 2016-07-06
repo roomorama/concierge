@@ -23,41 +23,53 @@ RSpec.describe Workers::Router do
       image.caption    =  "Swimming Pool"
       property.add_image(image)
 
-      property.update_calendar({
-        "2016-05-24" => true,
-        "2016-05-23" => true,
-        "2016-05-26" => false,
-        "2016-05-28" => false,
-        "2016-05-21" => true,
-        "2016-05-29" => true,
-      })
     end
   }
 
   subject { described_class.new(host) }
 
   describe "#dispatch" do
-    it "enqueues a publish operation in case the property was not previously imported" do
-      operation = subject.dispatch(roomorama_property)
+    let(:operations) { subject.dispatch(roomorama_property) }
 
-      expect(operation).to be_a Roomorama::Client::Operations::Publish
-      expect(operation.property).to eq roomorama_property
+    context "when the property was not previously imported" do
+      it "include publish the returned operations" do
+        expect(operations.first).to be_a Roomorama::Client::Operations::Publish
+        expect(operations.first.property).to eq roomorama_property
+      end
     end
 
-    it "enqueues a publish operation if a property from another host with the same identifier exists" do
-      create_property(host_id: host.id + 1, identifier: roomorama_property.identifier)
-      operation = subject.dispatch(roomorama_property)
+    context "when a property from another host with the same identifier exists" do
+      it "include publish the returned operations" do
+        create_property(host_id: host.id + 1, identifier: roomorama_property.identifier)
 
-      expect(operation).to be_a Roomorama::Client::Operations::Publish
-      expect(operation.property).to eq roomorama_property
+        expect(operations.first).to be_a Roomorama::Client::Operations::Publish
+        expect(operations.first.property).to eq roomorama_property
+      end
     end
 
-    it "enqueues a diff operation if there is a property with the same identifier for the same host" do
-      data = roomorama_property.to_h.merge!(title: "Different title")
-      create_property(host_id: host.id, identifier: roomorama_property.identifier, data: data)
-      operation = subject.dispatch(roomorama_property)
+    context "when a property from the same host with the same identifier exists" do
+      it "include diff in the returned operations" do
+        data = roomorama_property.to_h.merge!(title: "Different title")
+        create_property(host_id: host.id, identifier: roomorama_property.identifier, data: data)
 
-      expect(operation).to be_a Roomorama::Client::Operations::Diff
+        expect(operations.first).to be_a Roomorama::Client::Operations::Diff
+      end
+    end
+
+    context "when the property has calendar" do
+      before do
+        roomorama_property.update_calendar({
+          "2016-05-24" => true,
+          "2016-05-23" => true,
+          "2016-05-26" => false,
+          "2016-05-28" => false,
+          "2016-05-21" => true,
+          "2016-05-29" => true,
+        })
+      end
+      it "include update_calendar in the returned operations" do
+        expect(operations.last).to be_a Roomorama::Client::Operations::CalendarUpdate
+      end
     end
 
     it "raises an error if the database contains unrecognisable data" do
@@ -76,8 +88,7 @@ RSpec.describe Workers::Router do
       data = Roomorama::Client::Operations.publish(roomorama_property).request_data
       create_property(host_id: host.id, identifier: roomorama_property.identifier, data: data)
 
-      operation = subject.dispatch(roomorama_property)
-      expect(operation).to be_nil
+      expect(operations).to be_empty
     end
   end
 end

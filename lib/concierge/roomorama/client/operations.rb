@@ -22,6 +22,12 @@ class Roomorama::Client
       Disable.new(identifiers)
     end
 
+    # Performs a +update_calendar+ operation, updating the calendar of the
+    # property with the given Roomorama property.
+    def self.calendar_update(property)
+      CalendarUpdate.new(property)
+    end
+
   end
 
 end

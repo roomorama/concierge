@@ -38,26 +38,33 @@ module Workers
       @host = host
     end
 
-    # +property+ is expected to be an instance of +Roomorama::Property+. Returns:
+    # +property+ is expected to be an instance of +Roomorama::Property+.
+    # Returns a list of operations, which could include:
     #
     # - an instance of +Roomorama::Client::Operations::Publish+ if the
     #   property needs to be published
     # - an instance of +Roomorama::Client::Operations::Diff+ if the
     #   property needs to be updated
-    # - +nil+ in case there are no changes from the last known version
+    # - an instance of +Roomorama::Client::Operations::UpdateCalendar+ if the
+    #   property.calendar is not nil
+    # - +[]+ in case there are no changes from the last known version
     #   of the given property.
     def dispatch(property)
+      ops = []
       existing = concierge_property_for(property)
 
-      if existing
-        diff = calculate_diff(existing, property)
+      ops << if existing
+                diff = calculate_diff(existing, property)
 
-        unless diff.empty?
-          Roomorama::Client::Operations.diff(diff)
-        end
-      else
-        publish_op(property)
-      end
+                unless diff.empty?
+                  Roomorama::Client::Operations.diff(diff)
+                end
+              else
+                publish_op(property)
+              end
+      ops << Roomorama::Client::Operations.
+              calendar_update(property) if property.calendar
+      ops.compact
     end
 
     private
