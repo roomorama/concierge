@@ -25,6 +25,7 @@ module Workers::Suppliers
 
       properties.each do |property|
         synchronisation.start(property.internal_id) do
+          Concierge.context.disable!
 
           result = importer.fetch_detailed_property(property.internal_id)
 
