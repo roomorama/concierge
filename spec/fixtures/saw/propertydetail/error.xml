@@ -3,7 +3,7 @@
   <errors>
     <error>
       <code>0000</code>
-      <description>Strange Test Error</description>
+      <description>Strange Error</description>
     </error>
   </errors>
 </response>

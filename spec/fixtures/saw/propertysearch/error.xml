@@ -2,8 +2,8 @@
 <response>
   <errors>
     <error>
-      <code>1001</code>
-      <description>Valid XML request is not suppllied.</description>
+      <code>9999</code>
+      <description>Custom Error</description>
     </error>
   </errors>
 </response>
