@@ -1,0 +1,151 @@
+[
+  {
+    "FEE_TYPE_ID": 1,
+    "FEE_TYPE_LABEL": "Booking fees",
+    "FEE_TYPE_INCLUDE_IN_RENT": true,
+    "FEE_TYPE_UNITS": [
+      "AMOUNT",
+      "AMOUNT_PER_NIGHT",
+      "AMOUNT_PER_NIGHT_PER_GUEST",
+      "AMOUNT_PER_GUEST",
+      "PERCENT_RENT"
+    ]
+  },
+  {
+    "FEE_TYPE_ID": 2,
+    "FEE_TYPE_LABEL": "Check-in fees (weekday)",
+    "FEE_TYPE_INCLUDE_IN_RENT": true,
+    "FEE_TYPE_UNITS": [
+      "AMOUNT",
+      "PERCENT_RENT",
+      "STAYLENGTH"
+    ]
+  },
+  {
+    "FEE_TYPE_ID": 7,
+    "FEE_TYPE_LABEL": "Check-in fees (weekend)",
+    "FEE_TYPE_INCLUDE_IN_RENT": true,
+    "FEE_TYPE_UNITS": [
+      "AMOUNT",
+      "PERCENT_RENT",
+      "STAYLENGTH"
+    ]
+  },
+  {
+    "FEE_TYPE_ID": 13,
+    "FEE_TYPE_LABEL": "Check-out fees (weekday)",
+    "FEE_TYPE_INCLUDE_IN_RENT": true,
+    "FEE_TYPE_UNITS": [
+      "AMOUNT",
+      "PERCENT_RENT",
+      "STAYLENGTH"
+    ]
+  },
+  {
+    "FEE_TYPE_ID": 14,
+    "FEE_TYPE_LABEL": "Check-out fees (weekend)",
+    "FEE_TYPE_INCLUDE_IN_RENT": true,
+    "FEE_TYPE_UNITS": [
+      "AMOUNT",
+      "PERCENT_RENT",
+      "STAYLENGTH"
+    ]
+  },
+  {
+    "FEE_TYPE_ID": 3,
+    "FEE_TYPE_LABEL": "Cleaning fees",
+    "FEE_TYPE_INCLUDE_IN_RENT": true,
+    "FEE_TYPE_UNITS": [
+      "AMOUNT",
+      "AMOUNT_PER_NIGHT",
+      "AMOUNT_PER_NIGHT_PER_GUEST",
+      "AMOUNT_PER_GUEST",
+      "PERCENT_RENT"
+    ]
+  },
+  {
+    "FEE_TYPE_ID": 10,
+    "FEE_TYPE_LABEL": "Occupancy tax",
+    "FEE_TYPE_INCLUDE_IN_RENT": true,
+    "FEE_TYPE_UNITS": [
+      "AMOUNT",
+      "AMOUNT_PER_NIGHT",
+      "AMOUNT_PER_NIGHT_PER_GUEST",
+      "AMOUNT_PER_GUEST",
+      "PERCENT_RENT"
+    ]
+  },
+  {
+    "FEE_TYPE_ID": 11,
+    "FEE_TYPE_LABEL": "Utilities charges",
+    "FEE_TYPE_INCLUDE_IN_RENT": true,
+    "FEE_TYPE_UNITS": [
+      "AMOUNT",
+      "AMOUNT_PER_NIGHT",
+      "PERCENT_RENT",
+      "STAYLENGTH"
+    ]
+  },
+  {
+    "FEE_TYPE_ID": 8,
+    "FEE_TYPE_LABEL": "Damage waiver",
+    "FEE_TYPE_INCLUDE_IN_RENT": true,
+    "FEE_TYPE_UNITS": [
+      "AMOUNT",
+      "PERCENT_RENT",
+      "STAYLENGTH"
+    ]
+  },
+  {
+    "FEE_TYPE_ID": 12,
+    "FEE_TYPE_LABEL": "Damage insurance",
+    "FEE_TYPE_INCLUDE_IN_RENT": true,
+    "FEE_TYPE_UNITS": [
+      "AMOUNT",
+      "AMOUNT_PER_NIGHT",
+      "AMOUNT_PER_NIGHT_PER_GUEST",
+      "AMOUNT_PER_GUEST",
+      "PERCENT_RENT"
+    ]
+  },
+  {
+    "FEE_TYPE_ID": 4,
+    "FEE_TYPE_LABEL": "Cancelation insurance",
+    "FEE_TYPE_INCLUDE_IN_RENT": true,
+    "FEE_TYPE_UNITS": [
+      "AMOUNT",
+      "PERCENT_RENT",
+      "STAYLENGTH"
+    ]
+  },
+  {
+    "FEE_TYPE_ID": 5,
+    "FEE_TYPE_LABEL": "Bank fees",
+    "FEE_TYPE_INCLUDE_IN_RENT": true,
+    "FEE_TYPE_UNITS": [
+      "AMOUNT",
+      "PERCENT_RENT"
+    ]
+  },
+  {
+    "FEE_TYPE_ID": 6,
+    "FEE_TYPE_LABEL": "Credit card fees",
+    "FEE_TYPE_INCLUDE_IN_RENT": false,
+    "FEE_TYPE_UNITS": [
+      "AMOUNT",
+      "PERCENT_RENT"
+    ]
+  },
+  {
+    "FEE_TYPE_ID": 16,
+    "FEE_TYPE_LABEL": "Other taxes/fees",
+    "FEE_TYPE_INCLUDE_IN_RENT": true,
+    "FEE_TYPE_UNITS": [
+      "AMOUNT",
+      "AMOUNT_PER_NIGHT",
+      "AMOUNT_PER_NIGHT_PER_GUEST",
+      "AMOUNT_PER_GUEST",
+      "PERCENT_RENT"
+    ]
+  }
+]

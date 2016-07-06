@@ -1,0 +1,82 @@
+[
+  {
+    "PROP_TYPE_ID": 1,
+    "PROP_TYPE_LABEL": "House"
+  },
+  {
+    "PROP_TYPE_ID": 2,
+    "PROP_TYPE_LABEL": "Beach house"
+  },
+  {
+    "PROP_TYPE_ID": 4,
+    "PROP_TYPE_LABEL": "Lake house"
+  },
+  {
+    "PROP_TYPE_ID": 5,
+    "PROP_TYPE_LABEL": "Mountain house"
+  },
+  {
+    "PROP_TYPE_ID": 6,
+    "PROP_TYPE_LABEL": "Country house / villa"
+  },
+  {
+    "PROP_TYPE_ID": 7,
+    "PROP_TYPE_LABEL": "Cottage / chalet / cabin"
+  },
+  {
+    "PROP_TYPE_ID": 8,
+    "PROP_TYPE_LABEL": "Bungalow"
+  },
+  {
+    "PROP_TYPE_ID": 9,
+    "PROP_TYPE_LABEL": "Town house"
+  },
+  {
+    "PROP_TYPE_ID": 10,
+    "PROP_TYPE_LABEL": "Mobile home"
+  },
+  {
+    "PROP_TYPE_ID": 11,
+    "PROP_TYPE_LABEL": "Bed and breakfast"
+  },
+  {
+    "PROP_TYPE_ID": 12,
+    "PROP_TYPE_LABEL": "Share house"
+  },
+  {
+    "PROP_TYPE_ID": 13,
+    "PROP_TYPE_LABEL": "Hostel"
+  },
+  {
+    "PROP_TYPE_ID": 14,
+    "PROP_TYPE_LABEL": "Apartment"
+  },
+  {
+    "PROP_TYPE_ID": 15,
+    "PROP_TYPE_LABEL": "Condo"
+  },
+  {
+    "PROP_TYPE_ID": 16,
+    "PROP_TYPE_LABEL": "Penthouse"
+  },
+  {
+    "PROP_TYPE_ID": 17,
+    "PROP_TYPE_LABEL": "Camping"
+  },
+  {
+    "PROP_TYPE_ID": 18,
+    "PROP_TYPE_LABEL": "Resort"
+  },
+  {
+    "PROP_TYPE_ID": 19,
+    "PROP_TYPE_LABEL": "Hotel"
+  },
+  {
+    "PROP_TYPE_ID": 20,
+    "PROP_TYPE_LABEL": "Other"
+  },
+  {
+    "PROP_TYPE_ID": 21,
+    "PROP_TYPE_LABEL": "Houseboat"
+  }
+]
