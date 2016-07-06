@@ -9,7 +9,8 @@ module API::Controllers::SAW
     include API::Controllers::Cancel
 
     def cancel_reservation(params)
-      SAW::Client.new.cancel(params)
+      credentials = Concierge::Credentials.for("SAW")
+      SAW::Client.new(credentials).cancel(params)
     end
 
     def supplier_name
