@@ -1,0 +1,109 @@
+{
+  "DIFF_ID": "vdbfoXBLrLhZbiJYEqRNqQa3606400668da425fd477a112e56c7c69986c57a2a",
+  "RES_LIST": [
+    {
+      "RES_ID": 12935818,
+      "PROP_ID": 194962,
+      "RES_STATUS": "CONFIRMED",
+      "RES_CHECK_IN": "2016-04-07 15:00:00",
+      "RES_CHECK_OUT": "2016-04-11 10:00:00",
+      "RES_IS_FOR": true
+    },
+    {
+      "RES_ID": 13542667,
+      "PROP_ID": 194966,
+      "RES_STATUS": "CONFIRMED",
+      "RES_CHECK_IN": "2016-04-04 15:00:00",
+      "RES_CHECK_OUT": "2016-04-10 10:00:00",
+      "RES_IS_FOR": true
+    },
+    {
+      "RES_ID": 14481906,
+      "PROP_ID": 205069,
+      "RES_STATUS": "CONFIRMED",
+      "RES_CHECK_IN": "2016-04-15 15:00:00",
+      "RES_CHECK_OUT": "2016-04-17 10:00:00",
+      "RES_IS_FOR": true
+    },
+    {
+      "RES_ID": 19365470,
+      "PROP_ID": 141772,
+      "RES_STATUS": "CONFIRMED",
+      "RES_CHECK_IN": "2016-05-03 15:00:00",
+      "RES_CHECK_OUT": "2016-05-06 11:00:00",
+      "RES_IS_FOR": true
+    },
+    {
+      "RES_ID": 19895166,
+      "PROP_ID": 136526,
+      "RES_STATUS": "CONFIRMED",
+      "RES_CHECK_IN": "2016-05-01 15:00:00",
+      "RES_CHECK_OUT": "2016-05-04 11:00:00",
+      "RES_IS_FOR": true
+    },
+    {
+      "RES_ID": 21662974,
+      "PROP_ID": 218201,
+      "RES_STATUS": "CONFIRMED",
+      "RES_CHECK_IN": "2016-06-03 15:00:00",
+      "RES_CHECK_OUT": "2016-06-05 11:00:00",
+      "RES_IS_FOR": true
+    },
+    {
+      "RES_ID": 22242452,
+      "PROP_ID": 194013,
+      "RES_STATUS": "CONFIRMED",
+      "RES_CHECK_IN": "2016-10-04 15:00:00",
+      "RES_CHECK_OUT": "2016-10-06 11:00:00",
+      "RES_IS_FOR": true
+    },
+    {
+      "RES_ID": 22357782,
+      "PROP_ID": 210265,
+      "RES_STATUS": "CONFIRMED",
+      "RES_CHECK_IN": "2016-06-04 15:00:00",
+      "RES_CHECK_OUT": "2016-06-07 11:00:00",
+      "RES_IS_FOR": true
+    },
+    {
+      "RES_ID": 22405648,
+      "PROP_ID": 151398,
+      "RES_STATUS": "CONFIRMED",
+      "RES_CHECK_IN": "2016-06-05 15:00:00",
+      "RES_CHECK_OUT": "2016-06-09 11:00:00",
+      "RES_IS_FOR": true
+    },
+    {
+      "RES_ID": 23150436,
+      "PROP_ID": 233747,
+      "RES_STATUS": "CONFIRMED",
+      "RES_CHECK_IN": "2016-06-30 15:00:00",
+      "RES_CHECK_OUT": "2016-07-04 10:00:00",
+      "RES_IS_FOR": true
+    },
+    {
+      "RES_ID": 23189070,
+      "PROP_ID": 195545,
+      "RES_STATUS": "CONFIRMED",
+      "RES_CHECK_IN": "2016-07-26 13:00:00",
+      "RES_CHECK_OUT": "2016-08-03 11:00:00",
+      "RES_IS_FOR": true
+    },
+    {
+      "RES_ID": 23401911,
+      "PROP_ID": 232018,
+      "RES_STATUS": "CONFIRMED",
+      "RES_CHECK_IN": "2016-08-03 15:00:00",
+      "RES_CHECK_OUT": "2016-08-09 10:00:00",
+      "RES_IS_FOR": true
+    },
+    {
+      "RES_ID": 23401922,
+      "PROP_ID": 232018,
+      "RES_STATUS": "CONFIRMED",
+      "RES_CHECK_IN": "2016-10-06 15:00:00",
+      "RES_CHECK_OUT": "2016-10-10 10:00:00",
+      "RES_IS_FOR": true
+    }
+  ]
+}
