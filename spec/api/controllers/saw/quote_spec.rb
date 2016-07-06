@@ -23,10 +23,9 @@ RSpec.describe API::Controllers::SAW::Quote do
   
   it_behaves_like "external error reporting" do
     let(:supplier_name) { "SAW" }
-    let(:endpoint) { endpoint_for(:propertyrates) }
 
     def provoke_failure!
-      stub_call(:post, endpoint) { raise Faraday::TimeoutError }
+      mock_timeout_error(:propertyrates)
       Struct.new(:code).new("connection_timeout")
     end
   end
