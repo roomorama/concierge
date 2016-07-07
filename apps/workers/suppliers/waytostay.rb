@@ -103,7 +103,7 @@ module Workers::Suppliers
   end
 end
 
-Concierge::Announcer.on("sync.waytostay") do |host|
+Concierge::Announcer.on("sync.WayToStay") do |host|
   Workers::Suppliers::Waytostay.new(host).perform
 end
 
