@@ -8,6 +8,7 @@ how this file is formatted and how the process works.
 ### Added
 - Synchronisation with AtLeisure
 - Ability to enable or disable context tracking at certain points in time.
+- `Kigo::Booking` - implemented booking with supplier
 
 ### Changed
 - moved `JSONRPC` to `lib` folder

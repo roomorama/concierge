@@ -1,0 +1,9 @@
+{
+  "API_VERSION": 1,
+  "API_REVISION": 3,
+  "API_METHOD": "createConfirmedReservation",
+  "API_CALL_ID": "933486b2204dcd6c29640cee713ee3f3",
+  "API_RESULT_CODE": "E_CONFLICT",
+  "API_RESULT_TEXT": "Dates not available",
+  "API_REPLY": null
+}

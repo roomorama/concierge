@@ -6,75 +6,9 @@ module Kigo
   # similarity with the new Kigo Channels API, some properties can only
   # be queried against the old endpoints.
   #
-  # Usage
-  #
-  #   quotation = Kigo::Legacy.new(credentials).quote(stay_params)
-  #   if quotation.sucessful?
-  #     # ...
-  #   end
-  #
   # For more information on how to interact with Kigo Channels API and the Kigo
   # Legacy API, check the project Wiki.
   class Legacy
-
-    # +Kigo::Legacy::Request+
-    #
-    # Builds upon +Kigo::Request+ in order to implement a proper request to Kigo's
-    # legacy API.
-    #
-    # Usage
-    #
-    #   builder = Kigo::Request.new(credentials)
-    #   request = Kigo::Legacy::Request(builder)
-    #   request.build_compute_pricing(params)
-    #   # => #<Result error=nil value={..., "RES_CREATE" => ... }>
-    class Request
-      BASE_URI = "https://app.kigo.net"
-
-      attr_reader :credentials, :builder
-
-      def initialize(credentials, builder)
-        @credentials = credentials
-        @builder     = builder
-      end
-
-      def base_uri
-        BASE_URI
-      end
-
-      # Kigo Legacy API uses HTTP Basic Authentication to authenticate with
-      # their servers. A username and password combination is required.
-      def http_client
-        @http_client ||= Concierge::HTTPClient.new(base_uri, basic_auth: {
-          username: credentials.username,
-          password: credentials.password
-        })
-      end
-
-      def endpoint_for(api_method)
-        ["/api/ra/v1/", api_method].join
-      end
-
-      # Kigo Legacy API requires all parameters required by Kigo's new
-      # Channels API, with the addition of two parameters:
-      #
-      # +RES_CREATE+: the booking creation date.
-      # +RES_N_BABIES+: the number of babies.
-      def build_compute_pricing(params)
-        result = builder.build_compute_pricing(params)
-
-        if result.success?
-          Result.new(result.value.merge!({
-            "RES_CREATE"   => Date.today.to_s,
-            "RES_N_BABIES" => 0
-          }))
-        else
-          result
-        end
-      end
-
-    end
-
     SUPPLIER_NAME = "Kigo Legacy"
 
     attr_reader :credentials
@@ -83,26 +17,42 @@ module Kigo
       @credentials = credentials
     end
 
-    # Always returns a +Quotation+.
-    # Uses an instance +Kigo::Legacy::Request+ to dictate parameters and endpoints.
+    # Quote prices
+    #
+    # If an error happens in any step in the process of getting a response back from
+    # Kigo, a generic error message is sent back to the caller, and the failure
+    # is logged.
+    #
+    # Usage
+    #
+    #   result = Kigo::Legacy.new(credentials).quote(stay_params)
+    #   if result.success?
+    #     # ...
+    #   end
+    #
+    # Returns a +Result+ wrapping a +Quotation+ when operation succeeds
+    # Returns a +Result+ wrapping a nil object when operation fails
     def quote(params)
       Kigo::Price.new(credentials, request_handler: request_handler).quote(params)
     end
 
-    private
-
-    def request_handler
-      Request.new(credentials, Kigo::Request.new(credentials))
+    # Returns a +Result+ wrapping a +Reservation+.
+    # Returns a +Result+ with error if booking fails.
+    # Uses an instance +Kigo::LegacyRequest+ to dictate parameters and endpoints.
+    def book(params)
+      result = Kigo::Booking.new(credentials, request_handler: request_handler).book(params)
+      database.create(result.value) if result.success?
+      result
     end
 
-    def announce_error(operation, result)
-      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-        operation:   operation,
-        supplier:    SUPPLIER_NAME,
-        code:        result.error.code,
-        context:     Concierge.context.to_h,
-        happened_at: Time.now
-      })
+    private
+
+    def database
+      @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
+    end
+
+    def request_handler
+      LegacyRequest.new(credentials, Kigo::Request.new(credentials))
     end
   end
 

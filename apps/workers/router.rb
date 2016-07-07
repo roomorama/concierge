@@ -78,7 +78,7 @@ module Workers
     end
 
     # in case the +Result+ returned from calling +Roomorama::Property.load+ with
-    # data from the database results in a non-sucessful result, we raise a hard
+    # data from the database results in a non-successful result, we raise a hard
     # error, since this is a scenario that should not happen. The error message
     # includes the property +id+ so that further investigation is possible.
     def ensure_valid_data!(result, property)

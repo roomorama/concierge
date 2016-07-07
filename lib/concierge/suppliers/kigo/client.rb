@@ -36,16 +36,19 @@ module Kigo
       Kigo::Price.new(credentials).quote(params)
     end
 
+    # Returns a +Result+ wrapping a +Reservation+.
+    # Returns a +Result+ with error if booking fails.
+    # Uses an instance +Kigo::Request+ to dictate parameters and endpoints.
+    def book(params)
+      result = Kigo::Booking.new(credentials).book(params)
+      database.create(result.value) if result.success?
+      result
+    end
+
     private
 
-    def announce_error(operation, result)
-      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-        operation:   operation,
-        supplier:    SUPPLIER_NAME,
-        code:        result.error.code,
-        context:     Concierge.context.to_h,
-        happened_at: Time.now
-      })
+    def database
+      @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
     end
   end
 

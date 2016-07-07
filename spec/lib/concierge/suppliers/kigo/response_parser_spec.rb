@@ -3,11 +3,12 @@ require "spec_helper"
 RSpec.describe Kigo::ResponseParser do
   include Support::Fixtures
 
-  let(:request_params) {
-    { property_id: "123", check_in: "2016-04-05", check_out: "2016-04-08", guests: 1 }
-  }
-
   describe "#compute_pricing" do
+
+    let(:request_params) {
+      { property_id: "123", check_in: "2016-04-05", check_out: "2016-04-08", guests: 1 }
+    }
+
     it "fails if the API response does not indicate success" do
       response = read_fixture("kigo/e_nosuch.json")
       result = nil
@@ -84,6 +85,82 @@ RSpec.describe Kigo::ResponseParser do
       expect(quotation.available).to eq true
       expect(quotation.currency).to eq "EUR"
       expect(quotation.total).to eq 580.0 # total + fee
+    end
+  end
+
+  describe "#parse_reservation" do
+
+    let(:request_params) {
+      {
+        property_id: '123',
+        check_in:    '2016-03-22',
+        check_out:   '2016-03-24',
+        guests:      2,
+        customer:    {
+          first_name: 'Alex',
+          last_name:  'Black',
+          email:      'alex@black.com'
+        }
+      }
+    }
+
+    it "fails if the API response does not indicate success" do
+      response = read_fixture("kigo/e_nosuch.json")
+      result = nil
+
+      expect {
+        result = subject.parse_reservation(request_params, response)
+      }.to change { Concierge.context.events.size }
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :booking_call_failed
+
+      event = Concierge.context.events.last
+      expect(event.to_h[:type]).to eq "response_mismatch"
+    end
+
+    it "fails if the API returns an invalid JSON response" do
+      result = subject.parse_reservation(request_params, "invalid-json")
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :invalid_json_representation
+    end
+
+    it "fails without a reservation code field" do
+      response = read_fixture("kigo/no_api_reply.json")
+      result = nil
+
+      expect {
+        result = subject.parse_reservation(request_params, response)
+      }.to change { Concierge.context.events.size }
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :unrecognised_response
+
+      event = Concierge.context.events.last
+      expect(event.to_h[:type]).to eq "response_mismatch"
+    end
+
+    it "fails with unavailable dates" do
+      response = read_fixture("kigo/unavailable_dates.json")
+      result = subject.parse_reservation(request_params, response)
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :unavailable_dates
+    end
+
+    it "returns a reservation with the returned information on success" do
+      response = read_fixture("kigo/success_booking.json")
+      result = subject.parse_reservation(request_params, response)
+
+      expect(result).to be_success
+      reservation = result.value
+      expect(reservation).to be_a Reservation
+      expect(reservation.property_id).to eq "123"
+      expect(reservation.check_in).to eq "2016-03-22"
+      expect(reservation.check_out).to eq "2016-03-24"
+      expect(reservation.guests).to eq 2
+      expect(reservation.code).to eq "24985"
     end
   end
 end
