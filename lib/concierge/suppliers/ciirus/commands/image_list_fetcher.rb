@@ -36,8 +36,8 @@ module Ciirus
 
       private
 
-      def build_image_list(rates_hash)
-        images = rates_hash.get(
+      def build_image_list(result_hash)
+        images = result_hash.get(
           'get_image_list_response.get_image_list_result.string'
         )
         images ? Array(images) : []
