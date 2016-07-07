@@ -25,9 +25,9 @@ module Waytostay
 
     def oauth2_client
       @oauth2_client ||= Concierge::OAuth2Client.new(id:        credentials.client_id,
-                                                        secret:    credentials.client_secret,
-                                                        base_url:  credentials.url,
-                                                        token_url: credentials.token_url)
+                                                     secret:    credentials.client_secret,
+                                                     base_url:  credentials.url,
+                                                     token_url: credentials.token_url)
     end
 
     private
