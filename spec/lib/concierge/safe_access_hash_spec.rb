@@ -24,6 +24,10 @@ RSpec.describe Concierge::SafeAccessHash do
       expect(subject.get('c.@strange key.deep_key')).to eq 'deepest value'
       expect(subject.get('c.unknown_key.one_more_key')).to be nil
     end
+
+    it "returns nil for not existing keys" do
+      expect(subject.get('c.d.va')).to be_nil
+    end
   end
 
   it "should be equal to another instance if the underlying hashes are the same" do
