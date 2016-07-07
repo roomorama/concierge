@@ -76,6 +76,16 @@ module Ciirus
       message.doc.root.children.to_xml
     end
 
+    def image_list(property_id)
+      message = builder.new do |xml|
+        xml.root do
+          build_credentials(xml)
+          xml.PropertyID property_id
+        end
+      end
+      message.doc.root.children.to_xml
+    end
+
     private
 
     def builder
