@@ -16,8 +16,8 @@ module Ciirus
     # encapsulates the collection of +PropertyRate+.
     class PropertyRatesFetcher < BaseCommand
 
-      def call(params)
-        message = xml_builder.property_rates(params[:property_id])
+      def call(property_id)
+        message = xml_builder.property_rates(property_id)
         result = remote_call(message)
         if result.success?
           result_hash = to_safe_hash(result.value)
