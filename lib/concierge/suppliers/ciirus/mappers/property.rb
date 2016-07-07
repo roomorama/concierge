@@ -129,7 +129,7 @@ module Ciirus
           amenities << 'gym' if hash[:communal_gym]
           amenities << 'outdoor_space' if has_outdoor_space?(hash)
 
-          attrs[:amenitites] = amenities
+          attrs[:amenities] = amenities
         end
 
         def has_tv?(hash)
