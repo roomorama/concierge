@@ -14,6 +14,7 @@ how this file is formatted and how the process works.
 - `waytostay#update_media` sets images to all the new images from waytostay
 - `waytostay#update_availability` sets availability to all the new availability from waytostay
 - Waytostay synchronisation worker
+- `Kigo::Booking` - implemented booking with supplier
 
 ### Changed
 - moved `JSONRPC` to `lib` folder

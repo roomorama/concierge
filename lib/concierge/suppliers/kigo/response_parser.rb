@@ -11,7 +11,7 @@ module Kigo
   #   parser.compute_pricing(request_params, response_body)
   #   # => #<Result error=nil value=Quotation>
   #
-  # See documentation of this class instace methods for their description
+  # See documentation of this class instance methods for their description
   # and possible errors.
   class ResponseParser
     include Concierge::JSON
@@ -37,7 +37,7 @@ module Kigo
         reply = payload["API_REPLY"]
         unless reply
           no_field("API_REPLY")
-          return unrecognised_response(response)
+          return unrecognised_response
         end
 
         currency = reply["CURRENCY"]
@@ -47,7 +47,7 @@ module Kigo
         { "CURRENCY" => currency, "FEES_AMOUNT" => fees, "TOTAL_AMOUNT" => total }.each do |key, value|
           if !value
             no_field(value)
-            return unrecognised_response(response)
+            return unrecognised_response
           end
         end
 
@@ -71,18 +71,51 @@ module Kigo
       end
     end
 
-    private
+    # parses the response of a +createConfirmedReservation+ API call.
+    #
+    # Returns a +Result+ instance wrapping a +Reservation+ object
+    # in case the response is successful. Possible errors that could
+    # happen in this step are:
+    #
+    # +invalid_json_representation+: the response sent back is not a valid JSON.
+    # +booking_call_failed+:         the response status is not +E_OK+.
+    # +unrecognised_response+:       the response was successful, but the format cannot
+    #                                be parsed.
+    def parse_reservation(request_params, response)
+      decoded_payload = json_decode(response)
+      return decoded_payload unless decoded_payload.success?
 
-    def build_quotation(params)
-      Quotation.new(
-        property_id: params[:property_id],
-        check_in:    params[:check_in].to_s,
-        check_out:   params[:check_out].to_s,
-        guests:      params[:guests],
-      )
+      payload = Concierge::SafeAccessHash.new(decoded_payload.value)
+      reservation = build_reservation(request_params)
+
+      if payload["API_RESULT_CODE"] == "E_OK"
+        code = payload.get("API_REPLY.RES_ID")
+        unless code
+          no_field("RES_ID")
+          return unrecognised_response
+        end
+
+        reservation.code = code
+        Result.new(reservation)
+      elsif payload["API_RESULT_CODE"] == "E_CONFLICT" && payload["API_RESULT_TEXT"] == "Dates not available"
+        Result.error(:unavailable_dates)
+      else
+        non_successful_result_code
+        Result.error(:booking_call_failed)
+      end
     end
 
-    def unrecognised_response(response)
+    private
+
+    def build_reservation(params)
+      Reservation.new(params)
+    end
+
+    def build_quotation(params)
+      Quotation.new(params)
+    end
+
+    def unrecognised_response
       Result.error(:unrecognised_response)
     end
 
