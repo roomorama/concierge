@@ -20,7 +20,7 @@ module SAW
       end
 
       def http
-        @http_client ||= Concierge::HTTPClient.new(credentials.url)
+        @http_client ||= Concierge::HTTPClient.new(credentials.url, timeout: 20)
       end
     
       def content_type
