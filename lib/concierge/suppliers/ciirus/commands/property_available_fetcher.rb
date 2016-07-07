@@ -25,8 +25,8 @@ module Ciirus
         result = remote_call(message)
         if result.success?
           result_hash = to_safe_hash(result.value)
-          property_rate = Ciirus::Mappers::PropertyAvailable.build(result_hash)
-          Result.new(property_rate)
+          availability = fetch_availability(result_hash)
+          Result.new(availability)
         else
           result
         end
@@ -36,6 +36,12 @@ module Ciirus
 
       def operation_name
         :is_property_available
+      end
+
+      private
+
+      def fetch_availability(hash)
+        hash.get('is_property_available_response.is_property_available_result')
       end
     end
   end
