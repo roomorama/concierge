@@ -43,18 +43,23 @@ module Ciirus
 
       private
 
+      def valid_property_detail?(result_hash)
+        error_msg = result_hash.get('error_msg')
+        error_msg.nil? || error_msg.empty?
+      end
+
       def build_properties(result_hash)
         properties = result_hash.get(
           'get_properties_response.get_properties_result.property_details'
         )
+        result = []
         if properties
-          Array(properties).map do |property|
-            # TODO: validate property_details and filter invalid
-            Ciirus::Mappers::Property.build(property)
+          Array(properties).each do |property|
+            property = to_safe_hash(property)
+            result << Ciirus::Mappers::Property.build(property) if valid_property_detail?(property)
           end
-        else
-          []
         end
+        result
       end
     end
   end

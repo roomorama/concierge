@@ -13,6 +13,7 @@ RSpec.describe Ciirus::Commands::PropertiesFetcher do
   let(:success_response) { read_fixture('ciirus/properties_response.xml') }
   let(:many_properties_response) { read_fixture('ciirus/many_properties_response.xml') }
   let(:empty_response) { read_fixture('ciirus/empty_properties_response.xml') }
+  let(:error_response) { read_fixture('ciirus/error_properties_response.xml') }
   let(:wsdl) { read_fixture('ciirus/wsdl.xml') }
 
   subject { described_class.new(credentials) }
@@ -107,15 +108,17 @@ RSpec.describe Ciirus::Commands::PropertiesFetcher do
       end
     end
 
-    # context 'when xml contains error message' do
-    #   it 'returns a result with error' do
-    #     stub_call(method: :get_properties, response: error_response)
-    #
-    #     result = subject.call(params)
-    #
-    #     expect(result.success?).to be false
-    #     expect(result.error.code).to eq(:not_empty_error_msg)
-    #   end
-    # end
+    context 'when xml contains error message' do
+      it 'returns a result without bad properties' do
+        stub_call(method: :get_properties, response: error_response)
+
+        result = subject.call
+
+        expect(result).to be_a Result
+        expect(result).to be_success
+        expect(result.value).to all(be_a Ciirus::Entities::Property)
+        expect(result.value.length).to eq(1)
+      end
+    end
   end
 end
