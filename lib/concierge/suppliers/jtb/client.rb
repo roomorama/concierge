@@ -4,13 +4,6 @@ module JTB
   # This class is a convenience class for the smaller classes under +JTB+.
   # For now, it allows the caller to get price quotations.
   #
-  # Usage
-  #
-  #   quotation = JTB::Client.new(credentials).quote(stay_params)
-  #   if quotation.sucessful?
-  #     # ...
-  #   end
-  #
   # For more information on how to interact with JTB, check the project Wiki.
   class Client
     SUPPLIER_NAME = "JTB"
@@ -22,57 +15,62 @@ module JTB
       @credentials = credentials
     end
 
-    # Always returns a +Quotation+.
+    # Quote prices
+    #
     # If an error happens in any step in the process of getting a response back from
     # JTB, a generic error message is sent back to the caller, and the failure
     # is logged.
+    #
+    # Usage
+    #
+    #   result = JTB::Client.new(credentials).quote(stay_params)
+    #   if result.success?
+    #     # ...
+    #   end
+    #
+    # Returns a +Result+ wrapping a +Quotation+ when operation succeeds
+    # Returns a +Result+ wrapping a nil object when operation fails
     def quote(params)
-      return unavailable_quotation if params.stay_length > MAXIMUM_STAY_LENGTH
-      result = JTB::Price.new(credentials).quote(params)
-
-      if result.success?
-        result.value
-      else
-        announce_error("quote", result)
-        Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
-      end
+      return stay_too_long_error if params.stay_length > MAXIMUM_STAY_LENGTH
+      JTB::Price.new(credentials).quote(params)
     end
 
-    # Always returns a +Reservation+.
+    # Property bookings
+    #
     # If an error happens in any step in the process of getting a response back from
     # JTB, a generic error message is sent back to the caller, and the failure
     # is logged.
+    #
+    # Usage
+    #
+    #   result = JTB::Client.new(credentials).book(stay_params)
+    #   if result.success?
+    #     # ...
+    #   end
+    #
+    # Returns a +Result+ wrapping a +Reservation+ when operation succeeds
+    # Returns a +Result+ wrapping a nil object when operation fails
     def book(params)
       result = JTB::Booking.new(credentials).book(params)
       if result.success?
-        Reservation.new(params).tap do |reservation|
+        res = Reservation.new(params).tap do |reservation|
           reservation.code = result.value
-          database.create(reservation) # workaround to keep booking code for reservation
+          database.create(reservation) # workaround to keep reservation code
         end
+        Result.new(res)
       else
-        announce_error("booking", result)
-        Reservation.new(errors: { booking: 'Could not book property with remote supplier' })
+        result
       end
     end
 
     private
 
-    def announce_error(operation, result)
-      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-        operation:   operation,
-        supplier:    SUPPLIER_NAME,
-        code:        result.error.code,
-        context:     Concierge.context.to_h,
-        happened_at: Time.now
-      })
-    end
-
     def database
       @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
     end
 
-    def unavailable_quotation
-      Quotation.new(errors: { quote: "Maximum length of stay must be less than #{MAXIMUM_STAY_LENGTH} nights." })
+    def stay_too_long_error
+      Result.error(:stay_too_long, { quote: "Maximum length of stay must be less than #{MAXIMUM_STAY_LENGTH} nights." })
     end
 
   end

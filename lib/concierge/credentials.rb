@@ -78,7 +78,7 @@ module Concierge
           end
 
           required_credentials.each do |credential|
-            if supplier_credentials[credential].nil? || supplier_credentials[credential].empty?
+            if supplier_credentials[credential].nil? || supplier_credentials[credential].to_s.empty?
               raise MissingCredentialError.new(supplier, credential)
             end
           end

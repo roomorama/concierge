@@ -6,7 +6,7 @@
         "DEPOSIT_AMOUNT": "0.00",
         "DEPOSIT_DUE_DATE": null,
         "EXTRA_GUEST_CHARGES_AMOUNT": "0.00",
-        "FEES_AMOUNT": "0.00",
+        "FEES_AMOUNT": "10.00",
         "FEES_DUE_DATE": null,
         "RENT_AMOUNT": "570.00",
         "RENT_BASE_AMOUNT": "570.00",

@@ -17,20 +17,20 @@ module API::Controllers
   #     def quote_price(params)
   #       Partner::Client.new.quote(params)
   #     end
+  #     def supplier_name
+  #       "partner"
+  #     end
   #   end
   #
-  # The only method this module expects to be implemented is a +quote_price+
-  # method. The +params+ argument given to it is an instance of +API::Controllers::Params::Quote+.
+  # The method this module expects to be implemented are:
+  # 1. +quote_price+
+  # 2. +supplier_name+
   #
-  # This method is only invoked in case validations were successful, meaning that partner
-  # implementations need not to care about presence and format of expected parameters
+  # See the respective method documentations below
   #
-  # The +quote_price+ is expected to return a +Quotation+ object, always. See the documentation
-  # of that class for further information.
-  #
-  # If the quotation is not successful, this method returns the errors declared in the returned
-  # +Quotation+ object, and the return status is 503.
   module Quote
+
+    GENERIC_ERROR = "Could not quote price with remote supplier".freeze
 
     def self.included(base)
       base.class_eval do
@@ -46,12 +46,15 @@ module API::Controllers
 
     def call(params)
       if params.valid?
-        @quotation = quote_price(params)
+        quotation_result = quote_price(params)
 
-        if quotation.successful?
+        if quotation_result.success?
+          @quotation = quotation_result.value
           self.body = API::Views::Quote.render(exposures)
         else
-          status 503, invalid_request(quotation.errors)
+          announce_error(quotation_result)
+          error_message = quotation_result.error.data || { quote: GENERIC_ERROR }
+          status 503, invalid_request(error_message)
         end
       else
         status 422, invalid_request(params.error_messages)
@@ -64,6 +67,40 @@ module API::Controllers
       response = { status: "error" }.merge!(errors: errors)
       json_encode(response)
     end
+
+    def announce_error(result)
+      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
+        operation:   "quote",
+        supplier:    supplier_name,
+        code:        result.error.code,
+        context:     Concierge.context.to_h,
+        happened_at: Time.now
+      })
+    end
+
+    # Get the quote result from client implementations.
+    #
+    # The +params+ argument given is an instance of +API::Controllers::Params::Quote+.
+    #
+    # This method is only invoked in case validations were successful, meaning that partner
+    # implementations need not to care about presence and format of expected parameters
+    #
+    # Should return a +Result+ wrapping a +Quotation+ object.
+    # See the documentation of those classes for further information.
+    #
+    # If the quotation is not successful, return the +Result+ with error,
+    # then the response status will be 503, with a generic quote error message.
+    #
+    def quote_price(params)
+      raise NotImplementedError
+    end
+
+    # This is used when reporting errors from the supplier.
+    # Should return a string
+    def supplier_name
+      raise NotImplementedError
+    end
+
   end
 
 end

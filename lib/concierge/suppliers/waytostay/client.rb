@@ -1,16 +1,10 @@
 require_relative 'quote'
+require_relative 'cancel'
 module Waytostay
   # +Waytostay::Client+
   #
   # This class is a convenience class for interacting with Waytostay.
   # OAuth2 is used as authentication.
-  #
-  # Usage
-  #
-  #   quotation = Waytostay::Client.new(credentials).quote(stay_params)
-  #   if quotation.sucessful?
-  #     # ...
-  #   end
   #
   # For more information on how to interact with Waytostay, check the project Wiki.
   class Client
@@ -20,6 +14,7 @@ module Waytostay
 
     include Waytostay::Quote
     include Waytostay::Book
+    include Waytostay::Cancel
 
     attr_reader :credentials
 
@@ -29,10 +24,10 @@ module Waytostay
     end
 
     def oauth2_client
-      @oauth2_client ||= API::Support::OAuth2Client.new(id:        credentials.client_id,
-                                                        secret:    credentials.client_secret,
-                                                        base_url:  credentials.url,
-                                                        token_url: credentials.token_url)
+      @oauth2_client ||= Concierge::OAuth2Client.new(id:        credentials.client_id,
+                                                     secret:    credentials.client_secret,
+                                                     base_url:  credentials.url,
+                                                     token_url: credentials.token_url)
     end
 
     private

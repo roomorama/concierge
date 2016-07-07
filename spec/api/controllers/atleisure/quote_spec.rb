@@ -26,7 +26,7 @@ RSpec.describe API::Controllers::AtLeisure::Quote do
 
   describe "#call" do
     before do
-      allow_any_instance_of(API::Support::JSONRPC).to receive(:request_id) { 888888888888 }
+      allow_any_instance_of(Concierge::JSONRPC).to receive(:request_id) { 888888888888 }
     end
 
     ["atleisure/no_availability.json", "atleisure/no_price.json", "atleisure/on_request.json"].each do |fixture|

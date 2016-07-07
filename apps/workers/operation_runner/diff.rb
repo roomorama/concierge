@@ -9,13 +9,15 @@ class Workers::OperationRunner
   # * updating the database record on Concierge to reflect the new data.
   class Diff
 
-    attr_reader :host, :operation
+    attr_reader :host, :operation, :roomorama_client
 
     # host      - a +Host+ instance.
     # operation - a +Roomorama::Client::Operations::Diff+ instance
-    def initialize(host, operation)
-      @host      = host
-      @operation = operation
+    # client    - a +Roomorama::Client+ instance properly configured
+    def initialize(host, operation, client)
+      @host             = host
+      @operation        = operation
+      @roomorama_client = client
     end
 
     # property - a +Roomorama::Property+ instance representing the *new* property
@@ -45,10 +47,6 @@ class Workers::OperationRunner
       property.to_h.tap do |attributes|
         attributes.delete(:availabilities)
       end
-    end
-
-    def roomorama_client
-      @roomorama_client ||= Roomorama::Client.new(host.access_token)
     end
 
   end

@@ -177,6 +177,10 @@ module Workers
     end
 
     def run_operation(operation, *args)
+      # enable context tracking when performing API calls to Roomorama so that
+      # any errors during the request can be logged.
+      Concierge.context.enable!
+
       result = Workers::OperationRunner.new(host).perform(operation, *args)
       announce_failure(result) unless result.success?
     end

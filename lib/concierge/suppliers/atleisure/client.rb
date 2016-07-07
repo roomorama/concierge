@@ -3,14 +3,7 @@ module AtLeisure
   # +AtLeisure::Client+
   #
   # This class is a convenience class for the smaller classes under +AtLeisure+.
-  # For now, it allows the caller to get price quotations.
-  #
-  # Usage
-  #
-  #   quotation = AtLeisure::Client.new(credentials).quote(stay_params)
-  #   if quotation.sucessful?
-  #     # ...
-  #   end
+  # For now, it allows the caller to get price quotations and create booking.
   #
   # For more information on how to interact with AtLeisure, check the project Wiki.
   class Client
@@ -22,36 +15,44 @@ module AtLeisure
       @credentials = credentials
     end
 
-    # Always returns a +Quotation+.
+    # Quote prices
+    #
     # If an error happens in any step in the process of getting a response back from
     # AtLeisure, a generic error message is sent back to the caller, and the failure
     # is logged.
+    #
+    # Usage
+    #
+    #   result = AtLeisure::Client.new(credentials).quote(stay_params)
+    #   if result.success?
+    #     # ...
+    #   end
+    #
+    # Returns a +Result+ wrapping a +Quotation+ when operation succeeds
+    # Returns a +Result+ wrapping a nil object when operation fails
     def quote(params)
-      result = AtLeisure::Price.new(credentials).quote(params)
-
-      if result.success?
-        result.value
-      else
-        announce_error("quote", result)
-        Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
-      end
+      AtLeisure::Price.new(credentials).quote(params)
     end
 
-    # Always returns a +Reservation+.
+    # Property bookings
+    #
     # If an error happens in any step in the process of getting a response back from
     # AtLeisure, a generic error message is sent back to the caller, and the failure
     # is logged.
+    #
+    # Usage
+    #
+    #   result = AtLeisure::Client.new(credentials).book(stay_params)
+    #   if result.success?
+    #     # ...
+    #   end
+    #
+    # Returns a +Result+ wrapping a +Reservation+ when operation succeeds
+    # Returns a +Result+ wrapping a nil object when operation fails
     def book(params)
       result = AtLeisure::Booking.new(credentials).book(params)
-
-      if result.success?
-        result.value.tap do |reservation|
-          database.create(reservation) # workaround to keep booking code for reservation
-        end
-      else
-        announce_error("booking", result)
-        Reservation.new(errors: { booking: "Could not create booking with remote supplier" })
-      end
+      database.create(result.value) if result.success? # workaround to keep booking code for reservation
+      result
     end
 
     private
@@ -60,16 +61,6 @@ module AtLeisure
       @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
     end
 
-
-    def announce_error(operation, result)
-      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-        operation:   operation,
-        supplier:    SUPPLIER_NAME,
-        code:        result.error.code,
-        context:     Concierge.context.to_h,
-        happened_at: Time.now
-      })
-    end
   end
 
 end

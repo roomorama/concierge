@@ -50,4 +50,59 @@ RSpec.describe Kigo::Request do
     end
   end
 
+  describe "#build_reservation_details" do
+    let(:params) {
+      {
+        property_id: "123",
+        check_in:    "2016-03-22",
+        check_out:   "2016-03-24",
+        guests:      2,
+        customer:    {
+          first_name: "Alex",
+          last_name:  "Black",
+          email:      "alex@black.com",
+          phone:      "123-123",
+          country:    "RU"
+        }
+      }
+    }
+
+    it "builds the computePricing parameters for the Kigo Real Page API" do
+      result = subject.build_reservation_details(params)
+
+      expect(result).to be_success
+      expect(result.value).to eq({
+        "PROP_ID"        => 123,
+        "RES_CHECK_IN"   => "2016-03-22",
+        "RES_CHECK_OUT"  => "2016-03-24",
+        "RES_N_ADULTS"   => 2,
+        "RES_COMMENT"    => "Booking made via Roomorama on #{Date.today}",
+        "RES_N_CHILDREN" => 0,
+        "RES_GUEST"      => {
+          "RES_GUEST_EMAIL"     => "alex@black.com",
+          "RES_GUEST_PHONE"     => "123-123",
+          "RES_GUEST_COUNTRY"   => "RU",
+          "RES_GUEST_LASTNAME"  => "Black",
+          "RES_GUEST_FIRSTNAME" => "Alex"
+        }
+      })
+    end
+
+    it "fails if the property ID is not numerical" do
+      params[:property_id] = "KG-123"
+      result               = nil
+
+      expect {
+        result = subject.build_compute_pricing(params)
+      }.to change { Concierge.context.events.size }
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :invalid_property_id
+
+      event = Concierge.context.events.last
+      expect(event.to_h[:type]).to eq "generic_message"
+    end
+  end
+
+
 end

@@ -11,13 +11,15 @@ module Waytostay
 
     # Books and immediately confirms the waytostay booking
     #
-    # Always returns a +Reservation+.
     # If an error happens in any step in the process of getting a response back from
     # Waytostay, a generic error message is sent back to the caller, and the failure
     # is logged.
+    #
+    # Returns a +Result+ wrapping a +Reservation+ when operation succeeds
+    # Returns a +Result+ wrapping a nil object when operation fails
     def book(params)
-      remote_book(params).tap do |reservation|
-        remote_confirm(reservation, params) if reservation.successful?
+      remote_book(params).tap do |result|
+        remote_confirm(result.value, params) if result.success?
       end
     end
 
@@ -57,23 +59,18 @@ module Waytostay
     # Takes a +Result+ and returns a +Reservation+
     #
     def parse_reservation(result, params)
-      if result.success?
-        response = Concierge::SafeAccessHash.new(result.value)
+      return result unless result.success?
 
-        missing_keys = response.missing_keys_from(REQUIRED_RESPONSE_KEYS)
-        if missing_keys.empty?
-          reservation = Reservation.new(params)
-          reservation.code = response.get("booking_reference")
-          reservation
-        else
-          augment_missing_fields(missing_keys)
-          announce_error("booking", Result.error(:unrecognised_response))
-          Reservation.new(errors: { booking: "Could not create booking with remote supplier" })
-        end
+      response = Concierge::SafeAccessHash.new(result.value)
 
+      missing_keys = response.missing_keys_from(REQUIRED_RESPONSE_KEYS)
+      if missing_keys.empty?
+        reservation = Reservation.new(params)
+        reservation.code = response.get("booking_reference")
+        Result.new(reservation)
       else
-        announce_error("booking", result)
-        Reservation.new(errors: { booking: "Could not create booking with remote supplier" })
+        augment_missing_fields(missing_keys)
+        Result.error(:unrecognised_response)
       end
     end
 

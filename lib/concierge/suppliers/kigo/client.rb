@@ -5,13 +5,6 @@ module Kigo
   # This class is a convenience class for the smaller classes under +Kigo+.
   # For now, it allows the caller to get price quotations.
   #
-  # Usage
-  #
-  #   quotation = Kigo::Client.new(credentials).quote(stay_params)
-  #   if quotation.sucessful?
-  #     # ...
-  #   end
-  #
   # For more information on how to interact with Kigo, check the project Wiki.
   # Note that this client interacts with the new Kigo Channels API. For
   # reference of the old Kigo API, check +Kigo::Legacy+.
@@ -24,31 +17,38 @@ module Kigo
       @credentials = credentials
     end
 
-    # Always returns a +Quotation+.
+    # Quote prices
+    # 
     # If an error happens in any step in the process of getting a response back from
     # Kigo, a generic error message is sent back to the caller, and the failure
     # is logged.
+    #
+    # Usage
+    #
+    #   result = Kigo::Client.new(credentials).quote(stay_params)
+    #   if result.success?
+    #     # ...
+    #   end
+    #
+    # Returns a +Result+ wrapping a +Quotation+ when operation succeeds
+    # Returns a +Result+ wrapping a nil object when operation fails
     def quote(params)
-      result = Kigo::Price.new(credentials).quote(params)
+      Kigo::Price.new(credentials).quote(params)
+    end
 
-      if result.success?
-        result.value
-      else
-        announce_error("quote", result)
-        Quotation.new(errors: { quote: "Could not quote price with remote supplier" })
-      end
+    # Returns a +Result+ wrapping a +Reservation+.
+    # Returns a +Result+ with error if booking fails.
+    # Uses an instance +Kigo::Request+ to dictate parameters and endpoints.
+    def book(params)
+      result = Kigo::Booking.new(credentials).book(params)
+      database.create(result.value) if result.success?
+      result
     end
 
     private
 
-    def announce_error(operation, result)
-      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-        operation:   operation,
-        supplier:    SUPPLIER_NAME,
-        code:        result.error.code,
-        context:     Concierge.context.to_h,
-        happened_at: Time.now
-      })
+    def database
+      @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
     end
   end
 
