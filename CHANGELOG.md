@@ -9,6 +9,7 @@ how this file is formatted and how the process works.
 - Synchronisation with AtLeisure
 - Ability to enable or disable context tracking at certain points in time.
 - `Kigo::Booking` - implemented booking with supplier
+- added `currency_code` to the list of supported attributes for booking webhook and for `API::Controllers::Params::Booking` object
 
 ### Changed
 - moved `JSONRPC` to `lib` folder
