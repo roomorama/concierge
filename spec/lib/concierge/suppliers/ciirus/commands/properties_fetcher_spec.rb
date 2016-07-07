@@ -11,6 +11,7 @@ RSpec.describe Ciirus::Commands::PropertiesFetcher do
   end
 
   let(:success_response) { read_fixture('ciirus/properties_response.xml') }
+  let(:many_properties_response) { read_fixture('ciirus/many_properties_response.xml') }
   let(:empty_response) { read_fixture('ciirus/empty_properties_response.xml') }
   let(:wsdl) { read_fixture('ciirus/wsdl.xml') }
 
@@ -75,37 +76,26 @@ RSpec.describe Ciirus::Commands::PropertiesFetcher do
         expect(property.pets_allowed).to be(false)
         expect(property.currency_code).to eq('USD')
       end
-      #
-      # it 'fills properties with right amenities' do
-      #   stub_call(method: :get_properties, response: success_response)
-      #
-      #   result = subject.call(params)
-      #
-      #   property = result.value[0]
-      #   expect(property.property_id).to eq('51502')
-      #   expect(property.property_name).to eq('123 Fictional Lane')
-      #   expect(property.address).to eq('Long Island 234')
-      #   expect(property.zip).to eq('22313')
-      #   expect(property.city).to eq('Omks')
-      #   expect(property.bedrooms).to eq(4)
-      #   expect(property.sleeps).to eq(4)
-      #   expect(property.min_nights_stay).to eq(1)
-      #   expect(property.type).to eq('Unspecified')
-      #   expect(property.country).to eq('Russia')
-      #   expect(property.xco).to eq('0')
-      #   expect(property.yco).to eq('0')
-      #   expect(property.bathrooms).to eq(3.0)
-      #   expect(property.king_beds).to eq(2)
-      #   expect(property.queen_beds).to eq(1)
-      #   expect(property.full_beds).to eq(0)
-      #   expect(property.twin_beds).to eq(1)
-      #   expect(property.extra_bed).to be(true)
-      #   expect(property.sofa_bed).to be(false)
-      #   expect(property.pets_allowed).to be(false)
-      #   expect(property.currency_code).to eq('USD')
-      #   expect(property.amenities).to eq()
-      #
-      # end
+
+      it 'fills properties with right amenities' do
+        stub_call(method: :get_properties, response: success_response)
+
+        result = subject.call
+
+        amenities = result.value[0].amenities
+        expect(amenities).to contain_exactly('outdoor_space', 'parking', 'pool')
+      end
+
+      it 'can fetch many properties' do
+        stub_call(method: :get_properties, response: many_properties_response)
+
+        result = subject.call
+
+        expect(result).to be_a Result
+        expect(result).to be_success
+        expect(result.value).to all(be_a Ciirus::Entities::Property)
+        expect(result.value.length).to eq(2)
+      end
 
       it 'returns empty array for empty response' do
         stub_call(method: :get_properties, response: empty_response)
