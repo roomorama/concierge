@@ -10,11 +10,7 @@ RSpec.describe Ciirus::Commands::PropertyRatesFetcher do
            url:      'example.org')
   end
 
-  let(:params) do
-    {
-      property_id: 38180
-    }
-  end
+  let(:property_id) { 38180 }
 
   let(:success_response) { read_fixture('ciirus/property_rates_response.xml') }
   let(:one_rate_response) { read_fixture('ciirus/one_property_rate_response.xml') }
@@ -63,7 +59,7 @@ RSpec.describe Ciirus::Commands::PropertyRatesFetcher do
     context 'when remote call internal error happened' do
       it 'returns result with error' do
         allow_any_instance_of(Savon::Client).to receive(:call) { raise Savon::Error }
-        result = subject.call(params)
+        result = subject.call(property_id)
 
         expect(result).not_to be_success
         expect(result.error.code).to eq :savon_error
@@ -74,7 +70,7 @@ RSpec.describe Ciirus::Commands::PropertyRatesFetcher do
       it 'returns array of rates' do
         stub_call(method: :get_property_rates, response: success_response)
 
-        result = subject.call(params)
+        result = subject.call(property_id)
         rates = result.value
 
         expect(result).to be_a Result
@@ -87,7 +83,7 @@ RSpec.describe Ciirus::Commands::PropertyRatesFetcher do
       it 'returns array with a rate' do
         stub_call(method: :get_property_rates, response: one_rate_response)
 
-        result = subject.call(params)
+        result = subject.call(property_id)
         rates = result.value
 
         expect(result).to be_a Result
@@ -99,7 +95,7 @@ RSpec.describe Ciirus::Commands::PropertyRatesFetcher do
     it 'returns empty array for empty response' do
       stub_call(method: :get_property_rates, response: empty_response)
 
-      result = subject.call(params)
+      result = subject.call(property_id)
       rates = result.value
 
       expect(result).to be_a Result
