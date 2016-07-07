@@ -74,16 +74,29 @@ module Concierge
     #
     # Example
     #
+    #   # Make a connection with basic_auth (user + password):
+    #
     #   HTTPClient.new("https://www.example.org", basic_auth: {
     #     username: "user",
     #     password: "password"
+    #   })
+    #
+    #   # Make a connection with basic_auth ():
+    #
+    #   HTTPClient.new("https://www.example.org", basic_auth: {
+    #     "Authorization": "API_KEY_123"
     #   })
     def initialize(url, options = {})
       @url = url
       @options = options
       if options[:basic_auth]
         basic_auth = options.fetch(:basic_auth)
-        connection.basic_auth(basic_auth.fetch(:username), basic_auth.fetch(:password))
+
+        if basic_auth[:Authorization]
+          connection.authorization(:Authorization, basic_auth.fetch(:Authorization))
+        else
+          connection.basic_auth(basic_auth.fetch(:username), basic_auth.fetch(:password))
+        end
       end
     end
 
