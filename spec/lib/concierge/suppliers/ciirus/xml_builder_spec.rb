@@ -34,7 +34,17 @@ RSpec.describe Ciirus::XMLBuilder do
     let(:valid_request) do
       read_fixture('ciirus/valid_image_list_request.xml')
     end
-    let(:message) { subject.property_rates(property_id) }
+    let(:message) { subject.image_list(property_id) }
+
+    it { expect(message).to eq valid_request}
+  end
+
+  describe '#descriptions_plain_text' do
+    let(:property_id) { 10 }
+    let(:valid_request) do
+      read_fixture('ciirus/valid_descriptions_plain_text_request.xml')
+    end
+    let(:message) { subject.descriptions_plain_text(property_id) }
 
     it { expect(message).to eq valid_request}
   end
