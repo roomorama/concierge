@@ -10,6 +10,7 @@ how this file is formatted and how the process works.
 
 ### Changed
 - determine Roomorama API environment according to value in environment variable.
+- fixed SafeAccessHash#get method to return nil for unexisting keys
 
 ## [0.4.4] - 2016-07-07
 ### Added
