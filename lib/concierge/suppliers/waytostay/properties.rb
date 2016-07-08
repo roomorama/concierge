@@ -16,6 +16,7 @@ module Waytostay
       lng:                 "location.coord.lng",
       address:             "location.address.address",
       postal_code:         "location.address.postcode",
+      city:                "location.city.name",
       number_of_bedrooms:  "general.bedrooms",
       number_of_bathrooms: "general.bathrooms",
       surface:             "general.sqm",
@@ -24,6 +25,7 @@ module Waytostay
       check_in_time:       "general.checkin_time",
       check_out_time:      "general.checkout_time",
       currency:            "payment.currency",
+      nightly_rate:        "payment.lowest_rate",
     }.freeze
 
     REQUIRED_RESPONSE_KEYS = (FIELD_MAPPINGS.values +
@@ -38,8 +40,7 @@ module Waytostay
     def get_property(ref)
       result = oauth2_client.get(
         build_path(ENDPOINT, property_reference: ref),
-        headers: headers
-      )
+        headers: headers)
 
       parse_property(result)
     end
@@ -85,24 +86,28 @@ module Waytostay
       attr.merge! parse_services(response)
       attr.merge! parse_number_of_beds(response)
       attr.merge! parse_amenities(response)
+      attr.merge! parse_approximate_rates(response)
 
       attr.merge! parse_property_state(response)
+    end
+
+    def parse_approximate_rates(response)
+      {
+        weekly_rate:  response.get("payment.lowest_rate") * 7,
+        monthly_rate: response.get("payment.lowest_rate") * 30,
+      }
     end
 
     def parse_property_state(response)
       payment_supported = response.get("payment.payment_options")
                             .include?  Waytostay::Client::SUPPORTED_PAYMENT_METHOD
       active = response.get("active")
-      {
-        disabled: !payment_supported || !active
-      }
+      { disabled: !payment_supported || !active }
     end
 
     def parse_floors(response)
       floors = response.get("general.floors")
-      {
-        floor:floors.first["name"]
-      }
+      { floor:floors.first["name"] }
     end
 
     # Extracts `smoking_allowed`, `pets_allowed`

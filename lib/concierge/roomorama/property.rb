@@ -80,6 +80,10 @@ module Roomorama
       :services_car_rental_rate, :services_airport_pickup_rate, :services_concierge,
       :services_concierge_rate, :disabled, :instant_booking]
 
+    REQUIRED_ATTRIBUTES = [:identifier, :type, :title, :address, :postal_code,
+      :city, :description, :number_of_bedrooms, :max_guests, :minimum_stay,
+      :nightly_rate, :weekly_rate, :monthly_rate, :default_to_available]
+
     attr_accessor *ATTRIBUTES
 
     # identifier - the identifier on the supplier system. Required attribute
