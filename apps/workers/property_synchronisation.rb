@@ -1,6 +1,6 @@
 module Workers
 
-  # +Workers::Synchronisation+
+  # +Workers::PropertySynchronisation+
   #
   # Organizes the synchronisation process for a given host from supplier.
   # It is able to route processed property to the adequate operation
@@ -8,10 +8,14 @@ module Workers
   # that were published before but are no longer contained in the list
   # of properties for that host.
   #
+  # Handles exclusively creation/updates of property details. For changes
+  # on the availabilities calendar of a property, check the +Workers::PropertyCalendar+
+  # class.
+  #
   # Usage
   #
   #   host = Host.last
-  #   sync = Workers::Synchronisation.new(host)
+  #   sync = Workers::PropertySynchronisation.new(host)
   #
   #   # supplier API is called, raw data is fetched
   #   properties = fetch_properties
@@ -25,7 +29,7 @@ module Workers
   #   end
   #
   #   sync.finish! # => non-processed properties are deleted at the end of the process.
-  class Synchronisation
+  class PropertySynchronisation
 
     PropertyCounters = Struct.new(:created, :updated, :deleted)
 

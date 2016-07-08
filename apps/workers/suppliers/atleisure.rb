@@ -10,7 +10,7 @@ module Workers::Suppliers
 
     def initialize(host)
       @host            = host
-      @synchronisation = Workers::Synchronisation.new(host)
+      @synchronisation = Workers::PropertySynchronisation.new(host)
     end
 
     def perform

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Workers::Synchronisation do
+RSpec.describe Workers::PropertySynchronisation do
   include Support::Factories
   include Support::HTTPStubbing
   include Support::Fixtures
