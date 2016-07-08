@@ -51,21 +51,33 @@ module Waytostay
     def parse_property(result)
       if result.success?
         response = Concierge::SafeAccessHash.new(result.value)
-
-        missing_keys = response.missing_keys_from(REQUIRED_RESPONSE_KEYS)
-        if missing_keys.empty?
-          property = Roomorama::Property.new(response.get("reference"))
-          property_attributes_from(response).each do |key, value|
-            property[key] = value if value
-          end
-          Result.new(property)
+        if response.get("active") == true
+          parse_active_property(response)
         else
-          augment_missing_fields(missing_keys)
-          Result.error(:unrecognised_response)
+          Result.new inactive_property(response)
         end
-
       else
         result
+      end
+    end
+
+    def inactive_property(response)
+      Roomorama::Property.new(response.get("reference")).tap do |property|
+        property[:disabled] = true
+      end
+    end
+
+    def parse_active_property(response)
+      missing_keys = response.missing_keys_from(REQUIRED_RESPONSE_KEYS)
+      if missing_keys.empty?
+        property = Roomorama::Property.new(response.get("reference"))
+        property_attributes_from(response).each do |key, value|
+          property[key] = value if value
+        end
+        Result.new(property)
+      else
+        augment_missing_fields(missing_keys)
+        Result.error(:unrecognised_response)
       end
     end
 

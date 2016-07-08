@@ -64,7 +64,7 @@ RSpec.shared_examples "Waytostay property handler" do
 
   describe "#get_property" do
     let(:valid_property_id)           { "015868" }
-    let(:inactive_property_id)        { "101" }
+    let(:inactive_property_id)        { "inactive" }
     let(:partial_payment_property_id) { "102" }
     let(:property_url) { "#{base_url}/properties/#{property_id}" }
     before do
@@ -96,7 +96,7 @@ RSpec.shared_examples "Waytostay property handler" do
     end
 
     context "when property payment method is not supported" do
-      let(:property_id) { inactive_property_id }
+      let(:property_id) { partial_payment_property_id }
       it { expect(subject.result.disabled).to eq true }
     end
   end
