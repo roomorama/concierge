@@ -33,17 +33,18 @@ module Ciirus
       end
 
       def options
-        wsdl = "#{credentials.url}/#{PATH}?wsdl"
+        endpoint = "#{credentials.url}/#{PATH}"
+        wsdl     = "#{endpoint}?wsdl"
         {
-          wsdl:                 wsdl,
-          env_namespace:        :soap12,
-          namespace_identifier: nil,
-          soap_version:         2
+          wsdl:          wsdl,
+          env_namespace: :soap,
+          endpoint:      endpoint,
+          log: true
         }
       end
 
       def remote_call(message)
-        client.call(operation_name, message: message)
+        client.call(operation_name, message: message, attributes: {'xmlns' => 'http://xml.ciirus.com/'})
       end
 
       def to_safe_hash(usual_hash)

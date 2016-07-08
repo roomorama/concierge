@@ -11,10 +11,10 @@ RSpec.describe Ciirus::Commands::QuoteFetcher do
   end
 
   let(:params) do
-    API::Controllers::Params::Quote.new(property_id: 38180,
-                                        check_in: '2016-05-01',
-                                        check_out: '2016-05-12',
-                                        guests: 3)
+    API::Controllers::Params::Quote.new(property_id: 33680,
+                                        check_in: '2017-08-01',
+                                        check_out: '2017-08-05',
+                                        guests: 2)
   end
 
   let(:success_response) { read_fixture('ciirus/property_quote_response.xml') }
@@ -61,25 +61,25 @@ RSpec.describe Ciirus::Commands::QuoteFetcher do
         result = subject.call(params)
 
         quotation = result.value
-        expect(quotation.check_in).to eq('2016-05-01')
-        expect(quotation.check_out).to eq('2016-05-12')
-        expect(quotation.guests).to eq(3)
-        expect(quotation.property_id).to eq('38180')
+        expect(quotation.check_in).to eq('2017-08-01')
+        expect(quotation.check_out).to eq('2017-08-05')
+        expect(quotation.guests).to eq(2)
+        expect(quotation.property_id).to eq('33680')
         expect(quotation.currency).to eq('USD')
         expect(quotation.available).to be true
-        expect(quotation.total).to eq(3440.98)
+        expect(quotation.total).to eq(698.19)
       end
 
-      it 'returns unavailable quotation for empty response' do
+      it 'returns unavailable quotation for appropriate response' do
         stub_call(method: :get_properties, response: empty_response)
 
         result = subject.call(params)
 
         quotation = result.value
-        expect(quotation.check_in).to eq('2016-05-01')
-        expect(quotation.check_out).to eq('2016-05-12')
-        expect(quotation.guests).to eq(3)
-        expect(quotation.property_id).to eq('38180')
+        expect(quotation.check_in).to eq('2017-08-01')
+        expect(quotation.check_out).to eq('2017-08-05')
+        expect(quotation.guests).to eq(2)
+        expect(quotation.property_id).to eq('33680')
         expect(quotation.available).to be false
       end
     end
