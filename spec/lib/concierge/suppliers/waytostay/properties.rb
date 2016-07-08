@@ -28,6 +28,15 @@ RSpec.shared_examples "Waytostay property handler" do
       }
       it { expect(subject[:number_of_sofa_beds]).to eq 1 }
     end
+    context "when there are no single beds" do
+      let(:response) {
+        Concierge::SafeAccessHash.new( "general" => {
+          "bedding_summary"=>["1 double sofa bed"]
+        })
+      }
+      it { expect(subject[:number_of_sofa_beds]).to eq 1 }
+      it { expect(subject[:number_of_single_beds]).to eq 0 }
+    end
   end
 
   describe "#parse_amenities" do
@@ -52,5 +61,4 @@ RSpec.shared_examples "Waytostay property handler" do
       it { expect(subject[:amenities]).to match [] }
     end
   end
-
 end

@@ -143,9 +143,12 @@ module Waytostay
       summary.scan(/([0-9]*) \w+ sofa bed/) do |match|
         sofa_beds += match.first.to_i
       end
+
+      double_matches = /([0-9]*) double bed/.match(summary)
+      single_matches = /([0-9]*) single bed/.match(summary)
       {
-        number_of_double_beds: /([0-9]*) double bed/.match(summary)[1].to_i,
-        number_of_single_beds: /([0-9]*) single bed/.match(summary)[1].to_i,
+        number_of_double_beds: double_matches.nil? ? 0 : double_matches[1].to_i,
+        number_of_single_beds: single_matches.nil? ? 0 : single_matches[1].to_i,
         number_of_sofa_beds:   sofa_beds
       }
     end
