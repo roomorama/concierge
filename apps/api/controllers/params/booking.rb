@@ -13,11 +13,12 @@ module API::Controllers::Params
 
     DATE_FORMAT = /\d\d\d-\d\d-\d\d/
 
-    param :property_id, presence: true, type: String
-    param :check_in,    presence: true, type: String, format: DATE_FORMAT
-    param :check_out,   presence: true, type: String, format: DATE_FORMAT
-    param :guests,      presence: true, type: Integer
-    param :subtotal,    presence: true, type: Integer
+    param :property_id,   type: String,  presence: true
+    param :check_in,      type: String,  presence: true, format: DATE_FORMAT
+    param :check_out,     type: String,  presence: true, format: DATE_FORMAT
+    param :guests,        type: Integer, presence: true
+    param :subtotal,      type: Integer, presence: true
+    param :currency_code, type: String
 
     param :extra
     param :customer do

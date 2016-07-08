@@ -6,6 +6,13 @@ how this file is formatted and how the process works.
 
 ## [Unreleased]
 ### Added
+- added `currency_code` to the list of supported attributes for booking webhook and for `API::Controllers::Params::Booking` object
+
+### Changed
+- determine Roomorama API environment according to value in environment variable.
+
+## [0.4.4] - 2016-07-07
+### Added
 - Synchronisation with AtLeisure
 - Ability to enable or disable context tracking at certain points in time.
 - `Concierge::SafeAccessHash#merge` utils method
