@@ -34,7 +34,9 @@ RSpec.describe Roomorama::Client do
   subject { described_class.new(access_token) }
 
   describe "#initialize" do
-    it "defaults to production" do
+    it "defaults to the value specified in the environment variable" do
+      old_environment = ENV["ROOMORAMA_API_ENVIRONMENT"]
+      ENV["ROOMORAMA_API_ENVIRONMENT"] = "production"
       client = nil
 
       expect {
@@ -42,6 +44,7 @@ RSpec.describe Roomorama::Client do
       }.not_to raise_error
 
       expect(client.api_url).to eq "https://api.roomorama.com"
+      ENV["ROOMORAMA_API_ENVIRONMENT"] = old_environment
     end
 
     it "allows a different environment to be specified" do

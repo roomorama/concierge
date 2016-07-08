@@ -41,7 +41,7 @@ module Roomorama
 
     attr_reader :access_token, :api_url
 
-    def initialize(access_token, environment: :production)
+    def initialize(access_token, environment: ENV["ROOMORAMA_API_ENVIRONMENT"])
       @access_token = access_token
       @api_url      = resolve_api_url!(environment)
     end
@@ -72,7 +72,9 @@ module Roomorama
       {
         production: "https://api.roomorama.com",
         sandbox:    "https://api.sandbox.roomorama.com",
-        staging:    "https://api.staging.roomorama.com"
+        staging:    "https://api.staging.roomorama.com",
+        staging2:   "https://api.staging2.roomorama.com",
+        staging3:   "https://api.staging3.roomorama.com"
       }[environment.to_s.to_sym].tap do |url|
         raise UnknownEnvironmentError.new(environment) unless url
       end

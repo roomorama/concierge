@@ -64,13 +64,7 @@ module Workers
     end
 
     def roomorama_client
-      @roomorama_client ||= Roomorama::Client.new(host.access_token, environment: roomorama_environment)
-    end
-
-    # use the production Roomorama API on production, falling back to staging in any
-    # other environment.
-    def roomorama_environment
-      Hanami.env == "production" ? :production : :staging
+      @roomorama_client ||= Roomorama::Client.new(host.access_token)
     end
 
     # if the result of performing the operation was successful, we update
