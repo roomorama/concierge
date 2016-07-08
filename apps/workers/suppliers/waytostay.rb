@@ -12,9 +12,11 @@ module Workers::Suppliers
     end
 
     def perform
+      logger.debug "#perform start"
       changes = get_new_waytostay_changes
       return if changes.nil?
 
+      logger.debug "#perform changes count: #{uniq_properties_in(changes).count}"
       uniq_properties_in(changes).each do |property_ref|
         synchronisation.start(property_ref) do
           wrapped_property = if changes[:properties].include? property_ref
@@ -100,6 +102,9 @@ module Workers::Suppliers
       Roomorama::Property.load(existing.data.merge(identifier: ref))
     end
 
+    def logger
+      @logger ||= Logger.new(Hanami.root.join("log", "debug_waytostay.log").to_s)
+    end
   end
 end
 
