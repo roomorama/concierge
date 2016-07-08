@@ -9,12 +9,10 @@ module Ciirus
             property_id: params[:property_id],
             check_in:    params[:check_in].to_s,
             check_out:   params[:check_out].to_s,
-            guests:      params[:guests]
+            guests:      params[:guests],
+            available:   available?(hash)
           )
-          if hash.get('get_properties_response.get_properties_result.property_details').nil?
-            quotation.available = false
-          else
-            quotation.available = true
+          if quotation.available
             quotation.currency = parse_currency(hash)
             quotation.total = parse_total(hash)
           end
@@ -29,6 +27,11 @@ module Ciirus
 
         def parse_currency(hash)
           hash.get('get_properties_response.get_properties_result.property_details.currency_code')
+        end
+
+        def available?(hash)
+          error_msg = hash.get('get_properties_response.get_properties_result.property_details.error_msg')
+          error_msg != Ciirus::Commands::QuoteFetcher::EMPTY_ERROR_MESSAGE
         end
       end
     end

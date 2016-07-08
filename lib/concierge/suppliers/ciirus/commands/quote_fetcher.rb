@@ -18,9 +18,11 @@ module Ciirus
     # encapsulates the +Quotation+.
     class QuoteFetcher < BaseCommand
 
+      EMPTY_ERROR_MESSAGE = 'No Properties were found that fit the specified search Criteria.'
+
       def call(params)
         filter_options = Ciirus::FilterOptions.new(property_id: params[:property_id])
-        search_options = Ciirus::SearchOptions.new(quote: true)
+        search_options = Ciirus::SearchOptions.new(quote: true, full_details: false)
         special_options = Ciirus::SpecialOptions.new
         arrive_date = convert_date(params[:check_in])
         depart_date = convert_date(params[:check_out])
@@ -45,7 +47,7 @@ module Ciirus
 
       def valid_result?(result_hash)
         error_msg = result_hash.get('get_properties_response.get_properties_result.property_details.error_msg')
-        error_msg.nil? || error_msg.empty?
+        error_msg.nil? || error_msg.empty? || error_msg == EMPTY_ERROR_MESSAGE
       end
 
       def operation_name

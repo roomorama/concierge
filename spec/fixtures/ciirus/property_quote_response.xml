@@ -1,38 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
-  <soap12:Body>
-  <GetPropertiesResponse xmlns="http://xml.ciirus.com/">
+<soap:Envelope
+        xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <soap:Body>
+    <GetPropertiesResponse
+            xmlns="http://xml.ciirus.com/">
       <GetPropertiesResult>
         <PropertyDetails>
-          <PropertyID>38180</PropertyID>
-          <ManagementCompanyName>Orlando Property Services</ManagementCompanyName>
-          <MainImageURL>http://images.ciirus.com/properties/14450/38180/images/P1000879[1].jpg</MainImageURL>
-          <MCPropertyName>436PD</MCPropertyName>
-          <WebsitePropertyName>436PD</WebsitePropertyName>
-          <DescriptionSetID>32413</DescriptionSetID>
-          <Community>Highlands Reserve</Community>
-          <Bedrooms>4</Bedrooms>
-          <Sleeps>8</Sleeps>
-          <Bathrooms>3.0</Bathrooms>
-          <XCO>28.2985670</XCO>
-          <YCO>-81.6773980</YCO>
-          <Bullet1>Games Room</Bullet1>
-          <Bullet2>Internet</Bullet2>
+          <PropertyID>33680</PropertyID>
+          <ManagementCompanyName>Floriwood Property Management</ManagementCompanyName>
+          <MainImageURL>http://images.ciirus.com/properties/11015/33680/images/33656-Claus-Ebster-1008.jpg</MainImageURL>
+          <MCPropertyName>Carol's Kingdom</MCPropertyName>
+          <WebsitePropertyName>Carol's Kingdom</WebsitePropertyName>
+          <DescriptionSetID>854</DescriptionSetID>
+          <Community>Crescent Lakes</Community>
+          <Bedrooms>3</Bedrooms>
+          <Sleeps>6</Sleeps>
+          <Bathrooms>2</Bathrooms>
+          <XCO>28.2252710</XCO>
+          <YCO>-81.5005140</YCO>
+          <Bullet1>Luxury Villa</Bullet1>
+          <Bullet2>Close to all the theme parks</Bullet2>
           <Bullet3>Private Pool</Bullet3>
-          <Bullet4>South East Facing</Bullet4>
-          <Bullet5>Fairway View</Bullet5>
+          <Bullet4>Fully Air conditioned</Bullet4>
+          <Bullet5>Fully equipped kitchen</Bullet5>
           <CurrencySymbol>$</CurrencySymbol>
           <CurrencyCode>USD</CurrencyCode>
           <HasPool>true</HasPool>
           <HasSpa>true</HasSpa>
           <GamesRoom>true</GamesRoom>
-          <PropertyType>House</PropertyType>
+          <PropertyType>Apartment</PropertyType>
           <PropertyClass>Deluxe</PropertyClass>
-          <HostMCUserID>11840</HostMCUserID>
-          <QuoteExcludingTax>3072.30</QuoteExcludingTax>
-          <QuoteIncludingTax>3440.98</QuoteIncludingTax>
+          <HostMCUserID>11006</HostMCUserID>
+          <QuoteExcludingTax>629.00</QuoteExcludingTax>
+          <QuoteIncludingTax>698.19</QuoteIncludingTax>
           <LessThanMinimumNightsStay>false</LessThanMinimumNightsStay>
-          <MinimumNightsStay>7</MinimumNightsStay>
+          <MinimumNightsStay>3</MinimumNightsStay>
           <CommunalPool>false</CommunalPool>
           <CommunalGym>false</CommunalGym>
           <ConservationView>false</ConservationView>
@@ -73,25 +77,14 @@
           <RockingChairs>false</RockingChairs>
           <VideoGames>false</VideoGames>
           <Fishing>false</Fishing>
-          <BedroomConfiguration>string</BedroomConfiguration>
-          <Address1>string</Address1>
-          <Address2>string</Address2>
-          <City>string</City>
-          <County>string</County>
-          <State>string</State>
-          <Zip>string</Zip>
-          <Country>string</Country>
-          <Telephone>3568497</Telephone>
           <ExtraBed>false</ExtraBed>
           <SofaBed>false</SofaBed>
           <Twin_SingleBeds>0</Twin_SingleBeds>
-          <FullBeds>1</FullBeds>
+          <FullBeds>0</FullBeds>
           <QueenBeds>0</QueenBeds>
-          <KingBeds>4</KingBeds>
-          <ErrorMsg></ErrorMsg>
-          <SpecialResponse>string</SpecialResponse>
+          <KingBeds>0</KingBeds>
         </PropertyDetails>
       </GetPropertiesResult>
     </GetPropertiesResponse>
-  </soap12:Body>
-</soap12:Envelope>
+  </soap:Body>
+</soap:Envelope>
