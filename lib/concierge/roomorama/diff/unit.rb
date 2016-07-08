@@ -71,14 +71,6 @@ class Roomorama::Diff
       image_changes.deleted << identifier
     end
 
-    def update_calendar(dates)
-      calendar.merge!(dates.dup)
-    end
-
-    def calendar
-      @calendar ||= {}
-    end
-
     def to_h
       # map unit attribute changes
       data = {
@@ -113,11 +105,6 @@ class Roomorama::Diff
       # only include an images field if there are changes to be applied.
       unless mapped_image_changes.empty?
         data[:images] = mapped_image_changes
-      end
-
-      # no need for the +availabilities+ field if there is no calendar changes.
-      unless calendar.empty?
-        data[:availabilities] = map_availabilities(self)
       end
 
       scrub(data, erased)

@@ -21,14 +21,10 @@ class Roomorama::Client::Operations
     #
     # On initialization the +validate!+ method of the property is called - therefore,
     # an operation cannot be built unless the property given is conformant to the
-    # basica validations performed on that class.
+    # basic validations performed on that class.
     def initialize(property)
       @property = property
       property.validate!
-
-      # when publishing properties, an initial set of availabilities
-      # must be provided
-      property.require_calendar!
     end
 
     def endpoint

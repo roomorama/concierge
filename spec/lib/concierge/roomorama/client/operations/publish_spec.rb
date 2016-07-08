@@ -21,13 +21,6 @@ RSpec.describe Roomorama::Client::Operations::Publish do
     image.url     = "https://www.example.org/image2.png"
     image.caption = "Barbecue Pit"
     property.add_image(image)
-
-    property.update_calendar({
-      "2016-05-22" => true,
-      "2016-05-20" => false,
-      "2016-05-28" => true,
-      "2016-05-21" => true
-    })
   end
 
   describe "#initialize" do

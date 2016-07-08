@@ -24,15 +24,6 @@ RSpec.describe Workers::Synchronisation do
       image.url        = "https://www.example.org/img2"
       image.caption    =  "Swimming Pool"
       property.add_image(image)
-
-      property.update_calendar({
-        "2016-05-24" => true,
-        "2016-05-23" => true,
-        "2016-05-26" => false,
-        "2016-05-28" => false,
-        "2016-05-21" => true,
-        "2016-05-29" => true,
-      })
     end
   }
 

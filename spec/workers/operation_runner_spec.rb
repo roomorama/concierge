@@ -8,7 +8,7 @@ RSpec.describe Workers::OperationRunner do
 
   describe "#perform" do
     it "performs publish calls" do
-      roomorama_property = double(validate!: true, require_calendar!: true)
+      roomorama_property = double(validate!: true)
       operation = Roomorama::Client::Operations.publish(roomorama_property)
 
       expect_any_instance_of(Workers::OperationRunner::Publish).to receive(:perform).with(roomorama_property) { Result.new(true) }
