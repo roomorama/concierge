@@ -20,7 +20,8 @@ module Ciirus
     def is_property_available(property_id, check_in, check_out)
       message = builder.new do |xml|
         xml.root do
-          build_credentials(xml)
+          xml.APIUsername credentials.username
+          xml.APIPassword credentials.password
           xml.PropertyID property_id
           xml.ArrivalDate check_in
           xml.DepartureDate check_out
@@ -32,7 +33,8 @@ module Ciirus
     def property_rates(property_id)
       message = builder.new do |xml|
         xml.root do
-          build_credentials(xml)
+          xml.APIUserName credentials.username
+          xml.APIPassword credentials.password
           xml.PropertyID property_id
         end
       end
@@ -45,7 +47,8 @@ module Ciirus
                    arrive_date, depart_date)
       message = builder.new(encoding: 'utf-8') do |xml|
         xml.root do
-          build_credentials(xml)
+          xml.APIUsername credentials.username
+          xml.APIPassword credentials.password
           xml.ArriveDate arrive_date
           xml.DepartDate depart_date
           filter_options.to_xml(xml)
@@ -61,7 +64,8 @@ module Ciirus
     def make_booking(property_id, arrival_date, departure_date, guest)
       message = builder.new(encoding: 'utf-8') do |xml|
         xml.root do
-          build_credentials(xml)
+          xml.APIUsername credentials.username
+          xml.APIPassword credentials.password
           xml.BD do
             xml.ArrivalDate arrival_date
             xml.DepartureDate departure_date
@@ -79,7 +83,8 @@ module Ciirus
     def image_list(property_id)
       message = builder.new do |xml|
         xml.root do
-          build_credentials(xml)
+          xml.APIUserName credentials.username
+          xml.APIPassword credentials.password
           xml.PropertyID property_id
         end
       end
@@ -89,7 +94,8 @@ module Ciirus
     def descriptions_plain_text(property_id)
       message = builder.new do |xml|
         xml.root do
-          build_credentials(xml)
+          xml.APIUserName credentials.username
+          xml.APIPassword credentials.password
           xml.PropertyID property_id
         end
       end
@@ -100,11 +106,6 @@ module Ciirus
 
     def builder
       Nokogiri::XML::Builder
-    end
-
-    def build_credentials(xml)
-      xml.APIUsername credentials.username
-      xml.APIPassword credentials.password
     end
   end
 end
