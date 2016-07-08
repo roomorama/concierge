@@ -3,85 +3,90 @@
     <GetPropertiesResponse xmlns="http://xml.ciirus.com/">
       <GetPropertiesResult>
         <PropertyDetails>
-          <PropertyID>51502</PropertyID>
+          <PropertyID>33674</PropertyID>
           <ManagementCompanyName>Floriwood Property Management</ManagementCompanyName>
-          <MainImageURL>http://images.ciirus.com/properties/25559/51502/images/ccpdemo1.jpg</MainImageURL>
-          <MCPropertyName>123 Fictional Lane</MCPropertyName>
-          <WebsitePropertyName>123 Fictional Lane</WebsitePropertyName>
-          <DescriptionSetID>28183</DescriptionSetID>
-          <Community/>
-          <Bedrooms>4</Bedrooms>
-          <Sleeps>12</Sleeps>
-          <Bathrooms>3.0</Bathrooms>
-          <XCO>0</XCO>
-          <YCO>0</YCO>
-          <Bullet1/>
-          <Bullet2/>
-          <Bullet3/>
-          <Bullet4/>
-          <Bullet5/>
+          <MainImageURL>http://images.ciirus.com/properties/11009/33674/images/37568_Jeeves_1121.jpg</MainImageURL>
+          <MCPropertyName>Mandy's Magic Villa - MC</MCPropertyName>
+          <WebsitePropertyName>Mandy's Magic Villa</WebsitePropertyName>
+          <DescriptionSetID>850</DescriptionSetID>
+          <Community>Eagle Pointe</Community>
+          <Bedrooms>6</Bedrooms>
+          <Sleeps>6</Sleeps>
+          <Bathrooms>4</Bathrooms>
+          <XCO>28.2238577</XCO>
+          <YCO>-81.4975719</YCO>
+          <Bullet1>Luxury Villa - MC Marco</Bullet1>
+          <Bullet2>Close to all the theme parks - MC</Bullet2>
+          <Bullet3>Private Pool - MC</Bullet3>
+          <Bullet4>Fully Air conditioned - MC</Bullet4>
+          <Bullet5>Fully equipped kitchen - MC</Bullet5>
           <CurrencySymbol>$</CurrencySymbol>
           <CurrencyCode>USD</CurrencyCode>
-          <HasPool>false</HasPool>
-          <HasSpa>false</HasSpa>
-          <GamesRoom>false</GamesRoom>
-          <PropertyType>Unspecified</PropertyType>
-          <PropertyClass>Standard</PropertyClass>
+          <HasPool>true</HasPool>
+          <HasSpa>true</HasSpa>
+          <GamesRoom>true</GamesRoom>
+          <PropertyType>Villa</PropertyType>
+          <PropertyClass>Superior Deluxe with Games Room / Spa</PropertyClass>
           <HostMCUserID>11006</HostMCUserID>
           <QuoteExcludingTax>0</QuoteExcludingTax>
           <QuoteIncludingTax>0</QuoteIncludingTax>
-          <Address1>Long Island 234</Address1>
-          <Zip>22313</Zip>
-          <City>Omsk</City>
-          <Country>Russia</Country>
           <LessThanMinimumNightsStay>false</LessThanMinimumNightsStay>
-          <MinimumNightsStay>1</MinimumNightsStay>
-          <CommunalPool>false</CommunalPool>
-          <CommunalGym>false</CommunalGym>
-          <ConservationView>false</ConservationView>
-          <WaterView>false</WaterView>
-          <GolfView>false</GolfView>
-          <GolfIncluded>false</GolfIncluded>
-          <WiFi>false</WiFi>
-          <Internet>false</Internet>
-          <WiredInternetAccess>false</WiredInternetAccess>
-          <PetsAllowed>false</PetsAllowed>
-          <Stroller>false</Stroller>
-          <Crib>false</Crib>
-          <HighChair>false</HighChair>
-          <AirCon>false</AirCon>
-          <ElectricFireplace>false</ElectricFireplace>
-          <GasFireplace>false</GasFireplace>
-          <WoodBurningFireplace>false</WoodBurningFireplace>
-          <FreeCalls>false</FreeCalls>
+          <MinimumNightsStay>0</MinimumNightsStay>
+          <CommunalPool>true</CommunalPool>
+          <CommunalGym>true</CommunalGym>
+          <ConservationView>true</ConservationView>
+          <WaterView>true</WaterView>
+          <GolfView>true</GolfView>
+          <GolfIncluded>true</GolfIncluded>
+          <WiFi>true</WiFi>
+          <Internet>true</Internet>
+          <WiredInternetAccess>true</WiredInternetAccess>
+          <PetsAllowed>true</PetsAllowed>
+          <Stroller>true</Stroller>
+          <Crib>true</Crib>
+          <HighChair>true</HighChair>
+          <AirCon>true</AirCon>
+          <ElectricFireplace>true</ElectricFireplace>
+          <GasFireplace>true</GasFireplace>
+          <WoodBurningFireplace>true</WoodBurningFireplace>
+          <FreeCalls>true</FreeCalls>
           <FreeSolarHeatedPool>true</FreeSolarHeatedPool>
-          <PacknPlay>false</PacknPlay>
-          <PrivacyFence>false</PrivacyFence>
-          <SouthFacingPool>false</SouthFacingPool>
-          <BBQ>false</BBQ>
-          <AirHockeyTable>false</AirHockeyTable>
-          <BigScreenTV>false</BigScreenTV>
-          <CDPlayer>false</CDPlayer>
-          <DVDPlayer>false</DVDPlayer>
-          <FoosballTable>false</FoosballTable>
-          <Grill>false</Grill>
-          <HairDryer>false</HairDryer>
-          <TVInEveryBedroom>false</TVInEveryBedroom>
-          <KingBeds>2</KingBeds>
-          <QueenBeds>1</QueenBeds>
-          <FullBeds>0</FullBeds>
-          <Twin_SingleBeds>1</Twin_SingleBeds>
-          <ExtraBed>true</ExtraBed>
-          <SofaBed>false</SofaBed>
-          <VCR>false</VCR>
-          <IndoorJacuzzi>false</IndoorJacuzzi>
-          <IndoorHotTub>false</IndoorHotTub>
+          <PacknPlay>true</PacknPlay>
+          <PrivacyFence>true</PrivacyFence>
+          <SouthFacingPool>true</SouthFacingPool>
+          <BBQ>true</BBQ>
+          <AirHockeyTable>true</AirHockeyTable>
+          <BigScreenTV>true</BigScreenTV>
+          <CDPlayer>true</CDPlayer>
+          <DVDPlayer>true</DVDPlayer>
+          <FoosballTable>true</FoosballTable>
+          <Grill>true</Grill>
+          <HairDryer>true</HairDryer>
+          <TVInEveryBedroom>true</TVInEveryBedroom>
+          <VCR>true</VCR>
+          <IndoorJacuzzi>true</IndoorJacuzzi>
+          <IndoorHotTub>true</IndoorHotTub>
           <OutdoorHotTub>true</OutdoorHotTub>
           <PavedParking>true</PavedParking>
-          <PoolAccess>false</PoolAccess>
-          <RockingChairs>false</RockingChairs>
-          <VideoGames>false</VideoGames>
-          <Fishing>false</Fishing>
+          <PoolAccess>true</PoolAccess>
+          <RockingChairs>true</RockingChairs>
+          <VideoGames>true</VideoGames>
+          <Fishing>true</Fishing>
+          <BedroomConfiguration>1K, 1Q, 2T</BedroomConfiguration>
+          <Address1>1234 Dahlia Reserve Drive</Address1>
+          <Address2>Apt 222</Address2>
+          <City>Kissimmee</City>
+          <County>Osceola</County>
+          <State>FL</State>
+          <Zip>34744</Zip>
+          <Country>UK</Country>
+          <Telephone>111 222 3333</Telephone>
+          <ExtraBed>true</ExtraBed>
+          <SofaBed>true</SofaBed>
+          <Twin_SingleBeds>4</Twin_SingleBeds>
+          <FullBeds>3</FullBeds>
+          <QueenBeds>2</QueenBeds>
+          <KingBeds>1</KingBeds>
         </PropertyDetails>
       </GetPropertiesResult>
     </GetPropertiesResponse>

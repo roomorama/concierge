@@ -55,26 +55,26 @@ RSpec.describe Ciirus::Commands::PropertiesFetcher do
         result = subject.call
 
         property = result.value[0]
-        expect(property.property_id).to eq('51502')
-        expect(property.property_name).to eq('123 Fictional Lane')
-        expect(property.address).to eq('Long Island 234')
-        expect(property.zip).to eq('22313')
-        expect(property.city).to eq('Omsk')
-        expect(property.bedrooms).to eq(4)
-        expect(property.sleeps).to eq(12)
-        expect(property.min_nights_stay).to eq(1)
-        expect(property.type).to eq('Unspecified')
-        expect(property.country).to eq('Russia')
-        expect(property.xco).to eq('0')
-        expect(property.yco).to eq('0')
-        expect(property.bathrooms).to eq(3.0)
-        expect(property.king_beds).to eq(2)
-        expect(property.queen_beds).to eq(1)
-        expect(property.full_beds).to eq(0)
-        expect(property.twin_beds).to eq(1)
+        expect(property.property_id).to eq('33674')
+        expect(property.property_name).to eq("Mandy's Magic Villa")
+        expect(property.address).to eq('1234 Dahlia Reserve Drive')
+        expect(property.zip).to eq('34744')
+        expect(property.city).to eq('Kissimmee')
+        expect(property.bedrooms).to eq(6)
+        expect(property.sleeps).to eq(6)
+        expect(property.min_nights_stay).to eq(0)
+        expect(property.type).to eq('Villa')
+        expect(property.country).to eq('UK')
+        expect(property.xco).to eq('28.2238577')
+        expect(property.yco).to eq('-81.4975719')
+        expect(property.bathrooms).to eq(4.0)
+        expect(property.king_beds).to eq(1)
+        expect(property.queen_beds).to eq(2)
+        expect(property.full_beds).to eq(3)
+        expect(property.twin_beds).to eq(4)
         expect(property.extra_bed).to be(true)
-        expect(property.sofa_bed).to be(false)
-        expect(property.pets_allowed).to be(false)
+        expect(property.sofa_bed).to be(true)
+        expect(property.pets_allowed).to be(true)
         expect(property.currency_code).to eq('USD')
       end
 
@@ -84,7 +84,9 @@ RSpec.describe Ciirus::Commands::PropertiesFetcher do
         result = subject.call
 
         amenities = result.value[0].amenities
-        expect(amenities).to contain_exactly('outdoor_space', 'parking', 'pool')
+        expect(amenities).to contain_exactly(
+          'airconditioning', 'gym', 'internet', 'outdoor_space', 'parking',
+          'pool', 'tv', 'wifi')
       end
 
       it 'can fetch many properties' do
