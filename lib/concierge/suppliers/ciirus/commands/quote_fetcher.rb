@@ -47,6 +47,8 @@ module Ciirus
 
       def valid_result?(result_hash)
         error_msg = result_hash.get('get_properties_response.get_properties_result.property_details.error_msg')
+        # Special case for empty error message. In context of quotation it means
+        # not available, so it's valid result.
         error_msg.nil? || error_msg.empty? || error_msg == EMPTY_ERROR_MESSAGE
       end
 
