@@ -4,12 +4,18 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [Unreleased]
+
+### Added
+
+- added `currency_code` to the list of supported attributes for booking webhook and for `API::Controllers::Params::Booking` object
+
+
 ## [0.4.4] - 2016-07-07
 ### Added
 - Synchronisation with AtLeisure
 - Ability to enable or disable context tracking at certain points in time.
 - `Kigo::Booking` - implemented booking with supplier
-- added `currency_code` to the list of supported attributes for booking webhook and for `API::Controllers::Params::Booking` object
 
 ### Changed
 - moved `JSONRPC` to `lib` folder
