@@ -1,0 +1,44 @@
+{
+  "result": [
+    {
+      "identifier": "audit-property-1",
+      "title": "Audit Property #1",
+      "max_guests": 2,
+      "nightly_rate": 100,
+      "images": [
+        {
+          "identifier": "audit-image1",
+          "url": "https://www.example.org/img1",
+          "caption": "Barbecue Pit"
+        }
+      ],
+      "units": [
+        {
+          "identifier": "audit-unit1",
+          "title": "Audit Unit 1",
+          "number_of_units": 2,
+          "images": [
+            {
+              "identifier": "audit-unit1img1",
+              "url": "https://www.example.org/unit1img1"
+            },
+            {
+              "identifier": "audit-unit1img2",
+              "url": "https://www.example.org/unit1img2"
+            }
+          ]
+        },
+        {
+          "identifier": "audit-unit2",
+          "title": "Audit Unit 2",
+          "images": [
+            {
+              "identifier": "audit-unit2img1",
+              "url": "https://www.example.org/unit2img1"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
