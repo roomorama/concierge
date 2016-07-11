@@ -18,8 +18,8 @@ module Audit
 
     # retrieves the list of properties
     def fetch_properties
-      client = Concierge::HTTPClient.new("http://localhost:9292")
-      result = client.get("/fetch_properties")
+      client = Concierge::HTTPClient.new(credentials.host)
+      result = client.get(credentials.fetch_properties_endpoint)
       if result.success?
         json = JSON.parse(result.value.body)
         Result.new(json['result'])
