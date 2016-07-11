@@ -6,6 +6,7 @@ RSpec.describe Audit::Importer do
 
   let(:credentials) { Concierge::Credentials.for('audit') }
   let(:importer) { described_class.new(credentials) }
+  let(:endpoint) { "#{credentials.host}#{credentials.fetch_properties_endpoint}" }
 
   describe '#fetch_properties' do
 
@@ -13,9 +14,7 @@ RSpec.describe Audit::Importer do
 
     context 'success' do
       before do
-        allow_any_instance_of(Faraday::Connection).to receive(:get) do
-          Faraday::Response.new(method: :get, status: 200, body: IO.binread('spec/fixtures/audit/properties.json'))
-        end
+        stub_call(:get, endpoint) { [200, {}, read_fixture('audit/properties.json')] }
       end
 
       it 'should return Result of array of Hash' do
@@ -27,9 +26,7 @@ RSpec.describe Audit::Importer do
 
     context 'error' do
       before do
-        allow_any_instance_of(Faraday::Connection).to receive(:get) do
-          raise Faraday::Error.new("oops123")
-        end
+        stub_call(:get, endpoint) { raise Faraday::Error.new("oops123") }
       end
 
       it 'should return Result with errors' do
@@ -40,7 +37,7 @@ RSpec.describe Audit::Importer do
   end
 
   describe '#json_to_property' do
-    let(:json) { JSON.parse(IO.binread('spec/fixtures/audit/properties.json'))['result'].sample }
+    let(:json) { JSON.parse(read_fixture('audit/properties.json'))['result'].sample }
 
     it 'should return Result of Roomorama::Property' do
       result = importer.json_to_property(json)

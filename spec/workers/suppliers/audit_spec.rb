@@ -6,7 +6,7 @@ RSpec.describe Workers::Suppliers::Audit do
 
   let(:host) { create_host }
   let(:worker) { described_class.new(host) }
-  let(:fetch_properties_json) { JSON.parse(IO.binread('spec/fixtures/audit/properties.json')) }
+  let(:fetch_properties_json) { JSON.parse(read_fixture('audit/properties.json')) }
   let(:credentials) { Hash.new }
 
   def synchronisation_counters
