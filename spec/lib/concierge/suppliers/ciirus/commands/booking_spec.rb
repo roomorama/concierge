@@ -66,7 +66,7 @@ RSpec.describe Ciirus::Commands::Booking do
 
         expect(result).to be_a Result
         expect(result).to be_success
-        expect(result.value).to be_a Reservation
+        expect(result.value).to be_a RoomoramaReservation
       end
 
       it 'fills reservation with right attributes' do

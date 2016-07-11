@@ -36,7 +36,7 @@ module Ciirus
         if result.success?
           result_hash = to_safe_hash(result.value)
           if valid_result?(result_hash)
-            reservation = Ciirus::Mappers::Reservation.build(params, result_hash)
+            reservation = Ciirus::Mappers::RoomoramaReservation.build(params, result_hash)
             Result.new(reservation)
           else
             error_result(result_hash)

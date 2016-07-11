@@ -2,8 +2,8 @@ module Ciirus
   module Mappers
     class PropertyRate
       class << self
-        # Maps hash representation of Ciirus API IsPropertyAvailable response
-        # to bool
+        # Maps hash representation of Ciirus API GetPropertyRates response
+        # to Ciirus::Entities::PropertyRate
         def build(hash)
           Entities::PropertyRate.new(
             hash[:from_date],

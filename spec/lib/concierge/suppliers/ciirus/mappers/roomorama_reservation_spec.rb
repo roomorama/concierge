@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Ciirus::Mappers::Reservation do
+RSpec.describe Ciirus::Mappers::RoomoramaReservation do
 
   let(:customer) do
     {
