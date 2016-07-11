@@ -12,9 +12,11 @@
 # * +username+     - the username of the user account on Roomorama. Present only
 #                    for identification purposes.
 # * +access_token+ - the API access token used to identify the host on Roomorama's API.
+# * +commission+   - could reflect to quoting price. e.g. Kigo's partners
 class Host
   include Hanami::Entity
 
-  attributes :id, :supplier_id, :identifier, :username, :access_token,
+  attributes :id, :supplier_id, :identifier, :username, :access_token, :commission,
     :created_at, :updated_at
+
 end
