@@ -12,8 +12,7 @@ RSpec.describe Concierge::OAuth2Client do
                                      token_url: credentials[:token_url]) }
 
   before do
-    client.oauth_client.connection = stub_call(:post,
-                                               credentials[:url] + credentials[:token_url] ) {
+    client.oauth_client.connection = stub_call(:post, credentials[:url] + credentials[:token_url] ) {
       [200, {'Content-Type'=>'application/json'},
         read_fixture("waytostay#{credentials[:token_url]}.json")]
     }
@@ -35,8 +34,7 @@ RSpec.describe Concierge::OAuth2Client do
                                       base_url: credentials[:url],
                                       token_url: "/invalid_credentials") }
       before do
-        client.oauth_client.connection = stub_call(:post,
-                                                   credentials[:url] + "/invalid_credentials") {
+        client.oauth_client.connection = stub_call(:post, credentials[:url] + "/invalid_credentials") {
           [400, {'Content-Type'=>'application/json'},
             read_fixture("waytostay/invalid_credentials.json")]
         }
@@ -53,8 +51,7 @@ RSpec.describe Concierge::OAuth2Client do
 
     context "when successful" do
       before do
-        client.oauth_client.connection = stub_call(:get,
-                                                   credentials[:url] + endpoint ) {
+        client.oauth_client.connection = stub_call(:get, credentials[:url] + endpoint ) {
           [200, {'Content-Type'=>'application/json'},
            read_fixture("waytostay#{endpoint}.json")]
         }
@@ -66,7 +63,7 @@ RSpec.describe Concierge::OAuth2Client do
 
     [
       { code: :http_status_404, response: lambda { [404, {}, "Not found"]}},
-      { code: :http_status_401, response: lambda { [401, {}, "Not authorized"]}},
+      { code: :http_status_500, response: lambda { [500, {}, "Server error"]}},
     ].each do |error|
       context "when error #{error[:code]} occur" do
         before do
@@ -82,6 +79,30 @@ RSpec.describe Concierge::OAuth2Client do
       end
     end
 
+    context "when access_token in the cache expired" do
+      let(:cache) { Concierge::Cache.new(namespace: "oauth2") }
+      before do
+        cache.fetch(credentials[:client_id],
+                    serializer: Concierge::Cache::Serializers::JSON.new) do
+          Result.new({"token_type"   => "BEARER",
+                      "access_token" => "expired_token",
+                      "expires_at"   => 1465467451})
+        end
+        client.oauth_client.connection = stub_call(:get, credentials[:url] + endpoint) {
+          [401, {'Content-Type'=> 'application/json'}, "Token expired"]
+        }
+        # /oauth already stubbed to return the fixture with code 200
+      end
+      it "should request for new token and retry the request" do
+        current_cache = cache.storage.read("oauth2.#{credentials[:client_id]}")
+        expect(current_cache.value).to include "expired_token"
+
+        expect(client.oauth_client).to receive(:client_credentials).and_call_original.exactly(2)
+        subject
+        current_cache = cache.storage.read("oauth2.#{credentials[:client_id]}")
+        expect(current_cache).to be_nil
+      end
+    end
 
   end
 

@@ -50,6 +50,8 @@ module Concierge
       "User-Agent" => "Roomorama/Concierge #{Concierge::VERSION}"
     }.freeze
 
+    RETRY_401 = 3
+
     def initialize(id:, secret:, base_url:, token_url:, **options)
       @options = options
       oauth_options = {
@@ -117,11 +119,17 @@ module Concierge
     end
 
     def response_with_error_handling
+      tries ||= RETRY_401
       response = yield
       # No errors raised, the response is successful
       Concierge::Announcer.trigger(ON_RESPONSE, response.status, response.headers, response.body)
       json_serializer.decode(response.body)
     rescue OAuth2::Error => err
+      if err.response.status == 401
+        expire_access_token_cache
+        retry unless  (tries -= 1).zero?
+      end
+
       response = err.response
       Concierge::Announcer.trigger(ON_RESPONSE, response.status, response.headers, response.body)
       Result.error(:"http_status_#{err.response.status}", err.response.body)
@@ -141,6 +149,11 @@ module Concierge
 
     def cache
       @cache ||= Concierge::Cache.new(namespace: "oauth2")
+    end
+
+    def expire_access_token_cache
+      @access_token = nil
+      @cache.storage.delete("oauth2.#{@oauth_client.id}")
     end
 
     def one_day
