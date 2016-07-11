@@ -20,7 +20,7 @@ RSpec.describe Ciirus::Commands::PropertyAvailableFetcher do
   end
 
   let(:wsdl) { read_fixture('ciirus/wsdl.xml') }
-  let(:success_response) { read_fixture('ciirus/is_property_available_response.xml') }
+  let(:success_response) { read_fixture('ciirus/responses/is_property_available_response.xml') }
 
   subject { described_class.new(credentials) }
 

@@ -12,9 +12,9 @@ RSpec.describe Ciirus::Commands::ImageListFetcher do
 
   let(:property_id){ 38180 }
 
-  let(:success_response) { read_fixture('ciirus/image_list_response.xml') }
-  let(:one_image_response) { read_fixture('ciirus/one_image_list_response.xml') }
-  let(:empty_response) { read_fixture('ciirus/empty_image_list_response.xml') }
+  let(:success_response) { read_fixture('ciirus/responses/image_list_response.xml') }
+  let(:one_image_response) { read_fixture('ciirus/responses/one_image_list_response.xml') }
+  let(:empty_response) { read_fixture('ciirus/responses/empty_image_list_response.xml') }
   let(:wsdl) { read_fixture('ciirus/wsdl.xml') }
   subject { described_class.new(credentials) }
 

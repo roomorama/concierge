@@ -12,9 +12,9 @@ RSpec.describe Ciirus::Commands::PropertyRatesFetcher do
 
   let(:property_id) { 38180 }
 
-  let(:success_response) { read_fixture('ciirus/property_rates_response.xml') }
-  let(:one_rate_response) { read_fixture('ciirus/one_property_rate_response.xml') }
-  let(:empty_response) { read_fixture('ciirus/empty_property_rates_response.xml') }
+  let(:success_response) { read_fixture('ciirus/responses/property_rates_response.xml') }
+  let(:one_rate_response) { read_fixture('ciirus/responses/one_property_rate_response.xml') }
+  let(:empty_response) { read_fixture('ciirus/responses/empty_property_rates_response.xml') }
   let(:wsdl) { read_fixture('ciirus/wsdl.xml') }
   subject { described_class.new(credentials) }
 

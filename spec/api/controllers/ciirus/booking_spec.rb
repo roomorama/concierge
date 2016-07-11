@@ -27,8 +27,8 @@ RSpec.describe API::Controllers::Ciirus::Booking do
     }
   end
 
-  let(:success_response) { read_fixture('ciirus/make_booking_response.xml') }
-  let(:error_response) { read_fixture('ciirus/error_make_booking_response.xml') }
+  let(:success_response) { read_fixture('ciirus/responses/make_booking_response.xml') }
+  let(:error_response) { read_fixture('ciirus/responses/error_make_booking_response.xml') }
   let(:wsdl) { read_fixture('ciirus/wsdl.xml') }
 
   before do

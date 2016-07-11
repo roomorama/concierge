@@ -10,10 +10,10 @@ RSpec.describe Ciirus::Commands::PropertiesFetcher do
            url:      'http://example.org')
   end
 
-  let(:success_response) { read_fixture('ciirus/properties_response.xml') }
-  let(:many_properties_response) { read_fixture('ciirus/many_properties_response.xml') }
-  let(:empty_response) { read_fixture('ciirus/empty_properties_response.xml') }
-  let(:error_response) { read_fixture('ciirus/error_properties_response.xml') }
+  let(:success_response) { read_fixture('ciirus/responses/properties_response.xml') }
+  let(:many_properties_response) { read_fixture('ciirus/responses/many_properties_response.xml') }
+  let(:empty_response) { read_fixture('ciirus/responses/empty_properties_response.xml') }
+  let(:error_response) { read_fixture('ciirus/responses/error_properties_response.xml') }
   let(:wsdl) { read_fixture('ciirus/wsdl.xml') }
 
   subject { described_class.new(credentials) }

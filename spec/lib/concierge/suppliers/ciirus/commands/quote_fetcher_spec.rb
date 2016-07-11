@@ -17,9 +17,9 @@ RSpec.describe Ciirus::Commands::QuoteFetcher do
                                         guests: 2)
   end
 
-  let(:success_response) { read_fixture('ciirus/property_quote_response.xml') }
-  let(:empty_response) { read_fixture('ciirus/empty_property_quote_response.xml') }
-  let(:error_response) { read_fixture('ciirus/error_property_quote_response.xml') }
+  let(:success_response) { read_fixture('ciirus/responses/property_quote_response.xml') }
+  let(:empty_response) { read_fixture('ciirus/responses/empty_property_quote_response.xml') }
+  let(:error_response) { read_fixture('ciirus/responses/error_property_quote_response.xml') }
   let(:wsdl) { read_fixture('ciirus/wsdl.xml') }
 
   subject { described_class.new(credentials) }
