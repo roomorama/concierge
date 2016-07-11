@@ -3,6 +3,8 @@ require "spec_helper"
 RSpec.describe Kigo::ResponseParser do
   include Support::Fixtures
 
+  subject { described_class.new(request_params) }
+  
   describe "#compute_pricing" do
 
     let(:request_params) {
@@ -11,10 +13,10 @@ RSpec.describe Kigo::ResponseParser do
 
     it "fails if the API response does not indicate success" do
       response = read_fixture("kigo/e_nosuch.json")
-      result = nil
+      result   = nil
 
       expect {
-        result = subject.compute_pricing(request_params, response)
+        result = subject.compute_pricing(response)
       }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
@@ -25,7 +27,7 @@ RSpec.describe Kigo::ResponseParser do
     end
 
     it "fails if the API returns an invalid JSON response" do
-      result = subject.compute_pricing(request_params, "invalid-json")
+      result = subject.compute_pricing("invalid-json")
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :invalid_json_representation
@@ -33,10 +35,10 @@ RSpec.describe Kigo::ResponseParser do
 
     it "fails without a reply field" do
       response = read_fixture("kigo/no_api_reply.json")
-      result = nil
+      result   = nil
 
       expect {
-        result = subject.compute_pricing(request_params, response)
+        result = subject.compute_pricing(response)
       }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
@@ -46,12 +48,12 @@ RSpec.describe Kigo::ResponseParser do
       expect(event.to_h[:type]).to eq "response_mismatch"
     end
 
-    it "fails if there is no currency, fees or total fields" do
+    it "fails if there is no currency or total fields" do
       response = read_fixture("kigo/no_total.json")
-      result = nil
+      result   = nil
 
       expect {
-        result = subject.compute_pricing(request_params, response)
+        result = subject.compute_pricing(response)
       }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
@@ -63,7 +65,7 @@ RSpec.describe Kigo::ResponseParser do
 
     it "is unavailable if the API indicates so" do
       response = read_fixture("kigo/unavailable.json")
-      result = subject.compute_pricing(request_params, response)
+      result   = subject.compute_pricing(response)
 
       expect(result).to be_success
       quotation = result.value
@@ -72,8 +74,9 @@ RSpec.describe Kigo::ResponseParser do
     end
 
     it "returns a quotation with the returned information on success" do
+      allow(subject).to receive(:host) { double("Host", commission: 0) }
       response = read_fixture("kigo/success.json")
-      result = subject.compute_pricing(request_params, response)
+      result   = subject.compute_pricing(response)
 
       expect(result).to be_success
       quotation = result.value
@@ -84,8 +87,18 @@ RSpec.describe Kigo::ResponseParser do
       expect(quotation.guests).to eq 1
       expect(quotation.available).to eq true
       expect(quotation.currency).to eq "EUR"
-      expect(quotation.total).to eq 580.0 # total + fee
+      expect(quotation.total).to eq 570.0
     end
+
+    it "returns nett ammount if host has a commission" do
+      allow(subject).to receive(:host) { double("Host", commission: 8.0) }
+
+      response = read_fixture("kigo/success.json")
+      result   = subject.compute_pricing(response)
+
+      expect(result.value.total).to eq 570/1.08  # 527.777
+    end
+
   end
 
   describe "#parse_reservation" do
@@ -106,10 +119,10 @@ RSpec.describe Kigo::ResponseParser do
 
     it "fails if the API response does not indicate success" do
       response = read_fixture("kigo/e_nosuch.json")
-      result = nil
+      result   = nil
 
       expect {
-        result = subject.parse_reservation(request_params, response)
+        result = subject.parse_reservation(response)
       }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
@@ -120,7 +133,7 @@ RSpec.describe Kigo::ResponseParser do
     end
 
     it "fails if the API returns an invalid JSON response" do
-      result = subject.parse_reservation(request_params, "invalid-json")
+      result = subject.parse_reservation("invalid-json")
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :invalid_json_representation
@@ -128,10 +141,10 @@ RSpec.describe Kigo::ResponseParser do
 
     it "fails without a reservation.reference_number field" do
       response = read_fixture("kigo/no_api_reply.json")
-      result = nil
+      result   = nil
 
       expect {
-        result = subject.parse_reservation(request_params, response)
+        result = subject.parse_reservation(response)
       }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
@@ -143,7 +156,7 @@ RSpec.describe Kigo::ResponseParser do
 
     it "fails with unavailable dates" do
       response = read_fixture("kigo/unavailable_dates.json")
-      result = subject.parse_reservation(request_params, response)
+      result   = subject.parse_reservation(response)
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unavailable_dates
@@ -151,7 +164,7 @@ RSpec.describe Kigo::ResponseParser do
 
     it "returns a reservation with the returned information on success" do
       response = read_fixture("kigo/success_booking.json")
-      result = subject.parse_reservation(request_params, response)
+      result   = subject.parse_reservation(response)
 
       expect(result).to be_success
       reservation = result.value

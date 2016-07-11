@@ -8,7 +8,7 @@ module Kigo
   # Usage
   #
   #   parser = Kigo::ResponseParser.new
-  #   parser.compute_pricing(request_params, response_body)
+  #   parser.compute_pricing(params, response_body)
   #   # => #<Result error=nil value=Quotation>
   #
   # See documentation of this class instance methods for their description
@@ -16,6 +16,12 @@ module Kigo
   class ResponseParser
     include Concierge::JSON
 
+    attr_reader :params
+
+    def initialize(params)
+      @params = params
+    end
+    
     # parses the response of a +computePricing+ API call.
     #
     # Returns a +Result+ instance wrapping a +Quotation+ object
@@ -26,12 +32,12 @@ module Kigo
     # +quote_call_failed+:           the response status is not +E_OK+.
     # +unrecognised_response+:       the response was successful, but the format cannot
     #                                be parsed.
-    def compute_pricing(request_params, response)
+    def compute_pricing(response)
       decoded_payload = json_decode(response)
       return decoded_payload unless decoded_payload.success?
 
       payload = decoded_payload.value
-      quotation = build_quotation(request_params)
+      quotation = build_quotation(params)
 
       if payload["API_RESULT_CODE"] == "E_OK"
         reply = payload["API_REPLY"]
@@ -41,10 +47,9 @@ module Kigo
         end
 
         currency = reply["CURRENCY"]
-        fees     = reply["FEES_AMOUNT"]
         total    = reply["TOTAL_AMOUNT"]
 
-        { "CURRENCY" => currency, "FEES_AMOUNT" => fees, "TOTAL_AMOUNT" => total }.each do |key, value|
+        { "CURRENCY" => currency, "TOTAL_AMOUNT" => total }.each do |key, value|
           if !value
             no_field(value)
             return unrecognised_response
@@ -53,7 +58,7 @@ module Kigo
 
         quotation.available = true
         quotation.currency  = currency
-        quotation.total     = total.to_i + fees.to_i
+        quotation.total     = nett_amount(total.to_f)
 
         Result.new(quotation)
       elsif payload["API_RESULT_CODE"] == "E_NOSUCH" && payload["API_RESULT_TEXT"] =~ /is not available for your selected period/
@@ -81,12 +86,12 @@ module Kigo
     # +booking_call_failed+:         the response status is not +E_OK+.
     # +unrecognised_response+:       the response was successful, but the format cannot
     #                                be parsed.
-    def parse_reservation(request_params, response)
+    def parse_reservation(response)
       decoded_payload = json_decode(response)
       return decoded_payload unless decoded_payload.success?
 
       payload = Concierge::SafeAccessHash.new(decoded_payload.value)
-      reservation = build_reservation(request_params)
+      reservation = build_reservation(params)
 
       if payload["API_RESULT_CODE"] == "E_OK"
         code = payload.get("API_REPLY.RES_ID")
@@ -117,6 +122,18 @@ module Kigo
 
     def unrecognised_response
       Result.error(:unrecognised_response)
+    end
+
+    def nett_amount(total)
+      total / (host.commission / 100 + 1)
+    end
+
+    def host
+      @host ||= HostRepository.find(property.host_id)
+    end
+
+    def property
+      @property ||= PropertyRepository.identified_by(params[:property_id]).first
     end
 
     def non_successful_result_code

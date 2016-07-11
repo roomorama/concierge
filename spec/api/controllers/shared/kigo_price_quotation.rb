@@ -35,6 +35,7 @@ RSpec.shared_examples "Kigo price quotation" do
   end
 
   it "returns available quotations with price when the call is successful" do
+    allow_any_instance_of(Kigo::ResponseParser).to receive(:host) { double("Host", commission: 0) }
     stub_call(:post, endpoint) { [200, {}, read_fixture("kigo/success.json")] }
     response = parse_response(described_class.new.call(params))
 
@@ -46,7 +47,7 @@ RSpec.shared_examples "Kigo price quotation" do
     expect(response.body["check_out"]).to eq "2016-03-25"
     expect(response.body["guests"]).to eq 2
     expect(response.body["currency"]).to eq "EUR"
-    expect(response.body["total"]).to eq 580.0
+    expect(response.body["total"]).to eq 570.0
   end
 
   def parse_response(rack_response)
