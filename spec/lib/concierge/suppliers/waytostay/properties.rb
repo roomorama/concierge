@@ -101,4 +101,43 @@ RSpec.shared_examples "Waytostay property handler" do
     end
   end
 
+  describe "#get_active_properties" do
+
+    subject { stubbed_client.get_active_properties(page) }
+
+    context "on first page" do
+      let(:page) { 1 }
+
+      before do
+        stubbed_client.oauth2_client.oauth_client.connection = stub_call(:get, base_url + Waytostay::Properties::INDEX_ENDPOINT) {
+          [200, {}, read_fixture("waytostay/properties.json")]
+        }
+      end
+
+      it "should return the next page and one Result wrapping many Results of Roomorama::Property" do
+        expect(subject[0]).to be_success
+        expect(subject[0].value.first).to be_success
+        expect(subject[0].value.first.value).to be_a Roomorama::Property
+        expect(subject[1]).to eq 2
+      end
+    end
+
+    context "on last page" do
+      let(:page) { 94 }
+
+      before do
+        stubbed_client.oauth2_client.oauth_client.connection = stub_call(:get, base_url + Waytostay::Properties::INDEX_ENDPOINT) {
+          [200, {}, read_fixture("waytostay/properties.last.json")]
+        }
+      end
+
+      it "should return the next page and one Result wrapping many Results of Roomorama::Property" do
+        expect(subject[0]).to be_success
+        expect(subject[0].value.first).to be_success
+        expect(subject[0].value.first.value).to be_a Roomorama::Property
+        expect(subject[1]).to be_nil
+      end
+    end
+  end
+
 end

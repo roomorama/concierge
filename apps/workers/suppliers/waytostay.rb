@@ -12,11 +12,32 @@ module Workers::Suppliers
     end
 
     def perform
-      logger.debug "#perform start"
+      if last_synced_timestamp.nil?
+        fresh_import
+      else
+        synchronise
+      end
+    end
+
+    def fresh_import
+      get_inital_properties.each do |wrapped_property|
+        next unless wrapped_property.success?
+        synchronisation.start(wrapped_property.identifier) do
+          # grab media
+          wrapped_property = client.update_media(wrapped_property.result)
+          next wrapped_property unless wrapped_property.success?
+          # grab availabilities
+          wrapped_property = client.update_availabilities(wrapped_property.result)
+          wrapped_property
+        end
+      end
+      synchronisation.finish!
+    end
+
+    def synchronise
       changes = get_new_waytostay_changes
       return if changes.nil?
 
-      logger.debug "#perform changes count: #{uniq_properties_in(changes).count}"
       uniq_properties_in(changes).each do |property_ref|
         synchronisation.start(property_ref) do
           wrapped_property = if changes[:properties].include? property_ref
@@ -51,6 +72,13 @@ module Workers::Suppliers
     end
 
     private
+
+    def get_inital_properties
+      initialize_overall_sync_context
+      result = client.get_active_properties
+      announce_error(result) unless result.success?
+      result.values
+    end
 
     # Starts a new context, run the block that augments to context
     # Then announce if any error was returned from the block
@@ -102,9 +130,6 @@ module Workers::Suppliers
       Roomorama::Property.load(existing.data.merge(identifier: ref))
     end
 
-    def logger
-      @logger ||= Logger.new(Hanami.root.join("log", "debug_waytostay.log").to_s)
-    end
   end
 end
 

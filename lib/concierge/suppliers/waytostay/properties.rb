@@ -5,6 +5,7 @@ module Waytostay
   module Properties
 
     ENDPOINT = "/properties/:property_reference".freeze
+    INDEX_ENDPOINT = "/properties".freeze
 
     FIELD_MAPPINGS = {
       identifier:          "reference",
@@ -42,22 +43,52 @@ module Waytostay
         build_path(ENDPOINT, property_reference: ref),
         headers: headers)
 
-      parse_property(result)
+      return result unless result.success?
+      parse_property(Concierge::SafeAccessHash.new(result.value))
+    end
+
+    # Returns a +Result+ wrapping an array of +Result+ wrapped +Roomorama::Property+
+    # and the next page number. Caller should call this method again with the returned
+    # next page number until it is nil.
+    #
+    # This retrieves the current properties on waytostay that is active with supported
+    # payment method.
+    # See https://apis.sandbox.waytostay.com:25443/doc/swagger/WaytostayApi-v4#!/Properties/get_properties
+    #
+    # All properties returned here is to be published with Roomorama
+    #
+    # Example:
+    #
+    #   new_page = 1
+    #   while new_page.present?
+    #     result, new_page = get_active_properties(new_page)
+    #     if result.success?
+    #       import_multiple_properties(result.value)
+    #     end
+    #   end
+    #
+    def get_active_properties(current_page=1)
+      result = oauth2_client.get(
+        INDEX_ENDPOINT,
+        params: { page: current_page, payment_option: "full_payment", active: true },
+        headers: headers)
+      return result unless result.success?
+      response = Concierge::SafeAccessHash.new(result.value)
+      wrapped_properties = response.get("_embedded.properties").collect do |property_hash|
+        parse_property(Concierge::SafeAccessHash.new(property_hash))
+      end
+      next_page = current_page + 1 if current_page < response.get("page_count")
+      return Result.new(wrapped_properties), next_page
     end
 
     private
 
-    # Returns a +Roomorama::Property+ or nil from a +Result+
-    def parse_property(result)
-      if result.success?
-        response = Concierge::SafeAccessHash.new(result.value)
-        if response.get("active") == true
-          parse_active_property(response)
-        else
-          Result.new inactive_property(response)
-        end
+    # Returns a +Roomorama::Property+ or nil from a +Concierge::SafeAccessHash+
+    def parse_property(safe_hash)
+      if safe_hash.get("active") == true
+        parse_active_property(safe_hash)
       else
-        result
+        Result.new inactive_property(safe_hash)
       end
     end
 
