@@ -113,6 +113,19 @@ module Ciirus
       message.doc.root.children.to_xml
     end
 
+    def reservations(property_id)
+      message = builder.new do |xml|
+        xml.root do
+          xml.APIUsername credentials.username
+          xml.APIPassword credentials.password
+          xml.PropertyID property_id
+          xml.xmlMsg
+          xml.jSonMsg
+        end
+      end
+      message.doc.root.children.to_xml
+    end
+
     private
 
     def builder

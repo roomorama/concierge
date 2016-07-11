@@ -59,6 +59,16 @@ RSpec.describe Ciirus::XMLBuilder do
     it { expect(message).to eq valid_request}
   end
 
+  describe '#reservations' do
+    let(:property_id) { 10 }
+    let(:valid_request) do
+      read_fixture('ciirus/valid_reservations_request.xml')
+    end
+    let(:message) { subject.reservations(property_id) }
+
+    it { expect(message).to eq valid_request}
+  end
+
   describe '#properties' do
     let(:property_id) { 10 }
     let(:filter_options) { Ciirus::FilterOptions.new(property_id: property_id) }
