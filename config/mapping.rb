@@ -84,3 +84,17 @@ collection :sync_processes do
   attribute :created_at,         Time
   attribute :updated_at,         Time
 end
+
+collection :background_workers do
+  entity     BackgroundWorker
+  repository BackgroundWorkerRepository
+
+  attribute :id,          Integer
+  attribute :supplier_id, Integer
+  attribute :next_run_at, Time
+  attribute :interval,    Integer
+  attribute :type,        String
+  attribute :status,      String
+  attribute :created_at,  Time
+  attribute :updated_at,  Time
+end
