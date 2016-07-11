@@ -60,7 +60,7 @@ module Waytostay
     # Example:
     #
     #   new_page = 1
-    #   while new_page.present?
+    #   while !new_page.nil?
     #     result, new_page = get_active_properties(new_page)
     #     if result.success?
     #       import_multiple_properties(result.value)

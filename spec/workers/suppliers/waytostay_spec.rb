@@ -36,7 +36,7 @@ RSpec.describe Workers::Suppliers::Waytostay do
 
         page ||= 1
         next_page = page + 1 if page < 3 # there're 3 mock pages of properties
-        [Result.new([property_result_001, property_result_002]), nil]
+        [Result.new([property_result_001, property_result_002]), next_page]
       }
 
     end

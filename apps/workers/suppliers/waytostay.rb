@@ -20,11 +20,10 @@ module Workers::Suppliers
     end
 
     def fresh_import
-      get_inital_properties.each do |wrapped_property|
-        next unless wrapped_property.success?
-        synchronisation.start(wrapped_property.identifier) do
+      get_initial_properties do |property|
+        synchronisation.start(property.identifier) do
           # grab media
-          wrapped_property = client.update_media(wrapped_property.result)
+          wrapped_property = client.update_media(property)
           next wrapped_property unless wrapped_property.success?
           # grab availabilities
           wrapped_property = client.update_availabilities(wrapped_property.result)
@@ -73,11 +72,20 @@ module Workers::Suppliers
 
     private
 
-    def get_inital_properties
+    # Loops through all pages of waytostay new properties, yielding each
+    # as a Roomorama::Property
+    #
+    def get_initial_properties
       initialize_overall_sync_context
-      result = client.get_active_properties
-      announce_error(result) unless result.success?
-      result.value
+      current_page = 1
+      while !current_page.nil?
+        result, current_page = client.get_active_properties(current_page)
+        next announce_error(result) unless result.success?
+        result.value.each do |property_result|
+          next unless property_result.success?
+          yield property_result.value
+        end
+      end
     end
 
     # Starts a new context, run the block that augments to context
