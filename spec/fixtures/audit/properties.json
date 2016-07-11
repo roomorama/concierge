@@ -5,6 +5,11 @@
       "title": "Audit Property #1",
       "max_guests": 2,
       "nightly_rate": 100,
+      "availability_dates": {
+        "2016-07-11": true,
+        "2016-07-12": true,
+        "2016-07-13": true
+      },
       "images": [
         {
           "identifier": "audit-image1",
@@ -17,6 +22,11 @@
           "identifier": "audit-unit1",
           "title": "Audit Unit 1",
           "number_of_units": 2,
+          "availability_dates": {
+            "2016-07-11": true,
+            "2016-07-12": false,
+            "2016-07-13": true
+          },
           "images": [
             {
               "identifier": "audit-unit1img1",
@@ -31,6 +41,11 @@
         {
           "identifier": "audit-unit2",
           "title": "Audit Unit 2",
+          "availability_dates": {
+            "2016-07-11": false,
+            "2016-07-12": true,
+            "2016-07-13": true
+          },
           "images": [
             {
               "identifier": "audit-unit2img1",
