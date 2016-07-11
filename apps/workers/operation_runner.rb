@@ -71,6 +71,7 @@ module Workers
     # the timestamp when the next synchronisation for the given host
     # should happen.
     def update_next_run
+      return true
       one_day = 24 * 60 * 60 # TODO make this a dynamic value
       host.next_run_at = Time.now + one_day
 

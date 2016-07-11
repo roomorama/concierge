@@ -79,7 +79,6 @@ module Support
     def create_background_worker(overrides = {})
       attributes = {
         supplier_id: create_supplier.id,
-        next_run_at: Time.now + 60 * 60,
         interval:    100,
         type:        "metadata",
         status:      "idle"

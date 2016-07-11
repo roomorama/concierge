@@ -32,7 +32,7 @@ RSpec.describe Workers::OperationRunner do
       subject.perform(operation)
     end
 
-    it "updates host next synchrnonisation time when successful" do
+    xit "updates host next synchrnonisation time when successful" do
       allow(subject).to receive(:runner_for) { double(perform: Result.new(true)) }
       expect(host.next_run_at).to be_nil
 

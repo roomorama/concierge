@@ -52,7 +52,6 @@ collection :hosts do
   attribute :identifier,   String
   attribute :username,     String
   attribute :access_token, String
-  attribute :next_run_at,  Time
   attribute :created_at,   Time
   attribute :updated_at,   Time
 end
