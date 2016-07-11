@@ -16,6 +16,9 @@ module Ciirus
     # encapsulates the description string.
     class DescriptionsPlainTextFetcher < BaseCommand
 
+      # Response contains the text if a property doesn't have plain text description
+      EMPTY_DESCRIPTION_MESSAGE = 'GetDescriptionsPlainText: Error - The description is blank'
+
       def call(property_id)
         message = xml_builder.descriptions_plain_text(property_id)
         result = remote_call(message)
@@ -37,9 +40,14 @@ module Ciirus
       private
 
       def fetch_description(result_hash)
-        result_hash.get(
+        description = result_hash.get(
           'get_descriptions_plain_text_response.get_descriptions_plain_text_result'
         ).to_s
+        is_empty?(description) ? '' : description
+      end
+
+      def is_empty?(description)
+        description == EMPTY_DESCRIPTION_MESSAGE
       end
     end
   end

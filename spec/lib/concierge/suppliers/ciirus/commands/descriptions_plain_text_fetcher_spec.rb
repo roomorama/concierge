@@ -14,6 +14,7 @@ RSpec.describe Ciirus::Commands::DescriptionsPlainTextFetcher do
 
   let(:wsdl) { read_fixture('ciirus/wsdl.xml') }
   let(:success_response) { read_fixture('ciirus/descriptions_plain_text_response.xml') }
+  let(:empty_response) { read_fixture('ciirus/empty_descriptions_plain_text_response.xml') }
 
   subject { described_class.new(credentials) }
 
@@ -45,6 +46,18 @@ RSpec.describe Ciirus::Commands::DescriptionsPlainTextFetcher do
       expect(result).to be_a Result
       expect(result).to be_success
       expect(result.value).to eq 'Some description here'
+    end
+
+    context 'when description is empty' do
+      it 'returns empty string' do
+        stub_call(method: :get_descriptions_plain_text, response: empty_response)
+
+        result = subject.call(property_id)
+
+        expect(result).to be_a Result
+        expect(result).to be_success
+        expect(result.value).to be_empty
+      end
     end
   end
 end
