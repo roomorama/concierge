@@ -20,6 +20,22 @@
 class BackgroundWorker
   include Hanami::Entity
 
+  # possible values for the +type+ column of a background worker:
+  #
+  # +metadata+       - where processing of property metadata is fetched, parsed and
+  #                    synchronised with Roomorama. Includes property images.
+  # +availabilities+ - processing of the calendar of availabilities for a property.
+  #                    Indicates availabilities and prices.
+  TYPES    = %w(metadata availabilities)
+
+  # possibile statuses a worker can be in:
+  #
+  # +idle+    - the background worker is not being run, and the +next_run_at+ column
+  #             stores a timestamp in the future.
+  # +running+ - the background worker is currently running and therefore should not
+  #             be rescheduled.
+  STATUSES = %w(idle running)
+
   attributes :id, :supplier_id, :next_run_at, :interval, :type, :status,
     :created_at, :updated_at
 end
