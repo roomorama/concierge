@@ -77,7 +77,7 @@ module Workers::Suppliers
       initialize_overall_sync_context
       result = client.get_active_properties
       announce_error(result) unless result.success?
-      result.values
+      result.value
     end
 
     # Starts a new context, run the block that augments to context
