@@ -6,7 +6,12 @@
   <GuestEmailAddress>my@email.com</GuestEmailAddress>
   <GuestTelephone>+3 675 45879</GuestTelephone>
   <GuestAddress>Long Island 123</GuestAddress>
-  <GuestList/>
+  <GuestList>
+    <sGuests>
+      <Name>John Buttler</Name>
+      <Age>-1</Age>
+    </sGuests>
+  </GuestList>
   <PoolHeatRequired>false</PoolHeatRequired>
   <xmlMsg/>
   <jSonMsg/>
