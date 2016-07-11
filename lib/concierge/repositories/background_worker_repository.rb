@@ -9,4 +9,11 @@ class BackgroundWorkerRepository
     query.count
   end
 
+  # retrieves a list of workers for a given supplier
+  def self.for_supplier(supplier)
+    query do
+      where(supplier_id: supplier.id)
+    end
+  end
+
 end

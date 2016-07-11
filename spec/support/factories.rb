@@ -75,6 +75,19 @@ module Support
       entry = Concierge::Cache::Entry.new(attributes)
       Concierge::Cache::EntryRepository.create(entry)
     end
+
+    def create_background_worker(overrides = {})
+      attributes = {
+        supplier_id: create_supplier.id,
+        next_run_at: Time.now + 60 * 60,
+        interval:    100,
+        type:        "metadata",
+        status:      "idle"
+      }.merge(overrides)
+
+      worker = BackgroundWorker.new(attributes)
+      BackgroundWorkerRepository.create(worker)
+    end
   end
 
 end
