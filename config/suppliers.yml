@@ -18,3 +18,8 @@ WayToStay:
   workers:
     metadata:
       every: "1d"
+
+Audit:
+  workers:
+    metadata:
+      every: "1h"
