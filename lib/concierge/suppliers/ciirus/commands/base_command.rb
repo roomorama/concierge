@@ -9,6 +9,7 @@ module Ciirus
     class BaseCommand
       VERSION = '15.025'
       PATH = "/CiirusXML.#{VERSION}.asmx"
+      ADDITIONAL_PATH = "/XMLAdditionalFunctions.#{VERSION}.asmx"
       ROOMORAMA_DATE_FORMAT = "%Y-%m-%d"
       CIIRUS_DATE_FORMAT = "%d %b %Y"
 
@@ -29,11 +30,15 @@ module Ciirus
       end
 
       def client
-        @client ||= Concierge::SOAPClient.new(options)
+        @client ||= Concierge::SOAPClient.new(options(PATH))
       end
 
-      def options
-        endpoint = "#{credentials.url}/#{PATH}"
+      def additional_client
+        @additional_client ||= Concierge::SOAPClient.new(options(ADDITIONAL_PATH))
+      end
+
+      def options(path)
+        endpoint = "#{credentials.url}/#{path}"
         wsdl     = "#{endpoint}?wsdl"
         {
           wsdl:          wsdl,
@@ -44,6 +49,14 @@ module Ciirus
       end
 
       def remote_call(message)
+        call_client(client, message)
+      end
+
+      def additional_remote_call(message)
+        call_client(additinal_client, message)
+      end
+
+      def call_client(client, message)
         client.call(operation_name, message: message, attributes: {'xmlns' => 'http://xml.ciirus.com/'})
       end
 

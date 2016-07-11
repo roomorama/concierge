@@ -20,7 +20,7 @@ RSpec.describe API::Controllers::Ciirus::Quote do
   before do
     # Replace remote call for wsdl with static wsdl
     allow_any_instance_of(Ciirus::Commands::QuoteFetcher).to receive(:options).and_wrap_original do |m, *args|
-      original = m.call
+      original = m.call(*args)
       original[:wsdl] = wsdl
       original
     end
@@ -55,7 +55,7 @@ RSpec.describe API::Controllers::Ciirus::Quote do
         expect(response.body['check_out']).to eq '2016-05-12'
         expect(response.body['guests']).to eq 3
         expect(response.body['currency']).to eq 'USD'
-        expect(response.body['total']).to eq 3440.98
+        expect(response.body['total']).to eq 698.19
       end
 
       it 'returns unavailable quotation for empty response' do

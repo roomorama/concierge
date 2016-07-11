@@ -34,7 +34,7 @@ RSpec.describe API::Controllers::Ciirus::Booking do
   before do
     # Replace remote call for wsdl with static wsdl
     allow_any_instance_of(Ciirus::Commands::Booking).to receive(:options).and_wrap_original do |m, *args|
-      original = m.call
+      original = m.call(*args)
       original[:wsdl] = wsdl
       original
     end

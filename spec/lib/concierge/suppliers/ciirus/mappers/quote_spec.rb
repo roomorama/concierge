@@ -49,7 +49,11 @@ RSpec.describe Ciirus::Mappers::Quote do
       Concierge::SafeAccessHash.new(
         {
           get_properties_response: {
-            get_properties_result: {}
+            get_properties_result: {
+              property_details: {
+                error_msg: 'No Properties were found that fit the specified search Criteria.'
+              }
+            }
           }
         }
       )
