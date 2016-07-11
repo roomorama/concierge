@@ -11,9 +11,9 @@ RSpec.describe API::Controllers::Ciirus::Quote do
     { property_id: '38180', check_in: '2016-05-01', check_out: '2016-05-12', guests: 3 }
   }
 
-  let(:success_response) { read_fixture('ciirus/property_quote_response.xml') }
-  let(:empty_response) { read_fixture('ciirus/empty_property_quote_response.xml') }
-  let(:error_response) { read_fixture('ciirus/error_property_quote_response.xml') }
+  let(:success_response) { read_fixture('ciirus/responses/property_quote_response.xml') }
+  let(:empty_response) { read_fixture('ciirus/responses/empty_property_quote_response.xml') }
+  let(:error_response) { read_fixture('ciirus/responses/error_property_quote_response.xml') }
 
   let(:wsdl) { read_fixture('ciirus/wsdl.xml') }
 

@@ -13,8 +13,8 @@ RSpec.describe Ciirus::Commands::DescriptionsPlainTextFetcher do
   let(:property_id) { 38180 }
 
   let(:wsdl) { read_fixture('ciirus/wsdl.xml') }
-  let(:success_response) { read_fixture('ciirus/descriptions_plain_text_response.xml') }
-  let(:empty_response) { read_fixture('ciirus/empty_descriptions_plain_text_response.xml') }
+  let(:success_response) { read_fixture('ciirus/responses/descriptions_plain_text_response.xml') }
+  let(:empty_response) { read_fixture('ciirus/responses/empty_descriptions_plain_text_response.xml') }
 
   subject { described_class.new(credentials) }
 

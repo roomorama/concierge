@@ -13,7 +13,7 @@ RSpec.describe Ciirus::Commands::DescriptionsHtmlFetcher do
   let(:property_id) { 38180 }
 
   let(:wsdl) { read_fixture('ciirus/wsdl.xml') }
-  let(:success_response) { read_fixture('ciirus/descriptions_html_response.xml') }
+  let(:success_response) { read_fixture('ciirus/responses/descriptions_html_response.xml') }
 
   subject { described_class.new(credentials) }
 

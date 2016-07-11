@@ -12,7 +12,7 @@ RSpec.describe Ciirus::XMLBuilder do
     let(:check_in) { Date.new(2016, 6, 3) }
     let(:check_out) { Date.new(2016, 7, 2) }
     let(:valid_request) do
-      read_fixture('ciirus/valid_is_property_available_request.xml')
+      read_fixture('ciirus/requests/valid_is_property_available_request.xml')
     end
     let(:message) { subject.is_property_available(property_id, check_in, check_out) }
 
@@ -22,7 +22,7 @@ RSpec.describe Ciirus::XMLBuilder do
   describe '#property_rates' do
     let(:property_id) { 10 }
     let(:valid_request) do
-      read_fixture('ciirus/valid_property_rates_request.xml')
+      read_fixture('ciirus/requests/valid_property_rates_request.xml')
     end
     let(:message) { subject.property_rates(property_id) }
 
@@ -32,7 +32,7 @@ RSpec.describe Ciirus::XMLBuilder do
   describe '#image_list' do
     let(:property_id) { 10 }
     let(:valid_request) do
-      read_fixture('ciirus/valid_image_list_request.xml')
+      read_fixture('ciirus/requests/valid_image_list_request.xml')
     end
     let(:message) { subject.image_list(property_id) }
 
@@ -42,7 +42,7 @@ RSpec.describe Ciirus::XMLBuilder do
   describe '#descriptions_plain_text' do
     let(:property_id) { 10 }
     let(:valid_request) do
-      read_fixture('ciirus/valid_descriptions_plain_text_request.xml')
+      read_fixture('ciirus/requests/valid_descriptions_plain_text_request.xml')
     end
     let(:message) { subject.descriptions_plain_text(property_id) }
 
@@ -52,7 +52,7 @@ RSpec.describe Ciirus::XMLBuilder do
   describe '#descriptions_html' do
     let(:property_id) { 10 }
     let(:valid_request) do
-      read_fixture('ciirus/valid_descriptions_html_request.xml')
+      read_fixture('ciirus/requests/valid_descriptions_html_request.xml')
     end
     let(:message) { subject.descriptions_html(property_id) }
 
@@ -62,7 +62,7 @@ RSpec.describe Ciirus::XMLBuilder do
   describe '#reservations' do
     let(:property_id) { 10 }
     let(:valid_request) do
-      read_fixture('ciirus/valid_reservations_request.xml')
+      read_fixture('ciirus/requests/valid_reservations_request.xml')
     end
     let(:message) { subject.reservations(property_id) }
 
@@ -77,7 +77,7 @@ RSpec.describe Ciirus::XMLBuilder do
     let(:arrive_date) { '1 May 2016' }
     let(:depart_date) { '10 May 2016' }
     let(:valid_request) do
-      read_fixture('ciirus/valid_properties_request.xml')
+      read_fixture('ciirus/requests/valid_properties_request.xml')
     end
     let(:message) do
       subject.properties(filter_options, search_options, special_options,
@@ -98,7 +98,7 @@ RSpec.describe Ciirus::XMLBuilder do
     let(:arrival_date) { '1 May 2016' }
     let(:departure_date) { '10 May 2016' }
     let(:valid_request) do
-      read_fixture('ciirus/valid_make_booking_request.xml')
+      read_fixture('ciirus/requests/valid_make_booking_request.xml')
     end
     let(:message) do
       subject.make_booking(property_id, arrival_date, departure_date, guest)
