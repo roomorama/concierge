@@ -7,4 +7,10 @@
 # Only suppliers for which the full integration flow is completed should be
 # added here (properties synchronisation as well as webhooks.)
 
-- AtLeisure
+atleisure:
+  name: "AtLeisure"
+  workers:
+    metadata:
+      every: "1d"
+    availabilities:
+      every: "5h"
