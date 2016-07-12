@@ -97,23 +97,25 @@ module Concierge::Flows
     # for the supplier the host belongs to.
     def perform
       if valid?
-        host = create_host
-        workers_definition = find_workers_definition
+        transaction do
+          host = create_host
+          workers_definition = find_workers_definition
 
-        return workers_definition unless workers_definition.success?
+          return workers_definition unless workers_definition.success?
 
-        workers_definition.value.each do |type, data|
-          result = BackgroundWorkerCreation.new(
-            host_id:     host.id,
-            interval:    data.to_h["every"],
-            type:        type.to_s,
-            status:      "idle"
-          ).perform
+          workers_definition.value.each do |type, data|
+            result = BackgroundWorkerCreation.new(
+              host_id:     host.id,
+              interval:    data.to_h["every"],
+              type:        type.to_s,
+              status:      "idle"
+            ).perform
 
-          return result unless result.success?
+            return result unless result.success?
+          end
+
+          Result.new(host)
         end
-
-        Result.new(host)
       else
         Result.error(:invalid_parameters)
       end
@@ -149,6 +151,12 @@ module Concierge::Flows
 
     def suppliers_config
       @config ||= YAML.load_file(config_path)
+    end
+
+    def transaction
+      result = nil
+      HostRepository.transaction { result = yield }
+      result
     end
 
     def attributes
