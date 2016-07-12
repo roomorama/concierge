@@ -11,7 +11,7 @@ module Concierge::Flows
 
     INTERVAL_FORMAT = /^\s*(?<amount>\d+)\s*(?<unit>[smhd])\s*$/
 
-    attribute :supplier_id, presence: true
+    attribute :host_id,     presence: true
     attribute :interval,    presence: true, format:    INTERVAL_FORMAT
     attribute :type,        presence: true, inclusion: BackgroundWorker::TYPES
     attribute :status,      presence: true, inclusion: BackgroundWorker::STATUSES
@@ -36,12 +36,12 @@ module Concierge::Flows
     private
 
     def find_existing
-      workers = BackgroundWorkerRepository.for_supplier(supplier).to_a
+      workers = BackgroundWorkerRepository.for_host(host).to_a
       workers.find { |worker| worker.type == type }
     end
 
     def build_new
-      BackgroundWorker.new(supplier_id: supplier_id)
+      BackgroundWorker.new(host_id: host_id)
     end
 
     def interpret_interval(interval)
@@ -60,8 +60,8 @@ module Concierge::Flows
       end
     end
 
-    def supplier
-      @supplier ||= SupplierRepository.find(supplier_id)
+    def host
+      @host ||= HostRepository.find(host_id)
     end
 
     def attributes
@@ -69,29 +69,43 @@ module Concierge::Flows
     end
   end
 
-  # +Concierge::Flows::SupplierCreation+
+  # +Concierge::Flows::HostCreation+
   #
-  # This class encapsulates the creation of supplier, a including associated
-  # background workers. Suppleirs are composed of a +name+ only. A definition of
-  # the workers is also expected by this class.
-  class SupplierCreation
+  # This class encapsulates the creation of host, a including associated
+  # background workers. Hosts belong to a supplier and other related
+  # attributes.
+  class HostCreation
     include Hanami::Validations
 
-    attribute :name,    presence: true
-    attribute :workers, presence: true
+    attribute :supplier,     presence: true
+    attribute :identifier,   presence: true
+    attribute :username,     presence: true
+    attribute :access_token, presence: true
 
-    # creates database records for the supplier and background workers.
-    # Returns a +Result+ instance wrapping the resulting +Supplier+ instance,
-    # or an error in case the parameters are not valid.
+    attr_reader :config_path
+
+    # overrides the initializer definition by +Hanami::Validations+ to read the
+    # required +config_path+ option that indicates the path to the +suppliers.yml+
+    # file to read the workers definition.
+    def initialize(attributes)
+      @config_path = attributes.delete(:config_path)
+      super
+    end
+
+    # creates database records for the host, as well as associated workers.
+    # Parses the +config/suppliers.yml+ file to read the workers definition
+    # for the supplier the host belongs to.
     def perform
       if valid?
-        name     = attributes[:name]
-        supplier = SupplierRepository.named(name) || create_supplier(attributes[:name])
+        host = create_host
+        workers_definition = find_workers_definition
 
-        attributes[:workers].each do |type, data|
+        return workers_definition unless workers_definition.success?
+
+        workers_definition.value.each do |type, data|
           result = BackgroundWorkerCreation.new(
-            supplier_id: supplier.id,
-            interval:    data[:every],
+            host_id:     host.id,
+            interval:    data.to_h["every"],
             type:        type.to_s,
             status:      "idle"
           ).perform
@@ -99,7 +113,7 @@ module Concierge::Flows
           return result unless result.success?
         end
 
-        Result.new(supplier)
+        Result.new(host)
       else
         Result.error(:invalid_parameters)
       end
@@ -107,10 +121,34 @@ module Concierge::Flows
 
     private
 
-    def create_supplier(name)
-      SupplierRepository.create(
-        Supplier.new(name: attributes[:name])
-      )
+    def create_host
+      existing = HostRepository.from_supplier(supplier).identified_by(identifier).first
+      host = existing || Host.new(supplier_id: supplier.id, identifier: identifier)
+
+      host.username     = username
+      host.access_token = access_token
+
+      HostRepository.persist(host)
+    end
+
+    def find_workers_definition
+      definition = nil
+
+      suppliers_config.find do |name, workers|
+        if name == supplier.name
+          definition = workers
+        end
+      end
+
+      if definition
+        Result.new(definition["workers"].to_h)
+      else
+        Result.error(:no_workers_definition)
+      end
+    end
+
+    def suppliers_config
+      @config ||= YAML.load_file(config_path)
     end
 
     def attributes

@@ -1,45 +1,54 @@
 require "spec_helper"
 
-RSpec.describe Concierge::Flows::SupplierCreation do
+RSpec.describe Concierge::Flows::HostCreation do
+  include Support::Factories
+
+  let(:supplier) { create_supplier(name: "Supplier X") }
+
   let(:parameters) {
     {
-      name: "Supplier X",
-      workers: {
-        metadata: {
-          every: "1d"
-        },
-        availabilities: {
-          every: "2h"
-        }
-      }
+      supplier:     supplier,
+      identifier:   "host1",
+      username:     "roomorama-user",
+      access_token: "a1b2c3",
     }
   }
+
+  def config_suppliers(file)
+    parameters[:config_path] = Hanami.root.join("spec", "fixtures", "suppliers_configuration", file).to_s
+  end
+
+  before do
+    config_suppliers "suppliers.yml"
+  end
 
   subject { described_class.new(parameters) }
 
   describe "#perform" do
-    it "returns an unsuccessful result without a valid name" do
-      [nil, ""].each do |invalid_name|
-        parameters[:name] = invalid_name
+    it "returns an unsuccessful if any required parameter is missing" do
+      [nil, ""].each do |invalid_value|
+        [:supplier, :identifier, :username, :access_token].each do |attribute|
+          parameters[attribute] = invalid_value
 
-        result = subject.perform
-        expect(result).to be_a Result
-        expect(result).not_to be_success
-        expect(result.error.code).to eq :invalid_parameters
+          result = subject.perform
+          expect(result).to be_a Result
+          expect(result).not_to be_success
+          expect(result.error.code).to eq :invalid_parameters
+        end
       end
     end
 
     it "returns an unsuccessful result without a workers definition" do
-      parameters.delete(:workers)
+      config_suppliers "no_supplier_x.yml"
 
       result = subject.perform
       expect(result).to be_a Result
       expect(result).not_to be_success
-      expect(result.error.code).to eq :invalid_parameters
+      expect(result.error.code).to eq :no_workers_definition
     end
 
     it "returns an unsuccessful result if parameters for the workers are missing" do
-      parameters[:workers][:metadata].delete(:every)
+      config_suppliers "no_metadata_interval.yml"
 
       result = subject.perform
       expect(result).to be_a Result
@@ -48,7 +57,7 @@ RSpec.describe Concierge::Flows::SupplierCreation do
     end
 
     it "returns an unsuccessful result if the worker type is unknown" do
-      parameters[:workers][:invalid] = parameters[:workers].delete(:metadata)
+      config_suppliers "invalid_worker_type.yml"
 
       result = subject.perform
       expect(result).to be_a Result
@@ -57,7 +66,7 @@ RSpec.describe Concierge::Flows::SupplierCreation do
     end
 
     it "returns an unsuccessful result if the interval specified is not recognised" do
-      parameters[:workers][:metadata][:every] = "invalid"
+      config_suppliers "invalid_interval.yml"
 
       result = subject.perform
       expect(result).to be_a Result
@@ -65,17 +74,20 @@ RSpec.describe Concierge::Flows::SupplierCreation do
       expect(result.error.code).to eq :invalid_parameters
     end
 
-    it "creates supplier and associated workers" do
+    it "creates the host and associated workers" do
       expect {
         expect {
           expect(subject.perform).to be_success
-        }.to change { SupplierRepository.count }.by(1)
+        }.to change { HostRepository.count }.by(1)
       }.to change { BackgroundWorkerRepository.count }.by(2)
 
-      supplier = SupplierRepository.last
-      workers  = BackgroundWorkerRepository.for_supplier(supplier).to_a
+      host     = HostRepository.last
+      workers  = BackgroundWorkerRepository.for_host(host).to_a
 
-      expect(supplier.name).to eq "Supplier X"
+      expect(host.identifier).to eq "host1"
+      expect(host.username).to eq "roomorama-user"
+      expect(host.access_token).to eq "a1b2c3"
+
       expect(workers.size).to eq 2
 
       worker = workers.first
@@ -94,18 +106,18 @@ RSpec.describe Concierge::Flows::SupplierCreation do
     it "updates changed data on consecutive runs" do
       subject.perform
 
-      supplier = SupplierRepository.named("Supplier X")
-      workers  = BackgroundWorkerRepository.for_supplier(supplier).to_a
+      host     = HostRepository.last
+      workers  = BackgroundWorkerRepository.for_host(host).to_a
       metadata_worker = workers.find { |w| w.type == "metadata" }
 
       expect(metadata_worker.interval).to eq 24 * 60 * 60
 
       # updates metadata worker interval to every 2 days
-      parameters[:workers][:metadata][:every] = "2d"
+      config_suppliers "2d_interval.yml"
 
       expect {
-        subject.perform
-      }.not_to change { SupplierRepository.count }
+        described_class.new(parameters).perform
+      }.not_to change { HostRepository.count }
 
       metadata_worker = BackgroundWorkerRepository.find(metadata_worker.id)
       expect(metadata_worker.interval).to eq 2 * 24 * 60 * 60 # 2 days
@@ -113,24 +125,24 @@ RSpec.describe Concierge::Flows::SupplierCreation do
 
     context "interval parsing" do
       it "understands seconds notation" do
-        parameters[:workers][:availabilities][:every] = "10s"
+        config_suppliers "seconds_interval.yml"
         subject.perform
 
-        supplier = SupplierRepository.named("Supplier X")
-        worker   = BackgroundWorkerRepository.
-          for_supplier(supplier).
+        host   = HostRepository.last
+        worker = BackgroundWorkerRepository.
+          for_host(host).
           find { |w| w.type == "availabilities" }
 
         expect(worker.interval).to eq 10
       end
 
       it "understands minutes notation" do
-        parameters[:workers][:availabilities][:every] = "10m"
+        config_suppliers "minutes_interval.yml"
         subject.perform
 
-        supplier = SupplierRepository.named("Supplier X")
-        worker   = BackgroundWorkerRepository.
-          for_supplier(supplier).
+        host   = HostRepository.last
+        worker = BackgroundWorkerRepository.
+          for_host(host).
           find { |w| w.type == "availabilities" }
 
         expect(worker.interval).to eq 10 * 60

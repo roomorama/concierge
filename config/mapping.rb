@@ -89,7 +89,7 @@ collection :background_workers do
   repository BackgroundWorkerRepository
 
   attribute :id,          Integer
-  attribute :supplier_id, Integer
+  attribute :host_id,     Integer
   attribute :next_run_at, Time
   attribute :interval,    Integer
   attribute :type,        String

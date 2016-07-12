@@ -1,0 +1,6 @@
+Supplier Y:
+  workers:
+    metadata:
+      every: "1d"
+    availabilities:
+      every: "2h"

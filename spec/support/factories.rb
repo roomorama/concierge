@@ -78,10 +78,10 @@ module Support
 
     def create_background_worker(overrides = {})
       attributes = {
-        supplier_id: create_supplier.id,
-        interval:    100,
-        type:        "metadata",
-        status:      "idle"
+        host_id:  create_host.id,
+        interval: 100,
+        type:     "metadata",
+        status:   "idle"
       }.merge(overrides)
 
       worker = BackgroundWorker.new(attributes)
