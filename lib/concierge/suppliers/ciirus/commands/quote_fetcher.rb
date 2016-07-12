@@ -21,7 +21,9 @@ module Ciirus
       EMPTY_ERROR_MESSAGE = 'No Properties were found that fit the specified search Criteria.'
 
       def call(params)
-        filter_options = Ciirus::FilterOptions.new(property_id: params[:property_id])
+        filter_options = Ciirus::FilterOptions.new(property_id: params[:property_id]) do |filters|
+          filters.sleeps = params[:guests]
+        end
         search_options = Ciirus::SearchOptions.new(quote: true, full_details: false)
         special_options = Ciirus::SpecialOptions.new
         arrive_date = convert_date(params[:check_in])
