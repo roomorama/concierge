@@ -43,9 +43,7 @@ module Workers
     # Extra arguments depend on the specific implementation of the runner.
     # Check particular classes for more information.
     def perform(operation, *args)
-      runner_for(operation).perform(*args).tap do |result|
-        update_next_run if result.success?
-      end
+      runner_for(operation).perform(*args)
     end
 
     private
@@ -68,10 +66,8 @@ module Workers
     end
 
     # if the result of performing the operation was successful, we update
-    # the timestamp when the next synchronisation for the given host
-    # should happen.
+    # the timestamp when the next execution of the worker should happen.
     def update_next_run
-      return true
       one_day = 24 * 60 * 60 # TODO make this a dynamic value
       host.next_run_at = Time.now + one_day
 

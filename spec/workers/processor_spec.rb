@@ -29,21 +29,27 @@ RSpec.describe Workers::Processor do
     it "triggers the associated supplier synchronisation mechanism on background worker operations" do
       invoked = false
 
+      supplier = create_supplier(name: "AcmeTest")
+      host     = create_host(username: "acme-host", supplier_id: supplier.id)
+      worker   = create_background_worker(host_id: host.id, type: "metadata", interval: 10)
+      payload[:data][:background_worker_id] = worker.id
+
       Concierge::Announcer.on("metadata.AcmeTest") do |host|
         expect(host.username).to eq "acme-host"
         expect(SupplierRepository.find(host.supplier_id).name).to eq "AcmeTest"
         invoked = true
-      end
 
-      supplier = create_supplier(name: "AcmeTest")
-      host     = create_host(username: "acme-host", supplier_id: supplier.id)
-      worker   = create_background_worker(host_id: host.id, type: "metadata")
-      payload[:data][:background_worker_id] = worker.id
+        expect(BackgroundWorkerRepository.find(worker.id).status).to eq "running"
+      end
 
       result = subject.process!
       expect(result).to be_a Result
       expect(result).to be_success
       expect(invoked).to eq true
+
+      reloaded_worker = BackgroundWorkerRepository.find(worker.id)
+      expect(reloaded_worker.next_run_at - Time.now).to be_within(1).of(worker.interval)
+      expect(reloaded_worker.status).to eq "idle"
     end
 
     it "times out and fails if the operation takes too long" do

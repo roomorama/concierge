@@ -69,13 +69,15 @@ module Workers
     def run_worker(args)
       worker = BackgroundWorkerRepository.find(args[:background_worker_id])
 
-      timing_out(worker.type, args) do
-        host      = HostRepository.find(worker.host_id)
-        supplier  = SupplierRepository.find(host.supplier_id)
-        broadcast = [worker.type, ".", supplier.name].join
+      running(worker) do
+        timing_out(worker.type, args) do
+          host      = HostRepository.find(worker.host_id)
+          supplier  = SupplierRepository.find(host.supplier_id)
+          broadcast = [worker.type, ".", supplier.name].join
 
-        Concierge::Announcer.trigger(broadcast, host)
-        Result.new(true)
+          Concierge::Announcer.trigger(broadcast, host)
+          Result.new(true)
+        end
       end
     end
 
@@ -91,8 +93,35 @@ module Workers
       Result.error(:timeout)
     end
 
+    # coordinates the +BackgroundWorker+ instance status and timestamps by changing
+    # the worker status to +running+, yielding the block (which is supposed to do
+    # the worker's job), and ensuring that the worker's status is set back to +idle+
+    # at the end of the process, as well as properly updating the +next_run_at+ column
+    # according to the specified worker +interval+.
+    def running(worker)
+      worker_started(worker)
+      yield
+
+    ensure
+      # reload the worker instance to make sure to account for any possible
+      # changes in the process
+      worker_completed(BackgroundWorkerRepository.find(worker.id))
+    end
+
     def message
       @message = json_decode(payload)
+    end
+
+    def worker_started(worker)
+      worker.status = "running"
+      BackgroundWorkerRepository.update(worker)
+    end
+
+    def worker_completed(worker)
+      worker.status      = "idle"
+      worker.next_run_at = Time.now + worker.interval
+
+      BackgroundWorkerRepository.update(worker)
     end
 
     # NOTE this time out should be shorter than the +VisibilityTimeout+ configured
