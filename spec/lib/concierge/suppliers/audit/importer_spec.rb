@@ -14,7 +14,7 @@ RSpec.describe Audit::Importer do
 
     context 'success' do
       before do
-        stub_call(:get, endpoint) { [200, {}, read_fixture('audit/properties.json')] }
+        stub_call(:get, endpoint) { [200, {}, read_fixture('audit/fetch_properties.json')] }
       end
 
       it 'should return Result of array of Hash' do
@@ -37,7 +37,7 @@ RSpec.describe Audit::Importer do
   end
 
   describe '#json_to_property' do
-    let(:json) { JSON.parse(read_fixture('audit/properties.json'))['result'].sample }
+    let(:json) { JSON.parse(read_fixture('audit/fetch_properties.json'))['result'].sample }
 
     it 'should return Result of Roomorama::Property' do
       result = importer.json_to_property(json)

@@ -13,7 +13,7 @@
       "images": [
         {
           "identifier": "audit-image1",
-          "url": "https://www.example.org/img1",
+          "url": "/spec/fixtures/audit/villa.jpg?img1",
           "caption": "Barbecue Pit"
         }
       ],
@@ -30,11 +30,11 @@
           "images": [
             {
               "identifier": "audit-unit1img1",
-              "url": "https://www.example.org/unit1img1"
+              "url": "/spec/fixtures/audit/villa.jpg?unit1img1"
             },
             {
               "identifier": "audit-unit1img2",
-              "url": "https://www.example.org/unit1img2"
+              "url": "/spec/fixtures/audit/😻猫.png?unit1img2"
             }
           ]
         },
@@ -49,7 +49,7 @@
           "images": [
             {
               "identifier": "audit-unit2img1",
-              "url": "https://www.example.org/unit2img1"
+              "url": "/spec/fixtures/audit/😻猫.png?unit2img1"
             }
           ]
         }
