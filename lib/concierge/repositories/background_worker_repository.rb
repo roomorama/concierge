@@ -17,4 +17,19 @@ class BackgroundWorkerRepository
     end
   end
 
+  # queries for idle background workers
+  def self.idle
+    query do
+      where(status: "idle")
+    end
+  end
+
+  # queries for all background workers that are due for execution - that is,
+  # those whose +next_run_at+ column is +null+ or holds a timestamp in the past.
+  def self.pending
+    query do
+      where { next_run_at < Time.now }.or(next_run_at: nil).order(:next_run_at)
+    end.idle
+  end
+
 end

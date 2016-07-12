@@ -27,4 +27,25 @@ RSpec.describe BackgroundWorkerRepository do
       expect(described_class.for_host(host).to_a).to eq [host_worker]
     end
   end
+
+  describe ".pending" do
+    let(:one_hour) { 60 * 60 }
+    let(:now) { Time.now }
+
+    it "returns an empty collection if all workers are to be run in the future" do
+      worker = create_background_worker(next_run_at: now + one_hour)
+      expect(described_class.pending.to_a).to eq []
+    end
+
+    it "returns only workers with null timestamps or timestamps in the past which are not already running" do
+      new_worker     = create_background_worker(next_run_at: nil)
+      future_worker  = create_background_worker(next_run_at: now + one_hour)
+      pending_worker = create_background_worker(next_run_at: now - one_hour)
+
+      new_running_worker     = create_background_worker(next_run_at: nil, status: "running")
+      pending_running_worker = create_background_worker(next_run_at: now - one_hour, status: "running")
+
+      expect(described_class.pending.to_a).to eq [pending_worker, new_worker]
+    end
+  end
 end
