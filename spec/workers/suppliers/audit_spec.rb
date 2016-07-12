@@ -6,8 +6,8 @@ RSpec.describe Workers::Suppliers::Audit do
 
   let(:host) { create_host }
   let(:worker) { described_class.new(host) }
-  let(:fetch_properties_json) { JSON.parse(read_fixture('audit/properties.json')) }
-  let(:credentials) { Hash.new }
+  let(:fetch_properties_json) { JSON.parse(read_fixture('audit/fetch_properties.json')) }
+  let(:credentials) { worker.send(:credentials) }
 
   def synchronisation_counters
     [:created, :updated, :deleted].inject({}) do |sum,k|

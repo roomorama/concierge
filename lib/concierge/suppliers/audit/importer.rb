@@ -29,6 +29,10 @@ module Audit
     end
 
     def json_to_property(json)
+      # `Roomorama::Property.load` prefer absolute urls, but our fixture `url` values are relative
+      # make it happy
+      fix_relative_urls!(URI.join(credentials.host, credentials.fetch_properties_endpoint), json)
+
       Roomorama::Property.load(Concierge::SafeAccessHash.new json).tap do |property_result|
         if property_result.success?
           property = property_result.value
@@ -39,6 +43,23 @@ module Audit
             end
           end
         end
+      end
+    end
+
+    private
+
+    def fix_relative_urls!(base_uri, object)
+      case object
+      when Hash
+        object.each do |key, value|
+          if key == 'url'
+            object[key] = URI.join(base_uri, URI.escape(value)).to_s
+          elsif value.kind_of?(Hash) || value.kind_of?(Array)
+            fix_relative_urls!(base_uri, value)
+          end
+        end
+      when Array
+        object.each {|item| fix_relative_urls!(base_uri, item) }
       end
     end
   end
