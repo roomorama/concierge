@@ -31,7 +31,7 @@ module Concierge
 
       Array(keys).each do |k|
         break if result.nil?
-        result = result[k]
+        result = result.is_a?(SafeAccessHash) ? result[k] : nil
       end
       result = SafeAccessHash.new(result) if result.is_a?(Hanami::Utils::Hash)
       result
