@@ -14,19 +14,17 @@ RSpec.describe BackgroundWorkerRepository do
     end
   end
 
-  describe ".for_supplier" do
-    let(:supplier) { create_supplier }
-
-    it "returns an empty list if there are no workers for a given supplier" do
-      expect(described_class.for_supplier(supplier).to_a).to eq []
+  describe ".for_host" do
+    it "returns an empty collection when there are no workers" do
+      expect(described_class.for_host(create_host).to_a).to eq []
     end
 
-    it "returns a collection of background workers for a supplier" do
-      %w(metadata availabilities).each do |type|
-        create_background_worker(supplier_id: supplier.id, type: type)
-      end
+    it "returns workers associated with the given host only" do
+      host              = create_host
+      host_worker       = create_background_worker(host_id: host.id)
+      other_host_worker = create_background_worker
 
-      expect(described_class.for_supplier(supplier).to_a.size).to eq 2
+      expect(described_class.for_host(host).to_a).to eq [host_worker]
     end
   end
 end

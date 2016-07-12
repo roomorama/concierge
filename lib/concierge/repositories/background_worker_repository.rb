@@ -9,10 +9,11 @@ class BackgroundWorkerRepository
     query.count
   end
 
-  # retrieves a list of workers for a given supplier
-  def self.for_supplier(supplier)
+  # returns a collection of backround workers associated with the given +Host+
+  # instance.
+  def self.for_host(host)
     query do
-      where(supplier_id: supplier.id)
+      where(host_id: host.id)
     end
   end
 
