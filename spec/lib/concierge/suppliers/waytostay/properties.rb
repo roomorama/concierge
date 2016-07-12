@@ -1,4 +1,4 @@
-RSpec.shared_examples "Waytostay property handler" do
+RSpec.shared_examples "Waytostay property client" do
   include Support::Fixtures
 
   describe "#parse_number_of_beds" do
