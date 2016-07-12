@@ -99,6 +99,6 @@ module Workers::Suppliers
 end
 
 # listen supplier worker
-Concierge::Announcer.on("sync.AtLeisure") do |host|
+Concierge::Announcer.on("metadata.AtLeisure") do |host|
   Workers::Suppliers::AtLeisure.new(host).perform
 end
