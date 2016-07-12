@@ -15,9 +15,10 @@ class Concierge::Context
 
     CONTEXT_TYPE = "sync_process"
 
-    attr_reader :host_id, :identifier, :timestamp
+    attr_reader :worker, :host_id, :type, :identifier, :timestamp
 
-    def initialize(host_id:, identifier:)
+    def initialize(worker:, host_id:, identifier:)
+      @worker     = worker
       @host_id    = host_id
       @identifier = identifier
       @timestamp  = Time.now
@@ -26,6 +27,7 @@ class Concierge::Context
     def to_h
       {
         type:       CONTEXT_TYPE,
+        worker:     worker,
         timestamp:  timestamp,
         host_id:    host_id,
         identifier: identifier

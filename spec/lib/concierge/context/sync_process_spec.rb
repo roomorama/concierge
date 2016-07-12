@@ -3,6 +3,7 @@ require "spec_helper"
 RSpec.describe Concierge::Context::SyncProcess do
   let(:params) {
     {
+      worker:     "metadata",
       host_id:    2,
       identifier: "prop1"
     }
@@ -16,6 +17,7 @@ RSpec.describe Concierge::Context::SyncProcess do
 
       expect(subject.to_h).to eq({
         type:       "sync_process",
+        worker:     "metadata",
         timestamp:  Time.now,
         host_id:    2,
         identifier: "prop1"

@@ -31,6 +31,10 @@ module Workers
   #   sync.finish! # => non-processed properties are deleted at the end of the process.
   class PropertySynchronisation
 
+    # the kind of background worker that identifies property metadata synchronisation.
+    # Calendar availabilities is tackled by +Workers::CalendarSynchronisation+
+    WORKER_TYPE = "metadata"
+
     PropertyCounters = Struct.new(:created, :updated, :deleted)
 
     attr_reader :host, :router, :sync_record, :counters, :processed, :purge
@@ -141,6 +145,7 @@ module Workers
       Concierge.context = Concierge::Context.new(type: "batch")
 
       sync_process = Concierge::Context::SyncProcess.new(
+        worker:     WORKER_TYPE,
         host_id:    host.id,
         identifier: identifier
       )
