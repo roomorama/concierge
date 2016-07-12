@@ -2,7 +2,7 @@ module Workers
 
   # +Workers::Scheduler+
   #
-  # This class is responsible for checking which hosts should be synchronised
+  # This class is responsible for checking which background workers should be run
   # (i.e., the +next_run_at+ column is either +nil+ or in a time in the past),
   # and enqueue the correspondent message to the queue to start the
   # synchronisation process.
@@ -25,10 +25,10 @@ module Workers
     # queries the +hosts+ table to identify which host should be synchronised,
     # enqueueing messages if necessary.
     def trigger_pending!
-      HostRepository.pending_synchronisation.each do |host|
-        log_event(host)
-        update_timestamp(host)
-        enqueue(host)
+      BackgroundWorkerRepository.pending.each do |background_worker|
+        log_event(background_worker)
+        mark_running(background_worker)
+        enqueue(background_worker)
       end
     end
 
@@ -38,28 +38,27 @@ module Workers
       ::Logger.new(LOG_PATH)
     end
 
-    # updates the timestamp for next synchronisation to avoid enqueueing the same
-    # hosts multiple times unnecessarily. If the synchronisation is performed
-    # successfully by the worker, this timestamp is advanced again.
-    def update_timestamp(host)
-      three_hours_from_now = Time.now + 3 * 60 * 60
-      host.next_run_at = three_hours_from_now
-
-      HostRepository.update(host)
+    # updates the background worker status to +running+ so that it will not
+    # be enqueued again while it performs its task.
+    def mark_running(worker)
+      worker.status = "running"
+      BackgroundWorkerRepository.update(worker)
     end
 
-    def enqueue(host)
+    def enqueue(worker)
       element = Workers::Queue::Element.new(
-        operation: "sync",
-        data:      { host_id: host.id }
+        operation: "background_worker",
+        data:      { background_worker_id: worker.id }
       )
 
       queue.add(element)
     end
 
-    def log_event(host)
+    def log_event(worker)
+      host = HostRepository.find(worker.host_id)
+
       message = "action=%s host.username=%s host.identifier=%s" %
-        ["sync", host.username, host.identifier]
+        [worker.type, host.username, host.identifier]
 
       logger.info(message)
     end
