@@ -3,7 +3,7 @@ require "spec_helper"
 RSpec.describe Workers::Processor do
   include Support::Factories
 
-  let(:payload) { { operation: "sync", data: { host_id: 2 } } }
+  let(:payload) { { operation: "background_worker", data: { background_worker_id: 2 } } }
   let(:json)    { payload.to_json }
 
   subject { described_class.new(json) }
@@ -26,10 +26,10 @@ RSpec.describe Workers::Processor do
       }.to raise_error Workers::Processor::UnknownOperationError
     end
 
-    it "triggers the associated supplier synchronisation mechanism on sync operations" do
+    it "triggers the associated supplier synchronisation mechanism on background worker operations" do
       invoked = false
 
-      Concierge::Announcer.on("sync.AcmeTest") do |host|
+      Concierge::Announcer.on("metadata.AcmeTest") do |host|
         expect(host.username).to eq "acme-host"
         expect(SupplierRepository.find(host.supplier_id).name).to eq "AcmeTest"
         invoked = true
@@ -37,7 +37,8 @@ RSpec.describe Workers::Processor do
 
       supplier = create_supplier(name: "AcmeTest")
       host     = create_host(username: "acme-host", supplier_id: supplier.id)
-      payload[:data][:host_id] = host.id
+      worker   = create_background_worker(host_id: host.id, type: "metadata")
+      payload[:data][:background_worker_id] = worker.id
 
       result = subject.process!
       expect(result).to be_a Result
@@ -48,12 +49,13 @@ RSpec.describe Workers::Processor do
     it "times out and fails if the operation takes too long" do
       supplier = create_supplier(name: "AcmeTest")
       host     = create_host(username: "acme-host", supplier_id: supplier.id)
-      payload[:data][:host_id] = host.id
+      worker   = create_background_worker(host_id: host.id, type: "availabilities")
+      payload[:data][:background_worker_id] = worker.id
 
       # simulates a timeout of 0.5s and a synchronisation process that takes
       # one minute, thus timing out.
       allow(subject).to receive(:processing_timeout) { 0.5 }
-      Concierge::Announcer.on("sync.AcmeTest") { sleep 1 }
+      Concierge::Announcer.on("availabilities.AcmeTest") { sleep 1 }
 
       result = subject.process!
       expect(result).to be_a Result

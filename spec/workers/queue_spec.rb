@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe Workers::Queue do
   let(:credentials) { Concierge::Credentials.for("sqs") }
-  let(:element) { Workers::Queue::Element.new(operation: "sync", data: { key: "value" }) }
+  let(:element) { Workers::Queue::Element.new(operation: "background_worker", data: { key: "value" }) }
   subject { described_class.new(credentials) }
 
   describe "#add" do
@@ -22,7 +22,7 @@ RSpec.describe Workers::Queue do
 
       expect(sqs).to receive(:send_message).with({
         queue_url:    "https://www.example.org/concierge-queue",
-        message_body: { operation: "sync", data: { key: "value" } }.to_json
+        message_body: { operation: "background_worker", data: { key: "value" } }.to_json
       })
 
       subject.add(element)

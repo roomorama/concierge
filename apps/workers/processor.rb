@@ -57,8 +57,8 @@ module Workers
       return message unless message.success?
       element = Concierge::SafeAccessHash.new(message.value)
 
-      if element[:operation] == "sync"
-        perform_sync(element[:data])
+      if element[:operation] == "background_worker"
+        run_worker(element[:data])
       else
         raise UnknownOperationError.new(element[:operation])
       end
@@ -66,11 +66,13 @@ module Workers
 
     private
 
-    def perform_sync(args)
-      timing_out("sync", args) do
-        host      = HostRepository.find(args[:host_id])
+    def run_worker(args)
+      worker = BackgroundWorkerRepository.find(args[:background_worker_id])
+
+      timing_out(worker.type, args) do
+        host      = HostRepository.find(worker.host_id)
         supplier  = SupplierRepository.find(host.supplier_id)
-        broadcast = ["sync", ".", supplier.name].join
+        broadcast = [worker.type, ".", supplier.name].join
 
         Concierge::Announcer.trigger(broadcast, host)
         Result.new(true)
