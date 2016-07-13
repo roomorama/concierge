@@ -59,9 +59,10 @@ RSpec.describe Ciirus::Mappers::RoomoramaProperty do
   end
   let(:description) { 'Some description string' }
 
+  subject { described_class.new }
 
   it 'returns mapped roomorama property entity' do
-    roomorama_property = described_class.build(property, images, rates, description)
+    roomorama_property = subject.build(property, images, rates, description)
 
     expect(roomorama_property).to be_a(Roomorama::Property)
     expect(roomorama_property.identifier).to eq('33680')

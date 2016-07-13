@@ -36,6 +36,10 @@ module Ciirus
 
       private
 
+      def mapper
+        @mapper ||= Ciirus::Mappers::Reservation.new
+      end
+
       def build_reservations(result_hash)
         reservations = result_hash.get(
           'get_reservations_response.get_reservations_result.reservations'
@@ -43,9 +47,7 @@ module Ciirus
 
         return [] unless reservations
 
-        Array(reservations).map do |reservation|
-          Ciirus::Mappers::Reservation.build(reservation)
-        end
+        Array(reservations).map { |reservation| mapper.build(reservation) }
       end
     end
   end

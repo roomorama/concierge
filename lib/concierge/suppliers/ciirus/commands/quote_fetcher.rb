@@ -35,7 +35,7 @@ module Ciirus
         if result.success?
           result_hash = to_safe_hash(result.value)
           if valid_result?(result_hash)
-            quotation = Ciirus::Mappers::Quote.build(params, result_hash)
+            quotation = mapper.build(params, result_hash)
             Result.new(quotation)
           else
             error_result(result_hash)
@@ -47,6 +47,12 @@ module Ciirus
 
       protected
 
+      def operation_name
+        :get_properties
+      end
+
+      private
+
       def valid_result?(result_hash)
         error_msg = result_hash.get('get_properties_response.get_properties_result.property_details.error_msg')
         # Special case for empty error message. In context of quotation it means
@@ -54,15 +60,15 @@ module Ciirus
         error_msg.nil? || error_msg.empty? || error_msg == EMPTY_ERROR_MESSAGE
       end
 
-      def operation_name
-        :get_properties
-      end
-
       def error_result(result_hash)
         description = result_hash.get('get_properties_response.get_properties_result.property_details.error_msg')
         message = "The response contains not empty ErrorMsg: #{description}"
         mismatch(message, caller)
         Result.error(:not_empty_error_msg)
+      end
+
+      def mapper
+        @mapper ||= Ciirus::Mappers::Quote.new
       end
     end
   end

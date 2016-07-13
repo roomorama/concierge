@@ -36,6 +36,10 @@ module Ciirus
 
       private
 
+      def mapper
+        @mapper ||= Ciirus::Mappers::PropertyRate.new
+      end
+
       def build_property_rates(rates_hash)
         rates = rates_hash.get(
           'get_property_rates_response.get_property_rates_result.rate'
@@ -43,9 +47,7 @@ module Ciirus
 
         return [] unless rates
 
-        Array(rates).map do |rate|
-          Ciirus::Mappers::PropertyRate.build(rate)
-        end
+        Array(rates).map { |rate| mapper.build(rate) }
       end
     end
   end

@@ -26,7 +26,9 @@ RSpec.describe Ciirus::Mappers::Quote do
       )
     end
 
-    let(:quotation) { described_class.build(params, result_hash) }
+    let(:quotation) { subject.build(params, result_hash) }
+
+    subject { described_class.new }
 
     it 'returns roomorama Quotation entity' do
       expect(quotation).to be_a(::Quotation)
@@ -60,7 +62,7 @@ RSpec.describe Ciirus::Mappers::Quote do
     end
 
     it 'returns unavailable quotation' do
-      quotation = described_class.build(params, empty_result_hash)
+      quotation = subject.build(params, empty_result_hash)
 
       expect(quotation.available).to be false
     end

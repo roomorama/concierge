@@ -46,9 +46,7 @@ module Workers::Suppliers::Ciirus
               return result
             end
 
-            roomorama_property = ::Ciirus::Mappers::RoomoramaProperty.build(
-              property, images, rates, description
-            )
+            roomorama_property = mapper.build(property, images, rates, description)
 
             Result.new(roomorama_property)
           end
@@ -62,6 +60,10 @@ module Workers::Suppliers::Ciirus
     end
 
     private
+
+    def mapper
+      @mapper ||= ::Ciirus::Mappers::RoomoramaProperty.new
+    end
 
     def importer
       @importer ||= ::Ciirus::Importer.new(credentials)

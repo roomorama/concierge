@@ -23,6 +23,8 @@ RSpec.describe Ciirus::Mappers::RoomoramaReservation do
     )
   end
 
+  subject { described_class.new }
+
   context 'for valid result hash' do
     let(:result_hash) do
       Concierge::SafeAccessHash.new(
@@ -39,7 +41,7 @@ RSpec.describe Ciirus::Mappers::RoomoramaReservation do
       )
     end
 
-    let(:reservation) { described_class.build(params, result_hash) }
+    let(:reservation) { subject.build(params, result_hash) }
 
     it 'returns mapped roomorama reservation entity' do
       expect(reservation).to be_a(::Reservation)
