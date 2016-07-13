@@ -231,9 +231,9 @@ RSpec.describe Workers::PropertySynchronisation do
       expect(sync.successful).to eq false
       expect(sync.started_at).not_to be_nil
       expect(sync.finished_at).not_to be_nil
-      expect(sync.properties_created).to eq 2
-      expect(sync.properties_updated).to eq 0
-      expect(sync.properties_deleted).to eq 0
+      expect(sync.stats[:properties_created]).to eq 2
+      expect(sync.stats[:properties_updated]).to eq 0
+      expect(sync.stats[:properties_deleted]).to eq 0
     end
 
     it "registers updates and deletions when successful" do
@@ -271,9 +271,9 @@ RSpec.describe Workers::PropertySynchronisation do
       expect(sync.successful).to eq   true
       expect(sync.started_at).not_to  be_nil
       expect(sync.finished_at).not_to be_nil
-      expect(sync.properties_created).to eq 1
-      expect(sync.properties_updated).to eq 1
-      expect(sync.properties_deleted).to eq 1
+      expect(sync.stats[:properties_created]).to eq 1
+      expect(sync.stats[:properties_updated]).to eq 1
+      expect(sync.stats[:properties_deleted]).to eq 1
     end
   end
 end

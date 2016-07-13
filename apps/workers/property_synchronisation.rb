@@ -177,10 +177,14 @@ module Workers
     def save_sync_process
       database = Concierge::OptionalDatabaseAccess.new(SyncProcessRepository)
 
-      sync_record.properties_created = counters.created
-      sync_record.properties_updated = counters.updated
-      sync_record.properties_deleted = counters.deleted
-      sync_record.finished_at        = Time.now
+      sync_record.properties_created = 0
+      sync_record.properties_updated = 0
+      sync_record.properties_deleted = 0
+
+      sync_record.stats[:properties_created] = counters.created
+      sync_record.stats[:properties_updated] = counters.updated
+      sync_record.stats[:properties_deleted] = counters.deleted
+      sync_record.finished_at = Time.now
 
       database.create(sync_record)
     end
@@ -235,7 +239,8 @@ module Workers
         type:       WORKER_TYPE,
         host_id:    host.id,
         started_at: Time.now,
-        successful: true
+        successful: true,
+        stats:      {}
       )
     end
 
