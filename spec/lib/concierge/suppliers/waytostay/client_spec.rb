@@ -47,17 +47,11 @@ RSpec.describe Waytostay::Client do
     end
   end
 
-  describe "#update_availabilities" do
-    let(:roomorama_property) { Roomorama::Property.load(
-        # use this because #load expects keys in symbols
-        Concierge::SafeAccessHash.new(
-          JSON.parse(read_fixture("waytostay/properties/015868.roomorama-attributes.json"))
-        )
-      ).result
-    }
-    let(:availability_url) { "#{base_url}/properties/#{roomorama_property.identifier}/availability" }
+  describe "#get_availabilities" do
+    let(:property_identifier) { "015868" }
+    let(:availability_url) { "#{base_url}/properties/#{property_identifier}/availability" }
 
-    subject { stubbed_client.update_availabilities(roomorama_property) }
+    subject { stubbed_client.get_availabilities(property_identifier) }
 
     before do
       stubbed_client.oauth2_client.oauth_client.connection =
@@ -69,8 +63,11 @@ RSpec.describe Waytostay::Client do
           [200, {}, read_fixture("waytostay/properties/015868/availability?page=2.json")]
         }
     end
-    it { expect(subject).to be_success }
-    it { expect(subject.result.calendar["2018-07-02"]).to eq false }
+    it "should be a successful list of calendar entries" do
+      expect(subject).to be_success
+      expect(subject.value.last.date).to eq Date.parse("2018-07-03")
+      expect(subject.value.last.available).to eq false
+    end
   end
 
   describe "#book" do
