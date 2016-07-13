@@ -25,14 +25,20 @@ module Woori
 
       private
       def self.build_image(hash)
-        url = hash.get("url")
-        title = hash.get("content")
-        identifier = Digest::MD5.hexdigest(url)
+        url, title, identifier = fetch_image_data(hash)
 
         image = Roomorama::Image.new(identifier)
         image.url = url
         image.caption = title
         image
+      end
+
+      def self.fetch_image_data(hash)
+        url = hash.get("url")
+        title = hash.get("content")
+        identifier = Digest::MD5.hexdigest(url)
+
+        [url, title, identifier]
       end
     end
   end
