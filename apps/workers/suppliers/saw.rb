@@ -3,7 +3,6 @@ module Workers::Suppliers
   #
   # Performs synchronisation with supplier
   class SAW
-    SUPPLIER_NAME = 'SAW'
     attr_reader :synchronisation, :host
 
     def initialize(host)
@@ -58,7 +57,7 @@ module Workers::Suppliers
     end
 
     def credentials
-      @credentials ||= Concierge::Credentials.for(SUPPLIER_NAME)
+      @credentials ||= Concierge::Credentials.for(::SAW::Client::SUPPLIER_NAME)
     end
 
     def announce_error(message, result)
@@ -71,7 +70,7 @@ module Workers::Suppliers
 
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
         operation:   'sync',
-        supplier:    SUPPLIER_NAME,
+        supplier:    ::SAW::Client::SUPPLIER_NAME,
         code:        result.error.code,
         context:     Concierge.context.to_h,
         happened_at: Time.now
