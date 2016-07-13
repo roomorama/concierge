@@ -40,12 +40,11 @@ module Ciirus
         reservations = result_hash.get(
           'get_reservations_response.get_reservations_result.reservations'
         )
-        if reservations
-          Array(reservations).map do |reservation|
-            Ciirus::Mappers::Reservation.build(reservation)
-          end
-        else
-          []
+
+        return [] unless reservations
+
+        Array(reservations).map do |reservation|
+          Ciirus::Mappers::Reservation.build(reservation)
         end
       end
     end
