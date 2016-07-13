@@ -32,7 +32,7 @@ class Workers::Queue
 
     # defines the list of possible queue operations that can be wrapped in
     # +Element+ instances.
-    SUPPORTED_OPERATIONS = %w(sync)
+    SUPPORTED_OPERATIONS = %w(background_worker)
 
     attr_reader :operation, :data
 

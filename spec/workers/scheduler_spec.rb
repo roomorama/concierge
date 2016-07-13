@@ -3,10 +3,6 @@ require "spec_helper"
 RSpec.describe Workers::Scheduler do
   include Support::Factories
 
-  let!(:new_host)     { create_host(username: "new_host", identifier: "host1", next_run_at: nil) }
-  let!(:pending_host) { create_host(username: "pending_host", identifier: "host2", next_run_at: Time.now - 10) }
-  let!(:future_host)  { create_host(username: "future_host", identifier: "host3", next_run_at: Time.now + 60 * 60) }
-
   class LoggerStub
     attr_reader :messages
 
@@ -23,32 +19,32 @@ RSpec.describe Workers::Scheduler do
   subject { described_class.new(logger: logger) }
 
   describe "#trigger_pending!" do
-    it "does nothing in case there is no host to be synchronised" do
-      HostRepository.all.each do |host|
-        host.next_run_at = Time.now + 60*60
-        HostRepository.update(host)
-      end
-
+    it "does nothing in case there is no background worker to be run" do
       expect(subject).not_to receive(:enqueue)
       subject.trigger_pending!
 
       expect(logger.messages).to eq []
     end
 
-    it "triggers only new hosts and hosts that are pending" do
+    it "triggers only new workers and hosts that are pending" do
+      host = create_host(username: "host1", identifier: "host1")
+      new_worker     = create_background_worker(host_id: host.id,        type: "availabilities", next_run_at: nil)
+      pending_worker = create_background_worker(host_id: host.id,        type: "metadata",       next_run_at: Time.now - 60 * 60)
+      future_worker  = create_background_worker(host_id: create_host.id, type: "metadata",       next_run_at: Time.now + 60 * 60)
+
       expect(subject).to receive(:enqueue).twice
       subject.trigger_pending!
 
       expect(logger.messages).to eq [
-        "action=sync host.username=pending_host host.identifier=host2",
-        "action=sync host.username=new_host host.identifier=host1",
+        "action=metadata host.username=host1 host.identifier=host1",
+        "action=availabilities host.username=host1 host.identifier=host1",
       ]
 
-      new_reloaded = HostRepository.find(new_host.id)
-      pending_reloaded = HostRepository.find(pending_host.id)
+      new_reloaded = BackgroundWorkerRepository.find(new_worker.id)
+      pending_reloaded = BackgroundWorkerRepository.find(pending_worker.id)
 
-      expect(new_reloaded.next_run_at > Time.now).to eq true
-      expect(pending_reloaded.next_run_at > Time.now).to eq true
+      expect(new_reloaded.status).to eq "running"
+      expect(pending_reloaded.status).to eq "running"
     end
   end
 end

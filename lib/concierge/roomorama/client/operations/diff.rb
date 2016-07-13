@@ -11,7 +11,7 @@ class Roomorama::Client::Operations
   # Usage
   #
   #   diff      = Romorama::Diff.new("property_identifier")
-  #   operation = Roomorama::Client::Operations::diff.new(diff)
+  #   operation = Roomorama::Client::Operations::Diff.new(diff)
   #   roomorama_client.perform(operation)
   class Diff
 
@@ -24,7 +24,7 @@ class Roomorama::Client::Operations
     #
     # On initialization the +validate!+ method of the diff is called - therefore,
     # an operation cannot be built unless the property given is conformant to the
-    # basica validations performed on that class.
+    # basic validations performed on that class.
     def initialize(diff)
       @property_diff = diff
       property_diff.validate!

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Workers::Synchronisation do
+RSpec.describe Workers::PropertySynchronisation do
   include Support::Factories
   include Support::HTTPStubbing
   include Support::Fixtures
@@ -24,15 +24,6 @@ RSpec.describe Workers::Synchronisation do
       image.url        = "https://www.example.org/img2"
       image.caption    =  "Swimming Pool"
       property.add_image(image)
-
-      property.update_calendar({
-        "2016-05-24" => true,
-        "2016-05-23" => true,
-        "2016-05-26" => false,
-        "2016-05-28" => false,
-        "2016-05-21" => true,
-        "2016-05-29" => true,
-      })
     end
   }
 
@@ -235,13 +226,14 @@ RSpec.describe Workers::Synchronisation do
 
       sync = SyncProcessRepository.last
       expect(sync).to be_a SyncProcess
+      expect(sync.type).to eq "metadata"
       expect(sync.host_id).to eq host.id
       expect(sync.successful).to eq false
       expect(sync.started_at).not_to be_nil
       expect(sync.finished_at).not_to be_nil
-      expect(sync.properties_created).to eq 2
-      expect(sync.properties_updated).to eq 0
-      expect(sync.properties_deleted).to eq 0
+      expect(sync.stats[:properties_created]).to eq 2
+      expect(sync.stats[:properties_updated]).to eq 0
+      expect(sync.stats[:properties_deleted]).to eq 0
     end
 
     it "registers updates and deletions when successful" do
@@ -279,9 +271,9 @@ RSpec.describe Workers::Synchronisation do
       expect(sync.successful).to eq   true
       expect(sync.started_at).not_to  be_nil
       expect(sync.finished_at).not_to be_nil
-      expect(sync.properties_created).to eq 1
-      expect(sync.properties_updated).to eq 1
-      expect(sync.properties_deleted).to eq 1
+      expect(sync.stats[:properties_created]).to eq 1
+      expect(sync.stats[:properties_updated]).to eq 1
+      expect(sync.stats[:properties_deleted]).to eq 1
     end
   end
 end

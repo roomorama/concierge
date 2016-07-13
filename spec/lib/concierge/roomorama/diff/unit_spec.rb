@@ -81,15 +81,6 @@ RSpec.describe Roomorama::Diff::Unit do
     end
   end
 
-  describe "#update_calendar" do
-    it "updates its calendar with the data given" do
-      calendar = { "2016-05-22" => true, "2016-05-25" => true }
-      expect(subject.update_calendar(calendar)).to be
-
-      expect(subject.calendar).to eq({ "2016-05-22" => true, "2016-05-25" => true })
-    end
-  end
-
   describe "#validate!" do
     before do
       subject.identifier = "UNIT1"
@@ -140,14 +131,6 @@ RSpec.describe Roomorama::Diff::Unit do
       subject.change_image(image_diff)
 
       subject.delete_image("IMGDEL")
-
-      subject.update_calendar({
-        "2016-06-20" => true,
-        "2016-06-22" => true,
-        "2016-06-25" => true,
-        "2016-06-28" => false,
-        "2016-06-21" => true,
-      })
     end
 
     it "changed attributes" do
@@ -170,11 +153,6 @@ RSpec.describe Roomorama::Diff::Unit do
             }
           ],
           delete: ["IMGDEL"]
-        },
-
-        availabilities: {
-          start_date: "2016-06-20",
-          data:        "111111110"
         }
       })
     end
@@ -190,11 +168,6 @@ RSpec.describe Roomorama::Diff::Unit do
       subject.image_changes.deleted = []
 
       expect(subject.to_h).not_to have_key :images
-    end
-
-    it "does not include the `availabilities` field if there are no calendar changes" do
-      allow(subject).to receive(:calendar) { {} }
-      expect(subject.to_h).not_to have_key :availabilities
     end
   end
 end

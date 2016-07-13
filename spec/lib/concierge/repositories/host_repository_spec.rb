@@ -14,13 +14,29 @@ RSpec.describe HostRepository do
     end
   end
 
-  describe ".pending_synchronisation" do
-    let!(:pending_host)           { create_host(next_run_at: Time.now - 10) }
-    let!(:new_host)               { create_host(next_run_at: nil) }
-    let!(:just_synchronised_host) { create_host(next_run_at: Time.now + 60 * 60) }
+  describe ".from_supplier" do
+    let(:supplier) { create_supplier }
 
-    it "filters hosts where the next synchronisation time is nil or is in the past" do
-      expect(described_class.pending_synchronisation.to_a).to eq [pending_host, new_host]
+    it "returns an empty collection if there are no hosts for a given supplier" do
+      expect(described_class.from_supplier(supplier).to_a).to eq []
+    end
+
+    it "returns only hosts that belong to the given supplier" do
+      host_from_supplier       = create_host(supplier_id: supplier.id)
+      host_from_other_supplier = create_host
+
+      expect(described_class.from_supplier(supplier).to_a).to eq [host_from_supplier]
+    end
+  end
+
+  describe ".identified_by" do
+    it "returns an empty collection when no hosts match the given identifier" do
+      expect(described_class.identified_by("identifier").to_a).to eq []
+    end
+
+    it "returns only hosts that match the given identifier" do
+      host = create_host(identifier: "host1")
+      expect(described_class.identified_by("host1").to_a).to eq [host]
     end
   end
 end

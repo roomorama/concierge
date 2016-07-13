@@ -52,7 +52,6 @@ collection :hosts do
   attribute :identifier,   String
   attribute :username,     String
   attribute :access_token, String
-  attribute :next_run_at,  Time
   attribute :created_at,   Time
   attribute :updated_at,   Time
 end
@@ -73,14 +72,27 @@ collection :sync_processes do
   entity     SyncProcess
   repository SyncProcessRepository
 
-  attribute :id,                 Integer
-  attribute :host_id,            Integer
-  attribute :started_at,         Time
-  attribute :finished_at,        Time
-  attribute :successful,         Boolean
-  attribute :properties_created, Integer
-  attribute :properties_updated, Integer
-  attribute :properties_deleted, Integer
-  attribute :created_at,         Time
-  attribute :updated_at,         Time
+  attribute :id,          Integer
+  attribute :host_id,     Integer
+  attribute :started_at,  Time
+  attribute :finished_at, Time
+  attribute :successful,  Boolean
+  attribute :stats,       Concierge::PGJSON
+  attribute :type,        String
+  attribute :created_at,  Time
+  attribute :updated_at,  Time
+end
+
+collection :background_workers do
+  entity     BackgroundWorker
+  repository BackgroundWorkerRepository
+
+  attribute :id,          Integer
+  attribute :host_id,     Integer
+  attribute :next_run_at, Time
+  attribute :interval,    Integer
+  attribute :type,        String
+  attribute :status,      String
+  attribute :created_at,  Time
+  attribute :updated_at,  Time
 end

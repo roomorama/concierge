@@ -8,11 +8,9 @@ module Support
   module Factories
     def create_sync_process(overrides = {})
       attributes  = {
+        type: "metadata",
         started_at: Time.now - 10 * 60, # 10 minutes ago
-        finished_at: Time.now,
-        properties_created: 1,
-        properties_updated: 1,
-        properties_deleted: 1
+        finished_at: Time.now
       }.merge(overrides)
 
       process = SyncProcess.new(attributes)
@@ -79,6 +77,18 @@ module Support
 
       entry = Concierge::Cache::Entry.new(attributes)
       Concierge::Cache::EntryRepository.create(entry)
+    end
+
+    def create_background_worker(overrides = {})
+      attributes = {
+        host_id:  create_host.id,
+        interval: 100,
+        type:     "metadata",
+        status:   "idle"
+      }.merge(overrides)
+
+      worker = BackgroundWorker.new(attributes)
+      BackgroundWorkerRepository.create(worker)
     end
   end
 

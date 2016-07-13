@@ -4,10 +4,10 @@ namespace :suppliers do
   desc "Loads the suppliers.yml file into the database"
   task load: :environment do
     path  = Hanami.root.join("config", "suppliers.yml").to_s
-    names = YAML.load_file(path) || [] # if the file is empty, +load_file+ returns +false+
+    configuration = YAML.load_file(path) || {} # if the file is empty, +load_file+ returns +false+
     total = 0
 
-    names.map do |name|
+    configuration.keys.map do |name|
       existing = SupplierRepository.named(name)
 
       unless existing

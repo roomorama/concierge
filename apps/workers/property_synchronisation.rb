@@ -1,6 +1,6 @@
 module Workers
 
-  # +Workers::Synchronisation+
+  # +Workers::PropertySynchronisation+
   #
   # Organizes the synchronisation process for a given host from supplier.
   # It is able to route processed property to the adequate operation
@@ -8,10 +8,14 @@ module Workers
   # that were published before but are no longer contained in the list
   # of properties for that host.
   #
+  # Handles exclusively creation/updates of property details. For changes
+  # on the availabilities calendar of a property, check the +Workers::CalendarSynchronisation+
+  # class.
+  #
   # Usage
   #
   #   host = Host.last
-  #   sync = Workers::Synchronisation.new(host)
+  #   sync = Workers::PropertySynchronisation.new(host)
   #
   #   # supplier API is called, raw data is fetched
   #   properties = fetch_properties
@@ -25,7 +29,11 @@ module Workers
   #   end
   #
   #   sync.finish! # => non-processed properties are deleted at the end of the process.
-  class Synchronisation
+  class PropertySynchronisation
+
+    # the kind of background worker that identifies property metadata synchronisation.
+    # Calendar availabilities is tackled by +Workers::CalendarSynchronisation+
+    WORKER_TYPE = "metadata"
 
     PropertyCounters = Struct.new(:created, :updated, :deleted)
 
@@ -137,6 +145,7 @@ module Workers
       Concierge.context = Concierge::Context.new(type: "batch")
 
       sync_process = Concierge::Context::SyncProcess.new(
+        worker:     WORKER_TYPE,
         host_id:    host.id,
         identifier: identifier
       )
@@ -168,10 +177,10 @@ module Workers
     def save_sync_process
       database = Concierge::OptionalDatabaseAccess.new(SyncProcessRepository)
 
-      sync_record.properties_created = counters.created
-      sync_record.properties_updated = counters.updated
-      sync_record.properties_deleted = counters.deleted
-      sync_record.finished_at        = Time.now
+      sync_record.stats[:properties_created] = counters.created
+      sync_record.stats[:properties_updated] = counters.updated
+      sync_record.stats[:properties_deleted] = counters.deleted
+      sync_record.finished_at = Time.now
 
       database.create(sync_record)
     end
@@ -223,9 +232,11 @@ module Workers
 
     def init_sync_record(host)
       SyncProcess.new(
+        type:       WORKER_TYPE,
         host_id:    host.id,
         started_at: Time.now,
-        successful: true
+        successful: true,
+        stats:      {}
       )
     end
 
