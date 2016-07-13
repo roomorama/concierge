@@ -58,7 +58,7 @@ module SAW
       end
 
       def images
-        @images ? @images : []
+        Array(@images)
       end
 
       def images=(images)
