@@ -53,7 +53,6 @@ RSpec.describe Ciirus::Commands::PropertiesFetcher do
         expect(property.city).to eq('Kissimmee')
         expect(property.bedrooms).to eq(6)
         expect(property.sleeps).to eq(6)
-        expect(property.min_nights_stay).to eq(0)
         expect(property.type).to eq('Villa')
         expect(property.country).to eq('UK')
         expect(property.xco).to eq('28.2238577')

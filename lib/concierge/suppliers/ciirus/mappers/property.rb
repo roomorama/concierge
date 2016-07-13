@@ -13,7 +13,6 @@ module Ciirus
           copy_city!(hash, attrs)
           copy_bedrooms!(hash, attrs)
           copy_sleeps!(hash, attrs)
-          copy_min_nights_stay!(hash, attrs)
           copy_type!(hash, attrs)
           copy_country!(hash, attrs)
           copy_xco!(hash, attrs)
@@ -60,10 +59,6 @@ module Ciirus
 
         def copy_sleeps!(hash, attrs)
           attrs[:sleeps] = hash[:sleeps].to_i
-        end
-
-        def copy_min_nights_stay!(hash, attrs)
-          attrs[:min_nights_stay] = hash[:minimum_nights_stay].to_i
         end
 
         def copy_type!(hash, attrs)

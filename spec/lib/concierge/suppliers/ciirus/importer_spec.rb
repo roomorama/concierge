@@ -52,9 +52,18 @@ RSpec.describe Ciirus::Importer do
     it_behaves_like 'handling errors'
   end
 
+  describe '#fetch_rates' do
+    let(:method) { :get_property_rates }
+    let(:response) { read_fixture('ciirus/responses/property_rates_response.xml') }
+    let(:result) { subject.fetch_rates(property_id) }
+
+    it_behaves_like 'success response'
+    it_behaves_like 'handling errors'
+  end
+
   describe '#fetch_description' do
     let(:method) { :get_property_descriptions_plain_text }
-    let(:result) { subject.fetch_images(property_id) }
+    let(:result) { subject.fetch_description(property_id) }
     let(:response) { read_fixture('ciirus/responses/descriptions_plain_text_response.xml') }
     let(:html_response) { read_fixture('ciirus/responses/descriptions_html_response.xml') }
     let(:empty_response) { read_fixture('ciirus/responses/empty_descriptions_plain_text_response.xml') }
