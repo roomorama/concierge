@@ -20,16 +20,12 @@ module SAW
         #   => ["internet", "parking"]
         #
         # Returns [Array<String>] array with uniq supported amenitites
-        def convert(facility_services = [])
+        def convert(facility_services)
           roomorama_amenities = facility_services.map do |service_name|
-            supported_amenities.fetch(service_name, nil)
-          end.compact
-
-          if roomorama_amenities.any?
-            roomorama_amenities.uniq
-          else
-            []
+            supported_amenities[service_name]
           end
+
+          roomorama_amenities.compact.uniq
         end
 
         # Keeps only facility services which has no matches to Roomorama API
@@ -48,11 +44,11 @@ module SAW
         #   => ["Foobar"]
         #
         # Returns [Array<String>] array with uniq unsupported amenitites
-        def select_not_supported_amenities(facility_services = [])
+        def select_not_supported_amenities(facility_services)
           additional_amenities = []
 
           facility_services.each do |service_name|
-            match = supported_amenities.fetch(service_name, nil)
+            match = supported_amenities[service_name]
             additional_amenities << service_name unless match
           end
 
