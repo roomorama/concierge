@@ -23,6 +23,7 @@ module Support
         host_id:    create_host.id,
         data:       {
           title: "Studio Apartment in Madrid",
+          nightly_rate: 10,
           images: [
             { identifier: "PROP1IMAGE", url: "https://www.example.org/image.png" }
           ]

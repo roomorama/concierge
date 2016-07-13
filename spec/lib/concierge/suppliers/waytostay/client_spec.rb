@@ -51,7 +51,7 @@ RSpec.describe Waytostay::Client do
     let(:property_identifier) { "015868" }
     let(:availability_url) { "#{base_url}/properties/#{property_identifier}/availability" }
 
-    subject { stubbed_client.get_availabilities(property_identifier) }
+    subject { stubbed_client.get_availabilities(property_identifier, 15) }
 
     before do
       stubbed_client.oauth2_client.oauth_client.connection =

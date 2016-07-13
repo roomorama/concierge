@@ -12,6 +12,7 @@
   "number_of_double_beds": 2,
   "number_of_single_beds": 4,
   "number_of_sofa_beds": 2,
+  "nightly_rate": 10,
   "surface": 118,
   "surface_unit": "metric",
   "amenities": [

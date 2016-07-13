@@ -10,6 +10,7 @@
   "number_of_bathrooms": 2,
   "floor": "1st floor",
   "number_of_double_beds": 2,
+  "nightly_rate": 20,
   "number_of_single_beds": 4,
   "number_of_sofa_beds": 2,
   "surface": 118,

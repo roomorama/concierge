@@ -10,14 +10,14 @@ module Waytostay
     # Only availability field is filled in here. For rates, implementations
     # would be in the Waytostay::Rates module
     #
-    def get_availabilities(identifier)
+    def get_availabilities(identifier, nightly_rate)
       calendar_entries = []
       current_page = build_path(ENDPOINT, property_reference: identifier) # first page have no page number
       while current_page && !current_page.empty? do
         result = oauth2_client.get(current_page, headers: headers)
         return result unless result.success?
         response = Concierge::SafeAccessHash.new(result.value)
-        calendar_entries << availabilities_per_page(response)
+        calendar_entries << availabilities_per_page(response, nightly_rate)
         current_page = next_page_url(response)
       end
       return Result.new(calendar_entries.flatten)
@@ -25,24 +25,25 @@ module Waytostay
 
     private
 
-    def availabilities_per_page(response)
+    def availabilities_per_page(response, nightly_rate)
       missing_keys = response.missing_keys_from(REQUIRED_RESPONSE_KEYS)
       if missing_keys.empty?
-        return parse_calendar_entries(response)
+        return parse_calendar_entries(response, nightly_rate)
       else
         augment_missing_fields(missing_keys)
         Result.error(:unrecognised_response)
       end
     end
 
-    def parse_calendar_entries(response)
+    def parse_calendar_entries(response, nightly_rate)
       entries = []
       response.get("_embedded.properties_availability").each do |entry|
         available = entry["status"] != "unavailable"
         Date.parse(entry["start_date"]).upto Date.parse(entry["end_date"]) do |date|
           entries << Roomorama::Calendar::Entry.new(
-            date:      date.to_s,
-            available: available
+            date:         date.to_s,
+            available:    available,
+            nightly_rate: nightly_rate
           )
         end
       end

@@ -18,8 +18,8 @@ RSpec.describe Workers::Suppliers::Waytostay do
       Result.new(property)
     end
 
-    allow(subject.client).to receive(:update_availabilities) do |property|
-      Result.new(property)
+    allow(subject.client).to receive(:get_availabilities) do |property, nightly_rate|
+      Result.new([Roomorama::Calendar::Entry.new(date: Date.today, available:true, nightly_rate:nightly_rate)])
     end
   end
 
@@ -42,7 +42,7 @@ RSpec.describe Workers::Suppliers::Waytostay do
     end
     it "dispatches for each new properties" do
       properties_to_update_count = 6 # there are 2 properties per page * 3 pages
-      expect(subject.synchronisation.router).to receive(:dispatch)
+      expect(subject.property_sync.router).to receive(:dispatch)
         .exactly(properties_to_update_count).times
       subject.perform
     end
@@ -83,7 +83,7 @@ RSpec.describe Workers::Suppliers::Waytostay do
       context "when successful" do
         it "should start property attributes synchronisation" do
           properties_to_update_count = 5 # 001 to 005. changes in 006 rates is not dispatched
-          expect(subject.synchronisation.router).to receive(:dispatch)
+          expect(subject.property_sync.router).to receive(:dispatch)
             .exactly(properties_to_update_count).times
           subject.perform
         end

@@ -2,12 +2,13 @@ module Workers::Suppliers
 
   class Waytostay
 
-    attr_reader :synchronisation, :host, :client
+    attr_reader :property_sync, :calendar_sync, :host, :client
 
     def initialize(host)
       @host = host
-      @synchronisation = Workers::Synchronisation.new(host)
-      synchronisation.skip_purge!
+      @property_sync = Workers::PropertySynchronisation.new(host)
+      @calendar_sync = Workers::CalendarSynchronisation.new(host)
+      property_sync.skip_purge!
       @client = ::Waytostay::Client.new
     end
 
@@ -21,16 +22,26 @@ module Workers::Suppliers
 
     def fresh_import
       get_initial_properties do |property|
-        synchronisation.start(property.identifier) do
+
+        property_sync.start(property.identifier) do
           # grab media
           wrapped_property = client.update_media(property)
           next wrapped_property unless wrapped_property.success?
-          # grab availabilities
-          wrapped_property = client.update_availabilities(wrapped_property.result)
           wrapped_property
         end
+
+        calendar_sync.start(property.identifier) do
+          calendar_entries_result = client.get_availabilities(property.identifier, property.nightly_rate)
+          next calendar_entries_result unless calendar_entries_result.success?
+
+          calendar = Roomorama::Calendar.new(property.identifier)
+          calendar_entries_result.value.each { |entry| calendar.add entry }
+          next Result.new(calendar)
+        end
+
       end
-      synchronisation.finish!
+      property_sync.finish!
+      calendar_sync.finish!
     end
 
     def synchronise
@@ -38,7 +49,7 @@ module Workers::Suppliers
       return if changes.nil?
 
       uniq_properties_in(changes).each do |property_ref|
-        synchronisation.start(property_ref) do
+        property_sync.start(property_ref) do
           wrapped_property = if changes[:properties].include? property_ref
                                # get the updated property from supplier
                                client.get_property(property_ref)
@@ -55,9 +66,14 @@ module Workers::Suppliers
           end
 
           if changes[:availability].include? property_ref
-            # TODO: announce calendar sync event instead
-            wrapped_property = client.update_availabilities(wrapped_property.result)
-            next wrapped_property unless wrapped_property.success?
+            calendar_sync.start(property_ref) do
+              calendar_entries_result = client.get_availabilities(property_ref, wrapped_property.value.nightly_rate)
+              next calendar_entries_result unless calendar_entries_result.success?
+
+              calendar = Roomorama::Calendar.new(property_ref)
+              calendar_entries_result.value.each { |entry| calendar.add entry }
+              next Result.new(calendar)
+            end
           end
 
           # TODO: rates, bookings
@@ -67,7 +83,8 @@ module Workers::Suppliers
         end
       end
 
-      synchronisation.finish!
+      property_sync.finish!
+      calendar_sync.finish!
     end
 
     private
@@ -110,6 +127,7 @@ module Workers::Suppliers
     def initialize_overall_sync_context
       Concierge.context = Concierge::Context.new(type: "batch")
       sync_process = Concierge::Context::SyncProcess.new(
+        worker:     nil,
         host_id:    host.id,
         identifier: nil
       )
