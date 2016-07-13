@@ -1,0 +1,86 @@
+require 'spec_helper'
+
+RSpec.describe Ciirus::Importer do
+  include Support::Fixtures
+  include Support::SOAPStubbing
+
+  let(:credentials) do
+    double(username: 'Foo',
+           password: '123',
+           url:      'http://example.org')
+  end
+  let(:property_id) { 10 }
+
+  let(:wsdl) { read_fixture('ciirus/wsdl.xml') }
+
+  subject { described_class.new(credentials) }
+
+  shared_examples 'handling errors' do
+    it 'returns an unsuccessful result if external call fails' do
+      allow_any_instance_of(Savon::Client).to receive(:call) { raise Savon::Error }
+
+      expect(result).to be_a(Result)
+      expect(result).to_not be_success
+      expect(result.error.code).to eq :savon_error
+    end
+  end
+
+  shared_examples 'success response' do
+    it 'returns a success data' do
+      stub_call(method: method, response: response)
+
+      expect(result).to be_a(Result)
+      expect(result).to be_success
+    end
+  end
+
+  describe '#fetch_properties' do
+    let(:method) { :get_properties }
+    let(:response) { read_fixture('ciirus/responses/properties_response.xml') }
+    let(:result) { subject.fetch_properties }
+
+    it_behaves_like 'success response'
+    it_behaves_like 'handling errors'
+  end
+
+  describe '#fetch_images' do
+    let(:method) { :get_image_list }
+    let(:response) { read_fixture('ciirus/responses/image_list_response.xml') }
+    let(:result) { subject.fetch_images(property_id) }
+
+    it_behaves_like 'success response'
+    it_behaves_like 'handling errors'
+  end
+
+  describe '#fetch_description' do
+    let(:method) { :get_property_descriptions_plain_text }
+    let(:result) { subject.fetch_images(property_id) }
+    let(:response) { read_fixture('ciirus/responses/descriptions_plain_text_response.xml') }
+    let(:html_response) { read_fixture('ciirus/responses/descriptions_html_response.xml') }
+    let(:empty_response) { read_fixture('ciirus/responses/empty_descriptions_plain_text_response.xml') }
+
+    it_behaves_like 'handling errors'
+
+    it 'returns plain text description if it exists' do
+      stub_call(method: :get_descriptions_plain_text, response: response)
+      expect_any_instance_of(Ciirus::Commands::DescriptionsPlainTextFetcher).to receive(:call).once.and_call_original
+      expect_any_instance_of(Ciirus::Commands::DescriptionsHtmlFetcher).to_not receive(:call)
+      result = subject.fetch_description(property_id)
+
+      expect(result).to be_a(Result)
+      expect(result).to be_success
+    end
+
+    it 'returns html description if plain text is blank' do
+      stub_call(method: :get_descriptions_plain_text, response: empty_response)
+      stub_call(method: :get_descriptions_html, response: html_response)
+      expect_any_instance_of(Ciirus::Commands::DescriptionsHtmlFetcher).to receive(:call).once.and_call_original
+      expect_any_instance_of(Ciirus::Commands::DescriptionsPlainTextFetcher).to receive(:call).once.and_call_original
+      result = subject.fetch_description(property_id)
+
+      expect(result).to be_a(Result)
+      expect(result).to be_success
+    end
+
+  end
+end
