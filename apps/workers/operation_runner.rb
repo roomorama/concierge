@@ -56,6 +56,8 @@ module Workers
         Workers::OperationRunner::Diff.new(host, operation, roomorama_client)
       when Roomorama::Client::Operations::Disable
         Workers::OperationRunner::Disable.new(host, operation, roomorama_client)
+      when Roomorama::Client::Operations::UpdateCalendar
+        Workers::OperationRunner::UpdateCalendar.new(operation, roomorama_client)
       else
         raise InvalidOperationError.new(operation)
       end
