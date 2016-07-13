@@ -58,15 +58,15 @@ module SAW
       end
       
       def with_cache(key, freshness:)
-        cache.fetch(key, freshness: freshness, serializer: json_serializer) { yield }
+        cache.fetch(key, freshness: freshness, serializer: serializer) { yield }
       end
 
       def cache
         @_cache ||= Concierge::Cache.new(namespace: CACHE_PREFIX)
       end
     
-      def json_serializer
-        @serializer ||= Concierge::Cache::Serializers::JSON.new
+      def serializer
+        @serializer ||= Concierge::Cache::Serializers::Text.new
       end
     end
   end
