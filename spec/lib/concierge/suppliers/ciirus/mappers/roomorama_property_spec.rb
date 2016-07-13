@@ -35,11 +35,33 @@ RSpec.describe Ciirus::Mappers::RoomoramaProperty do
     )
   end
   let(:images) { ['http://image.com/15252'] }
+  let(:rates) do
+    [
+      Ciirus::Entities::PropertyRate.new(
+        DateTime.new(2014, 6, 27),
+        DateTime.new(2014, 8, 22),
+        3,
+        157.50
+      ),
+      Ciirus::Entities::PropertyRate.new(
+        DateTime.new(2014, 8, 23),
+        DateTime.new(2014, 10, 16),
+        2,
+        141.43
+      ),
+      Ciirus::Entities::PropertyRate.new(
+        DateTime.new(2014, 10, 17),
+        DateTime.new(2014, 11, 16),
+        1,
+        0.0
+      )
+    ]
+  end
   let(:description) { 'Some description string' }
 
 
   it 'returns mapped roomorama property entity' do
-    roomorama_property = described_class.build(property, images, description)
+    roomorama_property = described_class.build(property, images, rates, description)
 
     expect(roomorama_property).to be_a(Roomorama::Property)
     expect(roomorama_property.identifier).to eq('33680')
@@ -52,8 +74,6 @@ RSpec.describe Ciirus::Mappers::RoomoramaProperty do
     expect(roomorama_property.description).to eq(description)
     expect(roomorama_property.number_of_bedrooms).to eq(6)
     expect(roomorama_property.max_guests).to eq(6)
-    expect(roomorama_property.minimum_stay).to eq(0)
-    expect(roomorama_property.minimum_stay).to eq(0)
     expect(roomorama_property.country_code).to eq('GB')
     expect(roomorama_property.lat).to eq('28.2238577')
     expect(roomorama_property.lng).to eq('-81.4975719')
@@ -69,5 +89,10 @@ RSpec.describe Ciirus::Mappers::RoomoramaProperty do
     image = roomorama_property.images.first
     expect(image.identifier).to eq '7055ced3ea87d8c220f99595c483dfe3'
     expect(image.url).to eq 'http://image.com/15252'
+
+    expect(roomorama_property.minimum_stay).to eq(2)
+    expect(roomorama_property.nightly_rate).to eq(141.43)
+    expect(roomorama_property.weekly_rate).to eq(990.01)
+    expect(roomorama_property.monthly_rate).to eq(4242.9)
   end
 end

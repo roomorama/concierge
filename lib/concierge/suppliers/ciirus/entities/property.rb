@@ -2,10 +2,9 @@ module Ciirus
   module Entities
     class Property
       attr_reader :property_id, :property_name, :address, :zip, :city, :bedrooms,
-                  :sleeps, :min_nights_stay, :type, :country, :xco, :yco,
-                  :bathrooms, :king_beds, :queen_beds, :full_beds, :twin_beds,
-                  :extra_bed, :sofa_bed, :amenities, :pets_allowed,
-                  :currency_code
+                  :sleeps, :type, :country, :xco, :yco, :bathrooms, :king_beds,
+                  :queen_beds, :full_beds, :twin_beds, :extra_bed, :sofa_bed,
+                  :amenities, :pets_allowed, :currency_code
 
       def initialize(attrs = {})
         @property_id     = attrs[:property_id]
@@ -15,7 +14,6 @@ module Ciirus
         @city            = attrs[:city]
         @bedrooms        = attrs[:bedrooms]
         @sleeps          = attrs[:sleeps]
-        @min_nights_stay = attrs[:min_nights_stay]
         @type            = attrs[:type]
         @country         = attrs[:country]
         @xco             = attrs[:xco]

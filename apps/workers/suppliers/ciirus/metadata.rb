@@ -37,8 +37,17 @@ module Workers::Suppliers::Ciirus
               return result
             end
 
+            result = importer.fetch_rates(property_id)
+            if result.success?
+              rates = result.value
+            else
+              message = "Failed to fetch rates for property #{property_id}"
+              announce_error(message, result)
+              return result
+            end
+
             roomorama_property = ::Ciirus::Mappers::RoomoramaProperty.build(
-              property, images, description
+              property, images, rates, description
             )
 
             Result.new(roomorama_property)

@@ -29,6 +29,12 @@ module Ciirus
       fetcher.call(property_id)
     end
 
+    # Returns the Result wrapping the array of Ciirus::Entities::PropertyRate
+    def fetch_rates(property_id)
+      fetcher = Commands::PropertyRatesFetcher.new(credentials)
+      fetcher.call(property_id)
+    end
+
     # Returns the Result wrapping the description string.
     #
     # Tries to fetch plain text description if possible,
