@@ -1,0 +1,29 @@
+{
+  "enabled-amenities": {
+    "TV": "tv",
+    "air conditioner": "airconditioning",
+    "cookware": "kitchen",
+    "swimming pool - 15m": "pool",
+    "swimming pool": "pool",
+    "infant's swimming pool": "pool",
+    "free breakfast": "breakfast",
+    "internet": "internet"
+  },
+
+  "disabled-amenities": [
+    "bed",
+    "table",
+    "multi-media",
+    "refrigerator",
+    "fan",
+    "hair dryer",
+    "spa",
+    "DVD",
+    "fireplace",
+    "light meal service (surcharge)",
+    "seminar room",
+    "projector",
+    "karaoke",
+    "basketball court"
+  ]
+}
