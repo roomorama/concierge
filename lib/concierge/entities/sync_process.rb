@@ -19,12 +19,6 @@
 #                        kicked in.
 # +finished_at+        - a timestamp that indicates the time when the synchronisation process
 #                        was completed.
-# +properties_created+ - the number of properties published on Roomorama in a
-#                        given synchronisation (DEPRECATED)
-# +properties_updated+ - the number of properties updated on Roomorama in a
-#                        given synchronisation (DEPRECATED)
-# +properties_deleted+ - the number of properties deleted on Roomorama in a
-#                        given synchronisation (DEPRECATED)
 # +type+               - the type of synchronisation process that was executed.
 # +stats+              - a JSON field containing statistics about the synchronisation
 #                        process. Differs depending on the +type+ of sync process.
@@ -32,6 +26,6 @@ class SyncProcess
   include Hanami::Entity
 
   attributes :id, :host_id, :started_at, :finished_at, :properties_created,
-    :successful, :properties_updated, :properties_deleted, :created_at, :updated_at,
-    :type, :stats
+    :successful, :properties_updated, :properties_deleted, :type, :stats,
+    :created_at, :updated_at
 end

@@ -10,10 +10,7 @@ module Support
       attributes  = {
         type: "metadata",
         started_at: Time.now - 10 * 60, # 10 minutes ago
-        finished_at: Time.now,
-        properties_created: 1,
-        properties_updated: 1,
-        properties_deleted: 1
+        finished_at: Time.now
       }.merge(overrides)
 
       process = SyncProcess.new(attributes)

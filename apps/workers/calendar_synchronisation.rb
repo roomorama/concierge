@@ -72,10 +72,6 @@ module Workers
     def finish!
       database = Concierge::OptionalDatabaseAccess.new(SyncProcessRepository)
 
-      sync_record.properties_created = 0
-      sync_record.properties_updated = 0
-      sync_record.properties_deleted = 0
-
       sync_record.stats[:properties_processed] = processed
       sync_record.stats[:available_records]    = counters.available
       sync_record.stats[:unavailable_records]  = counters.unavailable
