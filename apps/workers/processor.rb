@@ -96,7 +96,7 @@ module Workers
     # NOTE this time out should be shorter than the +VisibilityTimeout+ configured
     # on the SQS queue to be used by Concierge.
     def processing_timeout
-      @one_hour ||= 60 * 60
+      @two_hour ||= 60 * 60 * 2
     end
   end
 
