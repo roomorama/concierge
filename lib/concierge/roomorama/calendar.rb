@@ -93,7 +93,7 @@ module Roomorama
 
       {
         identifier:       property_identifier,
-        start_date:       entries.min_by(&:date).date.to_s,
+        start_date:       entries.select(&:valid?).min_by(&:date).date.to_s,
         availabilities:   parsed.availabilities,
         nightly_rates:    parsed.rates.nightly,
         weekly_rates:     parsed.rates.weekly,
@@ -112,7 +112,7 @@ module Roomorama
     # and builds a +Roomorama::Calendar::ParsedEntries+ instance, containing data
     # after parsing.
     def parse_entries
-      sorted_entries = entries.sort_by(&:date)
+      sorted_entries = entries.select(&:valid?).sort_by(&:date)
       start_date     = sorted_entries.first.date
       end_date       = sorted_entries.last.date
 

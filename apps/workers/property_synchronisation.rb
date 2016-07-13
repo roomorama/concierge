@@ -9,7 +9,7 @@ module Workers
   # of properties for that host.
   #
   # Handles exclusively creation/updates of property details. For changes
-  # on the availabilities calendar of a property, check the +Workers::PropertyCalendar+
+  # on the availabilities calendar of a property, check the +Workers::CalendarSynchronisation+
   # class.
   #
   # Usage
