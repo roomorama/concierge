@@ -2,7 +2,6 @@ module SAW
   # +SAW::Client+
   #
   # This class is a convenience class for the smaller classes under +SAW+.
-  # For now, it allows the caller to get price quotations.
   #
   # For more information on how to interact with SAW, check the project Wiki.
   class Client
