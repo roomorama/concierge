@@ -125,13 +125,15 @@ module Kigo
     end
 
     def nett_amount(total)
-      total / (host.commission / 100 + 1)
+      coefficient = host.commission / 100 + 1
+      total / coefficient
     end
 
     def host
       @host ||= HostRepository.find(property.host_id)
     end
 
+    # todo: move to initialize after sync implementation
     def property
       @property ||= PropertyRepository.identified_by(params[:property_id]).first
     end
