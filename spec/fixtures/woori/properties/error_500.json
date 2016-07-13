@@ -1,0 +1,9 @@
+{
+    "error": "Internal Server Error",
+    "exception": "java.lang.NumberFormatException",
+    "message": "Test message",
+    "path": "/v1/properties",
+    "status": 500,
+    "timestamp": "2016-07-13 03:58:40"
+}
+
