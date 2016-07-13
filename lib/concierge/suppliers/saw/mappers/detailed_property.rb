@@ -105,21 +105,13 @@ module SAW
         def convert_amenities(hash)
           saw_amenities = fetch_saw_amenities(hash)
           
-          if saw_amenities.any?
-            Converters::Amenities.convert(saw_amenities)
-          else
-            return [] 
-          end
+          Converters::Amenities.convert(saw_amenities)
         end
 
         def convert_not_supported_amenities(hash)
           saw_amenities = fetch_saw_amenities(hash)
           
-          if saw_amenities.any?
-            Converters::Amenities.select_not_supported_amenities(saw_amenities)
-          else
-            return [] 
-          end
+          Converters::Amenities.select_not_supported_amenities(saw_amenities)
         end
 
         def fetch_saw_amenities(hash)
