@@ -21,7 +21,7 @@ module SAW
         #
         # Returns [String] rewritten url
         def build(url)
-          url.gsub(/\Ahttp:\/\/staging/, 'http://www')
+          url.gsub(%r[\Ahttp://staging], "http://www")
         end
       end
     end
