@@ -32,7 +32,7 @@ module SAW
         url = hash.get("large_image_url").to_s
         title = hash.get("title").to_s.strip
 
-        identifier = hash.get("id") || Digest::MD5.hexdigest(url)
+        identifier = Digest::MD5.hexdigest(url)
         image = Roomorama::Image.new(identifier)
         image.url = prepare_url(url, url_rewrite)
         image.caption = title
