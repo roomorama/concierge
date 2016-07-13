@@ -40,12 +40,11 @@ module Ciirus
         rates = rates_hash.get(
           'get_property_rates_response.get_property_rates_result.rate'
         )
-        if rates
-          Array(rates).map do |rate|
-            Ciirus::Mappers::PropertyRate.build(rate)
-          end
-        else
-          []
+
+        return [] unless rates
+
+        Array(rates).map do |rate|
+          Ciirus::Mappers::PropertyRate.build(rate)
         end
       end
     end
