@@ -14,7 +14,7 @@ module Woori
   #   # => RESULT - To be completed
 
   module Request
-    END_POINTS = YAML::load(File.open(File.join('lib', 'roomallo_api', 'end_points.yml')))
+    END_POINTS = [] #YAML::load(File.open(File.join('lib', 'roomallo_api', 'end_points.yml')))
     BASE_URI = "https://api.ytlabs.co.kr/stage/v1/"
 
     attr_reader :credentials
