@@ -2,6 +2,7 @@ require "spec_helper"
 
 RSpec.describe Workers::Suppliers::Waytostay do
   include Support::Factories
+  include Support::HTTPStubbing
   include Support::Fixtures
 
   subject { described_class.new(host) }
@@ -25,6 +26,10 @@ RSpec.describe Workers::Suppliers::Waytostay do
 
   context "first time properties" do
     before do
+
+      stub_call(:put, "https://api.roomorama.com/v1.0/host/update_calendar") {
+        [202, {}, [""]]
+      }
 
       allow(subject.client).to receive(:get_active_properties) {|page|
         property_result_001 = Roomorama::Property.load( Concierge::SafeAccessHash.new(
@@ -79,6 +84,11 @@ RSpec.describe Workers::Suppliers::Waytostay do
     end
 
     describe "perform" do
+      before do
+        stub_call(:put, "https://api.roomorama.com/v1.0/host/update_calendar") {
+          [202, {}, [""]]
+        }
+      end
 
       context "when successful" do
         it "should start property attributes synchronisation" do
