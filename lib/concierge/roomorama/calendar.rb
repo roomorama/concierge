@@ -75,9 +75,17 @@ module Roomorama
       @property_identifier = identifier
     end
 
+    # includes a new calendar entry in the calendar instance. +entry+ is expected
+    # to be a +Roomorama::Calendar::Entry+ instance.
     def add(entry)
-      validate_entry!(entry)
       entries << entry
+    end
+
+    # validates if all entries passed to this calendar instance via +add+ are valid.
+    # In case one of them is not, this method will raise a +Roomorama::Calendar::ValidationError+
+    # error.
+    def validate!
+      entries.all?(&:valid?) || (raise ValidationError.new("One of the entries miss required parameters."))
     end
 
     def to_h

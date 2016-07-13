@@ -15,22 +15,27 @@ RSpec.describe Roomorama::Calendar do
   subject { described_class.new(property_identifier) }
 
   describe "#add" do
-    it "fails if the object passed is not a calendar entry" do
-      expect {
-        subject.add(Object.new)
-      }.to raise_error(Roomorama::Calendar::ValidationError)
-    end
-
-    it "fails if the calendar entry given is not valid" do
-      entry.nightly_rate = nil
-      expect {
-        subject.add(entry)
-      }.to raise_error(Roomorama::Calendar::ValidationError)
-    end
-
     it "adds the entry to the list of calendar entries" do
       subject.add(entry)
       expect(subject.entries).to eq [entry]
+    end
+  end
+
+  describe "#validate!" do
+    it "raises an error in case there are invalid entries in the calendar" do
+      subject.add(entry)
+      subject.add(create_entry(nightly_rate: nil))
+
+      expect {
+        subject.validate!
+      }.to raise_error(Roomorama::Calendar::ValidationError)
+    end
+
+    it "is valid if all entries are valid" do
+      subject.add(entry)
+      subject.add(create_entry(date: "2016-05-20"))
+
+      expect(subject.validate!).to eq true
     end
   end
 
