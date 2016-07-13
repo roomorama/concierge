@@ -17,14 +17,14 @@ module Woori
       # Returns +Roomorama::Property+ Roomorama property object
       def self.build(safe_hash)
         property = Roomorama::Property.new(safe_hash.get("id"))
-        property.title       = safe_hash.get("data.name")
-        property.type        = safe_hash.get("type")
-        property.lat         = safe_hash.get("data.latitude")
-        property.lng         = safe_hash.get("data.longitude")
-        property.currency    = safe_hash.get("data.currency")
-        property.city        = safe_hash.get("data.city")
-        property.address     = full_address(safe_hash)
-        property.amenities   = amenities(safe_hash.get("data.facilities"))
+        property.title     = safe_hash.get("data.name")
+        property.type      = safe_hash.get("type")
+        property.lat       = safe_hash.get("data.latitude")
+        property.lng       = safe_hash.get("data.longitude")
+        property.currency  = safe_hash.get("data.currency")
+        property.city      = safe_hash.get("data.city")
+        property.address   = full_address(safe_hash)
+        property.amenities = amenities(safe_hash.get("data.facilities"))
         
         property.description = description_with_additional_amenities(
           safe_hash.get("data.description"),
