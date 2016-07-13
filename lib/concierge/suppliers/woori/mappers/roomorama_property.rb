@@ -31,11 +31,19 @@ module Woori
           additional_amenities(safe_hash.get("data.facilities"))
         )
         
+        set_images!(property, safe_hash.get("data.images"))
+        
         property.default_to_available = true
         property.instant_booking!
         property.multi_unit!
 
         property
+      end
+
+      private
+      def self.set_images!(property, image_hashes)
+        images = Mappers::RoomoramaImageSet.build(image_hashes)
+        images.each { |image| property.add_image(image) }
       end
 
       def self.full_address(safe_hash)
