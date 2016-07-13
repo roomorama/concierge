@@ -226,6 +226,7 @@ RSpec.describe Workers::PropertySynchronisation do
 
       sync = SyncProcessRepository.last
       expect(sync).to be_a SyncProcess
+      expect(sync.type).to eq "metadata"
       expect(sync.host_id).to eq host.id
       expect(sync.successful).to eq false
       expect(sync.started_at).not_to be_nil

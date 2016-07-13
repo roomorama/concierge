@@ -8,6 +8,7 @@ module Support
   module Factories
     def create_sync_process(overrides = {})
       attributes  = {
+        type: "metadata",
         started_at: Time.now - 10 * 60, # 10 minutes ago
         finished_at: Time.now,
         properties_created: 1,

@@ -80,6 +80,8 @@ collection :sync_processes do
   attribute :properties_created, Integer
   attribute :properties_updated, Integer
   attribute :properties_deleted, Integer
+  attribute :stats,              Concierge::PGJSON
+  attribute :type,               String
   attribute :created_at,         Time
   attribute :updated_at,         Time
 end

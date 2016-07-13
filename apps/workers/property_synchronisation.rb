@@ -232,6 +232,7 @@ module Workers
 
     def init_sync_record(host)
       SyncProcess.new(
+        type:       WORKER_TYPE,
         host_id:    host.id,
         started_at: Time.now,
         successful: true
