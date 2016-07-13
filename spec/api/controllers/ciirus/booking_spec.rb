@@ -31,15 +31,6 @@ RSpec.describe API::Controllers::Ciirus::Booking do
   let(:error_response) { read_fixture('ciirus/responses/error_make_booking_response.xml') }
   let(:wsdl) { read_fixture('ciirus/wsdl.xml') }
 
-  before do
-    # Replace remote call for wsdl with static wsdl
-    allow_any_instance_of(Ciirus::Commands::Booking).to receive(:options).and_wrap_original do |m, *args|
-      original = m.call(*args)
-      original[:wsdl] = wsdl
-      original
-    end
-  end
-
   it_behaves_like "performing booking parameters validations", controller_generator: -> { described_class.new }
 
   describe '#call' do

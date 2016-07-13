@@ -17,15 +17,6 @@ RSpec.describe API::Controllers::Ciirus::Quote do
 
   let(:wsdl) { read_fixture('ciirus/wsdl.xml') }
 
-  before do
-    # Replace remote call for wsdl with static wsdl
-    allow_any_instance_of(Ciirus::Commands::QuoteFetcher).to receive(:options).and_wrap_original do |m, *args|
-      original = m.call(*args)
-      original[:wsdl] = wsdl
-      original
-    end
-  end
-
   it_behaves_like "performing parameter validations", controller_generator: -> { described_class.new } do
     let(:valid_params) { params }
   end
