@@ -59,11 +59,11 @@ module SAW
       private
       def build_payload(params)
         payload_builder.build_compute_pricing(
-          property_id:   params[:property_id],
-          unit_id:       params[:unit_id],
-          check_in:      params[:check_in],
-          check_out:     params[:check_out],
-          num_guests:    params[:guests]
+          property_id: params[:property_id],
+          unit_id:     params[:unit_id],
+          check_in:    params[:check_in],
+          check_out:   params[:check_out],
+          num_guests:  params[:guests]
         )
       end
     end
