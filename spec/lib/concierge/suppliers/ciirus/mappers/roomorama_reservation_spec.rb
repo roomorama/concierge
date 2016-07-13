@@ -41,7 +41,7 @@ RSpec.describe Ciirus::Mappers::RoomoramaReservation do
 
     let(:reservation) { described_class.build(params, result_hash) }
 
-    it 'returns mapped roomorama quotation entity' do
+    it 'returns mapped roomorama reservation entity' do
       expect(reservation).to be_a(::Reservation)
       expect(reservation.check_in).to eq('2016-05-01')
       expect(reservation.check_out).to eq('2016-05-12')
