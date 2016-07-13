@@ -14,8 +14,10 @@ RSpec.describe Ciirus::Mappers::PropertyRate do
       )
     end
 
+    subject { described_class.new }
+
     it 'returns mapped property rate entity' do
-      mapped_rate = described_class.build(result_hash)
+      mapped_rate = subject.build(result_hash)
       expect(mapped_rate).to be_a(Ciirus::Entities::PropertyRate)
       expect(mapped_rate.from_date).to eq(DateTime.new(2014, 6, 27))
       expect(mapped_rate.to_date).to eq(DateTime.new(2014, 8, 22))

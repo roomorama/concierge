@@ -28,89 +28,87 @@ module Ciirus
       })
 
 
-      class << self
-        # Maps Ciirus API responses to +Roomorama::Property+
-        # Arguments
-        #
-        #   * +property+ [Ciirus::Entities::Property]
-        #   * +images+ [Array] array of images URLs
-        #   * +rates+ [Array] array of Ciirus::Entities::PropertyRate
-        #   * +description+ [String]
-        #
-        # Returns +Roomorama::Property+
-        def build(property, images, rates, description)
-          result = Roomorama::Property.new(property.property_id)
-          result.instant_booking!
+      # Maps Ciirus API responses to +Roomorama::Property+
+      # Arguments
+      #
+      #   * +property+ [Ciirus::Entities::Property]
+      #   * +images+ [Array] array of images URLs
+      #   * +rates+ [Array] array of Ciirus::Entities::PropertyRate
+      #   * +description+ [String]
+      #
+      # Returns +Roomorama::Property+
+      def build(property, images, rates, description)
+        result = Roomorama::Property.new(property.property_id)
+        result.instant_booking!
 
-          set_base_info!(result, property)
-          set_description!(result, description)
-          set_images!(result, images)
-          set_rates_and_minimum_stay!(result, rates)
+        set_base_info!(result, property)
+        set_description!(result, description)
+        set_images!(result, images)
+        set_rates_and_minimum_stay!(result, rates)
 
-          result
+        result
+      end
+
+      private
+
+      def set_base_info!(result, property)
+        result.title = property.property_name
+        # TODO: handle Unspecified ciirus property type
+        result.type = PROPERTY_TYPES.get("#{property.type}.type")
+        result.subtype = PROPERTY_TYPES.get("#{property.type}.subtype")
+        result.address = property.address
+        result.postal_code = property.zip
+        result.city = property.city
+        result.number_of_bedrooms = property.bedrooms
+        result.max_guests = property.sleeps
+        result.default_to_available = false
+        # TODO: convert country to alpha2
+        result.country_code = property.country
+        result.lat = property.xco
+        result.lng = property.yco
+        result.number_of_bathrooms = property.bathrooms
+        result.number_of_double_beds = calc_double_beds(property)
+        result.number_of_single_beds = calc_single_beds(property)
+        result.number_of_sofa_beds = calc_sofa_beds(property)
+        result.amenities = property.amenities
+        result.pets_allowed = property.pets_allowed
+        result.currency = property.currency_code
+      end
+
+      def set_description!(result, description)
+        result.description = description
+      end
+
+      def calc_double_beds(property)
+        property.king_beds + property.queen_beds + property.full_beds
+      end
+
+      def calc_single_beds(property)
+        property.twin_beds + (property.extra_bed ? 1 : 0)
+      end
+
+      def calc_sofa_beds(property)
+        property.sofa_bed ? 1 : 0
+      end
+
+      def set_images!(result, images)
+        images.each do |url|
+          identifier = Digest::MD5.hexdigest(url)
+          image = Roomorama::Image.new(identifier)
+          image.url = url
+
+          result.add_image(image)
         end
+      end
 
-        private
+      def set_rates_and_minimum_stay!(result, rates)
+        actual_rates = rates.select { |r| r.daily_rate > 0 }
+        min_price = actual_rates.map(&:daily_rate).min
 
-        def set_base_info!(result, property)
-          result.title = property.property_name
-          # TODO: handle Unspecified ciirus property type
-          result.type = PROPERTY_TYPES.get("#{property.type}.type")
-          result.subtype = PROPERTY_TYPES.get("#{property.type}.subtype")
-          result.address = property.address
-          result.postal_code = property.zip
-          result.city = property.city
-          result.number_of_bedrooms = property.bedrooms
-          result.max_guests = property.sleeps
-          result.default_to_available = false
-          # TODO: convert country to alpha2
-          result.country_code = property.country
-          result.lat = property.xco
-          result.lng = property.yco
-          result.number_of_bathrooms = property.bathrooms
-          result.number_of_double_beds = calc_double_beds(property)
-          result.number_of_single_beds = calc_single_beds(property)
-          result.number_of_sofa_beds = calc_sofa_beds(property)
-          result.amenities = property.amenities
-          result.pets_allowed = property.pets_allowed
-          result.currency = property.currency_code
-        end
-
-        def set_description!(result, description)
-          result.description = description
-        end
-
-        def calc_double_beds(property)
-          property.king_beds + property.queen_beds + property.full_beds
-        end
-
-        def calc_single_beds(property)
-          property.twin_beds + (property.extra_bed ? 1 : 0)
-        end
-
-        def calc_sofa_beds(property)
-          property.sofa_bed ? 1 : 0
-        end
-
-        def set_images!(result, images)
-          images.each do |url|
-            identifier = Digest::MD5.hexdigest(url)
-            image = Roomorama::Image.new(identifier)
-            image.url = url
-
-            result.add_image(image)
-          end
-        end
-
-        def set_rates_and_minimum_stay!(result, rates)
-          actual_rates = rates.select { |r| r.daily_rate > 0 }
-          min_price = actual_rates.map(&:daily_rate).min
-
-          result.minimum_stay = actual_rates.map(&:min_nights_stay).min
-          result.nightly_rate = min_price
-          result.weekly_rate  = (min_price * 7).round(2)
-          result.monthly_rate = (min_price * 30).round(2)
-        end
+        result.minimum_stay = actual_rates.map(&:min_nights_stay).min
+        result.nightly_rate = min_price
+        result.weekly_rate  = (min_price * 7).round(2)
+        result.monthly_rate = (min_price * 30).round(2)
       end
     end
   end

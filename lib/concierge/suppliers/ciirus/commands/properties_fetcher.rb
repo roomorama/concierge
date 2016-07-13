@@ -48,6 +48,10 @@ module Ciirus
         error_msg.nil? || error_msg.empty?
       end
 
+      def mapper
+        @mapper ||= Ciirus::Mappers::Property.new
+      end
+
       def build_properties(result_hash)
         properties = result_hash.get(
           'get_properties_response.get_properties_result.property_details'
@@ -56,7 +60,7 @@ module Ciirus
         if properties
           Array(properties).each do |property|
             property = to_safe_hash(property)
-            result << Ciirus::Mappers::Property.build(property) if valid_property_detail?(property)
+            result << mapper.build(property) if valid_property_detail?(property)
           end
         end
         result

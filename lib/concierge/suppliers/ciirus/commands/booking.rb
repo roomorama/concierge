@@ -36,7 +36,7 @@ module Ciirus
         if result.success?
           result_hash = to_safe_hash(result.value)
           if valid_result?(result_hash)
-            reservation = Ciirus::Mappers::RoomoramaReservation.build(params, result_hash)
+            reservation = mapper.build(params, result_hash)
             Result.new(reservation)
           else
             error_result(result_hash)
@@ -48,15 +48,21 @@ module Ciirus
 
       protected
 
+      def operation_name
+        :make_booking
+      end
+
+      private
+
+      def mapper
+        @mapper ||= Ciirus::Mappers::RoomoramaReservation.new
+      end
+
       def valid_result?(result_hash)
         booking_placed = extract_booking_placed(result_hash)
         error_msg = extract_error_message(result_hash)
         # Valid if booking placed and error_msg is empty
         booking_placed && (error_msg.nil? || error_msg.empty?)
-      end
-
-      def operation_name
-        :make_booking
       end
 
       def error_result(result_hash)
@@ -68,8 +74,6 @@ module Ciirus
         mismatch(message, caller)
         Result.error(:unexpected_response)
       end
-
-      private
 
       def extract_error_message(result_hash)
         result_hash.get('make_booking_response.make_booking_result.error_message')
