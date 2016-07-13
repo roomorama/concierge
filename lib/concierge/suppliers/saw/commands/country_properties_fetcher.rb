@@ -42,13 +42,11 @@ module SAW
       def build_properties(properties_hash, country)
         properties = properties_hash.get("response.properties.property")
 
-        if properties
-          Array(properties).map do |prop|
-            safe_hash = Concierge::SafeAccessHash.new(prop)
-            SAW::Mappers::BasicProperty.build(safe_hash, country: country.name)
-          end
-        else
-          []
+        return [] unless properties
+
+        Array(properties).map do |prop|
+          safe_hash = Concierge::SafeAccessHash.new(prop)
+          SAW::Mappers::BasicProperty.build(safe_hash, country: country.name)
         end
       end
     end
