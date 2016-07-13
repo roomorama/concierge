@@ -47,10 +47,6 @@ module SAW
           image_url_rewrite: credentials.url_rewrite
         )
       end
-
-      def require_image_url_rewrite?
-        credentials.url.start_with?('http://staging')
-      end
     end
   end
 end
