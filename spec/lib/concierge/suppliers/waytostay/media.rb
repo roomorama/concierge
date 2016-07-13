@@ -22,9 +22,14 @@ RSpec.shared_examples "Waytostay media client" do
           [200, {}, read_fixture("waytostay/properties/015868/media.json")]
         }
     end
+
     it { expect(subject).to be_success }
     it { expect(subject.result.images.count).to eq(7) }
     it { expect(subject.result.validate!).to eq true }
+
+    it "ignores waytostay caption (they are not descriptive)" do
+      expect(subject.result.images.first.caption).to be_nil
+    end
 
   end
 end

@@ -48,7 +48,6 @@ module Waytostay
         identifier = Digest::MD5.hexdigest(wts_media["url"])
         image = Roomorama::Image.new(identifier)
         image.url = wts_media["url"]
-        image.caption = wts_media["caption"]
         roomorama_property.add_image(image)
       end
     end
