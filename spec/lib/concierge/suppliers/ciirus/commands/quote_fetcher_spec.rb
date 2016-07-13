@@ -24,15 +24,6 @@ RSpec.describe Ciirus::Commands::QuoteFetcher do
 
   subject { described_class.new(credentials) }
 
-  before do
-    # Replace remote call for wsdl with static wsdl
-    allow(subject).to receive(:options).and_wrap_original do |m, *args|
-      original = m.call(*args)
-      original[:wsdl] = wsdl
-      original
-    end
-  end
-
   describe '#call' do
     context 'when remote call internal error happened' do
       it 'returns result with error' do
