@@ -57,7 +57,6 @@ module SAW
         end
       end
       
-      private
       def with_cache(key, freshness:)
         cache.fetch(key, freshness: freshness, serializer: json_serializer) { yield }
       end
