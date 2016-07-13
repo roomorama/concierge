@@ -7,8 +7,6 @@ module Woori
   #
   #   importer = Woori::Importer.new(credentials)
   #   importer.fetch_properties
-  #
-  #   => RESULT - TODO
   class Importer
 
     attr_reader :credentials
@@ -18,22 +16,8 @@ module Woori
     end
 
     def fetch_properties
-      client_for(endpoint).invoke(endpoint)
+      properties_fetcher = Commands::PropertiesFetcher.new(credentials)
+      properties_fetcher.call
     end
-
-    private
-
-    def client_for
-      Concierge::HTTPClient.new(credentials, api_token)
-    end
-
-    def api_token
-      # basic_auth: { "Authorization": "API_KEY_123" }
-    end
-
-    def endpoint
-      # Build from Woori::Request class
-    end
-
   end
 end
