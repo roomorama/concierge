@@ -15,7 +15,7 @@ module Waytostay
   # For more information on how to interact with Waytostay, check the project Wiki.
   class Client
 
-    SUPPLIER_NAME = "Waytostay".freeze
+    SUPPLIER_NAME = "WayToStay".freeze
     SUPPORTED_PAYMENT_METHOD = "full_payment".freeze
 
     include Waytostay::Quote
