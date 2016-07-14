@@ -37,7 +37,9 @@ module SAW
     # properties.
     # Sticking with providing `country` is a way more easier.
     #
-    # Returns [Array<SAW::Entities::Country>] array with available countries
+    # Returns a +Result+ wrapping +Array+ of +SAW::Entities::Country+
+    # when operation succeeds
+    # Returns a +Result+ with +Result::Error+ when operation fails
     def fetch_countries
       countries_fetcher = Commands::CountriesFetcher.new(credentials)
       countries_fetcher.call
@@ -45,7 +47,9 @@ module SAW
 
     # Retrieves the list of properties in a given country
     #
-    # Returns [Array<SAW::Entities::BasicProperty>]
+    # Returns a +Result+ wrapping +Array+ of +SAW::Entities::BasicProperty+
+    # when operation succeeds
+    # Returns a +Result+ with +Result::Error+ when operation fails
     def fetch_properties_by_country(country)
       properties_fetcher = Commands::CountryPropertiesFetcher.new(credentials)
       properties_fetcher.call(country)
@@ -72,7 +76,9 @@ module SAW
 
     # Retrieves property with extended information.
     #
-    # Returns [Array<SAW::Entities::DetailedProperty>]
+    # Returns a +Result+ wrapping +SAW::Entities::DetailedProperty+ object
+    # when operation succeeds
+    # Returns a +Result+ with +Result::Error+ when operation fails
     def fetch_detailed_property(property_id)
       property_fetcher = Commands::DetailedPropertyFetcher.new(credentials)
       property_fetcher.call(property_id)
