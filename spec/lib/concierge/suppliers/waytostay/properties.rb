@@ -77,6 +77,10 @@ RSpec.shared_examples "Waytostay property client" do
 
     context "when property is valid and active" do
       let(:property_id) { valid_property_id }
+      let(:required_attributes) { [:identifier, :type, :title, :address, :postal_code,
+      :city, :description, :number_of_bedrooms, :max_guests, :minimum_stay,
+      :nightly_rate, :weekly_rate, :monthly_rate, :default_to_available] }
+
       it "should return a Roomorama::Property" do
         expected_room_load = Roomorama::Property.load(
           Concierge::SafeAccessHash.new( # use this because #load expects keys in symbols
@@ -86,7 +90,7 @@ RSpec.shared_examples "Waytostay property client" do
         room_without_images = expected_room_load.result.to_h
         room_without_images[:images] = []
         expect(subject.result.to_h).to match room_without_images
-        expect(Roomorama::Property::REQUIRED_ATTRIBUTES - subject.result.to_h.keys).to be_empty
+        expect(required_attributes - subject.result.to_h.keys).to be_empty
       end
     end
 
