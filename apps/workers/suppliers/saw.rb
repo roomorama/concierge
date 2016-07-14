@@ -7,7 +7,7 @@ module Workers::Suppliers
 
     def initialize(host)
       @host = host
-      @synchronisation = Workers::Synchronisation.new(host)
+      @synchronisation = Workers::PropertySynchronisation.new(host)
     end
 
     def perform
@@ -88,6 +88,6 @@ module Workers::Suppliers
   end
 end
 
-Concierge::Announcer.on("sync.SAW") do |host|
+Concierge::Announcer.on("metadata.SAW") do |host|
   Workers::Suppliers::SAW.new(host).perform
 end
