@@ -37,7 +37,8 @@ module SAW
 
             Entities::UnitRate.new(
               id: parse_id(safe_hash),
-              price: parse_price(safe_hash)
+              price: parse_price(safe_hash),
+              available: parse_availability(safe_hash)
             )
           end
         end
@@ -48,6 +49,12 @@ module SAW
 
         def parse_price(hash)
           hash.get("price_detail.net.total_price.price")
+        end
+
+        def parse_availability(hash)
+          flag = hash.get("flag_bookable_property_accommodation")
+
+          flag == "Y" ? true : false
         end
       end
     end

@@ -22,7 +22,7 @@ module SAW
           guests:      params[:guests],
           currency:    property_rate.currency,
           total:       requested_unit.price,
-          available:   true
+          available:   requested_unit.available
         )
       end
     end

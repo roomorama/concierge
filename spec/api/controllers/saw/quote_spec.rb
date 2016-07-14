@@ -45,6 +45,23 @@ RSpec.describe API::Controllers::SAW::Quote do
     expect(quotation).to be_kind_of(Quotation)
     expect(quotation.total).to eq(641.3)
     expect(quotation.currency).to eq('EUR')
+    expect(quotation.available).to be true
+  end
+  
+  it "returns result object with not-available quotation" do
+    mock_request(:propertyrates, :not_available_unit)
+
+    result = controller.quote_price(params)
+    
+    expect(result.success?).to be true
+    expect(result).to be_kind_of(Result)
+    expect(result.value).not_to be nil
+
+    quotation = result.value
+    expect(quotation).to be_kind_of(Quotation)
+    expect(quotation.total).to eq(641.3)
+    expect(quotation.currency).to eq('EUR')
+    expect(quotation.available).to be false
   end
       
   context "when property is on request only" do
@@ -109,6 +126,7 @@ RSpec.describe API::Controllers::SAW::Quote do
       expect(quotation).to be_kind_of(Quotation)
       expect(quotation.total).to eq(72.25)
       expect(quotation.currency).to eq('EUR')
+      expect(quotation.available).to be true
       
       params[:unit_id] = "9734"
       result = controller.quote_price(params)
@@ -120,6 +138,7 @@ RSpec.describe API::Controllers::SAW::Quote do
       expect(quotation).to be_kind_of(Quotation)
       expect(quotation.total).to eq(170)
       expect(quotation.currency).to eq('EUR')
+      expect(quotation.available).to be true
     end
   end
 end
