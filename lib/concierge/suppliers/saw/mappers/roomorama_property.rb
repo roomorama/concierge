@@ -4,7 +4,7 @@ module SAW
     #
     # This class is responsible for building a +Roomorama::Property+ object.
     # Object initialization includes mapping of property attributes, rates,
-    # amenitites, availabilities, images, units.
+    # amenitites, images, units.
     class RoomoramaProperty
       # Bulds Roomorama::Property object
       #
@@ -13,12 +13,11 @@ module SAW
       #   roomorama_property = SAW::Mappers::RoomoramaProperty.build(
       #     property,
       #     detailed_property,
-      #     availability_calendar
       #   )
       #   => Roomorama::Property object
       #
       # Returns [Roomorama::Property] Roomorama property
-      def self.build(basic_property, detailed_property, availabilities)
+      def self.build(basic_property, detailed_property)
         property = Roomorama::Property.new(basic_property.internal_id.to_s)
         property.type = basic_property.type
         property.title = basic_property.title
@@ -44,23 +43,11 @@ module SAW
         property.instant_booking!
 
         set_units!(property, basic_property, detailed_property)
-        set_availabilities!(property, availabilities)
         set_images!(property, detailed_property.images)
         property
       end
 
       private
-      def self.set_availabilities!(property, availabilities)
-        property.units.each do |unit|
-          availabilities.each do |date, status|
-            unit.update_calendar(date => status)
-          end
-        end
-          
-        availabilities.each do |date, status|
-          property.update_calendar(date => status)
-        end
-      end
 
       def self.set_images!(property, images)
         images.each { |image| property.add_image(image) }
