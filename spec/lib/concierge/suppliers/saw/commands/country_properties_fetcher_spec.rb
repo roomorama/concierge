@@ -15,13 +15,10 @@ RSpec.describe SAW::Commands::CountryPropertiesFetcher do
       mock_request(:propertysearch, :empty)
 
       result = subject.call(country)
-      expect(result.success?).to be false
-      expect(result.error.code).to eq("1007")
-      expect(last_context_event[:message]).to eq(
-        "Response indicating the error `1007`, and description `No properties are available for the given search parameters`"
-      )
-      expect(last_context_event[:backtrace]).to be_kind_of(Array)
-      expect(last_context_event[:backtrace].any?).to be true
+      expect(result.success?).to be true
+      
+      properties = result.value
+      expect(properties).to eq([])
     end
   end
 
