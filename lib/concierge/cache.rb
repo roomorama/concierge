@@ -179,6 +179,16 @@ module Concierge
       end
     end
 
+    # Invalidates a cache +key+ given. If a computation is performed afterwards
+    # using the same key, it will be run again.
+    #
+    # The given +key+ will be properly namespaced with the namespace given on this
+    # class' initialization, if any.
+    def invalidate(key)
+      full_key = namespaced(key)
+      storage.delete(full_key)
+    end
+
     private
 
     def fresh?(entry, freshness)

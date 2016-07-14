@@ -126,14 +126,56 @@ RSpec.describe Concierge::Cache do
       expect(result).to be_success
       expect(result.value).to eq({ "key" => "value", "name" => "Supplier" })
     end
+  end
 
-    private
-
-    def create_entry(key, value)
-      storage = Concierge::Cache::Storage.new
-
-      storage.write(key, value)
-      storage.read(key)
+  describe "#invalidate" do
+    it "has no effect on nonexistent keys" do
+      expect {
+        subject.invalidate(key)
+      }.not_to raise_error
     end
+
+    it "removes the cache entry from the storage" do
+      create_entry(key, "value")
+
+      expect {
+        subject.invalidate(key)
+      }.to change { Concierge::Cache::EntryRepository.count }.by(-1)
+
+      expect(Concierge::Cache::EntryRepository.by_key(key)).to be_nil
+    end
+
+    it "executes the computation again" do
+      invoked = false
+      subject.fetch(key) do
+        invoked = true
+        Result.new("value")
+      end
+
+      expect(invoked).to eq true
+
+      subject.invalidate(key)
+      invoked = false
+
+      # cache is invalidated, block should be executed again
+      subject.fetch(key) do
+        invoked = true
+        Result.new("another_value")
+      end
+
+      expect(invoked).to eq true
+
+      # simulate a future read, block should be ignored
+      read = subject.fetch(key) { Result.error(:error) }
+
+      expect(read.value).to eq "another_value"
+    end
+  end
+
+  def create_entry(key, value)
+    storage = Concierge::Cache::Storage.new
+
+    storage.write(key, value)
+    storage.read(key)
   end
 end
