@@ -170,6 +170,17 @@ RSpec.describe Concierge::Cache do
 
       expect(read.value).to eq "another_value"
     end
+
+    it "announces cache invalidations" do
+      invalidation = Struct.new(:key).new
+
+      Concierge::Announcer.on(Concierge::Cache::CACHE_INVALIDATE) do |key|
+        invalidation.key = key
+      end
+
+      subject.invalidate(key)
+      expect(invalidation.key).to eq "test_key"
+    end
   end
 
   def create_entry(key, value)
