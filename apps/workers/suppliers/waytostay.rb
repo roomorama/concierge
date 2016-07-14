@@ -30,15 +30,7 @@ module Workers::Suppliers
           wrapped_property
         end
 
-        calendar_sync.start(property.identifier) do
-          calendar_entries_result = client.get_availabilities(property.identifier, property.nightly_rate)
-          next calendar_entries_result unless calendar_entries_result.success?
-
-          calendar = Roomorama::Calendar.new(property.identifier)
-          calendar_entries_result.value.each { |entry| calendar.add entry }
-          next Result.new(calendar)
-        end
-
+        sync_calendar(property.identifier, property.nightly_rate)
       end
       property_sync.finish!
       calendar_sync.finish!
@@ -66,18 +58,7 @@ module Workers::Suppliers
           end
 
           if changes.value[:availability].include? property_ref
-            calendar_sync.start(property_ref) do
-
-              calendar_entries_result = client.get_availabilities(property_ref, wrapped_property.value.nightly_rate)
-
-              if calendar_entries_result.success?
-                calendar = Roomorama::Calendar.new(property_ref)
-                calendar_entries_result.value.each { |entry| calendar.add entry }
-                Result.new(calendar)
-              else
-                calendar_entries_result
-              end
-            end
+            sync_calendar(property_ref, wrapped_property.value.nightly_rate)
           end
 
           # TODO: rates, bookings
@@ -115,6 +96,21 @@ module Workers::Suppliers
       initialize_overall_sync_context
       client.get_changes_since(last_synced_timestamp).tap do |result|
         announce_error(result) unless result.success?
+      end
+    end
+
+    def sync_calendar(property_ref, nightly_rate)
+      calendar_sync.start(property_ref) do
+
+        calendar_entries_result = client.get_availabilities(property_ref, nightly_rate)
+
+        if calendar_entries_result.success?
+          calendar = Roomorama::Calendar.new(property_ref)
+          calendar_entries_result.value.each { |entry| calendar.add entry }
+          Result.new(calendar)
+        else
+          calendar_entries_result
+        end
       end
     end
 
