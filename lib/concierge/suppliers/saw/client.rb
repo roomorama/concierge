@@ -27,7 +27,7 @@ module SAW
     #   end
     #
     # Returns a +Result+ wrapping a +Quotation+ when operation succeeds
-    # Returns a +Result+ wrapping a nil object when operation fails
+    # Returns a +Result+ with +Result::Error+ when operation fails
     def quote(params)
       command = SAW::Commands::PriceFetcher.new(credentials)
       command.call(params)
@@ -48,7 +48,7 @@ module SAW
     #   end
     #
     # Returns a +Result+ wrapping a +Reservation+ when operation succeeds
-    # Returns a +Result+ wrapping a nil object when operation fails
+    # Returns a +Result+ with +Result::Error+ when operation fails
     def book(params)
       command = SAW::Commands::Booking.new(credentials)
       command.call(params)
