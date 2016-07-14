@@ -67,12 +67,16 @@ module Workers::Suppliers
 
           if changes.value[:availability].include? property_ref
             calendar_sync.start(property_ref) do
-              calendar_entries_result = client.get_availabilities(property_ref, wrapped_property.value.nightly_rate)
-              next calendar_entries_result unless calendar_entries_result.success?
 
-              calendar = Roomorama::Calendar.new(property_ref)
-              calendar_entries_result.value.each { |entry| calendar.add entry }
-              next Result.new(calendar)
+              calendar_entries_result = client.get_availabilities(property_ref, wrapped_property.value.nightly_rate)
+
+              if calendar_entries_result.success?
+                calendar = Roomorama::Calendar.new(property_ref)
+                calendar_entries_result.value.each { |entry| calendar.add entry }
+                Result.new(calendar)
+              else
+                calendar_entries_result
+              end
             end
           end
 
