@@ -119,15 +119,16 @@ module Concierge
     end
 
     def response_with_error_handling
-      tries ||= RETRY_401
+      retried ||= false
       response = yield
       # No errors raised, the response is successful
       Concierge::Announcer.trigger(ON_RESPONSE, response.status, response.headers, response.body)
       json_serializer.decode(response.body)
     rescue OAuth2::Error => err
-      if err.response.status == 401
+      if err.response.status == 401 && !retried
         expire_access_token_cache
-        retry unless  (tries -= 1).zero?
+        retried = true
+        retry
       end
 
       response = err.response

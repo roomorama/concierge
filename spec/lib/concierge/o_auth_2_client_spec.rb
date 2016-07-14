@@ -97,10 +97,10 @@ RSpec.describe Concierge::OAuth2Client do
         current_cache = cache.storage.read("oauth2.#{credentials[:client_id]}")
         expect(current_cache.value).to include "expired_token"
 
-        expect(client.oauth_client).to receive(:client_credentials).and_call_original.exactly(2)
+        expect(client.oauth_client).to receive(:client_credentials).once.and_call_original
         subject
         current_cache = cache.storage.read("oauth2.#{credentials[:client_id]}")
-        expect(current_cache).to be_nil
+        expect(current_cache.value).to_not include("expired_token")
       end
     end
 
