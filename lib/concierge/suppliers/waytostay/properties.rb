@@ -183,15 +183,17 @@ module Waytostay
     #   "1 double sofa bed"
     # ],
     def parse_number_of_beds(response)
-      summary = response.get("general.bedding_summary").join(", ")
+
+      summary = response.get("general.bedding_summary")
+      summary_string = summary&.map(&:to_s)&.join(", ").to_s
       # matches both single sofa and double sofa:
       sofa_beds = 0
-      summary.scan(/([0-9]*) \w+ sofa bed/) do |match|
+      summary_string.scan(/([0-9]*) \w+ sofa bed/) do |match|
         sofa_beds += match.first.to_i
       end
 
-      double_matches = /([0-9]*) double bed/.match(summary)
-      single_matches = /([0-9]*) single bed/.match(summary)
+      double_matches = /([0-9]*) double bed/.match(summary_string)
+      single_matches = /([0-9]*) single bed/.match(summary_string)
       {
         number_of_double_beds: double_matches.nil? ? 0 : double_matches[1].to_i,
         number_of_single_beds: single_matches.nil? ? 0 : single_matches[1].to_i,
