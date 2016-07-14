@@ -3,8 +3,9 @@ require "spec_helper"
 RSpec.describe Kigo::ResponseParser do
   include Support::Fixtures
 
+  let(:host) { Host.new(commission: 0) }
   subject { described_class.new(request_params) }
-  
+
   describe "#compute_pricing" do
 
     let(:request_params) {
@@ -74,7 +75,7 @@ RSpec.describe Kigo::ResponseParser do
     end
 
     it "returns a quotation with the returned information on success" do
-      allow(subject).to receive(:host) { double("Host", commission: 0) }
+      allow(subject).to receive(:host) { host }
       response = read_fixture("kigo/success.json")
       result   = subject.compute_pricing(response)
 
@@ -91,12 +92,13 @@ RSpec.describe Kigo::ResponseParser do
     end
 
     it "returns nett ammount if host has a commission" do
-      allow(subject).to receive(:host) { double("Host", commission: 8.0) }
+      host.commission = 8.0
+      allow(subject).to receive(:host) { host }
 
       response = read_fixture("kigo/success.json")
       result   = subject.compute_pricing(response)
 
-      expect(result.value.total).to eq 570/1.08  # 527.777
+      expect(result.value.total).to eq 570/1.08 # 527.777
     end
 
   end
@@ -163,6 +165,8 @@ RSpec.describe Kigo::ResponseParser do
     end
 
     it "returns a reservation with the returned information on success" do
+      allow(subject).to receive(:host) { host }
+
       response = read_fixture("kigo/success_booking.json")
       result   = subject.parse_reservation(response)
 
