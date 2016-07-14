@@ -10,7 +10,14 @@
     else
       description = "of ID <code>#{host.id}</code>, no longer in the database"
     end
+
+    if event[:worker] == "metadata"
+      type = "property metadata"
+    else
+      type = "availabilities"
+    end
   %>
-  <p>The synchronisation process started for property <code><%= event[:identifier] %></code>,
+
+  <p>The <%= type %> synchronisation process started for property <code><%= event[:identifier] %></code>,
     from host <%= description %>.</p>
 </div>

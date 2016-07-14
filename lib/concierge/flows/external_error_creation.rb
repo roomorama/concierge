@@ -1,6 +1,6 @@
 module Concierge::Flows
 
-  # +UseCases::ExtennalErrorCreation+
+  # +Concierge::Flows::ExternalErrorCreation+
   #
   # This use case class wraps the creation of an +ExternalError+ record, performing
   # attribute validations prior to triggering the database call.

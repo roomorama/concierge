@@ -72,10 +72,6 @@ module Roomorama
       unit_changes.deleted << identifier
     end
 
-    def update_calendar(dates)
-      calendar.merge!(dates.dup)
-    end
-
     # makes sure that a non-empty property identifier is passed.
     def validate!
       if identifier.to_s.empty?
@@ -101,10 +97,6 @@ module Roomorama
     # diff.empty? # => false
     def empty?
       to_h.tap { |changes| changes.delete(:identifier) }.empty?
-    end
-
-    def calendar
-      @calendar ||= {}
     end
 
     def to_h
@@ -168,10 +160,6 @@ module Roomorama
       mapped_image_changes = map_changes(image_changes)
       unless mapped_image_changes.empty?
         data[:images] = mapped_image_changes
-      end
-
-      unless calendar.empty?
-        data[:availabilities] = map_availabilities(self)
       end
 
       mapped_unit_changes = map_changes(unit_changes)

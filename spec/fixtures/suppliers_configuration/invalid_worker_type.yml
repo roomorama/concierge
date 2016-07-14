@@ -1,0 +1,6 @@
+Supplier X:
+  workers:
+    invalid:
+      every: "1d"
+    availabilities:
+      every: "2h"

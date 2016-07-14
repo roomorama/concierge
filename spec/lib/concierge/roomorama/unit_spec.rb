@@ -98,15 +98,6 @@ RSpec.describe Roomorama::Unit do
     end
   end
 
-  describe "#update_calendar" do
-    it "updates its calendar with the data given" do
-      calendar = { "2016-05-22" => true, "2016-05-25" => true }
-      expect(subject.update_calendar(calendar)).to be
-
-      expect(subject.calendar).to eq({ "2016-05-22" => true, "2016-05-25" => true })
-    end
-  end
-
   describe "#validate!" do
     before do
       subject.identifier = "UNIT1"
@@ -118,11 +109,6 @@ RSpec.describe Roomorama::Unit do
       image = Roomorama::Image.new("IMG2")
       image.url = "https://wwww.example.org/image2.png"
       subject.add_image(image)
-
-      subject.update_calendar({
-        "2016-05-22" => true,
-        "2015-05-28" => true
-      })
     end
 
     it "is invalid if the identifier is not present" do
@@ -150,31 +136,6 @@ RSpec.describe Roomorama::Unit do
     it "is valid if all required parameters are present" do
       expect(subject.validate!).to be
     end
-
-    it "valid if there are no availabilities for the unit" do
-      allow(subject).to receive(:calendar) { {} }
-      expect(subject.validate!).to be
-    end
-  end
-
-  describe "#require_calendar!" do
-    before do
-      subject.update_calendar({
-        "2016-05-22" => true,
-        "2015-05-28" => true
-      })
-    end
-
-    it "is valid in case there is a non-empty availabilities calendar" do
-      expect(subject.require_calendar!).to be
-    end
-
-    it "is invalid in case the availabilities calendar is empty" do
-      allow(subject).to receive(:calendar) { {} }
-      expect {
-        subject.require_calendar!
-      }.to raise_error  Roomorama::Unit::ValidationError
-    end
   end
 
   describe "#to_h" do
@@ -192,14 +153,6 @@ RSpec.describe Roomorama::Unit do
       image = Roomorama::Image.new("image2")
       image.url = "https://www.example.org/image2.png"
       subject.add_image(image)
-
-      subject.update_calendar({
-        "2016-06-20" => true,
-        "2016-06-22" => true,
-        "2016-06-25" => true,
-        "2016-06-28" => false,
-        "2016-06-21" => true,
-      })
     end
 
     it "serializes all attributes" do
@@ -220,12 +173,7 @@ RSpec.describe Roomorama::Unit do
             identifier: "image2",
             url:        "https://www.example.org/image2.png"
           }
-        ],
-
-        availabilities: {
-          start_date: "2016-06-20",
-          data:        "111111110"
-        }
+        ]
       })
     end
   end

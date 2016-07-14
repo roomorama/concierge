@@ -25,15 +25,6 @@ RSpec.describe Workers::OperationRunner::Diff do
       image.url        = "https://www.example.org/img2"
       image.caption    =  "Swimming Pool"
       property.add_image(image)
-
-      property.update_calendar({
-        "2016-05-24" => true,
-        "2016-05-23" => true,
-        "2016-05-26" => false,
-        "2016-05-28" => false,
-        "2016-05-21" => true,
-        "2016-05-29" => true,
-      })
     end
   }
 
@@ -54,7 +45,7 @@ RSpec.describe Workers::OperationRunner::Diff do
     property = Property.new(
       identifier: roomorama_property.identifier,
       host_id:    host.id,
-      data:       roomorama_property.to_h.tap { |h| h.delete(:availabilities) }
+      data:       roomorama_property.to_h
     )
 
     PropertyRepository.create(property)
@@ -109,7 +100,7 @@ RSpec.describe Workers::OperationRunner::Diff do
       expect(property).to be_a Property
       expect(property.identifier).to eq "prop1"
       expect(property.host_id).to eq host.id
-      data = roomorama_property.to_h.tap { |h| h.delete(:availabilities) }
+      data = roomorama_property.to_h
       expect(property.data.to_h.keys).to eq data.keys.map(&:to_s)
       expect(property.data[:title]).to eq "New Title for property"
     end

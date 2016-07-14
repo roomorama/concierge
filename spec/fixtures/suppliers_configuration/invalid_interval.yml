@@ -1,0 +1,6 @@
+Supplier X:
+  workers:
+    metadata:
+      every: "invalid"
+    availabilities:
+      every: "2h"

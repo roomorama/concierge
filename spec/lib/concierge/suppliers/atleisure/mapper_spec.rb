@@ -58,20 +58,6 @@ RSpec.describe AtLeisure::Mapper do
       end
     end
 
-    context 'calendar' do
-      let(:on_request_date) { '2017-12-04' }
-      let(:missed_date) { '2017-10-04' }
-      let(:available_date) { '2017-12-08' }
-
-      it 'has dates of valid periods' do
-        property = subject.prepare(property_data).value
-
-        expect(property.calendar[available_date]).to eq true
-        expect(property.calendar[missed_date]).to be_nil
-        expect(property.calendar[on_request_date]).to be_nil
-      end
-    end
-
     context 'rates' do
       let(:on_request_period) {
         {

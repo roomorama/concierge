@@ -88,8 +88,6 @@ RSpec.describe Roomorama::Diff do
       image = Roomorama::Image.new("IMG1")
       image.url = "https://www.example.org/units/image1.png"
       unit.add_image(image)
-
-      unit.update_calendar("2016-05-22" => true)
     end
 
     it "adds a unit to the list of units of that property" do
@@ -122,15 +120,6 @@ RSpec.describe Roomorama::Diff do
     it "adds the identifier given to the list of units to be deleted" do
       subject.delete_unit("UNIT_DEL")
       expect(subject.unit_changes.deleted).to eq ["UNIT_DEL"]
-    end
-  end
-
-  describe "#update_calendar" do
-    it "updates its calendar with the data given" do
-      calendar = { "2016-05-22" => true, "2016-05-25" => true }
-      expect(subject.update_calendar(calendar)).to be
-
-      expect(subject.calendar).to eq({ "2016-05-22" => true, "2016-05-25" => true })
     end
   end
 
@@ -221,13 +210,6 @@ RSpec.describe Roomorama::Diff do
       image_diff.caption = "Barbecue Pit (renovated)"
       subject.change_image(image_diff)
 
-      subject.update_calendar({
-        "2016-05-22" => true,
-        "2016-05-20" => false,
-        "2016-05-28" => true,
-        "2016-05-21" => true
-      })
-
       unit = Roomorama::Unit.new("UNIT1")
       unit.title = "Unit 1"
       unit.nightly_rate = 200
@@ -243,8 +225,6 @@ RSpec.describe Roomorama::Diff do
       image.caption = "Bedroom 2"
       unit.add_image(image)
 
-      unit.update_calendar("2016-05-22" => true, "2016-05-28" => true)
-
       subject.add_unit(unit)
 
       unit = Roomorama::Diff::Unit.new("UNIT2")
@@ -258,8 +238,6 @@ RSpec.describe Roomorama::Diff do
       image_diff         = Roomorama::Diff::Image.new("UNIT2-IMG2")
       image_diff.caption = "Improved Living Room"
       unit.change_image(image_diff)
-
-      unit.update_calendar("2016-05-22" => true, "2016-05-28" => true)
 
       subject.change_unit(unit)
     end
@@ -288,11 +266,6 @@ RSpec.describe Roomorama::Diff do
           ]
         },
 
-        availabilities: {
-          start_date: "2016-05-20",
-          data:       "011111111"
-        },
-
         units: {
           create: [
             {
@@ -312,12 +285,7 @@ RSpec.describe Roomorama::Diff do
                   url:        "https://www.example.org/unit1/image2.png",
                   caption:    "Bedroom 2"
                 }
-              ],
-
-              availabilities: {
-                start_date: "2016-05-22",
-                data:       "1111111"
-              }
+              ]
             }
           ],
           update: [
@@ -339,11 +307,6 @@ RSpec.describe Roomorama::Diff do
                     caption:    "Improved Living Room"
                   }
                 ]
-              },
-
-              availabilities: {
-                start_date: "2016-05-22",
-                data:       "1111111"
               }
             }
           ]
