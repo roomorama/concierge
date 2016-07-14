@@ -16,7 +16,6 @@ module SAW
   #
   #   importer = SAW::Importer.new(credentials)
   #   importer.fetch_countries
-  #   importer.fetch_properties
   #   importer.fetch_properties_by_country(country)
   #   importer.fetch_properties_by_countries(countries)
   #   importer.fetch_detailed_property
