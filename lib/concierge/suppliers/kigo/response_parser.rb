@@ -125,7 +125,7 @@ module Kigo
     end
 
     def nett_amount(total)
-      coefficient = host.commission / 100 + 1
+      coefficient = 1 + (host.commission / 100)
       total / coefficient
     end
 
