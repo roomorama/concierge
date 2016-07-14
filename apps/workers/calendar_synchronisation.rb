@@ -21,6 +21,7 @@ module Workers
   #         available:    data[:available],
   #         nightly_rate: data[:nightly_price]
   #       )
+  #       calendar.add(entry)
   #     end
   #   end
   #

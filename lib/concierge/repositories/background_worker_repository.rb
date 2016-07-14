@@ -9,7 +9,7 @@ class BackgroundWorkerRepository
     query.count
   end
 
-  # returns a collection of backround workers associated with the given +Host+
+  # returns a collection of background workers associated with the given +Host+
   # instance.
   def self.for_host(host)
     query do

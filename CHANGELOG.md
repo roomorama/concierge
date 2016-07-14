@@ -8,9 +8,17 @@ how this file is formatted and how the process works.
 ### Added
 - added `currency_code` to the list of supported attributes for booking webhook and for `API::Controllers::Params::Booking` object
 - added `get_active_properties` by Waytostay::Client, for first time import
+- add `BackgroundWorker` and related refactor on queue processing.
+- add `Workers::CalendarSynchronisation` to deal with updating the calendar of availabilities.
+
 ### Changed
 - determine Roomorama API environment according to value in environment variable.
-- fixed SafeAccessHash#get method to return nil for unexisting keys
+- fixed `SafeAccessHash#get` method to return `nil` for nonexistent keys
+- new structure for the `config/suppliers.yml` file.
+- `Workers::Synchronisation` is now `Workers::PropertySynchronisation`.
+
+### Removed
+- `update_calendar` method removed from `Roomorama::Property`.
 
 ## [0.4.4] - 2016-07-07
 ### Added
