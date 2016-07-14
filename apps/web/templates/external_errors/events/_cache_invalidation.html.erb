@@ -1,0 +1,7 @@
+<div class="error-event">
+  <%= render partial: "external_errors/events/timestamp", locals: { event: event } %>
+
+  <h3>Cache Invalidation</h3>
+
+  <p>The <code><%= event[:key] %></code> key was invalidated from the cache.</p>
+</div>
