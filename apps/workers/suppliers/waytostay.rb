@@ -46,11 +46,11 @@ module Workers::Suppliers
 
     def synchronise
       changes = get_new_waytostay_changes
-      return if changes.nil?
+      return unless changes.success?
 
-      uniq_properties_in(changes).each do |property_ref|
+      uniq_properties_in(changes.value).each do |property_ref|
         property_sync.start(property_ref) do
-          wrapped_property = if changes[:properties].include? property_ref
+          wrapped_property = if changes.value[:properties].include? property_ref
                                # get the updated property from supplier
                                client.get_property(property_ref)
                              else
@@ -60,12 +60,12 @@ module Workers::Suppliers
                              end
           next wrapped_property unless wrapped_property.success?
 
-          if changes[:media].include? property_ref
+          if changes.value[:media].include? property_ref
             wrapped_property = client.update_media(wrapped_property.result)
             next wrapped_property unless wrapped_property.success?
           end
 
-          if changes[:availability].include? property_ref
+          if changes.value[:availability].include? property_ref
             calendar_sync.start(property_ref) do
               calendar_entries_result = client.get_availabilities(property_ref, wrapped_property.value.nightly_rate)
               next calendar_entries_result unless calendar_entries_result.success?
@@ -109,9 +109,9 @@ module Workers::Suppliers
     # Then announce if any error was returned from the block
     def get_new_waytostay_changes
       initialize_overall_sync_context
-      result = client.get_changes_since(last_synced_timestamp)
-      announce_error(result) unless result.success?
-      result.value
+      client.get_changes_since(last_synced_timestamp).tap do |result|
+        announce_error(result) unless result.success?
+      end
     end
 
     def announce_error(result)
