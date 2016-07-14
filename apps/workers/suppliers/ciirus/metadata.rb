@@ -23,7 +23,7 @@ module Workers::Suppliers::Ciirus
             if result.success?
               images = result.value
             else
-              message = "Failed to fetch images for property #{property_id}"
+              message = "Failed to fetch images for property `#{property_id}`"
               announce_error(message, result)
               return result
             end
@@ -32,7 +32,7 @@ module Workers::Suppliers::Ciirus
             if result.success?
               description = result.value
             else
-              message = "Failed to fetch description for property #{property_id}"
+              message = "Failed to fetch description for property `#{property_id}`"
               announce_error(message, result)
               return result
             end
@@ -41,7 +41,7 @@ module Workers::Suppliers::Ciirus
             if result.success?
               rates = result.value
             else
-              message = "Failed to fetch rates for property #{property_id}"
+              message = "Failed to fetch rates for property `#{property_id}`"
               announce_error(message, result)
               return result
             end

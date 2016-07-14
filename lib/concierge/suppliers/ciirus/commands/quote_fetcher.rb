@@ -61,8 +61,8 @@ module Ciirus
       end
 
       def error_result(result_hash)
-        description = result_hash.get('get_properties_response.get_properties_result.property_details.error_msg')
-        message = "The response contains not empty ErrorMsg: #{description}"
+        error_msg = result_hash.get('get_properties_response.get_properties_result.property_details.error_msg')
+        message = "The response contains not empty ErrorMsg: `#{error_msg}`"
         mismatch(message, caller)
         Result.error(:not_empty_error_msg)
       end
