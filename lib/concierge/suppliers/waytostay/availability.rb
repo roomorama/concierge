@@ -20,7 +20,7 @@ module Waytostay
         calendar_entries << availabilities_per_page(response, nightly_rate)
         current_page = next_page_url(response)
       end
-      return Result.new(calendar_entries.flatten)
+      Result.new(calendar_entries.flatten)
     end
 
     private
@@ -28,7 +28,7 @@ module Waytostay
     def availabilities_per_page(response, nightly_rate)
       missing_keys = response.missing_keys_from(REQUIRED_RESPONSE_KEYS)
       if missing_keys.empty?
-        return parse_calendar_entries(response, nightly_rate)
+        parse_calendar_entries(response, nightly_rate)
       else
         augment_missing_fields(missing_keys)
         Result.error(:unrecognised_response)
@@ -47,7 +47,7 @@ module Waytostay
           )
         end
       end
-      return entries
+      entries
     end
 
     # return the link for the next page, or nil if it is the last page
