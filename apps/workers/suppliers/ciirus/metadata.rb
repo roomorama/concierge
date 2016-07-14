@@ -59,7 +59,7 @@ module Workers::Suppliers::Ciirus
       unless result.success?
         with_context_enabled do
           message = "Failed to fetch images for property `#{property_id}`"
-          announce_error(message, result)
+          augment_context_error(message)
         end
       end
 
@@ -72,7 +72,7 @@ module Workers::Suppliers::Ciirus
       unless result.success?
         with_context_enabled do
           message = "Failed to fetch description for property `#{property_id}`"
-          announce_error(message, result)
+          augment_context_error(message)
         end
       end
 
@@ -85,7 +85,7 @@ module Workers::Suppliers::Ciirus
       unless result.success?
         with_context_enabled do
           message = "Failed to fetch rates for property `#{property_id}`"
-          announce_error(message, result)
+          augment_context_error(message)
         end
       end
 
@@ -114,7 +114,7 @@ module Workers::Suppliers::Ciirus
       Concierge::Credentials.for(Ciirus::Client::SUPPLIER_NAME)
     end
 
-    def announce_error(message, result)
+    def augment_context_error(message)
       message = {
         label: 'Synchronisation Failure',
         message: message,
@@ -122,6 +122,10 @@ module Workers::Suppliers::Ciirus
       }
       context = Concierge::Context::Message.new(message)
       Concierge.context.augment(context)
+    end
+
+    def announce_error(message, result)
+      augment_context_error(message)
 
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
         operation:   'sync',
