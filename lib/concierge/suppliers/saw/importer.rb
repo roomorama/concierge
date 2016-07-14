@@ -18,7 +18,7 @@ module SAW
   #   importer.fetch_countries
   #   importer.fetch_properties_by_country(country)
   #   importer.fetch_properties_by_countries(countries)
-  #   importer.fetch_detailed_property
+  #   importer.fetch_detailed_property(property_id)
   class Importer
 
     attr_reader :credentials
