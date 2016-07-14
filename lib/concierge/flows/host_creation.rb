@@ -81,6 +81,7 @@ module Concierge::Flows
     attribute :identifier,   presence: true
     attribute :username,     presence: true
     attribute :access_token, presence: true
+    attribute :commission
 
     attr_reader :config_path
 
@@ -129,7 +130,7 @@ module Concierge::Flows
 
       host.username     = username
       host.access_token = access_token
-
+      host.commission   = commission.to_f
       HostRepository.persist(host)
     end
 
