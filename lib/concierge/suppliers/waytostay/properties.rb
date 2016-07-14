@@ -165,7 +165,7 @@ module Waytostay
     # Extracts `services_cleaning[rate/required]`
     def parse_services(response)
       cleaning_fees = response.get("payment.fees")
-                              .select { |fee| fee["name"]=="cleaning fee" }
+                              .select { |fee| fee["name"] == "cleaning fee" }
                               .collect { |fee| fee["fee"] }
       total_cleaning_fee = cleaning_fees.reduce(&:+)
       {
@@ -201,11 +201,12 @@ module Waytostay
 
     def parse_amenities(response)
       roomorama_amenities = []
-      amenities = response.get("facilities_amenities.overview")
-      AMENITIES_MAPPINGS.each do |amenity, wts_amenity_name|
-         if amenities.any? { |a| a["name"]==wts_amenity_name && a["checked"] }
-           roomorama_amenities << amenity.to_s
-         end
+      amenities = Array(response.get("facilities_amenities.overview"))
+
+      amenities.each do |wts_amenity|
+        if wts_amenity["checked"] && AMENITIES_MAPPINGS.include?(wts_amenity["name"])
+         roomorama_amenities << AMENITIES_MAPPINGS[wts_amenity["name"]]
+        end
       end
 
       # kitchen
@@ -234,21 +235,17 @@ module Waytostay
     end
 
     AMENITIES_MAPPINGS = {
-        "internet":             "Internet",
-        "cabletv":              "International TV",
-        "tv":                   "TV",
-        "parking":              "Parking",
-        "airconditioning":      "Air conditioning",
-        "laundry":              "Washing machine",
-        "pool":                 "Swimming pool",
-        "elevator":             "Lift",
-        "balcony":              "Balcony",
-        "outdoor_space":        "Terrace",
-        # "breakfast":          "waytostay do not support",
-        # "doorman":            "waytostay do not support",
-        # "wheelchairaccess":   "waytostay do not support",
-        # "gym":                "waytostay do not support",
-      }
+      "Internet"         => "internet",
+      "International TV" => "cabletv",
+      "TV"               => "tv",
+      "Parking"          => "parking",
+      "Air conditioning" => "airconditioning",
+      "Washing machine"  => "laundry",
+      "Swimming pool"    => "pool",
+      "Lift"             => "elevator",
+      "Balcony"          => "balcony",
+      "Terrace"          => "outdoor_space"
+    }
 
   end
 end

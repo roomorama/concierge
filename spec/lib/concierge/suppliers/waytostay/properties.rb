@@ -47,8 +47,8 @@ RSpec.shared_examples "Waytostay property client" do
         JSON.parse(read_fixture("waytostay/properties/amenities_all_present.json")))
       }
       it { expect(subject[:amenities]).to match [
-          "internet", "cabletv", "tv", "parking", "airconditioning",
-          "laundry", "pool", "elevator", "balcony", "outdoor_space",
+          "internet", "tv", "cabletv", "airconditioning",
+          "laundry", "balcony", "outdoor_space", "pool", "parking", "elevator",
           "kitchen", "wifi", "free_cleaning", "bed_linen_and_towels"
         ]
       }
