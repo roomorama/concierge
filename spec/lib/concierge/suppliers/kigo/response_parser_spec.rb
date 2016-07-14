@@ -101,7 +101,7 @@ RSpec.describe Kigo::ResponseParser do
       response = read_fixture("kigo/success.json")
       result   = subject.compute_pricing(response)
 
-      expect(result.value.total).to eq 570/1.08 # 527.777
+      expect(result.value.total).to eq 527.78
     end
 
   end

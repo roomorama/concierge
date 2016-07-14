@@ -135,7 +135,7 @@ module Kigo
     # Kigo's response with +TOTAL_PRICE+ might include host commission
     def nett_amount(total)
       coefficient = 1 + (host.commission / 100)
-      total / coefficient
+      (total / coefficient).round(2)
     end
 
     def host

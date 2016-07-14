@@ -23,7 +23,7 @@ module API::Views
         if quotation.gross_rate
           response.merge!({
             gross_rate: quotation.gross_rate,
-            host_fee:   quotation.gross_rate - quotation.total
+            host_fee:   (quotation.gross_rate - quotation.total).round(2)
           })
         end
       end
