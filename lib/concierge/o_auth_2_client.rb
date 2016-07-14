@@ -50,8 +50,6 @@ module Concierge
       "User-Agent" => "Roomorama/Concierge #{Concierge::VERSION}"
     }.freeze
 
-    RETRY_401 = 3
-
     def initialize(id:, secret:, base_url:, token_url:, **options)
       @options = options
       oauth_options = {
@@ -99,14 +97,22 @@ module Concierge
 
     private
 
-    # Fetch the access token from cache by id.
-    # TODO: - Expire the cache according to the returned token's expire_at.
-    #         Currently we request for a new token every 1 day, arbitrarily
+    # Fetch the access token from cache by id, or request a new
+    # one if it's expired already/or it wasn't even in the cache
     #
     def access_token
       return @access_token unless @access_token.nil?
 
-      token_result = cache.fetch(oauth_client.id, freshness: one_day, serializer: json_serializer ) do
+      @access_token = get_token.tap do |token|
+        if token.expired?
+          cache.invalidate(oauth_client.id)
+          get_token
+        end
+      end
+    end
+
+    def get_token
+      token_result = cache.fetch(oauth_client.id, serializer: json_serializer ) do
         token_strategy = options.fetch(:strategy, :client_credentials)
         Concierge::Announcer.trigger(ON_TOKEN_REQUEST, oauth_client, token_strategy)
         @access_token = oauth_client.public_send(token_strategy).get_token
@@ -115,7 +121,7 @@ module Concierge
       end
 
       # If cache is hit, we need to parse result into an +OAuth2::AccessToken+ object
-      @access_token = OAuth2::AccessToken.from_hash(oauth_client, token_result.value)
+      OAuth2::AccessToken.from_hash(oauth_client, token_result.value)
     end
 
     def response_with_error_handling
@@ -125,12 +131,6 @@ module Concierge
       Concierge::Announcer.trigger(ON_RESPONSE, response.status, response.headers, response.body)
       json_serializer.decode(response.body)
     rescue OAuth2::Error => err
-      if err.response.status == 401 && !retried
-        expire_access_token_cache
-        retried = true
-        retry
-      end
-
       response = err.response
       Concierge::Announcer.trigger(ON_RESPONSE, response.status, response.headers, response.body)
       Result.error(:"http_status_#{err.response.status}", err.response.body)
@@ -150,11 +150,6 @@ module Concierge
 
     def cache
       @cache ||= Concierge::Cache.new(namespace: "oauth2")
-    end
-
-    def expire_access_token_cache
-      @access_token = nil
-      @cache.storage.delete("oauth2.#{@oauth_client.id}")
     end
 
     def one_day

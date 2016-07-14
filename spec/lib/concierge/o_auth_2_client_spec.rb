@@ -86,14 +86,14 @@ RSpec.describe Concierge::OAuth2Client do
                     serializer: Concierge::Cache::Serializers::JSON.new) do
           Result.new({"token_type"   => "BEARER",
                       "access_token" => "expired_token",
-                      "expires_at"   => 1465467451})
+                      "expires_at"   => 1465467451}) # <- in the past
         end
         client.oauth_client.connection = stub_call(:get, credentials[:url] + endpoint) {
           [401, {'Content-Type'=> 'application/json'}, "Token expired"]
         }
         # /oauth already stubbed to return the fixture with code 200
       end
-      it "should request for new token and retry the request" do
+      it "should request for new token" do
         current_cache = cache.storage.read("oauth2.#{credentials[:client_id]}")
         expect(current_cache.value).to include "expired_token"
 

@@ -16,7 +16,7 @@ RSpec.describe Waytostay::Client do
             serializer: Concierge::Cache::Serializers::JSON.new) do
       Result.new({"token_type"   => "BEARER",
                   "access_token" => "test_token",
-                  "expires_at"   => 1465467451})
+                  "expires_at"   => Time.now.to_i + 10 * 3600 })
     end
   end
 
