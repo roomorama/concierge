@@ -48,7 +48,7 @@ module Workers
     end
 
     # processes the message. For the +sync+ operation, all that is done is
-    # to trigger the +sync.<supplier_name>+ even on +Concierge::Announcer+.
+    # to trigger the +sync.<supplier_name>+ event on +Concierge::Announcer+.
     # If there is an implementation listening for this event, it will be
     # processed.
     #

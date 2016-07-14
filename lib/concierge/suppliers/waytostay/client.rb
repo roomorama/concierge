@@ -1,5 +1,11 @@
 require_relative 'quote'
+require_relative 'book'
+require_relative 'changes'
+require_relative 'properties'
+require_relative 'media'
+require_relative 'availability'
 require_relative 'cancel'
+
 module Waytostay
   # +Waytostay::Client+
   #
@@ -9,11 +15,15 @@ module Waytostay
   # For more information on how to interact with Waytostay, check the project Wiki.
   class Client
 
-    SUPPLIER_NAME = "Waytostay"
-    SUPPORTED_PAYMENT_METHOD = "full_payment"
+    SUPPLIER_NAME = "WayToStay".freeze
+    SUPPORTED_PAYMENT_METHOD = "full_payment".freeze
 
     include Waytostay::Quote
     include Waytostay::Book
+    include Waytostay::Changes
+    include Waytostay::Properties
+    include Waytostay::Media
+    include Waytostay::Availability
     include Waytostay::Cancel
 
     attr_reader :credentials
@@ -48,6 +58,13 @@ module Waytostay
           true
         end
       }
+    end
+
+    # Substitute keys in the path template with values
+    def build_path(path_template, params)
+      params.inject(path_template) do |path, (key, value)|
+        path.gsub(":#{key}", value)
+      end
     end
 
     def augment_missing_fields(fs)

@@ -1,0 +1,104 @@
+{
+  "_links": {
+    "self": {
+      "href": "https://apis.sandbox.waytostay.com:25443/properties/015868/media?page=1"
+    },
+    "first": {
+      "href": "https://apis.sandbox.waytostay.com:25443/properties/015868/media"
+    },
+    "next": {
+      "href": "/properties/015868/media?page=2"
+    },
+    "last": {
+      "href": "https://apis.sandbox.waytostay.com:25443/properties/015868/media?page=1"
+    }
+  },
+  "_embedded": {
+    "property_media": [
+      {
+        "id": 355474,
+        "url": "https://static.sandbox.waytostay.com:25443/media/apartments/570/3bce/5703bceabb997_extra_extra_large.JPG",
+        "original_name": "1-1 (1)5703bc29af95f5703bceab500c.JPG",
+        "size": "1440x1080",
+        "caption": "1-1 (1)5703bc29af95f5703bceab500c",
+        "order": 1,
+        "is_visible": true,
+        "type": "image",
+        "created_timestamp": 1459862771,
+        "_links": {
+          "self": {
+            "href": "https://apis.sandbox.waytostay.com:25443/properties/015868/media/355474"
+          }
+        }
+      },
+      {
+        "id": 355476,
+        "url": "https://static.sandbox.waytostay.com:25443/media/apartments/570/3bcf/5703bcfea0676_extra_extra_large.JPG",
+        "original_name": "1-1 (6)5703bc359d36e5703bcfe9bbf6.JPG",
+        "size": "1440x1080",
+        "caption": "1-1 (6)5703bc359d36e5703bcfe9bbf6",
+        "order": 2,
+        "is_visible": true,
+        "type": "image",
+        "created_timestamp": 1459862793,
+        "_links": {
+          "self": {
+            "href": "https://apis.sandbox.waytostay.com:25443/properties/015868/media/355476"
+          }
+        }
+      },
+      {
+        "id": 355473,
+        "url": "https://static.sandbox.waytostay.com:25443/media/apartments/570/3bce/5703bce298f4a_extra_extra_large.JPG",
+        "original_name": "1-1 (2)5703bc29563af5703bce291636.JPG",
+        "size": "1440x1080",
+        "caption": "1-1 (2)5703bc29563af5703bce291636",
+        "order": 3,
+        "is_visible": true,
+        "type": "image",
+        "created_timestamp": 1459862762,
+        "_links": {
+          "self": {
+            "href": "https://apis.sandbox.waytostay.com:25443/properties/015868/media/355473"
+          }
+        }
+      },
+      {
+        "id": 355478,
+        "url": "https://static.sandbox.waytostay.com:25443/media/apartments/570/3bd1/5703bd11df0bf_extra_extra_large.JPG",
+        "original_name": "1-1 (4) (2)5703bd11d92e4.JPG",
+        "size": "1440x1080",
+        "caption": "1-1 (4) (2)5703bd11d92e4",
+        "order": 4,
+        "is_visible": true,
+        "type": "image",
+        "created_timestamp": 1459862810,
+        "_links": {
+          "self": {
+            "href": "https://apis.sandbox.waytostay.com:25443/properties/015868/media/355478"
+          }
+        }
+      },
+      {
+        "id": 355479,
+        "url": "https://static.sandbox.waytostay.com:25443/media/apartments/570/3bd1/5703bd1a9b5ed_extra_extra_large.JPG",
+        "original_name": "1-1 (7)5703bc3d5527f5703bd1a9488f.JPG",
+        "size": "1440x1080",
+        "caption": "1-1 (7)5703bc3d5527f5703bd1a9488f",
+        "order": 5,
+        "is_visible": true,
+        "type": "image",
+        "created_timestamp": 1459862819,
+        "_links": {
+          "self": {
+            "href": "https://apis.sandbox.waytostay.com:25443/properties/015868/media/355479"
+          }
+        }
+      }
+    ]
+  },
+  "page_count": 2,
+  "page_size": 5,
+  "total_items": 7,
+  "page": 1
+}

@@ -1,0 +1,11 @@
+{
+  "reference": "001264",
+  "active": false,
+  "created_timestamp": 1241773440,
+  "modified_timestamp": 1467322324,
+  "_links": {
+    "self": {
+      "href": "https://apis.sandbox.waytostay.com:25443/properties/001264"
+    }
+  }
+}

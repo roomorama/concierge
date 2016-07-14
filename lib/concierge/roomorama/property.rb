@@ -111,6 +111,10 @@ module Roomorama
       images << image
     end
 
+    def drop_images!
+      @images = []
+    end
+
     def add_unit(unit)
       multi_unit!
       units << unit

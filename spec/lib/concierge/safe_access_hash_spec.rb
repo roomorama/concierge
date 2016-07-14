@@ -50,4 +50,12 @@ RSpec.describe Concierge::SafeAccessHash do
     end
   end
 
+  describe "#merge" do
+
+    subject { described_class.new(hash).merge({test: "val"}) }
+
+    it { expect { subject }.to_not change{hash.keys.count} }
+    it { expect(subject["test"]).to eq "val" }
+  end
+
 end

@@ -4,7 +4,7 @@ module Waytostay
   #
   module Quote
 
-    ENDPOINT = "/bookings/quote"
+    ENDPOINT = "/bookings/quote".freeze
     UNAVAILBLE_ERROR_MESSAGES = [
       "Apartment is not available for the selected dates",
       "The minimum number of nights to book this apartment is",
@@ -17,7 +17,7 @@ module Waytostay
       "booking_details.number_of_adults",
       "pricing.pricing_summary.gross_total",
       "pricing.currency"
-    ]
+    ].freeze
 
     # Quote prices
     # 

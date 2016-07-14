@@ -4,10 +4,10 @@ module Waytostay
   #
   module Book
 
-    ENDPOINT_BOOKING = "/bookings"
-    ENDPOINT_CONFIRMATION = "/bookings/:booking_reference/confirmation"
-    DEFAULT_CUSTOMER_LANGUAGE = "EN"
-    REQUIRED_RESPONSE_KEYS = [ "booking_reference" ]
+    ENDPOINT_BOOKING = "/bookings".freeze
+    ENDPOINT_CONFIRMATION = "/bookings/:booking_reference/confirmation".freeze
+    DEFAULT_CUSTOMER_LANGUAGE = "EN".freeze
+    REQUIRED_RESPONSE_KEYS = [ "booking_reference" ].freeze
 
     # Books and immediately confirms the waytostay booking
     #
@@ -45,16 +45,14 @@ module Waytostay
 
     # Always returns a +Reservation+.
     def remote_confirm(reservation, params)
-      result = oauth2_client.post(confirmation_path(reservation.code),
-                                  headers: headers)
+      result = oauth2_client.post(
+        build_path(ENDPOINT_CONFIRMATION, booking_reference: reservation.code),
+        headers: headers
+      )
       parse_reservation(result, params)
     end
 
     private
-
-    def confirmation_path ref
-      return ENDPOINT_CONFIRMATION.gsub(/:booking_reference/, ref)
-    end
 
     # Takes a +Result+ and returns a +Reservation+
     #
