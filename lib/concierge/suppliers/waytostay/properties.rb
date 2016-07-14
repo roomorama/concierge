@@ -160,9 +160,6 @@ module Waytostay
       {
         pets_allowed:     response.get("general.permissions.pets") == "allowed",
         smoking_allowed:  response.get("general.permissions.smoking") == "allowed",
-        parties_allowed:  response.get("general.permissions.parties") == "allowed",  #ignored by roomorama
-        children_allowed: response.get("general.permissions.children") == "allowed", #ignored by roomorama
-        young_allowed:    response.get("general.permissions.young") == "allowed",    #ignored by roomorama
       }
     end
 
