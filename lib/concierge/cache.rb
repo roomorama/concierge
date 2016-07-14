@@ -60,8 +60,9 @@ module Concierge
     end
 
     # events published through +Concierge::Announcer+.
-    CACHE_HIT  = "cache.hit"
-    CACHE_MISS = "cache.miss"
+    CACHE_HIT        = "cache.hit"
+    CACHE_MISS       = "cache.miss"
+    CACHE_INVALIDATE = "cache.invalidate"
 
     def initialize(namespace: nil, storage: Storage.new)
       @namespace = namespace
@@ -179,6 +180,18 @@ module Concierge
       end
     end
 
+    # Invalidates a cache +key+ given. If a computation is performed afterwards
+    # using the same key, it will be run again.
+    #
+    # The given +key+ will be properly namespaced with the namespace given on this
+    # class' initialization, if any.
+    def invalidate(key)
+      full_key = namespaced(key)
+      announce_cache_invalidate(full_key)
+
+      storage.delete(full_key)
+    end
+
     private
 
     def fresh?(entry, freshness)
@@ -206,6 +219,10 @@ module Concierge
 
     def announce_cache_miss(key)
       Concierge::Announcer.trigger(CACHE_MISS, key)
+    end
+
+    def announce_cache_invalidate(key)
+      Concierge::Announcer.trigger(CACHE_INVALIDATE, key)
     end
 
     def ensure_result!(object)

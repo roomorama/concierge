@@ -21,6 +21,7 @@ module Web::Views::ExternalErrors
     SUPPORTED_TYPES = [
       Concierge::Context::CacheHit::CONTEXT_TYPE,
       Concierge::Context::CacheMiss::CONTEXT_TYPE,
+      Concierge::Context::CacheInvalidation::CONTEXT_TYPE,
       Concierge::Context::IncomingRequest::CONTEXT_TYPE,
       Concierge::Context::JSONParsingError::CONTEXT_TYPE,
       Concierge::Context::ResponseMismatch::CONTEXT_TYPE,

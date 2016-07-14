@@ -9,6 +9,7 @@ how this file is formatted and how the process works.
 - added `currency_code` to the list of supported attributes for booking webhook and for `API::Controllers::Params::Booking` object
 - add `BackgroundWorker` and related refactor on queue processing.
 - add `Workers::CalendarSynchronisation` to deal with updating the calendar of availabilities.
+- `Concierge::Cache#invalidate` and the counterpart context event.
 
 ### Changed
 - determine Roomorama API environment according to value in environment variable.
