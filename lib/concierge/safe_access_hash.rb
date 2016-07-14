@@ -57,7 +57,7 @@ module Concierge
     # Given +required_keys+ should be an array of +string+
     #
     def missing_keys_from(required_keys)
-      required_keys.select{ |k| self.get(k).nil? }
+      required_keys.select{ |k| self.get(k).to_s.empty? }
     end
   end
 
