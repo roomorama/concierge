@@ -15,8 +15,11 @@ how this file is formatted and how the process works.
 ### Changed
 - determine Roomorama API environment according to value in environment variable.
 - fixed `SafeAccessHash#get` method to return `nil` for nonexistent keys
+- fixed `SafeAccessHash#missing_keys_from` method to check for empty strings as well
 - new structure for the `config/suppliers.yml` file.
 - `Workers::Synchronisation` is now `Workers::PropertySynchronisation`.
+- OAuth2Client invalidates cache if token is expired
+- `Waytostay::Client#update_availability` to `#get_availability`, and the client use the info
 
 ### Removed
 - `update_calendar` method removed from `Roomorama::Property`.
