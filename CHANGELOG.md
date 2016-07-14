@@ -38,6 +38,8 @@ how this file is formatted and how the process works.
 
 ## [0.5.0] - 2016-07-19
 ### Added
+- `gross_rate` and `host_fee` to quotation response
+- `commission` column to `Host` entity
 - added `currency_code` to the list of supported attributes for booking webhook and for `API::Controllers::Params::Booking` object
 - added `get_active_properties` by Waytostay::Client, for first time import
 - add `BackgroundWorker` and related refactor on queue processing.
@@ -45,6 +47,7 @@ how this file is formatted and how the process works.
 - `Concierge::Cache#invalidate` and the counterpart context event.
 
 ### Changed
+- fixed `Kigo::ResponseParser` to calculate nett price accordingly host's commission
 - determine Roomorama API environment according to value in environment variable.
 - fixed `SafeAccessHash#get` method to return `nil` for nonexistent keys
 - fixed `SafeAccessHash#missing_keys_from` method to check for empty strings as well
