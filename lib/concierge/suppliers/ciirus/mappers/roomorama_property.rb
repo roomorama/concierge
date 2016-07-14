@@ -5,7 +5,9 @@ module Ciirus
     # This class is responsible for building a +Roomorama::Property+ object
     # from data getting from Ciirus API.
     class RoomoramaProperty
-      # Maps Ciirus PropertyType to Roomorama property type/subtype
+      # Maps Ciirus PropertyType to Roomorama property type/subtype.
+      # There are also `Unspecified` and `Hotel` types in Ciirus API
+      # but roomorama doesn't support them.
       PROPERTY_TYPES = Concierge::SafeAccessHash.new({
         'Condo'           => {type: 'apartment', subtype: 'condo'},
         'Townhouse'       => {type: 'house', subtype: 'townhouse'},
@@ -16,7 +18,6 @@ module Ciirus
         'Cottage'         => {type: 'house', subtype: 'cottage'},
         'B+B'             => {type: 'bnb'},
         'Cabin'           => {type: 'house', subtype: 'cabin'},
-        'Hotel'           => {type: 'others', subtype: 'room'},
         'Motel'           => {type: 'others', subtype: 'room'},
         'Office'          => {type: 'others', subtype: 'office'},
         'Studio'          => {type: 'apartment', subtype: 'studio/bachelor'},
