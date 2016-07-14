@@ -37,7 +37,8 @@ module Waytostay
     # If an error happens in any step in the process of getting a response back from
     # Waytostay, a generic error message is sent back to the caller.
     # No failure is logged. The failure anouncement should be done by caller. This
-    # method expected to be only ever called by +Workers:Synchronisation
+    # method is expected to be only called by +Workers:Suppliers::Waytostay+
+    #
     def get_property(ref)
       result = oauth2_client.get(
         build_path(ENDPOINT, property_reference: ref),
@@ -94,7 +95,7 @@ module Waytostay
 
     def inactive_property(response)
       Roomorama::Property.new(response.get("reference")).tap do |property|
-        property[:disabled] = true
+        property.disabled = true
       end
     end
 
@@ -168,8 +169,8 @@ module Waytostay
     # Extracts `services_cleaning[rate/required]`
     def parse_services(response)
       cleaning_fees = response.get("payment.fees")
-                              .select { |x| x["name"]=="cleaning fee" }
-                              .collect { |x| x["fee"] }
+                              .select { |fee| fee["name"]=="cleaning fee" }
+                              .collect { |fee| fee["fee"] }
       total_cleaning_fee = cleaning_fees.reduce(&:+)
       {
         services_cleaning:          cleaning_fees.count > 0,
