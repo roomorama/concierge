@@ -54,7 +54,7 @@ module SAW
         def parse_availability(hash)
           flag = hash.get("flag_bookable_property_accommodation")
 
-          flag == "Y" ? true : false
+          flag == "Y"
         end
       end
     end
