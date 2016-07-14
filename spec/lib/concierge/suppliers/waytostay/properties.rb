@@ -99,6 +99,11 @@ RSpec.shared_examples "Waytostay property client" do
       let(:property_id) { partial_payment_property_id }
       it { expect(subject.result.disabled).to eq true }
     end
+
+    context "when property has empty postal code" do
+      let(:property_id) { "empty_postal_code" }
+      it { expect(subject.error.code).to eq :unrecognised_response }
+    end
   end
 
   describe "#get_active_properties" do

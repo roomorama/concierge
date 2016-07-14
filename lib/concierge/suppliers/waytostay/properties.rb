@@ -100,6 +100,7 @@ module Waytostay
 
     def parse_active_property(response)
       missing_keys = response.missing_keys_from(REQUIRED_RESPONSE_KEYS)
+      missing_keys << "location.address.postcode" if response.get("location.address.postcode")&.empty?
       if missing_keys.empty?
         property = Roomorama::Property.new(response.get("reference"))
         property_attributes_from(response).each do |key, value|
