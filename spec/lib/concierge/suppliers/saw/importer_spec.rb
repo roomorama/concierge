@@ -20,7 +20,7 @@ RSpec.describe SAW::Importer do
   end
   
   describe "fetch_properties_by_country" do
-    it "returns a result with an error if there is no results" do
+    it "returns a result with empty array if there is no results" do
       mock_request(:country, :one)
       mock_request(:propertysearch, :empty)
     
@@ -28,19 +28,47 @@ RSpec.describe SAW::Importer do
       current_country = countries_result.value.first
 
       properties_result = subject.fetch_properties_by_country(current_country)
+      expect(properties_result.success?).to be true
+      expect(properties_result.value).to eq([])
+    end
+    
+    it "returns a result with an error if there is no results" do
+      mock_request(:country, :one)
+      mock_request(:propertysearch, :error)
+    
+      countries_result = subject.fetch_countries
+      current_country = countries_result.value.first
+
+      properties_result = subject.fetch_properties_by_country(current_country)
       expect(properties_result.success?).to be false
-      expect(properties_result.error.code).to eq("1007")
+      expect(properties_result.error.code).to eq("9999")
     end
   end
 
   describe "fetch_properties_by_countries" do
-    it "returns an empty array when all requests are failed / empty" do
+    it "returns a result with an empty array when all requests are empty" do
       mock_request(:country, :multiple)
       mock_request(:propertysearch, :empty)
     
       countries_result = subject.fetch_countries
-      properties = subject.fetch_properties_by_countries(countries_result.value)
-      expect(properties.size).to eq(0)
+      properties_result = subject.fetch_properties_by_countries(
+        countries_result.value
+      )
+
+      expect(properties_result).to be_success
+      expect(properties_result.value).to eq([])
+    end
+    
+    it "returns a result with an error when all at least on request are failed" do
+      mock_request(:country, :multiple)
+      mock_request(:propertysearch, :error)
+    
+      countries_result = subject.fetch_countries
+      properties_result = subject.fetch_properties_by_countries(
+        countries_result.value
+      )
+      expect(properties_result).not_to be_success
+      expect(properties_result.error.code).to eq("9999")
     end
 
     it "returns a result with array of all properties from all countries" do
@@ -48,8 +76,14 @@ RSpec.describe SAW::Importer do
       mock_request(:country, :multiple)
 
       countries_result = subject.fetch_countries
-      properties = subject.fetch_properties_by_countries(countries_result.value)
-      expect(properties.size).to eq(20)
+      countries = countries_result.value
+      properties_result = subject.fetch_properties_by_countries(countries)
+      
+      expect(properties_result).to be_success
+      expect(properties_result.value.size).to eq(20)
+      expect(properties_result.value).to all(
+        be_kind_of(SAW::Entities::BasicProperty)
+      )
     end
   end
   
