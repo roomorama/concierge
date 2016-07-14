@@ -17,38 +17,30 @@ module Workers::Suppliers::Ciirus
         properties = result.value
         properties.each do |property|
           property_id = property.property_id
-          synchronisation.start(property.property_id) do
-            Concierge.context.disable!
-            result = importer.fetch_images(property_id)
-            if result.success?
-              images = result.value
-            else
-              message = "Failed to fetch images for property `#{property_id}`"
-              announce_error(message, result)
-              return result
+          if validator(property).valid?
+            synchronisation.start(property_id) do
+              Concierge.context.disable!
+              result = fetch_images(property_id)
+              if result.success?
+                images = result.value
+                result = fetch_description(property_id)
+                if result.success?
+                  description = result.value
+                  result = fetch_rates(property_id)
+                  if result.success?
+                    rates = result.value
+                    roomorama_property = mapper.build(property, images, rates, description)
+                    Result.new(roomorama_property)
+                  else
+                    result
+                  end
+                else
+                  result
+                end
+              else
+                result
+              end
             end
-
-            result = importer.fetch_description(property_id)
-            if result.success?
-              description = result.value
-            else
-              message = "Failed to fetch description for property `#{property_id}`"
-              announce_error(message, result)
-              return result
-            end
-
-            result = importer.fetch_rates(property_id)
-            if result.success?
-              rates = result.value
-            else
-              message = "Failed to fetch rates for property `#{property_id}`"
-              announce_error(message, result)
-              return result
-            end
-
-            roomorama_property = mapper.build(property, images, rates, description)
-
-            Result.new(roomorama_property)
           end
         end
         synchronisation.finish!
@@ -61,12 +53,61 @@ module Workers::Suppliers::Ciirus
 
     private
 
+    def fetch_images(property_id)
+      result = importer.fetch_images(property_id)
+
+      unless result.success?
+        with_context_enabled do
+          message = "Failed to fetch images for property `#{property_id}`"
+          announce_error(message, result)
+        end
+      end
+
+      result
+    end
+
+    def fetch_description(property_id)
+      result = importer.fetch_description(property_id)
+
+      unless result.success?
+        with_context_enabled do
+          message = "Failed to fetch description for property `#{property_id}`"
+          announce_error(message, result)
+        end
+      end
+
+      result
+    end
+
+    def fetch_rates(property_id)
+      result = importer.fetch_rates(property_id)
+
+      unless result.success?
+        with_context_enabled do
+          message = "Failed to fetch rates for property `#{property_id}`"
+          announce_error(message, result)
+        end
+      end
+
+      result
+    end
+
+    def with_context_enabled
+      Concierge.context.enable!
+      yield
+      Concierge.context.disable!
+    end
+
     def mapper
       @mapper ||= ::Ciirus::Mappers::RoomoramaProperty.new
     end
 
     def importer
       @importer ||= ::Ciirus::Importer.new(credentials)
+    end
+
+    def validator(property)
+      Ciirus::PropertyValidator.new(property)
     end
 
     def credentials

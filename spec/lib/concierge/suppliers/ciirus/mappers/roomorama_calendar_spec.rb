@@ -61,53 +61,55 @@ RSpec.describe Ciirus::Mappers::RoomoramaCalendar do
     allow(Date).to receive(:today).and_return(today)
   end
 
-  it 'returns roomorama calendar' do
-    expect(calendar).to be_a(Roomorama::Calendar)
-    expect(calendar.property_identifier).to eq(property_id)
-  end
+  describe '#build' do
+    it 'returns roomorama calendar' do
+      expect(calendar).to be_a(Roomorama::Calendar)
+      expect(calendar.property_identifier).to eq(property_id)
+    end
 
-  it 'returns not empty calendar' do
-    expect(calendar.entries).not_to be_empty
-  end
+    it 'returns not empty calendar' do
+      expect(calendar.entries).not_to be_empty
+    end
 
-  it 'returns calendar without dates with 0 price' do
-    invalid_entries = calendar.entries.select { |e| e.date >= Date.new(2014, 10, 17)}
+    it 'returns calendar without dates with 0 price' do
+      invalid_entries = calendar.entries.select { |e| e.date >= Date.new(2014, 10, 17)}
 
-    expect(invalid_entries).to be_empty
-  end
+      expect(invalid_entries).to be_empty
+    end
 
-  it 'returns calendar only after today' do
-    invalid_entries = calendar.entries.select { |e| e.date <= Date.today}
+    it 'returns calendar only after today' do
+      invalid_entries = calendar.entries.select { |e| e.date <= Date.today}
 
-    expect(invalid_entries).to be_empty
-  end
+      expect(invalid_entries).to be_empty
+    end
 
-  it 'does not return reserved days' do
-    entry = calendar.entries.detect { |e| e.date == Date.new(2014, 8, 28)}
+    it 'does not return reserved days' do
+      entry = calendar.entries.detect { |e| e.date == Date.new(2014, 8, 28)}
 
-    expect(entry).to be_nil
-  end
+      expect(entry).to be_nil
+    end
 
-  it 'does not allow to arrive in day of arrival' do
-    entry = calendar.entries.detect { |e| e.date == Date.new(2014, 9, 11)}
+    it 'does not allow to arrive in day of arrival' do
+      entry = calendar.entries.detect { |e| e.date == Date.new(2014, 9, 11)}
 
-    expect(entry.available).to be_falsey
-    expect(entry.checkin_allowed).to be_falsey
-  end
+      expect(entry.available).to be_falsey
+      expect(entry.checkin_allowed).to be_falsey
+    end
 
-  it 'allows to arrive in day of departure' do
-    entry = calendar.entries.detect { |e| e.date == Date.new(2014, 10, 16)}
+    it 'allows to arrive in day of departure' do
+      entry = calendar.entries.detect { |e| e.date == Date.new(2014, 10, 16)}
 
-    expect(entry.available).to be_truthy
-    expect(entry.checkin_allowed).to be_truthy
-  end
+      expect(entry.available).to be_truthy
+      expect(entry.checkin_allowed).to be_truthy
+    end
 
-  it 'returns filled entries' do
-    entry = calendar.entries.detect { |e| e.date == Date.new(2014, 9, 1)}
+    it 'returns filled entries' do
+      entry = calendar.entries.detect { |e| e.date == Date.new(2014, 9, 1)}
 
-    expect(entry.nightly_rate).to eq(141.43)
-    expect(entry.available).to be_truthy
-    expect(entry.checkin_allowed).to be_truthy
-    expect(entry.checkout_allowed).to be_truthy
+      expect(entry.nightly_rate).to eq(141.43)
+      expect(entry.available).to be_truthy
+      expect(entry.checkin_allowed).to be_truthy
+      expect(entry.checkout_allowed).to be_truthy
+    end
   end
 end
