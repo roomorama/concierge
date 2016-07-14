@@ -28,7 +28,7 @@ class BackgroundWorker
   #                    Indicates availabilities and prices.
   TYPES    = %w(metadata availabilities)
 
-  # possibile statuses a worker can be in:
+  # possible statuses a worker can be in:
   #
   # +idle+    - the background worker is not being run, and the +next_run_at+ column
   #             stores a timestamp in the future.
