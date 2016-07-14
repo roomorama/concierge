@@ -61,6 +61,15 @@ RSpec.describe Ciirus::Importer do
     it_behaves_like 'handling errors'
   end
 
+  describe '#fetch_reservations' do
+    let(:method) { :get_reservations }
+    let(:response) { read_fixture('ciirus/responses/reservations_response.xml') }
+    let(:result) { subject.fetch_reservations(property_id) }
+
+    it_behaves_like 'success response'
+    it_behaves_like 'handling errors'
+  end
+
   describe '#fetch_description' do
     let(:method) { :get_property_descriptions_plain_text }
     let(:result) { subject.fetch_description(property_id) }
