@@ -35,6 +35,12 @@ module Ciirus
       fetcher.call(property_id)
     end
 
+    # Returns the Result wrapping the array of Ciirus::Entities::Reservation
+    def fetch_reservations(property_id)
+      fetcher = Commands::ReservationsFetcher.new(credentials)
+      fetcher.call(property_id)
+    end
+
     # Returns the Result wrapping the description string.
     #
     # Tries to fetch plain text description if possible,
