@@ -21,13 +21,14 @@ module Kigo
     def initialize(params)
       @params = params
     end
-    
+
     # parses the response of a +computePricing+ API call.
     #
     # Returns a +Result+ instance wrapping a +Quotation+ object
     # in case the response is successful. Possible errors that could
     # happen in this step are:
     #
+    # +property_not_found+:          the param's +property_id+ doesn't persist in our database.
     # +invalid_json_representation+: the response sent back is not a valid JSON.
     # +quote_call_failed+:           the response status is not +E_OK+.
     # +unrecognised_response+:       the response was successful, but the format cannot
@@ -36,7 +37,7 @@ module Kigo
       decoded_payload = json_decode(response)
       return decoded_payload unless decoded_payload.success?
 
-      payload = decoded_payload.value
+      payload   = decoded_payload.value
       quotation = build_quotation(params)
 
       if payload["API_RESULT_CODE"] == "E_OK"
@@ -56,9 +57,12 @@ module Kigo
           end
         end
 
-        quotation.available = true
-        quotation.currency  = currency
-        quotation.total     = nett_amount(total.to_f)
+        return property_not_found unless property
+
+        quotation.available  = true
+        quotation.currency   = currency
+        quotation.total      = nett_amount(total.to_f)
+        quotation.gross_rate = total.to_f
 
         Result.new(quotation)
       elsif payload["API_RESULT_CODE"] == "E_NOSUCH" && payload["API_RESULT_TEXT"] =~ /is not available for your selected period/
@@ -90,7 +94,7 @@ module Kigo
       decoded_payload = json_decode(response)
       return decoded_payload unless decoded_payload.success?
 
-      payload = Concierge::SafeAccessHash.new(decoded_payload.value)
+      payload     = Concierge::SafeAccessHash.new(decoded_payload.value)
       reservation = build_reservation(params)
 
       if payload["API_RESULT_CODE"] == "E_OK"
@@ -124,6 +128,11 @@ module Kigo
       Result.error(:unrecognised_response)
     end
 
+    def property_not_found
+      Result.error(:property_not_found)
+    end
+
+    # Kigo's response with +TOTAL_PRICE+ might include host commission
     def nett_amount(total)
       coefficient = 1 + (host.commission / 100)
       total / coefficient
@@ -133,7 +142,6 @@ module Kigo
       @host ||= HostRepository.find(property.host_id)
     end
 
-    # todo: move to initialize after sync implementation
     def property
       @property ||= PropertyRepository.identified_by(params[:property_id]).first
     end

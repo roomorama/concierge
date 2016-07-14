@@ -2,8 +2,11 @@ require "spec_helper"
 
 RSpec.describe Kigo::ResponseParser do
   include Support::Fixtures
+  include Support::Factories
 
-  let(:host) { Host.new(commission: 0) }
+  let!(:host) { create_host(commission: 0) }
+  let!(:property) { create_property(identifier: "123", host_id: host.id)}
+
   subject { described_class.new(request_params) }
 
   describe "#compute_pricing" do
@@ -165,8 +168,6 @@ RSpec.describe Kigo::ResponseParser do
     end
 
     it "returns a reservation with the returned information on success" do
-      allow(subject).to receive(:host) { host }
-
       response = read_fixture("kigo/success_booking.json")
       result   = subject.parse_reservation(response)
 
