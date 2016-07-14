@@ -44,12 +44,9 @@ module Workers::Suppliers
             announce_error(message, result)
           end
           
-          availability_calendar = ::SAW::Mappers::AvailabilityCalendar.build
-
           roomorama_property = ::SAW::Mappers::RoomoramaProperty.build(
             property,
-            detailed_property,
-            availability_calendar
+            detailed_property
           )
           
           Result.new(roomorama_property)
