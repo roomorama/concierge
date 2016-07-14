@@ -52,15 +52,22 @@ module SAW
     end
 
     # Retrieves the list of properties in given countries
-    # Method ignores failed results, so only country property lists with
-    # successful results will be included in returning array.
+    # In case if request to one of the countries fails, method stops its
+    # execution and returns a result with a failure.
     #
-    # Returns [Array<SAW::Entities::BasicProperty>]
+    # Returns a +Result+ wrapping +Array+ of +SAW::Entities::BasicProperty+
+    # when operation succeeds
+    # Returns a +Result+ with +Result::Error+ when operation fails
     def fetch_properties_by_countries(countries)
-      countries.map do |country| 
+      properties = countries.map do |country| 
         result = fetch_properties_by_country(country)
-        result.success? ? result.value : []
+        
+        return result unless result.success?
+
+        result.value
       end.flatten
+
+      Result.new(properties)
     end
 
     # Retrieves property with extended information.

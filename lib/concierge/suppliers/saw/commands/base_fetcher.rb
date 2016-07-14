@@ -1,6 +1,10 @@
 module SAW
   module Commands
     class BaseFetcher
+      # Some errors from SAW API are not actually errors, so this constant is
+      # a list of whitelisted codes, which we consider as normal behaviour.
+      VALID_RESULT_ERROR_CODES = ['1007']
+
       attr_reader :credentials
 
       def initialize(credentials)
@@ -29,7 +33,10 @@ module SAW
     
       def valid_result?(hash)
         if hash.get("response")
-          hash.get("response.errors").nil?
+          return true if hash.get("response.errors").nil?
+          
+          code = hash.get("response.errors.error.code")
+          VALID_RESULT_ERROR_CODES.include?(code)
         else
           false
         end

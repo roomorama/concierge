@@ -18,9 +18,18 @@ module Workers::Suppliers
       else
         message = "Failed to perform the `#fetch_countries` operation"
         announce_error(message, result)
+        return
       end
       
-      properties = importer.fetch_properties_by_countries(countries)
+      result = importer.fetch_properties_by_countries(countries)
+      
+      if result.success?
+        properties = result.value
+      else
+        message = "Failed to perform the `#fetch_properties_by_countries` operation"
+        announce_error(message, result)
+        return
+      end
 
       properties.each do |property|
         synchronisation.start(property.internal_id) do
