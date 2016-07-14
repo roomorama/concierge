@@ -131,7 +131,7 @@ module Workers::Suppliers
     def initialize_overall_sync_context
       Concierge.context = Concierge::Context.new(type: "batch")
       sync_process = Concierge::Context::SyncProcess.new(
-        worker:     nil,
+        worker:     Workers::PropertySynchronisation::WORKER_TYPE,
         host_id:    host.id,
         identifier: nil
       )
