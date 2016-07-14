@@ -20,7 +20,7 @@ module Workers::Suppliers::Ciirus
           if result.success?
             rates = result.value
           else
-            message = "Failed to fetch rates for property #{property_id}"
+            message = "Failed to fetch rates for property `#{property_id}`"
             announce_error(message, result)
             return result
           end
@@ -30,7 +30,7 @@ module Workers::Suppliers::Ciirus
           if result.success?
             reservations = result.value
           else
-            message = "Failed to fetch availabilities for property #{property_id}"
+            message = "Failed to fetch availabilities for property `#{property_id}`"
             announce_error(message, result)
             return result
           end
