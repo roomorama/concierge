@@ -10,6 +10,7 @@ how this file is formatted and how the process works.
 - added `get_active_properties` by Waytostay::Client, for first time import
 - add `BackgroundWorker` and related refactor on queue processing.
 - add `Workers::CalendarSynchronisation` to deal with updating the calendar of availabilities.
+- `Concierge::Cache#invalidate` and the counterpart context event.
 
 ### Changed
 - determine Roomorama API environment according to value in environment variable.

@@ -20,3 +20,11 @@ Concierge::Announcer.on(Concierge::Cache::CACHE_MISS) do |key|
 
   Concierge.context.augment(cache_miss)
 end
+
+Concierge::Announcer.on(Concierge::Cache::CACHE_INVALIDATE) do |key|
+  cache_invalidation = Concierge::Context::CacheInvalidation.new(
+    key: key
+  )
+
+  Concierge.context.augment(cache_invalidation)
+end
