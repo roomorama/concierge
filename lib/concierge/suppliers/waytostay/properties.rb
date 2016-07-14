@@ -127,7 +127,6 @@ module Waytostay
       })
       attr.merge! parse_floors(response)
       attr.merge! parse_permissions(response)
-      attr.merge! parse_services(response)
       attr.merge! parse_number_of_beds(response)
       attr.merge! parse_amenities(response)
       attr.merge! parse_approximate_rates(response)
@@ -159,19 +158,6 @@ module Waytostay
       {
         pets_allowed:     response.get("general.permissions.pets") == "allowed",
         smoking_allowed:  response.get("general.permissions.smoking") == "allowed",
-      }
-    end
-
-    # Extracts `services_cleaning[rate/required]`
-    def parse_services(response)
-      cleaning_fees = response.get("payment.fees")
-                              .select { |fee| fee["name"] == "cleaning fee" }
-                              .collect { |fee| fee["fee"] }
-      total_cleaning_fee = cleaning_fees.reduce(&:+)
-      {
-        services_cleaning:          cleaning_fees.count > 0,
-        services_cleaning_rate:     total_cleaning_fee,
-        services_cleaning_required: true # have to pay fee to wts. TODO: check what this means in roomroama
       }
     end
 
