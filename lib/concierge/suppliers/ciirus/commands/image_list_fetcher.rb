@@ -40,7 +40,7 @@ module Ciirus
         images = result_hash.get(
           'get_image_list_response.get_image_list_result.string'
         )
-        images ? Array(images) : []
+        Array(images)
       end
     end
   end
