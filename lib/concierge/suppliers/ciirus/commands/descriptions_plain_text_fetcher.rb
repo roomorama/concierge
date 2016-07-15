@@ -20,7 +20,7 @@ module Ciirus
       EMPTY_DESCRIPTION_MESSAGE = 'GetDescriptionsPlainText: Error - The description is blank'
 
       def call(property_id)
-        message = xml_builder.descriptions_plain_text(property_id)
+        message = xml_builder.descriptions(property_id)
         result = remote_call(message)
         if result.success?
           result_hash = to_safe_hash(result.value)

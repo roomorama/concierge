@@ -44,17 +44,7 @@ RSpec.describe Ciirus::XMLBuilder do
     let(:valid_request) do
       read_fixture('ciirus/requests/valid_descriptions_plain_text_request.xml')
     end
-    let(:message) { subject.descriptions_plain_text(property_id) }
-
-    it { expect(message).to eq valid_request}
-  end
-
-  describe '#descriptions_html' do
-    let(:property_id) { 10 }
-    let(:valid_request) do
-      read_fixture('ciirus/requests/valid_descriptions_html_request.xml')
-    end
-    let(:message) { subject.descriptions_html(property_id) }
+    let(:message) { subject.descriptions(property_id) }
 
     it { expect(message).to eq valid_request}
   end
