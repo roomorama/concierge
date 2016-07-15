@@ -17,8 +17,8 @@ module Ciirus
 
     attr_reader :credentials
 
-    def initialize(creadentials)
-      @credentials = creadentials
+    def initialize(credentials)
+      @credentials = credentials
     end
 
     # Returns a +Result+ wrapping +Quotation+ in success case.
