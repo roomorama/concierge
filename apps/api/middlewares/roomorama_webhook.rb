@@ -18,7 +18,7 @@ module API
     # will expand Concierge's response back to the format expected by the webhooks.
     #
     # In the future, when the format of Roomorama webhooks gets simpler, this
-    # middlware could be entirely removed.
+    # middleware could be entirely removed.
     class RoomoramaWebhook
 
       # +API::Middlewares::RoomoramaWebhook::ConciergeRequest+
@@ -42,7 +42,7 @@ module API
       #       # ...
       #     }
       #   }
-      #   request.quote(paylaod)
+      #   request.quote(payload)
       #   # => Changes the request body to:
       #   # {
       #   #   property_id: "023",
@@ -92,7 +92,7 @@ module API
             guests:        payload.get("inquiry.num_guests"),
             subtotal:      payload.get("inquiry.subtotal"),
             currency_code: payload.get("inquiry.currency_code"),
-            customer: {
+            customer:      {
               first_name: payload.get("inquiry.user.first_name"),
               last_name:  payload.get("inquiry.user.last_name"),
               email:      payload.get("inquiry.user.email"),
@@ -152,7 +152,7 @@ module API
 
         attr_reader :payload
 
-        # Receives a +payload+ that represents the webhook paylaod initially sent
+        # Receives a +payload+ that represents the webhook payload initially sent
         # for this request/response cycle. Necessary since the response is basically
         # the same payload, with booking quotation values modified.
         def initialize(payload)
@@ -175,6 +175,9 @@ module API
           payload["inquiry"].merge!({
             "base_rental"            => response["total"],
             "currency_code"          => response["currency"],
+            "raw_price"              => response["raw_price"],
+            "host_fee"               => response["host_fee"],
+            "host_fee_percentage"    => response["host_fee_percentage"],
             "tax"                    => 0,
             "processing_fee"         => 0,
             "extra_guests_surcharge" => 0,
