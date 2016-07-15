@@ -93,7 +93,7 @@ module Roomorama
 
       {
         identifier:       property_identifier,
-        start_date:       entries.select(&:valid?).min_by(&:date).date.to_s,
+        start_date:       parsed.start_date.to_s,
         availabilities:   parsed.availabilities,
         nightly_rates:    parsed.rates.nightly,
         weekly_rates:     parsed.rates.weekly,
@@ -106,18 +106,20 @@ module Roomorama
     private
 
     Rates         = Struct.new(:nightly, :weekly, :monthly)
-    ParsedEntries = Struct.new(:availabilities, :checkin_rules, :checkout_rules, :rates)
+    ParsedEntries = Struct.new(:start_date, :availabilities, :checkin_rules, :checkout_rules, :rates)
 
     # parses the collection of +entries+ given on the lifecycle of this instance,
     # and builds a +Roomorama::Calendar::ParsedEntries+ instance, containing data
     # after parsing.
     def parse_entries
+      return empty_response if entries.empty?
+
       sorted_entries = entries.select(&:valid?).sort_by(&:date)
       start_date     = sorted_entries.first.date
       end_date       = sorted_entries.last.date
 
       rates          = Rates.new([], [], [])
-      parsed_entries = ParsedEntries.new("", "", "", rates)
+      parsed_entries = ParsedEntries.new(start_date, "", "", "", rates)
 
       # index all entries by date, to make the lookup for a given date faster.
       # Index once, and then all lookups can be performed in constant time,
@@ -142,6 +144,13 @@ module Roomorama
       end
 
       parsed_entries
+    end
+
+    # when there are no calendar entries given, the serialization should return
+    # the empty counterpart of the fields.
+    def empty_response
+      rates = Rates.new([], [], [])
+      ParsedEntries.new("", "", "", "", rates)
     end
 
     # builds a placeholder calendar entry to be used when there are gaps

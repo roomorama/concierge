@@ -92,6 +92,19 @@ RSpec.describe Roomorama::Calendar do
         checkout_allowed: "111111"
       })
     end
+
+    it "is able to serialize empty calendars" do
+      expect(subject.to_h).to eq({
+        identifier:       "prop1",
+        start_date:       "",
+        availabilities:   "",
+        nightly_rates:    [],
+        weekly_rates:     [],
+        monthly_rates:    [],
+        checkin_allowed:  "",
+        checkout_allowed: ""
+      })
+    end
   end
 
   def create_entry(overrides = {})
