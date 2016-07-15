@@ -18,6 +18,8 @@ module Ciirus
     # encapsulates the array of +Ciirus::Entities::Property+.
     class PropertiesFetcher < BaseCommand
 
+      OPERATION_NAME = :get_properties
+
       def call
         filter_options = Ciirus::FilterOptions.new
         search_options = Ciirus::SearchOptions.new
@@ -38,7 +40,7 @@ module Ciirus
       protected
 
       def operation_name
-        :get_properties
+        OPERATION_NAME
       end
 
       private

@@ -51,7 +51,7 @@ RSpec.describe Ciirus::Commands::Booking do
 
     context 'when xml response is correct' do
       it 'returns success reservation' do
-        stub_call(method: :make_booking, response: success_response)
+        stub_call(method: described_class::OPERATION_NAME, response: success_response)
 
         result = subject.call(params)
 
@@ -61,7 +61,7 @@ RSpec.describe Ciirus::Commands::Booking do
       end
 
       it 'fills reservation with right attributes' do
-        stub_call(method: :make_booking, response: success_response)
+        stub_call(method: described_class::OPERATION_NAME, response: success_response)
 
         result = subject.call(params)
 
@@ -77,7 +77,7 @@ RSpec.describe Ciirus::Commands::Booking do
 
     context 'when xml contains error message' do
       it 'returns a result with error' do
-        stub_call(method: :make_booking, response: error_response)
+        stub_call(method: described_class::OPERATION_NAME, response: error_response)
 
         result = subject.call(params)
 

@@ -16,6 +16,8 @@ module Ciirus
     # encapsulates the collection of image urls.
     class ImageListFetcher < BaseCommand
 
+      OPERATION_NAME = :get_image_list
+
       def call(property_id)
         message = xml_builder.image_list(property_id)
         result = remote_call(message)
@@ -31,7 +33,7 @@ module Ciirus
       protected
 
       def operation_name
-        :get_image_list
+        OPERATION_NAME
       end
 
       private

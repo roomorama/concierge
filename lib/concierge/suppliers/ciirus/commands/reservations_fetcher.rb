@@ -16,6 +16,8 @@ module Ciirus
     # encapsulates the collection of +Ciirus::Entities::Reservation+.
     class ReservationsFetcher < BaseCommand
 
+      OPERATION_NAME = :get_reservations
+
       def call(property_id)
         message = xml_builder.reservations(property_id)
         result = remote_call(message)
@@ -31,7 +33,7 @@ module Ciirus
       protected
 
       def operation_name
-        :get_reservations
+        OPERATION_NAME
       end
 
       private

@@ -18,6 +18,8 @@ module Ciirus
     # encapsulates the +Reservation+.
     class Booking < BaseCommand
 
+      OPERATION_NAME = :make_booking
+
       def call(params)
         customer = params[:customer]
         name = "#{customer[:first_name]} #{customer[:last_name]}"
@@ -49,7 +51,7 @@ module Ciirus
       protected
 
       def operation_name
-        :make_booking
+          OPERATION_NAME
       end
 
       private

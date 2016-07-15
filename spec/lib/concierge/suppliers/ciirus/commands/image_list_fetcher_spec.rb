@@ -40,7 +40,7 @@ RSpec.describe Ciirus::Commands::ImageListFetcher do
       end
 
       it 'returns array of images' do
-        stub_call(method: :get_image_list, response: success_response)
+        stub_call(method: described_class::OPERATION_NAME, response: success_response)
 
         result = subject.call(property_id)
         images = result.value
@@ -59,7 +59,7 @@ RSpec.describe Ciirus::Commands::ImageListFetcher do
       end
 
       it 'returns array with a image' do
-        stub_call(method: :get_image_list, response: one_image_response)
+        stub_call(method: described_class::OPERATION_NAME, response: one_image_response)
 
         result = subject.call(property_id)
         images = result.value
@@ -71,7 +71,7 @@ RSpec.describe Ciirus::Commands::ImageListFetcher do
     end
 
     it 'returns empty array for empty response' do
-      stub_call(method: :get_image_list, response: empty_response)
+      stub_call(method: described_class::OPERATION_NAME, response: empty_response)
 
       result = subject.call(property_id)
       images = result.value

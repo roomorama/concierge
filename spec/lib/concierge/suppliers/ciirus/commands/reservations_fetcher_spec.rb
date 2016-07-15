@@ -62,7 +62,7 @@ RSpec.describe Ciirus::Commands::ReservationsFetcher do
 
     context 'when many reservations' do
       it 'returns array of reservations' do
-        stub_call(method: :get_reservations, response: success_response)
+        stub_call(method: described_class::OPERATION_NAME, response: success_response)
 
         result = subject.call(property_id)
         reservations = result.value
@@ -75,7 +75,7 @@ RSpec.describe Ciirus::Commands::ReservationsFetcher do
 
     context 'when one reservation' do
       it 'returns array with a reservation' do
-        stub_call(method: :get_reservations, response: one_reservation_response)
+        stub_call(method: described_class::OPERATION_NAME, response: one_reservation_response)
 
         result = subject.call(property_id)
         reservations = result.value
@@ -87,7 +87,7 @@ RSpec.describe Ciirus::Commands::ReservationsFetcher do
     end
 
     it 'returns empty array for empty response' do
-      stub_call(method: :get_reservations, response: empty_response)
+      stub_call(method: described_class::OPERATION_NAME, response: empty_response)
 
       result = subject.call(property_id)
       reservations = result.value
