@@ -39,17 +39,17 @@ module Workers::Suppliers
 
           if result.success?
             detailed_property = result.value
+          
+            roomorama_property = ::SAW::Mappers::RoomoramaProperty.build(
+              property,
+              detailed_property
+            )
+            
+            Result.new(roomorama_property)
           else
             message = "Failed to perform the `#fetch_detailed_property` operation"
             announce_error(message, result)
           end
-          
-          roomorama_property = ::SAW::Mappers::RoomoramaProperty.build(
-            property,
-            detailed_property
-          )
-          
-          Result.new(roomorama_property)
         end
       end
 
