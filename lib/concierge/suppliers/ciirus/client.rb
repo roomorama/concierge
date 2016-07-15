@@ -34,9 +34,9 @@ module Ciirus
     # Ciirus, a generic error message is sent back to the caller, and the failure
     # is logged.
     def book(params)
-      result = Ciirus::Commands::Booking.new(credentials).call(params)
-      database.create(result.value) if result.success? # workaround to keep booking code for reservation
-      result
+      Ciirus::Commands::Booking.new(credentials).call(params).tap do |reservation|
+        database.create(reservation.value) if reservation.success?
+      end
     end
 
     private
