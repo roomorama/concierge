@@ -19,7 +19,6 @@ RSpec.describe Woori::Commands::PropertiesFetcher do
 
     expect(properties.size).to eq(5)
     expect(properties).to all(be_kind_of(Roomorama::Property))
-    binding.pry
   end
   
   it "returns results when there is only one property" do
