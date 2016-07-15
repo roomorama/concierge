@@ -1,0 +1,13 @@
+{
+  "result": {
+    "property_id": "String",
+    "unit_id": "String",
+    "check_in": "String",
+    "check_out": "String",
+    "guests": 3,
+    "code": "FOOBAR-123",
+    "extra": "Hash",
+    "customer": {
+    }
+  }
+}
