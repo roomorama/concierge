@@ -68,11 +68,20 @@ module Ciirus
       end
 
       def error_result(result_hash)
-        booking_placed = extract_booking_placed(result_hash)
-        description = extract_error_message(result_hash)
-        message = "The response contains unexpected data:
-                   ErrorMessage: #{description};
-                   BookingPlaced: #{booking_placed}"
+        errors = {
+          ErrorMessage:  extract_error_message(result_hash),
+          BookingPlaced: extract_booking_placed(result_hash)
+        }
+
+        parts = ['The response contains unexpected data:']
+        errors.each do |label, field|
+          unless field.nil?
+            parts << "#{label}:  #{field}"
+          end
+        end
+
+        message = parts.join("\n")
+
         mismatch(message, caller)
         Result.error(:unexpected_response)
       end
