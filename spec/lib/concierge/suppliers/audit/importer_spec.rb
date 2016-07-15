@@ -39,10 +39,20 @@ RSpec.describe Audit::Importer do
   describe '#json_to_property' do
     let(:json) { JSON.parse(read_fixture('audit/fetch_properties.json'))['result'].sample }
 
-    it 'should return Result of Roomorama::Property' do
-      result = importer.json_to_property(json)
+    it 'should return Result of Roomorama::Property with calendar parsed' do
+      parsed_calendar_entries = []
+      result = importer.json_to_property(json) do |calendar_entries|
+        calendar_entries.each_with_index do |entry, index|
+          yyyymmdd, bool = json['availability_dates'].to_a[index]
+          expect(entry.date).to eq(Date.parse(yyyymmdd))
+          expect(entry.available).to eq(bool)
+          expect(entry.nightly_rate).to eq(json['nightly_rate'])
+          parsed_calendar_entries << entry
+        end
+      end
       expect(result).to be_kind_of(Result)
       expect(result.value).to be_kind_of(Roomorama::Property)
+      expect(parsed_calendar_entries.length).to eq(3)
     end
   end
 end

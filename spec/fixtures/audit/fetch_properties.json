@@ -66,11 +66,6 @@
           "host_weekly_price": 100,
           "host_monthly_price": 400,
           "number_of_units": 2,
-          "availability_dates": {
-            "2016-07-11": true,
-            "2016-07-12": false,
-            "2016-07-13": true
-          },
           "images": [
             {
               "identifier": "audit-unit1img1",
@@ -95,11 +90,6 @@
           "host_weekly_price": 100,
           "host_monthly_price": 400,
           "number_of_units": 2,
-          "availability_dates": {
-            "2016-07-11": false,
-            "2016-07-12": true,
-            "2016-07-13": true
-          },
           "images": [
             {
               "identifier": "audit-unit2img1",
