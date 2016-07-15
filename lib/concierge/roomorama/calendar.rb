@@ -88,6 +88,11 @@ module Roomorama
       entries.all?(&:valid?) || (raise ValidationError.new("One of the entries miss required parameters."))
     end
 
+    # checks if the calendar is empty (has no entries).
+    def empty?
+      entries.empty?
+    end
+
     def to_h
       parsed = parse_entries
 
