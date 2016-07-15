@@ -1,0 +1,198 @@
+require 'spec_helper'
+
+RSpec.describe Workers::Suppliers::Ciirus::Metadata do
+  include Support::Fixtures
+  include Support::Factories
+
+  let(:supplier) { create_supplier(name: Ciirus::Client::SUPPLIER_NAME) }
+  let(:host) { create_host(supplier_id: supplier.id) }
+  let(:properties_list) do
+    [
+      Ciirus::Entities::Property.new(
+        {
+          property_id: '33680',
+          property_name: "Mandy's Magic Villa",
+          address: '1234 Dahlia Reserve Drive',
+          zip: '34744',
+          city: 'Kissimmee',
+          bedrooms: 6,
+          sleeps: 6,
+          min_nights_stay: 0,
+          type: 'Villa',
+          country: 'UK',
+          xco: '28.2238577',
+          yco: '-81.4975719',
+          bathrooms: 4,
+          king_beds: 1,
+          queen_beds: 2,
+          full_beds: 3,
+          twin_beds: 4,
+          extra_bed: true,
+          sofa_bed: true,
+          pets_allowed: true,
+          currency_code: 'USD',
+          amenities: ['airconditioning', 'gym', 'internet']
+        }
+      ),
+      Ciirus::Entities::Property.new(
+        {
+          property_id: '33680',
+          property_name: "Mandy's Magic Villa",
+          address: '1234 Dahlia Reserve Drive',
+          zip: '34744',
+          city: 'Kissimmee',
+          bedrooms: 6,
+          sleeps: 6,
+          min_nights_stay: 0,
+          type: 'Hotel',
+          country: 'UK',
+          xco: '28.2238577',
+          yco: '-81.4975719',
+          bathrooms: 4,
+          king_beds: 1,
+          queen_beds: 2,
+          full_beds: 3,
+          twin_beds: 4,
+          extra_bed: true,
+          sofa_bed: true,
+          pets_allowed: true,
+          currency_code: 'USD',
+          amenities: ['airconditioning', 'gym', 'internet']
+        }
+      )
+    ]
+  end
+  let(:images) { ['http://image.com/152523'] }
+  let(:description) { 'Some description here' }
+  let(:success_result) { Result.new(properties_list) }
+  let(:rates) do
+    [
+      Ciirus::Entities::PropertyRate.new(
+        DateTime.new(2014, 6, 27),
+        DateTime.new(2014, 8, 22),
+        3,
+        157.50
+      ),
+      Ciirus::Entities::PropertyRate.new(
+        DateTime.new(2014, 8, 23),
+        DateTime.new(2014, 10, 16),
+        2,
+        141.43
+      )
+    ]
+  end
+
+  subject { described_class.new(host) }
+
+  it 'announces an error if fetching properties fails' do
+    allow_any_instance_of(Ciirus::Importer).to receive(:fetch_properties) { Result.error(:soap_error) }
+
+    subject.perform
+
+    error = ExternalErrorRepository.last
+
+    expect(error.operation).to eq 'sync'
+    expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
+    expect(error.code).to eq 'soap_error'
+  end
+
+  context 'fetching images' do
+    before do
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_properties) { success_result }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_images) { Result.error(:soap_error) }
+    end
+
+    it 'announces an error if fetching images fails' do
+      subject.perform
+
+      error = ExternalErrorRepository.last
+
+      expect(error.operation).to eq 'sync'
+      expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
+      expect(error.code).to eq 'soap_error'
+    end
+
+    it 'doesnt finalize synchronisation with external error' do
+      expect(Roomorama::Client::Operations).to_not receive(:disable)
+      subject.perform
+    end
+  end
+
+  context 'fetching description' do
+    before do
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_properties) { success_result }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_images) { Result.new(images) }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_description) { Result.error(:soap_error) }
+    end
+
+    it 'announces an error if fetching description fails' do
+      subject.perform
+
+      error = ExternalErrorRepository.last
+
+      expect(error.operation).to eq 'sync'
+      expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
+      expect(error.code).to eq 'soap_error'
+    end
+
+    it 'doesnt finalize synchronisation with external error' do
+      expect(Roomorama::Client::Operations).to_not receive(:disable)
+      subject.perform
+    end
+  end
+
+  context 'fetching rates' do
+    before do
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_properties) { success_result }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_images) { Result.new(images) }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_description) { Result.new(description) }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_rates) { Result.error(:soap_error) }
+    end
+
+    it 'announces an error if fetching rates fails' do
+      subject.perform
+
+      error = ExternalErrorRepository.last
+
+      expect(error.operation).to eq 'sync'
+      expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
+      expect(error.code).to eq 'soap_error'
+    end
+
+    it 'doesnt finalize synchronisation with external error' do
+      expect(Roomorama::Client::Operations).to_not receive(:disable)
+      subject.perform
+    end
+  end
+
+  context 'success' do
+
+    before do
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_properties) { success_result }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_images) { Result.new(images) }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_description) { Result.new(description) }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_rates) { Result.new(rates) }
+    end
+
+    it 'finalizes synchronisation' do
+      allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
+
+      expect(subject.synchronisation).to receive(:finish!)
+      subject.perform
+    end
+
+    it 'doesnt create property with unsuccessful publishing' do
+      allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.error('fail') }
+      expect {
+        subject.perform
+      }.to_not change { PropertyRepository.count }
+    end
+
+    it 'creates valid properties in database' do
+      allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
+      expect {
+        subject.perform
+      }.to change { PropertyRepository.count }.by(1)
+    end
+  end
+end
