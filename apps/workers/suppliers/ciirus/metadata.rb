@@ -20,26 +20,21 @@ module Workers::Suppliers::Ciirus
           if validator(property).valid?
             synchronisation.start(property_id) do
               Concierge.context.disable!
+
               result = fetch_images(property_id)
-              if result.success?
-                images = result.value
-                result = fetch_description(property_id)
-                if result.success?
-                  description = result.value
-                  result = fetch_rates(property_id)
-                  if result.success?
-                    rates = result.value
-                    roomorama_property = mapper.build(property, images, rates, description)
-                    Result.new(roomorama_property)
-                  else
-                    result
-                  end
-                else
-                  result
-                end
-              else
-                result
-              end
+              next result unless result.success?
+              images = result.value
+
+              result = fetch_description(property_id)
+              next result unless result.success?
+              description = result.value
+
+              result = fetch_rates(property_id)
+              next result unless result.success?
+              rates = result.value
+
+              roomorama_property = mapper.build(property, images, rates, description)
+              Result.new(roomorama_property)
             end
           end
         end
