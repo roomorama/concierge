@@ -8,7 +8,7 @@ RSpec.describe API::Controllers::Kigo::Quote do
   include Support::Fixtures
   include Support::Factories
 
-  let!(:host) { create_host(commission: 7.0) }
+  let!(:host) { create_host(fee_percentage: 7.0) }
   let!(:property) { create_property(identifier: "567") }
 
   let(:params) {

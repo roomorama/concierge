@@ -132,9 +132,9 @@ module Kigo
       Result.error(:property_not_found)
     end
 
-    # Kigo's response with +TOTAL_PRICE+ might include host commission
+    # Kigo's response with +TOTAL_PRICE+ might include host fee_percentage
     def nett_amount(total)
-      coefficient = 1 + (host.commission / 100)
+      coefficient = 1 + (host.fee_percentage / 100)
       (total / coefficient).round(2)
     end
 

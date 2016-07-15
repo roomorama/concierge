@@ -128,9 +128,9 @@ module Concierge::Flows
       existing = HostRepository.from_supplier(supplier).identified_by(identifier).first
       host = existing || Host.new(supplier_id: supplier.id, identifier: identifier)
 
-      host.username     = username
-      host.access_token = access_token
-      host.commission   = commission.to_f
+      host.username       = username
+      host.access_token   = access_token
+      host.fee_percentage = fee_percentage.to_f
       HostRepository.persist(host)
     end
 

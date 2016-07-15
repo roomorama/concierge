@@ -39,7 +39,7 @@ how this file is formatted and how the process works.
 ## [0.5.0] - 2016-07-19
 ### Added
 - `gross_rate` and `host_fee` to quotation response
-- `commission` column to `Host` entity
+- `fee_percentage` column to `Host` entity
 - added `currency_code` to the list of supported attributes for booking webhook and for `API::Controllers::Params::Booking` object
 - added `get_active_properties` by Waytostay::Client, for first time import
 - add `BackgroundWorker` and related refactor on queue processing.

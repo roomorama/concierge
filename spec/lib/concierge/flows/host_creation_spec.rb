@@ -11,7 +11,7 @@ RSpec.describe Concierge::Flows::HostCreation do
       identifier:   "host1",
       username:     "roomorama-user",
       access_token: "a1b2c3",
-      commission:   7
+      fee_percentage:   7
     }
   }
 
@@ -88,7 +88,7 @@ RSpec.describe Concierge::Flows::HostCreation do
       expect(host.identifier).to eq "host1"
       expect(host.username).to eq "roomorama-user"
       expect(host.access_token).to eq "a1b2c3"
-      expect(host.commission).to eq 7
+      expect(host.fee_percentage).to eq 7
 
       expect(workers.size).to eq 2
 

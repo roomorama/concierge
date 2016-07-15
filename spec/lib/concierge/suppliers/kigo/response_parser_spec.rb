@@ -4,7 +4,7 @@ RSpec.describe Kigo::ResponseParser do
   include Support::Fixtures
   include Support::Factories
 
-  let!(:host) { create_host(commission: 0) }
+  let!(:host) { create_host(fee_percentage: 0) }
   let!(:property) { create_property(identifier: "123", host_id: host.id)}
 
   subject { described_class.new(request_params) }
@@ -94,8 +94,8 @@ RSpec.describe Kigo::ResponseParser do
       expect(quotation.total).to eq 570.0
     end
 
-    it "returns nett ammount if host has a commission" do
-      host.commission = 8.0
+    it "returns nett ammount if host has a fee" do
+      host.fee_percentage = 8.0
       allow(subject).to receive(:host) { host }
 
       response = read_fixture("kigo/success.json")

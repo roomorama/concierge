@@ -7,16 +7,16 @@
 #
 # Attributes:
 #
-# * +supplier_id+  - a foreign key to the +suppliers+ table.
-# * +identifier+   - the identifier for the account, on the supplier's system.
-# * +username+     - the username of the user account on Roomorama. Present only
-#                    for identification purposes.
-# * +access_token+ - the API access token used to identify the host on Roomorama's API.
-# * +commission+   - could reflect to quoting price. e.g. Kigo's partners
+# * +supplier_id+    - a foreign key to the +suppliers+ table.
+# * +identifier+     - the identifier for the account, on the supplier's system.
+# * +username+       - the username of the user account on Roomorama. Present only
+#                      for identification purposes.
+# * +access_token+   - the API access token used to identify the host on Roomorama's API.
+# * +fee_percentage+ - could affect to quoting price. e.g. Kigo's partners
 class Host
   include Hanami::Entity
 
-  attributes :id, :supplier_id, :identifier, :username, :access_token, :commission,
+  attributes :id, :supplier_id, :identifier, :username, :access_token, :fee_percentage,
     :created_at, :updated_at
 
 end
