@@ -19,7 +19,8 @@ gem 'savon'
 gem 'rollbar', '~> 2.8'
 gem 'aws-sdk', '~> 2.3'
 gem 'whenever', '~> 0.9', require: false
-gem 'sanitize'
+gem 'sanitize', '~> 4.0.1'
+gem 'iso_country_codes', '~> 0.7.4'
 
 group :test do
   gem 'rspec', '~> 3.4.0'

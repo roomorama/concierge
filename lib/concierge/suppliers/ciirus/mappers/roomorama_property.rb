@@ -54,7 +54,6 @@ module Ciirus
 
       def set_base_info!(result, property)
         result.title = property.property_name
-        # TODO: handle Unspecified ciirus property type
         result.type = PROPERTY_TYPES.get("#{property.type}.type")
         result.subtype = PROPERTY_TYPES.get("#{property.type}.subtype")
         result.address = property.address
@@ -63,8 +62,7 @@ module Ciirus
         result.number_of_bedrooms = property.bedrooms
         result.max_guests = property.sleeps
         result.default_to_available = false
-        # TODO: convert country to alpha2
-        result.country_code = property.country
+        result.country_code = country_converter.code_by_name(property.country)
         result.lat = property.xco
         result.lng = property.yco
         result.number_of_bathrooms = property.bathrooms
@@ -110,6 +108,10 @@ module Ciirus
         result.nightly_rate = min_price
         result.weekly_rate  = (min_price * 7).round(2)
         result.monthly_rate = (min_price * 30).round(2)
+      end
+
+      def country_converter
+        @country_converter ||= Ciirus::CountryCodeConverter.new
       end
     end
   end
