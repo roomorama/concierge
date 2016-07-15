@@ -3,6 +3,9 @@ module SAW
     class BaseFetcher
       # Some errors from SAW API are not actually errors, so this constant is
       # a list of whitelisted codes, which we consider as normal behaviour.
+      #
+      # Whitelisted SAW API errors:
+      # 1007 - No properties are available for the given search parameters
       VALID_RESULT_ERROR_CODES = ['1007']
 
       attr_reader :credentials
