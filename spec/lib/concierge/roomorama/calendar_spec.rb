@@ -39,6 +39,17 @@ RSpec.describe Roomorama::Calendar do
     end
   end
 
+  describe "#empty?" do
+    it "is empty if no calendar entries are added" do
+      expect(subject).to be_empty
+    end
+
+    it "is not empty if at least one calendar entry is added" do
+      subject.add(entry)
+      expect(subject).not_to be_empty
+    end
+  end
+
   describe "#to_h" do
     it "creates a representation of all entries given" do
       subject.add(create_entry(date: "2016-05-23", available: false, nightly_rate: 120))
@@ -90,6 +101,19 @@ RSpec.describe Roomorama::Calendar do
         monthly_rates:    [nil, nil, nil, nil, nil, nil],
         checkin_allowed:  "111111",
         checkout_allowed: "111111"
+      })
+    end
+
+    it "is able to serialize empty calendars" do
+      expect(subject.to_h).to eq({
+        identifier:       "prop1",
+        start_date:       "",
+        availabilities:   "",
+        nightly_rates:    [],
+        weekly_rates:     [],
+        monthly_rates:    [],
+        checkin_allowed:  "",
+        checkout_allowed: ""
       })
     end
   end
