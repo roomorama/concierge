@@ -16,6 +16,8 @@ module Ciirus
     # encapsulates the collection of +PropertyRate+.
     class PropertyRatesFetcher < BaseCommand
 
+      OPERATION_NAME = :get_property_rates
+
       def call(property_id)
         message = xml_builder.property_rates(property_id)
         result = remote_call(message)
@@ -31,7 +33,7 @@ module Ciirus
       protected
 
       def operation_name
-        :get_property_rates
+        OPERATION_NAME
       end
 
       private

@@ -31,7 +31,7 @@ RSpec.describe Ciirus::Commands::PropertiesFetcher do
 
     context 'when xml response is correct' do
       it 'returns success array of properties' do
-        stub_call(method: :get_properties, response: success_response)
+        stub_call(method: described_class::OPERATION_NAME, response: success_response)
 
         result = subject.call
 
@@ -41,7 +41,7 @@ RSpec.describe Ciirus::Commands::PropertiesFetcher do
       end
 
       it 'fills properties with right general attributes' do
-        stub_call(method: :get_properties, response: success_response)
+        stub_call(method: described_class::OPERATION_NAME, response: success_response)
 
         result = subject.call
 
@@ -69,7 +69,7 @@ RSpec.describe Ciirus::Commands::PropertiesFetcher do
       end
 
       it 'fills properties with right amenities' do
-        stub_call(method: :get_properties, response: success_response)
+        stub_call(method: described_class::OPERATION_NAME, response: success_response)
 
         result = subject.call
 
@@ -80,7 +80,7 @@ RSpec.describe Ciirus::Commands::PropertiesFetcher do
       end
 
       it 'can fetch many properties' do
-        stub_call(method: :get_properties, response: many_properties_response)
+        stub_call(method: described_class::OPERATION_NAME, response: many_properties_response)
 
         result = subject.call
 
@@ -91,7 +91,7 @@ RSpec.describe Ciirus::Commands::PropertiesFetcher do
       end
 
       it 'returns empty array for empty response' do
-        stub_call(method: :get_properties, response: empty_response)
+        stub_call(method: described_class::OPERATION_NAME, response: empty_response)
 
         result = subject.call
 
@@ -102,7 +102,7 @@ RSpec.describe Ciirus::Commands::PropertiesFetcher do
 
     context 'when xml contains error message' do
       it 'returns a result without bad properties' do
-        stub_call(method: :get_properties, response: error_response)
+        stub_call(method: described_class::OPERATION_NAME, response: error_response)
 
         result = subject.call
 

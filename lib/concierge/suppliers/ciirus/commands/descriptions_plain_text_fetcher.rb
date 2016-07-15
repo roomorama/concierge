@@ -16,6 +16,8 @@ module Ciirus
     # encapsulates the description string.
     class DescriptionsPlainTextFetcher < BaseCommand
 
+      OPERATION_NAME = :get_descriptions_plain_text
+
       # Response contains the text if a property doesn't have plain text description
       EMPTY_DESCRIPTION_MESSAGE = 'GetDescriptionsPlainText: Error - The description is blank'
 
@@ -34,7 +36,7 @@ module Ciirus
       protected
 
       def operation_name
-        :get_descriptions_plain_text
+        OPERATION_NAME
       end
 
       private

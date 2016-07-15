@@ -36,7 +36,7 @@ RSpec.describe Ciirus::Commands::PropertyAvailableFetcher do
     end
 
     it 'returns property availability' do
-      stub_call(method: :is_property_available, response: success_response)
+      stub_call(method: described_class::OPERATION_NAME, response: success_response)
 
       result = subject.call(params)
 

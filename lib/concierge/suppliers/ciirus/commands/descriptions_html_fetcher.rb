@@ -18,6 +18,8 @@ module Ciirus
     # encapsulates the description string.
     class DescriptionsHtmlFetcher < BaseCommand
 
+      OPERATION_NAME = :get_descriptions_html
+
       def call(property_id)
         message = xml_builder.descriptions(property_id)
         result = remote_call(message)
@@ -33,7 +35,7 @@ module Ciirus
       protected
 
       def operation_name
-        :get_descriptions_html
+        OPERATION_NAME
       end
 
       private

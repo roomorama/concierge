@@ -37,7 +37,7 @@ RSpec.describe Ciirus::Commands::QuoteFetcher do
 
     context 'when xml response is correct' do
       it 'returns success quotation' do
-        stub_call(method: :get_properties, response: success_response)
+        stub_call(method: described_class::OPERATION_NAME, response: success_response)
 
         result = subject.call(params)
 
@@ -47,7 +47,7 @@ RSpec.describe Ciirus::Commands::QuoteFetcher do
       end
 
       it 'fills quotation with right attributes' do
-        stub_call(method: :get_properties, response: success_response)
+        stub_call(method: described_class::OPERATION_NAME, response: success_response)
 
         result = subject.call(params)
 
@@ -62,7 +62,7 @@ RSpec.describe Ciirus::Commands::QuoteFetcher do
       end
 
       it 'returns unavailable quotation for appropriate response' do
-        stub_call(method: :get_properties, response: empty_response)
+        stub_call(method: described_class::OPERATION_NAME, response: empty_response)
 
         result = subject.call(params)
 
@@ -77,7 +77,7 @@ RSpec.describe Ciirus::Commands::QuoteFetcher do
 
     context 'when xml contains error message' do
       it 'returns a result with error' do
-        stub_call(method: :get_properties, response: error_response)
+        stub_call(method: described_class::OPERATION_NAME, response: error_response)
 
         result = subject.call(params)
 

@@ -18,6 +18,7 @@ module Ciirus
     # encapsulates the +Quotation+.
     class QuoteFetcher < BaseCommand
 
+      OPERATION_NAME = :get_properties
       EMPTY_ERROR_MESSAGE = 'No Properties were found that fit the specified search Criteria.'
 
       def call(params)
@@ -48,7 +49,7 @@ module Ciirus
       protected
 
       def operation_name
-        :get_properties
+        OPERATION_NAME
       end
 
       private

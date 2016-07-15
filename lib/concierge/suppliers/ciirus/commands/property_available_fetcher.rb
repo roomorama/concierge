@@ -16,6 +16,8 @@ module Ciirus
     # encapsulates the boolean result.
     class PropertyAvailableFetcher < BaseCommand
 
+      OPERATION_NAME = :is_property_available
+
       def call(params)
         check_in = convert_date(params[:check_in])
         check_out = convert_date(params[:check_out])
@@ -35,7 +37,7 @@ module Ciirus
       protected
 
       def operation_name
-        :is_property_available
+        OPERATION_NAME
       end
 
       private

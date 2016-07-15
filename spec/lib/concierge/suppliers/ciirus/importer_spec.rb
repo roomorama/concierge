@@ -35,7 +35,7 @@ RSpec.describe Ciirus::Importer do
   end
 
   describe '#fetch_properties' do
-    let(:method) { :get_properties }
+    let(:method) { Ciirus::Commands::PropertiesFetcher::OPERATION_NAME }
     let(:response) { read_fixture('ciirus/responses/properties_response.xml') }
     let(:result) { subject.fetch_properties }
 
@@ -44,7 +44,7 @@ RSpec.describe Ciirus::Importer do
   end
 
   describe '#fetch_images' do
-    let(:method) { :get_image_list }
+    let(:method) { Ciirus::Commands::ImageListFetcher::OPERATION_NAME }
     let(:response) { read_fixture('ciirus/responses/image_list_response.xml') }
     let(:result) { subject.fetch_images(property_id) }
 
@@ -53,7 +53,7 @@ RSpec.describe Ciirus::Importer do
   end
 
   describe '#fetch_rates' do
-    let(:method) { :get_property_rates }
+    let(:method) { Ciirus::Commands::PropertyRatesFetcher::OPERATION_NAME }
     let(:response) { read_fixture('ciirus/responses/property_rates_response.xml') }
     let(:result) { subject.fetch_rates(property_id) }
 
@@ -62,7 +62,7 @@ RSpec.describe Ciirus::Importer do
   end
 
   describe '#fetch_reservations' do
-    let(:method) { :get_reservations }
+    let(:method) { Ciirus::Commands::ReservationsFetcher::OPERATION_NAME }
     let(:response) { read_fixture('ciirus/responses/reservations_response.xml') }
     let(:result) { subject.fetch_reservations(property_id) }
 
@@ -71,7 +71,6 @@ RSpec.describe Ciirus::Importer do
   end
 
   describe '#fetch_description' do
-    let(:method) { :get_property_descriptions_plain_text }
     let(:result) { subject.fetch_description(property_id) }
     let(:response) { read_fixture('ciirus/responses/descriptions_plain_text_response.xml') }
     let(:html_response) { read_fixture('ciirus/responses/descriptions_html_response.xml') }
@@ -80,7 +79,8 @@ RSpec.describe Ciirus::Importer do
     it_behaves_like 'handling errors'
 
     it 'returns plain text description if it exists' do
-      stub_call(method: :get_descriptions_plain_text, response: response)
+      stub_call(method: Ciirus::Commands::DescriptionsPlainTextFetcher::OPERATION_NAME,
+                response: response)
       expect_any_instance_of(Ciirus::Commands::DescriptionsPlainTextFetcher).to receive(:call).once.and_call_original
       expect_any_instance_of(Ciirus::Commands::DescriptionsHtmlFetcher).to_not receive(:call)
       result = subject.fetch_description(property_id)
@@ -90,8 +90,10 @@ RSpec.describe Ciirus::Importer do
     end
 
     it 'returns html description if plain text is blank' do
-      stub_call(method: :get_descriptions_plain_text, response: empty_response)
-      stub_call(method: :get_descriptions_html, response: html_response)
+      stub_call(method: Ciirus::Commands::DescriptionsPlainTextFetcher::OPERATION_NAME,
+                response: empty_response)
+      stub_call(method: Ciirus::Commands::DescriptionsHtmlFetcher::OPERATION_NAME,
+                response: html_response)
       expect_any_instance_of(Ciirus::Commands::DescriptionsHtmlFetcher).to receive(:call).once.and_call_original
       expect_any_instance_of(Ciirus::Commands::DescriptionsPlainTextFetcher).to receive(:call).once.and_call_original
       result = subject.fetch_description(property_id)

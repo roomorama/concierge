@@ -30,7 +30,7 @@ RSpec.describe Ciirus::Commands::DescriptionsPlainTextFetcher do
     end
 
     it 'returns descriptions' do
-      stub_call(method: :get_descriptions_plain_text, response: success_response)
+      stub_call(method: described_class::OPERATION_NAME, response: success_response)
 
       result = subject.call(property_id)
 
@@ -41,7 +41,7 @@ RSpec.describe Ciirus::Commands::DescriptionsPlainTextFetcher do
 
     context 'when description is empty' do
       it 'returns empty string' do
-        stub_call(method: :get_descriptions_plain_text, response: empty_response)
+        stub_call(method: described_class::OPERATION_NAME, response: empty_response)
 
         result = subject.call(property_id)
 

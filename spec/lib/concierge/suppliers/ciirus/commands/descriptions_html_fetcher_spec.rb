@@ -29,7 +29,7 @@ RSpec.describe Ciirus::Commands::DescriptionsHtmlFetcher do
     end
 
     it 'returns descriptions' do
-      stub_call(method: :get_descriptions_html, response: success_response)
+      stub_call(method: described_class::OPERATION_NAME, response: success_response)
 
       result = subject.call(property_id)
       expected = 'This Florida vacation LuxuryHome with its own private swimming pool '\
