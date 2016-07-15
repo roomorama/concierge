@@ -64,7 +64,7 @@ module Ciirus
         booking_placed = extract_booking_placed(result_hash)
         error_msg = extract_error_message(result_hash)
         # Valid if booking placed and error_msg is empty
-        booking_placed && (error_msg.nil? || error_msg.empty?)
+        booking_placed && error_msg.to_s.empty?
       end
 
       def error_result(result_hash)
