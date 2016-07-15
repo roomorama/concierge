@@ -36,12 +36,14 @@ module Audit
       Roomorama::Property.load(Concierge::SafeAccessHash.new json).tap do |property_result|
         if property_result.success?
           property = property_result.value
-          property.update_calendar(json['availability_dates'])
-          property.units.each do |unit|
-            if unitjson = json['units'].find {|h| h['identifier'] == unit.identifier }
-              unit.update_calendar(unitjson['availability_dates'])
-            end
+          calendar_entries = json['availability_dates'].collect do |yyyymmdd, boolean|
+            Roomorama::Calendar::Entry.new(
+              date:             yyyymmdd,
+              available:        boolean,
+              nightly_rate:     property.nightly_rate,
+            )
           end
+          yield calendar_entries
         end
       end
     end

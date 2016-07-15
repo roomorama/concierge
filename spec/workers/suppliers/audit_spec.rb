@@ -9,20 +9,29 @@ RSpec.describe Workers::Suppliers::Audit do
   let(:fetch_properties_json) { JSON.parse(read_fixture('audit/fetch_properties.json')) }
   let(:credentials) { worker.send(:credentials) }
 
-  def synchronisation_counters
-    [:created, :updated, :deleted].inject({}) do |sum,k|
-      sum.merge(k => @counters.send(k))
+  def keyvalue(counters)
+    [:created, :updated, :deleted, :available, :unavailable].inject({}) do |sum,k|
+      if counters.respond_to?(k)
+        sum.merge(k => counters.send(k))
+      else
+        sum
+      end
     end
   end
 
   before do
     # do NOT make API calls during tests
-    allow_any_instance_of(Workers::Synchronisation).to receive(:run_operation).and_return(nil)
+    allow_any_instance_of(Workers::PropertySynchronisation).to receive(:run_operation).and_return(nil)
 
     # keep track of counters
-    @counters = Workers::Synchronisation::PropertyCounters.new(0, 0, 0)
-    allow_any_instance_of(Workers::Synchronisation).to receive(:save_sync_process) do |instance, *args|
-      @counters = instance.counters
+    @property_counters = Workers::PropertySynchronisation::PropertyCounters.new(0, 0, 0)
+    allow_any_instance_of(Workers::PropertySynchronisation).to receive(:save_sync_process) do |instance, *args|
+      @property_counters = instance.counters
+    end
+
+    @calendar_counters = Workers::CalendarSynchronisation::AvailabilityCounters.new(0, 0)
+    allow_any_instance_of(Workers::CalendarSynchronisation).to receive(:finish!) do |instance, *args|
+      @calendar_counters = instance.counters
     end
   end
 
@@ -37,13 +46,15 @@ RSpec.describe Workers::Suppliers::Audit do
     subject { proc { worker.perform } }
 
     context "fetched new property" do
-      it { is_expected.to change { synchronisation_counters }.to eq(created: 1, updated: 0, deleted: 0) }
+      it { is_expected.to change { keyvalue(@property_counters) }.to eq(created: 1, updated: 0, deleted: 0) }
+      it { is_expected.to change { keyvalue(@calendar_counters) }.to eq(available: 3, unavailable: 0) }
     end
 
     context "fetched existing property" do
       before do
         fetch_properties_json['result'].each do |json|
-          result = Audit::Importer.new(credentials).json_to_property(json)
+          result = Audit::Importer.new(credentials).json_to_property(json) do |calendar_entries|
+          end
           roomorama_property = result.value
           # See Workers::Router#dispatch
           # enqueues a diff operation if there is a property with the same identifier for the same host
@@ -52,7 +63,8 @@ RSpec.describe Workers::Suppliers::Audit do
         end
       end
 
-      it { is_expected.to change { synchronisation_counters }.to eq(created: 0, updated: 1, deleted: 0) }
+      it { is_expected.to change { keyvalue(@property_counters) }.to eq(created: 0, updated: 1, deleted: 0) }
+      it { is_expected.to change { keyvalue(@calendar_counters) }.to eq(available: 3, unavailable: 0) }
     end
 
     context "error when importing json_to_property" do
@@ -62,7 +74,8 @@ RSpec.describe Workers::Suppliers::Audit do
         end
       end
 
-      it { is_expected.not_to change { synchronisation_counters } }
+      it { is_expected.not_to change { keyvalue(@property_counters) } }
+      it { is_expected.not_to change { keyvalue(@calendar_counters) } }
     end
 
     context "error when fetching" do
@@ -72,7 +85,8 @@ RSpec.describe Workers::Suppliers::Audit do
         end
       end
 
-      it { is_expected.not_to change { synchronisation_counters } }
+      it { is_expected.not_to change { keyvalue(@property_counters) } }
+      it { is_expected.not_to change { keyvalue(@calendar_counters) } }
     end
   end
 end

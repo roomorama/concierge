@@ -2,22 +2,31 @@ module Workers::Suppliers
 
   class Audit
     SUPPLIER_NAME = "Audit"
-    attr_reader :synchronisation, :host
+    attr_reader :property_sync, :calendar_sync, :host
 
     def initialize(host)
       @host = host
-      @synchronisation = Workers::Synchronisation.new(host)
+      @property_sync = Workers::PropertySynchronisation.new(host)
+      @calendar_sync = Workers::CalendarSynchronisation.new(host)
     end
 
     def perform
       result = importer.fetch_properties
       if result.success?
         result.value.each do |json|
-          synchronisation.start(json['identifier']) do
-            importer.json_to_property(json)
+          property_sync.start(json['identifier']) do
+            importer.json_to_property(json) do |calendar_entries|
+              calendar_sync.start(json['identifier']) do
+                calendar = Roomorama::Calendar.new(json['identifier'])
+                calendar_entries.each {|entry| calendar.add entry }
+                Result.new(calendar)
+              end
+            end
           end
         end
-        synchronisation.finish!
+
+        property_sync.finish!
+        calendar_sync.finish!
       else
         message = "Failed to perform the `#fetch_properties` operation"
         announce_error(message, result)
