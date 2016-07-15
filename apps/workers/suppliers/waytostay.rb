@@ -22,18 +22,14 @@ module Workers::Suppliers
 
     def fresh_import
       get_initial_properties do |property|
-
         property_sync.start(property.identifier) do
           # grab media
           wrapped_property = client.update_media(property)
           next wrapped_property unless wrapped_property.success?
           wrapped_property
         end
-
-        sync_calendar(property.identifier, property.nightly_rate)
       end
       property_sync.finish!
-      calendar_sync.finish!
     end
 
     def synchronise
