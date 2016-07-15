@@ -77,11 +77,11 @@ module Concierge::Flows
   class HostCreation
     include Hanami::Validations
 
-    attribute :supplier,     presence: true
-    attribute :identifier,   presence: true
-    attribute :username,     presence: true
-    attribute :access_token, presence: true
-    attribute :commission
+    attribute :supplier,       presence: true
+    attribute :identifier,     presence: true
+    attribute :username,       presence: true
+    attribute :access_token,   presence: true
+    attribute :fee_percentage, presence: true
 
     attr_reader :config_path
 

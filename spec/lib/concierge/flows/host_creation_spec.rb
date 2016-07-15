@@ -28,7 +28,7 @@ RSpec.describe Concierge::Flows::HostCreation do
   describe "#perform" do
     it "returns an unsuccessful if any required parameter is missing" do
       [nil, ""].each do |invalid_value|
-        [:supplier, :identifier, :username, :access_token].each do |attribute|
+        [:supplier, :identifier, :username, :access_token, :fee_percentage].each do |attribute|
           parameters[attribute] = invalid_value
 
           result = subject.perform
