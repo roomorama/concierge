@@ -1,0 +1,353 @@
+{
+    "createdAt": "2016-07-13 10:38:01",
+    "data": {
+        "address1": "Sudong-myeon, Namyangju-si, Gyeonggi-do",
+        "address2": "239-25, Cheolmasan-ro",
+        "city": "Namyangju-si",
+        "contacts": [
+            {
+                "active": true,
+                "memo": "010-9436-6887",
+                "type": "phone"
+            },
+            {
+                "active": true,
+                "memo": "010-8773-6887",
+                "type": "phone"
+            },
+            {
+                "active": true,
+                "memo": "010-8773-6887",
+                "type": "phone"
+            }
+        ],
+        "country": "Korea",
+        "currency": "KRW",
+        "dates": [
+            {
+                "active": true,
+                "from": "2016-07-08 00:00:00",
+                "id": "pension_sum_season",
+                "name": "\ud39c\uc158\uc5ec\ub984\uc131\uc218\uae30",
+                "to": "2016-08-20 00:00:00"
+            }
+        ],
+        "description": "And in particular it introduces the sound of water Pension there is a valley that can not be easily seen in Namyangju to everyone in Gyeonggi area. Namyangju water sound pension of four seasons .... first of the spring, along with the fall of the immediately preceding Chorumasan, is located is celebrated recreation forest, such as picking up experience and at the same time Gaurusan night of wild flowers in the spring, in addition to a variety of experience, space where you can enjoy a walk and hiking has spread. The second of the summer, is formed naturally Gunurumaku together and the depth of the extent to which it is possible to man becomes a natural pool Breakfast before dedicated valley, woman, everyone of the AU to enjoy in the summer, at any time can be playing in the water is. The third winter, before the valley of pensions can enjoy the sled becomes natural sled field, right next to Tenma mountain ski resort (10 minutes car), are arranged and Seoul Resort (15 minutes), even in winter, it can be a variety of play. The other in Mongolia Cultural Village also (car 5 minutes) and the like Namyangju comprehensive studio is located nearby. Rather than receive a lot of people, and invite everyone in Namyangju water sound pension that has been prepared to greet the better choice.",
+        "facilities": [
+            "karaoke",
+            "bbq_grills",
+            "swimming_pool",
+            "internet"
+        ],
+        "images": [
+            {
+                "category": "main",
+                "content": "\ud39c\uc158\ub300\ud45c\uc774\ubbf8\uc9c0",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/201652792223.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc158\ud39c\uc158 \uc678\uacbd27",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/20107301818486.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc158\ud39c\uc158 \uc678\uacbd28",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/201073018184715.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc158\ud39c\uc158 \uc678\uacbd29",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/201073018184714.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc1581",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/20131219185411.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc1582",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/201312191854111.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc1583",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/201312191854112.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc1584",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/201312191854113.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc1585",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/201312191854114.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc1586",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/201312191854115.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc1587",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/201312191854116.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc1588",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/201312191854117.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc1589",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/20131219185412.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc15810",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/201312191854121.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc15811",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/201312191854122.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc15812",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/201312191854123.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc15813",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/201312191854124.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc15814",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/201312191854125.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc15815",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/201312191854126.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc15816",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/201312191854127.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc15817",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/201312191854128.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc15818",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/201312191854129.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc15819",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/2013121918541210.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc15820",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/2013121918541211.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc15821",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/2013121918541212.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc15822",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/2013121918541213.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc15823",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/2013121918541214.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc15824",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/20131219185413.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc15825",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/201312191854131.jpg"
+            },
+            {
+                "category": "ex",
+                "content": "\ud39c\uc15826",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/201312191854132.jpg"
+            },
+            {
+                "category": "etc",
+                "content": "\ud39c\uc158\ud39c\uc158\uc55e \uacc4\uace112",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/etc/2010730182054.jpg"
+            },
+            {
+                "category": "etc",
+                "content": "\ud39c\uc158\ud39c\uc158\uc55e \uacc4\uace113",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/etc/2010730182011.jpg"
+            },
+            {
+                "category": "etc",
+                "content": "\ud39c\uc158\ubc14\ubca0\ud05010",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/etc/2010730181953.jpg"
+            },
+            {
+                "category": "etc",
+                "content": "\ud39c\uc158\uacc4\uace111",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/etc/2009618164857.jpg"
+            },
+            {
+                "category": "etc",
+                "content": "\ud39c\uc158\uc218\uc601\uc7a54",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/etc/2013121919117.jpg"
+            },
+            {
+                "category": "etc",
+                "content": "\ud39c\uc158\uc218\uc601\uc7a55",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/etc/20131219191171.jpg"
+            },
+            {
+                "category": "etc",
+                "content": "\ud39c\uc158\ubc14\ubca0\ud0507",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/etc/20131219191172.jpg"
+            },
+            {
+                "category": "etc",
+                "content": "\ud39c\uc158\ubc14\ubca0\ud0506",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/etc/20131219191173.jpg"
+            },
+            {
+                "category": "etc",
+                "content": "\ud39c\uc158\ubc14\ubca0\ud0508",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/etc/2013121919118.jpg"
+            },
+            {
+                "category": "etc",
+                "content": "\ud39c\uc158\ubc14\ubca0\ud0509",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/etc/20131219191181.jpg"
+            },
+            {
+                "category": "etc",
+                "content": "\ud39c\uc158\ud39c\uc158\uc55e\uacc4\uace114",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/etc/20131219191182.jpg"
+            },
+            {
+                "category": "etc",
+                "content": "\ud39c\uc158\ud39c\uc158\uc55e\uacc4\uace115",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/etc/20131219191183.jpg"
+            },
+            {
+                "category": "etc",
+                "content": "\ud39c\uc158\uc871\uad6c\uc7a516",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/etc/20131219191184.jpg"
+            },
+            {
+                "category": "etc",
+                "content": "\ud39c\uc158\ud2b8\ub7a8\ube14\ub9b01",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/etc/20156218148.jpg"
+            },
+            {
+                "category": "etc",
+                "content": "\ud39c\uc158\ud2b8\ub7a8\ube14\ub9b02",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/etc/201563114542.jpg"
+            },
+            {
+                "category": "etc",
+                "content": "\ud39c\uc158\ud2b8\ub7a8\ube14\ub9b03",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0104006/etc/2015631145421.jpg"
+            }
+        ],
+        "isActive": 1,
+        "latitude": 37.7225,
+        "logoUrl": "http://image.wooripension.com/pension_images/w0104006/201652792223.jpg",
+        "longitude": 127.273,
+        "memo": "",
+        "name": "Nam Yang Ju Mur So Ri Pension",
+        "ownerName": "\uc784\uad11\ube48",
+        "postalCode": "12027",
+        "region": "Gyeonggi-do",
+        "times": [
+            {
+                "active": true,
+                "from": "15:00:00",
+                "id": "pension_chk_in",
+                "name": "\uc785\uc2e4\uc2dc\uac04",
+                "to": null
+            },
+            {
+                "active": true,
+                "from": null,
+                "id": "pension_chk_out",
+                "name": "\ud1f4\uc2e4\uc2dc\uac04",
+                "to": "12:00:00"
+            }
+        ],
+        "totalRoomCount": 9,
+        "updatedAt": "2016-07-11 20:30:44",
+        "zoom": 1
+    },
+    "hash": "w_w0104006",
+    "id": 28271,
+    "type": "property",
+    "updatedAt": null
+}
