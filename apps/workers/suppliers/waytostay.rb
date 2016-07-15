@@ -80,8 +80,11 @@ module Workers::Suppliers
         result, current_page = client.get_active_properties(current_page)
         next announce_error(result) unless result.success?
         result.value.each do |property_result|
-          next unless property_result.success?
-          yield property_result.value
+          if !property_result.success? || property_result.value.disabled
+            next
+          else
+            yield property_result.value
+          end
         end
       end
     end
