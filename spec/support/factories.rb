@@ -17,6 +17,20 @@ module Support
       SyncProcessRepository.create(process)
     end
 
+    def create_reservation(overrides = {})
+      attributes = {
+        property_id: create_property.id,
+        unit_id:     "UNIT1",
+        check_in:    Date.today.to_s,
+        check_out:   (Date.today + 3).to_s,
+        guests:      2,
+        code:        "ABC123",
+      }.merge(overrides)
+
+      reservation = Reservation.new(attributes)
+      ReservationRepository.create(reservation)
+    end
+
     def create_property(overrides = {})
       attributes = {
         identifier: "PROP1",
@@ -30,7 +44,7 @@ module Support
         },
       }.merge(overrides)
 
-      property   = Property.new(attributes)
+      property = Property.new(attributes)
       PropertyRepository.create(property)
     end
 

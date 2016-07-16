@@ -1,6 +1,6 @@
 # +ExternalErrorRepository+
 #
-# Persistence operations and queries of the `external_errors` table.
+# Persistence operations and queries of the +external_errors+ table.
 class ExternalErrorRepository
   include Hanami::Repository
 
