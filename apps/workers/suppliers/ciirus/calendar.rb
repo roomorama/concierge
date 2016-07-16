@@ -21,7 +21,6 @@ module Workers::Suppliers::Ciirus
           next result unless result.success?
           rates = result.value
 
-
           result = fetch_reservations(property_id)
           next result unless result.success?
           reservations = result.value
@@ -83,7 +82,7 @@ module Workers::Suppliers::Ciirus
       Concierge::Credentials.for(Ciirus::Client::SUPPLIER_NAME)
     end
 
-    def announce_error(message, result)
+    def augment_context_error(message)
       message = {
         label: 'Synchronisation Failure',
         message: message,
@@ -91,6 +90,10 @@ module Workers::Suppliers::Ciirus
       }
       context = Concierge::Context::Message.new(message)
       Concierge.context.augment(context)
+    end
+
+    def announce_error(message, result)
+      augment_context_error(message)
 
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
         operation:   'sync',
