@@ -11,32 +11,22 @@ module Workers::Suppliers::Ciirus
     end
 
     def perform
-      identifiers = @synchronisation.all_identifiers
+      identifiers = all_identifiers
 
       identifiers.each do |property_id|
         synchronisation.start(property_id) do
+          Concierge.context.disable!
 
-          result = importer.fetch_rates(property_id)
-          if result.success?
-            rates = result.value
-          else
-            message = "Failed to fetch rates for property `#{property_id}`"
-            announce_error(message, result)
-            return result
-          end
+          result = fetch_rates(property_id)
+          next result unless result.success?
+          rates = result.value
 
 
-          result = importer.fetch_reservations(property_id)
-          if result.success?
-            reservations = result.value
-          else
-            message = "Failed to fetch availabilities for property `#{property_id}`"
-            announce_error(message, result)
-            return result
-          end
+          result = fetch_reservations(property_id)
+          next result unless result.success?
+          reservations = result.value
 
           roomorama_calendar = mapper.build(property_id, rates, reservations)
-
           Result.new(roomorama_calendar)
         end
       end
@@ -44,6 +34,42 @@ module Workers::Suppliers::Ciirus
     end
 
     private
+
+    def fetch_rates(property_id)
+      result = importer.fetch_rates(property_id)
+
+      unless result.success?
+        with_context_enabled do
+          message = "Failed to fetch rates for property `#{property_id}`"
+          augment_context_error(message)
+        end
+      end
+
+      result
+    end
+
+    def fetch_reservations(property_id)
+      result = importer.fetch_reservations(property_id)
+
+      unless result.success?
+        with_context_enabled do
+          message = "Failed to fetch reservations for property `#{property_id}`"
+          augment_context_error(message)
+        end
+      end
+
+      result
+    end
+
+    def with_context_enabled
+      Concierge.context.enable!
+      yield
+      Concierge.context.disable!
+    end
+
+    def all_identifiers
+      PropertyRepository.from_host(host).only(:identifier).map(&:identifier)
+    end
 
     def mapper
       @mapper ||= ::Ciirus::Mappers::RoomoramaCalendar.new
