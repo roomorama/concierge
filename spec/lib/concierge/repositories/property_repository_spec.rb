@@ -14,6 +14,24 @@ RSpec.describe PropertyRepository do
     end
   end
 
+  describe ".from_supplier" do
+    let(:supplier) { create_supplier }
+    let(:host1)    { create_host(supplier_id: supplier.id, identifier: "host1") }
+    let(:host2)    { create_host(supplier_id: supplier.id, identifier: "host2") }
+    let(:host3)    { create_host }
+
+    let!(:valid1)  { create_property(host_id: host1.id) }
+    let!(:valid2)  { create_property(host_id: host2.id) }
+    let!(:invalid) { create_property(host_id: host3.id) }
+
+    it "retrieves only properties coming from any host of a given supplier" do
+      properties = described_class.from_supplier(supplier).to_a
+
+      expect(properties.size).to eq 2
+      expect(properties).to eq [valid1, valid2]
+    end
+  end
+
   describe ".from_host" do
     let(:host)     { create_host }
     let!(:valid)   { create_property(host_id: host.id) }
