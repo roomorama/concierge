@@ -70,5 +70,11 @@ RSpec.describe Workers::Router do
       operation = subject.dispatch(roomorama_property)
       expect(operation).to be_nil
     end
+
+    it "does not enqueue any operation if the new property is disabled" do
+      roomorama_property.disabled = true
+      operation = subject.dispatch(roomorama_property)
+      expect(operation).to be_nil
+    end
   end
 end
