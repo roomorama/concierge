@@ -8,6 +8,8 @@ module API::Controllers::Ciirus
   class Booking
     include API::Controllers::Booking
 
+    params API::Controllers::Params::Booking
+
     def create_booking(params)
       credentials = Concierge::Credentials.for("Ciirus")
       Ciirus::Client.new(credentials).book(params)
