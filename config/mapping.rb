@@ -31,6 +31,8 @@ collection :reservations do
   attribute :check_out,        String
   attribute :guests,           Integer
   attribute :reference_number, String
+  attribute :created_at,       Time
+  attribute :updated_at,       Time
 end
 
 collection :suppliers do

@@ -29,4 +29,6 @@ class Reservation
   attribute :reference_number, type: String
   attribute :extra,            type: Hash
   attribute :customer,         type: Hash
+  attribute :created_at,       type: Time
+  attribute :updated_at,       type: Time
 end
