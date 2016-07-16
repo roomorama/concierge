@@ -37,18 +37,25 @@ module Workers::Suppliers
             next wrapped_property unless wrapped_property.success?
           end
 
-          if changes.value[:availability].include? property_ref
-            sync_calendar(property_ref, wrapped_property.value.nightly_rate)
-          end
-
           # TODO: rates, bookings
-          # client.fetch_rates(property_ref) if changes[:rates].include property_ref
 
           wrapped_property
         end
       end
 
       property_sync.finish!
+
+      changes.value[:availability].each do |property_ref|
+        wrapped_property = if changes.value[:properties].include? property_ref
+                             # get the updated property from supplier
+                             client.get_property(property_ref)
+                           else
+                             # no changes on property attributes indicated, just
+                             # load one from db so we can attach other changes
+                             load_existing property_ref
+                           end
+        sync_calendar(property_ref, wrapped_property.value.nightly_rate)
+      end
       calendar_sync.finish!
     end
 
