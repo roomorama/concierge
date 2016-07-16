@@ -8,4 +8,10 @@ class ReservationRepository
   def self.count
     query.count
   end
+
+  # orders the reservation results by descending order of creation
+  # date.
+  def self.reverse_date
+    query.desc(:created_at)
+  end
 end
