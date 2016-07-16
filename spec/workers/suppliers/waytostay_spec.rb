@@ -24,35 +24,6 @@ RSpec.describe Workers::Suppliers::Waytostay do
     end
   end
 
-  context "first time properties" do
-    before do
-
-      stub_call(:put, "https://api.roomorama.com/v1.0/host/update_calendar") {
-        [202, {}, [""]]
-      }
-
-      allow(subject.client).to receive(:get_active_properties) {|page|
-        property_result_001 = Roomorama::Property.load( Concierge::SafeAccessHash.new(
-            JSON.parse(read_fixture("waytostay/properties/001.roomorama-attributes.json"))
-        ))
-        property_result_002 = Roomorama::Property.load( Concierge::SafeAccessHash.new(
-            JSON.parse(read_fixture("waytostay/properties/002.roomorama-attributes.json"))
-        ))
-
-        page ||= 1
-        next_page = page + 1 if page < 3 # there're 3 mock pages of properties
-        [Result.new([property_result_001, property_result_002]), next_page]
-      }
-
-    end
-    it "dispatches for each new properties" do
-      properties_to_update_count = 6 # there are 2 properties per page * 3 pages
-      expect(subject.property_sync.router).to receive(:dispatch)
-        .exactly(properties_to_update_count).times
-      subject.perform
-    end
-  end
-
   context "synchronizing properties" do
     let(:changes) { {
       properties:   ["001", "002"],
