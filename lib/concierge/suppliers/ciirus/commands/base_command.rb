@@ -44,7 +44,9 @@ module Ciirus
           wsdl:          wsdl,
           env_namespace: :soap,
           endpoint:      endpoint,
-          log: true
+          open_timeout:  10,
+          read_timeout:  20,
+          log:           true
         }
       end
 
