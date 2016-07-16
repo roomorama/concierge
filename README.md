@@ -91,90 +91,12 @@ of a call being the set of events that happened in the lifecycle of a request. D
 such events is collected so that, in the ocurrence of an error (that is, an `external error`),
 events data can be serialized and later displayed in the `web` app for analysis.
 
-### Quoting bookings
+### Required API endpoints for Suppliers
 
-To add the capability of quoting a booking for a new supplier, create a new controller
-as follows
-
-~~~ruby
-module API::Controllers::Supplier
-
-  class Quote
-    include API::Controllers::Quote
-
-    # params API::Controllers::Params::MultiUnitQuote # uncomment for multi unit supplier
-
-    def quote_price(params)
-      Supplier::Client.new.quote(params)
-    end
-    
-    def supplier_name
-      Supplier::Client::SUPPLIER_NAME
-    end
-
-  end
-end
-~~~
-
-`quote_price` and `supplier_name` are only methods whose implementation is necessary. You can assume
-that the parameters at this point were already validated, so required parameters
-will be present and valid.
-
-In the code above, `Supplier::Client` is an implementation of a client library
-for the supplier's API.
-
-Note that the `quote_price` method:
-
-* **must** return a `Result` object wrapping a `Quotation` object when operation succeeds and return a `Result` object wrapping `nil` object when operation fails.
-
-* does not raise an exception if the supplier API is unavailable or errors out or any
-network-related issue is happening.
-
-If there are errors during the execution of the `quote_price` method, the `Result`
-object returned must include a non-empty `errors` list to be returned to the caller,
-which will receive a `503` HTTP status.
-
-### Create bookings
-
-To add the capability to create a booking for a new supplier, create a new controller
-as follows
-
-~~~ruby
-module API::Controllers::Supplier
-
-  class Booking
-    include API::Controllers::Booking
-
-    # params API::Controllers::Params::MultiUnitBooking # uncomment for multi unit supplier
-
-    def create_booking(params)
-      Supplier::Client.new.book(params)
-    end
-
-    def supplier_name
-      Supplier::Client::SUPPLIER_NAME
-    end
-
-  end
-end
-~~~
-
-`create_booking` and `supplier_name` are only methods whose implementation is necessary. You can assume
-that the parameters at this point were already validated, so required parameters
-will be present and valid.
-
-In the code above, `Supplier::Client` is an implementation of a client library
-for the supplier's API.
-
-Note that the `create_booking` method:
-
-* **must** return a `Result` object wrapping a `Reservation` object when operation succeeds and return a `Result` object wrapping `nil` object when operation fails.
-* does not raise an exception if the supplier API is unavailable or errors out or any
-network-related issue is happening.
-
-If there are errors during the execution of the `create_booking` method, the `Result`
-object returned must include a non-empty `errors` list to be returned to the caller,
-which will receive a `503` HTTP status.
+For an overview of the required endpoints supplier API implementations should provide
+on Concierge as well as their implementation, check out the
+[Required Supplier Webhooks](https://github.com/roomorama/concierge/wiki/Required-Supplier-Webhooks)
+Wiki entry.
 
 ### Supplier Credentials
 
