@@ -76,7 +76,7 @@ module Ciirus
         parts = ['The response contains unexpected data:']
         errors.each do |label, field|
           unless field.nil?
-            parts << "#{label}:  #{field}"
+            parts << "#{label}:  `#{field}`"
           end
         end
 
