@@ -20,7 +20,6 @@ module Support
     def create_reservation(overrides = {})
       attributes = {
         property_id: create_property.id,
-        unit_id:     "UNIT1",
         check_in:    Date.today.to_s,
         check_out:   (Date.today + 3).to_s,
         guests:      2,
