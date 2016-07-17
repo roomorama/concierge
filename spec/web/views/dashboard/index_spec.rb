@@ -54,11 +54,15 @@ RSpec.describe Web::Views::Dashboard::Index do
   end
 
   it "includes the total number of reservations performed by Concierge" do
+    concierge_responds_with { [200, application_json, successful_response] }
+
     2.times { create_reservation }
     expect(rendered).to include %(A total of 2 reservations have been created on Concierge.)
   end
 
   it "includes all suppliers, as well as number of hosts and properties" do
+    concierge_responds_with { [200, application_json, successful_response] }
+
     supplier = create_supplier(name: "Supplier X")
     host1 = create_host(identifier: "host1", supplier_id: supplier.id)
     host2 = create_host(identifier: "host2", supplier_id: supplier.id)

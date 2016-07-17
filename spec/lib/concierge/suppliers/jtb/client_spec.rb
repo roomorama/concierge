@@ -68,16 +68,6 @@ RSpec.describe JTB::Client do
       }
     }
 
-    it 'creates record with booking code in database' do
-      allow_any_instance_of(JTB::Booking).to receive(:book) { Result.new('booking code') }
-      reservation_result = subject.book(params)
-      expect(reservation_result).to be_success
-      expect(reservation_result.value).to be_a Reservation
-      expect(reservation_result.value.reference_number).to eq "booking code"
-
-      expect(ReservationRepository.first.reference_number).to eq 'booking code'
-    end
-
     it "does not stop the booking in case database access is compromised" do
       allow_any_instance_of(JTB::Booking).to receive(:book) { Result.new('booking code') }
       allow(ReservationRepository).to receive(:create) { raise Hanami::Model::UniqueConstraintViolationError }

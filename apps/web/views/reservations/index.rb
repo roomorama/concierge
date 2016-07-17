@@ -2,6 +2,8 @@ module Web::Views::Reservations
 
   # +Web::Views::Reservations::Index+
   #
+  # The reservations index page renders a table of database reservations
+  # for analysis.
   class Index
     include Web::View
 
