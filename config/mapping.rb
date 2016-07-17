@@ -25,6 +25,7 @@ collection :reservations do
   repository ReservationRepository
 
   attribute :id,               Integer
+  attribute :supplier,         String
   attribute :property_id,      String
   attribute :unit_id,          String
   attribute :check_in,         String

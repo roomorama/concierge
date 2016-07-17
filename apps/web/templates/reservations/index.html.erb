@@ -10,6 +10,7 @@
     <thead>
       <tr>
         <th>#</th>
+        <th>Supplier</th>
         <th>Property</th>
         <th>Check-in</th>
         <th>Check-out</th>
@@ -23,6 +24,7 @@
       <% reservations.each do |reservation| %>
         <tr>
           <td><%= reservation.id %></td>
+          <td><%= reservation.supplier %></td>
           <td>
             <code><%= reservation.property_id %></code>
             <% unless reservation.unit_id.to_s.strip.empty? %>

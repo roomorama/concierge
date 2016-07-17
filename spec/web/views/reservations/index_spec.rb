@@ -12,7 +12,13 @@ RSpec.describe Web::Views::Reservations::Index do
   let(:sanitized) { rendered.gsub("\n", "").gsub(/\s\s+/, " ") }
 
   before do
-    2.times.map { |n| create_reservation(property_id: "property#{n}") }
+    2.times.map { |n| create_reservation(property_id: "property#{n}", supplier: "Supplier#{n}") }
+  end
+
+  it "includes the supplier that provides the booked property" do
+    [0, 1].each do |id|
+      expect(sanitized).to include %(<td>Supplier#{id}</td>)
+    end
   end
 
   it "renders a list of reservations" do

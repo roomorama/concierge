@@ -7,6 +7,8 @@
 #
 # Attributes
 #
+<<<<<<< 1d06dbb6c875ec262ed54c5c0fec84b9991639c4
+#   +supplier+:         a String containing the name of the supplier who provides the booked property.
 #   +property_id+:      a String used to identify the property with the supplier. Not related to Roomorama.
 #   +unit_id+:          a String used to identify the property's unit with the supplier.
 #                       Not related to Roomorama.
@@ -21,6 +23,7 @@ class Reservation
   include Hanami::Entity
   include Hanami::Validations
 
+  attribute :supplier,         type: String
   attribute :property_id,      type: String
   attribute :unit_id,          type: String
   attribute :check_in,         type: String
