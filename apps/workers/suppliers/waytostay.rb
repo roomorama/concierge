@@ -13,23 +13,7 @@ module Workers::Suppliers
     end
 
     def perform
-      if last_synced_timestamp.nil?
-        fresh_import
-      else
-        synchronise
-      end
-    end
-
-    def fresh_import
-      get_initial_properties do |property|
-        property_sync.start(property.identifier) do
-          # grab media
-          wrapped_property = client.update_media(property)
-          next wrapped_property unless wrapped_property.success?
-          wrapped_property
-        end
-      end
-      property_sync.finish!
+      synchronise
     end
 
     def synchronise
@@ -53,18 +37,25 @@ module Workers::Suppliers
             next wrapped_property unless wrapped_property.success?
           end
 
-          if changes.value[:availability].include? property_ref
-            sync_calendar(property_ref, wrapped_property.value.nightly_rate)
-          end
-
           # TODO: rates, bookings
-          # client.fetch_rates(property_ref) if changes[:rates].include property_ref
 
           wrapped_property
         end
       end
 
       property_sync.finish!
+
+      changes.value[:availability].each do |property_ref|
+        wrapped_property = if changes.value[:properties].include? property_ref
+                             # get the updated property from supplier
+                             client.get_property(property_ref)
+                           else
+                             # no changes on property attributes indicated, just
+                             # load one from db so we can attach other changes
+                             load_existing property_ref
+                           end
+        sync_calendar(property_ref, wrapped_property.value.nightly_rate)
+      end
       calendar_sync.finish!
     end
 
@@ -143,6 +134,9 @@ module Workers::Suppliers
       changes.values.reduce(&:+).uniq
     end
 
+    # Returns the last successful time stamp of a synchronisation
+    # Could be nil if there has never been a successful sync yet
+    #
     def last_synced_timestamp
       most_recent = SyncProcessRepository.recent_successful_sync_for_host(host).first
       most_recent&.started_at

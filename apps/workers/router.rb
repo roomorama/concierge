@@ -55,7 +55,7 @@ module Workers
         unless diff.empty?
           Roomorama::Client::Operations.diff(diff)
         end
-      else
+      elsif !property.disabled
         publish_op(property)
       end
     end

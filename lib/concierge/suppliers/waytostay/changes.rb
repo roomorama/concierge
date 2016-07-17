@@ -12,6 +12,9 @@ module Waytostay
     # Returns a +Result+ wrapped hash of properties ref that changed, looking like:
     #   { properties: ["a", "b", "c"], media: ["c", "d"] }
     #
+    # If last_synced_timestamp is nil, returns a "full set of all currently active properties"
+    # See https://apis.waytostay.com/doc/swagger/WaytostayApi-v4#!/Changes/get_changes
+    #
     # Augments missing fields in the response if there are any
     #
     def get_changes_since(last_synced_timestamp)
