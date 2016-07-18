@@ -1,0 +1,54 @@
+<div class="content">
+  <h2 class="content-subhead"><%= supplier.name %></h2>
+
+  <p>
+    <%= supplier.name %> has <em><%= hosts.count %></em> integrated hosts and currently
+    provides <em><%= supplier_properties(supplier) %></em> properties to Roomorama.
+  </p>
+
+  <h3>Hosts</h3>
+  <table class="errors-table pure-table pure-table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Identifier</th>
+        <th>Roomorama Username</th>
+        <th>Access Token</th>
+        <th># Properties</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% hosts.each do |host| %>
+        <tr>
+          <td><%= host.id %></td>
+          <td><code><%= host.identifier %></code></td>
+          <td><%= host.username %></td>
+          <td><code><%= format_access_token(host) %></code></td>
+          <td><%= host_properties(host) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <h3>Synchronisation</h3>
+  <div class="section-intro">
+    Synchronisation between suppliers and Roomorama happens through Concierge's
+    <em>background workers</em>. Workers can be of two types:
+
+    <ul>
+      <li><strong>Metadata</strong>: Responsible for synchronising data such as:
+        property titles and descriptions, list of images, amenities, etc.</li>
+      <li><strong>Calendar</strong>: Responsible for synchronising the availabilities
+        calendar for properties belonging to a given host/supplier. This includes
+        availability status, rates and check-in/check-out rules.</li>
+    </ul>
+  </div>
+
+  Workers frequency for <%= supplier.name %> properties:
+
+  <ul>
+    <li><em>Metadata:</em> <%= metadata_frequency(supplier) %></li>
+    <li><em>Calendar:</em> <%= calendar_frequency(supplier) %></li>
+  </ul>
+</div>

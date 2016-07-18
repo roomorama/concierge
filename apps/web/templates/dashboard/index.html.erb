@@ -31,7 +31,7 @@
     <tbody>
       <% suppliers.each do |supplier| %>
         <tr>
-          <td><%= supplier.id %></td>
+          <td><%= link_to supplier.id, routes.supplier_path(supplier.id) %></td>
           <td><%= supplier.name %></td>
           <td><%= total_hosts_for(supplier) %></td>
           <td><%= total_properties_for(supplier) %></td>

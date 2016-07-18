@@ -50,11 +50,11 @@ module Support
 
     def create_host(overrides = {})
       attributes = {
-        identifier:   "host",
-        username:     "concierge_host",
-        access_token: "abc123",
+        identifier:     "host",
+        username:       "concierge_host",
+        access_token:   SecureRandom.hex(32),
         fee_percentage: 0,
-        supplier_id:  create_supplier.id
+        supplier_id:    create_supplier.id
       }.merge(overrides)
 
       host = Host.new(attributes)
