@@ -13,7 +13,7 @@
       "href": "https://apis.sandbox.waytostay.com:25443/properties/015868/availability?page=2"
     }
   },
-  "_embedded": {
+  "_malformed_key": {
     "properties_availability": [
       {
         "id": 4694916030134,

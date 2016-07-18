@@ -37,24 +37,14 @@ module Workers::Suppliers
             next wrapped_property unless wrapped_property.success?
           end
 
-          # TODO: rates, bookings
-
+          # TODO: bookings
           wrapped_property
         end
       end
-
       property_sync.finish!
 
       changes.value[:availability].each do |property_ref|
-        wrapped_property = if changes.value[:properties].include? property_ref
-                             # get the updated property from supplier
-                             client.get_property(property_ref)
-                           else
-                             # no changes on property attributes indicated, just
-                             # load one from db so we can attach other changes
-                             load_existing property_ref
-                           end
-        sync_calendar(property_ref, wrapped_property.value.nightly_rate)
+        sync_calendar(property_ref)
       end
       calendar_sync.finish!
     end
@@ -89,10 +79,10 @@ module Workers::Suppliers
       end
     end
 
-    def sync_calendar(property_ref, nightly_rate)
+    def sync_calendar(property_ref)
       calendar_sync.start(property_ref) do
 
-        calendar_entries_result = client.get_availabilities(property_ref, nightly_rate)
+        calendar_entries_result = client.get_availabilities(property_ref)
 
         if calendar_entries_result.success?
           calendar = Roomorama::Calendar.new(property_ref)
