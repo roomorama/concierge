@@ -35,25 +35,30 @@ module Workers::Suppliers
         synchronisation.start(property.internal_id) do
           Concierge.context.disable!
 
-          result = importer.fetch_detailed_property(property.internal_id)
-
-          if result.success?
-            detailed_property = result.value
-          
-            roomorama_property = ::SAW::Mappers::RoomoramaProperty.build(
-              property,
-              detailed_property
-            )
-            
-            Result.new(roomorama_property)
-          else
-            message = "Failed to perform the `#fetch_detailed_property` operation"
-            announce_error(message, result)
-          end
+          fetch_details_and_build_property(property)
         end
       end
 
       synchronisation.finish!
+    end
+
+    def fetch_details_and_build_property(property)
+      result = importer.fetch_detailed_property(property.internal_id)
+
+      if result.success?
+        detailed_property = result.value
+      
+        roomorama_property = ::SAW::Mappers::RoomoramaProperty.build(
+          property,
+          detailed_property
+        )
+        
+        Result.new(roomorama_property)
+      else
+        message = "Failed to perform the `#fetch_detailed_property` operation"
+        announce_error(message, result)
+        result
+      end
     end
 
     private
