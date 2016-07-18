@@ -1,10 +1,10 @@
 require_relative "../cancel"
 
-module API::Controllers::Waytostay
+module API::Controllers::Ciirus
 
-  # API::Controllers::Waytostay::Cancel
+  # API::Controllers::Ciirus::Cancel
   #
-  # Cancels reservation from Waytostay.
+  # Cancels reservation from Ciirus.
   class Cancel
     include API::Controllers::Cancel
 
@@ -16,7 +16,7 @@ module API::Controllers::Waytostay
     end
 
     def supplier_name
-      Waytostay::Client::SUPPLIER_NAME
+      Ciirus::Client::SUPPLIER_NAME
     end
   end
 end
