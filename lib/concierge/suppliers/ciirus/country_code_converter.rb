@@ -10,7 +10,16 @@ module Ciirus
   # codes converter library and in Ciirus API.
   class CountryCodeConverter
     CUSTOM_COUNTRY_NAMES_MAPPING = {
-      'UK' => 'GB'
+      'UK'           => 'GB',
+      'U.S.A.'       => 'US',
+      'U.S.A'        => 'US',
+      'UNITE STATES' => 'US',
+      'Osceola'      => 'US',
+      'Polk'         => 'US',
+      'Larnaca'      => 'CY',
+      'Cyrus'        => 'CY',
+      'Paralimni'    => 'CY',
+      'Famagusta'    => 'CY'
     }
 
     # Returns country code by its name
@@ -23,24 +32,28 @@ module Ciirus
     #   CountryCode.code_by_name("Korea")
     #   => "KR"
     #
-    # Returns [String] country code or nil
+    # Returns +Result+ wrapping country code
     def code_by_name(name)
       name = name.strip
-      return CUSTOM_COUNTRY_NAMES_MAPPING[name] if CUSTOM_COUNTRY_NAMES_MAPPING[name]
+      return Result.new(CUSTOM_COUNTRY_NAMES_MAPPING[name]) if CUSTOM_COUNTRY_NAMES_MAPPING[name]
 
       # Try to find country by alpha-2, alpha-3 codes
       country = IsoCountryCodes.find(name) { nil }
+
       if country.nil?
-        standartized_name = prepare_name(name)
-        countries = IsoCountryCodes.search_by_name(standartized_name) { [] }
+        countries = IsoCountryCodes.search_by_name(name) { [] }
         country = countries.first
       end
-      country&.alpha2
+
+      return error_result(name) if country.nil?
+      Result.new(country.alpha2)
     end
 
     private
-    def prepare_name(name)
-      CUSTOM_COUNTRY_NAMES_MAPPING.fetch(name, name)
+
+    def error_result(name)
+      message = "Couldn't find country code for country: `#{name}`"
+      Result.error(:unknown_country, data = message)
     end
   end
 end
