@@ -10,7 +10,7 @@ module API::Controllers::Ciirus
     params API::Controllers::Params::Quote
 
     def quote_price(params)
-      credentials = Concierge::Credentials.for("Ciirus")
+      credentials = Concierge::Credentials.for(Ciirus::Client::SUPPLIER_NAME)
       Ciirus::Client.new(credentials).quote(params)
     end
 
