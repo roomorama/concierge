@@ -18,7 +18,9 @@ module Waytostay
         result = oauth2_client.get(current_page, headers: headers)
         return result unless result.success?
         response = Concierge::SafeAccessHash.new(result.value)
-        calendar_entries << availabilities_per_page(response)
+        availability_entries_reuslt = availabilities_per_page(response)
+        return availability_entries_reuslt unless availability_entries_reuslt.success?
+        calendar_entries << availability_entries_reuslt.value
         current_page = next_page_url(response)
       end
 
@@ -42,7 +44,7 @@ module Waytostay
     def availabilities_per_page(response)
       missing_keys = response.missing_keys_from(REQUIRED_RESPONSE_KEYS)
       if missing_keys.empty?
-        parse_calendar_entries(response)
+        Result.new(parse_calendar_entries(response))
       else
         augment_missing_fields(missing_keys)
         Result.error(:unrecognised_response)
@@ -55,8 +57,8 @@ module Waytostay
         available = entry["status"] != "unavailable"
         Date.parse(entry["start_date"]).upto Date.parse(entry["end_date"]) do |date|
           entries << Roomorama::Calendar::Entry.new(
-            date:         date.to_s,
-            available:    available,
+            date:      date.to_s,
+            available: available
           )
         end
       end
@@ -86,8 +88,8 @@ module Waytostay
           end
           unless entry_found
             calendar_entries << Roomorama::Calendar::Entry.new(
-              date: date_string,
-              available: true,
+              date:         date_string,
+              available:    true,
               nightly_rate: rate["per_person"]["1"]
             )
           end
