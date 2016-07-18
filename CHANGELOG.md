@@ -20,6 +20,7 @@ how this file is formatted and how the process works.
 - `Workers::Synchronisation` is now `Workers::PropertySynchronisation`.
 - OAuth2Client invalidates cache if token is expired
 - `Waytostay::Client#update_availability` to `#get_availability`, and the client use the info
+- allow `Roomorama::Property#amenities=` to be able to use `String` or `Array` representation.
 
 ### Removed
 - `update_calendar` method removed from `Roomorama::Property`.
