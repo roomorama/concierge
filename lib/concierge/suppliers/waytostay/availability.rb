@@ -65,7 +65,8 @@ module Waytostay
       entries
     end
 
-    # Adds the nightly rate into calendar entries. The property_rates given has the format:
+    # Adds the nightly rate into calendar entries.
+    # The property_rates given has the format:
     # [ {"start_date": "2016-07-21",
     #    "end_date": "2016-07-21",
     #    "per_person": {
@@ -75,22 +76,30 @@ module Waytostay
     #      "4": 217.2}
     # } ]
     #
+    # 2 notes:
+    #
+    #   - For dates where availability api did not cover, we assume it is avaiable.
+    #
+    #   - WayToStay provides us with data for a number of guests, and we chose to use
+    #   the price for one guest since we don't support prices/per guest on a given
+    #   date, and that is more accurate than using the host daily price.
+    #
+    #
     def append_rates!(calendar_entries, property_rates)
       property_rates.each do |rate|
         Date.parse(rate["start_date"]).upto(Date.parse(rate["end_date"])) do |date|
-          date_string = date.to_s
-          entry_found = false
-          calendar_entries.map do |entry|
-            if entry.date.to_s == date_string
-              entry.nightly_rate = rate["per_person"]["1"]
-              entry_found = true
-            end
-          end
-          unless entry_found
+          entry = calendar_entry.find { |entry| entry.date == date }
+          rates = Concierge::SafeAccessHash.new(rate)
+
+          nightly_rate = rates.get("per_person.1")
+
+          if entry
+            entry.nightly_rate = nightly_rate
+          else
             calendar_entries << Roomorama::Calendar::Entry.new(
               date:         date_string,
               available:    true,
-              nightly_rate: rate["per_person"]["1"]
+              nightly_rate: nightly_rate
             )
           end
         end
