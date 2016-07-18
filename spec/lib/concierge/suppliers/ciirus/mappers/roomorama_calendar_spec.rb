@@ -83,10 +83,12 @@ RSpec.describe Ciirus::Mappers::RoomoramaCalendar do
       expect(invalid_entries).to be_empty
     end
 
-    it 'does not return reserved days' do
+    it 'does returns reserved days as not available' do
       entry = calendar.entries.detect { |e| e.date == Date.new(2014, 8, 28)}
 
-      expect(entry).to be_nil
+      expect(entry.nightly_rate).to eq(141.43)
+      expect(entry.available).to be_falsey
+      expect(entry.checkin_allowed).to be_falsey
     end
 
     it 'does not allow to arrive in day of arrival' do
@@ -109,7 +111,6 @@ RSpec.describe Ciirus::Mappers::RoomoramaCalendar do
       expect(entry.nightly_rate).to eq(141.43)
       expect(entry.available).to be_truthy
       expect(entry.checkin_allowed).to be_truthy
-      expect(entry.checkout_allowed).to be_truthy
     end
   end
 end
