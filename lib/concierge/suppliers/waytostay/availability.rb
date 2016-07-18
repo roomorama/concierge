@@ -88,7 +88,7 @@ module Waytostay
     def append_rates!(calendar_entries, property_rates)
       property_rates.each do |rate|
         Date.parse(rate["start_date"]).upto(Date.parse(rate["end_date"])) do |date|
-          entry = calendar_entry.find { |entry| entry.date == date }
+          entry = calendar_entries.find { |entry| entry.date == date }
           rates = Concierge::SafeAccessHash.new(rate)
 
           nightly_rate = rates.get("per_person.1")
@@ -97,7 +97,7 @@ module Waytostay
             entry.nightly_rate = nightly_rate
           else
             calendar_entries << Roomorama::Calendar::Entry.new(
-              date:         date_string,
+              date:         date.to_s,
               available:    true,
               nightly_rate: nightly_rate
             )
