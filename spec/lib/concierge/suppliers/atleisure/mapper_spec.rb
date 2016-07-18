@@ -134,7 +134,7 @@ RSpec.describe AtLeisure::Mapper do
       expect(property.number_of_double_beds).to eq 4
       expect(property.number_of_single_beds).to eq 2
       expect(property.number_of_sofa_beds).to eq 0
-      expect(property.amenities).to eq ['kitchen', 'balcony', 'parking']
+      expect(property.amenities).to eq "kitchen,balcony,parking"
       expect(property.security_deposit_amount).to eq 500
       expect(property.services_cleaning).to eq true
       expect(property.services_cleaning_required).to eq true
