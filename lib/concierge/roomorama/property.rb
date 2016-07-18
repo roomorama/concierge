@@ -99,6 +99,22 @@ module Roomorama
       !!@multi_unit
     end
 
+    # changes amenities representation by allowing callers to use an +Array+
+    # or the final, comma-separated list of amenities +String+.
+    #
+    # Examples
+    #
+    #   property.amenities = "tv,airconditioning,parking"
+    #   property.amenities # => "tv,airconditioning,parking"
+    #
+    #   property.amenities = ["tv", "airconditioning", "parking"]
+    #   property.amenities # => "tv,airconditioning,parking"
+    def amenities
+      return if @amenities.nil?
+
+      Array(@amenities).join(",")
+    end
+
     def instant_booking!
       @instant_booking = true
     end
