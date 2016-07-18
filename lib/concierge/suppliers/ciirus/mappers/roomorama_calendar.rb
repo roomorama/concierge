@@ -29,6 +29,7 @@ module Ciirus
       private
 
       def build_entries(rates, reservations)
+        reservations_index = build_reservations_index(reservations)
         entries = []
         today = Date.today
         rates.each do |rate|
@@ -38,28 +39,29 @@ module Ciirus
           (rate.from_date..rate.to_date).each do |date|
 
             next if date <= today
-            next if date_reserved?(date, reservations)
-
-            available = nobody_arrived?(date, reservations)
+            available = !date_reserved?(date, reservations_index)
             entries << Roomorama::Calendar::Entry.new(
               date:             date.to_s,
               available:        available,
               nightly_rate:     rate.daily_rate,
-              checkin_allowed:  available,
-              checkout_allowed: true
+              checkin_allowed:  available
             )
           end
-
         end
         entries
       end
 
-      def date_reserved?(date, reservations)
-        reservations.any? { |r| r.arrival_date < date && date < r.departure_date }
+      def date_reserved?(date, reservations_index)
+        reservation = reservations_index[date]
+        !reservation.nil? && reservation.departure_date != date
       end
 
-      def nobody_arrived?(date, reservations)
-        reservations.none? { |r| r.arrival_date == date  }
+      def build_reservations_index(reservations)
+        {}.tap do |i|
+          reservations.each do |r|
+            (r.arrival_date..r.departure_date).each { |d| i[d] = r }
+          end
+        end
       end
     end
   end
