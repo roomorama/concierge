@@ -85,8 +85,13 @@ module Web::Views::Suppliers
       end
 
       definition = definition["workers"]
-      if definition["availabilities"]
-        format_frequency(definition["availabilities"]["every"])
+      return NO_CALENDAR_SYNC unless definition && definition["availabilities"]
+
+      availabilities = definition["availabilities"]
+      if availabilities["every"]
+        format_frequency(availabilities["every"])
+      elsif availabilities["absence"]
+        availabilities["absence"]
       else
         NO_CALENDAR_SYNC
       end
