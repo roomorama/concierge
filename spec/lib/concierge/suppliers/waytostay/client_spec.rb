@@ -4,6 +4,7 @@ require_relative "../shared/quote"
 require_relative "../shared/cancel"
 require_relative "properties"
 require_relative "media"
+require_relative "availabilities"
 
 RSpec.describe Waytostay::Client do
   include Support::Fixtures
@@ -27,6 +28,8 @@ RSpec.describe Waytostay::Client do
 
   it_behaves_like "Waytostay media client"
 
+  it_behaves_like "Waytostay availabilities client"
+
   describe "#get_changes_since" do
     let(:timestamp) { 1466562548 }
     let(:changes_url) { base_url + Waytostay::Changes::ENDPOINT }
@@ -44,29 +47,6 @@ RSpec.describe Waytostay::Client do
       # expect(subject[:rates]).to        match ["013064", "000001"]
       # expect(subject[:reviews]).to      match ["003"]
       # expect(subject[:bookings]).to     match []
-    end
-  end
-
-  describe "#get_availabilities" do
-    let(:property_identifier) { "015868" }
-    let(:availability_url) { "#{base_url}/properties/#{property_identifier}/availability" }
-
-    subject { stubbed_client.get_availabilities(property_identifier, 15) }
-
-    before do
-      stubbed_client.oauth2_client.oauth_client.connection =
-        stub_call(:get, availability_url, struct: true) {
-          [200, {}, read_fixture("waytostay/properties/015868/availability.json")]
-        }
-      stubbed_client.oauth2_client.oauth_client.connection =
-        stub_call(:get, availability_url + "?page=2", struct: true) {
-          [200, {}, read_fixture("waytostay/properties/015868/availability?page=2.json")]
-        }
-    end
-    it "should be a successful list of calendar entries" do
-      expect(subject).to be_success
-      expect(subject.value.last.date).to eq Date.parse("2018-07-03")
-      expect(subject.value.last.available).to eq false
     end
   end
 

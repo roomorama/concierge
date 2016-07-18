@@ -19,8 +19,8 @@ RSpec.describe Workers::Suppliers::Waytostay do
       Result.new(property)
     end
 
-    allow(subject.client).to receive(:get_availabilities) do |property, nightly_rate|
-      Result.new([Roomorama::Calendar::Entry.new(date: Date.today, available:true, nightly_rate:nightly_rate)])
+    allow(subject.client).to receive(:get_availabilities) do |property|
+      Result.new([Roomorama::Calendar::Entry.new(date: Date.today, available:true, nightly_rate:100)])
     end
   end
 
