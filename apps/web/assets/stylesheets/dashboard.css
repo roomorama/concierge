@@ -22,6 +22,16 @@ body {
   list-style: none;
 }
 
+.success-button {
+  color: #eee;
+  background: #2ebbab;
+}
+
+.warning-button {
+  color: #eee;
+  background: #ca3c3c;
+}
+
 #layout,
 #menu,
 .menu-link {

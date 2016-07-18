@@ -40,7 +40,31 @@ RSpec.describe Web::Views::Suppliers::Show do
     SupplierRepository.update(supplier)
 
     expect(sanitized).to include %(<em>Metadata:</em> every day)
-    expect(sanitized).to include %(<em>Calendar:</em> every 5 hours)
+    expect(sanitized).to include %(<em>Availabilities:</em> every 5 hours)
+  end
+
+  it "presents the status of workers for the hosts of the supplier" do
+    create_background_worker(
+      type:        "metadata",
+      host_id:     hosts.first.id,
+      status:      "idle",
+      next_run_at: nil
+    )
+    create_background_worker(
+      type:        "availabilities",
+      host_id:     hosts.first.id,
+      status:      "running",
+      next_run_at: Time.new(2016, 5, 22, 12, 32)
+    )
+
+    expect(sanitized).to include %(<td>metadata</td>)
+    expect(sanitized).to include %(<td>availabilities</td>)
+
+    expect(sanitized).to include %(<button class="warning-button pure-button">idle</button>)
+    expect(sanitized).to include %(<button class="success-button pure-button">running</button>)
+
+    expect(sanitized).to include %(<td>Soon (in at most 10 minutes)</td>)
+    expect(sanitized).to include %(<td>May 22, 2016 at 12:32</td>)
   end
 
 end

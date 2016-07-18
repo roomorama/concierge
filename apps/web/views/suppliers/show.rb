@@ -97,6 +97,33 @@ module Web::Views::Suppliers
       end
     end
 
+    def workers_for(host)
+      BackgroundWorkerRepository.for_host(host)
+    end
+
+    # Creates an HTML button/label for the status of a worker. +status+ is expected
+    # to be a +String+ equal to either +running+ or +idle+, the two possible values
+    # for the +status+ label on +BackgroundWorker+
+    def status_label(status)
+      if status == "running"
+        html.button "running", class: "success-button pure-button"
+      else
+        html.button "idle", class: "warning-button pure-button"
+      end
+    end
+
+    # Receives an instance of +BackgroundWorker+ and formats the
+    # +next_run_at+ column for display.
+    #
+    # If that column is +null+, meaning the worker has just been created
+    # and have never been run yet, the message indicates that the worker
+    # will be kicked in soon (time varies depending of when the scheduler
+    # will run next - see +Workers::Scheduler+).
+    def format_time(worker)
+      next_run_at = worker.next_run_at
+      next_run_at ? next_run_at.strftime("%B %d, %Y at %H:%M") : "Soon (in at most 10 minutes)"
+    end
+
     private
 
     # converts a number to its more human-readable version including commas

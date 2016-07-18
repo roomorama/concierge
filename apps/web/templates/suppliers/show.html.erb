@@ -39,7 +39,7 @@
     <ul>
       <li><strong>Metadata</strong>: Responsible for synchronising data such as:
         property titles and descriptions, list of images, amenities, etc.</li>
-      <li><strong>Calendar</strong>: Responsible for synchronising the availabilities
+      <li><strong>Availabilities</strong>: Responsible for synchronising the availabilities
         calendar for properties belonging to a given host/supplier. This includes
         availability status, rates and check-in/check-out rules.</li>
     </ul>
@@ -49,6 +49,34 @@
 
   <ul>
     <li><em>Metadata:</em> <%= metadata_frequency(supplier) %></li>
-    <li><em>Calendar:</em> <%= calendar_frequency(supplier) %></li>
+    <li><em>Availabilities:</em> <%= calendar_frequency(supplier) %></li>
   </ul>
+
+  <h3>Status</h3>
+
+  Find below the status of each synchronisation process for <%= supplier.name %>'s hosts:
+
+  <% hosts.each do |host| %>
+    <h4><%= host.username %> (identifier <code><%= host.identifier %></code>)</h4>
+
+    <table class="concierge-table pure-table">
+      <thead>
+        <tr>
+          <th>Worker</th>
+          <th>Status</th>
+          <th>Scheduled to Run At</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% workers_for(host).each do |worker| %>
+          <tr>
+            <td><%= worker.type %></td>
+            <td><%= status_label(worker.status) %></td>
+            <td><%= format_time(worker)%></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
 </div>
