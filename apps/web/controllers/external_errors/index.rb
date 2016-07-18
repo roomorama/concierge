@@ -11,7 +11,7 @@ module Web::Controllers::ExternalErrors
       page = params[:p]   && params[:p].to_i
       per  = params[:per] && params[:per].to_i
 
-      @external_errors = ExternalErrorRepository.paginate(page: page, per: per)
+      @external_errors = ExternalErrorRepository.reverse_occurrence.paginate(page: page, per: per)
     end
   end
 end

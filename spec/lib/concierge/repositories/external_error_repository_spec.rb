@@ -1,7 +1,12 @@
 require "spec_helper"
+require_relative "shared/pagination"
 
 RSpec.describe ExternalErrorRepository do
   include Support::Factories
+
+  it_behaves_like "paginating records" do
+    let(:factory) { -> { create_external_error } }
+  end
 
   describe ".count" do
     it "is zero when there are no records in the database" do
@@ -40,35 +45,16 @@ RSpec.describe ExternalErrorRepository do
     end
   end
 
-  describe ".paginate" do
-    before do
-      create_external_error(happened_at: Time.now - 24 * 60 * 60)
-      create_external_error(supplier: "SupplierB")
+  describe ".reverse_occurrence" do
+    it "returns an empty collection when there are no errors" do
+      expect(described_class.reverse_occurrence.to_a).to eq []
     end
 
-    it "uses the defaults in case the parameters given are nil" do
-      collection = described_class.paginate.to_a
+    it "returns a sorted collection keeping the most recent error first" do
+      recent_error = create_external_error(happened_at: Time.now)
+      old_error    = create_external_error(happened_at: Time.now - 4 * 24 * 60 * 60) # 4 days ago
 
-      expect(collection.size).to eq 2
-      expect(collection.first.supplier).to eq "SupplierB"
-      expect(collection.last.supplier).to eq "SupplierA"
-    end
-
-    it "uses the defaults in case the parameters given are invalid" do
-      collection = described_class.paginate(page: -1, per: -10).to_a
-
-      expect(collection.size).to eq 2
-      expect(collection.first.supplier).to eq "SupplierB"
-      expect(collection.last.supplier).to eq "SupplierA"
-    end
-
-    it "uses the parameters given" do
-      collection = described_class.paginate(per: 1).to_a
-      expect(collection.size).to eq 1
-      expect(collection.first.supplier).to eq "SupplierB"
-
-      collection = described_class.paginate(page: 2).to_a
-      expect(collection.size).to eq 0
+      expect(described_class.reverse_occurrence.to_a).to eq [recent_error, old_error]
     end
   end
 end
