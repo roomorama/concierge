@@ -197,7 +197,7 @@ module Roomorama
         number_of_sofa_beds:            number_of_sofa_beds,
         surface:                        surface,
         surface_unit:                   surface_unit,
-        amenities:                      Array(amenities).join(","),
+        amenities:                      amenities,
         max_guests:                     max_guests,
         minimum_stay:                   minimum_stay,
         multi_unit:                     multi_unit?,
