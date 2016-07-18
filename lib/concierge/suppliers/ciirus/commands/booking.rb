@@ -51,7 +51,7 @@ module Ciirus
       protected
 
       def operation_name
-          OPERATION_NAME
+        OPERATION_NAME
       end
 
       private
