@@ -3,6 +3,7 @@
 # Persistence operations and queries for the +reservations+ table.
 class ReservationRepository
   include Hanami::Repository
+  extend  Concierge::Repositories::Pagination
 
   # returns the total number of records on the +reservations+ table.
   def self.count

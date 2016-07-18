@@ -5,6 +5,11 @@ module Web::Controllers::ExternalErrors
     include Web::Action
     include Web::Controllers::InternalError
 
+    params do
+      param :p,    type: Integer # p: the page number
+      param :page, type: Integer # per: how many records per page
+    end
+
     expose :external_errors
 
     def call(params)

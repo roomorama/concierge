@@ -1,7 +1,12 @@
 require "spec_helper"
+require_relative "shared/pagination"
 
 RSpec.describe ReservationRepository do
   include Support::Factories
+
+  it_behaves_like "paginating records" do
+    let(:factory) { -> { create_reservation } }
+  end
 
   describe ".count" do
     it "is zero when there are no records in the database" do
