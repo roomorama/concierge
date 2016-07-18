@@ -53,8 +53,8 @@ RSpec.describe Workers::Suppliers::SAW do
 
       expected_property_ids = [1787, 1757, 2721, 2893, 1766]
 
-      expected_property_ids.each do |intenal_id|
-        expect(worker.synchronisation).to receive(:start).with(intenal_id)
+      expected_property_ids.each do |property_id|
+        expect(worker.synchronisation).to receive(:start).with(property_id)
       end
 
       result = worker.perform
