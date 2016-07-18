@@ -39,6 +39,14 @@ module Ciirus
       end
     end
 
+    # Returns a +Result+ wrapping reservation_id in success case.
+    # If an error happens in any step in the process of getting a response back from
+    # Ciirus, a generic error message is sent back to the caller, and the failure
+    # is logged.
+    def cancel(params)
+      Ciirus::Commands::Cancel.new(credentials).call(params[:reservation_id])
+    end
+
     private
 
     def database

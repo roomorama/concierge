@@ -6,6 +6,9 @@ module Ciirus
     # implement two methods:
     #  - call(params) - API call execution with returning +Result+
     #  - operation_name - name of API method
+    #
+    # There are two API endpoints: general and additional, so
+    # remote_call and additional_remote_call makes appropriate requests.
     class BaseCommand
       VERSION = '15.025'
       PATH = "/CiirusXML.#{VERSION}.asmx"
@@ -55,7 +58,7 @@ module Ciirus
       end
 
       def additional_remote_call(message)
-        call_client(additinal_client, message)
+        call_client(additional_client, message)
       end
 
       def call_client(client, message)
