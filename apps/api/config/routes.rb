@@ -14,5 +14,6 @@ post '/kigo/booking',        to: 'kigo#booking'
 post '/kigo/legacy/booking', to: 'kigo/legacy#booking'
 
 post 'waytostay/cancel', to: 'waytostay#cancel'
+post 'ciirus/cancel',    to: 'ciirus#cancel'
 
 post 'checkout', to: 'static#checkout'
