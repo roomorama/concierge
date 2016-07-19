@@ -25,7 +25,6 @@
 class SyncProcess
   include Hanami::Entity
 
-  attributes :id, :host_id, :started_at, :finished_at, :properties_created,
-    :successful, :properties_updated, :properties_deleted, :type, :stats,
-    :created_at, :updated_at
+  attributes :id, :host_id, :started_at, :finished_at, :successful, :type,
+    :stats, :created_at, :updated_at
 end
