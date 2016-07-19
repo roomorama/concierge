@@ -59,6 +59,12 @@ module Woori
       property = described_class.build(safe_hash)
       expect(property.instant_booking?).to eq(true)
     end
+
+    it "sets check_in_time and check_out_time attributes" do
+      property = described_class.build(safe_hash)
+      expect(property.check_in_time).to eq("15:00:00")
+      expect(property.check_out_time).to eq("12:00:00")
+    end
     
     it "sets images if images are present" do
       property = described_class.build(safe_hash)
