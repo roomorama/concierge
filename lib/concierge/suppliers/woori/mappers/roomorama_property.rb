@@ -17,17 +17,19 @@ module Woori
       # Returns +Roomorama::Property+ Roomorama property object
       def self.build(safe_hash)
         property = Roomorama::Property.new(safe_hash.get("id"))
-        property.title        = safe_hash.get("data.name")
-        property.type         = safe_hash.get("type")
-        property.lat          = safe_hash.get("data.latitude")
-        property.lng          = safe_hash.get("data.longitude")
-        property.currency     = safe_hash.get("data.currency")
-        property.city         = safe_hash.get("data.city")
-        property.neighborhood = safe_hash.get("data.region")
-        property.postal_code  = safe_hash.get("data.postalCode")
-        property.address      = full_address(safe_hash)
-        property.amenities    = amenities(safe_hash.get("data.facilities"))
-        property.country_code = country_code(safe_hash.get("data.country"))
+        property.title          = safe_hash.get("data.name")
+        property.type           = safe_hash.get("type")
+        property.lat            = safe_hash.get("data.latitude")
+        property.lng            = safe_hash.get("data.longitude")
+        property.currency       = safe_hash.get("data.currency")
+        property.city           = safe_hash.get("data.city")
+        property.neighborhood   = safe_hash.get("data.region")
+        property.postal_code    = safe_hash.get("data.postalCode")
+        property.check_in_time  = check_in_time(safe_hash.get("data.times"))
+        property.check_out_time = check_out_time(safe_hash.get("data.times"))
+        property.address        = full_address(safe_hash)
+        property.amenities      = amenities(safe_hash.get("data.facilities"))
+        property.country_code   = country_code(safe_hash.get("data.country"))
         
         property.description = description_with_additional_amenities(
           safe_hash.get("data.description"),
@@ -47,6 +49,26 @@ module Woori
       def self.set_images!(property, image_hashes)
         images = Mappers::RoomoramaImageSet.build(image_hashes)
         images.each { |image| property.add_image(image) }
+      end
+
+      def self.check_in_time(times_array)
+        record = find_time_record_by_id(times_array, "pension_chk_in")
+
+        return nil unless record
+        
+        record["from"] 
+      end
+      
+      def self.check_out_time(times_array)
+        record = find_time_record_by_id(times_array, "pension_chk_out")
+        
+        return nil unless record
+        
+        record["to"] 
+      end
+
+      def self.find_time_record_by_id(times_array, id)
+        times_array.select { |hash| hash["id"] == id  }.first
       end
 
       def self.full_address(safe_hash)
