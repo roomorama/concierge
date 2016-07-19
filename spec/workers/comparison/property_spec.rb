@@ -97,6 +97,20 @@ RSpec.describe Workers::Comparison::Property do
       expect(images).to eq ["img3"]
     end
 
+    it "is able to capture diffs from different amenities formats" do
+      new.amenities = ["parking,wifi,internet"]
+      diff = subject.extract_diff
+
+      expect(diff.to_h[:amenities]).to eq "parking,wifi,internet"
+    end
+
+    it "is able to recognise that amenities are equal in different formats" do
+      new.amenities = ["parking,wifi"]
+      diff = subject.extract_diff
+
+      expect(diff.to_h).not_to have_key :amenities
+    end
+
     context "multi units" do
       let(:unit_one) {
         Roomorama::Unit.new("unit1").tap do |unit|
