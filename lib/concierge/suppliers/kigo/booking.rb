@@ -32,7 +32,7 @@ module Kigo
       return reservation_details unless reservation_details.success?
 
       endpoint = request_handler.endpoint_for(API_METHOD)
-      result   = http.post(endpoint, json_encode(reservation_details.value), { 'Content-Type' => 'application/json' })
+      result   = http.post(endpoint, json_encode(reservation_details.value))
 
       if result.success?
         response_parser.parse_reservation(params, result.value.body)

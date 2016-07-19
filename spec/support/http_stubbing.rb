@@ -32,9 +32,9 @@ module Support
 
         case http_method
         when :get, :head, :delete, :options
-          stubs.public_send(http_method, url, options[:headers] || {}) { yield }
+          stubs.public_send(http_method, url) { yield }
         else # for :post, :put, :patch
-          stubs.public_send(http_method, path, options[:body] || {}, options[:headers] || {}) { yield }
+          stubs.public_send(http_method, path, options[:body] || {}) { yield }
         end
 
       else
@@ -44,7 +44,7 @@ module Support
 
       end
 
-      conn = Faraday.new(url: endpoint) do |f|
+      conn = Faraday.new(url: endpoint, headers: options[:headers]) do |f|
         f.adapter :test, stubs
       end
 

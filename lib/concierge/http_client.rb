@@ -89,7 +89,7 @@ module Concierge
 
     def get(path, params = {}, headers = {})
       with_error_handling do |conn|
-        conn.headers.merge!(DEFAULT_HEADERS).merge!(headers)
+        conn.headers.merge!(headers)
         announce_request(:get, path, params, conn.headers)
         conn.get(path, params)
       end
@@ -97,7 +97,7 @@ module Concierge
 
     def post(path, params = {}, headers = {})
       with_error_handling do |conn|
-        conn.headers.merge!(DEFAULT_HEADERS).merge!(headers)
+        conn.headers.merge!(headers)
         announce_request(:post, path, params, conn.headers)
         conn.post(path, params)
       end
@@ -105,7 +105,7 @@ module Concierge
 
     def put(path, params = {}, headers = {})
       with_error_handling do |conn|
-        conn.headers.merge!(DEFAULT_HEADERS).merge!(headers)
+        conn.headers.merge!(headers)
         announce_request(:put, path, params, conn.headers)
         conn.put(path, params)
       end
@@ -113,7 +113,7 @@ module Concierge
 
     def delete(path, params = {}, headers = {})
       with_error_handling do |conn|
-        conn.headers.merge!(DEFAULT_HEADERS).merge!(headers)
+        conn.headers.merge!(headers)
         announce_request(:delete, path, params, conn.headers)
         conn.delete(path) { |req| req.body = params }
       end
@@ -122,9 +122,19 @@ module Concierge
     private
 
     def connection
-      @connection ||= self.class._connection || Faraday.new(url: url, request: { timeout: options.fetch(:timeout, CONNECTION_TIMEOUT) }) do |f|
+      @connection ||= self.class._connection || Faraday.new(url: url, request: request_options, headers: headers) do |f|
         f.adapter :patron
       end
+    end
+
+    def request_options
+      {
+        timeout: options.fetch(:timeout, CONNECTION_TIMEOUT)
+      }
+    end
+
+    def headers
+      DEFAULT_HEADERS.merge(options.fetch(:headers, {}))
     end
 
     def with_error_handling

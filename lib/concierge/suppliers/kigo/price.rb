@@ -38,7 +38,7 @@ module Kigo
       return stay_details unless stay_details.success?
 
       endpoint = request_handler.endpoint_for(API_METHOD)
-      result   = http.post(endpoint, json_encode(stay_details.value), { "Content-Type" => "application/json" })
+      result   = http.post(endpoint, json_encode(stay_details.value))
 
       if result.success?
         response_parser.compute_pricing(params, result.value.body)
