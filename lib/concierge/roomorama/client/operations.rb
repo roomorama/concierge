@@ -22,6 +22,12 @@ class Roomorama::Client
       Disable.new(identifiers)
     end
 
+    # Performs an +update_calendar+ operation, making changes in bulk to
+    # a property's availabilities calendar.
+    def self.update_calendar(calendar)
+      UpdateCalendar.new(calendar)
+    end
+
   end
 
 end

@@ -4,10 +4,37 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.5.0] - 2016-07-19
+### Added
+- added `currency_code` to the list of supported attributes for booking webhook and for `API::Controllers::Params::Booking` object
+- added `get_active_properties` by Waytostay::Client, for first time import
+- add `BackgroundWorker` and related refactor on queue processing.
+- add `Workers::CalendarSynchronisation` to deal with updating the calendar of availabilities.
+- `Concierge::Cache#invalidate` and the counterpart context event.
+
+### Changed
+- determine Roomorama API environment according to value in environment variable.
+- fixed `SafeAccessHash#get` method to return `nil` for nonexistent keys
+- fixed `SafeAccessHash#missing_keys_from` method to check for empty strings as well
+- new structure for the `config/suppliers.yml` file.
+- `Workers::Synchronisation` is now `Workers::PropertySynchronisation`.
+- OAuth2Client invalidates cache if token is expired
+- `Waytostay::Client#update_availability` to `#get_availability`, and the client use the info
+- Fix issue on amenities when extracting diffs, by comparing properties in their serialized forms.
+
+### Removed
+- `update_calendar` method removed from `Roomorama::Property`.
+
 ## [0.4.4] - 2016-07-07
 ### Added
 - Synchronisation with AtLeisure
 - Ability to enable or disable context tracking at certain points in time.
+- `Concierge::SafeAccessHash#merge` utils method
+- `waytostay#get_changes` returns changes from waytostay api
+- `waytostay#get_property` returns a roomorama property from waytostay api
+- `waytostay#update_media` sets images to all the new images from waytostay
+- `waytostay#update_availability` sets availability to all the new availability from waytostay
+- Waytostay synchronisation worker
 - `Kigo::Booking` - implemented booking with supplier
 
 ### Changed

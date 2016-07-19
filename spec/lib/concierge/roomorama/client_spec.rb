@@ -22,19 +22,14 @@ RSpec.describe Roomorama::Client do
     image.url     = "https://www.example.org/image2.png"
     image.caption = "Barbecue Pit"
     property.add_image(image)
-
-    property.update_calendar({
-      "2016-05-22" => true,
-      "2016-05-20" => false,
-      "2016-05-28" => true,
-      "2016-05-21" => true
-    })
   end
 
   subject { described_class.new(access_token) }
 
   describe "#initialize" do
-    it "defaults to production" do
+    it "defaults to the value specified in the environment variable" do
+      old_environment = ENV["ROOMORAMA_API_ENVIRONMENT"]
+      ENV["ROOMORAMA_API_ENVIRONMENT"] = "production"
       client = nil
 
       expect {
@@ -42,6 +37,7 @@ RSpec.describe Roomorama::Client do
       }.not_to raise_error
 
       expect(client.api_url).to eq "https://api.roomorama.com"
+      ENV["ROOMORAMA_API_ENVIRONMENT"] = old_environment
     end
 
     it "allows a different environment to be specified" do
@@ -95,12 +91,7 @@ RSpec.describe Roomorama::Client do
             url:        "https://www.example.org/image2.png",
             caption:    "Barbecue Pit"
           }
-        ],
-
-        availabilities: {
-          start_date: "2016-05-20",
-          data:       "011111111"
-        }
+        ]
       }
 
       headers = {

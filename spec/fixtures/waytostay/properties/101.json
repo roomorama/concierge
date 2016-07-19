@@ -1,0 +1,527 @@
+{
+  "reference": "101",
+  "active": false,
+  "created_timestamp": 1459857520,
+  "modified_timestamp": 1464334450,
+  "sort_index": 8.2,
+  "services": [
+    {
+      "id": 4,
+      "name": "internet via WiFi",
+      "on_request": false,
+      "extra_cost": false
+    },
+    {
+      "id": 9,
+      "name": "national TV",
+      "on_request": false,
+      "extra_cost": false
+    }
+  ],
+  "general": {
+    "name": "Inactve Room Title Example",
+    "type": "Apartment",
+    "board_type": "RO",
+    "licence_number": "",
+    "default_photo_url": "https://static.waytostay.com/media/apartments/570/3bce/5703bceabb997_extra_extra_large.JPG",
+    "sleeps": 11,
+    "floors": [
+      {
+        "id": 4,
+        "name": "1st floor"
+      }
+    ],
+    "bedrooms": 4,
+    "bathrooms": 2,
+    "highlighted_until_timestamp": null,
+    "subtype": "SC",
+    "number_of_units": 1,
+    "sqm": 118,
+    "bedding_summary": [
+      "1 single sofa bed",
+      "2 double bed",
+      "4 single bed",
+      "1 double sofa bed"
+    ],
+    "min_stay_default": 2,
+    "checkin_time": "15:00:00",
+    "checkout_time": "11:00:00",
+    "late_checkin_possible": false,
+    "late_checkin_from": "22:00:00",
+    "late_checkin_to": "08:00:00",
+    "late_checkin_fee": 20,
+    "cut_off_days": 3,
+    "maximum_days_arrival": 365,
+    "specific_checkin_fees": "For a late check-in after 20:00 there is an extra cost of € 35.",
+    "permissions": {
+      "smoking": "on request",
+      "pets": "allowed",
+      "parties": "not allowed",
+      "children": "allowed",
+      "young": "allowed"
+    }
+  },
+  "notices": null,
+  "review_ratings": {
+    "is_new_online": true,
+    "reviews": 0,
+    "overall": 8,
+    "cleaning": 8,
+    "comfort": 8,
+    "value": 8,
+    "cico": 8
+  },
+  "payment": {
+    "payment_options": [
+      "full_payment",
+      "partial_payment"
+    ],
+    "currency": "EUR",
+    "vat_percent": null,
+    "extra_creditcard_charge_percent": 0,
+    "damage_deposit_payment_methods": [
+      {
+        "id": 2,
+        "name": "cash"
+      }
+    ],
+    "city_tourist_tax": [
+
+    ],
+    "lowest_rate": 163,
+    "lowest_rate_pp": 25,
+    "arrival_payment_methods": [
+      {
+        "id": 1,
+        "name": "cash"
+      }
+    ],
+    "damage_deposit": 150,
+    "fees": [
+      {
+        "name": "cleaning fee",
+        "fee": 60,
+        "is_per_day": false,
+        "is_per_person": false,
+        "fee_cap": null,
+        "is_discountable": false
+      },
+      {
+        "name": "cleaning fee",
+        "fee": 15,
+        "is_per_day": false,
+        "is_per_person": false,
+        "fee_cap": null,
+        "is_discountable": true
+      }
+    ]
+  },
+  "descriptions": {
+    "inside": "",
+    "outside": "",
+    "description": "This is how we would describe our apartment in a few words:\r\nInside: Outside: \r\nOur apartment Iris 5 Tempel is located in the central and beautiful Tempelhof area.\r\nThe property is situated on the 1st floor (for US guests +1).\r\n\r\nIt’s a great place to discover Berlin and a comfortable place to come home to.\r\nAlso:\r\n- lowest price guarantee \r\n- secure payment, no hidden costs\r\n- amend, cancel and rebook with no extra fees\r\nCheck more specific info about our apartment below the page.\r\n\r\nQuestions or doubts? Please feel free to contact us.\r\n\r\nThe prices are an indication and can be a bit lower or higher because of discounts and seasonal adjustments."
+  },
+  "waytostay_urls": {
+    "general": "https://www.sandbox.waytostay.com:25443/berlin-apartments/iris-5-tempel-15868/?orgid=1645",
+    "location": "https://www.sandbox.waytostay.com:25443/berlin-apartments/iris-5-tempel-15868/location/?orgid=1645",
+    "reviews": "https://www.sandbox.waytostay.com:25443/berlin-apartments/iris-5-tempel-15868/reviews/?orgid=1645"
+  },
+  "location": {
+    "address": {
+      "address": "Calle de la Dama de Elche 9",
+      "postcode": "46023"
+    },
+    "country": {
+      "iso": "de",
+      "name": "Germany"
+    },
+    "city": {
+      "id": 11,
+      "name": "Berlin"
+    },
+    "neighbourhood": {
+      "id": 280,
+      "name": "Tempelhof"
+    },
+    "area": {
+      "id": 391,
+      "name": "Tempelhof"
+    },
+    "coord": {
+      "lat": 52.46871,
+      "lng": 13.38642
+    }
+  },
+  "facilities_amenities": {
+    "facilities": {
+      "id": 99,
+      "name": "lift"
+    },
+    "general": [
+      {
+        "id": 9,
+        "name": "smoke alarm"
+      },
+      {
+        "id": 92,
+        "name": "central heating"
+      },
+      {
+        "id": 233,
+        "name": "board games"
+      }
+    ],
+    "rooms": [
+      {
+        "type": "Bathroom",
+        "label": "bathroom",
+        "amenities": [
+          {
+            "name": "wc",
+            "amount": 1,
+            "id": 2
+          },
+          {
+            "name": "hairdryer",
+            "amount": 1,
+            "id": 3
+          },
+          {
+            "name": "towels",
+            "amount": 1,
+            "id": 15
+          },
+          {
+            "name": "walk-in shower",
+            "amount": 1,
+            "id": 91
+          },
+          {
+            "name": "washbasin(s)",
+            "amount": 1,
+            "id": 229
+          }
+        ]
+      },
+      {
+        "type": "Bathroom",
+        "label": "bathroom",
+        "amenities": [
+          {
+            "name": "wc",
+            "amount": 1,
+            "id": 2
+          },
+          {
+            "name": "hairdryer",
+            "amount": 1,
+            "id": 3
+          },
+          {
+            "name": "towels",
+            "amount": 1,
+            "id": 15
+          },
+          {
+            "name": "walk-in shower",
+            "amount": 1,
+            "id": 91
+          },
+          {
+            "name": "washbasin(s)",
+            "amount": 1,
+            "id": 229
+          }
+        ]
+      },
+      {
+        "type": "Bedroom",
+        "label": "bedroom",
+        "amenities": [
+          {
+            "name": "bed linen",
+            "amount": 1,
+            "id": 14
+          },
+          {
+            "name": "single sofa bed",
+            "amount": 1,
+            "id": 50
+          },
+          {
+            "name": "double bed",
+            "amount": 1,
+            "id": 51
+          },
+          {
+            "name": "wardrobe",
+            "amount": 1,
+            "id": 134
+          },
+          {
+            "name": "chest of drawers",
+            "amount": 1,
+            "id": 292
+          }
+        ]
+      },
+      {
+        "type": "Bedroom",
+        "label": "bedroom",
+        "amenities": [
+          {
+            "name": "bed linen",
+            "amount": 1,
+            "id": 14
+          },
+          {
+            "name": "single bed",
+            "amount": 2,
+            "id": 61
+          },
+          {
+            "name": "chest of drawers",
+            "amount": 1,
+            "id": 292
+          }
+        ]
+      },
+      {
+        "type": "Bedroom",
+        "label": "bedroom",
+        "amenities": [
+          {
+            "name": "bed linen",
+            "amount": 1,
+            "id": 14
+          },
+          {
+            "name": "double bed",
+            "amount": 1,
+            "id": 51
+          }
+        ]
+      },
+      {
+        "type": "Bedroom",
+        "label": "bedroom",
+        "amenities": [
+          {
+            "name": "bed linen",
+            "amount": 1,
+            "id": 14
+          },
+          {
+            "name": "single bed",
+            "amount": 2,
+            "id": 61
+          },
+          {
+            "name": "wardrobe",
+            "amount": 1,
+            "id": 134
+          }
+        ]
+      },
+      {
+        "type": "Kitchen",
+        "label": "kitchen",
+        "amenities": [
+          {
+            "name": "ceramic-plate cooker",
+            "amount": 1,
+            "id": 20
+          },
+          {
+            "name": "complete kitchenware",
+            "amount": 1,
+            "id": 74
+          },
+          {
+            "name": "oven",
+            "amount": 1,
+            "id": 75
+          },
+          {
+            "name": "fridge",
+            "amount": 1,
+            "id": 76
+          },
+          {
+            "name": "coffee maker",
+            "amount": 1,
+            "id": 79
+          },
+          {
+            "name": "toaster",
+            "amount": 1,
+            "id": 82
+          },
+          {
+            "name": "dishwasher",
+            "amount": 1,
+            "id": 83
+          },
+          {
+            "name": "freezer",
+            "amount": 1,
+            "id": 125
+          }
+        ]
+      },
+      {
+        "type": "Living room",
+        "label": "living room",
+        "amenities": [
+          {
+            "name": "bed linen",
+            "amount": 1,
+            "id": 14
+          },
+          {
+            "name": "double sofa bed",
+            "amount": 1,
+            "id": 54
+          },
+          {
+            "name": "tv/dvd",
+            "amount": 1,
+            "id": 115
+          },
+          {
+            "name": "dining table with 11 seats",
+            "amount": 1,
+            "id": 183
+          }
+        ]
+      }
+    ],
+    "overview": [
+      {
+        "id": 1,
+        "name": "Internet",
+        "checked": true
+      },
+      {
+        "id": 2,
+        "name": "Pets allowed",
+        "checked": false
+      },
+      {
+        "id": 3,
+        "name": "Smoking allowed",
+        "checked": false
+      },
+      {
+        "id": 4,
+        "name": "TV",
+        "checked": true
+      },
+      {
+        "id": 5,
+        "name": "International TV",
+        "checked": false
+      },
+      {
+        "id": 6,
+        "name": "DVD",
+        "checked": true
+      },
+      {
+        "id": 7,
+        "name": "Air conditioning",
+        "checked": false
+      },
+      {
+        "id": 8,
+        "name": "Heating",
+        "checked": true
+      },
+      {
+        "id": 9,
+        "name": "Fan",
+        "checked": false
+      },
+      {
+        "id": 10,
+        "name": "Bed linen",
+        "checked": true
+      },
+      {
+        "id": 11,
+        "name": "Towels",
+        "checked": true
+      },
+      {
+        "id": 12,
+        "name": "Baby cot",
+        "checked": false
+      },
+      {
+        "id": 13,
+        "name": "Washing machine",
+        "checked": false
+      },
+      {
+        "id": 14,
+        "name": "Dryer",
+        "checked": false
+      },
+      {
+        "id": 15,
+        "name": "Dishwasher",
+        "checked": true
+      },
+      {
+        "id": 16,
+        "name": "Microwave",
+        "checked": false
+      },
+      {
+        "id": 17,
+        "name": "Oven",
+        "checked": true
+      },
+      {
+        "id": 18,
+        "name": "Complete kitchenware",
+        "checked": true
+      },
+      {
+        "id": 19,
+        "name": "Balcony",
+        "checked": false
+      },
+      {
+        "id": 20,
+        "name": "Terrace",
+        "checked": false
+      },
+      {
+        "id": 21,
+        "name": "Garden",
+        "checked": false
+      },
+      {
+        "id": 22,
+        "name": "Swimming pool",
+        "checked": false
+      },
+      {
+        "id": 23,
+        "name": "Parking",
+        "checked": false
+      },
+      {
+        "id": 24,
+        "name": "Lift",
+        "checked": true
+      }
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "https://apis.sandbox.waytostay.com:25443/properties/015868"
+    }
+  }
+}

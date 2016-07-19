@@ -2,10 +2,14 @@ require 'spec_helper'
 require_relative "../shared/book"
 require_relative "../shared/quote"
 require_relative "../shared/cancel"
+require_relative "properties"
+require_relative "media"
+require_relative "availabilities"
 
 RSpec.describe Waytostay::Client do
   include Support::Fixtures
   include Support::HTTPStubbing
+  include Support::Factories
 
   before do
     Concierge::Cache.new(namespace:"oauth2").
@@ -13,14 +17,41 @@ RSpec.describe Waytostay::Client do
             serializer: Concierge::Cache::Serializers::JSON.new) do
       Result.new({"token_type"   => "BEARER",
                   "access_token" => "test_token",
-                  "expires_at"   => 1465467451})
+                  "expires_at"   => Time.now.to_i + 10 * 3600 })
     end
   end
 
   subject(:stubbed_client) { described_class.new }
+  let(:base_url) { stubbed_client.credentials[:url] }
 
-  describe"#book" do
-    let(:book_url) { stubbed_client.credentials[:url] + Waytostay::Book::ENDPOINT_BOOKING }
+  it_behaves_like "Waytostay property client"
+
+  it_behaves_like "Waytostay media client"
+
+  it_behaves_like "Waytostay availabilities client"
+
+  describe "#get_changes_since" do
+    let(:timestamp) { 1466562548 }
+    let(:changes_url) { base_url + Waytostay::Changes::ENDPOINT }
+    before do
+      stubbed_client.oauth2_client.oauth_client.connection =
+        stub_call(:get, changes_url, params:{timestamp: timestamp}, strict: true) {
+          [200, {}, read_fixture("waytostay/changes?timestamp=#{timestamp}.json")]
+        }
+    end
+    subject { stubbed_client.get_changes_since(timestamp) }
+    it "should return hash of changes by categories" do
+      expect(subject.result[:properties]).to   match ["000001"]
+      expect(subject.result[:media]).to        match ["002"]
+      expect(subject.result[:availability]).to match ["003"]
+      # expect(subject[:rates]).to        match ["013064", "000001"]
+      # expect(subject[:reviews]).to      match ["003"]
+      # expect(subject[:bookings]).to     match []
+    end
+  end
+
+  describe "#book" do
+    let(:book_url) { base_url + Waytostay::Book::ENDPOINT_BOOKING }
     let(:params) {{
       customer: {
         email:      "user@test.com",
@@ -71,7 +102,7 @@ RSpec.describe Waytostay::Client do
       # Stubbing confirmation success
       stubbed_client.oauth2_client.oauth_client.connection = stub_call(
         :post,
-        stubbed_client.credentials[:url] + stubbed_client.send(:confirmation_path, successful_code)
+        "#{base_url}/bookings/#{successful_code}/confirmation"
       ) {
         [200, {}, read_fixture("waytostay/bookings/#{successful_code}/confirmation.json")]
       }
@@ -88,12 +119,12 @@ RSpec.describe Waytostay::Client do
 
       it "should send 2 posts, book and confirm" do
         expect_any_instance_of(Concierge::OAuth2Client).to receive(:post).twice.and_call_original
-        reservation = supplier_client.book(success_params)
+        supplier_client.book(success_params)
       end
 
       it "should only send 1 post, book, when there're errors" do
         expect_any_instance_of(Concierge::OAuth2Client).to receive(:post).once.and_call_original
-        reservation = supplier_client.book(error_params_list.first)
+        supplier_client.book(error_params_list.first)
       end
 
     end
@@ -101,7 +132,7 @@ RSpec.describe Waytostay::Client do
 
   describe "#quote" do
 
-    let(:quote_url) { stubbed_client.credentials[:url] + Waytostay::Quote::ENDPOINT }
+    let(:quote_url) { base_url + Waytostay::Quote::ENDPOINT }
 
     let(:quote_post_body) {{
       property_reference: "1",

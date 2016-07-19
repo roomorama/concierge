@@ -1,0 +1,44 @@
+{
+  "_links": {
+    "self": {
+      "href": "https://apis.waytostay.com/properties/000001/rates?start_date=2016-01-09&end_date=2016-01-11&page=1"
+    },
+    "first": {
+      "href": "https://apis.waytostay.com/properties/000001/rates?start_date=2016-01-09&end_date=2016-01-11"
+    },
+    "last": {
+      "href": "https://apis.waytostay.com/properties/000001/rates?start_date=2016-01-09&end_date=2016-01-11&page=1"
+    }
+  },
+  "_embedded": {
+    "properties_rates": [
+      {
+        "start_date": "2016-06-20",
+        "end_date": "2017-01-10",
+        "per_person": {
+          "1": 95,
+          "2": 95,
+          "3": 110,
+          "4": 125
+        },
+        "_links": []
+      },
+      {
+        "start_date": "2017-01-11",
+        "end_date": "2018-07-03",
+        "per_person": {
+          "1": 100,
+          "2": 100,
+          "3": 115,
+          "4": 130
+        },
+        "_links": []
+      }
+    ]
+  },
+  "page_count": 1,
+  "page_size": 1000,
+  "total_items": 2,
+  "page": 1
+}
+

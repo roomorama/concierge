@@ -5,6 +5,11 @@
 # metadata associated with the synchronisation process, allowing later
 # analysis about how a given supplier behaves.
 #
+# A synchronisation process can be related to property metadata publishing
+# to Roomorama as well as keeping the availabilities calendar up to date
+# (see +BackgroundWorker+). The +stats+ field collects statistics specific
+# for these kinds of events.
+#
 # Attributes
 #
 # +id+                 - the ID of the the record on the database, automatically generated.
@@ -14,15 +19,13 @@
 #                        kicked in.
 # +finished_at+        - a timestamp that indicates the time when the synchronisation process
 #                        was completed.
-# +properties_created+ - the number of properties published on Roomorama in a
-#                        given synchronisation
-# +properties_updated+ - the number of properties updated on Roomorama in a
-#                        given synchronisation
-# +properties_deleted+ - the number of properties deleted on Roomorama in a
-#                        given synchronisation
+# +type+               - the type of synchronisation process that was executed.
+# +stats+              - a JSON field containing statistics about the synchronisation
+#                        process. Differs depending on the +type+ of sync process.
 class SyncProcess
   include Hanami::Entity
 
   attributes :id, :host_id, :started_at, :finished_at, :properties_created,
-    :successful, :properties_updated, :properties_deleted, :created_at, :updated_at
+    :successful, :properties_updated, :properties_deleted, :type, :stats,
+    :created_at, :updated_at
 end

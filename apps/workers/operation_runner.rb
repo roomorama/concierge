@@ -43,9 +43,7 @@ module Workers
     # Extra arguments depend on the specific implementation of the runner.
     # Check particular classes for more information.
     def perform(operation, *args)
-      runner_for(operation).perform(*args).tap do |result|
-        update_next_run if result.success?
-      end
+      runner_for(operation).perform(*args)
     end
 
     private
@@ -58,24 +56,19 @@ module Workers
         Workers::OperationRunner::Diff.new(host, operation, roomorama_client)
       when Roomorama::Client::Operations::Disable
         Workers::OperationRunner::Disable.new(host, operation, roomorama_client)
+      when Roomorama::Client::Operations::UpdateCalendar
+        Workers::OperationRunner::UpdateCalendar.new(operation, roomorama_client)
       else
         raise InvalidOperationError.new(operation)
       end
     end
 
     def roomorama_client
-      @roomorama_client ||= Roomorama::Client.new(host.access_token, environment: roomorama_environment)
-    end
-
-    # use the production Roomorama API on production, falling back to staging in any
-    # other environment.
-    def roomorama_environment
-      Hanami.env == "production" ? :production : :staging
+      @roomorama_client ||= Roomorama::Client.new(host.access_token)
     end
 
     # if the result of performing the operation was successful, we update
-    # the timestamp when the next synchronisation for the given host
-    # should happen.
+    # the timestamp when the next execution of the worker should happen.
     def update_next_run
       one_day = 24 * 60 * 60 # TODO make this a dynamic value
       host.next_run_at = Time.now + one_day

@@ -22,15 +22,6 @@ RSpec.describe Workers::Router do
       image.url        = "https://www.example.org/img2"
       image.caption    =  "Swimming Pool"
       property.add_image(image)
-
-      property.update_calendar({
-        "2016-05-24" => true,
-        "2016-05-23" => true,
-        "2016-05-26" => false,
-        "2016-05-28" => false,
-        "2016-05-21" => true,
-        "2016-05-29" => true,
-      })
     end
   }
 
@@ -76,6 +67,12 @@ RSpec.describe Workers::Router do
       data = Roomorama::Client::Operations.publish(roomorama_property).request_data
       create_property(host_id: host.id, identifier: roomorama_property.identifier, data: data)
 
+      operation = subject.dispatch(roomorama_property)
+      expect(operation).to be_nil
+    end
+
+    it "does not enqueue any operation if the new property is disabled" do
+      roomorama_property.disabled = true
       operation = subject.dispatch(roomorama_property)
       expect(operation).to be_nil
     end

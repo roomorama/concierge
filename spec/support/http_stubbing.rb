@@ -32,7 +32,7 @@ module Support
 
         case http_method
         when :get, :head, :delete, :options
-          stubs.public_send(http_method, path, options[:headers] || {}) { yield }
+          stubs.public_send(http_method, url, options[:headers] || {}) { yield }
         else # for :post, :put, :patch
           stubs.public_send(http_method, path, options[:body] || {}, options[:headers] || {}) { yield }
         end

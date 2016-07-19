@@ -9,12 +9,18 @@ class HostRepository
     query.count
   end
 
-  # queries which hosts need to be synchronised at the current moment, by checking
-  # the +next_run_at+ column. If that column is +NULL+, it is also considered to
-  # be ready for synchronisation.
-  def self.pending_synchronisation
+  # queries for all hosts that belong to a given +supplier+
+  def self.from_supplier(supplier)
     query do
-      where { next_run_at < Time.now }.or(next_run_at: nil).order(:next_run_at)
+      where(supplier_id: supplier.id)
+    end
+  end
+
+  # queries for a host with the given +identifier+, which should be unique
+  # per supplier.
+  def self.identified_by(identifier)
+    query do
+      where(identifier: identifier)
     end
   end
 end

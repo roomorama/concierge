@@ -84,12 +84,13 @@ module API
           payload = safe_access(data)
 
           params = {
-            property_id: payload.get("inquiry.room.property_id"),
-            unit_id:     payload.get("inquiry.room.unit_id"),
-            check_in:    payload.get("inquiry.check_in"),
-            check_out:   payload.get("inquiry.check_out"),
-            guests:      payload.get("inquiry.num_guests"),
-            subtotal:    payload.get("inquiry.subtotal"),
+            property_id:   payload.get("inquiry.room.property_id"),
+            unit_id:       payload.get("inquiry.room.unit_id"),
+            check_in:      payload.get("inquiry.check_in"),
+            check_out:     payload.get("inquiry.check_out"),
+            guests:        payload.get("inquiry.num_guests"),
+            subtotal:      payload.get("inquiry.subtotal"),
+            currency_code: payload.get("inquiry.currency_code"),
             customer: {
               first_name: payload.get("inquiry.user.first_name"),
               last_name:  payload.get("inquiry.user.last_name"),

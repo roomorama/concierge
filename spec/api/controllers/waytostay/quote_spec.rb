@@ -18,7 +18,7 @@ RSpec.describe API::Controllers::Waytostay::Quote do
     let(:params) {
       { property_id: "321", unit_id: "123", check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
     }
-    let(:supplier_name) { "Waytostay" }
+    let(:supplier_name) { "WayToStay" }
     let(:error_code) { "savon_erorr" }
 
     def provoke_failure!

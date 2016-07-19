@@ -1,9 +1,9 @@
 <div class="error-event">
   <%= render partial: "external_errors/events/timestamp", locals: { event: event } %>
 
-  <h3>Missing Basic Property Data</h3>
-  <p>Concierge detected that basic information required for property publishing
-    was missing, and therefore the property was not sent to Roomorama's API.</p>
+  <h3>Missing Basic Data</h3>
+  <p>Concierge detected that basic information required for the synchronisation process
+    was missing, and therefore the request was not sent to Roomorama's API.</p>
 
   <p>The error message when parsing the data for the property was:</p>
 
@@ -11,7 +11,7 @@
     <%= event[:error_message] %>
   </div>
 
-  <p>The formatted data for this property was:</p>
+  <p>The formatted data for this request was:</p>
 
   <%
     content_type = "application/json"

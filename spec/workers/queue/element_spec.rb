@@ -1,7 +1,7 @@
 require "spec_helper"
 
 RSpec.describe Workers::Queue::Element do
-  let(:operation) { "sync" }
+  let(:operation) { "background_worker" }
   let(:data)      { { key: "value" } }
 
   subject { described_class.new(operation: operation, data: data) }

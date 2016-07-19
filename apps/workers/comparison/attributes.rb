@@ -33,10 +33,12 @@ module Workers::Comparison
     def apply_to(diff)
 
       changed = false
+      original_serialized = original.to_h
+      new_serialized      = new.to_h
 
       # 1. find attributes which map to scalar values (i.e., removes Arrays and Hashes).
-      original_attributes = meta_keys(original)
-      new_attributes      = meta_keys(new)
+      original_attributes = meta_keys(original_serialized)
+      new_attributes      = meta_keys(new_serialized)
 
       # 2. find the sets of attributes that were: added, removed or are common (shared
       #    between both instances.)
@@ -48,7 +50,7 @@ module Workers::Comparison
       #    to the content of the new object.
       added_meta.each do |attr|
         changed    = true
-        diff[attr] = new.public_send(attr)
+        diff[attr] = new_serialized[attr]
       end
 
       # 4. for each attribute that was originally set but is not anymore, we +erase+ it
@@ -61,8 +63,8 @@ module Workers::Comparison
       #    their values: if they differ, than the new value should be included
       #    in the +diff+.
       common_meta.each do |attr|
-        original_attr = original.public_send(attr)
-        new_attr      = new.public_send(attr)
+        original_attr = original_serialized[attr]
+        new_attr      = new_serialized[attr]
 
         if original_attr != new_attr
           changed = true
@@ -75,8 +77,8 @@ module Workers::Comparison
 
     private
 
-    def meta_keys(object)
-      object.to_h.delete_if { |_, value| value.is_a?(Array) || value.is_a?(Hash) }.keys.sort
+    def meta_keys(map)
+      map.delete_if { |_, value| value.is_a?(Array) || value.is_a?(Hash) }.keys.sort
     end
 
   end

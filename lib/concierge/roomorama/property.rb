@@ -4,8 +4,7 @@ module Roomorama
   #
   # This class is responsible for wrapping the properties of an entry in the `rooms`
   # table in Roomorama. It includes attribute accessors for all parameters accepted
-  # by Roomorama's API, as well as convenience methods to set property images
-  # and update the availabilities calendar.
+  # by Roomorama's API, as well as convenience methods to set property images.
   #
   # Usage
   #
@@ -16,8 +15,6 @@ module Roomorama
   #   image = Roomorama::Image.new("img134")
   #   image.url = "https://www.example.org/image.png"
   #   property.add_image(image)
-  #
-  #   property.update_calendar("2016-05-22" => true, "2016-05-23" => true")
   class Property
     include Roomorama::Mappers
 
@@ -114,13 +111,13 @@ module Roomorama
       images << image
     end
 
+    def drop_images!
+      @images = []
+    end
+
     def add_unit(unit)
       multi_unit!
       units << unit
-    end
-
-    def update_calendar(dates)
-      calendar.merge!(dates.dup)
     end
 
     # validates that all required fields for a unit are present. A unit needs:
@@ -141,6 +138,9 @@ module Roomorama
     def validate!
       if identifier.to_s.empty?
         raise ValidationError.new("identifier is not given or empty")
+      elsif disabled
+        # if there's an id and it's disabled, it's already a valid property
+        true
       elsif images.empty?
         raise ValidationError.new("no images")
       else
@@ -151,29 +151,8 @@ module Roomorama
       end
     end
 
-    # enforces that the property have a non-empty availabilities calendar
-    # (necessary when publishing a property).
-    #
-    # Raises a +Roomorama::Property::ValidationError+ in case the calendar
-    # is empty, or +true+ otherwise.
-    #
-    # If the property has any units, calendar is required for each of them
-    # as well.
-    def require_calendar!
-      if calendar.empty?
-        raise ValidationError.new("no availabilities")
-      else
-        units.each(&:require_calendar!)
-        true
-      end
-    end
-
     def images
       @images ||= []
-    end
-
-    def calendar
-      @calendar ||= {}
     end
 
     def units
@@ -241,7 +220,6 @@ module Roomorama
       }
 
       data[:images]         = map_images(self)
-      data[:availabilities] = map_availabilities(self)
       data[:units]          = map_units(self)
 
       scrub(data)

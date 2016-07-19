@@ -48,7 +48,7 @@ module Workers
     end
 
     # processes the message. For the +sync+ operation, all that is done is
-    # to trigger the +sync.<supplier_name>+ even on +Concierge::Announcer+.
+    # to trigger the +sync.<supplier_name>+ event on +Concierge::Announcer+.
     # If there is an implementation listening for this event, it will be
     # processed.
     #
@@ -57,8 +57,8 @@ module Workers
       return message unless message.success?
       element = Concierge::SafeAccessHash.new(message.value)
 
-      if element[:operation] == "sync"
-        perform_sync(element[:data])
+      if element[:operation] == "background_worker"
+        run_worker(element[:data])
       else
         raise UnknownOperationError.new(element[:operation])
       end
@@ -66,14 +66,18 @@ module Workers
 
     private
 
-    def perform_sync(args)
-      timing_out("sync", args) do
-        host      = HostRepository.find(args[:host_id])
-        supplier  = SupplierRepository.find(host.supplier_id)
-        broadcast = ["sync", ".", supplier.name].join
+    def run_worker(args)
+      worker = BackgroundWorkerRepository.find(args[:background_worker_id])
 
-        Concierge::Announcer.trigger(broadcast, host)
-        Result.new(true)
+      running(worker) do
+        timing_out(worker.type, args) do
+          host      = HostRepository.find(worker.host_id)
+          supplier  = SupplierRepository.find(host.supplier_id)
+          broadcast = [worker.type, ".", supplier.name].join
+
+          Concierge::Announcer.trigger(broadcast, host)
+          Result.new(true)
+        end
       end
     end
 
@@ -89,14 +93,41 @@ module Workers
       Result.error(:timeout)
     end
 
+    # coordinates the +BackgroundWorker+ instance status and timestamps by changing
+    # the worker status to +running+, yielding the block (which is supposed to do
+    # the worker's job), and ensuring that the worker's status is set back to +idle+
+    # at the end of the process, as well as properly updating the +next_run_at+ column
+    # according to the specified worker +interval+.
+    def running(worker)
+      worker_started(worker)
+      yield
+
+    ensure
+      # reload the worker instance to make sure to account for any possible
+      # changes in the process
+      worker_completed(BackgroundWorkerRepository.find(worker.id))
+    end
+
     def message
       @message = json_decode(payload)
+    end
+
+    def worker_started(worker)
+      worker.status = "running"
+      BackgroundWorkerRepository.update(worker)
+    end
+
+    def worker_completed(worker)
+      worker.status      = "idle"
+      worker.next_run_at = Time.now + worker.interval
+
+      BackgroundWorkerRepository.update(worker)
     end
 
     # NOTE this time out should be shorter than the +VisibilityTimeout+ configured
     # on the SQS queue to be used by Concierge.
     def processing_timeout
-      @one_hour ||= 60 * 60
+      @two_hour ||= 60 * 60 * 2
     end
   end
 

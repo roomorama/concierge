@@ -4,8 +4,7 @@ module Roomorama
   #
   # This class is responsible for wrapping the units of an entry in the `units`
   # table in Roomorama. It includes attribute accessors for all parameters accepted
-  # by Roomorama's API, as well as convenience methods to set unit images
-  # and update the availabilities calendar.
+  # by Roomorama's API, as well as convenience methods to set unit images.
   #
   # Usage
   #
@@ -15,8 +14,6 @@ module Roomorama
   #   image = Roomorama::Image.new("img134")
   #   image.url = "https://www.example.org/image.png"
   #   unit.add_image(image)
-  #
-  #   unit.update_calendar("2016-05-22" => true, "2016-05-23" => true")
   class Unit
     include Roomorama::Mappers
 
@@ -85,6 +82,9 @@ module Roomorama
     def validate!
       if identifier.to_s.empty?
         raise ValidationError.new("identifier is not given or empty")
+      elsif disabled
+        # if there's an id and it's disabled, it's already a valid unit
+        true
       elsif images.empty?
         raise ValidationError.new("no images")
       else
@@ -94,30 +94,12 @@ module Roomorama
       end
     end
 
-    # ensures there is a non-empty availabilities calendar. Raises an exception
-    # (+Roomorama::Unit::ValidationError+) in case the calendar is empty.
-    def require_calendar!
-      if calendar.empty?
-        raise ValidationError.new("no availabilities")
-      else
-        true
-      end
-    end
-
     def add_image(image)
       images << image
     end
 
-    def update_calendar(dates)
-      calendar.merge!(dates.dup)
-    end
-
     def images
       @images ||= []
-    end
-
-    def calendar
-      @calendar ||= {}
     end
 
     def to_h
@@ -148,7 +130,6 @@ module Roomorama
       }
 
       data[:images]         = map_images(self)
-      data[:availabilities] = map_availabilities(self)
 
       scrub(data)
     end
