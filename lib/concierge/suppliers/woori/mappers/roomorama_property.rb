@@ -70,7 +70,7 @@ module Woori
       end
       
       def self.description_with_additional_amenities(description, amenities)
-        text = description.to_s.strip
+        text = description.to_s.strip.gsub(/\.\z/, "")
         text_amenities = formatted_additional_amenities(amenities)
 
         description_parts = [text, text_amenities].reject(&:empty?)
