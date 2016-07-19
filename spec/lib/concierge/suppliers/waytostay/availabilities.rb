@@ -6,7 +6,7 @@ RSpec.shared_examples "Waytostay availabilities client" do
 
     subject { stubbed_client.get_availabilities(property_identifier) }
 
-    context "succesful" do
+    context "there are some existing reservations in availability.json" do
       before do
         stubbed_client.oauth2_client.oauth_client.connection =
           stub_call(:get, availability_url, struct: true) {
@@ -37,6 +37,22 @@ RSpec.shared_examples "Waytostay availabilities client" do
 
         expect(entries.count - 1).to eq Date.parse("2018-07-03") - Date.parse("2016-06-20")
       end
+    end
+
+    context "there are no reservation (no entries from /availability.json)" do
+      before do
+        stubbed_client.oauth2_client.oauth_client.connection =
+          stub_call(:get, availability_url, struct: true) {
+            [200, {}, read_fixture("waytostay/properties/015868/availability.empty.json")]
+          }
+        stubbed_client.oauth2_client.oauth_client.connection =
+          stub_call(:get, rates_url + "?end_date=2018-07-03", struct: true) {
+            [200, {}, read_fixture("waytostay/properties/015868/rates.json")]
+          }
+      end
+
+      it { expect(subject.value.all?(&:available)).to be true }
+
     end
 
     context "malformed response" do
