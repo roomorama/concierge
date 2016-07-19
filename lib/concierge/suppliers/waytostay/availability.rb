@@ -26,8 +26,7 @@ module Waytostay
 
       calendar_entries.flatten! # they were in nested arrays by pages
 
-      end_date = calendar_entries.last.date
-
+      end_date = calendar_entries.last&.date # could be nil, in which case waytostay would default to one year from today
       rates_result = oauth2_client.get(build_path(RATES_ENDPOINT, property_reference: identifier),
                                        params: {end_date: end_date.to_s}, # with no start date, to get rates from today
                                        headers: headers)

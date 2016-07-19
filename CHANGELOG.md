@@ -8,6 +8,9 @@ how this file is formatted and how the process works.
 ### Changed
 - Waytostay images that has is_visible=false should not be imported
 
+### Fixed
+- Waytostay calendar crashes when there is no entries from /availabilities api
+
 ## [0.5.0] - 2016-07-19
 ### Added
 - added `currency_code` to the list of supported attributes for booking webhook and for `API::Controllers::Params::Booking` object
