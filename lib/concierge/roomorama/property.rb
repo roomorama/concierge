@@ -138,6 +138,9 @@ module Roomorama
     def validate!
       if identifier.to_s.empty?
         raise ValidationError.new("identifier is not given or empty")
+      elsif disabled
+        # if there's an id and it's disabled, it's already a valid property
+        true
       elsif images.empty?
         raise ValidationError.new("no images")
       else
