@@ -1,8 +1,14 @@
 require "spec_helper"
+require_relative "shared/pagination"
 
 RSpec.describe SyncProcessRepository do
   include Support::Factories
-describe ".recent_successful_sync_for_host" do
+
+  it_behaves_like "paginating records" do
+    let(:factory) { -> { create_sync_process } }
+  end
+
+  describe ".recent_successful_sync_for_host" do
     let(:now) { Time.new(2016, 06, 06) }
     let(:one_hour_ago)       { now -  1 * 60 * 60 }
     let(:twenty_minutes_ago) { now - 20 * 60 }
@@ -40,5 +46,25 @@ describe ".recent_successful_sync_for_host" do
       expect(described_class.most_recent.to_a).to eq [recent, old]
     end
   end
-end
 
+  describe ".of_type" do
+    it "is empty if the there are no records" do
+      expect(described_class.of_type("metadata").to_a).to eq []
+    end
+
+    it "is empty if type is empty" do
+      expect(described_class.of_type("").to_a).to eq []
+    end
+
+    it "is empty if type is nil" do
+      expect(described_class.of_type(nil).to_a).to eq []
+    end
+
+    it "returns synchronisation process of the given type only" do
+      metadata_process       = create_sync_process(type: "metadata")
+      availabilities_process = create_sync_process(type: "availabilities")
+
+      expect(described_class.of_type("metadata").to_a).to eq [metadata_process]
+    end
+  end
+end

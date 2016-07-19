@@ -6,6 +6,7 @@
 # in this table.
 class SyncProcessRepository
   include Hanami::Repository
+  extend  Concierge::Repositories::Pagination
 
   # returns the total number of properties stored in the database.
   def self.count
@@ -22,6 +23,13 @@ class SyncProcessRepository
   def self.most_recent
     query do
       desc(:started_at)
+    end
+  end
+
+  # queries for synchronisation process of the given +type+.
+  def self.of_type(type)
+    query do
+      where(type: type)
     end
   end
 
