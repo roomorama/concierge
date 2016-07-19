@@ -47,13 +47,6 @@ module Roomorama
       erased << attr.to_s
     end
 
-    def amenities
-      return if @amenities.nil?
-
-      Array(@amenities).join(",")
-    end
-
-
     def add_image(image)
       image_changes.created << image
     end
@@ -129,7 +122,7 @@ module Roomorama
         number_of_sofa_beds:            number_of_sofa_beds,
         surface:                        surface,
         surface_unit:                   surface_unit,
-        amenities:                      amenities,
+        amenities:                      Array(amenities).join(","),
         max_guests:                     max_guests,
         minimum_stay:                   minimum_stay,
         multi_unit:                     multi_unit,

@@ -169,22 +169,6 @@ RSpec.describe Roomorama::Property do
     end
   end
 
-  describe "#amenities" do
-    it "is nil when no amenities were set" do
-      expect(subject.amenities).to eq nil
-    end
-
-    it "does not change the amenities if they are in the right format" do
-      subject.amenities = "internet, tv, airconditioning"
-      expect(subject.amenities).to eq "internet, tv, airconditioning"
-    end
-
-    it "generates a list of amenities separated by comma if amenities is given as a collection" do
-      subject.amenities = ["internet", "tv", "airconditioning"]
-      expect(subject.amenities).to eq "internet,tv,airconditioning"
-    end
-  end
-
   describe "#add_image" do
     let(:image) { Roomorama::Image.new("ID123") }
 
