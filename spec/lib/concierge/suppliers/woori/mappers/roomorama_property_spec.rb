@@ -76,5 +76,85 @@ module Woori
       expect(property.images).to be_kind_of(Array)
       expect(property.images.size).to eq(0)
     end
+
+    it "sets amenities" do
+      property_hash["data"]["facilities"] = ["TV", "swimming_pool"]
+      property = described_class.build(safe_hash)
+
+      expect(property.amenities).to eq(["tv"])
+    end
+    
+    it "keeps amenities empty if there is not Woori facilities" do
+      property_hash["data"]["facilities"] = []
+      property = described_class.build(safe_hash)
+
+      expect(property.amenities).to eq([])
+    end
+  
+    describe "changes description to include additional amenities" do
+      it "keeps description as is when no amenities is present" do
+        property_hash["data"]["facilities"] = []
+        property = described_class.build(safe_hash)
+
+        expect(property.description).to eq("Test description")
+      end
+      
+      it "keeps description as is when no additional amenities is present" do
+        property_hash["data"]["facilities"] = ["TV", "cookware", "air conditioner"]
+        property = described_class.build(safe_hash)
+
+        expect(property.description).to eq("Test description")
+      end
+
+      it "adds additional amenities to description" do
+        property_hash["data"]["facilities"] = ["foo", "bar"]
+        property = described_class.build(safe_hash)
+
+        expect(property.description).to eq(
+          "Test description. Additional amenities: foo, bar"
+        )
+      end
+
+      it "does not add double dot signs after description" do
+        property_hash["data"]["description"] = "Test description."
+        property_hash["data"]["facilities"] = ["foo", "bar"]
+        property = described_class.build(safe_hash)
+
+        expect(property.description).to eq(
+          "Test description. Additional amenities: foo, bar"
+        )
+      end
+      
+      it "adds additional amenities to description ignoring known amenitites" do
+        property_hash["data"]["facilities"] = ["TV", "foo", "bar"]
+        property = described_class.build(safe_hash)
+
+        expect(property.description).to eq(
+          "Test description. Additional amenities: foo, bar"
+        )
+      end
+    
+      it "adds additional amenities to description when description is blank" do
+        variations = ["", " ", nil]
+
+        variations.each do |desc|
+          property_hash["data"]["description"] = desc
+          property_hash["data"]["facilities"] = ["foo", "bar"]
+
+          property = described_class.build(safe_hash)
+
+          expect(property.description).to eq("Additional amenities: foo, bar")
+        end
+      end
+
+      it "keeps description empty when there is no additional amenities and original description" do
+        property_hash["data"]["description"] = nil
+        property_hash["data"]["facilities"] = ["TV"]
+          
+        property = described_class.build(safe_hash)
+
+        expect(property.description).to be_nil
+      end
+    end
   end
 end
