@@ -136,6 +136,12 @@ RSpec.describe Roomorama::Unit do
     it "is valid if all required parameters are present" do
       expect(subject.validate!).to be
     end
+
+    it "is valid if it has id and is disabled" do
+      subject.images.clear
+      subject.disabled = true
+      expect(subject.validate!).to be true
+    end
   end
 
   describe "#to_h" do
