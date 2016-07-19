@@ -8,8 +8,10 @@ module Support
   module Factories
     def create_sync_process(overrides = {})
       attributes  = {
-        type: "metadata",
-        started_at: Time.now - 10 * 60, # 10 minutes ago
+        type:        "metadata",
+        host_id:     create_host.id,
+        successful:  true,
+        started_at:  Time.now - 10 * 60, # 10 minutes ago
         finished_at: Time.now
       }.merge(overrides)
 

@@ -14,8 +14,13 @@ class SyncProcessRepository
 
   def self.recent_successful_sync_for_host(host)
     query do
-      where(successful: true).
-      where(host_id: host.id).
+      where(successful: true, host_id: host.id)
+    end.most_recent
+  end
+
+  # orders the collection by its start time, most recent first.
+  def self.most_recent
+    query do
       desc(:started_at)
     end
   end

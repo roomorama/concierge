@@ -2,8 +2,7 @@ require "spec_helper"
 
 RSpec.describe SyncProcessRepository do
   include Support::Factories
-
-  describe ".recent_successful_sync_for_host" do
+describe ".recent_successful_sync_for_host" do
     let(:now) { Time.new(2016, 06, 06) }
     let(:one_hour_ago)       { now -  1 * 60 * 60 }
     let(:twenty_minutes_ago) { now - 20 * 60 }
@@ -27,6 +26,19 @@ RSpec.describe SyncProcessRepository do
       it { expect(subject.first).to be_nil }
     end
 
+  end
+
+  describe ".most_recent" do
+    it "is empty in case there are no sync processes" do
+      expect(described_class.most_recent.to_a).to eq []
+    end
+
+    it "orders the collection bringing the most recent process first" do
+      recent = create_sync_process(started_at: Time.now)
+      old = create_sync_process(started_at: Time.now - 4 * 24 * 60 * 60) # 4 days ago
+
+      expect(described_class.most_recent.to_a).to eq [recent, old]
+    end
   end
 end
 
