@@ -31,11 +31,18 @@ module Woori
       expect(property.lng).to eq(127.273)
       expect(property.address).to eq("Sudong-myeon, Namyangju-si, Gyeonggi-do 239-25, Cheolmasan-ro")
       expect(property.city).to eq("Namyangju-si")
+      expect(property.neighborhood).to eq("Gyeonggi-do")
+      expect(property.postal_code).to eq("12027")
     end
 
     it "sets proper currency" do
       property = described_class.build(safe_hash)
       expect(property.currency).to eq("KRW")
+    end
+    
+    it "sets country code" do
+      property = described_class.build(safe_hash)
+      expect(property.country_code).to eq("KR")
     end
     
     it "sets default_to_available flag" do
