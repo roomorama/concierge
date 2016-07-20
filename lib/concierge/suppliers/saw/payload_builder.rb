@@ -96,6 +96,15 @@ module SAW
       }
     end
 
+    def build_cancel_request(reservation_id)
+      %{
+        <request>
+          #{build_username_and_password}
+          <booking_ref_number>#{reservation_id}</booking_ref_number>
+        </request>
+      }
+    end
+
     private
     def build_username_and_password
       %{

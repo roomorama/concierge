@@ -11,7 +11,8 @@ module SAW
       property_rates:   "xml/propertyrates.aspx",
       property_search:  "xml/propertysearch.aspx",
       property_list:    "xml/propertylist.aspx",
-      property_booking: "xml/propertybooking.aspx"
+      property_booking: "xml/propertybooking.aspx",
+      cancellation:     "xml/bookingcancellation.aspx"
     }
 
     # Returns a URL part for a given endpoint by its system name
