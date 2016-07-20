@@ -17,7 +17,7 @@ module Woori
 
     it "sets id to the property" do
       property = described_class.build(safe_hash)
-      expect(property.identifier).to eq(28271)
+      expect(property.identifier).to eq("28271")
     end
     
     it "sets type to the property" do
