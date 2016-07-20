@@ -62,6 +62,33 @@ RSpec.shared_examples "Waytostay property client" do
     end
   end
 
+  describe "#parse_security_deposit_method" do
+    subject { described_class.new.send(:parse_security_deposit_method, response) }
+
+    context "when card and cash is accepted" do
+      let(:response) { Concierge::SafeAccessHash.new(
+        { payment:
+          { damage_deposit_payment_methods:
+            [ { "id" => 1, "name" => "visa" },
+              { "id" => 2, "name" => "cash" }]
+          }
+        })
+      }
+      it { expect(subject[:security_deposit_type]).to eq "cash" }
+    end
+
+    context "when cash is not accepted" do
+      let(:response) { Concierge::SafeAccessHash.new(
+        { payment:
+          { damage_deposit_payment_methods:
+            [ { "id" => 1, "name" => "visa" } ]
+          }
+        })
+      }
+      it { expect(subject[:security_deposit_type]).to eq "visa" }
+    end
+  end
+
   describe "#get_property" do
     let(:valid_property_id)           { "015868" }
     let(:inactive_property_id)        { "inactive" }
