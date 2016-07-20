@@ -5,7 +5,7 @@ module Woori
   # corresponding Woori API urls.
   class Endpoint
     ENDPOINTS = {
-      properties: "properties",
+      properties: "properties"
     }
 
     # Returns a URL part for a given endpoint by its system name

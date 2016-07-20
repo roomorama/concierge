@@ -1,0 +1,39 @@
+{
+    "data": {
+        "count": 1,
+        "items": [
+            {
+                "createdAt": "2016-05-31 17:02:30",
+                "data": {
+                    "capacity": 8,
+                    "description": "It located on the second floor. <BR> You can barbecue on the terrace.",
+                    "facilities": [
+                        "cabletv",
+                        "airconditioning",
+                        "kitchen"
+                    ],
+                    "geofences": [
+                        "\uc804\uad6d"
+                    ],
+                    "images": null,
+                    "isActive": 1,
+                    "maxCapacity": 13,
+                    "name": "gughwa",
+                    "roomCount": 1,
+                    "roomSize": 66.1157,
+                    "roomType": "\uadf8\ub8f9\ub8f8",
+                    "roomUnit": "square meter",
+                    "updatedAt": "2016-04-14 11:33:21"
+                },
+                "hash": "w_w0104006_R05",
+                "id": 14360,
+                "type": "roomtype",
+                "updatedAt": null
+            }
+        ],
+        "limit": 0,
+        "offset": 0
+    },
+    "message": "success",
+    "status": 200
+}
