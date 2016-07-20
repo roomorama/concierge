@@ -13,8 +13,8 @@ module Woori
     class PropertiesFetcher < BaseFetcher
       include Concierge::JSON
 
-      def call
-        params = build_request_params
+      def call(updated_at, limit, offset)
+        params = build_request_params(updated_at, limit, offset)
         result = http.get(endpoint(:properties), params, headers)
 
         if result.success?
@@ -33,11 +33,11 @@ module Woori
       end
 
       private
-      def build_request_params
+      def build_request_params(updated_at, limit, offset)
         {
-          updatedAt: '1970-01-01',
-          limit: 5,
-          offset: 0,
+          updatedAt: updated_at,
+          limit: limit,
+          offset: offset,
           active: 1
         }
       end
