@@ -100,9 +100,9 @@ module Roomorama
         identifier:       property_identifier,
         start_date:       parsed.start_date.to_s,
         availabilities:   parsed.availabilities,
-        nightly_rates:    parsed.rates.nightly,
-        weekly_rates:     parsed.rates.weekly,
-        monthly_rates:    parsed.rates.monthly,
+        nightly_prices:    parsed.rates.nightly,
+        weekly_prices:     parsed.rates.weekly,
+        monthly_prices:    parsed.rates.monthly,
         checkin_allowed:  parsed.checkin_rules,
         checkout_allowed: parsed.checkout_rules
       }

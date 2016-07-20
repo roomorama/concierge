@@ -57,14 +57,14 @@ RSpec.describe Roomorama::Calendar do
       subject.add(create_entry(date: "2016-05-24", available: true,  nightly_rate: 150))
 
       expect(subject.to_h).to eq({
-        identifier:       "prop1",
-        start_date:       "2016-05-22",
-        availabilities:   "101",
-        nightly_rates:    [100, 120, 150],
-        weekly_rates:     [nil, nil, nil],
-        monthly_rates:    [nil, nil, nil],
-        checkin_allowed:  "111",
-        checkout_allowed: "111"
+        identifier:        "prop1",
+        start_date:        "2016-05-22",
+        availabilities:    "101",
+        nightly_prices:    [100, 120, 150],
+        weekly_prices:     [nil, nil, nil],
+        monthly_prices:    [nil, nil, nil],
+        checkin_allowed:   "111",
+        checkout_allowed:  "111"
       })
     end
 
@@ -74,14 +74,14 @@ RSpec.describe Roomorama::Calendar do
       subject.add(create_entry(date: "2016-05-24", available: true,  nightly_rate: 150, checkout_allowed: false))
 
       expect(subject.to_h).to eq({
-        identifier:       "prop1",
-        start_date:       "2016-05-22",
-        availabilities:   "101",
-        nightly_rates:    [100, 120, 150],
-        weekly_rates:     [500, nil, nil],
-        monthly_rates:    [nil, 1000, nil],
-        checkin_allowed:  "011",
-        checkout_allowed: "110"
+        identifier:        "prop1",
+        start_date:        "2016-05-22",
+        availabilities:    "101",
+        nightly_prices:    [100, 120, 150],
+        weekly_prices:     [500, nil, nil],
+        monthly_prices:    [nil, 1000, nil],
+        checkin_allowed:   "011",
+        checkout_allowed:  "110"
       })
     end
 
@@ -93,27 +93,27 @@ RSpec.describe Roomorama::Calendar do
       average = (100 + 120 + 150) / 3
 
       expect(subject.to_h).to eq({
-        identifier:       "prop1",
-        start_date:       "2016-05-22",
-        availabilities:   "111010",
-        nightly_rates:    [100, average, average, 120, average, 150],
-        weekly_rates:     [nil, nil, nil, nil, nil, nil],
-        monthly_rates:    [nil, nil, nil, nil, nil, nil],
-        checkin_allowed:  "111111",
-        checkout_allowed: "111111"
+        identifier:        "prop1",
+        start_date:        "2016-05-22",
+        availabilities:    "111010",
+        nightly_prices:    [100, average, average, 120, average, 150],
+        weekly_prices:     [nil, nil, nil, nil, nil, nil],
+        monthly_prices:    [nil, nil, nil, nil, nil, nil],
+        checkin_allowed:   "111111",
+        checkout_allowed:  "111111"
       })
     end
 
     it "is able to serialize empty calendars" do
       expect(subject.to_h).to eq({
-        identifier:       "prop1",
-        start_date:       "",
-        availabilities:   "",
-        nightly_rates:    [],
-        weekly_rates:     [],
-        monthly_rates:    [],
-        checkin_allowed:  "",
-        checkout_allowed: ""
+        identifier:        "prop1",
+        start_date:        "",
+        availabilities:    "",
+        nightly_prices:    [],
+        weekly_prices:     [],
+        monthly_prices:    [],
+        checkin_allowed:   "",
+        checkout_allowed:  ""
       })
     end
   end
