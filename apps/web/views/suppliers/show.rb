@@ -121,13 +121,17 @@ module Web::Views::Suppliers
     # will run next - see +Workers::Scheduler+).
     def format_time(worker)
       next_run_at = worker.next_run_at
-      next_run_at ? next_run_at.strftime("%B %d, %Y at %H:%M") : "Soon (in at most 10 minutes)"
+      next_run_at ? time_formatter.present(next_run_at) : "Soon (in at most 10 minutes)"
     end
 
     private
 
     def number_formatter
       @number_formatter ||= Web::Support::Formatters::Number.new
+    end
+
+    def time_formatter
+      @time_formatter ||= Web::Support::Formatters::Time.new
     end
 
     # used when priting frequencies of workers for suppliers. The +frequency+

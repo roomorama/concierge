@@ -10,7 +10,13 @@ module Web::Views::Reservations
     # Receives an instance of +Reservation+ and formats the
     # +created_at+ column for display.
     def format_time(reservation)
-      reservation.created_at.strftime("%B %d, %Y at %H:%M")
+      time_formatter.present(reservation.created_at)
+    end
+
+    private
+
+    def time_formatter
+      @time_formatter ||= Web::Support::Formatters::Time.new
     end
   end
 end

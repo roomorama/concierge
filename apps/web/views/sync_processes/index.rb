@@ -19,7 +19,13 @@ module Web::Views::SyncProcesses
 
     # Receives an timestamp and formats it for display.
     def format_time(timestamp)
-      timestamp.strftime("%B %d, %Y at %H:%M")
+      time_formatter.present(timestamp)
+    end
+
+    private
+
+    def time_formatter
+      @time_formatter ||= Web::Support::Formatters::Time.new
     end
   end
 end
