@@ -4,10 +4,10 @@ RSpec.describe Workers::Suppliers::Woori do
   include Support::Factories
   include Support::HTTPStubbing
   include Support::Fixtures
-  include Support::Woori::MockRequest
   include Support::Woori::LastContextEvent
 
   let(:host) { create_host }
+  let(:url) { "http://my.test/properties" }
 
   describe "#perform operation" do
     let(:worker) do
@@ -15,7 +15,8 @@ RSpec.describe Workers::Suppliers::Woori do
     end
     
     it "fails when fetching properties returns an error" do
-      mock_request(:properties, :error_500, status: 500)
+      stub_data = read_fixture("woori/error_500.json")
+      stub_call(:get, url) { [500, {}, stub_data] }
 
       result = worker.perform
 

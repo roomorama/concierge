@@ -3,17 +3,18 @@ require "spec_helper"
 RSpec.describe Woori::Commands::PropertiesFetcher do
   include Support::HTTPStubbing
   include Support::Fixtures
-  include Support::Woori::MockRequest
   include Support::Woori::LastContextEvent
 
   let(:credentials) { Concierge::Credentials.for("Woori") }
   let(:subject) { described_class.new(credentials) }
+  let(:url) { "http://my.test/properties" }
   let(:updated_at) { "1970-01-01" }
   let(:limit) { 50 }
   let(:offset) { 0 }
 
   it "returns results with an array of properties" do
-    mock_request(:properties, :success)
+    stub_data = read_fixture("woori/properties/success.json")
+    stub_call(:get, url) { [200, {}, stub_data] }
 
     result = subject.call(updated_at, limit, offset)
     expect(result.success?).to be true
@@ -25,7 +26,8 @@ RSpec.describe Woori::Commands::PropertiesFetcher do
   end
   
   it "returns results when there is only one property" do
-    mock_request(:properties, :one)
+    stub_data = read_fixture("woori/properties/one.json")
+    stub_call(:get, url) { [200, {}, stub_data] }
 
     result = subject.call(updated_at, limit, offset)
     expect(result.success?).to be true
@@ -37,7 +39,8 @@ RSpec.describe Woori::Commands::PropertiesFetcher do
   end
 
   it "returns an empty array when there is no properties" do
-    mock_request(:properties, :empty)
+    stub_data = read_fixture("woori/properties/empty.json")
+    stub_call(:get, url) { [200, {}, stub_data] }
 
     result = subject.call(updated_at, limit, offset)
     expect(result.success?).to be true
@@ -47,24 +50,19 @@ RSpec.describe Woori::Commands::PropertiesFetcher do
   end
 
   it "returns failure result when Woori API returns an error" do
-    mock_request(:properties, :error_500)
+    stub_data = read_fixture("woori/error_500.json")
+    stub_call(:get, url) { [500, {}, stub_data] }
 
     result = subject.call(updated_at, limit, offset)
-    properties = result.value
-
+    
     expect(result.success?).to be false
-    # expect(result.error.code).to eq("9999")
-    # expect(last_context_event[:message]).to eq(
-    #   "Response indicating the error `9999`, and description `Custom Error`"
-    # )
-    # expect(last_context_event[:backtrace]).to be_kind_of(Array)
-    # expect(last_context_event[:backtrace].any?).to be true
-    # expect(countries).to be_nil
+    expect(result.error.code).to eq(:http_status_500)
   end
 
   context "when response from the Woori api is not well-formed json" do
     it "returns a result with an appropriate error" do
-      mock_bad_json_request(:properties)
+      stub_data = read_fixture("woori/bad_response.json")
+      stub_call(:get, url) { [200, {}, stub_data] }
 
       result = subject.call(updated_at, limit, offset)
 
@@ -75,7 +73,7 @@ RSpec.describe Woori::Commands::PropertiesFetcher do
 
   context "when request fails due to timeout error" do
     it "returns a result with an appropriate error" do
-      mock_timeout_error(:properties)
+      stub_call(:get, url) { raise Faraday::TimeoutError }
 
       result = subject.call(updated_at, limit, offset)
 
