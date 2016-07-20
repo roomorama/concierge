@@ -12,14 +12,14 @@ module Web::Views::Suppliers
     # instance given, and returns the total in a human-readable format.
     def supplier_properties(supplier)
       total = PropertyRepository.from_supplier(supplier).count
-      format_number(total)
+      number_formatter.present(total)
     end
 
     # calculates the number of properties provided by a single +Host+ given
     # and returns the total in a human-readable format.
     def host_properties(host)
       total = PropertyRepository.from_host(host).count
-      format_number(total)
+      number_formatter.present(total)
     end
 
     # in order not to show the access token used by a host in its entirety,
@@ -126,22 +126,8 @@ module Web::Views::Suppliers
 
     private
 
-    # converts a number to its more human-readable version including commas
-    # to separate thousands.
-    #
-    # Example:
-    #
-    #   format_number(27840) # => "27,840"
-    def format_number(n)
-      n.               # 27840
-        to_s.          # "27840"
-        chars.         # ["2", "7", "8", "4", "0"]
-        reverse.       # ["0", "4", "8", "7", "2"]
-        each_slice(3). # Enumerator
-        to_a.          # [["0", "4", "8"], ["7", "2"]]
-        map(&:join).   # ["048", "72"]
-        join(",").     # "048,72"
-        reverse        # "27,840"
+    def number_formatter
+      @number_formatter ||= Web::Support::Formatters::Number.new
     end
 
     # used when priting frequencies of workers for suppliers. The +frequency+

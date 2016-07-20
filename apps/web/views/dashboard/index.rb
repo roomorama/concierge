@@ -24,15 +24,15 @@ module Web::Views::Dashboard
     end
 
     def total_reservations
-      ReservationRepository.count
+      number_formatter.present(ReservationRepository.count)
     end
 
     def total_hosts_for(supplier)
-      HostRepository.from_supplier(supplier).count
+      number_formatter.present(HostRepository.from_supplier(supplier).count)
     end
 
     def total_properties_for(supplier)
-      PropertyRepository.from_supplier(supplier).count
+      number_formatter.present(PropertyRepository.from_supplier(supplier).count)
     end
 
     # +concierge.response+ is a +Result+ instance that wraps a
@@ -52,6 +52,10 @@ module Web::Views::Dashboard
       else
         html.span failure, class: "concierge-failure"
       end
+    end
+
+    def number_formatter
+      @number_formatter ||= Web::Support::Formatters::Number.new
     end
   end
 end
