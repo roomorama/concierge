@@ -5,6 +5,9 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## [Unreleased]
+### Added
+- Cancellation webhook mappings
+
 ### Changed
 - Waytostay images that has is_visible=false should not be imported
 
