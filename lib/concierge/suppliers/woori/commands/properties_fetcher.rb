@@ -12,10 +12,12 @@ module Woori
     #   result = command.call(updated_at, limit, offset)
     class PropertiesFetcher < BaseFetcher
       include Concierge::JSON
+      
+      ENDPOINT = "properties"
 
       def call(updated_at, limit, offset)
         params = build_request_params(updated_at, limit, offset)
-        result = http.get(endpoint(:properties), params, headers)
+        result = http.get(ENDPOINT, params, headers)
 
         if result.success?
           decoded_result = json_decode(result.value.body)
@@ -42,7 +44,7 @@ module Woori
           i18n: 'en-US'
         }
       end
-      
+
       def build_properties(hash)
         properties = hash.get("data.items")
 
