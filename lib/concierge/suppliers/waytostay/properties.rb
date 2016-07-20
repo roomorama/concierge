@@ -191,12 +191,14 @@ module Waytostay
     end
 
     def parse_security_deposit_method(response)
-      methods = response.get("payment.damage_deposit_payment_methods")
+      methods = Array(response.get("payment.damage_deposit_payment_methods"))
       cash = methods.find { |m| m["name"] == "cash" }
       if cash
         { security_deposit_type: "cash" }
       elsif methods.any?
         { security_deposit_type: methods.first["name"] }
+      else
+        {}
       end
     end
 
