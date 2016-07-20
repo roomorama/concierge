@@ -17,10 +17,15 @@ module Workers::Suppliers
 
       result = importer.stream_properties(updated_at: last_updated_at) do |properties|
         properties.each do |property|
+          synchronisation.start(property.identifier) do
+            Result.new(property)
+          end
         end
       end
 
-      unless result.success?
+      if result.success?
+        synchronisation.finish!
+      else
         message = "Error while `#stream_properties` operation"
         announce_error(message, result)
       end
