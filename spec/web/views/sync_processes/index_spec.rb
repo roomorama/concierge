@@ -19,13 +19,13 @@ RSpec.describe Web::Views::SyncProcesses::Index do
     availabilities_supplier = create_supplier(name: "Availabilities Supplier")
     availabilities_host     = create_host(supplier_id: availabilities_supplier.id, username: "availabilities-host")
 
-    create_sync_process(type: "metadata", host_id: metadata_host.id, stats: {
+    create_sync_process(type: "metadata", successful: false, host_id: metadata_host.id, stats: {
       properties_created: 2,
       properties_updated: 10,
       properties_deleted: 1
     })
 
-    create_sync_process(type: "availabilities", host_id: availabilities_host.id, stats: {
+    create_sync_process(type: "availabilities", successful: true, host_id: availabilities_host.id, stats: {
       properties_processed: 20,
       available_records: 103,
       unavailable_records: 48
@@ -33,6 +33,7 @@ RSpec.describe Web::Views::SyncProcesses::Index do
   end
 
   it "includes information about metadata sync processes" do
+    expect(sanitized).to include %(<tr class="concierge-failed-row) # metadata failed
     expect(sanitized).to include %(<td>Metadata Supplier</td>)
     expect(sanitized).to include %(<td>metadata-host</td>)
     expect(sanitized).to include %(<td>2</td>)  # properties created
@@ -41,6 +42,7 @@ RSpec.describe Web::Views::SyncProcesses::Index do
   end
 
   it "includes information about availabilities sync processes" do
+    expect(sanitized).to include %(<tr class="concierge-success-row) # availabilities succeeded
     expect(sanitized).to include %(<td>Availabilities Supplier</td>)
     expect(sanitized).to include %(<td>availabilities-host</td>)
     expect(sanitized).to include %(<td>20</td>)  # properties processed

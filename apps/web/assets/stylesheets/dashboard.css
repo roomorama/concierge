@@ -32,6 +32,16 @@ body {
   background: #ca3c3c;
 }
 
+.concierge-success-row td {
+  background-color: rgba(46, 187, 171, 0.2) !important;
+  color: #2ebbab;
+}
+
+.concierge-failed-row td {
+  background-color: rgba(225, 69, 54, 0.2) !important;
+  color: #ca3c3c;
+}
+
 #layout,
 #menu,
 .menu-link {
