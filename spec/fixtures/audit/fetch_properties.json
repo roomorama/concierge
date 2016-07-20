@@ -28,7 +28,7 @@
       "services_airport_pickup_rate": 12,
       "services_concierge": true,
       "services_concierge_rate": 13,
-      "disabled": true,
+      "disabled": false,
       "instant_booking": true,
       "check_in_instructions": "Lorem ipsum instructions",
       "cancellation_policy": "standard",
