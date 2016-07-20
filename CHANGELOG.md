@@ -4,6 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [Unreleased]
+### Added
+- Waytostay security deposit information
+
 ## [0.5.0] - 2016-07-19
 ### Added
 - added `currency_code` to the list of supported attributes for booking webhook and for `API::Controllers::Params::Booking` object
