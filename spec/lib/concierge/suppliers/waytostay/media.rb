@@ -24,7 +24,7 @@ RSpec.shared_examples "Waytostay media client" do
     end
 
     it { expect(subject).to be_success }
-    it { expect(subject.result.images.count).to eq(7 - 2) } # 2 invisible images
+    it { expect(subject.result.images.count).to eq(7) }
     it { expect(subject.result.validate!).to eq true }
 
     it "ignores waytostay caption (they are not descriptive)" do

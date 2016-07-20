@@ -44,7 +44,7 @@ module Waytostay
 
     def parse_media!(response, roomorama_property)
       response.get("_embedded.property_media").each do |wts_media|
-        next if wts_media["type"] != "image" || !wts_media["is_visible"]
+        next if wts_media["type"] != "image"
         identifier = Digest::MD5.hexdigest(wts_media["url"])
         image = Roomorama::Image.new(identifier)
         image.url = wts_media["url"]
