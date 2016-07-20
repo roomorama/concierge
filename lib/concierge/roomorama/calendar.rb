@@ -107,7 +107,28 @@ module Roomorama
         minimum_stays:     parsed.minimum_stays,
         checkin_allowed:   parsed.checkin_rules,
         checkout_allowed:  parsed.checkout_rules
-      }
+      }.tap do |payload|
+
+        # we do not need to send a potentially large array of +nulls+ if a supplier
+        # does not provide weekly/monthly data. In that sense:
+        #
+        # * optional prices/minimum stays that are all null should be discarded
+        # * check-in/check-out rules where all elements are +true+ should be discarded,
+        #   since that is already the default of the API endpoint.
+
+        [:weekly_prices, :monthly_prices, :minimum_stays].each do |name|
+          if payload[name].all?(&:nil?)
+            payload.delete(name)
+          end
+        end
+
+        [:checkin_allowed, :checkout_allowed].each do |name|
+          if payload[name].to_s.chars.all? { |e| e == "1" }
+            payload.delete(name)
+          end
+        end
+
+      end
     end
 
     private

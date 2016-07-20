@@ -60,12 +60,7 @@ RSpec.describe Roomorama::Calendar do
         identifier:        "prop1",
         start_date:        "2016-05-22",
         availabilities:    "101",
-        nightly_prices:    [100, 120, 150],
-        weekly_prices:     [nil, nil, nil],
-        monthly_prices:    [nil, nil, nil],
-        minimum_stays:     [nil, nil, nil],
-        checkin_allowed:   "111",
-        checkout_allowed:  "111"
+        nightly_prices:    [100, 120, 150]
       })
     end
 
@@ -98,12 +93,7 @@ RSpec.describe Roomorama::Calendar do
         identifier:        "prop1",
         start_date:        "2016-05-22",
         availabilities:    "111010",
-        nightly_prices:    [100, average, average, 120, average, 150],
-        weekly_prices:     [nil, nil, nil, nil, nil, nil],
-        monthly_prices:    [nil, nil, nil, nil, nil, nil],
-        minimum_stays:     [nil, nil, nil, nil, nil, nil],
-        checkin_allowed:   "111111",
-        checkout_allowed:  "111111"
+        nightly_prices:    [100, average, average, 120, average, 150]
       })
     end
 
@@ -112,12 +102,7 @@ RSpec.describe Roomorama::Calendar do
         identifier:        "prop1",
         start_date:        "",
         availabilities:    "",
-        nightly_prices:    [],
-        weekly_prices:     [],
-        monthly_prices:    [],
-        minimum_stays:     [],
-        checkin_allowed:   "",
-        checkout_allowed:  ""
+        nightly_prices:    []
       })
     end
   end
