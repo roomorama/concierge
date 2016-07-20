@@ -16,7 +16,7 @@ module Woori
       #
       # Returns +Roomorama::Property+ Roomorama property object
       def self.build(safe_hash)
-        property = Roomorama::Property.new(safe_hash.get("id").to_s)
+        property = Roomorama::Property.new(safe_hash.get("hash"))
         property.title          = safe_hash.get("data.name")
         property.type           = safe_hash.get("type")
         property.lat            = safe_hash.get("data.latitude")
