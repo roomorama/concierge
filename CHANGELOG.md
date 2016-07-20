@@ -15,6 +15,7 @@ how this file is formatted and how the process works.
 
 ### Fixed
 - Waytostay calendar crashes because there is no start_date for /rates api
+- Calendar API call had wrong parameter name for prices.
 
 ## [0.5.0] - 2016-07-19
 ### Added
