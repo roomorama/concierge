@@ -27,14 +27,14 @@ RSpec.describe Workers::Processor do
     end
 
     it "returns early if the worker is currently busy" do
-      supplier = create_supplier(name: "AcmeTest")
-      host     = create_host(username: "acme-host", supplier_id: supplier.id)
+      supplier = create_supplier(name: "SupplierTest")
+      host     = create_host(username: "test-host", supplier_id: supplier.id)
       worker   = create_background_worker(host_id: host.id, type: "metadata", status: "running")
       payload[:data][:background_worker_id] = worker.id
 
       invoked = false
 
-      Concierge::Announcer.on("metadata.AcmeTest") do
+      Concierge::Announcer.on("metadata.SupplierTest") do
         invoked = true
       end
 

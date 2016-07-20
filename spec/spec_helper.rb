@@ -36,6 +36,5 @@ RSpec.configure do |config|
 
   config.before(:each) do
     Concierge.context = Concierge::Context.new(type: "spec")
-    Concierge::Announcer._reset!
   end
 end
