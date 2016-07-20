@@ -17,12 +17,21 @@ module Web::Views::SyncProcesses
       SupplierRepository.find(host.supplier_id)
     end
 
+    # formats a number given +n+ for presentation
+    def format_number(n)
+      number_formatter.present(n)
+    end
+
     # Receives an timestamp and formats it for display.
     def format_time(timestamp)
       time_formatter.present(timestamp)
     end
 
     private
+
+    def number_formatter
+      @number_formatter ||= Web::Support::Formatters::Number.new
+    end
 
     def time_formatter
       @time_formatter ||= Web::Support::Formatters::Time.new

@@ -32,9 +32,9 @@
           <td><%= host.username %></td>
           <td><%= format_time sync.started_at %></td>
           <td><%= format_time sync.finished_at %></td>
-          <td><%= sync.stats[:properties_created] %></td>
-          <td><%= sync.stats[:properties_updated] %></td>
-          <td><%= sync.stats[:properties_deleted] %></td>
+          <td><%= format_number sync.stats[:properties_created] %></td>
+          <td><%= format_number sync.stats[:properties_updated] %></td>
+          <td><%= format_number sync.stats[:properties_deleted] %></td>
         </tr>
       <% end %>
     </tbody>
@@ -65,9 +65,9 @@
           <td><%= host.username %></td>
           <td><%= format_time sync.started_at %></td>
           <td><%= format_time sync.finished_at %></td>
-          <td><%= sync.stats[:properties_processed] %></td>
-          <td><%= sync.stats[:available_records] %></td>
-          <td><%= sync.stats[:unavailable_records] %></td>
+          <td><%= format_number sync.stats[:properties_processed] %></td>
+          <td><%= format_number sync.stats[:available_records] %></td>
+          <td><%= format_number sync.stats[:unavailable_records] %></td>
         </tr>
       <% end %>
     </tbody>
