@@ -87,7 +87,7 @@ module Woori
       end
 
       def self.country_code(country_name)
-        # Converters::CountryCode.code_by_name(country_name)
+        Converters::CountryCode.code_by_name(country_name)
       end
 
       def self.additional_amenities(woori_facilities)

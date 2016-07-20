@@ -38,7 +38,8 @@ module Woori
           updatedAt: updated_at,
           limit: limit,
           offset: offset,
-          active: 1
+          active: 1,
+          i18n: 'en-US'
         }
       end
       
