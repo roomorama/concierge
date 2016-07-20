@@ -51,8 +51,10 @@ how this file is formatted and how the process works.
 ### Added
 - Cancellation webhook mappings
 - Waytostay security deposit information
+- View suppliers, reservations and synchronisation process history on the `web` app
 
 ### Changed
+- Waytostay images that has `is_visible=false` should not be imported
 - Waytostay `security_deposit` parses into either `cash` or `credit_card_auth` or nothing
 - Waytostay images that has `is_visible=false` should not be imported
 - Waytostay sync calls /calendar instead of /availabilities api
