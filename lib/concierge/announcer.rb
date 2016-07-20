@@ -27,6 +27,14 @@ module Concierge
       def trigger(event, *args)
         _announcer.trigger(event, *args)
       end
+
+      # private:
+      #
+      # resets the state of currently registered listeners. Useful to guarantee
+      # a clean state between specs execution.
+      def _reset!
+        @_announcer = nil
+      end
     end
 
     attr_reader :listeners
