@@ -1,9 +1,9 @@
 module Support
   module Woori
     module MockRequest
-      def mock_request(endpoint, filename)
+      def mock_request(endpoint, filename, status: 200)
         stub_data = read_fixture("woori/#{endpoint}/#{filename}.json")
-        stub_call(:get, endpoint_for(endpoint)) { [200, {}, stub_data] }
+        stub_call(:get, endpoint_for(endpoint)) { [status, {}, stub_data] }
       end
 
       def mock_bad_json_request(endpoint)
