@@ -22,6 +22,7 @@ RSpec.describe Workers::Suppliers::Audit do
   before do
     # do NOT make API calls during tests
     allow_any_instance_of(Workers::PropertySynchronisation).to receive(:run_operation).and_return(nil)
+    allow_any_instance_of(Workers::CalendarSynchronisation).to receive(:run_operation).and_return(nil)
 
     # keep track of counters
     @property_counters = Workers::PropertySynchronisation::PropertyCounters.new(0, 0, 0)
