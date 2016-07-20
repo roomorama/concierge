@@ -3,10 +3,9 @@ module Workers::Suppliers
   #
   # Performs synchronisation with supplier
   class Woori
-    SUPPLIER_NAME = 'Woori'
-    BATCH_SIZE = 50
-
     attr_reader :synchronisation, :host
+    
+    INIT_SYNC_DATE = "1970-01-01"
 
     def initialize(host)
       @host            = host
@@ -14,8 +13,17 @@ module Workers::Suppliers
     end
 
     def perform
-      result = importer.fetch_properties
-      #To be implemented
+      last_updated_at = last_synced_date
+
+      result = importer.stream_properties(updated_at: last_updated_at) do |properties|
+        properties.each do |property|
+        end
+      end
+
+      unless result.success?
+        message = "Error while `#stream_properties` operation"
+        announce_error(message, result)
+      end
     end
 
     private
@@ -25,7 +33,19 @@ module Workers::Suppliers
     end
 
     def credentials
-      Concierge::Credentials.for(SUPPLIER_NAME)
+      Concierge::Credentials.for(::Woori::Client::SUPPLIER_NAME)
+    end
+
+    # Returns the last successful time stamp of a synchronisation
+    # Could be nil if there has never been a successful sync yet
+    def last_synced_date
+      most_recent = SyncProcessRepository.recent_successful_sync_for_host(host).first
+
+      if most_recent
+        most_recent&.started_at.strftime("%Y-%m-%d")
+      else
+        INIT_SYNC_DATE
+      end
     end
 
     def announce_error(message, result)
@@ -39,7 +59,7 @@ module Workers::Suppliers
 
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
         operation:   'sync',
-        supplier:    SUPPLIER_NAME,
+        supplier:    ::Woori::Client::SUPPLIER_NAME,
         code:        result.error.code,
         context:     Concierge.context.to_h,
         happened_at: Time.now
