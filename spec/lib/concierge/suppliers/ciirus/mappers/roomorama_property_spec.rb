@@ -6,7 +6,6 @@ RSpec.describe Ciirus::Mappers::RoomoramaProperty do
     ['airconditioning', 'gym', 'internet', 'outdoor_space', 'parking',
      'pool', 'tv', 'wifi']
   end
-  let(:amenities_str) { amenities.join(',')}
   let(:property) do
     Ciirus::Entities::Property.new(
       {
@@ -83,7 +82,7 @@ RSpec.describe Ciirus::Mappers::RoomoramaProperty do
     expect(roomorama_property.number_of_double_beds).to eq(6)
     expect(roomorama_property.number_of_single_beds).to eq(5)
     expect(roomorama_property.number_of_sofa_beds).to eq(1)
-    expect(roomorama_property.amenities).to eq(amenities_str)
+    expect(roomorama_property.amenities).to eq(amenities)
     expect(roomorama_property.pets_allowed).to be(true)
     expect(roomorama_property.currency).to eq('USD')
 
