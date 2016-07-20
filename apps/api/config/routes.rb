@@ -16,5 +16,6 @@ post '/saw/booking',         to: 's_a_w#booking'
 
 post 'waytostay/cancel', to: 'waytostay#cancel'
 post 'ciirus/cancel',    to: 'ciirus#cancel'
+post 'saw/cancel',       to: 's_a_w#cancel'
 
 post 'checkout', to: 'static#checkout'

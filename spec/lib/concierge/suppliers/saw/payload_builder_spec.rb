@@ -260,6 +260,28 @@ RSpec.describe SAW::PayloadBuilder do
     end
   end
 
+  describe '#build_cancel_request' do
+    let(:reservation_id) { "MT010203" }
+
+    it 'embedds username and password to request' do
+      response = to_hash(payload_builder.build_cancel_request(reservation_id))
+      
+      response_attrs = response.fetch("request")
+      username = response_attrs.fetch("username")
+      password = response_attrs.fetch("password")
+      
+      expect(username).to eq(username)
+      expect(password).to eq(password)
+    end
+    
+    it 'embedds reservation_id to request' do
+      response = to_hash(payload_builder.build_cancel_request(reservation_id))
+      
+      response_attrs = response.fetch("request")
+      expect(response_attrs.fetch("booking_ref_number")).to eq(reservation_id)
+    end
+  end
+
   private
   def to_hash(response)
     Nori.new.parse(response)
