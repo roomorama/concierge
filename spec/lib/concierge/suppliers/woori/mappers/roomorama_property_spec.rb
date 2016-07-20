@@ -96,6 +96,13 @@ module Woori
 
       expect(property.amenities).to eq(["tv"])
     end
+
+    it "skips unknown amenities" do
+      property_hash["data"]["facilities"] = ["TV", "foo", "bar"]
+      property = described_class.build(safe_hash)
+
+      expect(property.amenities).to eq(["tv"])
+    end
     
     it "keeps amenities empty if there is not Woori facilities" do
       property_hash["data"]["facilities"] = []

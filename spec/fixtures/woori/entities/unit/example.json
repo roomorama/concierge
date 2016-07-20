@@ -2,7 +2,7 @@
     "createdAt": "2016-05-31 17:02:30",
     "data": {
         "capacity": 8,
-        "description": "It located on the second floor. <BR> You can barbecue on the terrace.",
+        "description": "Test description",
         "facilities": [
             "cabletv",
             "airconditioning",
