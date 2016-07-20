@@ -3,9 +3,9 @@ module Waytostay
   # Handles the fetching of availability
   #
   module Availability
-    ENDPOINT = "/properties/:property_reference/availability".freeze
+    CALENDAR_ENDPOINT = "/properties/:property_reference/calendar".freeze
     RATES_ENDPOINT = "/properties/:property_reference/rates".freeze
-    REQUIRED_RESPONSE_KEYS = [ "_embedded.properties_availability", "_links" ].freeze
+    REQUIRED_RESPONSE_KEYS = [ "_embedded.property_calendar", "_links" ].freeze
 
     # Return a Result wrapping a list of Roomorama::Calendar::Entries.
     # This method will trigger calls to both /availability and /rates
@@ -13,22 +13,22 @@ module Waytostay
     #
     def get_availabilities(identifier)
       calendar_entries = []
-      current_page = build_path(ENDPOINT, property_reference: identifier) # first page have no page number
+      # get calendar from today to one year from now
+      current_page = build_path(CALENDAR_ENDPOINT, property_reference: identifier) # first page have no page number
       while current_page && !current_page.empty? do
         result = oauth2_client.get(current_page, headers: headers)
         return result unless result.success?
         response = Concierge::SafeAccessHash.new(result.value)
-        availability_entries_reuslt = availabilities_per_page(response)
-        return availability_entries_reuslt unless availability_entries_reuslt.success?
-        calendar_entries << availability_entries_reuslt.value
+        calendar_page_entries = calendar_per_page(response)
+        return calendar_page_entries unless calendar_page_entries.success?
+        calendar_entries << calendar_page_entries.value
         current_page = next_page_url(response)
       end
 
       calendar_entries.flatten! # they were in nested arrays by pages
 
-      end_date = calendar_entries.last&.date # could be nil, in which case waytostay would default to one year from today
+      # get rate from today to one year from now
       rates_result = oauth2_client.get(build_path(RATES_ENDPOINT, property_reference: identifier),
-                                       params: {end_date: end_date.to_s}, # with no start date, to get rates from today
                                        headers: headers)
       return rates_result unless rates_result.success?
       response = Concierge::SafeAccessHash.new(rates_result.value)
@@ -40,7 +40,7 @@ module Waytostay
 
     private
 
-    def availabilities_per_page(response)
+    def calendar_per_page(response)
       missing_keys = response.missing_keys_from(REQUIRED_RESPONSE_KEYS)
       if missing_keys.empty?
         Result.new(parse_calendar_entries(response))
@@ -52,14 +52,15 @@ module Waytostay
 
     def parse_calendar_entries(response)
       entries = []
-      response.get("_embedded.properties_availability").each do |entry|
-        available = entry["status"] != "unavailable"
-        Date.parse(entry["start_date"]).upto Date.parse(entry["end_date"]) do |date|
-          entries << Roomorama::Calendar::Entry.new(
-            date:      date.to_s,
-            available: available
-          )
-        end
+      response.get("_embedded.property_calendar").each do |entry_hash|
+        entry = Concierge::SafeAccessHash.new entry_hash
+        entries << Roomorama::Calendar::Entry.new(
+          date:      entry.get("date"),
+          available: entry.get("available"),
+          checkin_allowed: !entry.get("closed_to_arrival"),
+          checkout_allowed: !entry.get("closed_to_departure")
+          # minimum_stay: entry.get("minimum_stay") # TODO
+        )
       end
       entries
     end
@@ -87,7 +88,7 @@ module Waytostay
     def append_rates!(calendar_entries, property_rates)
       property_rates.each do |rate|
         Date.parse(rate["start_date"]).upto(Date.parse(rate["end_date"])) do |date|
-          entry = calendar_entries.find { |entry| entry.date == date }
+          entry = calendar_entries.find { |e| e.date == date }
           rates = Concierge::SafeAccessHash.new(rate)
 
           nightly_rate = rates.get("per_person.1")
