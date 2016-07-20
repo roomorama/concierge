@@ -52,7 +52,7 @@ module Waytostay
 
     def parse_calendar_entries(response)
       entries = []
-      response.get("_embedded.property_calendar").each do |entry_hash|
+      Array(response.get("_embedded.property_calendar")).each do |entry_hash|
         entry = Concierge::SafeAccessHash.new entry_hash
         entries << Roomorama::Calendar::Entry.new(
           date:      entry.get("date"),
