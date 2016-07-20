@@ -9,7 +9,7 @@ module Woori
     # Usage
     #
     #   command = Woori::Commands::PropertiesFetcher.new(credentials)
-    #   result = command.call(country)
+    #   result = command.call(updated_at, limit, offset)
     class PropertiesFetcher < BaseFetcher
       include Concierge::JSON
 
