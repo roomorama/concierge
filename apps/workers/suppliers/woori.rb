@@ -6,6 +6,7 @@ module Workers::Suppliers
     attr_reader :synchronisation, :host
     
     INIT_SYNC_DATE = "1970-01-01"
+    BATCH_SIZE     = 50
 
     def initialize(host)
       @host            = host
@@ -14,21 +15,30 @@ module Workers::Suppliers
 
     def perform
       last_updated_at = last_synced_date
+      offset = 0
 
-      result = importer.stream_properties(updated_at: last_updated_at) do |properties|
-        properties.each do |property|
-          synchronisation.start(property.identifier) do
-            Result.new(property)
+      begin
+        result = importer.fetch_properties(last_updated_at, BATCH_SIZE, offset)
+
+        if result.success?
+          properties = result.value
+          size_fetched = properties.size
+          offset = offset + size_fetched
+          puts "Fetched: #{result.value.size} (limit: #{BATCH_SIZE}, offset: #{offset})"
+
+          properties.each do |property|
+            synchronisation.start(property.identifier) do
+              Result.new(property)
+            end
           end
+        else
+          message = "Error while `#fetch_properties` operation"
+          announce_error(message, result)
+          return result
         end
-      end
-
-      if result.success?
-        synchronisation.finish!
-      else
-        message = "Error while `#stream_properties` operation"
-        announce_error(message, result)
-      end
+      end while size_fetched == BATCH_SIZE
+      
+      synchronisation.finish!
     end
 
     private
@@ -41,8 +51,8 @@ module Workers::Suppliers
       Concierge::Credentials.for(::Woori::Client::SUPPLIER_NAME)
     end
 
-    # Returns the last successful time stamp of a synchronisation
-    # Could be nil if there has never been a successful sync yet
+    # Returns the last successful date of a synchronisation
+    # Returns default sync date if there has never been a successful sync yet
     def last_synced_date
       most_recent = SyncProcessRepository.recent_successful_sync_for_host(host).first
 
