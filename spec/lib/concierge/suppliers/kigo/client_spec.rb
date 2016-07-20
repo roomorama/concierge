@@ -52,14 +52,14 @@ RSpec.describe Kigo::Client do
     }
 
     it "returns the wrapped reservation from Kigo::Booking when successful" do
-      successful_reservation = Reservation.new(params.merge(code: '123'))
+      successful_reservation = Reservation.new(params.merge(reference_number: '123'))
       allow_any_instance_of(Kigo::Booking).to receive(:book) { Result.new(successful_reservation) }
 
       result = subject.book(params)
       reservation = ReservationRepository.last
 
       expect(result).to be_success
-      expect(reservation.code).to eq '123'
+      expect(reservation.reference_number).to eq '123'
     end
 
     it "returns a quotation object with a generic error message on failure" do

@@ -126,7 +126,7 @@ RSpec.describe Kigo::ResponseParser do
       expect(result.error.code).to eq :invalid_json_representation
     end
 
-    it "fails without a reservation code field" do
+    it "fails without a reservation.reference_number field" do
       response = read_fixture("kigo/no_api_reply.json")
       result = nil
 
@@ -160,7 +160,7 @@ RSpec.describe Kigo::ResponseParser do
       expect(reservation.check_in).to eq "2016-03-22"
       expect(reservation.check_out).to eq "2016-03-24"
       expect(reservation.guests).to eq 2
-      expect(reservation.code).to eq "24985"
+      expect(reservation.reference_number).to eq "24985"
     end
   end
 end

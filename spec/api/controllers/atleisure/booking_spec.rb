@@ -71,15 +71,15 @@ RSpec.describe API::Controllers::AtLeisure::Booking do
       expect(external_error.code).to eq "unrecognised_response"
     end
 
-    it "returns a booking code when successful booking" do
+    it "returns a booking reference_number when successful booking" do
       success_response = jsonrpc_fixture("atleisure/booking_success.json")
-      expected_code    = "175607953" # from fixture
+      expected_reference_number    = "175607953" # from fixture
 
       stub_call(:post, endpoint) { [200, {}, success_response] }
 
       expect(response.status).to eq 200
       expect(response.body["status"]).to eq "ok"
-      expect(response.body["code"]).to eq expected_code
+      expect(response.body["reference_number"]).to eq expected_reference_number
     end
   end
 

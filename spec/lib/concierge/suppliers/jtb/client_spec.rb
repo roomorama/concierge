@@ -73,9 +73,9 @@ RSpec.describe JTB::Client do
       reservation_result = subject.book(params)
       expect(reservation_result).to be_success
       expect(reservation_result.value).to be_a Reservation
-      expect(reservation_result.value.code).to eq "booking code"
+      expect(reservation_result.value.reference_number).to eq "booking code"
 
-      expect(ReservationRepository.first.code).to eq 'booking code'
+      expect(ReservationRepository.first.reference_number).to eq 'booking code'
     end
 
     it "does not stop the booking in case database access is compromised" do

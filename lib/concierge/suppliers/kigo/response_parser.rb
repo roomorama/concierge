@@ -95,7 +95,7 @@ module Kigo
           return unrecognised_response
         end
 
-        reservation.code = code
+        reservation.reference_number = code
         Result.new(reservation)
       elsif payload["API_RESULT_CODE"] == "E_CONFLICT" && payload["API_RESULT_TEXT"] == "Dates not available"
         Result.error(:unavailable_dates)

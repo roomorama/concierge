@@ -39,14 +39,14 @@ RSpec.describe API::Controllers::Kigo::Legacy::Booking do
       expect(response.body["errors"]["booking"]).to eq "Could not create booking with remote supplier"
     end
 
-    it "returns a booking code when successful" do
+    it "returns a booking reference_number when successful" do
       reservation = Reservation.new(params)
-      reservation.code = "test_code"
+      reservation.reference_number = "test_code"
       expect_any_instance_of(Kigo::Legacy).to receive(:book).and_return(Result.new(reservation))
 
       expect(response.status).to eq 200
       expect(response.body["status"]).to eq "ok"
-      expect(response.body["code"]).to eq "test_code"
+      expect(response.body["reference_number"]).to eq "test_code"
     end
   end
 end
