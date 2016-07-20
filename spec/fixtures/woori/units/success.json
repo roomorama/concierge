@@ -1,0 +1,257 @@
+{
+    "data": {
+        "count": 9,
+        "items": [
+            {
+                "createdAt": "2016-05-31 17:02:30",
+                "data": {
+                    "capacity": 8,
+                    "description": "It located on the second floor. <BR> You can barbecue on the terrace.",
+                    "facilities": [
+                        "cabletv",
+                        "airconditioning",
+                        "kitchen"
+                    ],
+                    "geofences": [
+                        "\uc804\uad6d"
+                    ],
+                    "images": null,
+                    "isActive": 1,
+                    "maxCapacity": 13,
+                    "name": "gughwa",
+                    "roomCount": 1,
+                    "roomSize": 66.1157,
+                    "roomType": "\uadf8\ub8f9\ub8f8",
+                    "roomUnit": "square meter",
+                    "updatedAt": "2016-04-14 11:33:21"
+                },
+                "hash": "w_w0104006_R05",
+                "id": 14360,
+                "type": "roomtype",
+                "updatedAt": null
+            },
+            {
+                "createdAt": "2016-07-13 10:38:27",
+                "data": {
+                    "capacity": 8,
+                    "description": "{{Br}} <br> Located on the first floor is a room. <br> You can barbecue on the terrace. <br><br{{nbr}}{{br}}",
+                    "facilities": [
+                        "cabletv",
+                        "airconditioning",
+                        "kitchen"
+                    ],
+                    "geofences": [
+                        "\uc804\uad6d"
+                    ],
+                    "images": null,
+                    "isActive": 1,
+                    "maxCapacity": 15,
+                    "name": "Mae Hwa",
+                    "roomCount": 1,
+                    "roomSize": 66.1157,
+                    "roomType": "\uadf8\ub8f9\ub8f8",
+                    "roomUnit": "square meter",
+                    "updatedAt": "2016-04-14 11:33:21"
+                },
+                "hash": "w_w0104006_R04",
+                "id": 52240,
+                "type": "roomtype",
+                "updatedAt": null
+            },
+            {
+                "createdAt": "2016-07-17 22:36:46",
+                "data": {
+                    "capacity": 8,
+                    "description": "{{Br}} <br> Located on the first floor is a room. <br> You can barbecue on the terrace. <br><br{{nbr}}{{br}}",
+                    "facilities": [
+                        "cabletv",
+                        "airconditioning",
+                        "kitchen"
+                    ],
+                    "geofences": [
+                        "\uc804\uad6d"
+                    ],
+                    "images": null,
+                    "isActive": 1,
+                    "maxCapacity": 15,
+                    "name": "Nan Co",
+                    "roomCount": 1,
+                    "roomSize": 66.1157,
+                    "roomType": "\uadf8\ub8f9\ub8f8",
+                    "roomUnit": "square meter",
+                    "updatedAt": "2016-04-14 11:33:21"
+                },
+                "hash": "w_w0104006_R03",
+                "id": 57861,
+                "type": "roomtype",
+                "updatedAt": null
+            },
+            {
+                "createdAt": "2016-07-18 13:36:57",
+                "data": {
+                    "capacity": 6,
+                    "description": "<FONT color=#ff0000>* There are currently no karaoke machine. *</font> <BR> Located on the first floor, it is a studio type group room of 17 equilibrium. <BR> Basically, in-room TV, sofa, air conditioning, refrigerator, cooking facilities, and tools on earth are available. <BR> It is also the room barbecue is available on the terrace. <BR>",
+                    "facilities": [
+                        "airconditioning",
+                        "kitchen"
+                    ],
+                    "geofences": [
+                        "\uc804\uad6d"
+                    ],
+                    "images": null,
+                    "isActive": 1,
+                    "maxCapacity": 13,
+                    "name": "Hae Ba Ra Gi",
+                    "roomCount": 1,
+                    "roomSize": 56.198345,
+                    "roomType": "\uadf8\ub8f9\ub8f8",
+                    "roomUnit": "square meter",
+                    "updatedAt": "2016-04-14 11:33:21"
+                },
+                "hash": "w_w0104006_302",
+                "id": 58341,
+                "type": "roomtype",
+                "updatedAt": null
+            },
+            {
+                "createdAt": "2016-07-20 09:07:07",
+                "data": {
+                    "capacity": 13,
+                    "description": "{{Br}} located on the second floor of the main building, is a good room to be used by the family and organizations in the group room of 30 square meters. In the room, karaoke equipment has been installed, you can barbecue on the terrace. {{Br}}",
+                    "facilities": [
+                        "airconditioning",
+                        "kitchen"
+                    ],
+                    "geofences": [
+                        "\uc804\uad6d"
+                    ],
+                    "images": null,
+                    "isActive": 1,
+                    "maxCapacity": 17,
+                    "name": "Byeor Cae",
+                    "roomCount": 1,
+                    "roomSize": 99.17355,
+                    "roomType": "\uadf8\ub8f9\ub8f8",
+                    "roomUnit": "square meter",
+                    "updatedAt": "2016-04-14 11:33:21"
+                },
+                "hash": "w_w0104006_301",
+                "id": 58702,
+                "type": "roomtype",
+                "updatedAt": null
+            },
+            {
+                "createdAt": "2016-07-17 00:26:38",
+                "data": {
+                    "capacity": 4,
+                    "description": "Is a studio-type family room of Ondol style, which is located on the second floor. <br> It is also the room barbecue is available on the terrace. <br>",
+                    "facilities": [
+                        "airconditioning",
+                        "kitchen"
+                    ],
+                    "geofences": [
+                        "\uc804\uad6d"
+                    ],
+                    "images": null,
+                    "isActive": 1,
+                    "maxCapacity": 7,
+                    "name": "Meo Ru",
+                    "roomCount": 1,
+                    "roomSize": 42.975205,
+                    "roomType": "\ud328\ubc00\ub9ac\ub8f8",
+                    "roomUnit": "square meter",
+                    "updatedAt": "2016-04-14 11:33:21"
+                },
+                "hash": "w_w0104006_202",
+                "id": 56950,
+                "type": "roomtype",
+                "updatedAt": null
+            },
+            {
+                "createdAt": "2016-07-20 08:28:51",
+                "data": {
+                    "capacity": 4,
+                    "description": "Located on the second floor, is a studio-type family room of 13 equilibrium bed is placed. <br> It is also the room barbecue is available on the terrace. <br>",
+                    "facilities": [
+                        "airconditioning",
+                        "kitchen"
+                    ],
+                    "geofences": [
+                        "\uc804\uad6d"
+                    ],
+                    "images": null,
+                    "isActive": 1,
+                    "maxCapacity": 5,
+                    "name": "Da Rae",
+                    "roomCount": 1,
+                    "roomSize": 42.975205,
+                    "roomType": "\ud328\ubc00\ub9ac\ub8f8",
+                    "roomUnit": "square meter",
+                    "updatedAt": "2016-04-14 11:33:21"
+                },
+                "hash": "w_w0104006_201",
+                "id": 58633,
+                "type": "roomtype",
+                "updatedAt": null
+            },
+            {
+                "createdAt": "2016-07-16 01:49:25",
+                "data": {
+                    "capacity": 2,
+                    "description": "1\uce35\uc5d0 \uc704\uce58\ud55c 8\ud3c9\ud615\uc758 \uce68\ub300\ub8f8\uc73c\ub85c \ucee4\ud50c\ub4e4\uc774 \uc120\ud638\ud558\ub294 \uac1d\uc2e4\uc785\ub2c8\ub2e4. <BR>\ub610\ud55c \ud14c\ub77c\uc2a4\uc5d0\uc11c \ubc14\ubca0\ud050\uac00 \uac00\ub2a5\ud55c \uac1d\uc2e4\uc785\ub2c8\ub2e4.<BR>",
+                    "facilities": [
+                        "airconditioning",
+                        "kitchen"
+                    ],
+                    "geofences": [
+                        "\uc804\uad6d"
+                    ],
+                    "images": null,
+                    "isActive": 1,
+                    "maxCapacity": 3,
+                    "name": "Gae Na Ri",
+                    "roomCount": 1,
+                    "roomSize": 26.44628,
+                    "roomType": "\ucee4\ud50c\ub8f8",
+                    "roomUnit": "square meter",
+                    "updatedAt": "2016-04-14 11:33:21"
+                },
+                "hash": "w_w0104006_102",
+                "id": 55495,
+                "type": "roomtype",
+                "updatedAt": null
+            },
+            {
+                "createdAt": "2016-07-12 18:17:49",
+                "data": {
+                    "capacity": 2,
+                    "description": "Located on the first floor, it is a room like a couple in the bedroom of 8 equilibrium. <BR> It is also the room barbecue is available on the terrace. <BR>",
+                    "facilities": [
+                        "airconditioning",
+                        "kitchen"
+                    ],
+                    "geofences": [
+                        "\uc804\uad6d"
+                    ],
+                    "images": null,
+                    "isActive": 1,
+                    "maxCapacity": 3,
+                    "name": "Jin Dar Rae",
+                    "roomCount": 1,
+                    "roomSize": 26.44628,
+                    "roomType": "\ucee4\ud50c\ub8f8",
+                    "roomUnit": "square meter",
+                    "updatedAt": "2016-04-14 11:33:21"
+                },
+                "hash": "w_w0104006_101",
+                "id": 51566,
+                "type": "roomtype",
+                "updatedAt": null
+            }
+        ],
+        "limit": 0,
+        "offset": 0
+    },
+    "message": "success",
+    "status": 200
+}
