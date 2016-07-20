@@ -7,12 +7,13 @@ how this file is formatted and how the process works.
 ## [Unreleased]
 ### Added
 - Cancellation webhook mappings
+- Waytostay security deposit information
 
 ### Changed
 - Waytostay images that has is_visible=false should not be imported
 
-### Added
-- Waytostay security deposit information
+### Fixed
+- Waytostay calendar crashes when there is no entries from /availabilities api
 
 ## [0.5.0] - 2016-07-19
 ### Added

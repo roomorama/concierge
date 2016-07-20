@@ -1,0 +1,21 @@
+{
+  "_links": {
+    "self": {
+      "href": "https://apis.sandbox.waytostay.com:25443/properties/015868/availability?page=1"
+    },
+    "first": {
+      "href": "https://apis.sandbox.waytostay.com:25443/properties/015868/availability"
+    },
+    "last": {
+      "href": "https://apis.sandbox.waytostay.com:25443/properties/015868/availability?page=2"
+    }
+  },
+  "_embedded": {
+    "properties_availability": [
+    ]
+  },
+  "page_count": 1,
+  "page_size": 25,
+  "total_items": 0,
+  "page": 1
+}
