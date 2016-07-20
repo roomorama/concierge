@@ -15,6 +15,8 @@ module Audit
     end
 
     # On success, return Result wrapping Quotation object
+    # - When property_id is `success`, a successful response is returned
+    # - When property_id is `connection_timeout`, Faraday::TimeoutError should be raised by HTTP::Client
     def quote(params)
       client = Concierge::HTTPClient.new(credentials.host)
       result = client.get("/spec/fixtures/audit/quotation.#{params[:property_id]}.json")
@@ -27,6 +29,8 @@ module Audit
     end
 
     # On success, return Result wrapping Reservation object
+    # - When property_id is `success`, a successful response is returned
+    # - When property_id is `connection_timeout`, Faraday::TimeoutError should be raised by HTTP::Client
     def book(params)
       client = Concierge::HTTPClient.new(credentials.host)
       result = client.get("/spec/fixtures/audit/booking.#{params[:property_id]}.json")
@@ -39,6 +43,8 @@ module Audit
     end
 
     # On success, return Result wrapping reservation_id String
+    # - When reservation_id is `success`, a successful response is returned
+    # - When reservation_id is `connection_timeout`, Faraday::TimeoutError should be raised by HTTP::Client
     def cancel(params)
       client = Concierge::HTTPClient.new(credentials.host)
       result = client.get("/spec/fixtures/audit/cancel.#{params[:reservation_id]}.json")
