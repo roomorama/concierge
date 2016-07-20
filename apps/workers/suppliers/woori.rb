@@ -32,9 +32,9 @@ module Workers::Suppliers
             end
           end
         else
-          message = "Error while `#fetch_properties` operation"
+          message = "Failed to perform the `#fetch_properties` operation"
           announce_error(message, result)
-          return result
+          return
         end
       end while size_fetched == BATCH_SIZE
       
