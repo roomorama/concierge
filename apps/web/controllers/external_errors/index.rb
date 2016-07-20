@@ -1,4 +1,5 @@
 require_relative "../internal_error"
+require_relative "../params/paginated"
 
 module Web::Controllers::ExternalErrors
   class Index
