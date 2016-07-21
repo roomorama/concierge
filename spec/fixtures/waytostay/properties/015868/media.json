@@ -54,7 +54,7 @@
         "size": "1440x1080",
         "caption": "1-1 (2)5703bc29563af5703bce291636",
         "order": 3,
-        "is_visible": false,
+        "is_visible": true,
         "type": "image",
         "created_timestamp": 1459862762,
         "_links": {
@@ -70,7 +70,7 @@
         "size": "1440x1080",
         "caption": "1-1 (4) (2)5703bd11d92e4",
         "order": 4,
-        "is_visible": false,
+        "is_visible": true,
         "type": "image",
         "created_timestamp": 1459862810,
         "_links": {
