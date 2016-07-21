@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Kigo::AmenitiesMapper do
+RSpec.describe Kigo::Mappers::Amenities do
   include Support::Fixtures
 
   let(:amenities) { JSON.parse(read_fixture('kigo/amenities.json')) }
