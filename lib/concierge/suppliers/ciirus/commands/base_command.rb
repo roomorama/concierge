@@ -28,10 +28,6 @@ module Ciirus
         @xml_builder ||= Ciirus::XMLBuilder.new(credentials)
       end
 
-      def response_parser
-        @response_parser ||= Ciirus::ResponseParser.new
-      end
-
       def client
         @client ||= Concierge::SOAPClient.new(options(PATH))
       end
