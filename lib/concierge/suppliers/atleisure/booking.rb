@@ -58,7 +58,7 @@ module AtLeisure
         no_booking_information
         unrecognised_response
       else
-        reservation.code = response["BookingNumber"]
+        reservation.reference_number = response["BookingNumber"]
         Result.new(reservation)
       end
     end

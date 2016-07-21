@@ -57,7 +57,7 @@ RSpec.describe AtLeisure::Client do
     }
 
     it "returns the wrapped reservation from AtLeisure::Booking when successful" do
-      successful_booking = Reservation.new(code: "XXX")
+      successful_booking = Reservation.new(reference_number: "XXX")
       allow_any_instance_of(AtLeisure::Booking).to receive(:book) { Result.new(successful_booking) }
 
       reservation_result = subject.book(params)
@@ -65,7 +65,7 @@ RSpec.describe AtLeisure::Client do
 
       reservation = reservation_result.value
       expect(reservation).to be_a Reservation
-      expect(reservation.code).to eq "XXX"
+      expect(reservation.reference_number).to eq "XXX"
     end
 
     it "returns a quotation object with a generic error message on failure" do

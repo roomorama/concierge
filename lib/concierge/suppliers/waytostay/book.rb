@@ -46,7 +46,7 @@ module Waytostay
     # Always returns a +Reservation+.
     def remote_confirm(reservation, params)
       result = oauth2_client.post(
-        build_path(ENDPOINT_CONFIRMATION, booking_reference: reservation.code),
+        build_path(ENDPOINT_CONFIRMATION, booking_reference: reservation.reference_number),
         headers: headers
       )
       parse_reservation(result, params)
@@ -64,7 +64,7 @@ module Waytostay
       missing_keys = response.missing_keys_from(REQUIRED_RESPONSE_KEYS)
       if missing_keys.empty?
         reservation = Reservation.new(params)
-        reservation.code = response.get("booking_reference")
+        reservation.reference_number = response.get("booking_reference")
         Result.new(reservation)
       else
         augment_missing_fields(missing_keys)

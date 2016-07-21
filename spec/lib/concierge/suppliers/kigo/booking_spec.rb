@@ -47,7 +47,7 @@ RSpec.describe Kigo::Booking do
 
       expect(result).to be_success
       expect(result.value).to be_a Reservation
-      expect(result.value.code).to eq "24985"
+      expect(result.value.reference_number).to eq "24985"
     end
   end
 end

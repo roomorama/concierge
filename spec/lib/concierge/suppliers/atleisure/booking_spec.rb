@@ -59,7 +59,7 @@ RSpec.describe AtLeisure::Booking do
       reservation = result.value
 
       expect(reservation).to be_a Reservation
-      expect(reservation.code).to eq expected_code
+      expect(reservation.reference_number).to eq expected_code
     end
 
     context "reservation details" do

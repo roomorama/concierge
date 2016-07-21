@@ -87,7 +87,7 @@ RSpec.describe Waytostay::Client do
       { code: 400, body: malformed_request_waytostay_params.to_json, response: read_fixture('waytostay/post.bookings.malformed_json.json')},
       { code: 422, body: unavailable_waytostay_params.to_json, response: read_fixture('waytostay/post.bookings.unavailable.json')},
     ]}
-    let(:successful_code) { "KUFSHS" }
+    let(:successful_reference_number) { "KUFSHS" }
 
     before do
       booking_responses.each do |stub|
@@ -102,9 +102,9 @@ RSpec.describe Waytostay::Client do
       # Stubbing confirmation success
       stubbed_client.oauth2_client.oauth_client.connection = stub_call(
         :post,
-        "#{base_url}/bookings/#{successful_code}/confirmation"
+        "#{base_url}/bookings/#{successful_reference_number}/confirmation"
       ) {
-        [200, {}, read_fixture("waytostay/bookings/#{successful_code}/confirmation.json")]
+        [200, {}, read_fixture("waytostay/bookings/#{successful_reference_number}/confirmation.json")]
       }
     end
 

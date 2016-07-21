@@ -7,7 +7,7 @@
 #   success_params:      Arguments for `#quote` in the happy case.
 #                        Assertions will be made on `supplier_client.quote(success_params)`
 #
-#   successful_code:     The returned successful reservation reference, asserted against the value returned from `book`
+#   successful_reference_number:     The returned successful reservation reference, asserted against the value returned from `book`
 #
 #   error_params_list:   A collection of arguments for `#quote` when some error occurs.
 #                        For each item p, assertions will be made on `supplier_client.quote(p)`
@@ -21,8 +21,8 @@ RSpec.shared_examples "supplier book method" do
       reservation = reservation_result.value
       expect(reservation).to be_a Reservation
 
-      expect(reservation.code).to be_a String
-      expect(reservation.code).to eq successful_code
+      expect(reservation.reference_number).to be_a String
+      expect(reservation.reference_number).to eq successful_reference_number
     end
   end
 

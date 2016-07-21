@@ -50,18 +50,18 @@ RSpec.describe API::Controllers::JTB::Booking do
       expect(response.body["errors"]).to eq( { "booking" => "Could not create booking with remote supplier" })
     end
 
-    it "returns a booking code when successful booking" do
-      expected_code    = "953" #random
+    it "returns a booking reference_number when successful booking" do
+      expected_reference_number    = "953" #random
       allow_any_instance_of(JTB::Client).to receive(:book) {
         Result.new(Reservation.new(multi_unit_params).tap { |res|
-          res.code = expected_code
+          res.reference_number = expected_reference_number
         })
       }
 
       response = parse_response(subject.call(multi_unit_params))
       expect(response.status).to eq 200
       expect(response.body["status"]).to eq "ok"
-      expect(response.body["code"]).to eq expected_code
+      expect(response.body["reference_number"]).to eq expected_reference_number
     end
   end
 
