@@ -26,7 +26,10 @@
     "PROP_BEDROOMS": 3,
     "PROP_BEDS": null,
     "PROP_BED_TYPES": [
-
+      3,
+      4,
+      4,
+      5
     ],
     "PROP_BATHROOMS": 2,
     "PROP_TOILETS": null,
@@ -65,6 +68,7 @@
       49,
       52,
       82,
+      83,
       10,
       109
     ],
