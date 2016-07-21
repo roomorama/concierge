@@ -102,7 +102,7 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
     before do
       roomorama_webhook["action"] = "cancelled"
       roomorama_webhook["event"] = "cancelled"
-      roomorama_webhook["inquiry"]["supplier_reference_number"] = "test_code"
+      roomorama_webhook["inquiry"]["reference_number"] = "test_code"
 
     end
 

@@ -106,7 +106,7 @@ module API
         def cancelled(data)
           payload = safe_access(data)
 
-          params = { reference_number: payload.get("inquiry.supplier_reference_number") }
+          params = { reference_number: payload.get("inquiry.reference_number") }
 
           env["rack.input"] = StringIO.new(json_encode(params))
           true
