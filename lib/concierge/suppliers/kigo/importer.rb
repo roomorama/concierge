@@ -62,8 +62,10 @@ module Kigo
     end
 
     def fetch_references
+
+      amenities = fetch(AMENITIES).value['AMENITY']
       {
-        amenities:      fetch(AMENITIES),
+        amenities:      amenities,
         fee_types:      fetch(FEE_TYPES),
         property_types: fetch(PROPERTY_TYPES),
         bed_types:      fetch(BED_TYPES)
