@@ -5,7 +5,7 @@ RSpec.describe Kigo::Mappers::Property do
 
   let(:references) {
     {
-      amenities: JSON.parse(read_fixture('kigo/amenities.json')),
+      amenities: JSON.parse(read_fixture('kigo/amenities.json'))['AMENITY'],
       property_types: JSON.parse(read_fixture('kigo/property_types.json')),
       fee_types: JSON.parse(read_fixture('kigo/fee_types.json'))
     }
@@ -40,20 +40,6 @@ RSpec.describe Kigo::Mappers::Property do
 
     end
 
-    context 'beds count' do
-      let(:single_beds) { { 'Item' => 10002, 'NumberOfItems' => 2 } }
-      let(:double_beds) { { 'Item' => 10012, 'NumberOfItems' => 3 } }
-      let(:sofa_beds)   { { 'Item' => 10008, 'NumberOfItems' => 1 } }
-
-      it 'calculates correct number of items' do
-        property_data['LayoutExtendedV2'] = [single_beds, double_beds, sofa_beds]
-        property = subject.prepare(property_data).value
-
-        expect(property.number_of_single_beds).to eq 2
-        expect(property.number_of_double_beds).to eq 3
-        expect(property.number_of_sofa_beds).to eq 1
-      end
-    end
 
     context 'rates' do
       let(:on_request_period) {
@@ -96,12 +82,23 @@ RSpec.describe Kigo::Mappers::Property do
       end
     end
 
-    it 'sets short description if origin description blank' do
-      property_data['LanguagePackENV4']['Description'] = nil
-      property = subject.prepare(property_data).value
+    context 'description' do
+      it 'sets short description if origin description is blank' do
+        property_data['PROP_INFO']['PROP_DESCRIPTION'] = ''
+        property = subject.prepare(property_data).value
 
-      expect(property.description).to eq "sdfg sdfg sd gsdf g sdfg sdfg sdf gsd fg sdf gd"
+        expect(property.description).to eq 'Short description'
+      end
+
+      it 'sets area description if origin and short description are blank' do
+        property_data['PROP_INFO']['PROP_DESCRIPTION'] = ''
+        property_data['PROP_INFO']['PROP_SHORTDESCRIPTION'] = ''
+        property = subject.prepare(property_data).value
+
+        expect(property.description).to eq 'Area description'
+      end
     end
+
 
     it 'returns the result with roomorama property accordingly provided data' do
       result = subject.prepare(property_data)
