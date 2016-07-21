@@ -9,7 +9,7 @@ module Web::Controllers::Dashboard
 
     def call(params)
       @concierge = Web::Support::StatusCheck.new
-      @suppliers = SupplierRepository.all.to_a
+      @suppliers = SupplierRepository.all
     end
   end
 end
