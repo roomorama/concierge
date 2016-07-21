@@ -10,6 +10,7 @@ how this file is formatted and how the process works.
 - Waytostay security deposit information
 
 ### Changed
+- Waytostay security_deposit parses into either cash or credit_card_auth or nothing
 - Waytostay images that has is_visible=false should not be imported
 - Waytostay sync calls /calendar instead of /availabilities api
 

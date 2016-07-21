@@ -69,7 +69,7 @@ RSpec.shared_examples "Waytostay property client" do
       let(:response) { Concierge::SafeAccessHash.new(
         { payment:
           { damage_deposit_payment_methods:
-            [ { "id" => 1, "name" => "visa" },
+            [ { "id" => 1, "name" => "card details will be taken" },
               { "id" => 2, "name" => "cash" }]
           }
         })
@@ -85,7 +85,7 @@ RSpec.shared_examples "Waytostay property client" do
           }
         })
       }
-      it { expect(subject[:security_deposit_type]).to eq "visa" }
+      it { expect(subject[:security_deposit_type]).to eq "credit_card_auth" }
     end
   end
 
