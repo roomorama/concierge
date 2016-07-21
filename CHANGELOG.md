@@ -4,7 +4,7 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
-## [Unreleased]
+## [0.5.1] - 2016-07-21
 ### Added
 - Cancellation webhook mappings
 - Waytostay security deposit information
