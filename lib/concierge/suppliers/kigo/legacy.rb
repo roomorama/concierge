@@ -45,8 +45,12 @@ module Kigo
 
     private
 
-    def legacy_handler
-      LegacyRequest.new(credentials, Kigo::Request.new(credentials))
+    def database
+      @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
+    end
+
+    def request_handler
+      LegacyRequest.new(credentials)
     end
   end
 
