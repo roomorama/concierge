@@ -7,18 +7,16 @@ module Kigo
   #
   # Usage
   #
-  #   builder = Kigo::Request.new(credentials)
-  #   request = Kigo::LegacyRequest.new(credentials, builder)
+  #   request = Kigo::LegacyRequest.new(credentials)
   #   request.build_compute_pricing(params)
   #   # => #<Result error=nil value={..., "RES_CREATE" => ... }>
   class LegacyRequest
     BASE_URI = "https://app.kigo.net"
 
-    attr_reader :credentials, :builder
+    attr_reader :credentials
 
-    def initialize(credentials, builder)
+    def initialize(credentials)
       @credentials = credentials
-      @builder     = builder
     end
 
     def base_uri
@@ -69,6 +67,12 @@ module Kigo
       else
         result
       end
+    end
+
+    private
+
+    def builder
+      @builder ||= Kigo::Request.new(credentials)
     end
   end
 end
