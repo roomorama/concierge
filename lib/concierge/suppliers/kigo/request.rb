@@ -29,7 +29,7 @@ module Kigo
     # For Kigo's new API, authentication happens by appending a parameter
     # to the URL, so this just returns a regular +Concierge::HTTPClient+ instance.
     def http_client
-      @http_client ||= Concierge::HTTPClient.new(base_uri)
+      @http_client ||= Concierge::HTTPClient.new(base_uri, timeout: 20)
     end
 
     # builds the URL path to be used to perform a given +api_method+. For Kigo's new

@@ -2,8 +2,7 @@ require "spec_helper"
 
 RSpec.describe Kigo::LegacyRequest do
   let(:credentials) { double(username: "deadbeef", password: "secret", subscription_key: "deadbeef") }
-  let(:builder) { Kigo::Request.new(credentials) }
-  subject { described_class.new(credentials, builder) }
+  subject { described_class.new(credentials) }
 
   describe "#base_uri" do
     it "points to Kigo Channels API" do
