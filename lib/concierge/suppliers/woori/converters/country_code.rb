@@ -13,6 +13,7 @@ module Woori
     class CountryCode
       CUSTOM_COUNTRY_NAMES_MAPPING = {
         "Korea" => "Korea (Republic of)",
+        '대한민국' => "Korea (Republic of)"
       }
 
       class << self

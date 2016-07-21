@@ -28,13 +28,30 @@ module Workers::Suppliers
 
           properties.each do |property|
             synchronisation.start(property.identifier) do
-              Result.new(property)
+              Concierge.context.disable!
+              puts "Sync started for: #{property.identifier}"
+
+              units_result = importer.fetch_units(property.identifier)
+
+              if units_result.success?
+                puts "  Fetched units: #{units_result.value.size}"
+                units_result.value.each { |unit| property.add_unit(unit) }
+
+                Result.new(property)
+              else
+                message = "Failed to perform the `#fetch_units` operation for property id=#{property.identifier}"
+                puts message
+                announce_error(message, units_result)
+                units_result
+              end
             end
           end
         else
+          puts "Failed to perform the `#fetch_properties` operation."
+
           message = "Failed to perform the `#fetch_properties` operation"
           announce_error(message, result)
-          return
+          next
         end
       end while size_fetched == BATCH_SIZE
       

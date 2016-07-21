@@ -21,7 +21,7 @@ module Woori
         unit.title       = safe_hash.get("data.name")
         unit.max_guests  = safe_hash.get("data.capacity")
         unit.amenities   = amenities(safe_hash.get("data.facilities"))
-        
+
         unit.description = description_with_additional_amenities(
           safe_hash.get("data.description"),
           additional_amenities(safe_hash.get("data.facilities"))

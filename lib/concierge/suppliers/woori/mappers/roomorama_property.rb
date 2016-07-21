@@ -30,12 +30,12 @@ module Woori
         property.address        = full_address(safe_hash)
         property.amenities      = amenities(safe_hash.get("data.facilities"))
         property.country_code   = country_code(safe_hash.get("data.country"))
-        
+
         property.description = description_with_additional_amenities(
           safe_hash.get("data.description"),
           additional_amenities(safe_hash.get("data.facilities"))
         )
-        
+
         set_images!(property, safe_hash.get("data.images"))
         
         property.default_to_available = true
