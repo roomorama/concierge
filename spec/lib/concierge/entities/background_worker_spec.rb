@@ -19,7 +19,7 @@ RSpec.describe BackgroundWorker do
       expect(subject).to be_idle
     end
 
-    it "is not running when running" do
+    it "is not idle when running" do
       subject.status = "running"
       expect(subject).not_to be_idle
     end
