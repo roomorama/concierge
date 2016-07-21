@@ -1,11 +1,11 @@
-module Kigo
-  # +Kigo::Amenity+ represents amenity structure
+module Kigo::Mappers
+  # +Kigo::Mappers::Amenity+ represents amenity structure
   Amenity = Struct.new(:id, :name, :category_id)
   #
-  # +Kigo::AmenitiesMapper+
+  # +Kigo::Mappers::Amenities+
   #
   # Represents Kigo property payload to Roomorama format
-  class AmenitiesMapper
+  class Amenities
     KITCHEN_CATEGORY_ID = 6
 
     attr_reader :amenities
