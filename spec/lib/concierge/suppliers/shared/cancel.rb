@@ -19,7 +19,7 @@ RSpec.shared_examples "supplier cancel method" do
     it "returns a +Result+ wrapping the reservation id" do
       result = supplier_client.cancel(success_params)
       expect(result).to be_success
-      expect(result.value).to eq success_params[:reservation_id]
+      expect(result.value).to eq success_params[:reference_number]
     end
   end
 

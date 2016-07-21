@@ -8,6 +8,9 @@ how this file is formatted and how the process works.
 ### Changed
 - `Roomorama::Calendar::Entry` now supports `minimum_stay` and synchronises that with Roomorama.
 
+### Fixed
+- Cancellation params name mismatch
+
 ## [0.5.1] - 2016-07-21
 ### Added
 - Cancellation webhook mappings

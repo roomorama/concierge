@@ -27,7 +27,7 @@ RSpec.shared_examples "cancel action" do
         response = call(described_class.new, kase[:params].dup)
         expect(response.status).to eq 200
         expect(response.body["status"]).to eq "ok"
-        expect(response.body["cancelled_reservation_id"]).to eq kase[:cancelled_reservation_id]
+        expect(response.body["cancelled_reference_number"]).to eq kase[:cancelled_reference_number]
       end
     end
   end

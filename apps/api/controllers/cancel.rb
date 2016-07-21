@@ -41,7 +41,7 @@ module API::Controllers
 
         params API::Controllers::Params::Cancel
 
-        expose :cancelled_reservation_id
+        expose :cancelled_reference_number
       end
     end
 
@@ -51,7 +51,7 @@ module API::Controllers
       cancellation_result = cancel_reservation(params)
 
       if cancellation_result.success?
-        @cancelled_reservation_id = cancellation_result.value
+        @cancelled_reference_number = cancellation_result.value
         self.body = API::Views::Cancel.render(exposures)
       else
         announce_error(cancellation_result)
@@ -82,7 +82,7 @@ module API::Controllers
     # This method is only invoked in case validations were successful, meaning that partner
     # implementations need not to care about presence and format of expected parameters
     #
-    # The +cancel_reservation+ should return a +Result+ wrapping the cancelled_reservation_id string.
+    # The +cancel_reservation+ should return a +Result+ wrapping the cancelled_reference_number string.
     # If cancellation is not succesful for any reason, augment the errors on to Context,
     # and return the error message in Result.error.data in the form below:
     #
