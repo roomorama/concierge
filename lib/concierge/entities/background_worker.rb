@@ -38,4 +38,12 @@ class BackgroundWorker
 
   attributes :id, :host_id, :next_run_at, :interval, :type, :status,
     :created_at, :updated_at
+
+  def running?
+    status == "running"
+  end
+
+  def idle?
+    !running?
+  end
 end

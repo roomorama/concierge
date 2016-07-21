@@ -10,13 +10,14 @@ how this file is formatted and how the process works.
 - Waytostay security deposit information
 
 ### Changed
-- Waytostay security_deposit parses into either cash or credit_card_auth or nothing
-- Waytostay images that has is_visible=false should not be imported
+- Waytostay `security_deposit` parses into either `cash` or `credit_card_auth` or nothing
+- Waytostay images that has `is_visible=false` should not be imported
 - Waytostay sync calls /calendar instead of /availabilities api
-- Reservation.code is now Reservation.reference_number
+- `Reservation#code` is now `Reservation#reference_number`
+- Do not process workers if there is already on instance running.
 
 ### Fixed
-- Waytostay calendar crashes because there is no start_date for /rates api
+- Waytostay calendar crashes because there is no `start_date` for /rates api
 - Calendar API call had wrong parameter name for prices.
 
 ## [0.5.0] - 2016-07-19
