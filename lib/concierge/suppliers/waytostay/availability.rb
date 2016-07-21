@@ -58,8 +58,8 @@ module Waytostay
           date:      entry.get("date"),
           available: entry.get("available"),
           checkin_allowed: !entry.get("closed_to_arrival"),
-          checkout_allowed: !entry.get("closed_to_departure")
-          # minimum_stay: entry.get("minimum_stay") # TODO
+          checkout_allowed: !entry.get("closed_to_departure"),
+          minimum_stay: entry.get("minimum_stay")
         )
       end
       entries
