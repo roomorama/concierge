@@ -196,8 +196,9 @@ module Waytostay
       if cash
         { security_deposit_type: "cash" }
       elsif methods.any?
-        { security_deposit_type: methods.first["name"] }
+        { security_deposit_type: "credit_card_auth" }
       else
+        # TODO: Add support for cheque
         {}
       end
     end
