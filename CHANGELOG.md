@@ -11,6 +11,7 @@ how this file is formatted and how the process works.
 
 ### Fixed
 - Cancellation params name mismatch
+- Wrong waytostay cancellation endpoint url
 
 ## [0.5.1] - 2016-07-21
 ### Added
