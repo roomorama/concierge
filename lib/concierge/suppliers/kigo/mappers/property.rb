@@ -63,7 +63,7 @@ module Kigo::Mappers
       property.city             = info['PROP_CITY']
       property.neighborhood     = info['PROP_REGION']
       property.postal_code      = info['PROP_POSTCODE']
-      property.street_address   = street_address
+      property.address   = street_address
       property.apartment_number = info['PROP_APTNO']
       coordinates               = info['PROP_LATLNG']
       property.lat              = coordinates['LATITUDE']
@@ -71,7 +71,6 @@ module Kigo::Mappers
     end
 
     def set_description
-      info        = payload['PROP_INFO']
       description = info['PROP_DESCRIPTION']
       description = info['PROP_SHORTDESCRIPTION'] if description.strip.empty?
       description = info['PROP_AREADESCRIPTION'] if description.strip.empty?
@@ -90,7 +89,7 @@ module Kigo::Mappers
 
     # payload presents beds size as different named items
     def set_beds_count
-      mapper = Mappers::Beds.new(info['PROP_BED_TYPES'])
+      mapper = Beds.new(info['PROP_BED_TYPES'])
 
       property.number_of_double_beds = mapper.double_beds.size
       property.number_of_single_beds = mapper.single_beds.size
@@ -102,7 +101,7 @@ module Kigo::Mappers
     end
 
     def amenities_mapper
-      Mappers::Amenities.new(references[:amenities])
+      Amenities.new(references[:amenities])
     end
 
     def set_deposit
