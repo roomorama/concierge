@@ -10,6 +10,8 @@ module Kigo
   #
   #   => #<Result:0x007ff5fc624dd8 @result=[{"PROP_ID"=>111985, "PROP_PROVIDER"=>{...}}, ...]
   class Importer
+    include Concierge::JSON
+
     PROPERTIES_LIST = 'listProperties2'
     PROPERTY_DATA   = 'readProperty2'
     PRICES          = 'readPropertyPricingSetup'
@@ -30,43 +32,56 @@ module Kigo
     end
 
     def fetch_properties
-      http.post(endpoint(PROPERTIES_LIST))
+      fetch(PROPERTIES_LIST)
     end
 
     def fetch_data(id)
-      http.post(endpoint(PROPERTY_DATA), { PROP_ID: id })
+      fetch(PROPERTY_DATA, { PROP_ID: id })
     end
 
     def fetch_prices(id)
-      http.post(endpoint(PRICES), { PROP_ID: id })
+      fetch(PRICES, { PROP_ID: id })
     end
 
     def fetch_availabilities(id, start_date:, end_date:)
-      http.post(endpoint(AVAILABILITIES), {
+      params = {
         PROP_ID:         id,
         LIST_START_DATE: start_date,
         LIST_END_DATE:   end_date
-      })
+      }
+      fetch(AVAILABILITIES, params)
     end
 
     def fetch_reservations(id, start_date:, end_date:)
-      http.post(endpoint(RESERVATIONS), {
+      params = {
         PROP_ID:         id,
         LIST_START_DATE: start_date,
         LIST_END_DATE:   end_date
-      })
+      }
+      fetch(RESERVATIONS, params)
     end
 
     def fetch_references
       {
-        amenities:      http.post(AMENITIES),
-        fee_types:      http.post(FEE_TYPES),
-        property_types: http.post(PROPERTY_TYPES),
-        bed_types:      http.post(BED_TYPES)
+        amenities:      fetch(AMENITIES),
+        fee_types:      fetch(FEE_TYPES),
+        property_types: fetch(PROPERTY_TYPES),
+        bed_types:      fetch(BED_TYPES)
       }
     end
 
     private
+
+    def fetch(request_method, params = nil)
+      result = http.post(endpoint(request_method), json_encode(params), headers)
+
+      if result.success?
+        response = result.value
+        json_decode(response.body)
+      else
+        result
+      end
+    end
 
     def http
       @http ||= request_handler.http_client
