@@ -4,7 +4,7 @@ module Waytostay
   #
   module Cancel
 
-    ENDPOINT = "/bookings/:reference_number/cancel"
+    ENDPOINT = "/bookings/:reference_number/cancellation"
     REQUIRED_RESPONSE_KEYS = [ "booking_reference" ]
 
     # Cancels a given reference_number
