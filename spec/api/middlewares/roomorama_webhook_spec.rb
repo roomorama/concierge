@@ -95,7 +95,7 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
     let(:concierge_response) {
       {
         status: "ok",
-        cancelled_reservation_id: "test_code"
+        cancelled_reference_number: "test_code"
       }
     }
 

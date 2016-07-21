@@ -202,7 +202,7 @@ RSpec.describe Waytostay::Client do
     }
     before do
       cancel_responses.each do |stub|
-        url = cancel_url.gsub(":reservation_id", stub[:id])
+        url = cancel_url.gsub(":reference_number", stub[:id])
         stubbed_client.oauth2_client.oauth_client.connection =
           stub_call(:post, url){
             [stub[:code], {}, stub[:response]]
@@ -211,8 +211,8 @@ RSpec.describe Waytostay::Client do
     end
     it_behaves_like "supplier cancel method" do
       let(:supplier_client) { stubbed_client }
-      let(:success_params) { {reservation_id: "KUFSHS" }}
-      let(:error_params) { {reservation_id: "ABC" }}
+      let(:success_params) { {reference_number: "KUFSHS" }}
+      let(:error_params) { {reference_number: "ABC" }}
     end
   end
 end

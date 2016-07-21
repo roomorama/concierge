@@ -6,7 +6,7 @@ module API::Views
     def render
       response = {
         status:     "ok",
-        cancelled_reservation_id: cancelled_reservation_id
+        cancelled_reference_number: cancelled_reference_number
       }
 
       json(response)

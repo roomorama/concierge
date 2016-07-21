@@ -12,14 +12,14 @@ module API::Controllers::Params
   #
   class Cancel < API::Action::Params
 
-    param :reservation_id, presence: true, type: String
+    param :reference_number, presence: true, type: String
 
     # Constructs a map of errors for the request.
     #
     # Example
     #
     #   action.error_messages
-    #   # => { reservation_id: ["reservation_id is required"] }
+    #   # => { reference_number: ["reference_number is required"] }
     #
     # The keys for the returned hash are attribute names (see the +param+ declaration list above)
     # and the values for each key is a list of errors for the attribute.
