@@ -54,7 +54,7 @@ RSpec.describe API::Controllers::Ciirus::Booking do
 
         expect(response.status).to eq 200
         expect(response.body['status']).to eq 'ok'
-        expect(response.body['code']).to eq '873184'
+        expect(response.body['reference_number']).to eq '873184'
         expect(response.body['property_id']).to eq '38180'
         expect(response.body['check_in']).to eq '2016-05-01'
         expect(response.body['check_out']).to eq '2016-05-12'

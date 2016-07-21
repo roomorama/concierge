@@ -70,7 +70,7 @@ RSpec.describe Ciirus::Commands::Booking do
         expect(reservation.check_out).to eq('2016-05-12')
         expect(reservation.guests).to eq(3)
         expect(reservation.property_id).to eq('38180')
-        expect(reservation.code).to eq('873184')
+        expect(reservation.reference_number).to eq('873184')
         expect(reservation.customer).to eq(customer)
       end
     end

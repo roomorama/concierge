@@ -5,7 +5,7 @@ module Ciirus
       # to Reservation
       def build(params, hash)
         reservation = ::Reservation.new(params)
-        reservation.code = parse_reservation_code(hash)
+        reservation.reference_number = parse_reservation_code(hash)
         reservation
       end
 
