@@ -1,0 +1,228 @@
+{
+  "features": [
+    "PETS",
+    "LIFT",
+    "BATH",
+    "AIRCONDITIONING",
+    "OVEN",
+    "WASHINGMACHINE",
+    "DISHWASHER",
+    "MICROWAVE",
+    "GARDENFURNITURE",
+    "GROUPPOOL",
+    "PARKING",
+    "TELEVISION",
+    "TERRACE"
+  ],
+  "url": "https://www.poplidays.com/en/product/8927439190",
+  "city": "Antibes",
+  "rooms": 2,
+  "latitude": 43.5869881,
+  "longitude": 7.094132100000024,
+  "caution": "500.0",
+  "licenceAgreement": null,
+  "shortLabel": "Rental Apartment, 1 bedroom, 4 persons",
+  "mediumLabel": "Rental Apartment Antibes, 1 bedroom, 4 persons",
+  "longLabel": "Rental Apartment RIVIERA GARDEN - Antibes, 1 bedroom, 4 persons",
+  "zipCode": "06600",
+  "minWeekPrice": 548.78,
+  "subType": "APARTMENT",
+  "requestOnly": false,
+  "surface": 45,
+  "priceEnabled": true,
+  "mandatoryServicesPrice": 25,
+  "coordinateAccuracy": true,
+  "photos": [
+    {
+      "pictures": [
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623451-255x197.jpg",
+          "dimension": "255x197"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623451-223x153.jpg",
+          "dimension": "223x153"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623451-395x304.jpg",
+          "dimension": "395x304"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623451-158x121.jpg",
+          "dimension": "158x121"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623451-478x368.jpg",
+          "dimension": "478x368"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623451-620x465.jpg",
+          "dimension": "620x465"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623451-170x130.jpg",
+          "dimension": "170x130"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623451-440x340.jpg",
+          "dimension": "440x340"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623451-100x80.jpg",
+          "dimension": "100x80"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623451-85x69.jpg",
+          "dimension": "85x69"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623451-375x258.jpg",
+          "dimension": "375x258"
+        }
+      ]
+    },
+    {
+      "pictures": [
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623455-255x197.jpg",
+          "dimension": "255x197"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623455-223x153.jpg",
+          "dimension": "223x153"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623455-395x304.jpg",
+          "dimension": "395x304"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623455-158x121.jpg",
+          "dimension": "158x121"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623455-478x368.jpg",
+          "dimension": "478x368"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623455-620x465.jpg",
+          "dimension": "620x465"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623455-170x130.jpg",
+          "dimension": "170x130"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623455-440x340.jpg",
+          "dimension": "440x340"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623455-100x80.jpg",
+          "dimension": "100x80"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623455-85x69.jpg",
+          "dimension": "85x69"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623455-375x258.jpg",
+          "dimension": "375x258"
+        }
+      ]
+    },
+    {
+      "pictures": [
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623459-255x197.jpg",
+          "dimension": "255x197"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623459-223x153.jpg",
+          "dimension": "223x153"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623459-395x304.jpg",
+          "dimension": "395x304"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623459-158x121.jpg",
+          "dimension": "158x121"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623459-478x368.jpg",
+          "dimension": "478x368"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623459-620x465.jpg",
+          "dimension": "620x465"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623459-170x130.jpg",
+          "dimension": "170x130"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623459-440x340.jpg",
+          "dimension": "440x340"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623459-100x80.jpg",
+          "dimension": "100x80"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623459-85x69.jpg",
+          "dimension": "85x69"
+        },
+        {
+          "url": "http://cdn-prod.poplidays.com/v2/pictures/8927623459-375x258.jpg",
+          "dimension": "375x258"
+        }
+      ]
+    }
+  ],
+  "surroundings": [
+    "BUS"
+  ],
+  "standing": 3,
+  "carRequired": "RECOMMENDED_CAR",
+  "conciseShortLabel": "Apartment, 1 bedroom, 4 pers.",
+  "conciseMediumLabel": "Apartment Antibes, 1 bedroom, 4 pers.",
+  "conciseLongLabel": "Apartment Antibes, 1 bedroom, 4 persons",
+  "bedrooms": 1,
+  "personMax": 4,
+  "minWeekBasePrice": 548.78,
+  "minWeekPromotion": 0,
+  "geoTree": {
+    "city": "Antibes",
+    "station": "Antibes",
+    "region": "Provence",
+    "zone": "French riviera - Côte d'Azur",
+    "group": "France"
+  },
+  "lastChange": "2016-06-20 17:19",
+  "bathrooms": 1,
+  "distanceLake": null,
+  "distanceBeach": "1001m.-.1500m",
+  "distanceSlope": null,
+  "distanceCityCentre": "+ 500m",
+  "distanceShops": "+ 500m",
+  "distanceBus": "101m - 500m",
+  "distanceMetro": null,
+  "distanceTram": null,
+  "distanceTaxi": null,
+  "address": {
+    "city": "Antibes",
+    "postalCode": "06600",
+    "line1": "87-91 Avenue Francisque PERRAUD",
+    "line2": "Rés. RIVIERA GARDEN, Bat; B",
+    "line3": "",
+    "country": "France"
+  },
+  "name": "RIVIERA GARDEN",
+  "id": 8927439190,
+  "type": "APARTMENT",
+  "country": "FR",
+  "description": {
+    "indoor": "Text here",
+    "outdoor": "Another text here"
+  },
+  "reference": "FR-1-14-39"
+}
