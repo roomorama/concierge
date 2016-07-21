@@ -1,0 +1,66 @@
+{
+  "_links": {
+    "self": {
+      "href": "https://apis.sandbox.waytostay.com/properties/015868/calendar?page=1"
+    },
+    "first": {
+      "href": "https://apis.sandbox.waytostay.com/properties/015868/calendar"
+    },
+    "last": {
+      "href": "https://apis.sandbox.waytostay.com/properties/015868/calendar?page=2"
+    },
+    "next": {
+      "href": "https://apis.sandbox.waytostay.com/properties/015868/calendar?page=2"
+    }
+  },
+  "_embedded": {
+    "property_calendar": [
+      {
+        "date": "2016-07-20",
+        "available": false,
+        "first_day": false,
+        "last_day": false,
+        "minimum_stay": 2,
+        "closed_to_arrival": false,
+        "closed_to_departure": false,
+        "_links": {
+          "self": {
+            "href": "https://apis.sandbox.waytostay.com/properties/015868/calendar/2016-07-20"
+          }
+        }
+      },
+      {
+        "date": "2016-07-21",
+        "available": false,
+        "first_day": true,
+        "last_day": true,
+        "minimum_stay": 2,
+        "closed_to_arrival": false,
+        "closed_to_departure": false,
+        "_links": {
+          "self": {
+            "href": "https://apis.sandbox.waytostay.com/properties/015868/calendar/2016-07-21"
+          }
+        }
+      },
+      {
+        "date": "2016-07-22",
+        "available": true,
+        "first_day": true,
+        "last_day": true,
+        "minimum_stay": 2,
+        "closed_to_arrival": false,
+        "closed_to_departure": true,
+        "_links": {
+          "self": {
+            "href": "https://apis.sandbox.waytostay.com/properties/015868/calendar/2016-07-22"
+          }
+        }
+      }
+    ]
+  },
+  "page_count": 2,
+  "page_size": 3,
+  "total_items": 5,
+  "page": 1
+}

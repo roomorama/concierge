@@ -91,6 +91,34 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
     end
   end
 
+  describe "cancelling bookings" do
+    let(:concierge_response) {
+      {
+        status: "ok",
+        cancelled_reservation_id: "test_code"
+      }
+    }
+
+    before do
+      roomorama_webhook["action"] = "cancelled"
+      roomorama_webhook["event"] = "cancelled"
+      roomorama_webhook["inquiry"]["reference_number"] = "test_code"
+
+    end
+
+    it "returns 200 if upstream was success" do
+      response = concierge_response.to_json
+      expect(post("/", headers)).to eq [200, { "Content-Length" => response.size.to_s }, response]
+    end
+
+    it "returns 422 if upstream has error" do
+      concierge_response[:status] = "error"
+      concierge_response[:errors] = {"cancellation" => "Already cancelled"}
+      response = concierge_response.to_json
+      expect(post("/", headers)).to eq [422, { "Content-Length" => response.size.to_s }, response]
+    end
+  end
+
   describe "quoting bookings" do
     let(:concierge_response) {
       {

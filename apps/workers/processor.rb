@@ -68,6 +68,7 @@ module Workers
 
     def run_worker(args)
       worker = BackgroundWorkerRepository.find(args[:background_worker_id])
+      return Result.new(true) if worker.running?
 
       running(worker) do
         timing_out(worker.type, args) do

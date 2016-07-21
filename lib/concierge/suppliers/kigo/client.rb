@@ -18,7 +18,7 @@ module Kigo
     end
 
     # Quote prices
-    # 
+    #
     # If an error happens in any step in the process of getting a response back from
     # Kigo, a generic error message is sent back to the caller, and the failure
     # is logged.

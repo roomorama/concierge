@@ -24,13 +24,13 @@ collection :reservations do
   entity     Reservation
   repository ReservationRepository
 
-  attribute :id,          Integer
-  attribute :property_id, String
-  attribute :unit_id,     String
-  attribute :check_in,    String
-  attribute :check_out,   String
-  attribute :guests,      Integer
-  attribute :code,        String
+  attribute :id,               Integer
+  attribute :property_id,      String
+  attribute :unit_id,          String
+  attribute :check_in,         String
+  attribute :check_out,        String
+  attribute :guests,           Integer
+  attribute :reference_number, String
 end
 
 collection :suppliers do

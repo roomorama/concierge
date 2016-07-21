@@ -54,8 +54,8 @@ module JTB
       result = JTB::Booking.new(credentials).book(params)
       if result.success?
         res = Reservation.new(params).tap do |reservation|
-          reservation.code = result.value
-          database.create(reservation) # workaround to keep reservation code
+          reservation.reference_number = result.value
+          database.create(reservation) # workaround to keep reservation.reference_number
         end
         Result.new(res)
       else

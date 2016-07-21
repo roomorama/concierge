@@ -4,6 +4,22 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.5.1] - 2016-07-21
+### Added
+- Cancellation webhook mappings
+- Waytostay security deposit information
+
+### Changed
+- Waytostay `security_deposit` parses into either `cash` or `credit_card_auth` or nothing
+- Waytostay images that has `is_visible=false` should not be imported
+- Waytostay sync calls /calendar instead of /availabilities api
+- `Reservation#code` is now `Reservation#reference_number`
+- Do not process workers if there is already on instance running.
+
+### Fixed
+- Waytostay calendar crashes because there is no `start_date` for /rates api
+- Calendar API call had wrong parameter name for prices.
+
 ## [0.5.0] - 2016-07-19
 ### Added
 - added `currency_code` to the list of supported attributes for booking webhook and for `API::Controllers::Params::Booking` object

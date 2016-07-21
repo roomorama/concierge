@@ -8,25 +8,27 @@ module Waytostay
     INDEX_ENDPOINT = "/properties".freeze
 
     FIELD_MAPPINGS = {
-      identifier:          "reference",
-      title:               "general.name",
-      description:         "descriptions.description",
-      type:                "general.type",
-      country_code:        "location.country.iso",
-      lat:                 "location.coord.lat",
-      lng:                 "location.coord.lng",
-      address:             "location.address.address",
-      postal_code:         "location.address.postcode",
-      city:                "location.city.name",
-      number_of_bedrooms:  "general.bedrooms",
-      number_of_bathrooms: "general.bathrooms",
-      surface:             "general.sqm",
-      max_guests:          "general.sleeps",
-      minimum_stay:        "general.min_stay_default",
-      check_in_time:       "general.checkin_time",
-      check_out_time:      "general.checkout_time",
-      currency:            "payment.currency",
-      nightly_rate:        "payment.lowest_rate",
+      identifier:                "reference",
+      title:                     "general.name",
+      description:               "descriptions.description",
+      type:                      "general.type",
+      country_code:              "location.country.iso",
+      lat:                       "location.coord.lat",
+      lng:                       "location.coord.lng",
+      address:                   "location.address.address",
+      postal_code:               "location.address.postcode",
+      city:                      "location.city.name",
+      number_of_bedrooms:        "general.bedrooms",
+      number_of_bathrooms:       "general.bathrooms",
+      surface:                   "general.sqm",
+      max_guests:                "general.sleeps",
+      minimum_stay:              "general.min_stay_default",
+      check_in_time:             "general.checkin_time",
+      check_out_time:            "general.checkout_time",
+      currency:                  "payment.currency",
+      nightly_rate:              "payment.lowest_rate",
+      security_deposit_amount:   "payment.damage_deposit",
+      security_deposit_currency: "payment.currency",
     }.freeze
 
     REQUIRED_RESPONSE_KEYS = (FIELD_MAPPINGS.values +
@@ -130,6 +132,7 @@ module Waytostay
       attr.merge! parse_number_of_beds(response)
       attr.merge! parse_amenities(response)
       attr.merge! parse_approximate_rates(response)
+      attr.merge! parse_security_deposit_method(response)
 
       attr.merge! parse_property_state(response)
     end
@@ -185,6 +188,19 @@ module Waytostay
         number_of_single_beds: single_matches.nil? ? 0 : single_matches[1].to_i,
         number_of_sofa_beds:   sofa_beds
       }
+    end
+
+    def parse_security_deposit_method(response)
+      methods = Array(response.get("payment.damage_deposit_payment_methods"))
+      cash = methods.find { |m| m["name"] == "cash" }
+      if cash
+        { security_deposit_type: "cash" }
+      elsif methods.any?
+        { security_deposit_type: "credit_card_auth" }
+      else
+        # TODO: Add support for cheque
+        {}
+      end
     end
 
     def parse_amenities(response)

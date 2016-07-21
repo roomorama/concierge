@@ -55,7 +55,7 @@ module JTB
     # builds message for +JTB::API+ +create_booking+ method
     # full description on 28th page of JTB "API References Guide"
     # message has a test behaviour if +PassiveIndicator+ is true JTB will not create a booking
-    # but return success response 'XXXXXXXXXX' reservation code
+    # but return success response 'XXXXXXXXXX' reservation.reference_number
     def build_booking(params, rate)
       params = Concierge::SafeAccessHash.new(params)
       message = builder.new(encoding: 'utf-8') do |xml|

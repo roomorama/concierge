@@ -26,6 +26,24 @@ RSpec.describe Workers::Processor do
       }.to raise_error Workers::Processor::UnknownOperationError
     end
 
+    it "returns early if the worker is currently busy" do
+      supplier = create_supplier(name: "SupplierTest")
+      host     = create_host(username: "test-host", supplier_id: supplier.id)
+      worker   = create_background_worker(host_id: host.id, type: "metadata", status: "running")
+      payload[:data][:background_worker_id] = worker.id
+
+      invoked = false
+
+      Concierge::Announcer.on("metadata.SupplierTest") do
+        invoked = true
+      end
+
+      result = subject.process!
+      expect(result).to be_a Result
+      expect(result).to be_success
+      expect(invoked).to eq false
+    end
+
     it "triggers the associated supplier synchronisation mechanism on background worker operations" do
       invoked = false
 

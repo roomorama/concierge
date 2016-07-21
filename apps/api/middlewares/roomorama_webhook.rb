@@ -103,6 +103,15 @@ module API
           true
         end
 
+        def cancelled(data)
+          payload = safe_access(data)
+
+          params = { reference_number: payload.get("inquiry.reference_number") }
+
+          env["rack.input"] = StringIO.new(json_encode(params))
+          true
+        end
+
         def request_path
           env["PATH_INFO"] || env["REQUEST_PATH"]
         end
@@ -182,6 +191,11 @@ module API
         def booking(status, headers, response)
           [status, headers, [json_encode(response)]]
         end
+
+        def cancelled(status, headers, response)
+          status = 422 if response["status"] == "error"
+          [status, headers, [json_encode(response)]]
+        end
       end
 
       include Concierge::JSON
@@ -224,6 +238,8 @@ module API
           concierge_request.quote(webhook_payload)
         when "booked_instant"
           concierge_request.booking(webhook_payload)
+        when "cancelled"
+          concierge_request.cancelled(webhook_payload)
         else
           # event is not recognized and should not be handled.
           false
@@ -246,6 +262,8 @@ module API
           webhook_response.quote(status, headers, data)
         when "booked_instant"
           webhook_response.booking(status, headers, data)
+        when "cancelled"
+          webhook_response.cancelled(status, headers, data)
         end
       end
 

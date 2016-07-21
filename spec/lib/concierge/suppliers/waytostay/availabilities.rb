@@ -1,20 +1,20 @@
 RSpec.shared_examples "Waytostay availabilities client" do
   describe "#get_availabilities" do
     let(:property_identifier) { "015868" }
-    let(:availability_url) { "#{base_url}/properties/#{property_identifier}/availability" }
+    let(:calendar_url) { "#{base_url}/properties/#{property_identifier}/calendar" }
     let(:rates_url) { "#{base_url}/properties/#{property_identifier}/rates" }
 
     subject { stubbed_client.get_availabilities(property_identifier) }
 
-    context "succesful" do
+    context "when successful" do
       before do
         stubbed_client.oauth2_client.oauth_client.connection =
-          stub_call(:get, availability_url, struct: true) {
-            [200, {}, read_fixture("waytostay/properties/015868/availability.json")]
+          stub_call(:get, calendar_url, struct: true) {
+            [200, {}, read_fixture("waytostay/properties/015868/calendar.json")]
           }
         stubbed_client.oauth2_client.oauth_client.connection =
-          stub_call(:get, availability_url + "?page=2", struct: true) {
-            [200, {}, read_fixture("waytostay/properties/015868/availability?page=2.json")]
+          stub_call(:get, calendar_url + "?page=2", struct: true) {
+            [200, {}, read_fixture("waytostay/properties/015868/calendar?page=2.json")]
           }
         stubbed_client.oauth2_client.oauth_client.connection =
           stub_call(:get, rates_url + "?end_date=2018-07-03", struct: true) {
@@ -32,8 +32,13 @@ RSpec.shared_examples "Waytostay availabilities client" do
         expect(entries.first.nightly_rate).to eq 95
 
         expect(entries.last.date).to eq Date.parse("2018-07-03")
-        expect(entries.last.available).to eq false
+        expect(entries.last.available).to eq true
         expect(entries.last.nightly_rate).to eq 100
+
+        test_entry = entries.find { |e| e.date.to_s == "2016-07-22" }
+        expect(test_entry.available).to eq true
+        expect(test_entry.checkin_allowed).to eq true
+        expect(test_entry.checkout_allowed).to eq false
 
         expect(entries.count - 1).to eq Date.parse("2018-07-03") - Date.parse("2016-06-20")
       end
@@ -42,8 +47,8 @@ RSpec.shared_examples "Waytostay availabilities client" do
     context "malformed response" do
       before do
         stubbed_client.oauth2_client.oauth_client.connection =
-          stub_call(:get, availability_url, struct: true) {
-            [200, {}, read_fixture("waytostay/properties/015868/availability-malformed.json")]
+          stub_call(:get, calendar_url, struct: true) {
+            [200, {}, read_fixture("waytostay/properties/015868/calendar-malformed.json")]
           }
       end
 
