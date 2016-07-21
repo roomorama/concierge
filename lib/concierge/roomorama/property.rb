@@ -64,7 +64,7 @@ module Roomorama
 
     ATTRIBUTES = [:type, :title, :address, :postal_code, :city, :description,
       :number_of_bedrooms, :max_guests, :minimum_stay, :nightly_rate,
-      :weekly_rate, :monthly_rate, :default_to_available, :availabilities,
+      :weekly_rate, :monthly_rate, :default_to_available,
       :identifier, :subtype, :apartment_number, :neighborhood, :country_code,
       :lat, :lng, :number_of_bathrooms, :floor, :number_of_double_beds,
       :number_of_single_beds, :number_of_sofa_beds, :surface, :surface_unit,
