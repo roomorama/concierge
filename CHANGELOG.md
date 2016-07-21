@@ -12,6 +12,7 @@ how this file is formatted and how the process works.
 ### Changed
 - Waytostay images that has is_visible=false should not be imported
 - Waytostay sync calls /calendar instead of /availabilities api
+- Reservation.code is now Reservation.reference_number
 
 ### Fixed
 - Waytostay calendar crashes because there is no start_date for /rates api
