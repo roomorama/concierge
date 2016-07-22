@@ -35,7 +35,7 @@ module Workers::Suppliers
             next wrapped_property
           end
 
-          if changes.value[:media].include?(property_ref)
+          if changes.value[:media].include?(property_ref) || wrapped_property.result.images.empty?
             wrapped_property = client.update_media(wrapped_property.result)
             next wrapped_property unless wrapped_property.success?
           end
