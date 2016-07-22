@@ -46,6 +46,14 @@ RSpec.describe API::Controllers::SAW::Booking do
     expect(reservation.check_out).to eq(safe_params[:check_out])
     expect(reservation.reference_number).to eq('MTA66395')
   end
+    
+  it 'creates record with booking code in database' do
+    mock_request(:propertybooking, :success)
+    controller.create_booking(safe_params)
+    
+    expect(ReservationRepository.first.reference_number).to eq('MTA66395')
+  end
+
 
   it "returns an error reservation if booking request fails" do
     mock_request(:propertybooking, :error)
