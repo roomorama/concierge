@@ -17,7 +17,9 @@ module SAW
       def self.build(request_params, result_hash)
         reservation_code = parse_reservation_code(result_hash)
 
-        ::Reservation.new(request_params.to_h.merge!(code: reservation_code))
+        ::Reservation.new(
+          request_params.to_h.merge!(reference_number: reservation_code)
+        )
       end
 
       private

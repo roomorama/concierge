@@ -44,7 +44,7 @@ RSpec.describe API::Controllers::SAW::Booking do
     expect(reservation.unit_id).to eq(safe_params[:unit_id])
     expect(reservation.check_in).to eq(safe_params[:check_in])
     expect(reservation.check_out).to eq(safe_params[:check_out])
-    expect(reservation.code).to eq('MTA66395')
+    expect(reservation.reference_number).to eq('MTA66395')
   end
 
   it "returns an error reservation if booking request fails" do
