@@ -4,6 +4,15 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.5.2] - 2016-07-21
+### Changed
+- `Roomorama::Calendar::Entry` now supports `minimum_stay` and synchronises that with Roomorama.
+- Waytostay calendar client returns `minimum_stay` related to above
+
+### Fixed
+- Cancellation params name mismatch
+- Wrong waytostay cancellation endpoint url
+
 ## [0.5.1] - 2016-07-21
 ### Added
 - Cancellation webhook mappings

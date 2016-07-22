@@ -2,19 +2,19 @@ require 'spec_helper'
 require_relative "../shared/cancel"
 
 RSpec.describe API::Controllers::Waytostay::Cancel do
-  let(:params) { { reservation_id: "A123" } }
+  let(:params) { { reference_number: "A123" } }
 
   it_behaves_like "cancel action" do
     let(:success_cases) {
       [
-        { params: {reservation_id: "A023"}, cancelled_reservation_id: "XYZ" },
-        { params: {reservation_id: "A024"}, cancelled_reservation_id: "ASD" },
+        { params: {reference_number: "A023"}, cancelled_reference_number: "XYZ" },
+        { params: {reference_number: "A024"}, cancelled_reference_number: "ASD" },
       ]
     }
     let(:error_cases) {
       [
-        { params: {reservation_id: "A123"}, error: {"cancellation" => "Could not cancel with remote supplier"} },
-        { params: {reservation_id: "A124"}, error: {"cancellation" => "Already cancelled"} },
+        { params: {reference_number: "A123"}, error: {"cancellation" => "Could not cancel with remote supplier"} },
+        { params: {reference_number: "A124"}, error: {"cancellation" => "Already cancelled"} },
       ]
     }
 
@@ -22,14 +22,14 @@ RSpec.describe API::Controllers::Waytostay::Cancel do
       allow_any_instance_of(Waytostay::Client).to receive(:cancel) do |instance, par|
         result = nil
         error_cases.each do |kase|
-          if par.reservation_id == kase[:params][:reservation_id]
+          if par.reference_number == kase[:params][:reference_number]
             result = Result.error(:already_cancelled, kase[:error])
             break
           end
         end
         success_cases.each do |kase|
-          if par.reservation_id == kase[:params][:reservation_id]
-            result = Result.new(kase[:cancelled_reservation_id])
+          if par.reference_number == kase[:params][:reference_number]
+            result = Result.new(kase[:cancelled_reference_number])
             break
           end
         end

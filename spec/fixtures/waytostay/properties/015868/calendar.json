@@ -48,7 +48,7 @@
         "available": true,
         "first_day": true,
         "last_day": true,
-        "minimum_stay": 2,
+        "minimum_stay": 8,
         "closed_to_arrival": false,
         "closed_to_departure": true,
         "_links": {

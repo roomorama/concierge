@@ -37,6 +37,7 @@ module Roomorama
       attribute :nightly_rate, presence: true
       attribute :weekly_rate
       attribute :monthly_rate
+      attribute :minimum_stay
       attribute :checkin_allowed
       attribute :checkout_allowed
 
@@ -97,21 +98,45 @@ module Roomorama
       parsed = parse_entries
 
       {
-        identifier:       property_identifier,
-        start_date:       parsed.start_date.to_s,
-        availabilities:   parsed.availabilities,
+        identifier:        property_identifier,
+        start_date:        parsed.start_date.to_s,
+        availabilities:    parsed.availabilities,
         nightly_prices:    parsed.rates.nightly,
         weekly_prices:     parsed.rates.weekly,
         monthly_prices:    parsed.rates.monthly,
-        checkin_allowed:  parsed.checkin_rules,
-        checkout_allowed: parsed.checkout_rules
-      }
+        minimum_stays:     parsed.minimum_stays,
+        checkin_allowed:   parsed.checkin_rules,
+        checkout_allowed:  parsed.checkout_rules
+      }.tap do |payload|
+
+        # we do not need to send a potentially large array of +nulls+ if a supplier
+        # does not provide weekly/monthly data. In that sense:
+        #
+        # * optional prices/minimum stays that are all null should be discarded
+        # * check-in/check-out rules where all elements are +true+ should be discarded,
+        #   since that is already the default of the API endpoint.
+
+        [:weekly_prices, :monthly_prices, :minimum_stays].each do |name|
+          if payload[name].all?(&:nil?)
+            payload.delete(name)
+          end
+        end
+
+        [:checkin_allowed, :checkout_allowed].each do |name|
+          if payload[name].to_s.chars.all? { |e| e == "1" }
+            payload.delete(name)
+          end
+        end
+
+      end
     end
 
     private
 
     Rates         = Struct.new(:nightly, :weekly, :monthly)
-    ParsedEntries = Struct.new(:start_date, :availabilities, :checkin_rules, :checkout_rules, :rates)
+    ParsedEntries = Struct.new(
+      :start_date, :availabilities, :checkin_rules, :checkout_rules, :minimum_stays, :rates
+    )
 
     # parses the collection of +entries+ given on the lifecycle of this instance,
     # and builds a +Roomorama::Calendar::ParsedEntries+ instance, containing data
@@ -124,7 +149,7 @@ module Roomorama
       end_date       = sorted_entries.last.date
 
       rates          = Rates.new([], [], [])
-      parsed_entries = ParsedEntries.new(start_date, "", "", "", rates)
+      parsed_entries = ParsedEntries.new(start_date, "", "", "", [], rates)
 
       # index all entries by date, to make the lookup for a given date faster.
       # Index once, and then all lookups can be performed in constant time,
@@ -144,6 +169,7 @@ module Roomorama
         parsed_entries.rates.nightly  << entry.nightly_rate
         parsed_entries.rates.weekly   << entry.weekly_rate
         parsed_entries.rates.monthly  << entry.monthly_rate
+        parsed_entries.minimum_stays  << entry.minimum_stay
         parsed_entries.checkin_rules  << boolean_to_string(entry.checkin_allowed)
         parsed_entries.checkout_rules << boolean_to_string(entry.checkout_allowed)
       end
@@ -155,7 +181,7 @@ module Roomorama
     # the empty counterpart of the fields.
     def empty_response
       rates = Rates.new([], [], [])
-      ParsedEntries.new("", "", "", "", rates)
+      ParsedEntries.new("", "", "", "", [], rates)
     end
 
     # builds a placeholder calendar entry to be used when there are gaps

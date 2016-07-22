@@ -60,18 +60,14 @@ RSpec.describe Roomorama::Calendar do
         identifier:        "prop1",
         start_date:        "2016-05-22",
         availabilities:    "101",
-        nightly_prices:    [100, 120, 150],
-        weekly_prices:     [nil, nil, nil],
-        monthly_prices:    [nil, nil, nil],
-        checkin_allowed:   "111",
-        checkout_allowed:  "111"
+        nightly_prices:    [100, 120, 150]
       })
     end
 
-    it "overwrites given weekly/monthly rates as well as check-in/check-out rules" do
+    it "overwrites given weekly/monthly rates as well as check-in/check-out rules and minimum stays" do
       subject.add(create_entry(date: "2016-05-22", available: true,  nightly_rate: 100, weekly_rate: 500, checkin_allowed: false))
       subject.add(create_entry(date: "2016-05-23", available: false, nightly_rate: 120, monthly_rate: 1000, checkin_allowed: true))
-      subject.add(create_entry(date: "2016-05-24", available: true,  nightly_rate: 150, checkout_allowed: false))
+      subject.add(create_entry(date: "2016-05-24", available: true,  nightly_rate: 150, minimum_stay: 2, checkout_allowed: false))
 
       expect(subject.to_h).to eq({
         identifier:        "prop1",
@@ -80,6 +76,7 @@ RSpec.describe Roomorama::Calendar do
         nightly_prices:    [100, 120, 150],
         weekly_prices:     [500, nil, nil],
         monthly_prices:    [nil, 1000, nil],
+        minimum_stays:     [nil, nil, 2],
         checkin_allowed:   "011",
         checkout_allowed:  "110"
       })
@@ -96,11 +93,7 @@ RSpec.describe Roomorama::Calendar do
         identifier:        "prop1",
         start_date:        "2016-05-22",
         availabilities:    "111010",
-        nightly_prices:    [100, average, average, 120, average, 150],
-        weekly_prices:     [nil, nil, nil, nil, nil, nil],
-        monthly_prices:    [nil, nil, nil, nil, nil, nil],
-        checkin_allowed:   "111111",
-        checkout_allowed:  "111111"
+        nightly_prices:    [100, average, average, 120, average, 150]
       })
     end
 
@@ -109,11 +102,7 @@ RSpec.describe Roomorama::Calendar do
         identifier:        "prop1",
         start_date:        "",
         availabilities:    "",
-        nightly_prices:    [],
-        weekly_prices:     [],
-        monthly_prices:    [],
-        checkin_allowed:   "",
-        checkout_allowed:  ""
+        nightly_prices:    []
       })
     end
   end

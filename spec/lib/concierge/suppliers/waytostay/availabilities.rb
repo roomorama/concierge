@@ -39,6 +39,8 @@ RSpec.shared_examples "Waytostay availabilities client" do
         expect(test_entry.available).to eq true
         expect(test_entry.checkin_allowed).to eq true
         expect(test_entry.checkout_allowed).to eq false
+        expect(test_entry.checkout_allowed).to eq false
+        expect(test_entry.minimum_stay).to eq 8
 
         expect(entries.count - 1).to eq Date.parse("2018-07-03") - Date.parse("2016-06-20")
       end
