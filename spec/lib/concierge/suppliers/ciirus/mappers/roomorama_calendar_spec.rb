@@ -111,6 +111,7 @@ RSpec.describe Ciirus::Mappers::RoomoramaCalendar do
       expect(entry.nightly_rate).to eq(141.43)
       expect(entry.available).to be_truthy
       expect(entry.checkin_allowed).to be_truthy
+      expect(entry.minimum_stay).to eq(2)
     end
   end
 end
