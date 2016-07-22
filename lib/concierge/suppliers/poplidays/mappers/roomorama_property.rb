@@ -36,7 +36,7 @@ module Poplidays
         set_base_info!(roomorama_property, details)
         set_images!(roomorama_property, details)
         set_amenities!(roomorama_property, details)
-        set_rates!(roomorama_property, details, availabilities)
+        set_rates_and_min_stay!(roomorama_property, details, availabilities)
 
         Result.new(roomorama_property)
       end
@@ -53,7 +53,6 @@ module Poplidays
         roomorama_property.description = build_descriptions(details)
         roomorama_property.number_of_bedrooms = details['bedrooms']
         roomorama_property.max_guests = details['personMax']
-        roomorama_property.minimum_stay = details['standing']
         roomorama_property.default_to_available = false
         roomorama_property.country_code = details['country']
         roomorama_property.lat = details['latitude']
@@ -141,11 +140,12 @@ module Poplidays
         features.include?('FREEZER')
       end
 
-      def set_rates!(roomorama_property, details, availabilities_hash)
+      def set_rates_and_min_stay!(roomorama_property, details, availabilities_hash)
 
         availabilities = availabilities_hash['availabilities']
 
         min_daily_rate = nil
+        min_stay = nil
         availabilities.each do |stay|
           next if stay['requestOnly'] && !stay['priceEnabled']
 
@@ -158,14 +158,15 @@ module Poplidays
           price_per_day = subtotal.to_f / length
 
           min_daily_rate = [min_daily_rate, price_per_day].compact.min
+          min_stay = [min_stay, length].compact.min
         end
 
         daily_rate = min_daily_rate.round(2)
         roomorama_property.nightly_rate = daily_rate
         roomorama_property.weekly_rate = (daily_rate * 7).round(2)
         roomorama_property.monthly_rate = (daily_rate * 30).round(2)
+        roomorama_property.minimum_stay = min_stay || details['standing']
       end
-
     end
   end
 end
