@@ -8,6 +8,7 @@ module Woori
   #   importer = Woori::Importer.new(credentials)
   #   importer.fetch_properties(updated_at, limit, offset)
   #   importer.fetch_units("w_w0104006")
+  #   importer.fetch_unit_rates("w_w0104006")
   class Importer
     attr_reader :credentials
 
@@ -23,6 +24,11 @@ module Woori
     def fetch_units(property_id)
       properties_fetcher = Commands::UnitsFetcher.new(credentials)
       properties_fetcher.call(property_id)
+    end
+
+    def fetch_unit_rates(unit_id)
+      properties_fetcher = Commands::UnitRatesFetcher.new(credentials)
+      properties_fetcher.call(unit_id)
     end
   end
 end
