@@ -42,12 +42,12 @@ RSpec.describe API::Controllers::Audit::Booking do
 
     it "returns a booking code when successful" do
       reservation = Result.new(Reservation.new(params))
-      reservation.value.code = "test_code"
+      reservation.value.reference_number = "test_code"
       expect_any_instance_of(Audit::Client).to receive(:book).and_return(reservation)
 
       expect(response.status).to eq 200
       expect(response.body["status"]).to eq "ok"
-      expect(response.body["code"]).to eq "test_code"
+      expect(response.body["reference_number"]).to eq "test_code"
     end
   end
 end

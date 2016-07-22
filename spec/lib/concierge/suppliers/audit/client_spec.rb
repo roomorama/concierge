@@ -73,7 +73,7 @@ RSpec.describe Audit::Client do
 
       reservation = reservation_result.value
       expect(reservation).to be_a Reservation
-      expect(reservation.code).to eq json['result']['code']
+      expect(reservation.reference_number).to eq json['result']['reference_number']
     end
 
     it "returns a Result with a generic error message on failure" do
@@ -88,13 +88,13 @@ RSpec.describe Audit::Client do
   end
 
   describe "#cancel" do
-    def cancel_params_for(reservation_id)
+    def cancel_params_for(reference_number)
       {
-        reservation_id: reservation_id
+        reference_number: reference_number
       }
     end
 
-    it "returns the wrapped reservation_id when successful" do
+    it "returns the wrapped reference_number when successful" do
       json = JSON.parse(read_fixture('audit/cancel.success.json'))
       stub_call(:get, "#{base_url}/spec/fixtures/audit/cancel.success.json") {
         [200, {}, json.to_json]
