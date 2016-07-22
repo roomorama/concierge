@@ -53,6 +53,7 @@ module SAW
 
           if valid_result?(result_hash)
             reservation = SAW::Mappers::Reservation.build(params, result_hash)
+            database.create(reservation)
             
             Result.new(reservation)
           else
@@ -79,6 +80,10 @@ module SAW
             email:       params.get("customer.email")
           }
         )
+      end
+    
+      def database
+        @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
       end
     end
   end
