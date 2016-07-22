@@ -19,6 +19,8 @@ module Poplidays
     class LodgingsFetcher < BaseCommand
 
       PATH = 'lodgings/out/Roomorama'
+      # The response is >75mb it requires a lot of time
+      TIMEOUT = 180
 
       def call
         raw_lodgings = remote_call
@@ -45,6 +47,10 @@ module Poplidays
 
       def protocol
         'http'
+      end
+
+      def timeout
+        TIMEOUT
       end
     end
   end
