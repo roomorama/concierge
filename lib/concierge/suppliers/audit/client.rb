@@ -42,12 +42,12 @@ module Audit
       end
     end
 
-    # On success, return Result wrapping reservation_id String
-    # - When reservation_id is `success`, a successful response is returned
-    # - When reservation_id is `connection_timeout`, Faraday::TimeoutError should be raised by HTTP::Client
+    # On success, return Result wrapping reference_number String
+    # - When reference_number is `success`, a successful response is returned
+    # - When reference_number is `connection_timeout`, Faraday::TimeoutError should be raised by HTTP::Client
     def cancel(params)
       client = Concierge::HTTPClient.new(credentials.host)
-      result = client.get("/spec/fixtures/audit/cancel.#{params[:reservation_id]}.json")
+      result = client.get("/spec/fixtures/audit/cancel.#{params[:reference_number]}.json")
       if result.success?
         json = JSON.parse(result.value.body)
         Result.new(json['result'])
