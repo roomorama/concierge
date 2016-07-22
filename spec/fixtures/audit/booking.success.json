@@ -1,5 +1,6 @@
 {
   "result": {
+    "reference_number": "success-reservation_number123",
     "property_id": "String",
     "unit_id": "String",
     "check_in": "String",
