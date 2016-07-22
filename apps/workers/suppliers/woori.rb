@@ -35,7 +35,28 @@ module Workers::Suppliers
 
               if units_result.success?
                 puts "  Fetched units: #{units_result.value.size}"
-                units_result.value.each { |unit| property.add_unit(unit) }
+                units = units_result.value
+                  
+                units.each do |unit|
+                  rates_result = importer.fetch_unit_rates(unit.identifier)
+
+                  if rates_result.success?
+                    rates = rates_result.value
+                
+                    puts "  Rates: #{rates.nightly_rate} / #{rates.weekly_rate} / #{rates.monthly_rate}"
+
+                    unit.nightly_rate = rates.nightly_rate
+                    unit.weekly_rate  = rates.weekly_rate
+                    unit.monthly_rate = rates.monthly_rate
+
+                    property.add_unit(unit)
+                  else
+                    message = "Failed to perform the `#fetch_unit_rates` operation for unit id=#{unit.identifier}"
+                    puts message
+                    announce_error(message, units_result)
+                    rates_result
+                  end
+                end
 
                 Result.new(property)
               else
@@ -44,6 +65,7 @@ module Workers::Suppliers
                 announce_error(message, units_result)
                 units_result
               end
+
             end
           end
         else
