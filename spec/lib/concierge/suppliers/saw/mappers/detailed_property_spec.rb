@@ -182,7 +182,7 @@ module SAW
         %w(airconditioning tv gym laundry free_cleaning parking wifi)
       )
     end
-    
+
     it "doesn't add breakfast to amenities if it's not available" do
       attributes["flag_breakfast_included"] = "N"
 
@@ -200,14 +200,14 @@ module SAW
         %w(airconditioning tv gym laundry free_cleaning parking wifi breakfast)
       )
     end
-    
+
     it "has empty amenities when facility services equal nil" do
       attributes["facility_services"] = nil
 
       property = described_class.build(hash)
       expect(property.amenities).to eq([])
     end
-    
+
     it "has empty amenities when facility services equal {}" do
       attributes["facility_services"] = {}
 
@@ -229,33 +229,33 @@ module SAW
          "BBQ",
          "Breakfast Room",
          "Burners / Hobs",
-         "Chauffeur Service (Extra Cost)", 
-         "Childrens' Playground", 
-         "Coffee Maker", 
-         "Coffee Shop Nearby", 
-         "Conference Facilities", 
-         "Deposit Box", 
-         "Direct Dial Telephone", 
-         "Dry Cleaning (Extra Cost)", 
-         "Fridge / Freezer", 
-         "Garden", 
-         "Hairdryer", 
-         "Ipod Docking Station", 
-         "Iron and Ironing Board", 
-         "Kettle", 
-         "Lift", 
-         "No Smoking Apartments/Rooms", 
-         "Oven ", 
-         "Restaurant Nearby", 
-         "Restaurant On-Site", 
-         "Room Safe", 
-         "Room Service", 
-         "Shuttle Services", 
-         "Sports Facilities", 
-         "Supermarket On-Site", 
-         "Swimming Pool Outdoors", 
-         "Tea and Coffee", 
-         "Toaster", 
+         "Chauffeur Service (Extra Cost)",
+         "Childrens' Playground",
+         "Coffee Maker",
+         "Coffee Shop Nearby",
+         "Conference Facilities",
+         "Deposit Box",
+         "Direct Dial Telephone",
+         "Dry Cleaning (Extra Cost)",
+         "Fridge / Freezer",
+         "Garden",
+         "Hairdryer",
+         "Ipod Docking Station",
+         "Iron and Ironing Board",
+         "Kettle",
+         "Lift",
+         "No Smoking Apartments/Rooms",
+         "Oven ",
+         "Restaurant Nearby",
+         "Restaurant On-Site",
+         "Room Safe",
+         "Room Service",
+         "Shuttle Services",
+         "Sports Facilities",
+         "Supermarket On-Site",
+         "Swimming Pool Outdoors",
+         "Tea and Coffee",
+         "Toaster",
          "Washing Machine / Dryer",
          "Work Place"
         ]
@@ -281,16 +281,16 @@ module SAW
         image = images.find { |i| i.identifier == "18a2054d50d80faccd697db4e77dd1e8" }
         expect(image.caption).to eq("Outrigger Laguna Phuket Resort & Villas")
         expect(image.url).to eq("#{url_prefix}ImageInstanceId=39062")
-        
+
         image = images.find { |i| i.identifier == "afba570fdc566cadcd9ec428e38c0256" }
         expect(image.caption).to eq("1 Bedroom Suite")
         expect(image.url).to eq("#{url_prefix}ImageInstanceId=38992")
-        
+
         image = images.find { |i| i.identifier == "b2a73c895dd9d3e6acd88e2a8a0ec66b" }
         expect(image.caption).to eq("1 Bedroom Suite")
         expect(image.url).to eq("#{url_prefix}ImageInstanceId=38997")
       end
-      
+
       context 'when only one image available' do
         let(:image_gallery_attributes) do
           {
@@ -301,7 +301,7 @@ module SAW
             }
           }
         end
-      
+
         it "adds images" do
           property = described_class.build(hash)
 
@@ -317,7 +317,7 @@ module SAW
 
       expect(property.bed_configurations).to eq(hash["beddingconfigurations"])
     end
-    
+
     it "adds property accomodations" do
       property = described_class.build(hash)
 

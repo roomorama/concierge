@@ -7,13 +7,13 @@ module SAW
     class Amenities
       class << self
         # Converts SAW facility services to Roomorama amenities
-        #  
+        #
         # Arguments
-        #   
+        #
         #   * +facility_services+ [Array<String>] array with SAW amenities
         #
         # Example
-        #   
+        #
         #   SAW::Converters::Amenities.convert(
         #     ["Broadband", "Parking (on site)"]
         #   )
@@ -33,7 +33,7 @@ module SAW
         # returned
         #
         # Arguments
-        # 
+        #
         #   * +facility_services+ [Array<String>] array with SAW amenities
         #
         # Example
@@ -55,7 +55,7 @@ module SAW
           additional_amenities.uniq
         end
 
-        # Returns a hash with mapping between SAW facility services and 
+        # Returns a hash with mapping between SAW facility services and
         # Roomorama API supported amenities
         #
         # Example

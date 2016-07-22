@@ -3,10 +3,10 @@ module SAW
   #
   # This class builds XML payloads for all SAW endpoints.
   class PayloadBuilder
-    
+
     # Need to fetch all available accomodations
     ALL_ACCOMODATIONS_TYPE_CODE = -1
-    
+
     def initialize(credentials)
       @credentials = credentials
     end
@@ -86,7 +86,7 @@ module SAW
         </request>
       }
     end
-    
+
     def propertydetail_request(property_id)
       %{
         <request>
@@ -108,8 +108,8 @@ module SAW
     private
     def build_username_and_password
       %{
-        <username>#{@credentials.username}</username> 
-        <password>#{@credentials.password}</password> 
+        <username>#{@credentials.username}</username>
+        <password>#{@credentials.password}</password>
       }
     end
 
@@ -117,7 +117,7 @@ module SAW
       %{
         <properties>
           <propertyid>#{property_id}</propertyid>
-        </properties> 
+        </properties>
       }
     end
   end

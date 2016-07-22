@@ -28,16 +28,16 @@ module SAW
       #
       # +params+ object includes:
       #
-      #   * +property_id+ 
-      #   * +unit_id+ 
+      #   * +property_id+
+      #   * +unit_id+
       #   * +check_in+
       #   * +check_out+
       #   * +guests+
       #   * +subtotal+
       #   * +customer+
-      # 
+      #
       # +customer+ object includes:
-      #   
+      #
       #   * +first_name+
       #   * +last_name+
       #   * +email+

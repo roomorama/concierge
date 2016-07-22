@@ -20,9 +20,9 @@ module Workers::Suppliers
         announce_error(message, result)
         return
       end
-      
+
       result = importer.fetch_properties_by_countries(countries)
-      
+
       if result.success?
         properties = result.value
       else
@@ -47,12 +47,12 @@ module Workers::Suppliers
 
       if result.success?
         detailed_property = result.value
-      
+
         roomorama_property = ::SAW::Mappers::RoomoramaProperty.build(
           property,
           detailed_property
         )
-        
+
         Result.new(roomorama_property)
       else
         message = "Failed to perform the `#fetch_detailed_property` operation"

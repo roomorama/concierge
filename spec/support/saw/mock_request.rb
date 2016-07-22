@@ -10,7 +10,7 @@ module Support
         stub_data = read_fixture("saw/bad_xml.xml")
         stub_call(:post, endpoint_for(endpoint)) { [200, {}, stub_data] }
       end
-      
+
       def mock_timeout_error(endpoint)
         stub_call(:post, endpoint_for(endpoint)) do
           raise Faraday::TimeoutError

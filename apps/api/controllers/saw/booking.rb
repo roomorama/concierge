@@ -11,12 +11,12 @@ module API::Controllers::SAW
 
     params API::Controllers::Params::MultiUnitBooking
 
-    # Make property booking request 
+    # Make property booking request
     #
     # Usage
     #
     #   It returns a +Reservation+ object in both success and fail cases:
-    #   
+    #
     #   API::Controllers::SAW::Booking.create_booking(selected_params)
     #   => Reservation(..)
     def create_booking(params)

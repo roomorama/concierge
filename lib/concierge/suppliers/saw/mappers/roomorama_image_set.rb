@@ -3,7 +3,7 @@ module SAW
     # +SAW::Mappers::RoomoramaImageSet+
     #
     # This class is responsible for building an array of images for the
-    # property. 
+    # property.
     #
     # Array of images includes +Roomorama::Image+ objects
     class RoomoramaImageSet
@@ -18,10 +18,10 @@ module SAW
       # Returns [Array<Roomorama::Image] array of images
       def self.build(hash, url_rewrite)
         images = hash.get("image_gallery.image")
-        
+
         return [] unless images
-        
-        Array(images).map do |h| 
+
+        Array(images).map do |h|
           safe_hash = Concierge::SafeAccessHash.new(h)
           build_image(safe_hash, url_rewrite)
         end
@@ -38,7 +38,7 @@ module SAW
         image.caption = title
         image
       end
-      
+
       def self.prepare_url(url, url_rewrite)
         if url_rewrite
           Converters::URLRewriter.build(url)

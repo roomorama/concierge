@@ -6,7 +6,7 @@ RSpec.describe API::Controllers::SAW::Quote do
   include Support::HTTPStubbing
   include Support::Fixtures
   include Support::SAW::MockRequest
-  
+
   let(:params) do
     {
       property_id: 1,
@@ -16,11 +16,11 @@ RSpec.describe API::Controllers::SAW::Quote do
       guests: 2
     }
   end
-  
+
   it_behaves_like "performing parameter validations", controller_generator: -> { described_class.new } do
     let(:valid_params) { params }
   end
-  
+
   it_behaves_like "external error reporting" do
     let(:supplier_name) { "SAW" }
 
@@ -31,12 +31,12 @@ RSpec.describe API::Controllers::SAW::Quote do
   end
 
   let(:controller) { described_class.new }
-  
+
   it "performs successful request returning Quotation object" do
     mock_request(:propertyrates, :success)
 
     result = controller.quote_price(params)
-    
+
     expect(result.success?).to be true
     expect(result).to be_kind_of(Result)
     expect(result.value).not_to be nil
@@ -47,12 +47,12 @@ RSpec.describe API::Controllers::SAW::Quote do
     expect(quotation.currency).to eq('EUR')
     expect(quotation.available).to be true
   end
-  
+
   it "returns result object with not-available quotation" do
     mock_request(:propertyrates, :not_available_unit)
 
     result = controller.quote_price(params)
-    
+
     expect(result.success?).to be true
     expect(result).to be_kind_of(Result)
     expect(result.value).not_to be nil
@@ -63,13 +63,13 @@ RSpec.describe API::Controllers::SAW::Quote do
     expect(quotation.currency).to eq('EUR')
     expect(quotation.available).to be false
   end
-      
+
   context "when property is on request only" do
     it "returns a quotation with an appropriate error" do
       mock_request(:propertyrates, :request_only)
 
       result = controller.quote_price(params)
-      
+
       expect(result.success?).to be false
       expect(result).to be_kind_of(Result)
       expect(result.value).to be nil
@@ -79,9 +79,9 @@ RSpec.describe API::Controllers::SAW::Quote do
   context "when given wrong currency" do
     it "returns a quotation with an appropriate error" do
       mock_request(:propertyrates, :currency_error)
-      
+
       result = controller.quote_price(params)
-      
+
       expect(result.success?).to be false
       expect(result).to be_kind_of(Result)
       expect(result.value).to be nil
@@ -93,7 +93,7 @@ RSpec.describe API::Controllers::SAW::Quote do
       mock_request(:propertyrates, :rates_not_available)
 
       result = controller.quote_price(params)
-      
+
       expect(result.success?).to be false
       expect(result).to be_kind_of(Result)
       expect(result.value).to be nil
@@ -105,7 +105,7 @@ RSpec.describe API::Controllers::SAW::Quote do
       mock_bad_xml_request(:propertyrates)
 
       result = controller.quote_price(params)
-      
+
       expect(result.success?).to be false
       expect(result).to be_kind_of(Result)
       expect(result.value).to be nil
@@ -127,7 +127,7 @@ RSpec.describe API::Controllers::SAW::Quote do
       expect(quotation.total).to eq(72.25)
       expect(quotation.currency).to eq('EUR')
       expect(quotation.available).to be true
-      
+
       params[:unit_id] = "9734"
       result = controller.quote_price(params)
       expect(result.success?).to be true

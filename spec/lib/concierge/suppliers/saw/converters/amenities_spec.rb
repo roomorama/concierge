@@ -36,14 +36,14 @@ module SAW
         amenities = described_class.convert(saw_services)
         expect(amenities).to eq(["internet", "parking"])
       end
-      
+
       it "removes duplicates if there are two saw services with the same name" do
         saw_services = ["Broadband", "Broadband", "Parking (on site)"]
 
         amenities = described_class.convert(saw_services)
         expect(amenities).to eq(["internet", "parking"])
       end
-      
+
       it "removes duplicates if there are saw services with the same match" do
         saw_services = ["WIFI Chargeable", "WIFI Free of Charge", "Parking (on site)"]
 
@@ -59,7 +59,7 @@ module SAW
         amenities = described_class.select_not_supported_amenities(services)
         expect(amenities).to eq([])
       end
-      
+
       it "return [] if all given amenitites has matches to Roomorama API" do
         services = ["WIFI Chargeable", "WIFI Free of Charge", "Parking (on site)"]
 
@@ -73,7 +73,7 @@ module SAW
         amenities = described_class.select_not_supported_amenities(services)
         expect(amenities).to eq(["Foo", "Bar"])
       end
-      
+
       it "removes duplicate facility services" do
         services = ["WIFI Chargeable", "Foo", "Foo"]
 

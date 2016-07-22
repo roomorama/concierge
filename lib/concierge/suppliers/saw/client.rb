@@ -15,7 +15,7 @@ module SAW
 
     # Quote SAW properties prices
     # If an error happens in any step in the process of getting a response back
-    # from SAW, a result object with error is returned  
+    # from SAW, a result object with error is returned
     #
     # Usage
     #
@@ -36,7 +36,7 @@ module SAW
     # SAW properties booking.
     #
     # If an error happens in any step in the process of getting a response back
-    # from SAW, a result object with error is returned  
+    # from SAW, a result object with error is returned
     #
     # Usage
     #

@@ -6,10 +6,10 @@ module SAW
   # `SAW::Importer` returns properties and countries.
   # There are corresponsing PORO-entities which describe these domain models.
   #
-  # A `SAW::Entities::DetailedProperty` object is different from the 
-  # `SAW::Entities::BasicProperty` object and we can't say that one of them is 
+  # A `SAW::Entities::DetailedProperty` object is different from the
+  # `SAW::Entities::BasicProperty` object and we can't say that one of them is
   # a full version of the property and the second one is a light version
-  # because there are some attributes which present in `BasicProperty` but 
+  # because there are some attributes which present in `BasicProperty` but
   # missed in `DetailedProperty` and vise versa.
   #
   # Usage
@@ -62,9 +62,9 @@ module SAW
     # when operation succeeds
     # Returns a +Result+ with +Result::Error+ when operation fails
     def fetch_properties_by_countries(countries)
-      properties = countries.map do |country| 
+      properties = countries.map do |country|
         result = fetch_properties_by_country(country)
-        
+
         return result unless result.success?
 
         result.value

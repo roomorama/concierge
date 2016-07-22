@@ -10,7 +10,7 @@ module SAW
 
           if valid_result?(result_hash)
             reservation_id = result_hash.get("response.booking_ref_number")
-            
+
             Result.new(reservation_id)
           else
             error_result(result_hash)
