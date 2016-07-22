@@ -44,7 +44,7 @@ module Ciirus
     # Ciirus, a generic error message is sent back to the caller, and the failure
     # is logged.
     def cancel(params)
-      Ciirus::Commands::Cancel.new(credentials).call(params[:reservation_id])
+      Ciirus::Commands::Cancel.new(credentials).call(params[:reference_number])
     end
 
     private
