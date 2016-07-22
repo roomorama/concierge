@@ -6,15 +6,15 @@ RSpec.describe API::Controllers::Ciirus::Cancel do
   it_behaves_like 'cancel action' do
     let(:success_cases) do
       [
-        { params: {reservation_id: '5486789'}, cancelled_reservation_id: '5486789' },
-        { params: {reservation_id: '2154254'}, cancelled_reservation_id: '2154254' },
+        { params: {reference_number: '5486789'}, cancelled_reference_number: '5486789' },
+        { params: {reference_number: '2154254'}, cancelled_reference_number: '2154254' },
       ]
     end
 
     let(:error_cases) do
       [
-        { params: {reservation_id: '658794'}, error: {'cancellation' => 'Could not cancel with remote supplier'} },
-        { params: {reservation_id: '245784'}, error: {'cancellation' => 'Already cancelled'} }
+        { params: {reference_number: '658794'}, error: {'cancellation' => 'Could not cancel with remote supplier'} },
+        { params: {reference_number: '245784'}, error: {'cancellation' => 'Already cancelled'} }
       ]
     end
   end
@@ -23,14 +23,14 @@ RSpec.describe API::Controllers::Ciirus::Cancel do
     allow_any_instance_of(Ciirus::Client).to receive(:cancel) do |instance, par|
       result = nil
       error_cases.each do |kase|
-        if par.reservation_id == kase[:params][:reservation_id]
+        if par.reference_number == kase[:params][:reference_number]
           result = Result.error(:already_cancelled, kase[:error])
           break
         end
       end
       success_cases.each do |kase|
-        if par.reservation_id == kase[:params][:reservation_id]
-          result = Result.new(kase[:cancelled_reservation_id])
+        if par.reference_number == kase[:params][:reference_number]
+          result = Result.new(kase[:cancelled_reference_number])
           break
         end
       end
