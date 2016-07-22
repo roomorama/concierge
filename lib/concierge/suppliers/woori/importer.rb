@@ -24,10 +24,5 @@ module Woori
       properties_fetcher = Commands::UnitsFetcher.new(credentials)
       properties_fetcher.call(property_id)
     end
-    
-    def fetch_all_units(updated_at, limit, offset)
-      properties_fetcher = Commands::UnitsFetcher.new(credentials)
-      properties_fetcher.call(updated_at, limit, offset)
-    end
   end
 end
