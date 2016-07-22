@@ -20,6 +20,9 @@ module Poplidays
 
       CACHE_PREFIX = 'poplidays'
 
+      # Http timeout in seconds
+      DEFAULT_TIMEOUT = 15
+
       # Poplidays support XML and JSON responses, the former being the default.
       # Therefore, every API call need to explicitly indicate that a JSON
       # response is preferred.
@@ -88,11 +91,15 @@ module Poplidays
         raise NotImplementedError
       end
 
+      def timeout
+        DEFAULT_TIMEOUT
+      end
+
       private
 
       def client
         url = "#{protocol}://#{URL}"
-        @client ||= Concierge::HTTPClient.new(url, options = {timeout: 180})
+        @client ||= Concierge::HTTPClient.new(url, options = {timeout: timeout})
       end
 
       def escape_params(params)
