@@ -2,7 +2,7 @@ module SAW
   module Mappers
     # +SAW::Mappers::BasicProperty+
     #
-    # This class is responsible for building a +SAW::Entities::BasicProperty+ 
+    # This class is responsible for building a +SAW::Entities::BasicProperty+
     # object from the hash which was fetched from the SAW API.
     class BasicProperty
       ALLOWED_FIELDS = [
@@ -33,7 +33,7 @@ module SAW
           add_multi_unit_flag!(new_hash)
           add_room_type!(new_hash)
           keep_only_needed_fields!(new_hash)
-          
+
           safe_hash = Concierge::SafeAccessHash.new(new_hash)
           Entities::BasicProperty.new(safe_hash)
         end
@@ -47,7 +47,7 @@ module SAW
         def copy_internal_id!(attrs, hash)
           hash[:internal_id] = attrs.get("@id").to_i
         end
-        
+
         def copy_title!(attrs, hash)
           hash[:title] = attrs.get("name")
         end
@@ -84,7 +84,7 @@ module SAW
         def add_multi_unit_flag!(hash)
           hash[:multi_unit] = true
         end
-        
+
         def add_country_code!(hash, country_name)
           hash[:country_code] = Converters::CountryCode.code_by_name(
             country_name

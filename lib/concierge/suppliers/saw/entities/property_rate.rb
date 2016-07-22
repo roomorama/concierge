@@ -2,7 +2,7 @@ module SAW
   module Entities
     # +SAW::Entities::PropertyRate+
     #
-    # This entity represents an object with available rates for property 
+    # This entity represents an object with available rates for property
     # units: entity includes +units+ array which has unit rates and the
     # currency used for the current property
     #
@@ -21,9 +21,9 @@ module SAW
       # Find unit by +id+
       #
       # Arguments
-      #   * +id+ 
+      #   * +id+
       #
-      # Returns [SAW::Entities::UnitRate] 
+      # Returns [SAW::Entities::UnitRate]
       def find_unit(id)
         units.detect { |u| u.id == id }
       end

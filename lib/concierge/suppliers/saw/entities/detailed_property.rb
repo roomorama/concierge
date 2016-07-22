@@ -5,7 +5,7 @@ module SAW
     # This entity corresponds to a detailed property that was fetched from the
     # SAW API.
     #
-    # +SAW::Entities::DetailedProperty+ is different from 
+    # +SAW::Entities::DetailedProperty+ is different from
     # +SAW::Entities::BasicProperty+: some of property attributes are different
     #
     # Attributes

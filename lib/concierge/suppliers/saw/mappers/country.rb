@@ -2,7 +2,7 @@ module SAW
   module Mappers
     # +SAW::Mappers::Country+
     #
-    # This class is responsible for building a +SAW::Entities::Country+ 
+    # This class is responsible for building a +SAW::Entities::Country+
     # object from the hash which was fetched from the SAW API.
     class Country
       class << self

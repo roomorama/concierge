@@ -2,7 +2,7 @@ module SAW
   module Mappers
     # +SAW::Mappers::DetailedProperty+
     #
-    # This class is responsible for building a 
+    # This class is responsible for building a
     # +SAW::Entities::DetailedProperty+ object from the hash which was fetched
     # from the SAW API.
     class DetailedProperty
@@ -50,7 +50,7 @@ module SAW
         def copy_internal_id!(attrs, hash)
           hash[:internal_id] = attrs.get("@id").to_i
         end
-        
+
         def copy_title!(attrs, hash)
           hash[:title] = attrs.get("name")
         end
@@ -74,22 +74,22 @@ module SAW
           hash[:images] = Mappers::RoomoramaImageSet.build(
             attrs,
             image_url_rewrite
-          ) 
+          )
         end
 
         def copy_supported_amenities!(attrs, hash)
           hash[:amenities] = convert_amenities(attrs)
         end
-        
+
         def copy_not_supported_amenities!(attrs, hash)
-          hash[:not_supported_amenities] = 
+          hash[:not_supported_amenities] =
             convert_not_supported_amenities(attrs)
         end
 
         def copy_bed_configurations!(attrs, hash)
           hash[:bed_configurations] = attrs.get("beddingconfigurations")
         end
-        
+
         def copy_property_accomodations!(attrs, hash)
           hash[:property_accommodations] = attrs.get("property_accommodations")
         end
@@ -104,27 +104,27 @@ module SAW
 
         def convert_amenities(hash)
           saw_amenities = fetch_saw_amenities(hash)
-          
+
           Converters::Amenities.convert(saw_amenities)
         end
 
         def convert_not_supported_amenities(hash)
           saw_amenities = fetch_saw_amenities(hash)
-          
+
           Converters::Amenities.select_not_supported_amenities(saw_amenities)
         end
 
         def fetch_saw_amenities(hash)
           facility_services = hash.get("facility_services")
-          
+
           if facility_services
             saw_amenities = Array(facility_services.get("facility_service"))
           else
             saw_amenities = []
           end
-          
+
           if hash.get('flag_breakfast_included') == 'Y'
-            saw_amenities << 'Breakfast' 
+            saw_amenities << 'Breakfast'
           end
 
           saw_amenities

@@ -2,7 +2,7 @@ module SAW
   module Commands
     # +SAW::Commands::DetailedPropertyFetcher+
     #
-    # This class is responsible for wrapping the logic related to fetching 
+    # This class is responsible for wrapping the logic related to fetching
     # detailed versions of properties from SAW, parsing the response, and
     # building the +Result+ object
     #
@@ -14,7 +14,7 @@ module SAW
       # Calls the SAW API method usung the HTTP client.
       #
       # Arguments
-      # 
+      #
       #   * +property_id+ [String] id of the property to fetch
       #
       # The +call+ method returns a +Result+ object that, when successful,
@@ -31,7 +31,7 @@ module SAW
             property = build_property(result_hash)
             Result.new(property)
           else
-            error_result(result_hash) 
+            error_result(result_hash)
           end
         else
           result
@@ -41,7 +41,7 @@ module SAW
       private
       def build_property(result_hash)
         property_hash = result_hash.get("response.property")
-      
+
         SAW::Mappers::DetailedProperty.build(
           property_hash,
           image_url_rewrite: credentials.url_rewrite

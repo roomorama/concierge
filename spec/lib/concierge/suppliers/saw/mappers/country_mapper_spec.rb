@@ -10,7 +10,7 @@ module SAW
     end
 
     it "builds country entity from hash with proper attributes" do
-      country = described_class.build(hash) 
+      country = described_class.build(hash)
       expect(country).to be_kind_of(SAW::Entities::Country)
       expect(country.id).to eq(1450)
       expect(country.name).to eq("New Country")

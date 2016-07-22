@@ -29,15 +29,15 @@ module SAW
       def http
         @http_client ||= Concierge::HTTPClient.new(credentials.url, timeout: 20)
       end
-    
+
       def content_type
         { "Content-Type" => "application/xml" }
       end
-    
+
       def valid_result?(hash)
         if hash.get("response")
           return true if hash.get("response.errors").nil?
-          
+
           code = hash.get("response.errors.error.code")
           VALID_RESULT_ERROR_CODES.include?(code)
         else

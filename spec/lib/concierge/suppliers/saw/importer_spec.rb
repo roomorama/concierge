@@ -18,12 +18,12 @@ RSpec.describe SAW::Importer do
       expect(countries_result.value).to all(be_kind_of(SAW::Entities::Country))
     end
   end
-  
+
   describe "fetch_properties_by_country" do
     it "returns a result with empty array if there is no results" do
       mock_request(:country, :one)
       mock_request(:propertysearch, :empty)
-    
+
       countries_result = subject.fetch_countries
       current_country = countries_result.value.first
 
@@ -31,11 +31,11 @@ RSpec.describe SAW::Importer do
       expect(properties_result.success?).to be true
       expect(properties_result.value).to eq([])
     end
-    
+
     it "returns a result with an error if there is no results" do
       mock_request(:country, :one)
       mock_request(:propertysearch, :error)
-    
+
       countries_result = subject.fetch_countries
       current_country = countries_result.value.first
 
@@ -49,7 +49,7 @@ RSpec.describe SAW::Importer do
     it "returns a result with an empty array when all requests are empty" do
       mock_request(:country, :multiple)
       mock_request(:propertysearch, :empty)
-    
+
       countries_result = subject.fetch_countries
       properties_result = subject.fetch_properties_by_countries(
         countries_result.value
@@ -58,11 +58,11 @@ RSpec.describe SAW::Importer do
       expect(properties_result).to be_success
       expect(properties_result.value).to eq([])
     end
-    
+
     it "returns a result with an error when all at least on request are failed" do
       mock_request(:country, :multiple)
       mock_request(:propertysearch, :error)
-    
+
       countries_result = subject.fetch_countries
       properties_result = subject.fetch_properties_by_countries(
         countries_result.value
@@ -78,7 +78,7 @@ RSpec.describe SAW::Importer do
       countries_result = subject.fetch_countries
       countries = countries_result.value
       properties_result = subject.fetch_properties_by_countries(countries)
-      
+
       expect(properties_result).to be_success
       expect(properties_result.value.size).to eq(20)
       expect(properties_result.value).to all(
@@ -86,13 +86,13 @@ RSpec.describe SAW::Importer do
       )
     end
   end
-  
+
   describe "fetch_detailed_property" do
     let(:property_id) { 'fake' }
 
     it "returns a result with detailed property" do
       mock_request(:propertydetail, :success)
-    
+
       property_result = subject.fetch_detailed_property(property_id)
       property = property_result.value
 

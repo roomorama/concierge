@@ -29,7 +29,7 @@ module SAW
         property.weekly_rate = basic_property.weekly_rate
         property.monthly_rate = basic_property.monthly_rate
         property.multi_unit! if basic_property.multi_unit?
-        
+
         property.description = description_with_additional_amenities(
           detailed_property.description,
           detailed_property.not_supported_amenities
@@ -38,7 +38,7 @@ module SAW
         property.neighborhood = detailed_property.neighborhood
         property.address = detailed_property.address
         property.amenities = detailed_property.amenities
-        
+
         property.default_to_available = true
         property.instant_booking!
 

@@ -29,7 +29,7 @@ RSpec.describe Workers::Suppliers::SAW do
       expect(last_context_event[:backtrace]).to be_kind_of(Array)
       expect(last_context_event[:backtrace].any?).to be true
     end
-    
+
     it "fails when fetching properties by countries returns an error" do
       mock_request(:country, :one)
       mock_request(:propertysearch, :error)
@@ -61,7 +61,7 @@ RSpec.describe Workers::Suppliers::SAW do
       expect(result).to be_kind_of(SyncProcess)
       expect(result.to_h[:successful]).to be true
     end
-    
+
     it "fails when there is an error while fetching property details" do
       mock_request(:propertydetail, :error)
 
@@ -80,7 +80,7 @@ RSpec.describe Workers::Suppliers::SAW do
       expect(last_context_event[:backtrace]).to be_kind_of(Array)
       expect(last_context_event[:backtrace].any?).to be true
     end
-   
+
     it "returns built property" do
       mock_request(:propertydetail, :success)
 

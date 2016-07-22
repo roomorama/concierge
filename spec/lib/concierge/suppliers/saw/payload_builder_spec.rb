@@ -3,7 +3,7 @@ require "spec_helper"
 RSpec.describe SAW::PayloadBuilder do
   let(:credentials) { Concierge::Credentials.for("SAW") }
   let(:payload_builder) { described_class.new(credentials) }
-  
+
   describe '#build_compute_pricing' do
     let(:payload) do
       {
@@ -22,7 +22,7 @@ RSpec.describe SAW::PayloadBuilder do
 
       required_keys.each do |key|
         wrong_payload = payload.dup.delete(key)
-        
+
         expect {
           payload_builder.build_compute_pricing(wrong_payload)
         }.to raise_error(ArgumentError)
@@ -42,7 +42,7 @@ RSpec.describe SAW::PayloadBuilder do
 
     it 'sets property request parameters' do
       response = to_hash(payload_builder.build_compute_pricing(payload))
-      
+
       response_attrs = response.fetch("request")
 
       property_id   = response_attrs.fetch("propertyid")
@@ -56,7 +56,7 @@ RSpec.describe SAW::PayloadBuilder do
 
     it 'sets apartment type parameters' do
       response = to_hash(payload_builder.build_compute_pricing(payload))
-      
+
       response_attrs = response.fetch("request")
       accommodation_type = response_attrs.fetch("apartments")
                                          .fetch("accommodation_type")
@@ -64,10 +64,10 @@ RSpec.describe SAW::PayloadBuilder do
       number_of_guests = accommodation_type.fetch("number_of_guests")
       expect(number_of_guests).to eq(payload[:num_guests].to_s)
     end
-    
+
     it "sets unit type id" do
       response = to_hash(payload_builder.build_compute_pricing(payload))
-      
+
       response_attrs = response.fetch("request")
       accommodation_type = response_attrs.fetch("apartments")
                                          .fetch("accommodation_type")
@@ -79,7 +79,7 @@ RSpec.describe SAW::PayloadBuilder do
     it "sets unit type to ALL when it's not provided" do
       payload[:unit_id] = nil
       response = to_hash(payload_builder.build_compute_pricing(payload))
-      
+
       response_attrs = response.fetch("request")
       accommodation_type = response_attrs.fetch("apartments")
                                          .fetch("accommodation_type")
@@ -88,7 +88,7 @@ RSpec.describe SAW::PayloadBuilder do
       expect(id).to eq(payload_builder.class::ALL_ACCOMODATIONS_TYPE_CODE.to_s)
     end
   end
-  
+
   describe '#build_booking_request' do
     let(:payload) do
       {
@@ -106,7 +106,7 @@ RSpec.describe SAW::PayloadBuilder do
         }
       }
     end
-    
+
     it 'embedds username and password to request' do
       response = to_hash(payload_builder.build_booking_request(payload))
 
@@ -174,7 +174,7 @@ RSpec.describe SAW::PayloadBuilder do
       expect(last_name).to eq(payload.fetch(:user).fetch(:last_name))
     end
   end
-  
+
   describe '#build_countries_request' do
     it 'embedds username and password to request' do
       response = to_hash(payload_builder.build_countries_request)
@@ -187,7 +187,7 @@ RSpec.describe SAW::PayloadBuilder do
       expect(password).to eq(password)
     end
   end
-  
+
   describe '#propertysearch_request' do
     let(:payload) do
       {
@@ -206,7 +206,7 @@ RSpec.describe SAW::PayloadBuilder do
       expect(username).to eq(username)
       expect(password).to eq(password)
     end
-    
+
     it "embedds country details" do
       response = to_hash(payload_builder.propertysearch_request(payload))
 
@@ -216,15 +216,15 @@ RSpec.describe SAW::PayloadBuilder do
       expect(country_id).to eq(payload.fetch(:country))
     end
 
-    it "embedds property details" do 
+    it "embedds property details" do
       response = to_hash(payload_builder.propertysearch_request(payload))
 
       response_attrs = response.fetch("request")
       properties = response_attrs.fetch("properties")
-      
+
       expect(properties).to eq({ "propertyid" => "2323" })
     end
-    
+
     it "does not embedds property details if property_id is not provided" do
       payload[:property_id] = nil
 
@@ -237,7 +237,7 @@ RSpec.describe SAW::PayloadBuilder do
       }.to raise_error(KeyError)
     end
   end
-  
+
   describe '#propertydetail_request' do
     let(:property_id) { "1222" }
 
@@ -265,18 +265,18 @@ RSpec.describe SAW::PayloadBuilder do
 
     it 'embedds username and password to request' do
       response = to_hash(payload_builder.build_cancel_request(reservation_id))
-      
+
       response_attrs = response.fetch("request")
       username = response_attrs.fetch("username")
       password = response_attrs.fetch("password")
-      
+
       expect(username).to eq(username)
       expect(password).to eq(password)
     end
-    
+
     it 'embedds reservation_id to request' do
       response = to_hash(payload_builder.build_cancel_request(reservation_id))
-      
+
       response_attrs = response.fetch("request")
       expect(response_attrs.fetch("booking_ref_number")).to eq(reservation_id)
     end

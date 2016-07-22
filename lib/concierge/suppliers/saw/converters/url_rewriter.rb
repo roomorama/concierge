@@ -3,7 +3,7 @@ module SAW
     # +SAW::Converters::URLRewriter+
     #
     # URLRewriter is needed because SAW images has wrong URLs on staging.
-    # SAW server doesn't redirect images from staging subdomain causing 
+    # SAW server doesn't redirect images from staging subdomain causing
     # us to getting 0-byte images
     class URLRewriter
       class << self
@@ -12,7 +12,7 @@ module SAW
         # serves all images as expected.
         #
         # Arguments
-        #   
+        #
         #   * +url+ [String] original url coming from SAW API
         #
         # Usage

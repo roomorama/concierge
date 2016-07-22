@@ -18,18 +18,18 @@ module SAW
     #   end
     class PriceFetcher < BaseFetcher
       # Calls the SAW API method using the HTTP client.
-      # 
+      #
       # Arguments
       #
       #   * +params+ [Concierge::SafeAccessHash] stay parameters
-      # 
+      #
       # Stay parameters are defined by the set of attributes from
       # +API::Controllers::Params::MultiUnitQuote+ params object.
       #
       # +params+ object includes:
       #
-      #   * +property_id+ 
-      #   * +unit_id+ 
+      #   * +property_id+
+      #   * +unit_id+
       #   * +check_in+
       #   * +check_out+
       #   * +guests+
@@ -46,7 +46,7 @@ module SAW
           if valid_result?(result_hash)
             property_rate = SAW::Mappers::PropertyRate.build(result_hash)
             quotation = SAW::Mappers::Quotation.build(params, property_rate)
-          
+
             Result.new(quotation)
           else
             error_result(result_hash)

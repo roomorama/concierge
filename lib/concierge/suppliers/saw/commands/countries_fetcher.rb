@@ -48,15 +48,15 @@ module SAW
       private
       def build_countries(countries_hash)
         countries = countries_hash.get("response.countries")
-      
+
         return [] unless countries
-        
+
         Array(countries.get("country")).map do |hash|
           safe_hash = Concierge::SafeAccessHash.new(hash)
           SAW::Mappers::Country.build(safe_hash)
         end
       end
-      
+
       def with_cache(key, freshness:)
         cache.fetch(key, freshness: freshness) { yield }
       end

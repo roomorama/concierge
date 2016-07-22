@@ -24,7 +24,7 @@ RSpec.describe SAW::Commands::CountriesFetcher do
       { id: "4", name: "France" },
     ])
   end
-  
+
   it "returns results when there is only one country" do
     mock_request(:country, :one)
 
@@ -37,23 +37,23 @@ RSpec.describe SAW::Commands::CountriesFetcher do
       { id: "1", name: "United States" }
     ])
   end
-      
+
   it "returns an empty array when there is no countries" do
     mock_request(:country, :empty)
 
     results = subject.call
     countries = results.value
-    
+
     expect(results.success?).to be true
     expect(countries.size).to eq(0)
   end
-      
+
   it "returns failure result when SAW API returns an error" do
     mock_request(:country, :error)
-    
+
     results = subject.call
     countries = results.value
-    
+
     expect(results.success?).to be false
     expect(results.error.code).to eq("9999")
     expect(last_context_event[:message]).to eq(
@@ -63,13 +63,13 @@ RSpec.describe SAW::Commands::CountriesFetcher do
     expect(last_context_event[:backtrace].any?).to be true
     expect(countries).to be_nil
   end
-  
+
   context "when response from the SAW api is not well-formed xml" do
     it "returns a result with an appropriate error" do
       mock_bad_xml_request(:country)
 
       result = subject.call
-    
+
       expect(result.success?).to be false
       expect(result.error.code).to eq(:unrecognised_response)
       expect(last_context_event[:message]).to eq(

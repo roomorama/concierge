@@ -16,7 +16,7 @@ RSpec.describe SAW::Commands::CountryPropertiesFetcher do
 
       result = subject.call(country)
       expect(result.success?).to be true
-      
+
       properties = result.value
       expect(properties).to eq([])
     end
@@ -36,13 +36,13 @@ RSpec.describe SAW::Commands::CountryPropertiesFetcher do
       expect(last_context_event[:backtrace].any?).to be true
     end
   end
-  
+
   context "when response from the SAW api is not well-formed xml" do
     it "returns a result with an appropriate error" do
       mock_bad_xml_request(:propertysearch)
 
       result = subject.call(country)
-    
+
       expect(result.success?).to be false
       expect(result.error.code).to eq(:unrecognised_response)
       expect(last_context_event[:message]).to eq(
@@ -52,7 +52,7 @@ RSpec.describe SAW::Commands::CountryPropertiesFetcher do
       expect(last_context_event[:backtrace].any?).to be true
     end
   end
-  
+
   context "when request fails due to timeout error" do
     it "returns a result with an appropriate error" do
       mock_timeout_error(:propertysearch)
@@ -83,19 +83,19 @@ RSpec.describe SAW::Commands::CountryPropertiesFetcher do
         be_an(SAW::Entities::BasicProperty)
       )
     end
-        
+
     it "sets internal id for properties" do
       internal_ids = properties.map(&:internal_id)
 
       expect(internal_ids).to eq([1787, 1757, 2721, 2893, 1766])
     end
-        
+
     it "sets room type for properties" do
       expect(properties).to all(
         have_attributes(type: 'apartment')
       )
     end
-    
+
     it "sets title for properties" do
       titles = properties.map(&:title)
 
@@ -109,7 +109,7 @@ RSpec.describe SAW::Commands::CountryPropertiesFetcher do
         ]
       )
     end
-        
+
     it "sets descriptions for properties" do
       descriptions = properties.map(&:description)
 
@@ -134,7 +134,7 @@ RSpec.describe SAW::Commands::CountryPropertiesFetcher do
         ["100.52724", "100.55612", "100.52692", "98.30736", "100.98747"]
       )
     end
-        
+
     it "sets city and neighborhood attrs for properties" do
       city_values = properties.map(&:city)
       neighborhood_values = properties.map(&:neighborhood)

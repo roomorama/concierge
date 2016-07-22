@@ -55,27 +55,27 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
       Concierge::SafeAccessHash.new(detailed_property_attributes)
     )
   end
-    
+
   it "returns roomorama property entity" do
     property = described_class.build(basic_property, detailed_property)
     expect(property).to be_a(Roomorama::Property)
   end
-    
+
   it "adds multi-unit flag" do
     property = described_class.build(basic_property, detailed_property)
     expect(property.multi_unit?).to eq(basic_property.multi_unit?)
   end
-  
+
   it "adds instant_booking flag" do
     property = described_class.build(basic_property, detailed_property)
     expect(property.instant_booking?).to eq(true)
   end
-  
+
   it "adds default_to_available flag" do
     property = described_class.build(basic_property, detailed_property)
     expect(property.default_to_available).to eq(true)
   end
-    
+
   it "adds to result property needed attributes from basic property" do
     property = described_class.build(basic_property, detailed_property)
 
@@ -97,7 +97,7 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
       expect(property.send(attr)).to eq(basic_property.send(attr))
     end
   end
-    
+
   it "adds to result property needed attributes from detailed property" do
     property = described_class.build(basic_property, detailed_property)
 
@@ -108,7 +108,7 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
       address
       amenities
     )
-    
+
     attributes.each do |attr|
       expect(property.send(attr)).to eq(detailed_property.send(attr))
     end
@@ -201,40 +201,40 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
       expect(property.units).to all(be_kind_of(Roomorama::Unit))
     end
   end
-  
+
   describe "changes description to include additional amenities" do
     it "adds additional amenities to description" do
       detailed_property_attributes[:not_supported_amenities] = ["foo", "bar"]
-      
+
       property = described_class.build(
         basic_property,
         detailed_property
       )
-      
+
       expect(property.description).to eq(
         "Description Detailed. Additional amenities: foo, bar"
       )
     end
-  
+
     it "adds only additional amenities to description when description is blank" do
       variations = ["", " ", nil]
 
       variations.each do |desc|
         detailed_property_attributes[:description] = desc
         detailed_property_attributes[:not_supported_amenities] = ["foo", "bar"]
-      
+
         property = described_class.build(
           basic_property,
           detailed_property
         )
-        
+
         expect(property.description).to eq("Additional amenities: foo, bar")
       end
     end
 
     it "doesn't add additional amenities to description when they are empty" do
       detailed_property_attributes[:not_supported_amenities] = []
-        
+
       property = described_class.build(
         basic_property,
         detailed_property
@@ -246,7 +246,7 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
     it "keeps description empty when there is no additional amenities and original description" do
       detailed_property_attributes[:description] = nil
       detailed_property_attributes[:not_supported_amenities] = []
-      
+
       property = described_class.build(
         basic_property,
         detailed_property

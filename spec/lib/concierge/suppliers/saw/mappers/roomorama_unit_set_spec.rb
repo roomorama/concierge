@@ -91,7 +91,7 @@ module SAW
         expect(created_unit.title).to eq(unit_info["property_accommodation_name"])
       end
     end
-    
+
     it "keeps units images empty if detailed_property has no images" do
       units = described_class.build(basic_property, detailed_property)
       expect(units.size).to eq(5)
@@ -103,7 +103,7 @@ module SAW
         expect(created_unit.images).to eq([])
       end
     end
-    
+
     it "copies images to unit if detailed_property has images" do
       detailed_property.images = images
 
@@ -175,21 +175,21 @@ module SAW
                 "@id"=>"198",
                 "accommodation_name"=>"2 Bedroom",
                 "property_accommodation"=> [
-                  { 
+                  {
                     "property_accommodation_name"=>"2 Bedroom Executive",
                     "@id"=>"9514"
-                  }, 
+                  },
                   {
-                    "property_accommodation_name"=>"2 Bedroom Premium", 
+                    "property_accommodation_name"=>"2 Bedroom Premium",
                     "@id"=>"10354"
                   }
                 ]
               },
               {
                 "@id"=>"374",
-                "accommodation_name"=>"3 Bedroom", 
+                "accommodation_name"=>"3 Bedroom",
                 "property_accommodation"=> {
-                  "property_accommodation_name"=>"3 Bedroom Premium", 
+                  "property_accommodation_name"=>"3 Bedroom Premium",
                   "@id"=>"9516"
                 }
               }
@@ -217,12 +217,12 @@ module SAW
         expect(units.size).to eq(5)
       end
     end
-    
+
     context "when there is only one unit in current accomodation" do
       let(:units_info) do
         {"property_accommodation_name"=>"1 Bedroom", "@id"=>"8368"}
       end
-      
+
       it "builds units" do
         units = described_class.build(basic_property, detailed_property)
         expect(units.size).to eq(1)
@@ -239,7 +239,7 @@ module SAW
               {
                 "bed_type_name"=>"Double Bed",
                 "@id"=>"13102"
-              }, 
+              },
               {
                 "bed_type_name"=>"Double & Double",
                 "@id"=>"13103"

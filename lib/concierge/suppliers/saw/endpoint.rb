@@ -1,7 +1,7 @@
 module SAW
   # +SAW::Endpoint+
   #
-  # This class provides mapping between internal endpoint names and 
+  # This class provides mapping between internal endpoint names and
   # corresponding SAW API urls.
   class Endpoint
     ENDPOINTS = {

@@ -2,8 +2,8 @@ module SAW
   module Commands
     # +SAW::Commands::CountryPropertiesFetcher+
     #
-    # This class is responsible for wrapping the logic related to fetching 
-    # properties from SAW, parsing the response, and building the +Result+ 
+    # This class is responsible for wrapping the logic related to fetching
+    # properties from SAW, parsing the response, and building the +Result+
     # object
     #
     # Usage
@@ -14,7 +14,7 @@ module SAW
       # Calls the SAW API method usung the HTTP client.
       #
       # Arguments
-      # 
+      #
       #   * +country+ [SAW:Entities::Country] country to return properties from
       #
       # The +call+ method returns a +Result+ object that, when successful,
@@ -31,7 +31,7 @@ module SAW
             properties = build_properties(result_hash, country)
             Result.new(properties)
           else
-            error_result(result_hash) 
+            error_result(result_hash)
           end
         else
           result

@@ -2,7 +2,7 @@ module SAW
   module Mappers
     # +SAW::Mappers::PropertyRate+
     #
-    # This class is responsible for building a +SAW::Entities::PropertyRate+ 
+    # This class is responsible for building a +SAW::Entities::PropertyRate+
     # object from the hash which was fetched from the SAW API.
     class PropertyRate
       class << self
@@ -26,7 +26,7 @@ module SAW
         def parse_currency(hash)
           hash.get("response.property.currency_code")
         end
-      
+
         def build_units(hash)
           units = hash.get(
             "response.property.apartments.accommodation_type.property_accommodation"

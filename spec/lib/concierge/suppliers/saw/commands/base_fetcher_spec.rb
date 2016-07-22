@@ -18,7 +18,7 @@ RSpec.describe SAW::Commands::BaseFetcher do
       validity = subject.valid_result?(response)
       expect(validity).to be true
     end
-    
+
     it "returns false if there is existing error in the given response" do
       response = Concierge::SafeAccessHash.new(
         response: { errors: { code: '1000' }}
@@ -27,7 +27,7 @@ RSpec.describe SAW::Commands::BaseFetcher do
       validity = subject.valid_result?(response)
       expect(validity).to be false
     end
-   
+
     it "returns true if there is the error from white-listed codes" do
       response = Concierge::SafeAccessHash.new(
         response: { errors: { error: { code: '1007' }}}

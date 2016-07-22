@@ -3,7 +3,7 @@ module SAW
     # +SAW::Mappers::RoomoramaUnitSet+
     #
     # This class is responsible for building an array of units for the
-    # property. 
+    # property.
     #
     # Array of units includes +Roomorama::Unit+ objects
     class RoomoramaUnitSet
@@ -15,7 +15,7 @@ module SAW
       #   * +detailed_property+ [SAW::Entities::DetailedProperty]
       #
       # +detailed_property+ includes two attributes-hashes:
-      #   
+      #
       #   * +bed_configurations+ [Concierge::SafeAccessHash]
       #   * +property_accommodations+ [Concierge::SafeAccessHash]
       #
@@ -23,7 +23,7 @@ module SAW
       def self.build(basic_property, detailed_property)
         bed_configurations = Array(detailed_property.bed_configurations)
         property_accommodations = fetch_property_accommodations(detailed_property.property_accommodations)
-          
+
         property_accommodations.map do |hash|
           units = Array(safe_hash(hash).get("property_accommodation"))
           units.map do |unit_hash|
@@ -43,7 +43,7 @@ module SAW
         u.weekly_rate = basic_property.weekly_rate
         u.monthly_rate = basic_property.monthly_rate
         u.number_of_units = 1
-        
+
         detailed_property.images.each { |image| u.add_image(image) }
 
         bed_configuration = find_bed_types(bed_configurations, unit.get("@id"))
@@ -77,7 +77,7 @@ module SAW
           nil
         end
       end
-      
+
       def self.safe_hash(hash)
         Concierge::SafeAccessHash.new(hash)
       end

@@ -13,19 +13,19 @@ RSpec.describe SAW::Commands::DetailedPropertyFetcher do
   it "returns detailed property object" do
     mock_request(:propertydetail, :success)
 
-    result = subject.call(property_id) 
+    result = subject.call(property_id)
     expect(result.success?).to be true
-    
+
     detailed_property = result.value
     expect(detailed_property).to be_kind_of(SAW::Entities::DetailedProperty)
   end
-  
+
   it "returns result with error after error" do
     mock_request(:propertydetail, :error)
 
-    result = subject.call(property_id) 
+    result = subject.call(property_id)
     expect(result.success?).to be false
-      
+
     expect(result.error.code).to eq("0000")
     expect(last_context_event[:message]).to eq(
       "Response indicating the error `0000`, and description `Strange Error`"
@@ -33,13 +33,13 @@ RSpec.describe SAW::Commands::DetailedPropertyFetcher do
     expect(last_context_event[:backtrace]).to be_kind_of(Array)
     expect(last_context_event[:backtrace].any?).to be true
   end
-  
+
   context "when response from the SAW api is not well-formed xml" do
     it "returns a result with an appropriate error" do
       mock_bad_xml_request(:propertydetail)
 
-      result = subject.call(property_id) 
-    
+      result = subject.call(property_id)
+
       expect(result.success?).to be false
       expect(result.error.code).to eq(:unrecognised_response)
       expect(last_context_event[:message]).to eq(
@@ -49,7 +49,7 @@ RSpec.describe SAW::Commands::DetailedPropertyFetcher do
       expect(last_context_event[:backtrace].any?).to be true
     end
   end
-  
+
   context "when request fails due to timeout error" do
     it "returns a result with an appropriate error" do
       mock_timeout_error(:propertydetail)
