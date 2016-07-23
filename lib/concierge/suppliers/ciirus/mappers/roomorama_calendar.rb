@@ -34,19 +34,27 @@ module Ciirus
         today = Date.today
         rates.each do |rate|
 
-          next if rate.daily_rate == 0
-
           (rate.from_date..rate.to_date).each do |date|
 
             next if date <= today
-            available = !date_reserved?(date, reservations_index)
-            entries << Roomorama::Calendar::Entry.new(
-              date:             date.to_s,
-              available:        available,
-              nightly_rate:     rate.daily_rate,
-              checkin_allowed:  available,
-              minimum_stay:     rate.min_nights_stay
-            )
+
+            if rate.daily_rate == 0
+              entry = Roomorama::Calendar::Entry.new(
+                date:             date.to_s,
+                available:        false,
+                nightly_rate:     0
+              )
+            else
+              available = !date_reserved?(date, reservations_index)
+              entry = Roomorama::Calendar::Entry.new(
+                date:             date.to_s,
+                available:        available,
+                nightly_rate:     rate.daily_rate,
+                checkin_allowed:  available,
+                minimum_stay:     rate.min_nights_stay
+              )
+            end
+            entries << entry
           end
         end
         entries
