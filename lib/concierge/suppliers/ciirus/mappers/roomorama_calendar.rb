@@ -1,6 +1,6 @@
 module Ciirus
   module Mappers
-    # +Ciirus::Mappers::RoomoramaProperty+
+    # +Ciirus::Mappers::RoomoramaCalendar+
     #
     # This class is responsible for building a +Roomorama::Calendar+ object
     # from data getting from Ciirus API.
