@@ -72,20 +72,23 @@ RSpec.describe Ciirus::Mappers::RoomoramaCalendar do
       expect(calendar.entries).not_to be_empty
     end
 
-    it 'returns calendar without dates with 0 price' do
-      invalid_entries = calendar.entries.select { |e| e.date >= Date.new(2014, 10, 17)}
+    it 'returns unavailable entries for rates with 0 price' do
+      entries = calendar.entries.select { |e| e.date >= Date.new(2014, 10, 17) }
 
-      expect(invalid_entries).to be_empty
+      expect(entries).not_to be_empty
+      entries.each do |e|
+        expect(e.available).to be_falsey
+      end
     end
 
     it 'returns calendar only after today' do
-      invalid_entries = calendar.entries.select { |e| e.date <= Date.today}
+      invalid_entries = calendar.entries.select { |e| e.date <= Date.today }
 
       expect(invalid_entries).to be_empty
     end
 
-    it 'does returns reserved days as not available' do
-      entry = calendar.entries.detect { |e| e.date == Date.new(2014, 8, 28)}
+    it 'returns reserved days as not available' do
+      entry = calendar.entries.detect { |e| e.date == Date.new(2014, 8, 28) }
 
       expect(entry.nightly_rate).to eq(141.43)
       expect(entry.available).to be_falsey
@@ -93,21 +96,21 @@ RSpec.describe Ciirus::Mappers::RoomoramaCalendar do
     end
 
     it 'does not allow to arrive in day of arrival' do
-      entry = calendar.entries.detect { |e| e.date == Date.new(2014, 9, 11)}
+      entry = calendar.entries.detect { |e| e.date == Date.new(2014, 9, 11) }
 
       expect(entry.available).to be_falsey
       expect(entry.checkin_allowed).to be_falsey
     end
 
     it 'allows to arrive in day of departure' do
-      entry = calendar.entries.detect { |e| e.date == Date.new(2014, 10, 16)}
+      entry = calendar.entries.detect { |e| e.date == Date.new(2014, 10, 16) }
 
       expect(entry.available).to be_truthy
       expect(entry.checkin_allowed).to be_truthy
     end
 
     it 'returns filled entries' do
-      entry = calendar.entries.detect { |e| e.date == Date.new(2014, 9, 1)}
+      entry = calendar.entries.detect { |e| e.date == Date.new(2014, 9, 1) }
 
       expect(entry.nightly_rate).to eq(141.43)
       expect(entry.available).to be_truthy
