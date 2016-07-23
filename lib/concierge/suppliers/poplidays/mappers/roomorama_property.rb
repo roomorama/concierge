@@ -165,7 +165,7 @@ module Poplidays
         roomorama_property.nightly_rate = daily_rate
         roomorama_property.weekly_rate = (daily_rate * 7).round(2)
         roomorama_property.monthly_rate = (daily_rate * 30).round(2)
-        roomorama_property.minimum_stay = min_stay || details['standing']
+        roomorama_property.minimum_stay = min_stay
       end
     end
   end
