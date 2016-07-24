@@ -9,7 +9,8 @@ module SAW
       ALLOWED_FIELDS = [
         :internal_id, :type, :title, :description, :lat, :lon, :city,
         :neighborhood, :address, :country, :amenities, :multi_unit, :images,
-        :not_supported_amenities, :bed_configurations, :property_accommodations
+        :postal_code, :not_supported_amenities, :bed_configurations,
+        :property_accommodations
       ]
 
       class << self
@@ -68,6 +69,7 @@ module SAW
           hash[:country]      = attrs.get("country")
           hash[:city]         = attrs.get("city_region")
           hash[:neighborhood] = attrs.get("location")
+          hash[:postal_code]  = attrs.get("postalcode")
         end
 
         def copy_images!(attrs, hash, image_url_rewrite)
