@@ -36,6 +36,7 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
       description: 'Description Detailed',
       city: 'City Detailed',
       neighborhood: 'Neighborhood Detailed',
+      postal_code: '12345',
       address: 'Address',
       country: 'Thailand',
       amenities: ['wifi', 'breakfast'],
@@ -105,6 +106,7 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
       description
       city
       neighborhood
+      postal_code
       address
       amenities
     )

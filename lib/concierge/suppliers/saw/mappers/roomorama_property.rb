@@ -36,6 +36,7 @@ module SAW
         )
         property.city = detailed_property.city
         property.neighborhood = detailed_property.neighborhood
+        property.postal_code = detailed_property.postal_code
         property.address = detailed_property.address
         property.amenities = detailed_property.amenities
 

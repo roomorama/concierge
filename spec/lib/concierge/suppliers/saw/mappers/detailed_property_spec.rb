@@ -168,12 +168,13 @@ module SAW
       expect(property.lon).to eq("98.30736")
     end
 
-    it "adds city, country, neighborhood and full_address" do
+    it "adds city, country, neighborhood, postal_code and full_address" do
       property = described_class.build(hash)
       expect(property.city).to eq("Phuket")
       expect(property.country).to eq("Thailand")
       expect(property.address).to eq("Address1 Address2 Phuket Thailand")
       expect(property.neighborhood).to eq("Golf Course")
+      expect(property.postal_code).to eq("83110")
     end
 
     it "adds amenities" do

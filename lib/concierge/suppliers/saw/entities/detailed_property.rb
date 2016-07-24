@@ -19,6 +19,7 @@ module SAW
     # +city+                    - city in which property located in
     # +neighborhood+            - city neighborhood (region) in which property
     #                             located in
+    # +postal_code+             - postal code
     # +address+                 - property address
     # +country+                 - country
     # +amenities+               - supported amenities
@@ -30,7 +31,7 @@ module SAW
     #                             multi unit
     class DetailedProperty
       attr_reader :internal_id, :type, :title, :description, :lat, :lon, :city,
-                  :neighborhood, :address, :country, :amenities,
+                  :neighborhood, :postal_code, :address, :country, :amenities,
                   :bed_configurations, :property_accommodations,
                   :not_supported_amenities
 
@@ -43,6 +44,7 @@ module SAW
         @lat                     = attrs[:lat]
         @city                    = attrs[:city]
         @neighborhood            = attrs[:neighborhood]
+        @postal_code             = attrs[:postal_code]
         @address                 = attrs[:address]
         @country                 = attrs[:country]
         @amenities               = attrs[:amenities]
