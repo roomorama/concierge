@@ -1,6 +1,6 @@
 module Ciirus
   module Commands
-    #  +Ciirus::PropertyPermissionsFetcher+
+    #  +Ciirus::Commands::PropertyPermissionsFetcher+
     #
     # This class is responsible for fetching property permissions and relationship
     # settings from Ciirus API, parsing the response and building the result.

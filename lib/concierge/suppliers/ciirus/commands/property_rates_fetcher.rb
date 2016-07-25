@@ -1,6 +1,6 @@
 module Ciirus
   module Commands
-    #  +Ciirus::PropertyRatesFetcher+
+    #  +Ciirus::Commans::PropertyRatesFetcher+
     #
     # This class is responsible for fetching property rates
     # from Ciirus API, parsing the response and building the result.

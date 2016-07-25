@@ -1,6 +1,6 @@
 module Ciirus
   module Commands
-    #  +Ciirus::ImageListFetcher+
+    #  +Ciirus::Commands::ImageListFetcher+
     #
     # This class is responsible for fetching a property image list
     # from Ciirus API, parsing the response and building the result.
