@@ -12,7 +12,7 @@ module Ciirus
     class BaseCommand
       VERSION = '15.025'
       PATH = "/CiirusXML.#{VERSION}.asmx"
-      ADDITIONAL_PATH = "/XMLAdditionalFunctions.#{VERSION}.asmx"
+      ADDITIONAL_PATH = "/XMLAdditionalFunctions#{VERSION}.asmx"
       ROOMORAMA_DATE_FORMAT = "%Y-%m-%d"
       CIIRUS_DATE_FORMAT = "%d %b %Y"
 
