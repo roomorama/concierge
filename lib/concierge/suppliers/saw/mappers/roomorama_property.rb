@@ -6,6 +6,8 @@ module SAW
     # Object initialization includes mapping of property attributes, rates,
     # amenitites, images, units.
     class RoomoramaProperty
+      CANCELLATION_POLICY = 'moderate'
+
       # Bulds Roomorama::Property object
       #
       # Example
@@ -42,6 +44,7 @@ module SAW
 
         property.minimum_stay = 1
         property.default_to_available = true
+        property.cancellation_policy = CANCELLATION_POLICY
         property.instant_booking!
 
         set_units!(property, basic_property, detailed_property)
