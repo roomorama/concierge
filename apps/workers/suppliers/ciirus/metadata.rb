@@ -17,25 +17,33 @@ module Workers::Suppliers::Ciirus
         properties = result.value
         properties.each do |property|
           property_id = property.property_id
-          if validator(property).valid?
-            synchronisation.start(property_id) do
-              Concierge.context.disable!
+            if validator(property).valid?
+              synchronisation.start(property_id) do
+                Concierge.context.disable!
 
-              result = fetch_images(property_id)
-              next result unless result.success?
-              images = result.value
+                result = fetch_permissions(property_id)
+                next result unless result.success?
+                permissions = result.value
 
-              result = fetch_description(property_id)
-              next result unless result.success?
-              description = result.value
+                if permissions_validator(permissions).valid?
+                  result = fetch_images(property_id)
+                  next result unless result.success?
+                  images = result.value
 
-              result = fetch_rates(property_id)
-              next result unless result.success?
-              rates = result.value
+                  result = fetch_description(property_id)
+                  next result unless result.success?
+                  description = result.value
 
-              roomorama_property = mapper.build(property, images, rates, description)
-              Result.new(roomorama_property)
-            end
+                  result = fetch_rates(property_id)
+                  next result unless result.success?
+                  rates = result.value
+
+                  roomorama_property = mapper.build(property, images, rates, description)
+                  Result.new(roomorama_property)
+                else
+                  invalid_permissions_error(permissions)
+                end
+              end
           end
         end
         synchronisation.finish!
@@ -44,6 +52,15 @@ module Workers::Suppliers::Ciirus
         message = 'Failed to perform the `#fetch_properties` operation'
         announce_error(message, result)
       end
+    end
+
+    def invalid_permissions_error(permissions)
+      with_context_enabled do
+        message = "Invalid permissions for property `#{permissions.property_id}`. The property should be
+                   online bookable and not timeshare: `#{permissions.to_h}`"
+        augment_context_error(message)
+      end
+      Result.error(:invalid_permissions_error)
     end
 
     private
@@ -87,6 +104,19 @@ module Workers::Suppliers::Ciirus
       result
     end
 
+    def fetch_permissions(property_id)
+      result = importer.fetch_permissions(property_id)
+
+      unless result.success?
+        with_context_enabled do
+          message = "Failed to fetch permissions for property `#{property_id}`"
+          augment_context_error(message)
+        end
+      end
+
+      result
+    end
+
     def with_context_enabled
       Concierge.context.enable!
       yield
@@ -102,7 +132,12 @@ module Workers::Suppliers::Ciirus
     end
 
     def validator(property)
-      Ciirus::PropertyValidator.new(property)
+      Ciirus::Validators::PropertyValidator.new(property)
+    end
+
+
+    def permissions_validator(permissions)
+      Ciirus::Validators::PermissionsValidator.new(permissions)
     end
 
     def credentials

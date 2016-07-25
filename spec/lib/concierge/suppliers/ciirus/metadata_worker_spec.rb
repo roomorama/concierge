@@ -81,6 +81,37 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
       )
     ]
   end
+  let(:permissions) do
+    Ciirus::Entities::PropertyPermissions.new(
+      {
+        property_id: '33680',
+        mc_enable_property: true,
+        agent_enable_property: true,
+        agent_user_id: '33457',
+        mc_user_id: '5489',
+        native_property: false,
+        calendar_sync_property: false,
+        aoa_property: false,
+        time_share: false,
+        online_booking_allowed: true
+      })
+  end
+
+  let(:invalid_permissions) do
+    Ciirus::Entities::PropertyPermissions.new(
+      {
+        property_id: '33680',
+        mc_enable_property: true,
+        agent_enable_property: true,
+        agent_user_id: '33457',
+        mc_user_id: '5489',
+        native_property: false,
+        calendar_sync_property: false,
+        aoa_property: false,
+        time_share: false,
+        online_booking_allowed: false
+      })
+  end
 
   subject { described_class.new(host) }
 
@@ -96,9 +127,43 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
     expect(error.code).to eq 'soap_error'
   end
 
+  context 'fetching permissions' do
+    before do
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_properties) { success_result }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_permissions) { Result.error(:soap_error) }
+    end
+
+    it 'announces an error if fetching permissions fails' do
+      subject.perform
+
+      error = ExternalErrorRepository.last
+
+      expect(error.operation).to eq 'sync'
+      expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
+      expect(error.code).to eq 'soap_error'
+    end
+
+    it 'announces an error if permissions are invalid' do
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_permissions) { Result.new(invalid_permissions) }
+      subject.perform
+
+      error = ExternalErrorRepository.last
+
+      expect(error.operation).to eq 'sync'
+      expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
+      expect(error.code).to eq 'invalid_permissions_error'
+    end
+
+    it 'doesnt finalize synchronisation with external error' do
+      expect(Roomorama::Client::Operations).to_not receive(:disable)
+      subject.perform
+    end
+  end
+
   context 'fetching images' do
     before do
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_properties) { success_result }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_permissions) { Result.new(permissions) }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_images) { Result.error(:soap_error) }
     end
 
@@ -121,6 +186,7 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
   context 'fetching description' do
     before do
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_properties) { success_result }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_permissions) { Result.new(permissions) }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_images) { Result.new(images) }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_description) { Result.error(:soap_error) }
     end
@@ -144,6 +210,7 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
   context 'fetching rates' do
     before do
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_properties) { success_result }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_permissions) { Result.new(permissions) }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_images) { Result.new(images) }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_description) { Result.new(description) }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_rates) { Result.error(:soap_error) }
@@ -169,6 +236,7 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
 
     before do
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_properties) { success_result }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_permissions) { Result.new(permissions) }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_images) { Result.new(images) }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_description) { Result.new(description) }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_rates) { Result.new(rates) }

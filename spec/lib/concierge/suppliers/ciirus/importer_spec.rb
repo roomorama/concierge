@@ -102,5 +102,14 @@ RSpec.describe Ciirus::Importer do
       expect(result).to be_success
     end
 
+    describe '#fetch_permissions' do
+      let(:method) { Ciirus::Commands::PropertyPermissionsFetcher::OPERATION_NAME }
+      let(:response) { read_fixture('ciirus/responses/property_permissions_response.xml') }
+      let(:result) { subject.fetch_permissions(property_id) }
+
+      it_behaves_like 'success response'
+      it_behaves_like 'handling errors'
+    end
+
   end
 end

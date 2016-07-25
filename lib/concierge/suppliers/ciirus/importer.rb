@@ -54,5 +54,11 @@ module Ciirus
       end
       result
     end
+
+    # Returns the Result wrapping the Ciirus::Entities::PropertyPermissions
+    def fetch_permissions(property_id)
+      fetcher = Commands::PropertyPermissionsFetcher.new(credentials)
+      fetcher.call(property_id)
+    end
   end
 end
