@@ -40,6 +40,7 @@ module SAW
         property.address = detailed_property.address
         property.amenities = detailed_property.amenities
 
+        property.minimum_stay = 1
         property.default_to_available = true
         property.instant_booking!
 

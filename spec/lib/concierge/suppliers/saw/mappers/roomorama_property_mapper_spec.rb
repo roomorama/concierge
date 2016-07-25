@@ -77,6 +77,11 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
     expect(property.default_to_available).to eq(true)
   end
 
+  it "adds minimum_stay" do
+    property = described_class.build(basic_property, detailed_property)
+    expect(property.minimum_stay).to eq(1)
+  end
+
   it "adds to result property needed attributes from basic property" do
     property = described_class.build(basic_property, detailed_property)
 
