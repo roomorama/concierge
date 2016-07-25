@@ -46,7 +46,7 @@ module Woori
 
       private
       def build_request_params
-        { i18n: 'en-US' }
+        { i18n: default_locale }
       end
 
       def build_path(property_id)
