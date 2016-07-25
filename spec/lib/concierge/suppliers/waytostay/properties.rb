@@ -137,6 +137,16 @@ RSpec.shared_examples "Waytostay property client" do
     end
   end
 
+  describe "#get_properties_by_ids" do
+    subject { stubbed_client.get_properties_by_ids(["016233", "016206"]) }
+    before do
+        stubbed_client.oauth2_client.oauth_client.connection = stub_call(:get, base_url + Waytostay::Properties::INDEX_ENDPOINT) {
+          [200, {}, read_fixture("waytostay/properties.json")]
+        }
+    end
+    it { expect(subject.value.count).to eq 2 }
+  end
+
   describe "#get_active_properties" do
 
     subject { stubbed_client.get_active_properties(page) }

@@ -50,6 +50,24 @@ module Waytostay
       parse_property(Concierge::SafeAccessHash.new(result.value))
     end
 
+    # Always returns a +Result+ wrapped array of +Roomorama::Property+.
+    # Caller should only use this with a batch of 25 properties each time to avoid `414 Request-URI Too Large`
+    #
+    def get_properties_by_ids(ids, active=true)
+      result = oauth2_client.get(
+        INDEX_ENDPOINT,
+        params: { references: ids.join(","),
+                  payment_option: Waytostay::Client::SUPPORTED_PAYMENT_METHOD,
+                  active: true },
+        headers: headers)
+      return result unless result.success?
+      response = Concierge::SafeAccessHash.new(result.value)
+      wrapped_properties = response.get("_embedded.properties").collect do |property_hash|
+        parse_property(Concierge::SafeAccessHash.new(property_hash))
+      end
+      return Result.new(wrapped_properties)
+    end
+
     # Returns a +Result+ wrapping an array of +Result+ wrapped +Roomorama::Property+
     # and the next page number. Caller should call this method again with the returned
     # next page number until it is nil.
