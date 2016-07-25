@@ -27,9 +27,10 @@ module Kigo::Mappers
       set_description
       set_beds_count
       set_amenities
+      set_property_type
       # set_deposit
       # set_cleaning_service
-      # set_property_type
+
       # set_images
       # set_price_and_availabilities
       #
@@ -48,26 +49,37 @@ module Kigo::Mappers
     end
 
     def set_base_info
-      property.title                = info['PROP_NAME']
-      property.number_of_bedrooms   = info['PROP_BEDROOMS']
-      property.number_of_bathrooms  = info['PROP_BATHROOMS']
-      property.surface              = info['PROP_SIZE']
-      property.surface_unit         = surface_unit(info['PROP_SIZE_UNIT'])
-      property.max_guests           = info['PROP_MAXGUESTS']
-      property.pets_allowed         = amenity_ids.include?(code_for(:pets_allowed))
-      property.smoking_allowed      = amenity_ids.include?(code_for(:smoking_allowed))
-      property.cancellation_policy  = CANCELLATION_POLICY
-      property.default_to_available = true
+      property.title                 = info['PROP_NAME']
+      property.number_of_bedrooms    = info['PROP_BEDROOMS']
+      property.number_of_bathrooms   = info['PROP_BATHROOMS']
+      property.surface               = info['PROP_SIZE']
+      property.surface_unit          = surface_unit(info['PROP_SIZE_UNIT'])
+      property.max_guests            = info['PROP_MAXGUESTS']
+      property.floor                 = info['PROP_FLOOR']
+      property.pets_allowed          = amenity_ids.include?(code_for(:pets_allowed))
+      property.smoking_allowed       = amenity_ids.include?(code_for(:smoking_allowed))
+      property.cancellation_policy   = CANCELLATION_POLICY
+      property.default_to_available  = true
+      property.check_in_time         = info['PROP_CIN_TIME']
+      property.check_out_time        = info['PROP_COUT_TIME']
+      property.check_in_instructions = info['PROP_ARRIVAL_SHEET']
+      property.minimum_stay          = stay_length(info['PROP_STAYTIME_MIN'])
 
       property.country_code     = info['PROP_COUNTRY']
       property.city             = info['PROP_CITY']
       property.neighborhood     = info['PROP_REGION']
       property.postal_code      = info['PROP_POSTCODE']
-      property.address   = street_address
+      property.address          = street_address
       property.apartment_number = info['PROP_APTNO']
       coordinates               = info['PROP_LATLNG']
       property.lat              = coordinates['LATITUDE']
       property.lng              = coordinates['LONGITUDE']
+    end
+
+    # returns days count computed by NIGHT, MONTH, YEAR unit
+    def stay_length(period)
+      multiplier = { 'MONTH' => 30, 'YEAR' => 365 }.fetch(period['UNIT'], 1)
+      period['NUMBER'] * multiplier
     end
 
     def set_description
@@ -87,7 +99,6 @@ module Kigo::Mappers
       addresses.join(', ')
     end
 
-    # payload presents beds size as different named items
     def set_beds_count
       mapper = Beds.new(info['PROP_BED_TYPES'])
 
@@ -104,73 +115,42 @@ module Kigo::Mappers
       Amenities.new(references[:amenities])
     end
 
-    def set_deposit
-      deposit = find_cost('Deposit')
-      return unless deposit
+    def set_property_type
+      mapper                          = PropertyType.new(references[:property_types])
+      property.type, property.subtype = mapper.map(info['PROP_TYPE_ID'])
+    end
 
-      if deposit['Payment'] == 'MandatoryDepositOnSite'
-        property.security_deposit_amount        = deposit['Amount'].to_i
-        property.security_deposit_type          = 'cash'
-        property.security_deposit_currency_code = Price::CURRENCY
-      end
+    def set_deposit
+
     end
 
     def set_cleaning_service
-      cleaning = find_cost('Cleaning')
-      return unless cleaning
+      return if pricing_setup["PRICING"].nil? || pricing_setup["PRICING"]["FEES"].nil? # No fees information
+      fees          = pricing_setup["PRICING"]["FEES"]["FEES"]
+      fees_currency = pricing_setup["PRICING"]["CURRENCY"]
+      return if fees.empty? # No fees
 
-      property.services_cleaning          = cleaning['Payment'] != 'None'
-      property.services_cleaning_required = cleaning['Payment'] == 'Mandatory'
-      property.services_cleaning_rate     = cleaning['Amount']
-
-      property.amenities << 'free_cleaning' if cleaning['Payment'] == 'Inclusive'
-    end
-
-
-    # sets type and subtype accordingly related code
-    def set_property_type
-      properties_array = payload['PropertiesV1']
-      room_type_hash   = properties_array.find { |data_hash| data_hash['TypeNumber'] == code_for(:property_type) }
-      room_type_number = room_type_hash['TypeContents'].first
-
-      case room_type_number
-      when 20 # Castle
-        property.type    = 'house'
-        property.subtype = 'chateau'
-      when 30 # Cottage
-        property.type    = 'house'
-        property.subtype = 'cottage'
-      when 40 # Mansion
-        property.type    = 'house'
-        property.subtype = 'townhouse'
-      when 50 # Villa
-        property.type    = 'house'
-        property.subtype = 'villa'
-      when 60 # Chalet
-        property.type    = 'house'
-        property.subtype = 'ski_chalet'
-      when 80 # Bungalow
-        property.type    = 'house'
-        property.subtype = 'bungalow'
-      when 110, 112 # Studio, Duplex
-        property.type    = 'apartment'
-        property.subtype = 'studio_bachelor'
-      when 120 # Penthouse
-        property.type    = 'apartment'
-        property.subtype = 'luxury_apartment'
-      when 130 # Hotel
-        property.type    = 'others'
-        property.subtype = 'hotel'
-      when 140 # Lodge
-        property.type    = 'house'
-        property.subtype = 'cabin'
-      when 160 # Apartment
-        property.type    = 'apartment'
-        property.subtype = 'apartment'
-      when 70, 90, 95, 100, 145, 150 # Farmhouse, Boat, House Boat, Holiday Home, Riad, Mobile Home
-        property.type    = 'house'
-        property.subtype = 'house'
+      kigo_fees        = self.fees_mapping
+      kigo_fees_hashed = kigo_fees.inject({}) do |hashed, kfee|
+        hashed[kfee["FEE_TYPE_ID"]] = kfee
+        hashed
       end
+
+      fees_description = ""
+      fees.each do |fee|
+        fee_type = fee["FEE_TYPE_ID"]
+        if fee_type == 3
+          room.cleaningservice          = true
+          room.cleaningservice_cost     = get_fee_value(fee)
+          room.cleaningservice_required = !!fee["INCLUDE_IN_RENT"]
+        elsif get_fee_value(fee) > 0
+          fees_description = "\n\n *** Room Fees ***\n" if fees_description.empty?
+          fees_description << "#{kigo_fees_hashed[fee_type]['FEE_TYPE_LABEL']}: #{fees_currency} #{display_fee_and_unit(fee)}\n"
+        end
+      end
+
+      room.descriptions[:en] << fees_description if room.descriptions[:en]
+
     end
 
     def set_images
@@ -189,16 +169,10 @@ module Kigo::Mappers
       end
     end
 
-    def set_price_and_availabilities
-      periods        = payload['AvailabilityPeriodV1'].map { |period| AvailabilityPeriod.new(period) }
-      actual_periods = periods.select(&:valid?)
+    def set_price
+      rate = payload['PROP_RATE']
 
-
-      min_price  = actual_periods.map(&:daily_price).min
-      dates_size = actual_periods.map { |period| period.dates.size }
-
-      property.currency     = Price::CURRENCY
-      property.minimum_stay = dates_size.min
+      property.currency     = rate['PROP_RATE_CURRENCY']
       property.nightly_rate = min_price
       property.weekly_rate  = min_price * 7
       property.monthly_rate = min_price * 30
