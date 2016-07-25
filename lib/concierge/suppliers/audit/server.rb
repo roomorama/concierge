@@ -14,27 +14,49 @@ module Audit
 
     def call(env)
       status, headers, body = @app.call(env)
-      if status == 404
-        case File.basename(env['REQUEST_PATH'])
+      status, headers, body = handle_404(env) if status == 404
 
-        when /connection_timeout/
-          # First we wait
-          sleep Concierge::HTTPClient::CONNECTION_TIMEOUT + 1
+      if File.basename(env['PATH_INFO']) =~ /booking/
+        [status, headers, [replace_response_body(body)]]
+      else
+        [status, headers, body]
+      end
+    end
 
-          # Then we return the requested info (Concierge::HTTPClient should have errored out by now)
-          @app.call(env.merge({
-            'PATH_INFO' => env['PATH_INFO'].gsub('connection_timeout', 'success'),
-            'REQUEST_PATH' => env['REQUEST_PATH'].gsub('connection_timeout', 'success'),
-          }))
+    private
 
-        when /wrong_json/
-          [200, {}, ["[1, 2, 3]"]]
+    def handle_404(env)
+      case File.basename(env['PATH_INFO'])
+      when /connection_timeout/
+        # First we wait
+        sleep Concierge::HTTPClient::CONNECTION_TIMEOUT + 1
 
-        when /invalid_json/
-          [200, {}, ["{"]]
-        end
+        # Then we return the requested info (Concierge::HTTPClient should have errored out by now)
+        @app.call(env.merge({
+          'PATH_INFO' => env['PATH_INFO'].gsub('connection_timeout', 'success'),
+          'REQUEST_PATH' => env['REQUEST_PATH'] && env['REQUEST_PATH'].gsub('connection_timeout', 'success'),
+        }))
 
-      end || [status, headers, body]
+      when /wrong_json/
+        [200, {}, ["[1, 2, 3]"]]
+
+      when /invalid_json/
+        [200, {}, ["{"]]
+      end
+    end
+
+    def replace_response_body(body)
+      body_string = case body
+      when Rack::File
+        IO.read body.path
+      else
+        body.join("")
+      end
+
+      body_string.gsub("REPLACEME", [
+        "success",
+        "connection_timeout"
+      ].sample)
     end
   end
 end

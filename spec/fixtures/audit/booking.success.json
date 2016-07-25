@@ -1,6 +1,6 @@
 {
   "result": {
-    "reference_number": "success-reservation_number123",
+    "reference_number": "REPLACEME",
     "property_id": "String",
     "unit_id": "String",
     "check_in": "String",
