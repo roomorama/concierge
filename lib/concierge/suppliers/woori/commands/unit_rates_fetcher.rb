@@ -34,7 +34,7 @@ module Woori
           if decoded_result.success?
             safe_hash = Concierge::SafeAccessHash.new(decoded_result.value)
             mapper = Woori::Mappers::UnitRates.new(safe_hash)
-            unit_rates = mapper.build
+            unit_rates = mapper.build_unit_rates
             Result.new(unit_rates)
           else
             decoded_result

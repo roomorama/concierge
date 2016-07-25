@@ -20,7 +20,8 @@ module Woori
     end
 
     it "builds Roomorama::Image entities from array of hashes" do
-      images = described_class.build(image_hashes) 
+      mapper = described_class.new(image_hashes)
+      images = mapper.build_images
 
       expect(images.size).to eq(image_hashes.size)
       expect(images).to all(be_kind_of(Roomorama::Image))
@@ -36,12 +37,14 @@ module Woori
     end
     
     it "returns empty array when no image_gallery attribute is there" do
-      images = described_class.build([]) 
+      mapper = described_class.new([])
+      images = mapper.build_images
       expect(images).to eq([])
     end
     
     it "returns empty array when image_gallery is nil" do
-      images = described_class.build(nil)
+      mapper = described_class.new(nil)
+      images = mapper.build_images
       expect(images).to eq([])
     end
   end

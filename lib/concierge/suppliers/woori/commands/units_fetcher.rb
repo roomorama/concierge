@@ -58,7 +58,8 @@ module Woori
 
         Array(units).map do |unit_hash|
           safe_hash = Concierge::SafeAccessHash.new(unit_hash)
-          Woori::Mappers::RoomoramaUnit.build(safe_hash)
+          mapper = Woori::Mappers::RoomoramaUnit.new(safe_hash)
+          mapper.build_unit
         end
       end
     end

@@ -62,7 +62,8 @@ module Woori
         if properties
           properties.map do |propery_hash|
             safe_hash = Concierge::SafeAccessHash.new(propery_hash)
-            Woori::Mappers::RoomoramaProperty.build(safe_hash)
+            mapper = Woori::Mappers::RoomoramaProperty.new(safe_hash)
+            mapper.build_property
           end
         else
           []
