@@ -82,6 +82,11 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
     expect(property.minimum_stay).to eq(1)
   end
 
+  it "adds cancellation policy" do
+    property = described_class.build(basic_property, detailed_property)
+    expect(property.cancellation_policy).to eq('moderate')
+  end
+
   it "adds to result property needed attributes from basic property" do
     property = described_class.build(basic_property, detailed_property)
 
