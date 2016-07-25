@@ -29,6 +29,16 @@ RSpec.describe Ciirus::XMLBuilder do
     it { expect(message).to eq valid_request}
   end
 
+  describe '#property_permissions' do
+    let(:property_id) { 10 }
+    let(:valid_request) do
+      read_fixture('ciirus/requests/valid_property_permissions_request.xml')
+    end
+    let(:message) { subject.property_permissions(property_id) }
+
+    it { expect(message).to eq valid_request}
+  end
+
   describe '#image_list' do
     let(:property_id) { 10 }
     let(:valid_request) do
