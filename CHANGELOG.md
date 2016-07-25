@@ -7,6 +7,11 @@ how this file is formatted and how the process works.
 ## [Unreleased]
 ### Added
 - Send inquiry id as `agent_reference` field to WayToStay
+- `nett_rate`, `host_fee` and `host_fee_percentage` to quotation response
+- `fee_percentage` column to `Host` entity
+
+### Changed
+- `Kigo::ResponseParser` to calculate nett price according to host's commission
 
 ### Fixed
 - Bug when integer timestamp is expected but Time is given instead
@@ -38,8 +43,6 @@ how this file is formatted and how the process works.
 
 ## [0.5.0] - 2016-07-19
 ### Added
-- `gross_rate` and `host_fee` to quotation response
-- `fee_percentage` column to `Host` entity
 - added `currency_code` to the list of supported attributes for booking webhook and for `API::Controllers::Params::Booking` object
 - added `get_active_properties` by Waytostay::Client, for first time import
 - add `BackgroundWorker` and related refactor on queue processing.
@@ -47,7 +50,6 @@ how this file is formatted and how the process works.
 - `Concierge::Cache#invalidate` and the counterpart context event.
 
 ### Changed
-- fixed `Kigo::ResponseParser` to calculate nett price accordingly host's commission
 - determine Roomorama API environment according to value in environment variable.
 - fixed `SafeAccessHash#get` method to return `nil` for nonexistent keys
 - fixed `SafeAccessHash#missing_keys_from` method to check for empty strings as well
