@@ -129,7 +129,7 @@ module Workers::Suppliers
     #
     def last_synced_timestamp
       most_recent = SyncProcessRepository.recent_successful_sync_for_host(host).first
-      most_recent&.started_at
+      most_recent&.started_at.to_i
     end
 
     # Returns an existing +Roomorama::Property+
