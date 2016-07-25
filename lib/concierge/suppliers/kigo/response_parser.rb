@@ -61,8 +61,7 @@ module Kigo
 
         quotation.available  = true
         quotation.currency   = currency
-        quotation.total      = nett_amount(total.to_f)
-        quotation.gross_rate = total.to_f
+        quotation.total      = total.to_f
 
         Result.new(quotation)
       elsif payload["API_RESULT_CODE"] == "E_NOSUCH" && payload["API_RESULT_TEXT"] =~ /is not available for your selected period/
@@ -121,7 +120,8 @@ module Kigo
     end
 
     def build_quotation(params)
-      Quotation.new(params)
+      attributes = params.to_h.merge(host_fee_percentage: host.fee_percentage)
+      Quotation.new(attributes)
     end
 
     def unrecognised_response
@@ -130,12 +130,6 @@ module Kigo
 
     def property_not_found
       Result.error(:property_not_found)
-    end
-
-    # Kigo's response with +TOTAL_PRICE+ might include host fee_percentage
-    def nett_amount(total)
-      coefficient = 1 + (host.fee_percentage / 100)
-      (total / coefficient).round(2)
     end
 
     def host

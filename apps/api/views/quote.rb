@@ -16,16 +16,13 @@ module API::Views
 
       if quotation.available
         response.merge!({
-          currency: quotation.currency,
-          total:    quotation.total,
-        })
+                          currency:            quotation.currency,
+                          total:               quotation.total,
+                          nett_rate:           quotation.nett_rate,
+                          host_fee:            quotation.host_fee,
+                          host_fee_percentage: quotation.host_fee_percentage
+                        })
 
-        if quotation.gross_rate
-          response.merge!({
-            gross_rate: quotation.gross_rate,
-            host_fee:   (quotation.gross_rate - quotation.total).round(2)
-          })
-        end
       end
 
       json(response)

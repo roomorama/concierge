@@ -64,9 +64,10 @@ RSpec.shared_examples "Kigo price quotation" do
       expect(response.body["check_out"]).to eq "2016-03-25"
       expect(response.body["guests"]).to eq 2
       expect(response.body["currency"]).to eq "EUR"
-      expect(response.body["total"]).to eq 532.71
-      expect(response.body["gross_rate"]).to eq 570.0
+      expect(response.body["nett_rate"]).to eq 532.71
+      expect(response.body["total"]).to eq 570.0
       expect(response.body["host_fee"]).to eq 37.29
+      expect(response.body["host_fee_percentage"]).to eq 7
     end
 
   end
