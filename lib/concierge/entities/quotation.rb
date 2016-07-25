@@ -31,10 +31,10 @@ class Quotation
   attribute :host_fee_percentage, type: Float
 
   def host_fee
-    (total - nett_rate).round(2)
+    (total - net_rate).round(2)
   end
 
-  def nett_rate
+  def net_rate
     coefficient = 1 + (host_fee_percentage.to_f / 100)
     (total / coefficient).round(2)
   end

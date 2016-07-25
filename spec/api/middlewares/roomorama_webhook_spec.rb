@@ -124,7 +124,7 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
       {
         status:      "ok",
         total:       150,
-        nett_rate:   150,
+        net_rate:   150,
         host_fee:    0,
         host_fee_percentage: 0,
         currency:    "EUR",
@@ -237,7 +237,7 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
           "id"  => 12345,
           "url" => "https://www.roomorama.com/users/12345"
         },
-        "nett_rate"              => total,
+        "net_rate"               => total,
         "host_fee"               => 0,
         "host_fee_percentage"    => 0
       }
