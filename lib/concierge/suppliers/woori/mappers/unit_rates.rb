@@ -22,7 +22,7 @@ module Woori
       #   Mappers::UnitRates.build(safe_hash)
       #
       # Returns +Entities::UnitRates+ Unit rates object
-      def build
+      def build_unit_rates
         return nil unless days && days.any?
      
         Entities::UnitRates.new(
