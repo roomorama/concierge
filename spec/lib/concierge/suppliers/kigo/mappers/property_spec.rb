@@ -42,40 +42,22 @@ RSpec.describe Kigo::Mappers::Property do
 
 
     context 'rates' do
-      let(:on_request_period) {
+      let(:property_rate) {
         {
-          'Quantity'           => 1,
-          'ArrivalDate'        => '2017-12-04',
-          'ArrivalTimeFrom'    => '16:00',
-          'ArrivalTimeUntil'   => '18:00',
-          'DepartureDate'      => '2017-12-11',
-          'DepartureTimeFrom'  => '09:00',
-          'DepartureTimeUntil' => '10:00',
-          'OnRequest'          => 'Yes',
-          'Price'              => 681,
-          'PriceExclDiscount'  => 681
-        }
+          'PROP_RATE_CURRENCY'     => "EUR",
+          'PROP_RATE_NIGHTLY_FROM' => "151.98",
+          'PROP_RATE_NIGHTLY_TO'   => "417.18",
+          'PROP_RATE_WEEKLY_FROM'  => nil,
+          'PROP_RATE_WEEKLY_TO'    => nil,
+          'PROP_RATE_MONTHLY_FROM' => nil,
+          'PROP_RATE_MONTHLY_TO'   => nil
+          }
       }
-      let(:valid_period) {
-        {
-          'Quantity'           => 1,
-          'ArrivalDate'        => '2017-12-04',
-          'ArrivalTimeFrom'    => '16:00',
-          'ArrivalTimeUntil'   => '18:00',
-          'DepartureDate'      => '2017-12-11',
-          'DepartureTimeFrom'  => '09:00',
-          'DepartureTimeUntil' => '10:00',
-          'OnRequest'          => 'No',
-          'Price'              => 800,
-          'PriceExclDiscount'  => 800
-        }
-      }
-
+      
       it 'sets price of valid period' do
-        property_data['AvailabilityPeriodV1'] = [on_request_period, valid_period]
+        property_data['PROP_RATE'] = property_rate
         property = subject.prepare(property_data).value
 
-        expect(property.minimum_stay).to eq 8
         expect(property.nightly_rate).to eq 100
         expect(property.weekly_rate).to eq 700
         expect(property.monthly_rate).to eq 3000
@@ -114,30 +96,38 @@ RSpec.describe Kigo::Mappers::Property do
       expect(property.surface).to eq '37674'
       expect(property.surface_unit).to eq 'imperial'
       expect(property.max_guests).to eq 9
+      expect(property.floor).to eq 3
       expect(property.pets_allowed).to eq true
+      expect(property.smoking_allowed).to eq false
       expect(property.cancellation_policy).to eq 'super_elite'
       expect(property.default_to_available).to eq true
+      expect(property.check_in_time).to eq '15:00'
+      expect(property.check_out_time).to eq '10:00'
       expect(property.country_code).to eq 'IT'
       expect(property.city).to eq 'Gallipoli'
       expect(property.neighborhood).to eq 'Puglia'
       expect(property.postal_code).to eq '73014'
-      expect(property.lat).to eq "39.982447"
-      expect(property.lng).to eq "18.015175"
-      # expect(property.number_of_double_beds).to eq 4
-      # expect(property.number_of_single_beds).to eq 2
-      # expect(property.number_of_sofa_beds).to eq 0
-      expect(property.amenities).to eq ['kitchen', 'balcony', 'parking']
+      expect(property.address).to eq 'Strada Provinciale 215'
+      expect(property.apartment_number).to eq '12'
+      expect(property.lat).to eq '39.982447'
+      expect(property.lng).to eq '18.015175'
+      expect(property.number_of_double_beds).to eq 1
+      expect(property.number_of_single_beds).to eq 4
+      expect(property.number_of_sofa_beds).to eq 0
+      expect(property.amenities).to eq ['wheelchairaccess', 'tv', 'kitchen']
+      expect(property.type).to eq 'house'
+      expect(property.subtype).to eq 'villa'
+
       # expect(property.security_deposit_amount).to eq 500
       # expect(property.services_cleaning).to eq true
       # expect(property.services_cleaning_required).to eq true
       # expect(property.services_cleaning_rate).to eq 150
-      # expect(property.smoking_allowed).to eq false
-      # expect(property.type).to eq 'house'
-      # expect(property.subtype).to eq 'house'
-      # expect(property.minimum_stay).to eq 3
-      # expect(property.nightly_rate.to_i).to eq 57
-      # expect(property.weekly_rate.to_i).to eq 402
-      # expect(property.monthly_rate.to_i).to eq 1722
+
+      expect(property.minimum_stay).to eq 3
+      expect(property.nightly_rate.to_i).to eq 57
+      expect(property.weekly_rate.to_i).to eq 402
+      expect(property.monthly_rate.to_i).to eq 1722
+
       # expect(property.images.size).to eq 9
       #
       # image = property.images.first
