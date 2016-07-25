@@ -7,14 +7,21 @@ module Woori
     #
     # Array of images includes +Roomorama::Image+ objects
     class RoomoramaImageSet
-      # Builds an array of property images
+      attr_reader :image_hashes
+
+      # Initialize RoomoramaImageSet mapper
       #
       # Arguments:
       #
       #   * +image_hashes+ [Array] array with image hashes
+      def initialize(image_hashes)
+        @image_hashes = image_hashes
+      end
+
+      # Builds an array of property images
       #
       # Returns +Array<Roomorama::Image>+ array of images
-      def self.build(image_hashes)
+      def build_images
         return [] unless image_hashes
         
         image_hashes.map do |h| 
@@ -24,7 +31,7 @@ module Woori
       end
 
       private
-      def self.build_image(hash)
+      def build_image(hash)
         url, title, identifier = fetch_image_data(hash)
 
         image = Roomorama::Image.new(identifier)
@@ -33,7 +40,7 @@ module Woori
         image
       end
 
-      def self.fetch_image_data(hash)
+      def fetch_image_data(hash)
         url = hash.get("url")
         title = hash.get("content")
         identifier = Digest::MD5.hexdigest(url)
