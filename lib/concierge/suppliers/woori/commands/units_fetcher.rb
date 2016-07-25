@@ -1,20 +1,29 @@
 module Woori
   module Commands
-    # +Woori::Commands::CountryUnitsFetcher+
+    # +Woori::Commands::UnitsFetcher+
     #
     # This class is responsible for wrapping the logic related to fetching 
     # property units from Woori, parsing the response, and building the
     # +Result+ object
-    #
-    # Usage
-    #
-    #   command = Woori::Commands::UnitsFetcher.new(credentials)
-    #   result = command.call("w_w0104006")
     class UnitsFetcher < BaseFetcher
       include Concierge::JSON
     
       ENDPOINT = "properties/:property_id/roomtypes"
 
+      # Retrieves the list of units for property by its id
+      #
+      # Arguments
+      #
+      #   * +property_id+ [String] property id (property hash in Woori API)
+      #
+      # Usage
+      #
+      #   command = Woori::Commands::UnitsFetcher.new(credentials)
+      #   result = command.call("w_w0104006")
+      #
+      # Returns a +Result+ wrapping an +Array+ of +Roomorama::Unit+ objects
+      # when operation succeeds
+      # Returns a +Result+ with +Result::Error+ when operation fails
       def call(property_id)
         params = build_request_params
         path = build_path(property_id)
