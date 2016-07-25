@@ -72,9 +72,9 @@ module SAW
         def copy_rates!(attrs, hash)
           price = BigDecimal.new(attrs.get("price"))
 
-          hash[:nightly_rate] = sprintf('%02.2f', price)
-          hash[:weekly_rate] = sprintf('%02.2f', price * 7)
-          hash[:monthly_rate] = sprintf('%02.2f', price * 30)
+          hash[:nightly_rate] = sprintf('%02.2f', price).to_f
+          hash[:weekly_rate] = sprintf('%02.2f', price * 7).to_f
+          hash[:monthly_rate] = sprintf('%02.2f', price * 30).to_f
         end
 
         def add_room_type!(hash)
