@@ -52,7 +52,7 @@ module Woori
           limit: limit,
           offset: offset,
           active: 1,
-          i18n: 'en-US'
+          i18n: default_locale
         }
       end
 

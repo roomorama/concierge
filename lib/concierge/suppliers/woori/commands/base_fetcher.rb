@@ -21,6 +21,10 @@ module Woori
           "Authorization" => credentials.api_key
         }
       end
+
+      def default_locale
+        "en-US"
+      end
     end
   end
 end
