@@ -5,7 +5,7 @@ module SAW
     let(:units_info) do
       [
         {"property_accommodation_name"=>"1 Bedroom", "@id"=>"8368"},
-        {"property_accommodation_name"=>"1-Bedroom apartment", "@id"=>"10614"},
+        {"property_accommodation_name"=>"2-Bedroom apartment", "@id"=>"10614"},
         {"property_accommodation_name"=>"Classic Room", "@id"=>"10612"},
         {"property_accommodation_name"=>"Studio", "@id"=>"8367"},
         {"property_accommodation_name"=>"Studio", "@id"=>"10613"}
@@ -270,6 +270,42 @@ module SAW
         expect(unit_with_beds.number_of_double_beds).to eq(3)
         expect(unit_with_beds.number_of_single_beds).to eq(0)
         expect(unit_with_beds.max_guests).to eq(6)
+      end
+
+      it "parses number_of_bedrooms for Studio" do
+        units = described_class.build(
+          basic_property,
+          detailed_property_with_beds
+        )
+        unit_with_beds = units.detect { |u| u.identifier == "8367" }
+        expect(unit_with_beds.number_of_bedrooms).to eq(1)
+      end
+
+      it "parses number_of_bedrooms for 1-Bedroom" do
+        units = described_class.build(
+          basic_property,
+          detailed_property_with_beds
+        )
+        unit_with_beds = units.detect { |u| u.identifier == "8368" }
+        expect(unit_with_beds.number_of_bedrooms).to eq(1)
+      end
+
+      it "parses number_of_bedrooms for 2-Bedroom" do
+        units = described_class.build(
+          basic_property,
+          detailed_property_with_beds
+        )
+        unit_with_beds = units.detect { |u| u.identifier == "10614" }
+        expect(unit_with_beds.number_of_bedrooms).to eq(2)
+      end
+
+      it "parses number_of_bedrooms for unknown names" do
+        units = described_class.build(
+          basic_property,
+          detailed_property_with_beds
+        )
+        unit_with_beds = units.detect { |u| u.identifier == "10612" }
+        expect(unit_with_beds.number_of_bedrooms).to eq(1)
       end
     end
   end

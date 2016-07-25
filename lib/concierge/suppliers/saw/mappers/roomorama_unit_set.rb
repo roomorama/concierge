@@ -43,8 +43,7 @@ module SAW
         u.weekly_rate = basic_property.weekly_rate
         u.monthly_rate = basic_property.monthly_rate
         u.number_of_units = 1
-
-        detailed_property.images.each { |image| u.add_image(image) }
+        u.number_of_bedrooms = parse_number_of_bedrooms(unit)
 
         bed_configuration = find_bed_types(bed_configurations, unit.get("@id"))
 
@@ -80,6 +79,19 @@ module SAW
 
       def self.safe_hash(hash)
         Concierge::SafeAccessHash.new(hash)
+      end
+
+      def self.parse_number_of_bedrooms(unit_hash)
+        name = unit_hash.get("property_accommodation_name")
+
+        # most likely there is a bedrooms count in the apartment name:
+        # 5 Bedroom - 3 Bathroom, 1-Bedroom, 2 Bedrooms, etc
+        bedrooms_count = name[/\d/]
+        return bedrooms_count.to_i if bedrooms_count
+
+        # in other cases return 1:
+        # Studio, Standard apartment, etc
+        return 1
       end
     end
   end
