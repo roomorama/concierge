@@ -27,7 +27,7 @@ RSpec.describe Ciirus::Mappers::PropertyPermissions do
 
     subject { described_class.new }
 
-    it 'returns mapped property rate entity' do
+    it 'returns mapped property permissions entity' do
       permissions = subject.build(result_hash)
       expect(permissions).to be_a(Ciirus::Entities::PropertyPermissions)
       expect(permissions.property_id).to eq('33680')
