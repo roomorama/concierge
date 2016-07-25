@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope
+        xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <soap:Body>
+    <GetCleaningFeeResponse
+            xmlns="http://xml.ciirus.com/">
+      <GetCleaningFeeResult>
+        <ChargeCleaningFee>false</ChargeCleaningFee>
+        <CleaningFeeAmount>0</CleaningFeeAmount>
+        <OnlyChargeCleaningFeeWhenLessThanDays>0</OnlyChargeCleaningFeeWhenLessThanDays>
+        <ChargeTax1>false</ChargeTax1>
+        <ChargeTax2>false</ChargeTax2>
+        <ChargeTax3>false</ChargeTax3>
+        <ErrorMsg>GetCleaningFee: You do not have access rights to this Property (2).</ErrorMsg>
+      </GetCleaningFeeResult>
+    </GetCleaningFeeResponse>
+  </soap:Body>
+</soap:Envelope>

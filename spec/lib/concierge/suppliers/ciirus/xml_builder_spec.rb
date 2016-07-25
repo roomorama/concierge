@@ -69,6 +69,16 @@ RSpec.describe Ciirus::XMLBuilder do
     it { expect(message).to eq valid_request}
   end
 
+  describe '#cleaning_fee' do
+    let(:property_id) { 10 }
+    let(:valid_request) do
+      read_fixture('ciirus/requests/valid_cleaning_fee_request.xml')
+    end
+    let(:message) { subject.cleaning_fee(property_id) }
+
+    it { expect(message).to eq valid_request}
+  end
+
   describe '#cancel' do
     let(:booking_id) { 10 }
     let(:valid_request) do

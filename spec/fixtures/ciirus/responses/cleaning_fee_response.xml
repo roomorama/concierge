@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope
+        xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <soap:Body>
+    <GetCleaningFeeResponse
+            xmlns="http://xml.ciirus.com/">
+      <GetCleaningFeeResult>
+        <ChargeCleaningFee>true</ChargeCleaningFee>
+        <CleaningFeeAmount>100</CleaningFeeAmount>
+        <OnlyChargeCleaningFeeWhenLessThanDays>99</OnlyChargeCleaningFeeWhenLessThanDays>
+        <ChargeTax1>true</ChargeTax1>
+        <ChargeTax2>true</ChargeTax2>
+        <ChargeTax3>true</ChargeTax3>
+      </GetCleaningFeeResult>
+    </GetCleaningFeeResponse>
+  </soap:Body>
+</soap:Envelope>
