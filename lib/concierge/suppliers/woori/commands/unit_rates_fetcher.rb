@@ -5,16 +5,25 @@ module Woori
     # This class is responsible for wrapping the logic related to fetching 
     # unit rates from Woori, parsing the response, and building the
     # +Result+ object
-    #
-    # Usage
-    #
-    #   command = Woori::Commands::UnitRatesFetcher.new(credentials)
-    #   result = command.call("w_w0104006")
     class UnitRatesFetcher < BaseFetcher
       include Concierge::JSON
     
       ENDPOINT = "available"
 
+      # Retrieves rates for unit by unit_id
+      #
+      # Arguments
+      #
+      #   * +unit_id+ [String] unit id (room code hash)
+      #
+      # Usage
+      #
+      #   command = Woori::Commands::UnitRatesFetcher.new(credentials)
+      #   result = command.call("w_w0104006")
+      #
+      # Returns a +Result+ wrapping +Entities::UnitRates+ object
+      # when operation succeeds
+      # Returns a +Result+ with +Result::Error+ when operation fails
       def call(unit_id)
         params = build_request_params(unit_id)
         result = http.get(ENDPOINT, params, headers)
