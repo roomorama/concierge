@@ -21,13 +21,6 @@ module Woori
           "Authorization" => credentials.api_key
         }
       end
-    
-      def valid_result?(hash)
-        true
-      end
-
-      def error_result(hash)
-      end
     end
   end
 end
