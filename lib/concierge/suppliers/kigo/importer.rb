@@ -66,9 +66,9 @@ module Kigo
       amenities = fetch(AMENITIES).value['AMENITY']
       {
         amenities:      amenities,
-        fee_types:      fetch(FEE_TYPES),
-        property_types: fetch(PROPERTY_TYPES),
-        bed_types:      fetch(BED_TYPES)
+        fee_types:      fetch(FEE_TYPES).value,
+        property_types: fetch(PROPERTY_TYPES).value,
+        bed_types:      fetch(BED_TYPES).value
       }
     end
 
