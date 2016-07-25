@@ -7,10 +7,6 @@ module Woori
         @credentials = credentials
       end
 
-      def endpoint(name)
-        Woori::Endpoint.endpoint_for(name)
-      end
-
       def response_parser
         @response_parser ||= Woori::ResponseParser.new
       end
