@@ -7,7 +7,7 @@ module Ciirus
     #
     # Usage
     #
-    #   result = Ciirus::Commands::PropertyRatesFetcher.new(credentials).fetch(params)
+    #   result = Ciirus::Commands::PropertyRatesFetcher.new(credentials).fetch(property_id)
     #   if result.success?
     #     result.value
     #   end
