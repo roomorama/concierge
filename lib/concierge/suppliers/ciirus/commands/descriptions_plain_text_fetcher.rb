@@ -1,6 +1,6 @@
 module Ciirus
   module Commands
-    #  +Ciirus::DescriptionsPlainTextFetcher+
+    #  +Ciirus::Commands::DescriptionsPlainTextFetcher+
     #
     # This class is responsible for fetching a property description plain text
     # from Ciirus API, parsing the response and building the result.

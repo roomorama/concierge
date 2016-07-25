@@ -1,6 +1,6 @@
 module Ciirus
   module Commands
-    #  +Ciirus::DescriptionsHtmlFetcher+
+    #  +Ciirus::Commands::DescriptionsHtmlFetcher+
     #
     # This class is responsible for fetching a property html description
     # from Ciirus API, parsing the response, sanitize and building the result. The fetcher is useful

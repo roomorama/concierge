@@ -1,6 +1,6 @@
 module Ciirus
   module Commands
-    #  +Ciirus::PropertyAvailableFetcher+
+    #  +Ciirus::Commands::PropertyAvailableFetcher+
     #
     # This class is responsible for fetching property availability
     # from Ciirus API and parsing the response.

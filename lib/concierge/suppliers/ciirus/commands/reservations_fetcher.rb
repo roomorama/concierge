@@ -1,6 +1,6 @@
 module Ciirus
   module Commands
-    #  +Ciirus::ReservationsFetcher+
+    #  +Ciirus::Commands::ReservationsFetcher+
     #
     # This class is responsible for fetching property reservations
     # from Ciirus API, parsing the response and building the result.
