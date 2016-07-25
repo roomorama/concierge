@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Ciirus::PropertyValidator do
+RSpec.describe Ciirus::Validators::PropertyValidator do
 
   let(:invalid_country_property) { double(type: 'Unspecified', country: '654987')}
   let(:invalid_type_property) { double(type: 'Unspecified', country: 'Turkey')}
