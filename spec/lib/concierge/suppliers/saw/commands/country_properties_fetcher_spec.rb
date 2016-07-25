@@ -165,13 +165,13 @@ RSpec.describe SAW::Commands::CountryPropertiesFetcher do
       monthly_rates = properties.map(&:monthly_rate)
 
       expect(nightly_rates).to eq(
-        ["123.45", "49.94", "99.01", "18.50", "1811.31"]
+        [123.45, 49.94, 99.01, 18.5, 1811.31]
       )
       expect(weekly_rates).to eq(
-        ["864.15", "349.58", "693.07", "129.50", "12679.17"]
+        [864.15, 349.58, 693.07, 129.5, 12679.17]
       )
       expect(monthly_rates).to eq(
-        ["3703.50", "1498.20", "2970.30", "555.00", "54339.30"]
+        [3703.5, 1498.2, 2970.3, 555, 54339.3]
       )
     end
 
