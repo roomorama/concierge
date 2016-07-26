@@ -39,14 +39,16 @@ RSpec.describe Workers::Suppliers::Waytostay do
 
       # properties 001 and 002 is stubbed for client fetches,
       # 003, 004 and 005 stubbed for concierge database
-      allow(subject.client).to receive(:get_property) do |ref|
-        expect(["001", "002"]).to include ref
-        Roomorama::Property.load(
-          Concierge::SafeAccessHash.new(
-            JSON.parse(read_fixture("waytostay/properties/#{ref}.roomorama-attributes.json"))
-          )
-        )
+      allow_any_instance_of(Waytostay::Client).to receive(:get_properties_by_ids) do |ids|
+        properties = ids.collect do |ref|
+          Roomorama::Property.load(
+            Concierge::SafeAccessHash.new(
+              JSON.parse(read_fixture("waytostay/properties/#{ref}.roomorama-attributes.json"))
+            ))
+        end
+        Result.new properties
       end
+
       create_property(identifier: "003", host_id: host.id)
       create_property(identifier: "004", host_id: host.id)
       create_property(identifier: "005", host_id: host.id)
@@ -94,6 +96,22 @@ RSpec.describe Workers::Suppliers::Waytostay do
           expect(error.context[:events].last["label"]).to eq "Response Mismatch"
         end
       end
+    end
+
+    describe "fetch_property" do
+      it "calls batch properties api" do
+        expect_any_instance_of(Waytostay::Client).to receive(:get_properties_by_ids) do |ids|
+          ref = ids[0] # expect a one-element array
+          Result.new [Roomorama::Property.load(
+              Concierge::SafeAccessHash.new(
+                JSON.parse(read_fixture("waytostay/properties/#{ref}.roomorama-attributes.json"))
+              ))]
+        end
+        fetch_result = subject.send(:fetch_property, "002", ["001", "002"], 1)
+        expect(fetch_result).to be_success
+        expect(fetch_result.value).to be_a Roomorama::Property
+      end
+
     end
   end
 end

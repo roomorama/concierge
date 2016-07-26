@@ -23,14 +23,17 @@ module Workers::Suppliers
       uniq_properties_in(changes.value).each do |property_ref|
         property_sync.start(property_ref) do
           wrapped_property = if changes.value[:properties].include? property_ref
-                               # get the updated property from supplier
-                               client.get_property(property_ref)
+                               fetch_property(property_ref, changes.value[:properties])
                              else
                                # no changes on property attributes indicated, just
                                # load one from db so we can attach other changes
                                load_existing property_ref
                              end
-          next wrapped_property unless wrapped_property.success?
+
+          unless wrapped_property.success?
+            # if rate limit, return
+            next wrapped_property
+          end
 
           if changes.value[:media].include?(property_ref)
             wrapped_property = client.update_media(wrapped_property.result)
@@ -50,6 +53,34 @@ module Workers::Suppliers
     end
 
     private
+
+    # Minimize the number of requests, by fetching properties in batches of 25, to also
+    # avoid too much memory consumption.
+    #
+    # - Search for and return a +Result+ wrapped property from an cache of batch-fetched properties
+    # - If not found, fetch the next batch, search and repeat till found
+    #
+    def fetch_property(property_ref, ids, batch_size=25)
+      @fetched_ids   ||= []
+      @current_batch ||= (ids - @fetched_ids)[0...batch_size]
+
+      while @current_batch && !@current_batch.empty?
+        if @properties_cache.nil?
+          result = client.get_properties_by_ids @current_batch
+          return result unless result.success?
+          @properties_cache = result.value
+        end
+
+        property_result = @properties_cache.find { |p| p.value&.identifier == property_ref }
+        return property_result unless property_result.nil?
+
+        @current_batch = (ids - @fetched_ids)[0...batch_size]
+        @fetched_ids += @current_batch
+        @properties_cache = nil
+      end
+
+      return Result.error(:not_found)
+    end
 
     # Loops through all pages of waytostay new properties, yielding each
     # as a Roomorama::Property
