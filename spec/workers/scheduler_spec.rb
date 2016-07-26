@@ -43,8 +43,8 @@ RSpec.describe Workers::Scheduler do
       new_reloaded = BackgroundWorkerRepository.find(new_worker.id)
       pending_reloaded = BackgroundWorkerRepository.find(pending_worker.id)
 
-      expect(new_reloaded.status).to eq "running"
-      expect(pending_reloaded.status).to eq "running"
+      expect(new_reloaded.status).to eq "idle"
+      expect(pending_reloaded.status).to eq "idle"
     end
   end
 end

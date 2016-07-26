@@ -27,7 +27,6 @@ module Workers
     def trigger_pending!
       BackgroundWorkerRepository.pending.each do |background_worker|
         log_event(background_worker)
-        mark_running(background_worker)
         enqueue(background_worker)
       end
     end
@@ -36,13 +35,6 @@ module Workers
 
     def default_logger
       ::Logger.new(LOG_PATH)
-    end
-
-    # updates the background worker status to +running+ so that it will not
-    # be enqueued again while it performs its task.
-    def mark_running(worker)
-      worker.status = "running"
-      BackgroundWorkerRepository.update(worker)
     end
 
     def enqueue(worker)
