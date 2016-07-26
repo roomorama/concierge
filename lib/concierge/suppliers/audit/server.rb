@@ -9,6 +9,13 @@ module Audit
   # For more information on how to interact with Audit, check the project Wiki.
   class Server
 
+    SCENARIOS = [
+      'success',
+      'connection_timeout',
+      'wrong_json',
+      'invalid_json',
+    ]
+
     def initialize(app)
       @app = app
     end
@@ -38,12 +45,7 @@ module Audit
       case File.basename(env['PATH_INFO'])
       when /properties/
         property_json = JSON.parse(IO.read 'spec/fixtures/audit/property.json')
-        result = [
-          'success',
-          'connection_timeout',
-          'wrong_json',
-          'invalid_json',
-        ].collect {|k| property_json.merge('identifier' => k, 'title' => "#{property_json['title']} (#{k})") }
+        result = SCENARIOS.collect {|k| property_json.merge('identifier' => k, 'title' => "#{property_json['title']} (#{k})") }
         new_body = Hash(result: result).to_json
         [200, {}, [new_body]]
 
@@ -74,10 +76,7 @@ module Audit
         body.join("")
       end
 
-      body_string.gsub("REPLACEME", [
-        "success",
-        "connection_timeout"
-      ].sample)
+      body_string.gsub("REPLACEME", SCENARIOS.sample)
     end
   end
 end
