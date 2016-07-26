@@ -30,7 +30,7 @@ module Woori
     # Returns a +Result+ wrapping a +Quotation+ when operation succeeds
     # Returns a +Result+ with +Result::Error+ when operation fails
     def quote(params)
-      command = Woori::Commands::PriceFetcher.new(credentials)
+      command = Woori::Commands::QuotationFetcher.new(credentials)
       command.call(params)
     end
   end
