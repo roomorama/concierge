@@ -25,11 +25,15 @@ module Workers::Suppliers::Poplidays
               next result unless result.success?
               details = result.value
 
-              result = fetch_availabilities(property_id)
-              next result unless result.success?
-              availabilities = result.value
+              if details_validator(details).valid?
+                result = fetch_availabilities(property_id)
+                next result unless result.success?
+                availabilities = result.value
 
-              mapper.build(property, details, availabilities)
+                mapper.build(property, details, availabilities)
+              else
+                Result.error(:invalid_property_details_error)
+              end
             end
           end
         end
@@ -84,7 +88,11 @@ module Workers::Suppliers::Poplidays
     end
 
     def validator(property)
-      Poplidays::PropertyValidator.new(property)
+      Poplidays::Validators::PropertyValidator.new(property)
+    end
+
+    def details_validator(details)
+      Poplidays::Validators::PropertyDetailsValidator.new(details)
     end
 
     def credentials
