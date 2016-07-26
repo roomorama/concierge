@@ -23,6 +23,10 @@ RSpec.describe API::Middlewares::Authentication do
     expect(post("/supplier/quote", headers)).to eq success
   end
 
+  it "is valid if it is a POST with content-type and a whitelisted endpoint" do
+    expect(post("/checkout", headers)).to eq success
+  end
+
   it "is forbidden without a request body" do
     headers.delete(:input)
     expect(post("/supplier/quote", headers)).to eq forbidden

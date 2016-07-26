@@ -76,6 +76,7 @@ module API
           env["rack.input"] = StringIO.new(json_encode(params))
           true
         end
+        alias_method :checkout, :quote
 
         # translates params for a +booking+ call. Receives a +data+ argument
         # representing the webhook payload sent by Roomorama and changes
@@ -188,6 +189,14 @@ module API
           [status, headers, [json_encode(payload)]]
         end
 
+        # the checkout action should be a static (supplier-independent)
+        # action (see +API::Controllers::Static::Checkout+ for more information).
+        #
+        # The upstream response is returned untouched.
+        def checkout(status, headers, response)
+          [status, headers, [json_encode(response)]]
+        end
+
         # When making a booking, Roomorama checks only the HTTP status code of
         # the response, and not the content itself. In that sense, it is enough
         # to use the status code and response from Concierge, since they should
@@ -238,8 +247,10 @@ module API
         event            = webhook_payload["event"]
 
         case event
-        when "quote_instant", "checkout_instant"
+        when "quote_instant"
           concierge_request.quote(webhook_payload)
+        when "checkout_instant"
+          concierge_request.checkout(webhook_payload)
         when "booked_instant"
           concierge_request.booking(webhook_payload)
         when "cancelled"
@@ -262,8 +273,10 @@ module API
         event = webhook_payload["event"]
 
         case event
-        when "quote_instant", "checkout_instant"
+        when "quote_instant"
           webhook_response.quote(status, headers, data)
+        when "checkout_instant"
+          webhook_response.checkout(status, headers, data)
         when "booked_instant"
           webhook_response.booking(status, headers, data)
         when "cancelled"

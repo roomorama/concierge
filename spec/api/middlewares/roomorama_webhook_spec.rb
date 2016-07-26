@@ -91,6 +91,22 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
     end
   end
 
+  describe "checkout process" do
+    let(:concierge_response) {
+      { status: "ok" }
+    }
+
+    before do
+      roomorama_webhook["action"] = "checkout_instant"
+      roomorama_webhook["event"]  = "checkout_instant"
+    end
+
+    it "returns the upstream response untouched" do
+      response = concierge_response.to_json
+      expect(post("/", headers)).to eq [200, { "Content-Length" => response.size.to_s }, response]
+    end
+  end
+
   describe "cancelling bookings" do
     let(:concierge_response) {
       {
@@ -103,7 +119,6 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
       roomorama_webhook["action"] = "cancelled"
       roomorama_webhook["event"] = "cancelled"
       roomorama_webhook["inquiry"]["reference_number"] = "test_code"
-
     end
 
     it "returns 200 if upstream was success" do
