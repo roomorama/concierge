@@ -34,7 +34,7 @@ RSpec.describe Workers::Suppliers::Waytostay do
       # bookings:     []
     }}
     before do
-      allow(subject).to receive(:last_synced_timestamp) { Time.now() }
+      allow(subject).to receive(:last_synced_timestamp) { Time.now().to_i }
       allow(subject.client).to receive(:get_changes_since).and_return(Result.new(changes))
 
       # properties 001 and 002 is stubbed for client fetches,
@@ -52,6 +52,14 @@ RSpec.describe Workers::Suppliers::Waytostay do
       create_property(identifier: "005", host_id: host.id)
       create_property(identifier: "006", host_id: host.id)
 
+    end
+
+    describe "last_synced_timestamp" do
+      before do
+        create_sync_process(successful: true, host_id: host.id)
+      end
+
+      it { expect(subject.send(:last_synced_timestamp)).to be_a Integer }
     end
 
     describe "perform" do

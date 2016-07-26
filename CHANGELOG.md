@@ -8,6 +8,9 @@ how this file is formatted and how the process works.
 ### Added
 - Send inquiry id as `agent_reference` field to WayToStay
 
+### Fixed
+- Bug when integer timestamp is expected but Time is given instead
+
 ## [0.5.2] - 2016-07-21
 ### Changed
 - `Roomorama::Calendar::Entry` now supports `minimum_stay` and synchronises that with Roomorama.
