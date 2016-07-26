@@ -62,7 +62,6 @@ module Ciirus
         result.number_of_bedrooms = property.bedrooms
         result.max_guests = property.sleeps
         result.default_to_available = false
-        result.country_code = country_converter.code_by_name(property.country).value
         result.lat = property.xco
         result.lng = property.yco
         result.number_of_bathrooms = property.bathrooms
@@ -72,6 +71,9 @@ module Ciirus
         result.amenities = property.amenities
         result.pets_allowed = property.pets_allowed
         result.currency = property.currency_code
+
+        country_code = country_converter.code_by_name(property.country)
+        result.country_code = country_code.value if country_code.success?
       end
 
       def set_description!(result, description)

@@ -6,6 +6,7 @@ RSpec.describe Ciirus::Mappers::RoomoramaProperty do
     ['airconditioning', 'gym', 'internet', 'outdoor_space', 'parking',
      'pool', 'tv', 'wifi']
   end
+  let(:country) { 'UK' }
   let(:property) do
     Ciirus::Entities::Property.new(
       {
@@ -18,7 +19,7 @@ RSpec.describe Ciirus::Mappers::RoomoramaProperty do
         sleeps: 6,
         min_nights_stay: 0,
         type: 'Villa',
-        country: 'UK',
+        country: country,
         xco: '28.2238577',
         yco: '-81.4975719',
         bathrooms: 4,
@@ -95,5 +96,14 @@ RSpec.describe Ciirus::Mappers::RoomoramaProperty do
     expect(roomorama_property.nightly_rate).to eq(141.43)
     expect(roomorama_property.weekly_rate).to eq(990.01)
     expect(roomorama_property.monthly_rate).to eq(4242.9)
+  end
+
+  context 'when country is unknown' do
+    let(:country) { '1568799' }
+    it 'doesnot fill the country code' do
+      roomorama_property = subject.build(property, images, rates, description)
+
+      expect(roomorama_property.country_code).to be_nil
+    end
   end
 end
