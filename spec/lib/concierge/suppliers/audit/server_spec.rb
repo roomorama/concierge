@@ -16,6 +16,16 @@ RSpec.describe Audit::Server do
     expect(response_body_as_string(response)).to eq(IO.read file)
   end
 
+  it "serves sample requests as success" do
+    file = %w[
+      spec/fixtures/audit/cancel.success.json
+      spec/fixtures/audit/quotation.success.json
+    ].sample
+    code, env, response = middleware.call Rack::MockRequest.env_for("http://admin.example.com/#{file.gsub("success", "sample")}", {})
+    expect(code).to eq(200)
+    expect(response_body_as_string(response)).to eq(IO.read file)
+  end
+
   it "serves connection_timeout with correct content but after CONNECTION_TIMEOUT seconds delay" do
     # we could do a start/end check.. but that'll make test slower
     expect(middleware).to receive(:sleep).with(Concierge::HTTPClient::CONNECTION_TIMEOUT + 1).and_return(nil)
@@ -51,6 +61,12 @@ RSpec.describe Audit::Server do
     code, env, response = middleware.call Rack::MockRequest.env_for("http://admin.example.com/#{file}", {})
     expect(code).to eq(200)
     expect(response_body_as_string(response)).to eq("{")
+  end
+
+  it "serves unknown as 404" do
+    file = Dir["spec/fixtures/audit/*.success.json"].sample.gsub("success", "unknown")
+    code, env, response = middleware.call Rack::MockRequest.env_for("http://admin.example.com/#{file}", {})
+    expect(code).to eq(404)
   end
 
   def result_without_key(hash, key)
