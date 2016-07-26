@@ -31,7 +31,7 @@ module Workers::Suppliers
                              end
 
           unless wrapped_property.success?
-            # if rate limit, return
+            return if wrapped_property.error.code == :http_status_429
             next wrapped_property
           end
 

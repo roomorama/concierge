@@ -96,6 +96,16 @@ RSpec.describe Workers::Suppliers::Waytostay do
           expect(error.context[:events].last["label"]).to eq "Response Mismatch"
         end
       end
+
+      context "when rate limit is hit" do
+        it "should stop making any more calls" do
+          expect(subject.client).to receive(:get_properties_by_ids).once do
+            Result.error(:http_status_429)
+          end
+          expect(subject.client).to_not receive(:update_media)
+          subject.perform
+        end
+      end
     end
 
     describe "fetch_property" do
