@@ -34,19 +34,19 @@ module Woori
 
       private
       def days
-        safe_hash.get("data")
+        @days ||= safe_hash.get("data")
       end
 
       def nightly_rate
-        (monthly_rate / 30).to_i
+        @nightly_rate ||= (monthly_rate / days.size).to_i
       end
 
       def weekly_rate
-        nightly_rate * 7 
+        @weekly_rate ||= nightly_rate * 7
       end
 
       def monthly_rate
-        days.inject(0) { |sum, day| sum + day["price"].to_i }
+        @monthly_rate ||= days.inject(0) { |sum, day| sum + day["price"].to_i }
       end
     end
   end
