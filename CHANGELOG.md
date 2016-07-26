@@ -8,6 +8,10 @@ how this file is formatted and how the process works.
 ### Added
 - `net_rate`, `host_fee` and `host_fee_percentage` to quotation response
 - `fee_percentage` column to `Host` entity
+- Send inquiry id as `agent_reference` field to WayToStay
+
+### Fixed
+- Bug when integer timestamp is expected but Time is given instead
 
 ### Changed
 - `Kigo::ResponseParser` set host's fee percentage to quotation
