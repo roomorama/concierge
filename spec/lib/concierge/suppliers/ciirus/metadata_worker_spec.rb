@@ -62,6 +62,23 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
       )
     ]
   end
+  let(:security_deposit) do
+    Ciirus::Entities::Extra.new(
+      {
+        property_id: '33692',
+        item_code: 'SD',
+        item_description: 'Security Deposit',
+        flat_fee: true,
+        flat_fee_amount: 2500.00,
+        daily_fee: false,
+        daily_fee_amount: 0,
+        percentage_fee: false,
+        percentage: 0,
+        mandatory: true,
+        minimum_charge: 0.00,
+      }
+    )
+  end
   let(:images) { ['http://image.com/152523'] }
   let(:description) { 'Some description here' }
   let(:success_result) { Result.new(properties_list) }
@@ -232,6 +249,33 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
     end
   end
 
+  context 'fetching security deposit' do
+    before do
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_properties) { success_result }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_permissions) { Result.new(permissions) }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_images) { Result.new(images) }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_description) { Result.new(description) }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_rates) { Result.new(rates) }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_security_deposit) { Result.error(:soap_error) }
+    end
+
+    context 'even without security deposit' do
+      it 'finalizes synchronisation' do
+        allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
+
+        expect(subject.synchronisation).to receive(:finish!)
+        subject.perform
+      end
+
+      it 'creates valid properties in database' do
+        allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
+        expect {
+          subject.perform
+        }.to change { PropertyRepository.count }.by(1)
+      end
+    end
+  end
+
   context 'success' do
 
     before do
@@ -240,6 +284,7 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_images) { Result.new(images) }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_description) { Result.new(description) }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_rates) { Result.new(rates) }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_security_deposit) { Result.new(security_deposit) }
     end
 
     it 'finalizes synchronisation' do

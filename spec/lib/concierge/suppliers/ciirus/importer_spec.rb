@@ -70,6 +70,16 @@ RSpec.describe Ciirus::Importer do
     it_behaves_like 'handling errors'
   end
 
+  describe '#fetch_security_deposit' do
+    let(:wsdl) { read_fixture('ciirus/additional_wsdl.xml') }
+    let(:method) { Ciirus::Commands::SecurityDepositFetcher::OPERATION_NAME }
+    let(:response) { read_fixture('ciirus/responses/extras_response.xml') }
+    let(:result) { subject.fetch_security_deposit(property_id) }
+
+    it_behaves_like 'success response'
+    it_behaves_like 'handling errors'
+  end
+
   describe '#fetch_description' do
     let(:result) { subject.fetch_description(property_id) }
     let(:response) { read_fixture('ciirus/responses/descriptions_plain_text_response.xml') }

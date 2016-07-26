@@ -22,7 +22,7 @@ module Ciirus
 
       def call(property_id)
         message = xml_builder.extras(property_id)
-        result = remote_call(message)
+        result = additional_remote_call(message)
         if result.success?
           result_hash = to_safe_hash(result.value)
           if valid_result?(result_hash)

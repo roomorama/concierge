@@ -36,9 +36,10 @@ module Ciirus
       #   * +images+ [Array] array of images URLs
       #   * +rates+ [Array] array of Ciirus::Entities::PropertyRate
       #   * +description+ [String]
-      #
+      #   * +security_deposit+ [Ciirus::Entities::Extra] security deposit info
+      #                                                  can be nil
       # Returns +Roomorama::Property+
-      def build(property, images, rates, description)
+      def build(property, images, rates, description, security_deposit)
         result = Roomorama::Property.new(property.property_id)
         result.instant_booking!
 
@@ -46,6 +47,7 @@ module Ciirus
         set_description!(result, description)
         set_images!(result, images)
         set_rates_and_minimum_stay!(result, rates)
+        set_security_deposit_info!(result, property, security_deposit)
 
         result
       end
@@ -110,6 +112,20 @@ module Ciirus
         result.nightly_rate = min_price
         result.weekly_rate  = (min_price * 7).round(2)
         result.monthly_rate = (min_price * 30).round(2)
+      end
+
+      def set_security_deposit_info!(result, property, security_deposit)
+        amount = extract_security_deposit_amount(security_deposit)
+        if amount
+          result.security_deposit_currency_code = property.currency_code
+          result.security_deposit_amount = amount
+        end
+      end
+
+      def extract_security_deposit_amount(security_deposit)
+        if security_deposit && security_deposit.mandatory && security_deposit.flat_fee && security_deposit.flat_fee_amount != 0
+          security_deposit.flat_fee_amount
+        end
       end
 
       def country_converter
