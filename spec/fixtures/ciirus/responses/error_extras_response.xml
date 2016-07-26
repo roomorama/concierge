@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope
+        xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <soap:Body>
+    <GetExtrasResponse xmlns="http://xml.ciirus.com/">
+      <GetExtrasResult>
+        <RowCount>0</RowCount>
+        <ErrorMsg>GetExtras: You do not have access rights to this Property (2).</ErrorMsg>
+      </GetExtrasResult>
+    </GetExtrasResponse>
+  </soap:Body>
+</soap:Envelope>
