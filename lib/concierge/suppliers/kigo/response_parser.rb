@@ -58,10 +58,12 @@ module Kigo
         end
 
         return property_not_found unless property
+        return host_not_found unless host
 
-        quotation.available  = true
-        quotation.currency   = currency
-        quotation.total      = total.to_f
+        quotation.available           = true
+        quotation.host_fee_percentage = host.fee_percentage
+        quotation.currency            = currency
+        quotation.total               = total.to_f
 
         Result.new(quotation)
       elsif payload["API_RESULT_CODE"] == "E_NOSUCH" && payload["API_RESULT_TEXT"] =~ /is not available for your selected period/
@@ -120,8 +122,7 @@ module Kigo
     end
 
     def build_quotation(params)
-      attributes = params.to_h.merge(host_fee_percentage: host.fee_percentage)
-      Quotation.new(attributes)
+      Quotation.new(params)
     end
 
     def unrecognised_response
@@ -130,6 +131,10 @@ module Kigo
 
     def property_not_found
       Result.error(:property_not_found)
+    end
+
+    def host_not_found
+      Result.error(:host_not_found)
     end
 
     def host
