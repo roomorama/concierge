@@ -43,6 +43,7 @@ module API
       #   secrets.for(request_path) # => X32842I
       class Secrets
         APP_SECRETS = {
+          "/audit"       => ENV["ROOMORAMA_SECRET_AUDIT"],
           "/jtb"         => ENV["ROOMORAMA_SECRET_JTB"],
           "/kigo/legacy" => ENV["ROOMORAMA_SECRET_KIGO_LEGACY"],
           "/kigo"        => ENV["ROOMORAMA_SECRET_KIGO"],

@@ -1,0 +1,12 @@
+{
+  "result": {
+    "property_id": "String",
+    "unit_id": "String",
+    "check_in": "String",
+    "check_out": "String",
+    "guests": 2,
+    "available": true,
+    "total": 400.59,
+    "currency": "USD"
+  }
+}

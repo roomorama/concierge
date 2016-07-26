@@ -1,0 +1,103 @@
+{
+  "result": [
+    {
+      "identifier": "audit-property-1",
+      "title": "Audit Property #1",
+      "type": "house",
+      "subtype": "cabin",
+      "postal_code": "069935",
+      "country_code": "SG",
+      "city": "Singapore",
+      "neighborhood": "CBD",
+      "description": "Audit property description",
+      "number_of_bedrooms": 2,
+      "minimum_stay": 1,
+      "weekly_rate": 100,
+      "monthly_rate": 400,
+      "security_deposit_amount": 99,
+      "security_deposit_currency_code": "MYR",
+      "security_deposit_type": "credit_card_auth",
+      "pets_allowed": true,
+      "smoking_allowed": true,
+      "services_cleaning": true,
+      "services_cleaning_rate": 10,
+      "services_cleaning_required": true,
+      "services_airport_pickup": true,
+      "services_car_rental": true,
+      "services_car_rental_rate": 11.5,
+      "services_airport_pickup_rate": 12,
+      "services_concierge": true,
+      "services_concierge_rate": 13,
+      "disabled": false,
+      "instant_booking": true,
+      "check_in_instructions": "Lorem ipsum instructions",
+      "cancellation_policy": "standard",
+      "default_to_available": true,
+      "lat": 1.282097,
+      "lng": 103.848025,
+      "currency": "SGD",
+      "address": "115 Amoy Street",
+      "apartment_number": "#02-01",
+      "max_guests": 2,
+      "nightly_rate": 100,
+      "availability_dates": {
+        "2016-07-11": true,
+        "2016-07-12": true,
+        "2016-07-13": true
+      },
+      "images": [
+        {
+          "identifier": "audit-image1",
+          "url": "/spec/fixtures/audit/villa.jpg?img1",
+          "caption": "Barbecue Pit"
+        }
+      ],
+      "units": [
+        {
+          "identifier": "audit-unit1",
+          "title": "Audit Unit 1",
+          "description": "Audit unit 1 description",
+          "nightly_rate": 20,
+          "weekly_rate": 100,
+          "monthly_rate": 400,
+          "number_of_bedrooms": 2,
+          "max_guests": 4,
+          "host_daily_price": 20,
+          "host_weekly_price": 100,
+          "host_monthly_price": 400,
+          "number_of_units": 2,
+          "images": [
+            {
+              "identifier": "audit-unit1img1",
+              "url": "/spec/fixtures/audit/villa.jpg?unit1img1"
+            },
+            {
+              "identifier": "audit-unit1img2",
+              "url": "/spec/fixtures/audit/😻猫.png?unit1img2"
+            }
+          ]
+        },
+        {
+          "identifier": "audit-unit2",
+          "title": "Audit Unit 2",
+          "description": "Audit unit 2 description",
+          "nightly_rate": 20,
+          "weekly_rate": 100,
+          "monthly_rate": 400,
+          "number_of_bedrooms": 2,
+          "max_guests": 4,
+          "host_daily_price": 20,
+          "host_weekly_price": 100,
+          "host_monthly_price": 400,
+          "number_of_units": 2,
+          "images": [
+            {
+              "identifier": "audit-unit2img1",
+              "url": "/spec/fixtures/audit/😻猫.png?unit2img1"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
