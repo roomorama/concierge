@@ -46,6 +46,7 @@ RSpec.describe Audit::Server do
     file_json = JSON.parse(IO.read file)
     resp_json = JSON.parse(response_body_as_string(response))
     expect(resp_json).not_to eq(file_json)
+    expect(Audit::Server::SCENARIOS).to include(resp_json['result']['reference_number'])
     expect(result_without_key resp_json, 'reference_number').to eq(result_without_key file_json, 'reference_number')
   end
 
