@@ -14,64 +14,72 @@ module Workers::Suppliers
     end
 
     def perform
-      last_updated_at = last_synced_date
       offset = 0
 
       begin
-        result = importer.fetch_properties(last_updated_at, BATCH_SIZE, offset)
+        result = importer.fetch_properties(last_synced_date, BATCH_SIZE, offset)
 
         if result.success?
           properties = result.value
           size_fetched = properties.size
           offset = offset + size_fetched
-          puts "Fetched: #{result.value.size} (limit: #{BATCH_SIZE}, offset: #{offset})"
+          puts "FETCH PROPERTIES. Fetched: #{result.value.size} properties. (limit: #{BATCH_SIZE}, offset: #{offset})"
 
           properties.each do |property|
             synchronisation.start(property.identifier) do
               Concierge.context.disable!
-              puts "Sync started for: #{property.identifier}"
+              puts "  Processing property id=#{property.identifier}..."
 
-              units_result = importer.fetch_units(property.identifier)
+              begin
+                units_result = importer.fetch_units(property.identifier)
 
-              if units_result.success?
-                puts "  Fetched units: #{units_result.value.size}"
-                units = units_result.value
-                  
-                units.each do |unit|
-                  rates_result = importer.fetch_unit_rates(unit.identifier)
+                if units_result.success?
+                  puts "    FETCH UNITS: Fetched: #{units_result.value.size} units for property id=#{property.identifier}"
+                  units = units_result.value
+                    
+                  units.each do |unit|
+                    puts "      FETCH UNIT RATES: Processing unit id=#{unit.identifier} for property id=#{property.identifier}"
+                    begin
+                      rates_result = importer.fetch_unit_rates(unit.identifier)
 
-                  if rates_result.success?
-                    rates = rates_result.value
-                
-                    puts "  Rates: #{rates.nightly_rate} / #{rates.weekly_rate} / #{rates.monthly_rate}"
+                      if rates_result.success?
+                        rates = rates_result.value
+                    
+                        puts "      FETCH UNIT RATES: Success for #{unit.identifier}: #{rates.nightly_rate} / #{rates.weekly_rate} / #{rates.monthly_rate}"
 
-                    unit.nightly_rate = rates.nightly_rate
-                    unit.weekly_rate  = rates.weekly_rate
-                    unit.monthly_rate = rates.monthly_rate
+                        unit.nightly_rate = rates.nightly_rate
+                        unit.weekly_rate  = rates.weekly_rate
+                        unit.monthly_rate = rates.monthly_rate
 
-                    property.add_unit(unit)
-                  else
-                    message = "Failed to perform the `#fetch_unit_rates` operation for unit id=#{unit.identifier}"
-                    puts message
-                    announce_error(message, units_result)
-                    rates_result
+                        property.add_unit(unit)
+                      else
+                        message = "      FETCH UNIT RATES: Failed to perform the `#fetch_unit_rates` operation for unit id=#{unit.identifier}. Retrying..."
+                        puts message
+                        announce_error(message, units_result)
+                        # rates_result
+                        raise "error"
+                      end
+                    rescue
+                      retry
+                    end
                   end
+
+                  Result.new(property)
+                else
+                  message = "    FETCH UNITS: Failed to perform the `#fetch_units` operation for property id=#{property.identifier}. Retrying..."
+                  puts message
+                  announce_error(message, units_result)
+                  # units_result
+                  raise "error"
                 end
-
-                Result.new(property)
-              else
-                message = "Failed to perform the `#fetch_units` operation for property id=#{property.identifier}"
-                puts message
-                announce_error(message, units_result)
-                units_result
+              rescue
+                retry
               end
-
             end
           end
         else
-          puts "Failed to perform the `#fetch_properties` operation."
-
-          message = "Failed to perform the `#fetch_properties` operation"
+          message = "Failed to perform the `#fetch_properties` operation. Parameters: date=#{last_synced_date} limit=#{BATCH_SIZE} offset=#{offset}. Retrying..."
+          puts message
           announce_error(message, result)
           next
         end
