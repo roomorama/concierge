@@ -14,8 +14,6 @@ module Poplidays
 
       # Poplidays API version
       VERSION = 'v2'
-      # URL for API calls. All calls are relative to this endpoint.
-      URL = 'api.poplidays.com'
       DEFAULT_PROTOCOL = 'https'
 
       CACHE_PREFIX = 'poplidays'
@@ -98,7 +96,7 @@ module Poplidays
       private
 
       def client
-        url = "#{protocol}://#{URL}"
+        url = "#{protocol}://#{credentials.url}"
         @client ||= Concierge::HTTPClient.new(url, options = {timeout: timeout})
       end
 

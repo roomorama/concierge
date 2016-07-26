@@ -4,7 +4,7 @@ RSpec.describe Poplidays::Importer do
   include Support::Fixtures
   include Support::HTTPStubbing
 
-  let(:credentials) { double }
+  let(:credentials) { double(url: 'api.poplidays.com') }
   let(:property_id) { '35898794' }
 
   subject { described_class.new(credentials) }
