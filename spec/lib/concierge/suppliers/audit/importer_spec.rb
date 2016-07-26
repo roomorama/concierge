@@ -37,7 +37,7 @@ RSpec.describe Audit::Importer do
   end
 
   describe '#json_to_property' do
-    let(:json) { JSON.parse(read_fixture('audit/fetch_properties.json'))['result'].sample }
+    let(:json) { JSON.parse(read_fixture('audit/property.json')) }
 
     it 'should return Result of Roomorama::Property with calendar parsed' do
       parsed_calendar_entries = []
