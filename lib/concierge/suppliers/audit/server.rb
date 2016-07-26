@@ -1,3 +1,4 @@
+require 'json'
 require_relative '../../http_client'
 
 module Audit
@@ -35,6 +36,17 @@ module Audit
 
     def handle_404(env)
       case File.basename(env['PATH_INFO'])
+      when /properties/
+        property_json = JSON.parse(IO.read 'spec/fixtures/audit/property.json')
+        result = [
+          'success',
+          'connection_timeout',
+          'wrong_json',
+          'invalid_json',
+        ].collect {|k| property_json.merge('identifier' => k, 'title' => "#{property_json['title']} (#{k})") }
+        new_body = Hash(result: result).to_json
+        [200, {}, [new_body]]
+
       when /sample/
         # sample = success
         retry_with(env, 'sample', 'success')
