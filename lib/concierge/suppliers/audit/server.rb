@@ -46,7 +46,7 @@ module Audit
       when /properties/
         property_json = JSON.parse(IO.read 'spec/fixtures/audit/property.json')
         result = SCENARIOS.collect {|k| property_json.merge('identifier' => k, 'title' => "#{property_json['title']} (#{k})") }
-        new_body = Hash(result: result).to_json
+        new_body = JSON.pretty_generate(result: result)
         [200, {}, [new_body]]
 
       when /sample/
