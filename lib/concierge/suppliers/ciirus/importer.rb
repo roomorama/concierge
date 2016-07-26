@@ -60,5 +60,11 @@ module Ciirus
       fetcher = Commands::PropertyPermissionsFetcher.new(credentials)
       fetcher.call(property_id)
     end
+
+    # Returns the Result wrapping the Ciirus::Entities::Extra
+    def fetch_security_deposit(property_id)
+      fetcher = Commands::SecurityDepositFetcher.new(credentials)
+      fetcher.call(property_id)
+    end
   end
 end

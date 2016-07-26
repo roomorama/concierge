@@ -58,12 +58,29 @@ RSpec.describe Ciirus::Mappers::RoomoramaProperty do
       )
     ]
   end
+  let(:security_deposit) do
+    Ciirus::Entities::Extra.new(
+      {
+        property_id: '33692',
+        item_code: 'SD',
+        item_description: 'Security Deposit',
+        flat_fee: true,
+        flat_fee_amount: 2500.00,
+        daily_fee: false,
+        daily_fee_amount: 0,
+        percentage_fee: false,
+        percentage: 0,
+        mandatory: true,
+        minimum_charge: 0.00,
+      }
+    )
+  end
   let(:description) { 'Some description string' }
 
   subject { described_class.new }
 
   it 'returns mapped roomorama property entity' do
-    roomorama_property = subject.build(property, images, rates, description)
+    roomorama_property = subject.build(property, images, rates, description, security_deposit)
 
     expect(roomorama_property).to be_a(Roomorama::Property)
     expect(roomorama_property.identifier).to eq('33680')
@@ -96,12 +113,22 @@ RSpec.describe Ciirus::Mappers::RoomoramaProperty do
     expect(roomorama_property.nightly_rate).to eq(141.43)
     expect(roomorama_property.weekly_rate).to eq(990.01)
     expect(roomorama_property.monthly_rate).to eq(4242.9)
+
+    expect(roomorama_property.security_deposit_amount).to eq(2500.0)
+    expect(roomorama_property.security_deposit_currency_code).to eq('USD')
+  end
+
+  it 'works fine if security_deposit is nil' do
+    roomorama_property = subject.build(property, images, rates, description, nil)
+
+    expect(roomorama_property.security_deposit_amount).to be_nil
+    expect(roomorama_property.security_deposit_currency_code).to be_nil
   end
 
   context 'when country is unknown' do
     let(:country) { '1568799' }
     it 'doesnot fill the country code' do
-      roomorama_property = subject.build(property, images, rates, description)
+      roomorama_property = subject.build(property, images, rates, description, security_deposit)
 
       expect(roomorama_property.country_code).to be_nil
     end

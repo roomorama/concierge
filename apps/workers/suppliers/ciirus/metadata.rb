@@ -38,7 +38,10 @@ module Workers::Suppliers::Ciirus
                   next result unless result.success?
                   rates = result.value
 
-                  roomorama_property = mapper.build(property, images, rates, description)
+                  result = fetch_security_deposit(property_id)
+                  security_deposit = result.success? ? result.value : nil
+
+                  roomorama_property = mapper.build(property, images, rates, description, security_deposit)
                   Result.new(roomorama_property)
                 else
                   invalid_permissions_error(permissions)
@@ -110,6 +113,21 @@ module Workers::Suppliers::Ciirus
       unless result.success?
         with_context_enabled do
           message = "Failed to fetch permissions for property `#{property_id}`"
+          augment_context_error(message)
+        end
+      end
+
+      result
+    end
+
+    def fetch_security_deposit(property_id)
+      result = importer.fetch_security_deposit(property_id)
+
+      unless result.success?
+        with_context_enabled do
+          message = "Failed to fetch security deposit info for property `#{property_id}`
+                     But continue to sync the property as well as security deposit
+                     is optional information."
           augment_context_error(message)
         end
       end
