@@ -11,9 +11,9 @@ module Woori
     # between which names are used in country codes converter library and in 
     # Woori API.
     class CountryCode
-      CUSTOM_COUNTRY_NAMES_MAPPING = {
-        "Korea" => "Korea (Republic of)",
-        '대한민국' => "Korea (Republic of)"
+      CUSTOM_COUNTRY_CODES = {
+        "Korea" => "KR",
+        '대한민국' => "KR"
       }
 
       # Returns country code by its name
@@ -28,14 +28,12 @@ module Woori
       # 
       # Returns [String] country code
       def code_by_name(name)
-        standartized_name = prepare_name(name)
-        country = IsoCountryCodes.search_by_name(standartized_name).first
-        (country && country.alpha2).to_s
-      end
+        custom_code = CUSTOM_COUNTRY_CODES[name]
 
-      private
-      def prepare_name(name)
-        CUSTOM_COUNTRY_NAMES_MAPPING.fetch(name, name)
+        return custom_code if custom_code
+
+        country = IsoCountryCodes.search_by_name(name).first
+        (country && country.alpha2).to_s
       end
     end
   end

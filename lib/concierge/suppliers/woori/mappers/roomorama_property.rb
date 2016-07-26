@@ -13,7 +13,7 @@ module Woori
       #   * +safe_hash+ [Concierge::SafeAccessHash] property parameters
       def initialize(safe_hash)
         @safe_hash = safe_hash
-        @amenities_converter = Converters::Amenities.new
+        @amenities_converter = Converters::Amenities.new(safe_hash.get("data.facilities"))
         @country_code_converter = Converters::CountryCode.new
       end
 
@@ -37,7 +37,7 @@ module Woori
         property.check_in_time  = check_in_time
         property.check_out_time = check_out_time
         property.address        = full_address
-        property.amenities      = amenities
+        property.amenities      = amenities_converter.convert
         property.country_code   = country_code
         property.description    = description_with_additional_amenities
         property.default_to_available = true
@@ -85,29 +85,13 @@ module Woori
         [address_1, address_2].join(" ")
       end
 
-      def amenities
-        woori_facilities = safe_hash.get("data.facilities")
-
-        if woori_facilities && woori_facilities.any?
-          amenities_converter.convert(woori_facilities)
-        else
-          [] 
-        end
-      end
-
       def country_code
         country_name = safe_hash.get("data.country")
         country_code_converter.code_by_name(country_name)
       end
 
       def additional_amenities
-        woori_facilities = safe_hash.get("data.facilities")
-
-        if woori_facilities && woori_facilities.any?
-          amenities_converter.select_not_supported_amenities(woori_facilities)
-        else
-          [] 
-        end
+        amenities_converter.select_not_supported_amenities
       end
 
       def description_with_additional_amenities
