@@ -4,6 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [Unreleased]
+### Added
+- Send inquiry id as `agent_reference` field to WayToStay
+
 ## [0.5.2] - 2016-07-21
 ### Changed
 - `Roomorama::Calendar::Entry` now supports `minimum_stay` and synchronises that with Roomorama.
