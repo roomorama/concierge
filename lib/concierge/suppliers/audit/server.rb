@@ -14,10 +14,11 @@ module Audit
 
     def call(env)
       status, headers, body = @app.call(env)
-      status, headers, body = handle_404(env) if status == 404
+      status, headers, body = handle_404(env) || [status, headers, body] if status == 404
 
       if File.basename(env['PATH_INFO']) =~ /booking/
-        [status, headers, [replace_response_body(body)]]
+        new_body = replace_response_body(body)
+        [status, headers.merge('Content-Length' => new_body.length.to_s), [new_body]]
       else
         [status, headers, body]
       end
@@ -25,17 +26,25 @@ module Audit
 
     private
 
+    def retry_with(env, old_string, new_string)
+      @app.call(env.merge({
+        'PATH_INFO' => env['PATH_INFO'].gsub(old_string, new_string),
+        'REQUEST_PATH' => env['REQUEST_PATH'] && env['REQUEST_PATH'].gsub(old_string, new_string),
+      }))
+    end
+
     def handle_404(env)
       case File.basename(env['PATH_INFO'])
+      when /sample/
+        # sample = success
+        retry_with(env, 'sample', 'success')
+
       when /connection_timeout/
         # First we wait
         sleep Concierge::HTTPClient::CONNECTION_TIMEOUT + 1
 
         # Then we return the requested info (Concierge::HTTPClient should have errored out by now)
-        @app.call(env.merge({
-          'PATH_INFO' => env['PATH_INFO'].gsub('connection_timeout', 'success'),
-          'REQUEST_PATH' => env['REQUEST_PATH'] && env['REQUEST_PATH'].gsub('connection_timeout', 'success'),
-        }))
+        retry_with(env, 'connection_timeout', 'success')
 
       when /wrong_json/
         [200, {}, ["[1, 2, 3]"]]
