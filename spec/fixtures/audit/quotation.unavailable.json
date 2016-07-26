@@ -7,6 +7,6 @@
     "guests": 2,
     "available": false,
     "total": 400.59,
-    "currency": "String"
+    "currency": "USD"
   }
 }
