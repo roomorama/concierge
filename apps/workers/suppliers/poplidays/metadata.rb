@@ -25,15 +25,15 @@ module Workers::Suppliers::Poplidays
               next result unless result.success?
               details = result.value
 
-              if details_validator(details).valid?
-                result = fetch_availabilities(property_id)
-                next result unless result.success?
-                availabilities = result.value
+              next invalid_details_error unless details_validator(details).valid?
 
-                mapper.build(property, details, availabilities)
-              else
-                Result.error(:invalid_property_details_error)
-              end
+              result = fetch_availabilities(property_id)
+              next result unless result.success?
+              availabilities = result.value
+
+              next invalid_availabilities_error unless availabilities_validator(availabilities).valid?
+
+              mapper.build(property, details, availabilities)
             end
           end
         end
@@ -46,6 +46,14 @@ module Workers::Suppliers::Poplidays
     end
 
     private
+
+    def invalid_details_error
+      Result.error(:invalid_property_details_error)
+    end
+
+    def invalid_availabilities_error
+      Result.error(:invalid_availabilities_error)
+    end
 
     def fetch_property_details(property_id)
       result = importer.fetch_property_details(property_id)
@@ -93,6 +101,10 @@ module Workers::Suppliers::Poplidays
 
     def details_validator(details)
       Poplidays::Validators::PropertyDetailsValidator.new(details)
+    end
+
+    def availabilities_validator(details)
+      Poplidays::Validators::AvailabilitiesValidator.new(details)
     end
 
     def credentials

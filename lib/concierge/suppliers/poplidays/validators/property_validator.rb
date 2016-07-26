@@ -1,6 +1,6 @@
 module Poplidays
   module Validators
-    # +Poplidays::PropertyValidator+
+    # +Poplidays::Validators::PropertyValidator+
     #
     # This class responsible for properties validation.
     # cases when property invalid:

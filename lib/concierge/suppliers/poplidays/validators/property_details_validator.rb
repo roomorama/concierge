@@ -1,9 +1,9 @@
 module Poplidays
   module Validators
-    # +Poplidays::PropertyDetailsValidator+
+    # +Poplidays::Validators::PropertyDetailsValidator+
     #
     # This class responsible for property details validation.
-    # cases when property invalid:
+    # cases when details invalid:
     #
     #   * property is on request only
     #   * property price is only available through call center
