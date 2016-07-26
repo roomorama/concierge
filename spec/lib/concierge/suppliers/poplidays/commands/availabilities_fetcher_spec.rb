@@ -4,7 +4,7 @@ RSpec.describe Poplidays::Commands::AvailabilitiesFetcher do
   include Support::Fixtures
   include Support::HTTPStubbing
 
-  subject { described_class.new(double) }
+  subject { described_class.new(double(url: 'api.poplidays.com')) }
 
   describe '#call' do
 
