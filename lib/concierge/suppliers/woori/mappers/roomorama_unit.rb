@@ -13,7 +13,7 @@ module Woori
       #   * +safe_hash+ [Concierge::SafeAccessHash] unit parameters
       def initialize(safe_hash)
         @safe_hash = safe_hash
-        @amenities_converter = Converters::Amenities.new
+        @amenities_converter = Converters::Amenities.new(safe_hash.get("data.facilities"))
       end
 
       # Builds Roomorama::Unit object
@@ -32,31 +32,15 @@ module Woori
 
         unit.title       = safe_hash.get("data.name")
         unit.max_guests  = safe_hash.get("data.capacity")
-        unit.amenities   = amenities
+        unit.amenities   = amenities_converter.convert
         unit.description = description_with_additional_amenities
 
         unit
       end
 
       private
-      def amenities
-        woori_facilities = safe_hash.get("data.facilities")
-
-        if woori_facilities && woori_facilities.any?
-          amenities_converter.convert(woori_facilities)
-        else
-          [] 
-        end
-      end
-
       def additional_amenities
-        woori_facilities = safe_hash.get("data.facilities")
-
-        if woori_facilities && woori_facilities.any?
-          amenities_converter.select_not_supported_amenities(woori_facilities)
-        else
-          [] 
-        end
+        amenities_converter.select_not_supported_amenities
       end
 
       def description_with_additional_amenities

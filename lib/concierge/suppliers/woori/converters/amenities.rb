@@ -5,11 +5,18 @@ module Woori
     # This class is responsible for mapping amenitites between Woori and
     # Roomorama APIs.
     class Amenities
-      # Converts Woori facility services to Roomorama amenities
+      attr_reader :facility_services
+
+      # Initialize amenities converter
       #  
       # Arguments
       #   
       #   * +facility_services+ [Array<String>] array with Woori amenities
+      def initialize(facility_services = [])
+        @facility_services = Array(facility_services)
+      end
+
+      # Converts Woori facility services to Roomorama amenities
       #
       # Example
       #   
@@ -19,7 +26,7 @@ module Woori
       #   => ["airconditioning", "pool"]
       #
       # Returns +Array<String>+ array with uniq supported amenitites
-      def convert(facility_services = [])
+      def convert
         roomorama_amenities = facility_services.map do |service_name|
           supported_amenities.fetch(service_name, nil)
         end.compact
@@ -35,10 +42,6 @@ module Woori
       # Facility services from array which are supported by API will not be
       # returned
       #
-      # Arguments
-      # 
-      #   * +facility_services+ [Array<String>] array with Woori amenities
-      #
       # Example
       #
       #   Woori::Converters::Amenities.select_not_supported_amenities(
@@ -47,7 +50,7 @@ module Woori
       #   => ["foobar"]
       #
       # Returns +Array<String>+ array with uniq unsupported amenitites
-      def select_not_supported_amenities(facility_services = [])
+      def select_not_supported_amenities
         additional_amenities = []
 
         facility_services.each do |service_name|
