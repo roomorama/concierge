@@ -85,6 +85,7 @@ module API
 
           params = {
             property_id:   payload.get("inquiry.room.property_id"),
+            inquiry_id:    payload.get("inquiry.id"),
             unit_id:       payload.get("inquiry.room.unit_id"),
             check_in:      payload.get("inquiry.check_in"),
             check_out:     payload.get("inquiry.check_out"),

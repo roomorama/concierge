@@ -60,6 +60,7 @@ RSpec.describe Waytostay::Client do
         phone:      "+12345678",
       },
       property_id:  "9234",
+      inquiry_id:   "roomorama_inquiry_ref",
       check_in:     "2016-06-10",
       check_out:    "2016-06-15",
       guests:       2
@@ -74,6 +75,7 @@ RSpec.describe Waytostay::Client do
       arrival_date:       params[:check_in],
       departure_date:     params[:check_out],
       number_of_adults:   params[:guests],
+      agent_reference:    params[:inquiry_id],
       payment_option:     "full_payment"
     }}
     let(:success_waytostay_params) { booking_post_body.merge(property_reference: "1") }

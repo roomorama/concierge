@@ -19,6 +19,7 @@ module API::Controllers::Params
     param :guests,        type: Integer, presence: true
     param :subtotal,      type: Integer, presence: true
     param :currency_code, type: String
+    param :inquiry_id,    type: String
 
     param :extra
     param :customer do

@@ -35,6 +35,7 @@ module Waytostay
         arrival_date:       params[:check_in],
         departure_date:     params[:check_out],
         number_of_adults:   params[:guests],
+        agent_reference:    params[:inquiry_id],
         payment_option:     Waytostay::Client::SUPPORTED_PAYMENT_METHOD
       }
       result = oauth2_client.post(ENDPOINT_BOOKING,
