@@ -92,19 +92,7 @@ module SAW
       end
     end
 
-    it "keeps units images empty if detailed_property has no images" do
-      units = described_class.build(basic_property, detailed_property)
-      expect(units.size).to eq(5)
-
-      units_info.each do |unit_info|
-        created_unit = units.detect { |u| u.identifier == unit_info["@id"] }
-
-        expect(created_unit).to be_kind_of(Roomorama::Unit)
-        expect(created_unit.images).to eq([])
-      end
-    end
-
-    it "copies images to unit if detailed_property has images" do
+    it "does not copies images to unit from detailed_property" do
       detailed_property.images = images
 
       units = described_class.build(basic_property, detailed_property)
@@ -114,7 +102,7 @@ module SAW
         created_unit = units.detect { |u| u.identifier == unit_info["@id"] }
 
         expect(created_unit).to be_kind_of(Roomorama::Unit)
-        expect(created_unit.images).to eq(images)
+        expect(created_unit.images).to eq([])
       end
     end
 
