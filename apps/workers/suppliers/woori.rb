@@ -5,8 +5,7 @@ module Workers::Suppliers
   class Woori
     attr_reader :synchronisation, :host
     
-    INIT_SYNC_DATE = "1970-01-01"
-    BATCH_SIZE     = 50
+    BATCH_SIZE     = 30
 
     def initialize(host)
       @host            = host
@@ -16,14 +15,16 @@ module Workers::Suppliers
     def perform
       offset = 0
 
+      puts "last_synced_date=#{last_synced_date}"
+
       begin
         result = importer.fetch_properties(last_synced_date, BATCH_SIZE, offset)
 
         if result.success?
+          puts "FETCH PROPERTIES. Fetched: #{result.value.size} properties. (limit: #{BATCH_SIZE}, offset: #{offset})"
           properties = result.value
           size_fetched = properties.size
           offset = offset + size_fetched
-          puts "FETCH PROPERTIES. Fetched: #{result.value.size} properties. (limit: #{BATCH_SIZE}, offset: #{offset})"
 
           properties.each do |property|
             synchronisation.start(property.identifier) do
@@ -36,7 +37,7 @@ module Workers::Suppliers
                 if units_result.success?
                   puts "    FETCH UNITS: Fetched: #{units_result.value.size} units for property id=#{property.identifier}"
                   units = units_result.value
-                    
+
                   units.each do |unit|
                     puts "      FETCH UNIT RATES: Processing unit id=#{unit.identifier} for property id=#{property.identifier}"
                     begin
@@ -44,7 +45,7 @@ module Workers::Suppliers
 
                       if rates_result.success?
                         rates = rates_result.value
-                    
+
                         puts "      FETCH UNIT RATES: Success for #{unit.identifier}: #{rates.nightly_rate} / #{rates.weekly_rate} / #{rates.monthly_rate}"
 
                         unit.nightly_rate = rates.nightly_rate
@@ -106,8 +107,12 @@ module Workers::Suppliers
       if most_recent
         most_recent&.started_at.strftime("%Y-%m-%d")
       else
-        INIT_SYNC_DATE
+        init_sync_date
       end
+    end
+
+    def init_sync_date
+      (Time.now - 7 * 24 * 60 * 60).strftime("%Y-%m-%d")
     end
 
     def announce_error(message, result)
