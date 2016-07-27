@@ -60,7 +60,7 @@ module Waytostay
 
         while current_batch && !current_batch.empty?
           if properties_cache.nil?
-            result = client.get_properties_by_ids(current_batch)
+            result = client.get_active_properties_by_ids(current_batch)
             return result unless result.success?
             @properties_cache = result.value
           end
@@ -101,7 +101,7 @@ module Waytostay
     # Caller should only use this with a batch of 25 properties each time to avoid
     # having to fetch multiple pages, and to avoid `414 Request-URI Too Large`
     #
-    def get_properties_by_ids(ids, active=true)
+    def get_active_properties_by_ids(ids)
       result = oauth2_client.get(
         INDEX_ENDPOINT,
         params: { references: ids.join(","),

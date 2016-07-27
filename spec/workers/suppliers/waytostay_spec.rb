@@ -39,7 +39,7 @@ RSpec.describe Workers::Suppliers::Waytostay do
 
       # properties 001 and 002 is stubbed for client fetches,
       # 003, 004 and 005 stubbed for concierge database
-      allow_any_instance_of(Waytostay::Client).to receive(:get_properties_by_ids) do |ids|
+      allow_any_instance_of(Waytostay::Client).to receive(:get_active_properties_by_ids) do |ids|
         properties = ids.collect do |ref|
           Roomorama::Property.load(
             Concierge::SafeAccessHash.new(
@@ -99,7 +99,7 @@ RSpec.describe Workers::Suppliers::Waytostay do
 
       context "when rate limit is hit" do
         it "should stop making any more calls" do
-          expect(subject.client).to receive(:get_properties_by_ids).once do
+          expect(subject.client).to receive(:get_active_properties_by_ids).once do
             Result.error(:http_status_429)
           end
           expect(subject.client).to_not receive(:update_media)
