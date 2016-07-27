@@ -22,7 +22,7 @@ module Ciirus
 
       def find_security_deposit_extra(extras_result)
         if extras_result[:row_count].to_i > 0
-          extras = extras_result.get('extras.property_extras')
+          extras = Array(extras_result.get('extras.property_extras'))
           extras.detect { |e| security_deposit?(e) }
         end
       end
