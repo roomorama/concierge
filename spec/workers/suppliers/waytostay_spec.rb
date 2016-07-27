@@ -24,6 +24,20 @@ RSpec.describe Workers::Suppliers::Waytostay do
     end
   end
 
+  describe "last_synced_timestamp" do
+    context "there are no successful syncs" do
+      it { expect(subject.send(:last_synced_timestamp)).to be_nil }
+    end
+
+    context "there are successful syncs" do
+      before do
+        create_sync_process(successful: true, host_id: host.id)
+      end
+
+      it { expect(subject.send(:last_synced_timestamp)).to be_a Integer }
+    end
+  end
+
   context "synchronizing properties" do
     let(:changes) { {
       properties:   ["001", "002"],
@@ -54,14 +68,6 @@ RSpec.describe Workers::Suppliers::Waytostay do
       create_property(identifier: "005", host_id: host.id)
       create_property(identifier: "006", host_id: host.id)
 
-    end
-
-    describe "last_synced_timestamp" do
-      before do
-        create_sync_process(successful: true, host_id: host.id)
-      end
-
-      it { expect(subject.send(:last_synced_timestamp)).to be_a Integer }
     end
 
     describe "perform" do
