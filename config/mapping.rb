@@ -47,13 +47,14 @@ collection :hosts do
   entity     Host
   repository HostRepository
 
-  attribute :id,           Integer
-  attribute :supplier_id,  Integer
-  attribute :identifier,   String
-  attribute :username,     String
-  attribute :access_token, String
-  attribute :created_at,   Time
-  attribute :updated_at,   Time
+  attribute :id,             Integer
+  attribute :supplier_id,    Integer
+  attribute :identifier,     String
+  attribute :username,       String
+  attribute :access_token,   String
+  attribute :fee_percentage, Float
+  attribute :created_at,     Time
+  attribute :updated_at,     Time
 end
 
 collection :properties do

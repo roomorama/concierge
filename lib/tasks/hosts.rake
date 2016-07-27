@@ -8,11 +8,12 @@ namespace :hosts do
     SupplierRepository.all.each do |supplier|
       HostRepository.from_supplier(supplier).each do |host|
         Concierge::Flows::HostCreation.new(
-          supplier:     supplier,
-          identifier:   host.identifier,
-          username:     host.username,
-          access_token: host.access_token,
-          config_path:  path
+          supplier:       supplier,
+          identifier:     host.identifier,
+          username:       host.username,
+          access_token:   host.access_token,
+          fee_percentage: host.fee_percentage,
+          config_path:    path
         ).perform
       end
     end

@@ -39,6 +39,7 @@ module Support
         identifier:   "host",
         username:     "concierge_host",
         access_token: "abc123",
+        fee_percentage: 0,
         supplier_id:  create_supplier.id
       }.merge(overrides)
 

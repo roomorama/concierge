@@ -41,6 +41,7 @@ RSpec.describe Kigo::Booking do
     end
 
     it 'returns wrapped reservation with code if success' do
+      allow_any_instance_of(Kigo::ResponseParser).to receive(:host) { Host.new(fee_percentage: 0) }
       stub_call(:post, endpoint) { [200, {}, read_fixture('kigo/success_booking.json')] }
 
       result = subject.book(params)

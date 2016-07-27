@@ -6,9 +6,13 @@ require_relative "../../shared/kigo_price_quotation"
 RSpec.describe API::Controllers::Kigo::Legacy::Quote do
   include Support::HTTPStubbing
   include Support::Fixtures
+  include Support::Factories
+
+  let!(:host) { create_host(fee_percentage: 7.0) }
+  let!(:property) { create_property(identifier: "567") }
 
   let(:params) {
-    { property_id: "567", check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
+    { property_id: property.identifier, check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
   }
   let(:endpoint) { "https://app.kigo.net/api/ra/v1/computePricing" }
 
