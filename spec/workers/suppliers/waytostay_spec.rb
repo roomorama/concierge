@@ -39,14 +39,16 @@ RSpec.describe Workers::Suppliers::Waytostay do
 
       # properties 001 and 002 is stubbed for client fetches,
       # 003, 004 and 005 stubbed for concierge database
-      allow(subject.client).to receive(:get_property) do |ref|
-        expect(["001", "002"]).to include ref
-        Roomorama::Property.load(
-          Concierge::SafeAccessHash.new(
-            JSON.parse(read_fixture("waytostay/properties/#{ref}.roomorama-attributes.json"))
-          )
-        )
+      allow_any_instance_of(Waytostay::Client).to receive(:get_active_properties_by_ids) do |ids|
+        properties = ids.collect do |ref|
+          Roomorama::Property.load(
+            Concierge::SafeAccessHash.new(
+              JSON.parse(read_fixture("waytostay/properties/#{ref}.roomorama-attributes.json"))
+            ))
+        end
+        Result.new properties
       end
+
       create_property(identifier: "003", host_id: host.id)
       create_property(identifier: "004", host_id: host.id)
       create_property(identifier: "005", host_id: host.id)
@@ -94,6 +96,17 @@ RSpec.describe Workers::Suppliers::Waytostay do
           expect(error.context[:events].last["label"]).to eq "Response Mismatch"
         end
       end
+
+      context "when rate limit is hit" do
+        it "should stop making any more calls" do
+          expect(subject.client).to receive(:get_active_properties_by_ids).once do
+            Result.error(:http_status_429)
+          end
+          expect(subject.client).to_not receive(:update_media)
+          subject.perform
+        end
+      end
     end
+
   end
 end

@@ -4,7 +4,7 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
-## [Unreleased] 
+## [Unreleased]
 ### Added
 - `net_rate`, `host_fee` and `host_fee_percentage` to quotation response
 - `fee_percentage` column to `Host` entity
@@ -15,6 +15,7 @@ how this file is formatted and how the process works.
 
 ### Changed
 - `Kigo::ResponseParser` set host's fee percentage to quotation
+- Waytostay sync now loads properties in batches of 25
 
 ## [0.5.2] - 2016-07-21
 ### Changed
