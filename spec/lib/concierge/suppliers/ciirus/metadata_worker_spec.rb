@@ -114,22 +114,6 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
       })
   end
 
-  let(:invalid_permissions) do
-    Ciirus::Entities::PropertyPermissions.new(
-      {
-        property_id: '33680',
-        mc_enable_property: true,
-        agent_enable_property: true,
-        agent_user_id: '33457',
-        mc_user_id: '5489',
-        native_property: false,
-        calendar_sync_property: false,
-        aoa_property: false,
-        time_share: false,
-        online_booking_allowed: false
-      })
-  end
-
   subject { described_class.new(host) }
 
   it 'announces an error if fetching properties fails' do
@@ -161,7 +145,8 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
     end
 
     it 'announces an error if permissions are invalid' do
-      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_permissions) { Result.new(invalid_permissions) }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_permissions) { Result.new(permissions) }
+      allow_any_instance_of(Ciirus::Validators::PermissionsValidator).to receive(:valid?) { false }
       subject.perform
 
       error = ExternalErrorRepository.last
@@ -296,6 +281,14 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
 
     it 'doesnt create property with unsuccessful publishing' do
       allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.error('fail') }
+      expect {
+        subject.perform
+      }.to_not change { PropertyRepository.count }
+    end
+
+    it 'does not create invalid properties in database' do
+      allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
+      allow_any_instance_of(Ciirus::Validators::PropertyValidator).to receive(:valid?) { false }
       expect {
         subject.perform
       }.to_not change { PropertyRepository.count }
