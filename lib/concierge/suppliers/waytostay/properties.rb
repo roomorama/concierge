@@ -39,41 +39,41 @@ module Waytostay
       "general.permissions", "services"]).freeze
 
     # A wrapper class for fetching properties with batch cache.
-    # The objective is to minimize the number of requests, by fetching properties in batches of 25,
-    # to also avoid too much memory consumption.
-    #
-    # - Search for and return a +Result+ wrapped property from an cache of batch-fetched properties
-    # - If not found, fetch the next batch, search and repeat till found
+    # The objective is to minimize the number of requests
     #
     class BatchedPropertyFetcher
 
-      attr_reader :ids, :client, :properties_cache, :current_batch, :fetched_ids
-
+      # Loads all ids into memory using the client
+      #
       def initialize(client, ids)
-        @ids = ids
-        @client = client
+        @properties_cache_result = fetch_all(client, ids)
       end
 
+      # Returns a Result
+      # - wrapping a property if found
+      # - with error if fetch_all had some error
+      # - :not_found if there were no error in fetching, and the property ref wasn't found
+      #
       def fetch(property_ref)
-        @fetched_ids   ||= []
-        @current_batch ||= (ids - fetched_ids)[0...PER_PAGE]
+        return @properties_cache_result unless @properties_cache_result.success?
 
-        while current_batch && !current_batch.empty?
-          if properties_cache.nil?
-            result = client.get_active_properties_by_ids(current_batch)
-            return result unless result.success?
-            @properties_cache = result.value
-          end
+        @properties_cache_result.value.find do |p|
+          p.value&.identifier == property_ref
+        end || Result.error(:not_found)
+      end
 
-          property_result = properties_cache.find { |p| p.value&.identifier == property_ref }
-          return property_result unless property_result.nil?
+      private
 
-          @current_batch = (ids - fetched_ids)[0...PER_PAGE]
-          @fetched_ids += current_batch
-          @properties_cache = nil
+      # Loads all ids, 25(the amount per page) at a time
+      #
+      def fetch_all(client, ids)
+        properties = []
+        ids.each_slice(PER_PAGE) do |batch|
+          result = client.get_active_properties_by_ids(batch)
+          return result unless result.success?
+          properties << result.value
         end
-
-        Result.error(:not_found)
+        Result.new(properties.flatten)
       end
     end
 
