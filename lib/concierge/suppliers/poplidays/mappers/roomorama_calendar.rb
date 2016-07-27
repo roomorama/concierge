@@ -41,7 +41,7 @@ module Poplidays
       # }
       def prepare_availabilities(availabilities, mandatory_service_price)
         prepared_availabilities = availabilities.select do |stay|
-          !stay['requestOnly'] && stay['priceEnabled']
+          availability_validator(stay).valid?
         end.map do |stay|
           stay.dup.tap do |s|
             from = Date.parse(s['arrival'])
@@ -65,41 +65,47 @@ module Poplidays
 
       def build_entries(details, availabilities)
         entries = []
-        max_date = availabilities.map { |s| Date.parse(s['departure']) }.max
-        mandatory_services = details['mandatoryServicesPrice']
-        prepared_availabilities = prepare_availabilities(availabilities, mandatory_services)
-        tomorrow = Date.today + 1
+        unless availabilities.empty?
+          max_date = availabilities.map { |s| Date.parse(s['departure']) }.max
+          mandatory_services = details['mandatoryServicesPrice']
+          prepared_availabilities = prepare_availabilities(availabilities, mandatory_services)
+          tomorrow = Date.today + 1
 
-        (tomorrow..max_date).each do |date|
-          if prepared_availabilities.key?(date)
-            date_availabilities = prepared_availabilities[date]
-            checkin_allowed = date_availabilities.any? { |s| s['arrival'] == date }
-            checkout_allowed = date_availabilities.any? { |s| s['departure'] == date }
-            daily_rate = date_availabilities.map { |s| s['daily_price'] }.min
-            entry = Roomorama::Calendar::Entry.new(
-              date:             date.to_s,
-              nightly_rate:     daily_rate,
-              available:        true,
-              checkin_allowed:  checkin_allowed,
-              checkout_allowed: checkout_allowed,
-            )
-            if checkin_allowed
-              min_stay = date_availabilities.map { |s| s['length'] }.min
-              entry.minimum_stay = min_stay
+          (tomorrow..max_date).each do |date|
+            if prepared_availabilities.key?(date)
+              date_availabilities = prepared_availabilities[date]
+              checkin_allowed = date_availabilities.any? { |s| s['arrival'] == date }
+              checkout_allowed = date_availabilities.any? { |s| s['departure'] == date }
+              daily_rate = date_availabilities.map { |s| s['daily_price'] }.min
+              entry = Roomorama::Calendar::Entry.new(
+                date:             date.to_s,
+                nightly_rate:     daily_rate,
+                available:        true,
+                checkin_allowed:  checkin_allowed,
+                checkout_allowed: checkout_allowed,
+              )
+              if checkin_allowed
+                min_stay = date_availabilities.map { |s| s['length'] }.min
+                entry.minimum_stay = min_stay
+              end
+            else
+              # If date isn't inside any availability's range the date is unavailable
+              entry = Roomorama::Calendar::Entry.new(
+                date:             date.to_s,
+                nightly_rate:     0,
+                available:        false,
+                checkin_allowed:  false,
+                checkout_allowed: false
+              )
             end
-          else
-            # If date isn't inside any availability's range the date is unavailable
-            entry = Roomorama::Calendar::Entry.new(
-              date:             date.to_s,
-              nightly_rate:     0,
-              available:        false,
-              checkin_allowed:  false,
-              checkout_allowed: false
-            )
+            entries << entry
           end
-          entries << entry
         end
         entries
+      end
+
+      def availability_validator(availability)
+        Poplidays::Validators::AvailabilityValidator.new(availability)
       end
 
       def date_reserved?(date, reservations_index)

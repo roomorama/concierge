@@ -196,5 +196,15 @@ RSpec.describe Poplidays::Mappers::RoomoramaCalendar do
       entry = calendar.entries.detect { |e| e.date == Date.new(2016, 9, 1)}
       expect(entry.minimum_stay).to eq(9)
     end
+
+    it 'returns empty calendar for empty availabilities' do
+      availabilities_hash = {
+        'availabilities' => []
+      }
+
+      calendar = subject.build(property_id, property_details, availabilities_hash)
+
+      expect(calendar.entries.length).to eq(0)
+    end
   end
 end
