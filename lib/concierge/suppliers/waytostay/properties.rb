@@ -54,13 +54,13 @@ module Waytostay
         @client = client
       end
 
-      def fetch property_ref
+      def fetch(property_ref)
         @fetched_ids   ||= []
         @current_batch ||= (ids - fetched_ids)[0...PER_PAGE]
 
         while current_batch && !current_batch.empty?
           if properties_cache.nil?
-            result = client.get_properties_by_ids current_batch
+            result = client.get_properties_by_ids(current_batch)
             return result unless result.success?
             @properties_cache = result.value
           end
@@ -73,13 +73,13 @@ module Waytostay
           @properties_cache = nil
         end
 
-        return Result.error(:not_found)
+        Result.error(:not_found)
       end
     end
 
     def get_property_from_batch(property_ref, ids)
-      @batched_fetcher ||= BatchedPropertyFetcher.new self, ids
-      return @batched_fetcher.fetch property_ref
+      @batched_fetcher ||= BatchedPropertyFetcher.new(self, ids)
+      @batched_fetcher.fetch(property_ref)
     end
 
     # Always returns a +Result+ wrapped +Roomorama::Property+.
@@ -113,7 +113,7 @@ module Waytostay
       wrapped_properties = response.get("_embedded.properties").collect do |property_hash|
         parse_property(Concierge::SafeAccessHash.new(property_hash))
       end
-      return Result.new(wrapped_properties)
+      Result.new(wrapped_properties)
     end
 
     # Returns a +Result+ wrapping an array of +Result+ wrapped +Roomorama::Property+
