@@ -1,0 +1,39 @@
+{
+  "timestamp": 1469599936,
+  "properties": {
+    "reference": [
+    ]
+  },
+  "properties_media": {
+    "reference": [
+    ]
+  },
+  "properties_availability": {
+    "reference": [
+    ]
+  },
+  "properties_rates": {
+    "reference": [
+    ]
+  },
+  "properties_offers": {
+    "reference": [
+    ]
+  },
+  "properties_reviews": {
+    "reference": [
+    ]
+  },
+  "properties_minimum_stay": {
+    "reference": [
+    ]
+  },
+  "bookings": {
+    "reference": []
+  },
+  "_links": {
+    "self": {
+      "href": "https://apis.sandbox.waytostay.com:25443/changes/1469599936"
+    }
+  }
+}
