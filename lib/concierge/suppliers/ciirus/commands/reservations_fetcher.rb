@@ -47,8 +47,6 @@ module Ciirus
           'get_reservations_response.get_reservations_result.reservations'
         )
 
-        return [] unless reservations
-
         Array(reservations).map { |reservation| mapper.build(reservation) }
       end
     end
