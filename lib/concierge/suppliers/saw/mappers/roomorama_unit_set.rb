@@ -21,7 +21,7 @@ module SAW
       #
       # Returns [Array<Roomorama::Unit] array of property units
       def self.build(basic_property, detailed_property)
-        bed_configurations = Array(detailed_property.bed_configurations)
+        bed_configurations = fetch_bed_configurations(detailed_property.bed_configurations)
         property_accommodations = fetch_property_accommodations(detailed_property.property_accommodations)
 
         property_accommodations.map do |hash|
@@ -45,7 +45,7 @@ module SAW
         u.number_of_units = 1
         u.number_of_bedrooms = parse_number_of_bedrooms(unit)
 
-        bed_configuration = find_bed_types(bed_configurations, unit.get("@id"))
+        bed_configuration = find_bed_types(bed_configurations, u.identifier)
 
         if bed_configuration
           u.number_of_double_beds = bed_configuration.number_of_double_beds
@@ -53,6 +53,16 @@ module SAW
           u.max_guests = bed_configuration.max_guests
         end
         u
+      end
+
+      def self.fetch_bed_configurations(bed_configurations)
+        if bed_configurations
+          Array(bed_configurations.get("property_accommodation")).map do |hash|
+            safe_hash(hash)
+          end
+        else
+          []
+        end
       end
 
       def self.fetch_property_accommodations(property_accommodations)
@@ -63,9 +73,9 @@ module SAW
         end
       end
 
-      def self.find_bed_types(configurations, current_id)
+      def self.find_bed_types(configurations, unit_id)
         configuration = configurations.detect do |config|
-          config.get("@id") == current_id
+          config.get("@id") == unit_id
         end
 
         if configuration
