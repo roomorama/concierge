@@ -108,20 +108,5 @@ RSpec.describe Workers::Suppliers::Waytostay do
       end
     end
 
-    describe "fetch_property" do
-      it "calls batch properties api" do
-        expect_any_instance_of(Waytostay::Client).to receive(:get_properties_by_ids) do |ids|
-          ref = ids[0] # expect a one-element array
-          Result.new [Roomorama::Property.load(
-              Concierge::SafeAccessHash.new(
-                JSON.parse(read_fixture("waytostay/properties/#{ref}.roomorama-attributes.json"))
-              ))]
-        end
-        fetch_result = subject.send(:fetch_property, "002", ["001", "002"], 1)
-        expect(fetch_result).to be_success
-        expect(fetch_result.value).to be_a Roomorama::Property
-      end
-
-    end
   end
 end

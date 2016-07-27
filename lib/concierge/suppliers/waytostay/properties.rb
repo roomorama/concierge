@@ -6,6 +6,9 @@ module Waytostay
 
     ENDPOINT = "/properties/:property_reference".freeze
     INDEX_ENDPOINT = "/properties".freeze
+    # The default number of properties per page returned from waytostay's /properties endpoint
+    # This is used as the batch size when fetching properties, to prevent multiple page responses
+    PER_PAGE = 25
 
     FIELD_MAPPINGS = {
       identifier:                "reference",
@@ -35,6 +38,50 @@ module Waytostay
       [ "facilities_amenities.overview", "facilities_amenities.rooms", "payment.fees",
       "general.permissions", "services"]).freeze
 
+    # A wrapper class for fetching properties with batch cache.
+    # The objective is to minimize the number of requests, by fetching properties in batches of 25,
+    # to also avoid too much memory consumption.
+    #
+    # - Search for and return a +Result+ wrapped property from an cache of batch-fetched properties
+    # - If not found, fetch the next batch, search and repeat till found
+    #
+    class BatchedPropertyFetcher
+
+      attr_reader :ids, :client, :properties_cache, :current_batch, :fetched_ids
+
+      def initialize(client, ids)
+        @ids = ids
+        @client = client
+      end
+
+      def fetch property_ref
+        @fetched_ids   ||= []
+        @current_batch ||= (ids - fetched_ids)[0...PER_PAGE]
+
+        while current_batch && !current_batch.empty?
+          if properties_cache.nil?
+            result = client.get_properties_by_ids current_batch
+            return result unless result.success?
+            @properties_cache = result.value
+          end
+
+          property_result = properties_cache.find { |p| p.value&.identifier == property_ref }
+          return property_result unless property_result.nil?
+
+          @current_batch = (ids - fetched_ids)[0...PER_PAGE]
+          @fetched_ids += current_batch
+          @properties_cache = nil
+        end
+
+        return Result.error(:not_found)
+      end
+    end
+
+    def get_property_from_batch(property_ref, ids)
+      @batched_fetcher ||= BatchedPropertyFetcher.new self, ids
+      return @batched_fetcher.fetch property_ref
+    end
+
     # Always returns a +Result+ wrapped +Roomorama::Property+.
     # If an error happens in any step in the process of getting a response back from
     # Waytostay, a generic error message is sent back to the caller.
@@ -51,7 +98,8 @@ module Waytostay
     end
 
     # Always returns a +Result+ wrapped array of +Roomorama::Property+.
-    # Caller should only use this with a batch of 25 properties each time to avoid `414 Request-URI Too Large`
+    # Caller should only use this with a batch of 25 properties each time to avoid
+    # having to fetch multiple pages, and to avoid `414 Request-URI Too Large`
     #
     def get_properties_by_ids(ids, active=true)
       result = oauth2_client.get(

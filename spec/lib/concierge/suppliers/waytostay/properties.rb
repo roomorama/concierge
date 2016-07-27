@@ -186,4 +186,21 @@ RSpec.shared_examples "Waytostay property client" do
     end
   end
 
+  describe "#get_property_from_batch" do
+
+    subject { stubbed_client.get_property_from_batch("002", ["001", "002"]) }
+
+    it "calls batch properties api" do
+      expect_any_instance_of(Waytostay::Client).to receive(:get_properties_by_ids) do |client, ids|
+        Result.new ids.collect { |ref| Roomorama::Property.load(
+            Concierge::SafeAccessHash.new(
+              JSON.parse(read_fixture("waytostay/properties/#{ref}.roomorama-attributes.json"))
+            )) }
+      end
+      expect(subject).to be_success
+      expect(subject.value).to be_a Roomorama::Property
+    end
+
+  end
+
 end

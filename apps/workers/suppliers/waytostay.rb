@@ -23,7 +23,7 @@ module Workers::Suppliers
       uniq_properties_in(changes.value).each do |property_ref|
         property_sync.start(property_ref) do
           wrapped_property = if changes.value[:properties].include? property_ref
-                               fetch_property(property_ref, changes.value[:properties])
+                               client.get_property_from_batch(property_ref, changes.value[:properties])
                              else
                                # no changes on property attributes indicated, just
                                # load one from db so we can attach other changes
@@ -53,53 +53,6 @@ module Workers::Suppliers
     end
 
     private
-
-    # Minimize the number of requests, by fetching properties in batches of 25, to also
-    # avoid too much memory consumption.
-    #
-    # - Search for and return a +Result+ wrapped property from an cache of batch-fetched properties
-    # - If not found, fetch the next batch, search and repeat till found
-    #
-    def fetch_property(property_ref, ids, batch_size=25)
-      @fetched_ids   ||= []
-      @current_batch ||= (ids - @fetched_ids)[0...batch_size]
-
-      while @current_batch && !@current_batch.empty?
-        if @properties_cache.nil?
-          result = client.get_properties_by_ids @current_batch
-          return result unless result.success?
-          @properties_cache = result.value
-        end
-
-        property_result = @properties_cache.find { |p| p.value&.identifier == property_ref }
-        return property_result unless property_result.nil?
-
-        @current_batch = (ids - @fetched_ids)[0...batch_size]
-        @fetched_ids += @current_batch
-        @properties_cache = nil
-      end
-
-      return Result.error(:not_found)
-    end
-
-    # Loops through all pages of waytostay new properties, yielding each
-    # as a Roomorama::Property
-    #
-    def get_initial_properties
-      initialize_overall_sync_context
-      current_page = 1
-      while !current_page.nil?
-        result, current_page = client.get_active_properties(current_page)
-        next announce_error(result) unless result.success?
-        result.value.each do |property_result|
-          if !property_result.success? || property_result.value.disabled
-            next
-          else
-            yield property_result.value
-          end
-        end
-      end
-    end
 
     # Starts a new context, run the block that augments to context
     # Then announce if any error was returned from the block
