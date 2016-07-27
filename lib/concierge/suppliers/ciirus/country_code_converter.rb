@@ -34,7 +34,9 @@ module Ciirus
     #
     # Returns +Result+ wrapping country code
     def code_by_name(name)
-      name = name.strip
+      name = name.to_s.strip
+
+      return error_result(name) if name.empty?
       return Result.new(CUSTOM_COUNTRY_NAMES_MAPPING[name]) if CUSTOM_COUNTRY_NAMES_MAPPING[name]
 
       # Try to find country by alpha-2, alpha-3 codes

@@ -13,6 +13,7 @@ RSpec.describe Ciirus::Commands::SecurityDepositFetcher do
   let(:property_id) { {property_id: '33692'} }
 
   let(:success_response) { read_fixture('ciirus/responses/extras_response.xml') }
+  let(:one_extra_response) { read_fixture('ciirus/responses/one_extra_response.xml') }
   let(:empty_response) { read_fixture('ciirus/responses/extras_response_without_sd.xml') }
   let(:error_response) { read_fixture('ciirus/responses/error_extras_response.xml') }
   let(:wsdl) { read_fixture('ciirus/additional_wsdl.xml') }
@@ -43,6 +44,25 @@ RSpec.describe Ciirus::Commands::SecurityDepositFetcher do
 
       it 'fills extra with right attributes' do
         stub_call(method: described_class::OPERATION_NAME, response: success_response)
+
+        result = subject.call(property_id)
+
+        extra = result.value
+        expect(extra.property_id).to eq('33692')
+        expect(extra.item_code).to eq('SD')
+        expect(extra.item_description).to eq('Security Deposit')
+        expect(extra.flat_fee).to be_truthy
+        expect(extra.flat_fee_amount).to eq(2500.0)
+        expect(extra.daily_fee).to be_falsey
+        expect(extra.daily_fee_amount).to eq(0)
+        expect(extra.percentage_fee).to be_falsey
+        expect(extra.percentage).to eq(0)
+        expect(extra.mandatory).to be_falsey
+        expect(extra.minimum_charge).to eq(0)
+      end
+
+      it 'works fine with one extra as well' do
+        stub_call(method: described_class::OPERATION_NAME, response: one_extra_response)
 
         result = subject.call(property_id)
 

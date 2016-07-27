@@ -37,5 +37,10 @@ RSpec.describe Ciirus::CountryCodeConverter do
       code = subject.code_by_name('dsfe')
       expect(code.value).to be_nil
     end
+
+    it 'returns nil for nil input' do
+      code = subject.code_by_name(nil)
+      expect(code.value).to be_nil
+    end
   end
 end
