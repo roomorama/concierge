@@ -17,6 +17,7 @@ module Workers::Suppliers
 
       puts "last_synced_date=#{last_synced_date}"
 
+      fetch_property_retries_count = 1
       begin
         result = importer.fetch_properties(last_synced_date, BATCH_SIZE, offset)
 
@@ -31,6 +32,7 @@ module Workers::Suppliers
               Concierge.context.disable!
               puts "  Processing property id=#{property.identifier}..."
 
+              fetch_units_retries_count = 1
               begin
                 units_result = importer.fetch_units(property.identifier)
 
@@ -54,35 +56,64 @@ module Workers::Suppliers
 
                         property.add_unit(unit)
                       else
-                        message = "      FETCH UNIT RATES: Failed to perform the `#fetch_unit_rates` operation for unit id=#{unit.identifier}. Retrying..."
-                        puts message
-                        announce_error(message, units_result)
                         # rates_result
                         raise "error"
                       end
                     rescue
-                      retry
+                      fetch_rates_retries_count = fetch_rates_retries_count + 1
+
+                      if fetch_units_retries_count <= 3
+                        message = "      FETCH UNIT RATES: Failed to perform the `#fetch_unit_rates` operation for unit id=#{unit.identifier}. Retrying..."
+                        puts message
+                        announce_error(message, units_result)
+                        retry
+                      else
+                        message = "      FETCH UNIT RATES: Failed to perform the `#fetch_unit_rates` operation for unit id=#{unit.identifier}. Skipping..."
+                        puts message
+                        announce_error(message, units_result)
+                        
+                        rates_result
+                      end
                     end
                   end
 
                   Result.new(property)
                 else
-                  message = "    FETCH UNITS: Failed to perform the `#fetch_units` operation for property id=#{property.identifier}. Retrying..."
-                  puts message
-                  announce_error(message, units_result)
                   # units_result
                   raise "error"
                 end
               rescue
-                retry
+                fetch_units_retries_count = fetch_units_retries_count + 1
+                
+                if fetch_units_retries_count <= 3
+                  message = "    FETCH UNITS: Failed to perform the `#fetch_units` operation for property id=#{property.identifier}. Retrying..."
+                  puts message
+                  announce_error(message, units_result)
+                  retry
+                else
+                  message = "    FETCH UNITS: Failed to perform the `#fetch_units` operation for property id=#{property.identifier}. Skipping"
+                  puts message
+                  announce_error(message, units_result)
+                  
+                  units_result 
+                end
               end
             end
           end
         else
-          message = "Failed to perform the `#fetch_properties` operation. Parameters: date=#{last_synced_date} limit=#{BATCH_SIZE} offset=#{offset}. Retrying..."
-          puts message
-          announce_error(message, result)
-          next
+          fetch_property_retries_count = fetch_property_retries_count + 1
+
+          if fetch_property_retries_count <= 3
+            message = "Failed to perform the `#fetch_properties` operation. Parameters: date=#{last_synced_date} limit=#{BATCH_SIZE} offset=#{offset}. Retrying..."
+            announce_error(message, result)
+            puts message
+            next
+          else
+            message = "Failed to perform the `#fetch_properties` operation. Parameters: date=#{last_synced_date} limit=#{BATCH_SIZE} offset=#{offset}. Skipping."
+            announce_error(message, result)
+            puts message
+            return
+          end
         end
       end while size_fetched == BATCH_SIZE
       
