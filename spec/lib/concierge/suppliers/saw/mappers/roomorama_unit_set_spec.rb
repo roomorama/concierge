@@ -229,8 +229,8 @@ module SAW
       end
     end
 
-    context "with available bedding configurations" do
-      let(:bedding_configurations) do
+    context "with available bedding configuration" do
+      let(:unit_beds_configuration) do
         {
           "@id"=>"8367",
           "property_accommodation_name"=>"Studio",
@@ -249,63 +249,70 @@ module SAW
         }
       end
 
-      let(:detailed_property_with_beds) do
-        SAW::Entities::DetailedProperty.new(
-          Concierge::SafeAccessHash.new(
-            detailed_property_attributes.merge(
-              bed_configurations: bedding_configurations
-            )
+      RSpec.shared_examples "units mapper" do
+        it "builds units" do
+          units = described_class.build(basic_property, detailed_property_with_beds)
+          expect(units.size).to eq(5)
+
+          unit_with_beds = units.detect { |u| u.identifier == "8367" }
+          expect(unit_with_beds.number_of_double_beds).to eq(3)
+          expect(unit_with_beds.number_of_single_beds).to eq(0)
+          expect(unit_with_beds.max_guests).to eq(6)
+        end
+
+        it "parses number_of_bedrooms for Studio" do
+          units = described_class.build(basic_property, detailed_property_with_beds)
+          unit_with_beds = units.detect { |u| u.identifier == "8367" }
+          expect(unit_with_beds.number_of_bedrooms).to eq(1)
+        end
+
+        it "parses number_of_bedrooms for 1-Bedroom" do
+          units = described_class.build(basic_property, detailed_property_with_beds)
+          unit_with_beds = units.detect { |u| u.identifier == "8368" }
+          expect(unit_with_beds.number_of_bedrooms).to eq(1)
+        end
+
+        it "parses number_of_bedrooms for 2-Bedroom" do
+          units = described_class.build(basic_property, detailed_property_with_beds)
+          unit_with_beds = units.detect { |u| u.identifier == "10614" }
+          expect(unit_with_beds.number_of_bedrooms).to eq(2)
+        end
+
+        it "parses number_of_bedrooms for unknown names" do
+          units = described_class.build(basic_property, detailed_property_with_beds)
+          unit_with_beds = units.detect { |u| u.identifier == "10612" }
+          expect(unit_with_beds.number_of_bedrooms).to eq(1)
+        end
+      end
+
+      context "when beds configuration is an array" do
+        let(:detailed_property_with_beds) do
+          attributes = detailed_property_attributes.merge(
+            bed_configurations: {
+              "property_accommodation" => [unit_beds_configuration]
+            }
           )
-        )
+
+          safe_hash = Concierge::SafeAccessHash.new(attributes)
+          SAW::Entities::DetailedProperty.new(safe_hash)
+        end
+
+        it_behaves_like "units mapper"
       end
 
-      it "builds units" do
-        units = described_class.build(
-          basic_property,
-          detailed_property_with_beds
-        )
-        expect(units.size).to eq(5)
+      context "when beds configuration is a single object" do
+        let(:detailed_property_with_beds) do
+          attributes = detailed_property_attributes.merge(
+            bed_configurations: {
+              "property_accommodation" => unit_beds_configuration
+            }
+          )
 
-        unit_with_beds = units.detect { |u| u.identifier == "8367" }
-        expect(unit_with_beds.number_of_double_beds).to eq(3)
-        expect(unit_with_beds.number_of_single_beds).to eq(0)
-        expect(unit_with_beds.max_guests).to eq(6)
-      end
+          safe_hash = Concierge::SafeAccessHash.new(attributes)
+          SAW::Entities::DetailedProperty.new(safe_hash)
+        end
 
-      it "parses number_of_bedrooms for Studio" do
-        units = described_class.build(
-          basic_property,
-          detailed_property_with_beds
-        )
-        unit_with_beds = units.detect { |u| u.identifier == "8367" }
-        expect(unit_with_beds.number_of_bedrooms).to eq(1)
-      end
-
-      it "parses number_of_bedrooms for 1-Bedroom" do
-        units = described_class.build(
-          basic_property,
-          detailed_property_with_beds
-        )
-        unit_with_beds = units.detect { |u| u.identifier == "8368" }
-        expect(unit_with_beds.number_of_bedrooms).to eq(1)
-      end
-
-      it "parses number_of_bedrooms for 2-Bedroom" do
-        units = described_class.build(
-          basic_property,
-          detailed_property_with_beds
-        )
-        unit_with_beds = units.detect { |u| u.identifier == "10614" }
-        expect(unit_with_beds.number_of_bedrooms).to eq(2)
-      end
-
-      it "parses number_of_bedrooms for unknown names" do
-        units = described_class.build(
-          basic_property,
-          detailed_property_with_beds
-        )
-        unit_with_beds = units.detect { |u| u.identifier == "10612" }
-        expect(unit_with_beds.number_of_bedrooms).to eq(1)
+        it_behaves_like "units mapper"
       end
     end
   end

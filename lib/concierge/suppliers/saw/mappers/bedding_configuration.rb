@@ -19,8 +19,10 @@ module SAW
           number_of_double_beds = 0
 
           beds = bedding_config.get("bed_type")
-          beds.each do |bed|
-            single_count, double_count = detect_beds(bed)
+          Array(beds).each do |bed|
+            safe_bed_hash = Concierge::SafeAccessHash.new(bed)
+
+            single_count, double_count = detect_beds(safe_bed_hash)
             number_of_double_beds = number_of_double_beds + double_count
             number_of_single_beds = number_of_single_beds + single_count
           end
@@ -33,7 +35,7 @@ module SAW
 
         private
         def detect_beds(bed_configuraton)
-          string = bed_configuraton.fetch("bed_type_name")
+          string = bed_configuraton.get("bed_type_name")
 
           double_count = string.scan(/double/i).size
           single_count = string.scan(/single/i).size + 2 * string.scan(/twin/i).size
