@@ -21,7 +21,7 @@ module Workers::Suppliers
         return
       end
 
-      result = importer.fetch_properties_by_countries(countries)
+      result = importer.fetch_available_properties_by_countries(countries)
 
       if result.success?
         properties = result.value

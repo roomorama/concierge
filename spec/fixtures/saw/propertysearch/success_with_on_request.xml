@@ -18,7 +18,7 @@
       <summary>Ascott Sathorn offers luxurious and spacious apartments complemented with comprehensive services and facilities. The residence is the premier Bangkok serviced apartment property and is ideal for corporate housing.</summary>
       <currency_code>USD</currency_code>
       <price>123.45</price>
-      <flag_on_request>N</flag_on_request>
+      <flag_on_request>Y</flag_on_request>
       <default_currency_code>USD</default_currency_code>
       <flag_great_deal>N</flag_great_deal>
     </property>

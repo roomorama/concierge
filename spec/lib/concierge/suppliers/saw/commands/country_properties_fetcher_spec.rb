@@ -180,6 +180,27 @@ RSpec.describe SAW::Commands::CountryPropertiesFetcher do
 
       expect(multi_unit_values).to all(eq(true))
     end
+
+    it "sets on_request for properties" do
+      on_request_values = properties.map(&:on_request?)
+
+      expect(on_request_values).to all(eq(false))
+    end
+  end
+
+  context "when there are on_request properties" do
+    before do
+      mock_request(:propertysearch, :success_with_on_request)
+    end
+
+    let(:result) { subject.call(country) }
+    let(:properties) { result.value }
+
+    it "sets on_request for properties" do
+      on_request_values = properties.map(&:on_request?)
+
+      expect(on_request_values).to eq([true, false, false, false, false])
+    end
   end
 
   context "when there is only one property in response" do

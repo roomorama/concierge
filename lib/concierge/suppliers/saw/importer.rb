@@ -54,6 +54,24 @@ module SAW
       properties_fetcher.call(country)
     end
 
+    # Retrieves the list of available properties in a given country
+    # Available means those which doesn't have `on_request` attribute
+    #
+    # Returns a +Result+ wrapping +Array+ of +SAW::Entities::BasicProperty+
+    # when operation succeeds
+    # Returns a +Result+ with +Result::Error+ when operation fails
+    def fetch_available_properties_by_country(country)
+      result = fetch_properties_by_country(country)
+
+      if result.success?
+        all_properties = result.value
+        available_properties = all_properties.reject { |p| p.on_request? }
+        Result.new(available_properties)
+      else
+        result
+      end
+    end
+
     # Retrieves the list of properties in given countries
     # In case if request to one of the countries fails, method stops its
     # execution and returns a result with a failure.
@@ -64,6 +82,25 @@ module SAW
     def fetch_properties_by_countries(countries)
       properties = countries.map do |country|
         result = fetch_properties_by_country(country)
+
+        return result unless result.success?
+
+        result.value
+      end.flatten
+
+      Result.new(properties)
+    end
+
+    # Retrieves the list of available properties in given countries
+    # In case if request to one of the countries fails, method stops its
+    # execution and returns a result with a failure.
+    #
+    # Returns a +Result+ wrapping +Array+ of +SAW::Entities::BasicProperty+
+    # when operation succeeds
+    # Returns a +Result+ with +Result::Error+ when operation fails
+    def fetch_available_properties_by_countries(countries)
+      properties = countries.map do |country|
+        result = fetch_available_properties_by_country(country)
 
         return result unless result.success?
 
