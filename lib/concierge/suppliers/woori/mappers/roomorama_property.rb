@@ -4,6 +4,9 @@ module Woori
     #
     # This class is responsible for building a +Roomorama::Property+ object.
     class RoomoramaProperty
+      MINIMUM_STAY = 1
+      CANCELLATION_POLICY = 'moderate'
+
       attr_reader :safe_hash, :amenities_converter, :country_code_converter
 
       # Initialize RoomoramaProperty mapper
@@ -26,20 +29,22 @@ module Woori
       # Returns +Roomorama::Property+ Roomorama property object
       def build_property
         property = Roomorama::Property.new(safe_hash.get("hash"))
-        property.title          = safe_hash.get("data.name")
-        property.type           = safe_hash.get("type")
-        property.lat            = safe_hash.get("data.latitude")
-        property.lng            = safe_hash.get("data.longitude")
-        property.currency       = safe_hash.get("data.currency")
-        property.city           = safe_hash.get("data.city")
-        property.neighborhood   = safe_hash.get("data.region")
-        property.postal_code    = safe_hash.get("data.postalCode")
-        property.check_in_time  = check_in_time
-        property.check_out_time = check_out_time
-        property.address        = full_address
-        property.amenities      = amenities_converter.convert
-        property.country_code   = country_code
-        property.description    = description_with_additional_amenities
+        property.title                = safe_hash.get("data.name")
+        property.type                 = safe_hash.get("type")
+        property.lat                  = safe_hash.get("data.latitude")
+        property.lng                  = safe_hash.get("data.longitude")
+        property.currency             = safe_hash.get("data.currency")
+        property.city                 = safe_hash.get("data.city")
+        property.neighborhood         = safe_hash.get("data.region")
+        property.postal_code          = safe_hash.get("data.postalCode")
+        property.check_in_time        = check_in_time
+        property.check_out_time       = check_out_time
+        property.address              = full_address
+        property.amenities            = amenities_converter.convert
+        property.country_code         = country_code
+        property.description          = description_with_additional_amenities
+        property.minimum_stay         = MINIMUM_STAY
+        property.cancellation_policy  = CANCELLATION_POLICY
         property.default_to_available = true
         property.instant_booking!
         property.multi_unit!
