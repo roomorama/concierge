@@ -9,6 +9,7 @@ how this file is formatted and how the process works.
 - `net_rate`, `host_fee` and `host_fee_percentage` to quotation response
 - `fee_percentage` column to `Host` entity
 - Send inquiry id as `agent_reference` field to WayToStay
+- Fee percentage for WayToStay
 - `/checkout` endpoint which always returns a successful status.
 - removed image presence validation for `Roomorama::Unit` entity
 

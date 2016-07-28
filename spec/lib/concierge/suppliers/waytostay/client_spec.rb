@@ -19,6 +19,8 @@ RSpec.describe Waytostay::Client do
                   "access_token" => "test_token",
                   "expires_at"   => Time.now.to_i + 10 * 3600 })
     end
+    supplier = create_supplier(name: Waytostay::Client::SUPPLIER_NAME)
+    create_host(supplier_id: supplier.id, fee_percentage: 7.0)
   end
 
   subject(:stubbed_client) { described_class.new }
@@ -195,6 +197,14 @@ RSpec.describe Waytostay::Client do
         success_params.merge(property_id: "malformed_response"),
         success_params.merge(property_id: "timeout")
       ]}
+    end
+
+    it "appends net_rate and fee_percentage info" do
+      quotation = stubbed_client.quote( { property_id: "success", check_in: Date.today + 10, check_out: Date.today + 20, guests: 2 } )
+      expect(quotation.value.total).to eq 603.0
+      expect(quotation.value.net_rate).to eq 563.55
+      expect(quotation.value.host_fee_percentage).to eq 7
+      expect(quotation.value.host_fee).to eq (603 - 563.55).round(2)
     end
 
     it "should announce missing fields from response for malformed responses" do
