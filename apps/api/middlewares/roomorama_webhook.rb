@@ -18,7 +18,7 @@ module API
     # will expand Concierge's response back to the format expected by the webhooks.
     #
     # In the future, when the format of Roomorama webhooks gets simpler, this
-    # middlware could be entirely removed.
+    # middleware could be entirely removed.
     class RoomoramaWebhook
 
       # +API::Middlewares::RoomoramaWebhook::ConciergeRequest+
@@ -42,7 +42,7 @@ module API
       #       # ...
       #     }
       #   }
-      #   request.quote(paylaod)
+      #   request.quote(payload)
       #   # => Changes the request body to:
       #   # {
       #   #   property_id: "023",
@@ -76,6 +76,7 @@ module API
           env["rack.input"] = StringIO.new(json_encode(params))
           true
         end
+        alias_method :checkout, :quote
 
         # translates params for a +booking+ call. Receives a +data+ argument
         # representing the webhook payload sent by Roomorama and changes
@@ -85,13 +86,14 @@ module API
 
           params = {
             property_id:   payload.get("inquiry.room.property_id"),
+            inquiry_id:    payload.get("inquiry.id"),
             unit_id:       payload.get("inquiry.room.unit_id"),
             check_in:      payload.get("inquiry.check_in"),
             check_out:     payload.get("inquiry.check_out"),
             guests:        payload.get("inquiry.num_guests"),
             subtotal:      payload.get("inquiry.subtotal"),
             currency_code: payload.get("inquiry.currency_code"),
-            customer: {
+            customer:      {
               first_name: payload.get("inquiry.user.first_name"),
               last_name:  payload.get("inquiry.user.last_name"),
               email:      payload.get("inquiry.user.email"),
@@ -151,7 +153,7 @@ module API
 
         attr_reader :payload
 
-        # Receives a +payload+ that represents the webhook paylaod initially sent
+        # Receives a +payload+ that represents the webhook payload initially sent
         # for this request/response cycle. Necessary since the response is basically
         # the same payload, with booking quotation values modified.
         def initialize(payload)
@@ -174,6 +176,9 @@ module API
           payload["inquiry"].merge!({
             "base_rental"            => response["total"],
             "currency_code"          => response["currency"],
+            "net_rate"               => response["net_rate"],
+            "host_fee"               => response["host_fee"],
+            "host_fee_percentage"    => response["host_fee_percentage"],
             "tax"                    => 0,
             "processing_fee"         => 0,
             "extra_guests_surcharge" => 0,
@@ -182,6 +187,14 @@ module API
           })
 
           [status, headers, [json_encode(payload)]]
+        end
+
+        # the checkout action should be a static (supplier-independent)
+        # action (see +API::Controllers::Static::Checkout+ for more information).
+        #
+        # The upstream response is returned untouched.
+        def checkout(status, headers, response)
+          [status, headers, [json_encode(response)]]
         end
 
         # When making a booking, Roomorama checks only the HTTP status code of
@@ -234,8 +247,10 @@ module API
         event            = webhook_payload["event"]
 
         case event
-        when "quote_instant", "checkout_instant"
+        when "quote_instant"
           concierge_request.quote(webhook_payload)
+        when "checkout_instant"
+          concierge_request.checkout(webhook_payload)
         when "booked_instant"
           concierge_request.booking(webhook_payload)
         when "cancelled"
@@ -258,8 +273,10 @@ module API
         event = webhook_payload["event"]
 
         case event
-        when "quote_instant", "checkout_instant"
+        when "quote_instant"
           webhook_response.quote(status, headers, data)
+        when "checkout_instant"
+          webhook_response.checkout(status, headers, data)
         when "booked_instant"
           webhook_response.booking(status, headers, data)
         when "cancelled"

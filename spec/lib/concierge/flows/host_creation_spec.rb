@@ -11,6 +11,7 @@ RSpec.describe Concierge::Flows::HostCreation do
       identifier:   "host1",
       username:     "roomorama-user",
       access_token: "a1b2c3",
+      fee_percentage:   7
     }
   }
 
@@ -27,7 +28,7 @@ RSpec.describe Concierge::Flows::HostCreation do
   describe "#perform" do
     it "returns an unsuccessful if any required parameter is missing" do
       [nil, ""].each do |invalid_value|
-        [:supplier, :identifier, :username, :access_token].each do |attribute|
+        [:supplier, :identifier, :username, :access_token, :fee_percentage].each do |attribute|
           parameters[attribute] = invalid_value
 
           result = subject.perform
@@ -87,6 +88,7 @@ RSpec.describe Concierge::Flows::HostCreation do
       expect(host.identifier).to eq "host1"
       expect(host.username).to eq "roomorama-user"
       expect(host.access_token).to eq "a1b2c3"
+      expect(host.fee_percentage).to eq 7
 
       expect(workers.size).to eq 2
 

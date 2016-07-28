@@ -118,11 +118,11 @@ RSpec.describe Roomorama::Unit do
       }.to raise_error Roomorama::Unit::ValidationError
     end
 
-    it "is invalid if there are no images associated with the unit" do
+    it "is valid if there are no images associated with the unit" do
       allow(subject).to receive(:images) { [] }
       expect {
         subject.validate!
-      }.to raise_error Roomorama::Unit::ValidationError
+      }.not_to raise_error
     end
 
     it "rejects invalid image objects" do

@@ -24,6 +24,20 @@ RSpec.describe Workers::Suppliers::Waytostay do
     end
   end
 
+  describe "last_synced_timestamp" do
+    context "there are no successful syncs" do
+      it { expect(subject.send(:last_synced_timestamp)).to be_nil }
+    end
+
+    context "there are successful syncs" do
+      before do
+        create_sync_process(successful: true, host_id: host.id)
+      end
+
+      it { expect(subject.send(:last_synced_timestamp)).to be_a Integer }
+    end
+  end
+
   context "synchronizing properties" do
     let(:changes) { {
       properties:   ["001", "002"],
@@ -34,19 +48,21 @@ RSpec.describe Workers::Suppliers::Waytostay do
       # bookings:     []
     }}
     before do
-      allow(subject).to receive(:last_synced_timestamp) { Time.now() }
+      allow(subject).to receive(:last_synced_timestamp) { Time.now().to_i }
       allow(subject.client).to receive(:get_changes_since).and_return(Result.new(changes))
 
       # properties 001 and 002 is stubbed for client fetches,
       # 003, 004 and 005 stubbed for concierge database
-      allow(subject.client).to receive(:get_property) do |ref|
-        expect(["001", "002"]).to include ref
-        Roomorama::Property.load(
-          Concierge::SafeAccessHash.new(
-            JSON.parse(read_fixture("waytostay/properties/#{ref}.roomorama-attributes.json"))
-          )
-        )
+      allow_any_instance_of(Waytostay::Client).to receive(:get_active_properties_by_ids) do |ids|
+        properties = ids.collect do |ref|
+          Roomorama::Property.load(
+            Concierge::SafeAccessHash.new(
+              JSON.parse(read_fixture("waytostay/properties/#{ref}.roomorama-attributes.json"))
+            ))
+        end
+        Result.new properties
       end
+
       create_property(identifier: "003", host_id: host.id)
       create_property(identifier: "004", host_id: host.id)
       create_property(identifier: "005", host_id: host.id)
@@ -86,6 +102,17 @@ RSpec.describe Workers::Suppliers::Waytostay do
           expect(error.context[:events].last["label"]).to eq "Response Mismatch"
         end
       end
+
+      context "when rate limit is hit" do
+        it "should stop making any more calls" do
+          expect(subject.client).to receive(:get_active_properties_by_ids).once do
+            Result.error(:http_status_429)
+          end
+          expect(subject.client).to_not receive(:update_media)
+          subject.perform
+        end
+      end
     end
+
   end
 end

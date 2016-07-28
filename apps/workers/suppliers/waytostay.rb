@@ -23,14 +23,17 @@ module Workers::Suppliers
       uniq_properties_in(changes.value).each do |property_ref|
         property_sync.start(property_ref) do
           wrapped_property = if changes.value[:properties].include? property_ref
-                               # get the updated property from supplier
-                               client.get_property(property_ref)
+                               client.get_property_from_batch(property_ref, changes.value[:properties])
                              else
                                # no changes on property attributes indicated, just
                                # load one from db so we can attach other changes
                                load_existing property_ref
                              end
-          next wrapped_property unless wrapped_property.success?
+
+          unless wrapped_property.success?
+            return if wrapped_property.error.code == :http_status_429
+            next wrapped_property
+          end
 
           if changes.value[:media].include?(property_ref)
             wrapped_property = client.update_media(wrapped_property.result)
@@ -50,25 +53,6 @@ module Workers::Suppliers
     end
 
     private
-
-    # Loops through all pages of waytostay new properties, yielding each
-    # as a Roomorama::Property
-    #
-    def get_initial_properties
-      initialize_overall_sync_context
-      current_page = 1
-      while !current_page.nil?
-        result, current_page = client.get_active_properties(current_page)
-        next announce_error(result) unless result.success?
-        result.value.each do |property_result|
-          if !property_result.success? || property_result.value.disabled
-            next
-          else
-            yield property_result.value
-          end
-        end
-      end
-    end
 
     # Starts a new context, run the block that augments to context
     # Then announce if any error was returned from the block
@@ -129,7 +113,7 @@ module Workers::Suppliers
     #
     def last_synced_timestamp
       most_recent = SyncProcessRepository.recent_successful_sync_for_host(host).first
-      most_recent&.started_at
+      most_recent&.started_at&.to_i
     end
 
     # Returns an existing +Roomorama::Property+

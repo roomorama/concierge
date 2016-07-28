@@ -77,10 +77,11 @@ module Concierge::Flows
   class HostCreation
     include Hanami::Validations
 
-    attribute :supplier,     presence: true
-    attribute :identifier,   presence: true
-    attribute :username,     presence: true
-    attribute :access_token, presence: true
+    attribute :supplier,       presence: true
+    attribute :identifier,     presence: true
+    attribute :username,       presence: true
+    attribute :access_token,   presence: true
+    attribute :fee_percentage, presence: true
 
     attr_reader :config_path
 
@@ -127,9 +128,9 @@ module Concierge::Flows
       existing = HostRepository.from_supplier(supplier).identified_by(identifier).first
       host = existing || Host.new(supplier_id: supplier.id, identifier: identifier)
 
-      host.username     = username
-      host.access_token = access_token
-
+      host.username       = username
+      host.access_token   = access_token
+      host.fee_percentage = fee_percentage.to_f
       HostRepository.persist(host)
     end
 

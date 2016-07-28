@@ -31,22 +31,33 @@ RSpec.describe Waytostay::Client do
   it_behaves_like "Waytostay availabilities client"
 
   describe "#get_changes_since" do
-    let(:timestamp) { 1466562548 }
     let(:changes_url) { base_url + Waytostay::Changes::ENDPOINT }
+
     before do
       stubbed_client.oauth2_client.oauth_client.connection =
         stub_call(:get, changes_url, params:{timestamp: timestamp}, strict: true) {
           [200, {}, read_fixture("waytostay/changes?timestamp=#{timestamp}.json")]
         }
     end
+
     subject { stubbed_client.get_changes_since(timestamp) }
-    it "should return hash of changes by categories" do
-      expect(subject.result[:properties]).to   match ["000001"]
-      expect(subject.result[:media]).to        match ["002"]
-      expect(subject.result[:availability]).to match ["003"]
-      # expect(subject[:rates]).to        match ["013064", "000001"]
-      # expect(subject[:reviews]).to      match ["003"]
-      # expect(subject[:bookings]).to     match []
+
+    context "there are changes" do
+      let(:timestamp) { 1466562548 }
+      it "should return hash of changes by categories" do
+        expect(subject.result[:properties]).to   match ["000001"]
+        expect(subject.result[:media]).to        match ["002"]
+        expect(subject.result[:availability]).to match ["003"]
+      end
+    end
+
+    context "there are no changes" do
+      let(:timestamp) { 1469599936 }
+      it "should return empty arrays" do
+        expect(subject.result[:properties]).to eq []
+        expect(subject.result[:media]).to eq []
+        expect(subject.result[:availability]).to eq []
+      end
     end
   end
 
@@ -60,6 +71,7 @@ RSpec.describe Waytostay::Client do
         phone:      "+12345678",
       },
       property_id:  "9234",
+      inquiry_id:   "roomorama_inquiry_ref",
       check_in:     "2016-06-10",
       check_out:    "2016-06-15",
       guests:       2
@@ -74,6 +86,7 @@ RSpec.describe Waytostay::Client do
       arrival_date:       params[:check_in],
       departure_date:     params[:check_out],
       number_of_adults:   params[:guests],
+      agent_reference:    params[:inquiry_id],
       payment_option:     "full_payment"
     }}
     let(:success_waytostay_params) { booking_post_body.merge(property_reference: "1") }

@@ -5,8 +5,8 @@
 #
 # Attributes
 #
-#   +property_id+: a String used to identify the proeprty with the partner. Not related to Roomorama.
-#   +unit_id+:     a String used to identify the proeprty's unit with the partner. Not related to Roomorama.
+#   +property_id+: a String used to identify the property with the partner. Not related to Roomorama.
+#   +unit_id+:     a String used to identify the property's unit with the partner. Not related to Roomorama.
 #   +check_in+:    the check-in date for the stay
 #   +check_out+:   the check-out date for the stay
 #   +guests+:      the number of guests

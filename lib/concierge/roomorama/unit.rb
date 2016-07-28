@@ -85,8 +85,6 @@ module Roomorama
       elsif disabled
         # if there's an id and it's disabled, it's already a valid unit
         true
-      elsif images.empty?
-        raise ValidationError.new("no images")
       else
         images.each(&:validate!)
 
