@@ -23,7 +23,12 @@ module Woori
       unit = mapper.build_unit
       expect(unit.max_guests).to eq(8)
     end
-    
+
+    it "sets number_of_bedrooms to the unit" do
+      unit = mapper.build_unit
+      expect(unit.number_of_bedrooms).to eq(1)
+    end
+
     it "sets amenities" do
       unit_hash["data"]["facilities"] = ["TV"]
       unit = mapper.build_unit
