@@ -7,6 +7,7 @@ module Poplidays
     # This class is responsible for wrapping the logic related to getting all
     # lodging's availabilities from Poplidays, parsing the response,
     # and building the +Result+ object with the raw data returned from their API.
+    # Uses cache with Concierge::Cache::DEFAULT_TTL
     #
     # Usage
     #
