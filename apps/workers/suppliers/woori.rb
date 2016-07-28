@@ -28,7 +28,7 @@ module Workers::Suppliers
           puts "FETCH PROPERTIES. Fetched: #{size_fetched} properties. (limit: #{BATCH_SIZE}, offset: #{offset})"
 
           properties.each do |property|
-            # synchronisation.start(property.identifier) do
+            synchronisation.start(property.identifier) do
               Concierge.context.disable!
 
               units_result = fetch_property_units(property)
@@ -60,7 +60,7 @@ module Workers::Suppliers
                 announce_property_units_fetch_error(property, result)
                 result
               end
-            # end
+            end
           end
 
         else
