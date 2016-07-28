@@ -59,6 +59,16 @@ module Woori
       expect(property.instant_booking?).to eq(true)
     end
 
+    it "sets cancellation policy" do
+      property = mapper.build_property
+      expect(property.cancellation_policy).to eq('moderate')
+    end
+
+    it "sets minimum_stay" do
+      property = mapper.build_property
+      expect(property.minimum_stay).to eq(1)
+    end
+
     it "sets check_in_time and check_out_time attributes" do
       property = mapper.build_property
       expect(property.check_in_time).to eq("15:00:00")
