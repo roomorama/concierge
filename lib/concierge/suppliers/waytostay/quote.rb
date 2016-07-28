@@ -4,7 +4,7 @@ module Waytostay
   #
   module Quote
 
-    FEE_PERCENTAGE = 7.0
+    FEE_PERCENTAGE = 7.0 # As per contract
     ENDPOINT = "/bookings/quote".freeze
     UNAVAILBLE_ERROR_MESSAGES = [
       "Apartment is not available for the selected dates",
