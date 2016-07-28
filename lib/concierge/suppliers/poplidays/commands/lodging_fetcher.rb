@@ -21,7 +21,7 @@ module Poplidays
       PATH = 'lodgings/%<id>s'
 
       def call(lodging_id)
-        raw_lodging = remote_call(url_params = {id: lodging_id})
+        raw_lodging = remote_call(url_params: {id: lodging_id})
         if raw_lodging.success?
           json_decode(raw_lodging.value)
         else

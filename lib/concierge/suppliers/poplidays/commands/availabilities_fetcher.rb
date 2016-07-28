@@ -26,7 +26,7 @@ module Poplidays
         key = ['availabilities', '.', lodging_id].join
 
         raw_availabilities = with_cache(key) do
-          remote_call(url_params = {id: lodging_id})
+          remote_call(url_params: {id: lodging_id})
         end
 
         if raw_availabilities.success?

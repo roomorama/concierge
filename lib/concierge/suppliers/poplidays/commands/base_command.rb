@@ -27,6 +27,9 @@ module Poplidays
       HEADERS  = { 'Accept'          => 'application/json',
                    'Accept-Language' => 'en'}
 
+      ROOMORAMA_DATE_FORMAT = '%Y-%m-%d'
+      POPLIDAYS_DATE_FORMAT = '%Y%m%d'
+
       attr_reader :credentials
 
       def initialize(credentials)
@@ -42,20 +45,19 @@ module Poplidays
       #   * +url_params+ [Hash] a hash of params to be inserted to the command path
       #                         with sprintf method
       #   * +params+ [Hash] HTTP params (POST or GET) to be sent during remote call
-      def remote_call(url_params = {}, params = {})
+      def remote_call(url_params: {}, params: {})
         endpoint = sprintf("#{VERSION}/#{path}", url_params)
 
         auth_params = {}
         if authentication_required?
           auth_params = { client: credentials.client_key, signature: sign_request(endpoint) }
         end
-
         if method == :get
           params.merge!(auth_params)
           response = client.get(endpoint, params, HEADERS)
         elsif method == :post
-          endpoint += escape_params(auth_params)
-          response = client.post(endpoint, params, HEADERS)
+          endpoint += "?#{escape_params(auth_params)}"
+          response = client.post(endpoint, json_encode(params), {'Content-Type' => 'application/json'}.merge!(HEADERS))
         end
 
         if response.success?
@@ -93,6 +95,11 @@ module Poplidays
         DEFAULT_TIMEOUT
       end
 
+      # Converts date string to Poplidays expected format
+      def convert_date(date)
+        Date.strptime(date, ROOMORAMA_DATE_FORMAT).strftime(POPLIDAYS_DATE_FORMAT)
+      end
+
       private
 
       def client
@@ -107,7 +114,7 @@ module Poplidays
       def sign_request(endpoint)
         passphrase = credentials.passphrase
         client_key = credentials.client_key
-        mixed = "#{passphrase}:#{endpoint}:client:#{client_key}"
+        mixed = "#{passphrase}:/#{endpoint}:client:#{client_key}"
         Digest::SHA1.hexdigest(mixed)
       end
     end
