@@ -4,6 +4,7 @@ module Waytostay
   #
   module Quote
 
+    FEE_PERCENTAGE = 7.0
     ENDPOINT = "/bookings/quote".freeze
     UNAVAILBLE_ERROR_MESSAGES = [
       "Apartment is not available for the selected dates",
@@ -20,7 +21,7 @@ module Waytostay
     ].freeze
 
     # Quote prices
-    # 
+    #
     # If an error happens in any step in the process of getting a response back from
     # Waytostay, a generic error message is sent back to the caller, and the failure
     # is logged.
@@ -82,13 +83,14 @@ module Waytostay
     #
     def quote_params_from(response)
       {
-        property_id: response.get("booking_details.property_reference"),
-        check_in:    response.get("booking_details.arrival_date"),
-        check_out:   response.get("booking_details.departure_date"),
-        guests:      response.get("booking_details.number_of_adults"),
-        total:       response.get("pricing.pricing_summary.gross_total"),
-        currency:    response.get("pricing.currency"),
-        available:   true
+        property_id:         response.get("booking_details.property_reference"),
+        check_in:            response.get("booking_details.arrival_date"),
+        check_out:           response.get("booking_details.departure_date"),
+        guests:              response.get("booking_details.number_of_adults"),
+        total:               response.get("pricing.pricing_summary.gross_total"),
+        host_fee_percentage: FEE_PERCENTAGE,
+        currency:            response.get("pricing.currency"),
+        available:           true
       }
     end
 
