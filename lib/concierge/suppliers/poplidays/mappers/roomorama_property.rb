@@ -24,10 +24,6 @@ module Poplidays
         'HOUSE'     => 1000.0
       }
 
-      # currency information is not included in the response, but prices are
-      # always quoted in EUR.
-      CURRENCY = 'EUR'
-
       # Maps Poplidays lodging type to Roomorama property type/subtype.
       PROPERTY_TYPES = Concierge::SafeAccessHash.new({
         'APARTMENT' => {type: 'apartment', subtype: 'apartment'},
@@ -77,7 +73,7 @@ module Poplidays
         roomorama_property.number_of_bathrooms = details['bathrooms']
         roomorama_property.smoking_allowed = smoking_allowed?(details)
         roomorama_property.pets_allowed = pets_allowed?(details)
-        roomorama_property.currency = CURRENCY
+        roomorama_property.currency =  Poplidays::Mappers::Quote::CURRENCY
         roomorama_property.cancellation_policy = CANCELLATION_POLICY
 
         # Some properties have 0 value

@@ -4,6 +4,12 @@ RSpec.describe Poplidays::Client do
   let(:params) {
     { property_id: "439439", check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
   }
+  let(:credentials) do
+    double(url: 'api.poplidays.com',
+           client_key: '1111',
+           passphrase: '4311')
+  end
+  subject { described_class.new(credentials) }
 
   describe "#quote" do
     it "returns the wrapped quotation from Poplidays::Price when successful" do

@@ -9,6 +9,12 @@ module Poplidays
   class Client
     SUPPLIER_NAME = "Poplidays"
 
+    attr_reader :credentials
+
+    def initialize(credentials)
+      @credentials = credentials
+    end
+
     # Quote prices
     #
     # If an error happens in any step in the process of getting a response back from
@@ -25,7 +31,7 @@ module Poplidays
     # Returns a +Result+ wrapping a +Quotation+ when operation succeeds
     # Returns a +Result+ wrapping a nil object when operation fails
     def quote(params)
-      Poplidays::Price.new.quote(params)
+      Poplidays::Price.new(credentials).quote(params)
     end
 
     private
