@@ -46,10 +46,15 @@ module SAW
         @weekly_rate   = attrs[:weekly_rate]
         @monthly_rate  = attrs[:monthly_rate]
         @multi_unit    = attrs[:multi_unit]
+        @on_request    = attrs[:on_request]
       end
 
       def multi_unit?
         !!@multi_unit
+      end
+
+      def on_request?
+        !!@on_request
       end
     end
   end

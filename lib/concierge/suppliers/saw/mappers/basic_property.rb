@@ -8,7 +8,7 @@ module SAW
       ALLOWED_FIELDS = [
         :internal_id, :title, :description, :lat, :lon, :city, :neighborhood,
         :country_code, :currency_code, :multi_unit, :type,
-        :nightly_rate, :weekly_rate, :monthly_rate
+        :nightly_rate, :weekly_rate, :monthly_rate, :on_request
       ]
 
       class << self
@@ -26,6 +26,7 @@ module SAW
           copy_internal_id!(attrs, new_hash)
           copy_title!(attrs, new_hash)
           copy_description!(attrs, new_hash)
+          copy_on_request!(attrs, new_hash)
           copy_address_information!(attrs, new_hash)
           copy_currency_code!(attrs, new_hash)
           copy_rates!(attrs, new_hash)
@@ -54,6 +55,10 @@ module SAW
 
         def copy_description!(attrs, hash)
           hash[:description] = attrs.get("summary")
+        end
+
+        def copy_on_request!(attrs, hash)
+          hash[:on_request] = attrs.get("flag_on_request") == "Y"
         end
 
         def copy_address_information!(attrs, hash)
