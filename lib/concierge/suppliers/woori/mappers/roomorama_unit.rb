@@ -30,10 +30,11 @@ module Woori
       def build_unit
         unit = Roomorama::Unit.new(safe_hash.get("hash"))
 
-        unit.title       = safe_hash.get("data.name")
-        unit.max_guests  = safe_hash.get("data.capacity")
-        unit.amenities   = amenities_converter.convert
-        unit.description = description_with_additional_amenities
+        unit.title              = safe_hash.get("data.name")
+        unit.description        = description_with_additional_amenities
+        unit.amenities          = amenities_converter.convert
+        unit.max_guests         = safe_hash.get("data.capacity")
+        unit.number_of_bedrooms = safe_hash.get("data.roomCount")
 
         unit
       end
