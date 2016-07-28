@@ -19,6 +19,8 @@ RSpec.describe Waytostay::Client do
                   "access_token" => "test_token",
                   "expires_at"   => Time.now.to_i + 10 * 3600 })
     end
+    supplier = create_supplier(name: Waytostay::Client::SUPPLIER_NAME)
+    create_host(supplier_id: supplier.id, fee_percentage: 7.0)
   end
 
   subject(:stubbed_client) { described_class.new }
