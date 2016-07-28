@@ -51,14 +51,14 @@ module Workers::Suppliers
                     property.add_unit(unit)
                   else
                     announce_property_unit_rates_fetch_error(unit, result)
-                    result
+                    rates_result
                   end
                 end
 
                 Result.new(property)
               else
                 announce_property_units_fetch_error(property, result)
-                result
+                units_result
               end
             end
           end
