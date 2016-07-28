@@ -7,12 +7,11 @@ module Kigo
 
     API_METHOD = 'createConfirmedReservation'
 
-    attr_reader :credentials, :request_handler, :response_parser
+    attr_reader :credentials, :request_handler
 
-    def initialize(credentials, request_handler: nil, response_parser: nil)
+    def initialize(credentials, request_handler: nil)
       @credentials     = credentials
       @request_handler = request_handler || default_request_handler
-      @response_parser = response_parser || default_response_parser
     end
 
 
@@ -35,7 +34,7 @@ module Kigo
       result   = http.post(endpoint, json_encode(reservation_details.value), { 'Content-Type' => 'application/json' })
 
       if result.success?
-        response_parser.parse_reservation(params, result.value.body)
+        response_parser(params).parse_reservation(result.value.body)
       else
         result
       end
@@ -48,8 +47,8 @@ module Kigo
       @request_handler ||= Kigo::Request.new(credentials)
     end
 
-    def default_response_parser
-      @response_parser ||= Kigo::ResponseParser.new
+    def response_parser(params)
+      Kigo::ResponseParser.new(params)
     end
 
     def http

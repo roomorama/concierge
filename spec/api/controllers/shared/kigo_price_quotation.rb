@@ -34,20 +34,44 @@ RSpec.shared_examples "Kigo price quotation" do
     expect(response.body).not_to have_key("total")
   end
 
-  it "returns available quotations with price when the call is successful" do
-    stub_call(:post, endpoint) { [200, {}, read_fixture("kigo/success.json")] }
-    response = parse_response(described_class.new.call(params))
+  context "success" do
+    before { stub_call(:post, endpoint) { [200, {}, read_fixture("kigo/success.json")] } }
 
-    expect(response.status).to eq 200
-    expect(response.body["status"]).to eq "ok"
-    expect(response.body["available"]).to eq true
-    expect(response.body["property_id"]).to eq "567"
-    expect(response.body["check_in"]).to eq "2016-03-22"
-    expect(response.body["check_out"]).to eq "2016-03-25"
-    expect(response.body["guests"]).to eq 2
-    expect(response.body["currency"]).to eq "EUR"
-    expect(response.body["total"]).to eq 580.0
+    it "returns available quotations with price when the call is successful" do
+      allow_any_instance_of(Kigo::ResponseParser).to receive(:host) { Host.new(fee_percentage: 0) }
+      response = parse_response(described_class.new.call(params))
+
+      expect(response.status).to eq 200
+      expect(response.body["status"]).to eq "ok"
+      expect(response.body["available"]).to eq true
+      expect(response.body["property_id"]).to eq "567"
+      expect(response.body["check_in"]).to eq "2016-03-22"
+      expect(response.body["check_out"]).to eq "2016-03-25"
+      expect(response.body["guests"]).to eq 2
+      expect(response.body["currency"]).to eq "EUR"
+      expect(response.body["total"]).to eq 570.0
+    end
+
+    it "returns available quotations with gross rate" do
+      allow_any_instance_of(Kigo::ResponseParser).to receive(:host) { Host.new(fee_percentage: 7.0) }
+      response = parse_response(described_class.new.call(params))
+
+      expect(response.status).to eq 200
+      expect(response.body["status"]).to eq "ok"
+      expect(response.body["available"]).to eq true
+      expect(response.body["property_id"]).to eq "567"
+      expect(response.body["check_in"]).to eq "2016-03-22"
+      expect(response.body["check_out"]).to eq "2016-03-25"
+      expect(response.body["guests"]).to eq 2
+      expect(response.body["currency"]).to eq "EUR"
+      expect(response.body["net_rate"]).to eq 532.71
+      expect(response.body["total"]).to eq 570.0
+      expect(response.body["host_fee"]).to eq 37.29
+      expect(response.body["host_fee_percentage"]).to eq 7
+    end
+
   end
+
 
   def parse_response(rack_response)
     Support::HTTPStubbing::ResponseWrapper.new(

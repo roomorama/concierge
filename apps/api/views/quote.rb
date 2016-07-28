@@ -5,7 +5,7 @@ module API::Views
 
     def render
       response = {
-        status:     "ok",
+        status:      "ok",
         available:   quotation.available,
         property_id: quotation.property_id,
         unit_id:     quotation.unit_id,
@@ -16,8 +16,11 @@ module API::Views
 
       if quotation.available
         response.merge!({
-          currency: quotation.currency,
-          total:    quotation.total
+          currency:            quotation.currency,
+          total:               quotation.total,
+          net_rate:            quotation.net_rate,
+          host_fee:            quotation.host_fee,
+          host_fee_percentage: quotation.host_fee_percentage
         })
       end
 

@@ -23,7 +23,10 @@ module API
     # * the signature does not match the payload.
     #
     # In case all of the above meet the expectations, the request is accepted and
-    # processed.
+    # processed. Exception to this rule are endpoints listed on the +WHITELIST+ constant,
+    # where the same endpoint is reused across suppliers, and therefore no signature can
+    # be enforced on them (since the secret changes per supplier.) Such endpoints should
+    # be few and do no significant work.
     #
     # Note that each supplier partner has a different +Client Application+ on Roomorama.
     # That means that each supplier has its own secret, which makes sure that a supplier's
@@ -75,6 +78,7 @@ module API
       HTTP_METHOD         = "POST"
       SIGNATURE_HEADER    = "HTTP_CONTENT_SIGNATURE"
       CONTENT_TYPE_HEADER = "CONTENT_TYPE"
+      WHITELIST           = %w(/checkout)
       REQUIRED_HEADERS    = [SIGNATURE_HEADER, CONTENT_TYPE_HEADER]
 
       def initialize(app, secrets = Secrets.new)
@@ -110,12 +114,18 @@ module API
         request_body = read_request_body(env)
         request_path = env["PATH_INFO"] || env["REQUEST_PATH"]
 
+        return true if whitelisted?(request_path)
+
         valid_request_body = request_body && !request_body.empty?
         secret             = secrets.for(request_path)
         expected_signature = sign(request_body, secret: secret) if secret
         signatures_match   = (env[SIGNATURE_HEADER] == expected_signature)
 
         valid_request_body && secret && signatures_match
+      end
+
+      def whitelisted?(path)
+        WHITELIST.include?(path)
       end
 
       # +env["rack.input"]+ is a IO-like object. According to the Rack spec,

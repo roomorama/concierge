@@ -64,13 +64,16 @@ RSpec.describe API::Controllers::Waytostay::Quote do
 
     it "returns available quotation when call is successful" do
       available_quotation = Quotation.new({
-          property_id: params[:property_id],
-          check_in:    params[:check_in],
-          check_out:   params[:check_out],
-          guests:      params[:guests],
-          available:   true,
-          currency:    "EUR",
-          total:       56.78,
+          property_id:         params[:property_id],
+          check_in:            params[:check_in],
+          check_out:           params[:check_out],
+          guests:              params[:guests],
+          available:           true,
+          currency:            "EUR",
+          total:               56.78,
+          host_fee_percentage: 7.0,
+          host_fee:            3.71 ,
+          net_rate:            53.07,
         })
       expect_any_instance_of(Waytostay::Client).to receive(:quote).and_return(Result.new(available_quotation))
 
@@ -84,6 +87,9 @@ RSpec.describe API::Controllers::Waytostay::Quote do
       expect(response.body["guests"]).to eq 2
       expect(response.body["currency"]).to eq "EUR"
       expect(response.body["total"]).to eq 56.78
+      expect(response.body["net_rate"]).to eq 53.07
+      expect(response.body["host_fee"]).to eq 3.71
+      expect(response.body["host_fee_percentage"]).to eq 7.0
 
     end
   end
