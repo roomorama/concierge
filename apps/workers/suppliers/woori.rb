@@ -3,6 +3,10 @@ module Workers::Suppliers
   #
   # Performs synchronisation with supplier
   class Woori
+    class PropertiesFetchError < StandardError; end
+    class UnitsFetchError < StandardError; end
+    class UnitRatesFetchError < StandardError; end
+
     attr_reader :synchronisation, :host
     
     BATCH_SIZE     = 30
@@ -15,112 +19,116 @@ module Workers::Suppliers
     def perform
       offset = 0
 
-      puts "last_synced_date=#{last_synced_date}"
-
-      fetch_property_retries_count = 1
       begin
-        result = importer.fetch_properties(last_synced_date, BATCH_SIZE, offset)
+        result = fetch_properties(last_synced_date, BATCH_SIZE, offset)
 
         if result.success?
-          puts "FETCH PROPERTIES. Fetched: #{result.value.size} properties. (limit: #{BATCH_SIZE}, offset: #{offset})"
           properties = result.value
           size_fetched = properties.size
-          offset = offset + size_fetched
+          puts "FETCH PROPERTIES. Fetched: #{size_fetched} properties. (limit: #{BATCH_SIZE}, offset: #{offset})"
 
           properties.each do |property|
-            synchronisation.start(property.identifier) do
+            # synchronisation.start(property.identifier) do
               Concierge.context.disable!
-              puts "  Processing property id=#{property.identifier}..."
 
-              fetch_units_retries_count = 1
-              begin
-                units_result = importer.fetch_units(property.identifier)
+              units_result = fetch_property_units(property)
 
-                if units_result.success?
-                  puts "    FETCH UNITS: Fetched: #{units_result.value.size} units for property id=#{property.identifier}"
-                  units = units_result.value
+              if units_result.success?
+                units = units_result.value
+                puts "    FETCH UNITS: Fetched: #{units.size} units for property id=#{property.identifier}"
 
-                  units.each do |unit|
-                    puts "      FETCH UNIT RATES: Processing unit id=#{unit.identifier} for property id=#{property.identifier}"
-                    begin
-                      rates_result = importer.fetch_unit_rates(unit.identifier)
+                units.each do |unit|
+                  rates_result = fetch_unit_rates(unit)
 
-                      if rates_result.success?
-                        rates = rates_result.value
+                  if rates_result.success?
+                    rates = rates_result.value
+                    puts "      FETCH RATES: Fetched rates for unit=#{unit.identifier}. nightly_rate=#{rates.nightly_rate} weekly_rate=#{rates.weekly_rate} monthly_rate=#{rates.monthly_rate}"
 
-                        puts "      FETCH UNIT RATES: Success for #{unit.identifier}: #{rates.nightly_rate} / #{rates.weekly_rate} / #{rates.monthly_rate}"
+                    unit.nightly_rate = rates.nightly_rate
+                    unit.weekly_rate  = rates.weekly_rate
+                    unit.monthly_rate = rates.monthly_rate
 
-                        unit.nightly_rate = rates.nightly_rate
-                        unit.weekly_rate  = rates.weekly_rate
-                        unit.monthly_rate = rates.monthly_rate
-
-                        property.add_unit(unit)
-                      else
-                        # rates_result
-                        raise "error"
-                      end
-                    rescue
-                      fetch_rates_retries_count = fetch_rates_retries_count + 1
-
-                      if fetch_units_retries_count <= 3
-                        message = "      FETCH UNIT RATES: Failed to perform the `#fetch_unit_rates` operation for unit id=#{unit.identifier}. Retrying..."
-                        puts message
-                        announce_error(message, units_result)
-                        retry
-                      else
-                        message = "      FETCH UNIT RATES: Failed to perform the `#fetch_unit_rates` operation for unit id=#{unit.identifier}. Skipping..."
-                        puts message
-                        announce_error(message, units_result)
-                        
-                        rates_result
-                      end
-                    end
+                    property.add_unit(unit)
+                  else
+                    announce_property_unit_rates_fetch_error(unit, result)
+                    result
                   end
+                end
 
-                  Result.new(property)
-                else
-                  # units_result
-                  raise "error"
-                end
-              rescue
-                fetch_units_retries_count = fetch_units_retries_count + 1
-                
-                if fetch_units_retries_count <= 3
-                  message = "    FETCH UNITS: Failed to perform the `#fetch_units` operation for property id=#{property.identifier}. Retrying..."
-                  puts message
-                  announce_error(message, units_result)
-                  retry
-                else
-                  message = "    FETCH UNITS: Failed to perform the `#fetch_units` operation for property id=#{property.identifier}. Skipping"
-                  puts message
-                  announce_error(message, units_result)
-                  
-                  units_result 
-                end
+                Result.new(property)
+              else
+                announce_property_units_fetch_error(property, result)
+                result
               end
-            end
+            # end
           end
-        else
-          fetch_property_retries_count = fetch_property_retries_count + 1
 
-          if fetch_property_retries_count <= 3
-            message = "Failed to perform the `#fetch_properties` operation. Parameters: date=#{last_synced_date} limit=#{BATCH_SIZE} offset=#{offset}. Retrying..."
-            announce_error(message, result)
-            puts message
-            next
-          else
-            message = "Failed to perform the `#fetch_properties` operation. Parameters: date=#{last_synced_date} limit=#{BATCH_SIZE} offset=#{offset}. Skipping."
-            announce_error(message, result)
-            puts message
-            return
-          end
+        else
+          announce_properties_fetch_error(result)
+          return
         end
+
+        offset = offset + size_fetched
       end while size_fetched == BATCH_SIZE
-      
+
       synchronisation.finish!
     end
 
     private
+
+    def fetch_properties(date, batch_size, offset)
+      retries ||= 3
+      result = importer.fetch_properties(date, batch_size, offset)
+
+      if result.success?
+        result
+      else
+        raise PropertiesFetchError
+      end
+    rescue PropertiesFetchError
+      if (retries -= 1) > 0
+        puts "Retry fetching properties..."
+        retry
+      else
+        result
+      end
+    end
+
+    def fetch_property_units(property)
+      retries ||= 3
+      result = importer.fetch_units(property.identifier)
+
+      if result.success?
+        result
+      else
+        raise UnitsFetchError
+      end
+    rescue UnitsFetchError
+      if (retries -= 1) > 0
+        puts "Retry fetching units..."
+        retry
+      else
+        result
+      end
+    end
+
+    def fetch_unit_rates(unit)
+      retries ||= 3
+      result = importer.fetch_unit_rates(unit.identifier)
+
+      if result.success?
+        result
+      else
+        raise UnitRatesFetchError
+      end
+    rescue UnitRatesFetchError
+      if (retries -= 1) > 0
+        puts "Retry fetching units rates..."
+        retry
+      else
+        result
+      end
+    end
 
     def importer
       @importer ||= ::Woori::Importer.new(credentials)
@@ -162,6 +170,22 @@ module Workers::Suppliers
         context:     Concierge.context.to_h,
         happened_at: Time.now
       })
+    end
+
+    def announce_properties_fetch_error(result)
+      message = "Failed to perform the `#fetch_properties` operation"
+      announce_error(message, result)
+    end
+
+    def announce_property_units_fetch_error(property, result)
+      message = "Failed to perform the `#fetch_units` operation for property id=#{property.identifier}"
+      announce_error(message, result)
+    end
+
+    def announce_property_unit_rates_fetch_error(unit, result)
+      message = "Failed to perform the `#fetch_unit_rates` operation for unit id=#{unit.identifier}"
+
+      announce_error(message, result)
     end
   end
 end
