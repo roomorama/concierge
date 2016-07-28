@@ -171,7 +171,7 @@ RSpec.describe Roomorama::Diff do
 
     it "validates added units" do
       unit = Roomorama::Unit.new("UNIT1")
-      unit.images.clear
+      unit.identifier = nil
       subject.add_unit(unit)
 
       expect {

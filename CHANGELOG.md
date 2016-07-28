@@ -10,6 +10,7 @@ how this file is formatted and how the process works.
 - `fee_percentage` column to `Host` entity
 - Send inquiry id as `agent_reference` field to WayToStay
 - `/checkout` endpoint which always returns a successful status.
+- removed image presence validation for `Roomorama::Unit` entity
 
 ### Fixed
 - Bug when integer timestamp is expected but Time is given instead
