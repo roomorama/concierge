@@ -33,6 +33,23 @@ module Woori
       command = Woori::Commands::QuotationFetcher.new(credentials)
       command.call(params)
     end
+    
+    # Woori properties booking.
+    #
+    # If an error happens in any step in the process of getting a response back
+    # from Woori, a result object with error is returned
+    #
+    # Usage
+    #
+    #   comamnd = Woori::Client.new(credentials)
+    #   result = command.book(params)
+    #
+    # Returns a +Result+ wrapping a +Reservation+ when operation succeeds
+    # Returns a +Result+ with +Result::Error+ when operation fails
+    def book(params)
+      command = Woori::Commands::Booking.new(credentials)
+      command.call(params)
+    end
 
     # Cancels a given reservation_id
     #
@@ -43,10 +60,6 @@ module Woori
     #
     #   client = Woori::Client.new(credentials)
     #   result = client.cancel(params)
-    #
-    #   if result.sucess?
-    #     # ...
-    #   end
     #
     # Returns a +Result+ wrapping a +String+ with booking id number when
     # operation succeeds
