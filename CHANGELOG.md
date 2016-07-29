@@ -4,6 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [Unreleased]
+### Fixed
+- Crash when a property isn't included in waytostay changes, but also not in concierge database
+
 ## [0.5.3] - 2016-070-28
 ### Added
 - `net_rate`, `host_fee` and `host_fee_percentage` to quotation response
