@@ -6,7 +6,7 @@ RSpec.describe Kigo::Mappers::Beds do
 
   subject { described_class.new(bed_type_ids) }
 
-  it { expect(subject.single_beds.size).to eq 3 }
+  it { expect(subject.single_beds.size).to eq 8 }
   it { expect(subject.double_beds.size).to eq 3 }
   it { expect(subject.sofa_beds.size).to eq 3 }
 
@@ -16,5 +16,12 @@ RSpec.describe Kigo::Mappers::Beds do
     expect(mapper.double_beds.size).to eq 1
     expect(mapper.single_beds.size).to eq 2
     expect(mapper.sofa_beds.size).to eq 1
+  end
+
+  it 'doubles single beds with proper ids' do
+    twice_single_bed_ids = [13, 14]
+    mapper = described_class.new(twice_single_bed_ids)
+
+    expect(mapper.single_beds.size).to eq 4
   end
 end
