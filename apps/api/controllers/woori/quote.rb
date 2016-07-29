@@ -19,7 +19,7 @@ module API::Controllers::Woori
     #   API::Controllers::Woori::Quote.quote_price(selected_params)
     #   => Quotation(..)
     def quote_price(params)
-      credentials = Concierge::Credentials.for("Woori")
+      credentials = Concierge::Credentials.for(supplier_name)
       Woori::Client.new(credentials).quote(params)
     end
     
