@@ -63,7 +63,7 @@ module Web
       end
 
       def logger
-        output = Hanami.root.join("log", ["concierge_web.", Hanami.env].join).to_s
+        output = Hanami.root.join("log", [Hanami.env, "_web.log"].join).to_s
         ::Logger.new(output)
       end
 
