@@ -126,17 +126,6 @@ module Ciirus
       message.doc.root.children.to_xml
     end
 
-    def cleaning_fee(property_id)
-      message = builder.new do |xml|
-        xml.root do
-          xml.APIUserName credentials.username
-          xml.APIPassword credentials.password
-          xml.PropertyID property_id
-        end
-      end
-      message.doc.root.children.to_xml
-    end
-
     def extras(property_id)
       message = builder.new do |xml|
         xml.root do
