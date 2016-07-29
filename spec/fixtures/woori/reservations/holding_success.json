@@ -1,0 +1,37 @@
+{
+    "data": {
+        "createdAt": "2016-07-29 11:26:34",
+        "data": {
+            "checkinAt": "2016-08-05 00:00:00",
+            "checkoutAt": "2016-08-06 00:00:00",
+            "confirmId": null,
+            "confirmType": null,
+            "createdAt": null,
+            "customers": null,
+            "memo": null,
+            "receipt": null,
+            "requestedAt": null,
+            "reservationChannelType": "roomorama",
+            "rooms": [
+                {
+                    "adult": 0,
+                    "checkIn": "2016-08-05",
+                    "checkOut": "2016-08-06",
+                    "children": 0,
+                    "numberOfGeusts": 0,
+                    "price": null,
+                    "roomtypeHash": "w_w0814002_R01",
+                    "roomtypeName": "\uac1d\uc2e41"
+                }
+            ],
+            "status": "pending",
+            "updatedAt": null
+        },
+        "hash": "w_WP20160729112634CD7D",
+        "id": 386317,
+        "type": "reservation",
+        "updatedAt": null
+    },
+    "message": "success",
+    "status": 200
+}
