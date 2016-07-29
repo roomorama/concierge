@@ -8,13 +8,13 @@ RSpec.describe Woori::Commands::QuotationFetcher do
   let(:subject) { described_class.new(credentials) }
   let(:url) { "http://my.test/available" }
   let(:quotation_params) do
-    {
+    API::Controllers::Params::MultiUnitQuote.new(
       property_id: 'w_w0511001',
       unit_id: 'w_w0511001_R07',
       check_in: "2015-02-26",
       check_out: "2015-02-28",
       guests: 2
-    }
+    )
   end
 
   it "performs successful request returning Quotation object" do
