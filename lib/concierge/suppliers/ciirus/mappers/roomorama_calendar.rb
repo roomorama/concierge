@@ -6,6 +6,8 @@ module Ciirus
     # from data getting from Ciirus API.
     class RoomoramaCalendar
 
+      PERIOD_SYNC = 365
+
       # Maps Ciirus API responses to +Roomorama::Calendar+
       # Every rate defines availability period with daily price.
       # Every reservation defines reservation period.
@@ -37,6 +39,7 @@ module Ciirus
           (rate.from_date..rate.to_date).each do |date|
 
             next if date <= today
+            next if date > today + PERIOD_SYNC
 
             if rate.daily_rate == 0
               entry = Roomorama::Calendar::Entry.new(
@@ -47,11 +50,12 @@ module Ciirus
             else
               available = !date_reserved?(date, reservations_index)
               entry = Roomorama::Calendar::Entry.new(
-                date:             date.to_s,
-                available:        available,
-                nightly_rate:     rate.daily_rate,
-                checkin_allowed:  available,
-                minimum_stay:     rate.min_nights_stay
+                date:              date.to_s,
+                available:         available,
+                nightly_rate:      rate.daily_rate,
+                checkin_allowed:   available,
+                checkout_allowed:  available,
+                minimum_stay:      rate.min_nights_stay
               )
             end
             entries << entry

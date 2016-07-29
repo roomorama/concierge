@@ -17,36 +17,36 @@ module Workers::Suppliers::Ciirus
         properties = result.value
         properties.each do |property|
           property_id = property.property_id
-            if validator(property).valid?
-              synchronisation.start(property_id) do
-                Concierge.context.disable!
+          if validator(property).valid?
+            synchronisation.start(property_id) do
+              Concierge.context.disable!
 
-                result = fetch_permissions(property_id)
+              result = fetch_permissions(property_id)
+              next result unless result.success?
+              permissions = result.value
+
+              if permissions_validator(permissions).valid?
+                result = fetch_images(property_id)
                 next result unless result.success?
-                permissions = result.value
+                images = result.value
 
-                if permissions_validator(permissions).valid?
-                  result = fetch_images(property_id)
-                  next result unless result.success?
-                  images = result.value
+                result = fetch_description(property_id)
+                next result unless result.success?
+                description = result.value
 
-                  result = fetch_description(property_id)
-                  next result unless result.success?
-                  description = result.value
+                result = fetch_rates(property_id)
+                next result unless result.success?
+                rates = result.value
 
-                  result = fetch_rates(property_id)
-                  next result unless result.success?
-                  rates = result.value
+                result = fetch_security_deposit(property_id)
+                security_deposit = result.success? ? result.value : nil
 
-                  result = fetch_security_deposit(property_id)
-                  security_deposit = result.success? ? result.value : nil
-
-                  roomorama_property = mapper.build(property, images, rates, description, security_deposit)
-                  Result.new(roomorama_property)
-                else
-                  invalid_permissions_error(permissions)
-                end
+                roomorama_property = mapper.build(property, images, rates, description, security_deposit)
+                Result.new(roomorama_property)
+              else
+                invalid_permissions_error(permissions)
               end
+            end
           end
         end
         synchronisation.finish!
