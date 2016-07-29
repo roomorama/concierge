@@ -23,6 +23,7 @@ module Woori
       def build
         ::Quotation.new(
           property_id: params[:property_id],
+          unit_id:     params[:unit_id],
           check_in:    params[:check_in].to_s,
           check_out:   params[:check_out].to_s,
           guests:      params[:guests],

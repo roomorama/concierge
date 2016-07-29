@@ -20,6 +20,7 @@ module Woori
       include Concierge::JSON
     
       ENDPOINT = "available"
+      MAXIMUM_STAY_LENGTH = 30
 
       # Calls the Woori API method using the HTTP client.
       # 
@@ -41,6 +42,8 @@ module Woori
       # The +call+ method returns a +Result+ object that, when successful,
       # encapsulates the resulting +Quotation+ object.
       def call(quotation_params)
+        return stay_too_long_error if quotation_params.stay_length > MAXIMUM_STAY_LENGTH
+
         params = build_request_params(quotation_params)
         result = http.get(ENDPOINT, params, headers)
 
@@ -70,6 +73,11 @@ module Woori
           searchStartDate: params[:check_in],
           searchEndDate:   params[:check_out]
         }
+      end
+
+      def stay_too_long_error
+        message = "Maximum length of stay must be less than #{MAXIMUM_STAY_LENGTH} nights."
+        Result.error(:stay_too_long, { quote: message })
       end
     end
   end
