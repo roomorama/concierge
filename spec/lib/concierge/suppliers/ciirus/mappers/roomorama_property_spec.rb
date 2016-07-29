@@ -103,6 +103,7 @@ RSpec.describe Ciirus::Mappers::RoomoramaProperty do
     expect(roomorama_property.amenities).to eq(amenities)
     expect(roomorama_property.pets_allowed).to be(true)
     expect(roomorama_property.currency).to eq('USD')
+    expect(roomorama_property.cancellation_policy).to eq('moderate')
 
     expect(roomorama_property.images.length).to eq(1)
     image = roomorama_property.images.first
