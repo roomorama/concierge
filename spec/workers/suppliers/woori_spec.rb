@@ -20,7 +20,7 @@ RSpec.describe Workers::Suppliers::Woori do
 
       result = worker.perform
 
-      expect(result).to be_kind_of(SyncProcess)
+      expect(result).to be_nil
       expect(last_context_event[:label]).to eq(
         "Synchronisation Failure"
       )
