@@ -17,9 +17,11 @@ class Workers::Suppliers::Kigo
     if result.success?
       properties = result.value
       properties.each do |property|
+        # payload validation
         next if property['PROP_PROVIDER'].nil?
         id     = property['PROP_ID']
         result = importer.fetch_data(id)
+        # result_price = importer.fetch_prices(id)
 
         if result.success?
           mapper.prepare(result.value)
