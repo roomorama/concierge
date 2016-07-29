@@ -28,11 +28,12 @@ module Kigo::Mappers
       set_beds_count
       set_amenities
       set_property_type
+      set_price
+
       # set_deposit
       # set_cleaning_service
 
       # set_images
-      # set_price_and_availabilities
       #
       Result.new(property)
     end
@@ -170,12 +171,12 @@ module Kigo::Mappers
     end
 
     def set_price
-      rate = payload['PROP_RATE']
+      pricing_mapper = PricingSetup.new(payload['PROP_RATE'], pricing)
 
-      property.currency     = rate['PROP_RATE_CURRENCY']
-      property.nightly_rate = min_price
-      property.weekly_rate  = min_price * 7
-      property.monthly_rate = min_price * 30
+      property.currency     = pricing_mapper.currency
+      property.nightly_rate = pricing_mapper.nightly_rate
+      property.weekly_rate  = pricing_mapper.weekly_rate
+      property.monthly_rate = pricing_mapper.monthly_rate
     end
 
     def code_for(item)
@@ -187,10 +188,6 @@ module Kigo::Mappers
 
     def amenity_ids
       payload['PROP_INFO']['PROP_AMENITIES']
-    end
-
-    def pets_allowed?
-      amenity_ids.include?(PETS_ALLOWED_AMENITY_ID)
     end
 
   end
