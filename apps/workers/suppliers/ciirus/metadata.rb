@@ -125,7 +125,7 @@ module Workers::Suppliers::Ciirus
 
       unless result.success?
         with_context_enabled do
-          message = "Failed to fetch security deposit info for property `#{property_id}` " \
+          message = "Failed to fetch security deposit info for property `#{property_id}`. " \
             "But continue to sync the property as well as security deposit is optional information."
           augment_context_error(message)
         end
