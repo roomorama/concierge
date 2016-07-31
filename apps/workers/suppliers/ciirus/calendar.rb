@@ -91,18 +91,6 @@ module Workers::Suppliers::Ciirus
       context = Concierge::Context::Message.new(message)
       Concierge.context.augment(context)
     end
-
-    def announce_error(message, result)
-      augment_context_error(message)
-
-      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-        operation:   'sync',
-        supplier:    Ciirus::Client::SUPPLIER_NAME,
-        code:        result.error.code,
-        context:     Concierge.context.to_h,
-        happened_at: Time.now
-      })
-    end
   end
 end
 
