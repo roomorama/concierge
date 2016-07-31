@@ -47,8 +47,6 @@ module Ciirus
           'get_property_rates_response.get_property_rates_result.rate'
         )
 
-        return [] unless rates
-
         Array(rates).map { |rate| mapper.build(rate) }
       end
     end
