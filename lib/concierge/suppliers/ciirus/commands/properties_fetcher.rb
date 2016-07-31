@@ -59,11 +59,9 @@ module Ciirus
           'get_properties_response.get_properties_result.property_details'
         )
         result = []
-        if properties
-          Array(properties).each do |property|
-            property = to_safe_hash(property)
-            result << mapper.build(property) if valid_property_detail?(property)
-          end
+        Array(properties).each do |property|
+          property = to_safe_hash(property)
+          result << mapper.build(property) if valid_property_detail?(property)
         end
         result
       end
