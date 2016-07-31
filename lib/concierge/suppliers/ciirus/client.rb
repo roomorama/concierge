@@ -2,7 +2,6 @@ module Ciirus
   #  +Ciirus::Client+
   #
   # This class is a convenience class for the smaller classes under +Ciirus+
-  # For now, it allows the caller to get price quotations.
   #
   # Usage
   #
