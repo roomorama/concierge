@@ -59,8 +59,8 @@ module Workers::Suppliers::Ciirus
 
     def invalid_permissions_error(permissions)
       with_context_enabled do
-        message = "Invalid permissions for property `#{permissions.property_id}`. The property should be
-                   online bookable and not timeshare: `#{permissions.to_h}`"
+        message = "Invalid permissions for property `#{permissions.property_id}`. " \
+          "The property should be online bookable and not timeshare: `#{permissions.to_h}`"
         augment_context_error(message)
       end
       Result.error(:invalid_permissions_error)
@@ -125,9 +125,8 @@ module Workers::Suppliers::Ciirus
 
       unless result.success?
         with_context_enabled do
-          message = "Failed to fetch security deposit info for property `#{property_id}`
-                     But continue to sync the property as well as security deposit
-                     is optional information."
+          message = "Failed to fetch security deposit info for property `#{property_id}` " \
+            "But continue to sync the property as well as security deposit is optional information."
           augment_context_error(message)
         end
       end
