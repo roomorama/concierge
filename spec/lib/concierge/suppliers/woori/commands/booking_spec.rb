@@ -29,11 +29,11 @@ RSpec.describe Woori::Commands::Booking do
   end
 
   it "successfully creates reservation" do
-    stub_data = read_fixture("woori/reservations/holding_success.json")
-    stub_call(:get, holding_url) { [200, {}, stub_data] }
+    holding_json = read_fixture("woori/reservations/holding_success.json")
+    stub_call(:get, holding_url) { [200, {}, holding_json] }
 
-    stub_data = read_fixture("woori/reservations/confirm_success.json")
-    stub_call(:get, confirm_url) { [200, {}, stub_data] }
+    confirm_json = read_fixture("woori/reservations/confirm_success.json")
+    stub_call(:get, confirm_url) { [200, {}, confirm_json] }
 
     result = subject.call(reservation_params)
     expect(result.success?).to be true
@@ -42,15 +42,81 @@ RSpec.describe Woori::Commands::Booking do
   end
 
   it "creates reservation record in repository" do
-    stub_data = read_fixture("woori/reservations/holding_success.json")
-    stub_call(:get, holding_url) { [200, {}, stub_data] }
+    holding_json = read_fixture("woori/reservations/holding_success.json")
+    stub_call(:get, holding_url) { [200, {}, holding_json] }
 
-    stub_data = read_fixture("woori/reservations/confirm_success.json")
-    stub_call(:get, confirm_url) { [200, {}, stub_data] }
+    confirm_json = read_fixture("woori/reservations/confirm_success.json")
+    stub_call(:get, confirm_url) { [200, {}, confirm_json] }
 
     subject.call(reservation_params)
 
     reservation = ReservationRepository.first
     expect(reservation.reference_number).to eq('w_WP20160729141224FE3E')
+  end
+
+  it "fails when holding request gets a message that unit is already booked" do
+    holding_json = read_fixture("woori/reservations/holding_already_booked_error.json")
+    stub_call(:get, holding_url) { [400, {}, holding_json] }
+
+    result = subject.call(reservation_params)
+    expect(result.success?).to be false
+    expect(result.error.code).to eq(:http_status_400)
+  end
+
+  it "fails when holding request gets invalid JSON response" do
+    holding_json = read_fixture("woori/bad_response.json")
+    stub_call(:get, holding_url) { [200, {}, holding_json] }
+
+    result = subject.call(reservation_params)
+
+    expect(result.success?).to be false
+    expect(result.error.code).to eq(:invalid_json_representation)
+  end
+
+  it "fails when holding request times out" do
+    stub_call(:get, holding_url) { raise Faraday::TimeoutError }
+
+    result = subject.call(reservation_params)
+
+    expect(result).not_to be_success
+    expect(last_context_event[:message]).to eq("timeout")
+    expect(result.error.code).to eq :connection_timeout
+  end
+
+  it "fails when confirm request was performed when unit was already booked" do
+    holding_json = read_fixture("woori/reservations/holding_success.json")
+    stub_call(:get, holding_url) { [200, {}, holding_json] }
+
+    confirm_json = read_fixture("woori/reservations/confirm_already_booked_error.json")
+    stub_call(:get, confirm_url) { [400, {}, confirm_json] }
+
+    result = subject.call(reservation_params)
+    expect(result).not_to be_success
+    expect(result.error.code).to eq(:http_status_400)
+  end
+
+  it "fails when confirm request gets invalid JSON response" do
+    holding_json = read_fixture("woori/reservations/holding_success.json")
+    stub_call(:get, holding_url) { [200, {}, holding_json] }
+
+    confirm_json = read_fixture("woori/bad_response.json")
+    stub_call(:get, confirm_url) { [200, {}, confirm_json] }
+
+    result = subject.call(reservation_params)
+
+    expect(result.success?).to be false
+    expect(result.error.code).to eq(:invalid_json_representation)
+  end
+
+  it "fails when confirm request times out" do
+    holding_json = read_fixture("woori/reservations/holding_success.json")
+    stub_call(:get, holding_url) { [200, {}, holding_json] }
+    stub_call(:get, confirm_url) { raise Faraday::TimeoutError }
+
+    result = subject.call(reservation_params)
+
+    expect(result).not_to be_success
+    expect(last_context_event[:message]).to eq("timeout")
+    expect(result.error.code).to eq :connection_timeout
   end
 end
