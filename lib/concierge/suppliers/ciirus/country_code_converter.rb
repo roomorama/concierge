@@ -22,15 +22,16 @@ module Ciirus
       'Famagusta'    => 'CY'
     }
 
-    # Returns country code by its name
+    # Finds country code by its name.
     #
     # Arguments
     #   * +name+ [String] name of the country
     #
     # Example
     #
-    #   CountryCode.code_by_name("Korea")
-    #   => "KR"
+    #   converter = CountryCodeConverter.new
+    #   country_code = converter.code_by_name("Korea")
+    #   country_code.value # => "KR"
     #
     # Returns +Result+ wrapping country code
     def code_by_name(name)
