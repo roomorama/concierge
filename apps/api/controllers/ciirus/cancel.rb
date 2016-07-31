@@ -11,7 +11,7 @@ module API::Controllers::Ciirus
     params API::Controllers::Params::Cancel
 
     def cancel_reservation(params)
-      credentials = Concierge::Credentials.for(Ciirus::Client::SUPPLIER_NAME)
+      credentials = Concierge::Credentials.for(supplier_name)
       Ciirus::Client.new(credentials).cancel(params)
     end
 
