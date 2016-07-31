@@ -40,4 +40,17 @@ RSpec.describe Woori::Commands::Booking do
     expect(result.value).to be_kind_of(Reservation)
     expect(result.value.reference_number).to eq("w_WP20160729141224FE3E")
   end
+
+  it "creates reservation record in repository" do
+    stub_data = read_fixture("woori/reservations/holding_success.json")
+    stub_call(:get, holding_url) { [200, {}, stub_data] }
+
+    stub_data = read_fixture("woori/reservations/confirm_success.json")
+    stub_call(:get, confirm_url) { [200, {}, stub_data] }
+
+    subject.call(reservation_params)
+
+    reservation = ReservationRepository.first
+    expect(reservation.reference_number).to eq('w_WP20160729141224FE3E')
+  end
 end

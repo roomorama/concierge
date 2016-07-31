@@ -96,6 +96,7 @@ module Woori
             mapper = Woori::Mappers::Reservation.new(reservation_params, safe_hash.get("data"))
             reservation = mapper.build_reservation
 
+            database.create(reservation)
             Result.new(reservation)
           else
             decoded_result
