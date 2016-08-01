@@ -64,7 +64,7 @@ module Woori
 
       def request_holding(reservation_params)
         params = build_holding_request_params(reservation_params)
-        result = http.get(RESERVATION_HOLDING_ENDPOINT, params, headers)
+        result = http.post(RESERVATION_HOLDING_ENDPOINT, params, headers)
 
         if result.success?
           decoded_result = json_decode(result.value.body)
@@ -86,7 +86,7 @@ module Woori
       def request_confirmation(reservation_status, reservation_params)
         code = reservation_status.reservation_code
         params = build_confirm_request_params(code, reservation_params)
-        result = http.get(RESERVATION_CONFIRM_ENDPOINT, params, headers)
+        result = http.post(RESERVATION_CONFIRM_ENDPOINT, params, headers)
 
         if result.success?
           decoded_result = json_decode(result.value.body)
@@ -109,26 +109,28 @@ module Woori
       def build_holding_request_params(reservation_params)
         {
           roomCode:     reservation_params.get("unit_id"),
-          checkInDate:  reservation_params.get("check_in"),
-          checkOutDate: reservation_params.get("check_out")
-        }
+          checkInDate:  format_date(reservation_params.get("check_in")),
+          checkOutDate: format_date(reservation_params.get("check_out"))
+        }.to_json
       end
 
       def build_confirm_request_params(reservation_code, reservation_params)
         {
           reservationNo:    reservation_code,
           roomtypeCode:     reservation_params.get("unit_id"),
-          checkInDate:      reservation_params.get("check_in"),
-          checkOutDate:     reservation_params.get("check_out"),
+          checkInDate:      format_date(reservation_params.get("check_in")),
+          checkOutDate:     format_date(reservation_params.get("check_out")),
           guestName:        full_name(reservation_params.get("customer")),
-          guestPhone:       reservation_params.get("customer.phone"),
-          guestEmail:       reservation_params.get("customer.email"),
           guestCount:       reservation_params.get("guests"),
           adultCount:       reservation_params.get("guests"),
           childrenCount:    0,
           paidPrice:        reservation_params.get("subtotal"),
           currency:         reservation_params.get("currency_code")
-        }
+        }.to_json
+      end
+
+      def format_date(date)
+        Date.parse(date).strftime("%Y-%m-%d")
       end
 
       def full_name(customer)
