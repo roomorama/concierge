@@ -261,10 +261,11 @@ module Waytostay
       cash = methods.find { |m| m["name"] == "cash" }
       if cash
         { security_deposit_type: "cash" }
-      elsif methods.any?
+      elsif methods.find { |m| m["name"] == "credit card details will be taken" }
         { security_deposit_type: "credit_card_auth" }
+      elsif methods.find { |m| m["name"] == "traveller’s cheques" }
+        { security_deposit_type: "check" }
       else
-        # TODO: Add support for cheque
         {}
       end
     end
