@@ -38,7 +38,6 @@ class Workers::Suppliers::Kigo
             announce_error(message, price_result)
             next price_result
           end
-
           mapper.prepare(data_result.value, price_result.value['PRICING'])
         end
       end
@@ -60,7 +59,7 @@ class Workers::Suppliers::Kigo
   end
 
   def mapper
-    Kigo::Mappers::Property.new(references: importer.fetch_references)
+    Kigo::Mappers::Property.new(importer.fetch_references)
   end
 
   def credentials

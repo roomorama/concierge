@@ -5,9 +5,8 @@ RSpec.describe Kigo::Mappers::Property do
 
   let(:references) {
     {
-      amenities: JSON.parse(read_fixture('kigo/amenities.json'))['AMENITY'],
+      amenities: JSON.parse(read_fixture('kigo/amenities.json')),
       property_types: JSON.parse(read_fixture('kigo/property_types.json')),
-      fee_types: JSON.parse(read_fixture('kigo/fee_types.json'))
     }
   }
 
@@ -24,7 +23,7 @@ RSpec.describe Kigo::Mappers::Property do
           'PHOTO_ID'        => '//supper-fantastic.url/hashed-identifier.jpg',
           'PHOTO_PANORAMIC' => false,
           'PHOTO_NAME'      => 'Balcony',
-          'PHOTO_COMMENTS'  => ''
+          'PHOTO_COMMENTS'  => 'Balcony with foosball table'
         }
       }
 
@@ -36,7 +35,7 @@ RSpec.describe Kigo::Mappers::Property do
         image = property.images.first
         expect(image.url).to eq 'https://supper-fantastic.url/hashed-identifier.jpg'
         expect(image.identifier).to eq 'hashed-identifier.jpg'
-        expect(image.caption).to eq 'Balcony'
+        expect(image.caption).to eq 'Balcony with foosball table'
       end
     end
 
@@ -60,7 +59,7 @@ RSpec.describe Kigo::Mappers::Property do
     context 'description' do
       it 'sets short description if origin description is blank' do
         property_data['PROP_INFO']['PROP_DESCRIPTION'] = ''
-        property = subject.prepare(property_data).value
+        property = subject.prepare(property_data, pricing).value
 
         expect(property.description).to eq 'Short description'
       end
