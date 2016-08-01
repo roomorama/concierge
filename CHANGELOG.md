@@ -5,6 +5,9 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## [Unreleased]
+### Changed
+- change request log name to `environment.log` (e.g., `staging.log`)
+
 ### Fixed
 - Crash when a property isn't included in waytostay changes, but also not in concierge database
 
