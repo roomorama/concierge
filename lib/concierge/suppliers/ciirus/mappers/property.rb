@@ -128,28 +128,28 @@ module Ciirus
 
       def has_tv?(hash)
         hash[:big_screen_tv] ||
-        hash[:dvd_player] ||
-        hash[:tv_in_every_bedroom] ||
-        hash[:vcr]
+          hash[:dvd_player] ||
+          hash[:tv_in_every_bedroom] ||
+          hash[:vcr]
       end
 
       def has_internet?(hash)
         hash[:internet] ||
-        hash[:wired_internet_access]
+          hash[:wired_internet_access]
       end
 
       def has_pool?(hash)
         hash[:has_pool] ||
-        hash[:communal_pool] ||
-        hash[:free_solar_heated_pool] ||
-        hash[:south_facing_pool] ||
-        hash[:pool_access]
+          hash[:communal_pool] ||
+          hash[:free_solar_heated_pool] ||
+          hash[:south_facing_pool] ||
+          hash[:pool_access]
       end
 
       def has_outdoor_space?(hash)
         hash[:bbq] ||
-        hash[:grill] ||
-        hash[:outdoor_hot_tub]
+          hash[:grill] ||
+          hash[:outdoor_hot_tub]
       end
     end
   end
