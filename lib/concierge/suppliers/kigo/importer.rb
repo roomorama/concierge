@@ -21,8 +21,6 @@ module Kigo
     # references
     AMENITIES       = 'listKigoPropertyAmenities'
     PROPERTY_TYPES  = 'listKigoPropertyTypes'
-    FEE_TYPES       = 'listKigoFeeTypes'
-    BED_TYPES       = 'listKigoPropertyBedTypes'
 
     attr_reader :credentials, :request_handler
 
@@ -62,13 +60,9 @@ module Kigo
     end
 
     def fetch_references
-
-      amenities = fetch(AMENITIES).value['AMENITY']
       {
-        amenities:      amenities,
-        fee_types:      fetch(FEE_TYPES).value,
-        property_types: fetch(PROPERTY_TYPES).value,
-        bed_types:      fetch(BED_TYPES).value
+        amenities:      fetch(AMENITIES).value,
+        property_types: fetch(PROPERTY_TYPES).value
       }
     end
 
