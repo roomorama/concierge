@@ -12,6 +12,10 @@ class Workers::Suppliers::Kigo
     @synchronisation = Workers::PropertySynchronisation.new(host)
   end
 
+  # for the fetching a property data performing process has to make two calls
+  #
+  #   * fetch_data   - performs fetching base property data
+  #   * fetch_prices - returns property pricing setup. (Uses for deposit, additional price ...)
   def perform
     result = importer.fetch_properties
     if result.success?
@@ -26,7 +30,7 @@ class Workers::Suppliers::Kigo
           announce_error(message, data_result)
           next data_result
         end
-
+        # TODO: mark non instant booking property and skip it for the next sync process
         next unless data_result.value['PROP_INSTANT_BOOK']
 
         synchronisation.start(id) do

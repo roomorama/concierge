@@ -1,7 +1,9 @@
 module Kigo
   # +Kigo::Importer+
   #
-  # This class wraps supplier API and provides data for building properties.
+  # This class is responsible for wrapping the logic related to fetching
+  # properties from Kigo, parsing the response, and building the +Result+
+  # object.
   #
   # Usage
   #
@@ -59,6 +61,7 @@ module Kigo
       fetch(RESERVATIONS, params)
     end
 
+    # references helps us to match data by their names instead of using ids
     def fetch_references
       {
         amenities:      fetch(AMENITIES).value,
