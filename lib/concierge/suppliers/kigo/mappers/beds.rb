@@ -1,4 +1,7 @@
 module Kigo::Mappers
+  # +Kigo::Mappers::Beds+
+  #
+  # This class performs bed types matched by provided ids with reference data
   class Beds
     SINGLE_BED_IDS       = [4, 5, 9, 11]
     TWICE_SINGLE_BED_IDS = [13, 14]
@@ -25,6 +28,7 @@ module Kigo::Mappers
 
     private
 
+    # Kigo provides some bed types which match as 2 single beds (twin bed, trundle bed)
     def twice_single_beds
       ids.select { |id| TWICE_SINGLE_BED_IDS.include?(id) } * 2
     end
