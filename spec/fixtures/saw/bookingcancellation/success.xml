@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<response>
+  <booking_ref_number>MTA66591</booking_ref_number>
+  <affiliate_booking_ref_number/>
+  <property_name>Adagio Brussels Centre Monnaie</property_name>
+  <address1>Address1</address1>
+  <address2>Address2</address2>
+  <city_region>Brussels</city_region>
+  <statecounty/>
+  <postalcode>1000</postalcode>
+  <check_in>05/07/2016</check_in>
+  <check_out>06/07/2016</check_out>
+  <nights>1</nights>
+  <apartments>
+    <property_accommodation>
+      <property_accommodation_name>Studio 2 people </property_accommodation_name>
+      <number_of_guest>1</number_of_guest>
+    </property_accommodation>
+  </apartments>
+</response>

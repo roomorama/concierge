@@ -28,7 +28,7 @@ RSpec.describe JTB::XMLBuilder do
     end
 
   end
-  
+
   describe '#build_booking' do
     let(:params) {
       {
@@ -46,7 +46,7 @@ RSpec.describe JTB::XMLBuilder do
     }
     let(:rate_plan) { JTB::RatePlan.new('sample', 2000, true, 2) }
     let(:message) { subject.build_booking(params, rate_plan) }
-    
+
     it { expect(attribute_for(message, 'RatePlan', 'RatePlanID')).to eq 'sample' }
     it { expect(attribute_for(message, 'RoomType', 'RoomTypeCode')).to eq params[:unit_id] }
     it { expect(attribute_for(message, 'TimeSpan', 'StartDate')).to eq params[:check_in] }

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<response>
+  <errors>
+    <error>
+      <code>9999</code>
+      <description>Custom Error</description>
+    </error>
+  </errors>
+</response>

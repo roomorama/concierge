@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<response>
+  <properties>
+    <property id="1787">
+      <name>Ascott Sathorn </name>
+      <image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=4761</image_url>
+      <city_region>Bangkok</city_region>
+      <location>Sathorn</location>
+      <map_location>
+        <latitude>13.71702</latitude>
+        <longitude>100.52724</longitude>
+      </map_location>
+      <our_rating>
+        <our_rating_value>11</our_rating_value>
+        <our_rating_description>PRESTIGE</our_rating_description>
+      </our_rating>
+      <customer_rating/>
+      <summary>Ascott Sathorn offers luxurious and spacious apartments complemented with comprehensive services and facilities. The residence is the premier Bangkok serviced apartment property and is ideal for corporate housing.</summary>
+      <currency_code>USD</currency_code>
+      <price>123.45</price>
+      <flag_on_request>N</flag_on_request>
+      <default_currency_code>USD</default_currency_code>
+      <flag_great_deal>N</flag_great_deal>
+    </property>
+    <property id="1757">
+      <name>Citadines Sukhumvit 8 </name>
+      <image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=4650</image_url>
+      <city_region>Bangkok</city_region>
+      <location>Klongtoey</location>
+      <map_location>
+        <latitude>13.73693</latitude>
+        <longitude>100.55612</longitude>
+      </map_location>
+      <our_rating>
+        <our_rating_value>8</our_rating_value>
+        <our_rating_description>STANDARD PLUS</our_rating_description>
+      </our_rating>
+      <customer_rating/>
+      <summary>Designed for the international professional, the residence is relaxing, spacious and offers hi-tech amenities for modern business and leisure.</summary>
+      <currency_code>USD</currency_code>
+      <price>49.94</price>
+      <flag_on_request>N</flag_on_request>
+      <default_currency_code>USD</default_currency_code>
+      <flag_great_deal>N</flag_great_deal>
+    </property>
+    <property id="2721">
+      <name>Marvin Suites</name>
+      <image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=31292</image_url>
+      <city_region>Bangkok</city_region>
+      <location>Sathorn</location>
+      <map_location>
+        <latitude>13.71762</latitude>
+        <longitude>100.52692</longitude>
+      </map_location>
+      <our_rating>
+        <our_rating_value>7</our_rating_value>
+        <our_rating_description>STANDARD</our_rating_description>
+      </our_rating>
+      <customer_rating/>
+      <summary>Marvin Suites serviced apartments located in a quiet "Soi" (small street) right off Sathorn road, in the heart of one of Bangkok's prime financial and retail districts. </summary>
+      <currency_code>USD</currency_code>
+      <price>99.01</price>
+      <flag_on_request>N</flag_on_request>
+      <default_currency_code>USD</default_currency_code>
+      <flag_great_deal>N</flag_great_deal>
+    </property>
+    <property id="2893">
+      <name>Outrigger Laguna Phuket Resort &amp; Villas</name>
+      <image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=39050</image_url>
+      <city_region>Phuket</city_region>
+      <location>Golf Course</location>
+      <map_location>
+        <latitude>8.00382</latitude>
+        <longitude>98.30736</longitude>
+      </map_location>
+      <our_rating>
+        <our_rating_value>10</our_rating_value>
+        <our_rating_description>SUPERIOR PLUS</our_rating_description>
+      </our_rating>
+      <customer_rating/>
+      <summary>Experience stunning residential-style accommodations perfectly suited for elegant living located close to Laguna Phuket Golf Club.  
+
+</summary>
+      <currency_code>USD</currency_code>
+      <price>18.50</price>
+      <flag_on_request>N</flag_on_request>
+      <default_currency_code>USD</default_currency_code>
+      <flag_great_deal>N</flag_great_deal>
+    </property>
+    <property id="1766">
+      <name>Somerset Lake Point </name>
+      <image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=4668</image_url>
+      <city_region>Bangkok</city_region>
+      <location>Klongtoey</location>
+      <map_location>
+        <latitude>13.35908</latitude>
+        <longitude>100.98747</longitude>
+      </map_location>
+      <our_rating>
+        <our_rating_value>9</our_rating_value>
+        <our_rating_description>SUPERIOR</our_rating_description>
+      </our_rating>
+      <customer_rating/>
+      <summary>The culture and excitement of Thailand can be enjoyed whilst indulging in the comforts and security of a private serviced residence. These modern and superbly appointed serviced apartments are nestled in a private garden, just minutes from the business district of Silom and Sathorn Road.</summary>
+      <currency_code>USD</currency_code>
+      <price>1811.31</price>
+      <flag_on_request>N</flag_on_request>
+      <default_currency_code>USD</default_currency_code>
+      <flag_great_deal>N</flag_great_deal>
+    </property>
+  </properties>
+</response>
