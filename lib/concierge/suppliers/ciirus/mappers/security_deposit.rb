@@ -37,13 +37,13 @@ module Ciirus
           item_code:        sd_hash[:item_code],
           item_description: sd_hash[:item_description],
           flat_fee:         sd_hash[:flat_fee],
-          flat_fee_amount:  Float(sd_hash[:flat_fee_amount]),
+          flat_fee_amount:  sd_hash[:flat_fee_amount].to_f,
           daily_fee:        sd_hash[:daily_fee],
-          daily_fee_amount: Float(sd_hash[:daily_fee_amount]),
+          daily_fee_amount: sd_hash[:daily_fee_amount].to_f,
           percentage_fee:   sd_hash[:percentage_fee],
-          percentage:       Float(sd_hash[:percentage]),
+          percentage:       sd_hash[:percentage].to_f,
           mandatory:        sd_hash[:mandatory],
-          minimum_charge:   Float(sd_hash[:minimum_charge])
+          minimum_charge:   sd_hash[:minimum_charge].to_f
         }
 
         Ciirus::Entities::Extra.new(attrs)

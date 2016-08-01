@@ -8,7 +8,7 @@ module Ciirus
           hash[:from_date],
           hash[:to_date],
           hash[:min_nights_stay].to_i,
-          Float(hash[:daily_rate])
+          hash[:daily_rate].to_f
         )
       end
     end
