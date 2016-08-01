@@ -39,7 +39,7 @@ module Ciirus
           (rate.from_date..rate.to_date).each do |date|
 
             next if date <= today
-            next if date > today + PERIOD_SYNC
+            break if date > today + PERIOD_SYNC
 
             if rate.daily_rate == 0
               entry = Roomorama::Calendar::Entry.new(
