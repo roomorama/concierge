@@ -131,9 +131,9 @@ module Kigo::Mappers
 
       return unless cleaning_fee
 
-      property.services_cleaning = true
+      property.services_cleaning          = true
       property.services_cleaning_required = cleaning_fee['INCLUDE_IN_RENT']
-      property.services_cleaning_rate = get_fee_amount(cleaning_fee['VALUE']).to_f
+      property.services_cleaning_rate     = get_fee_amount(cleaning_fee['VALUE']).to_f
     end
 
     def get_fee_amount(amount)
@@ -141,12 +141,14 @@ module Kigo::Mappers
       amount['AMOUNT_ADULT']
     end
 
+    # images payload has two attributes for caption PHOTO_NAME and PHOTO_COMMENTS
+    # the PHOTO_NAME is the short version of PHOTO_COMMENTS
     def set_images
       images = payload['PROP_PHOTOS']
       images.each do |image_data|
         url        = image_data['PHOTO_ID']
         identifier = url.split('/').last
-        caption    = image_data['PHOTO_NAME']
+        caption    = image_data['PHOTO_COMMENTS']
         image      = Roomorama::Image.new(identifier).tap do |i|
           i.url     = ['https:', url].join
           i.caption = caption

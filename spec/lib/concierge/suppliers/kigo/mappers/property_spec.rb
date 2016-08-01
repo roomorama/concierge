@@ -125,6 +125,7 @@ RSpec.describe Kigo::Mappers::Property do
       image = property.images.first
       expect(image.identifier).to eq '95dec679-74ea-4a5c-babc-6b76eb4ea474.jpg'
       expect(image.url).to eq 'https://s3.amazonaws.com/cdnmedia.bookt.com/15826/95dec679-74ea-4a5c-babc-6b76eb4ea474.jpg'
+      expect(image.caption).to eq 'Niiice'
 
       expect(property.validate!).to be true
     end
