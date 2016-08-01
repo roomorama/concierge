@@ -4,7 +4,14 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
-## [0.5.3] - 2016-070-28
+## [0.5.4] - 2016-08-01
+### Changed
+- change request log name to `environment.log` (e.g., `staging.log`)
+
+### Fixed
+- Crash when a property isn't included in waytostay changes, but also not in concierge database
+
+## [0.5.3] - 2016-07-28
 ### Added
 - `net_rate`, `host_fee` and `host_fee_percentage` to quotation response
 - `fee_percentage` column to `Host` entity

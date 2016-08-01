@@ -70,7 +70,7 @@ module Concierge
     end
 
     def default_engine
-      output = Hanami.root.join("log", ["concierge.", Hanami.env].join).to_s
+      output = Hanami.root.join("log", [Hanami.env, ".log"].join).to_s
       Logger.new(output)
     end
   end
