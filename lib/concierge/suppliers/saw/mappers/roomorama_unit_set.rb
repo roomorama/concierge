@@ -44,6 +44,7 @@ module SAW
         u.monthly_rate = basic_property.monthly_rate
         u.number_of_units = 1
         u.number_of_bedrooms = parse_number_of_bedrooms(unit)
+        u.amenities = detailed_property.amenities
 
         bed_configuration = find_bed_types(bed_configurations, u.identifier)
 
