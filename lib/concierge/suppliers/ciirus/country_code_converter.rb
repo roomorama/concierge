@@ -41,14 +41,13 @@ module Ciirus
       return Result.new(CUSTOM_COUNTRY_NAMES_MAPPING[name]) if CUSTOM_COUNTRY_NAMES_MAPPING[name]
 
       # Try to find country by alpha-2, alpha-3 codes
-      country = IsoCountryCodes.find(name) { nil }
-
-      if country.nil?
-        countries = IsoCountryCodes.search_by_name(name) { [] }
-        country = countries.first
+      country = IsoCountryCodes.find(name) do
+        # Try to find country by name
+        IsoCountryCodes.search_by_name(name) do
+          return error_result(name)
+        end.first
       end
 
-      return error_result(name) if country.nil?
       Result.new(country.alpha2)
     end
 
