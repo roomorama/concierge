@@ -48,7 +48,7 @@ module Ciirus
     def fetch_description(property_id)
       plain_text_fetcher = Commands::DescriptionsPlainTextFetcher.new(credentials)
       result = plain_text_fetcher.call(property_id)
-      if !result.success? || result.value.blank?
+      if !result.success? || result.value.strip.empty?
         html_fetcher = Commands::DescriptionsHtmlFetcher.new(credentials)
         result = html_fetcher.call(property_id)
       end
