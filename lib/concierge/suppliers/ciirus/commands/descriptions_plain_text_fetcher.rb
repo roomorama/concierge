@@ -45,7 +45,7 @@ module Ciirus
         description = result_hash.get(
           'get_descriptions_plain_text_response.get_descriptions_plain_text_result'
         ).to_s
-        is_empty?(description) ? '' : description
+        is_empty?(description) ? '' : description.to_s
       end
 
       def is_empty?(description)
