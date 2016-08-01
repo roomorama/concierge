@@ -1,4 +1,7 @@
 module Kigo::Mappers
+  # +Kigo::Mappers::PropertyType+
+  #
+  # This class performs property type and subtype matched by provided id with reference data
   class PropertyType
 
     attr_reader :references
