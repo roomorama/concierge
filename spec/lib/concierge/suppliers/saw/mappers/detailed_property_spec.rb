@@ -177,6 +177,13 @@ module SAW
       expect(property.postal_code).to eq("83110")
     end
 
+    it "removes trailing spaces for postal_code" do
+      attributes["postalcode"] = "    44055        "
+      property = described_class.build(hash)
+
+      expect(property.postal_code).to eq("44055")
+    end
+
     it "adds amenities" do
       property = described_class.build(hash)
       expect(property.amenities).to eq(
