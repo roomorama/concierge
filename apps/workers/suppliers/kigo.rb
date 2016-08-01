@@ -17,19 +17,29 @@ class Workers::Suppliers::Kigo
     if result.success?
       properties = result.value
       properties.each do |property|
-        # payload validation
         next if property['PROP_PROVIDER'].nil?
-        id     = property['PROP_ID']
-        result = importer.fetch_data(id)
-        # result_price = importer.fetch_prices(id)
+        id = property['PROP_ID']
+        data_result = importer.fetch_data(id)
 
-        if result.success?
-          mapper.prepare(result.value)
-        else
-          synchronisation.failed!
+        unless data_result.success?
           message = "Failed to perform the `#fetch_data` operation, with identifier: `#{id}`"
-          announce_error(message, result)
-          result
+          announce_error(message, data_result)
+          next data_result
+        end
+
+        next unless data_result.value['PROP_INSTANT_BOOK']
+
+        synchronisation.start(id) do
+          price_result = importer.fetch_prices(id)
+
+          unless price_result.success?
+            synchronisation.failed!
+            message = "Failed to perform the `#fetch_prices` operation, with identifier: `#{id}`"
+            announce_error(message, price_result)
+            next price_result
+          end
+
+          mapper.prepare(data_result.value, price_result.value['PRICING'])
         end
       end
       synchronisation.finish!
@@ -40,15 +50,6 @@ class Workers::Suppliers::Kigo
   end
 
   private
-
-  def filter(properties)
-    properties.select do |property|
-      provider = property['PROP_PROVIDER']
-      provider && (ids.include?(provider['RA_ID'] || ids.include?(provider['OWNER_ID'])))
-    end
-
-  end
-
 
   def importer
     @importer ||= Kigo::Importer.new(credentials, request_handler)
