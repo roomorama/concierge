@@ -43,17 +43,45 @@ module Ciirus
 
     # Builds request message for properties Ciirus API method.
     # arrive_date and depart_date are dates in format 'dd MMM yyyy'
-    def properties(filter_options, search_options, special_options,
-                   arrive_date, depart_date)
+    def properties(management_company_id: 0, property_id: 0,
+                   full_details: true, quote: false, sleeps: 0,
+                   arrive_date: '', depart_date: '')
       message = builder.new(encoding: 'utf-8') do |xml|
         xml.root do
           xml.APIUsername credentials.username
           xml.APIPassword credentials.password
           xml.ArriveDate arrive_date
           xml.DepartDate depart_date
-          filter_options.to_xml(xml)
-          search_options.to_xml(xml)
-          special_options.to_xml(xml)
+          xml.FilterOptions do
+            xml.ManagementCompanyID management_company_id
+            xml.CommunityID 0
+            xml.PropertyID property_id
+            xml.PropertyType 0
+            xml.HasPool 2
+            xml.HasSpa 2
+            xml.PrivacyFence 2
+            xml.CommunalGym 2
+            xml.HasGamesRoom 2
+            xml.IsGasFree false
+            xml.Sleeps sleeps
+            xml.PropertyClass 0
+            xml.ConservationView 2
+            xml.Bedrooms 0
+            xml.WaterView 2
+            xml.LakeView 2
+            xml.WiFi 2
+            xml.PetsAllowed 2
+            xml.OnGolfCourse 2
+            xml.SouthFacingPool 2
+          end
+          xml.SearchOptions do
+            xml.ReturnTopX 0
+            xml.ReturnFullDetails full_details
+            xml.ReturnQuote quote
+            xml.IncludePoolHeatInQuote false
+          end
+          xml.xmlMsg
+          xml.jSonMsg
         end
       end
       message.doc.root.children.to_xml

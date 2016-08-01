@@ -22,16 +22,14 @@ module Ciirus
       EMPTY_ERROR_MESSAGE = 'No Properties were found that fit the specified search Criteria.'
 
       def call(params)
-        filter_options = Ciirus::FilterOptions.new(property_id: params[:property_id]) do |filters|
-          filters.sleeps = params[:guests]
-        end
-        search_options = Ciirus::SearchOptions.new(quote: true, full_details: false)
-        special_options = Ciirus::SpecialOptions.new
         arrive_date = convert_date(params[:check_in])
         depart_date = convert_date(params[:check_out])
-        message = xml_builder.properties(filter_options, search_options,
-                                         special_options, arrive_date,
-                                         depart_date)
+        message = xml_builder.properties(property_id: params[:property_id],
+                                         sleeps: params[:guests],
+                                         quote: true,
+                                         full_details: false,
+                                         arrive_date: arrive_date,
+                                         depart_date: depart_date)
         result = remote_call(message)
         if result.success?
           result_hash = to_safe_hash(result.value)
