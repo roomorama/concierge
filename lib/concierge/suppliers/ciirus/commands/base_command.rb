@@ -44,7 +44,7 @@ module Ciirus
           env_namespace: :soap,
           endpoint:      endpoint,
           open_timeout:  10,
-          read_timeout:  20
+          read_timeout:  10
         }
       end
 
