@@ -258,8 +258,7 @@ module Waytostay
 
     def parse_security_deposit_method(response)
       methods = Array(response.get("payment.damage_deposit_payment_methods"))
-      cash = methods.find { |m| m["name"] == "cash" }
-      if cash
+      if methods.find { |m| m["name"] == "cash" }
         { security_deposit_type: "cash" }
       elsif methods.find { |m| m["name"] == "credit card details will be taken" }
         { security_deposit_type: "credit_card_auth" }
