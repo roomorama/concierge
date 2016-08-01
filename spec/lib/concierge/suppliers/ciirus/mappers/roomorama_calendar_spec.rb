@@ -99,21 +99,18 @@ RSpec.describe Ciirus::Mappers::RoomoramaCalendar do
 
       expect(entry.nightly_rate).to eq(141.43)
       expect(entry.available).to be_falsey
-      expect(entry.checkin_allowed).to be_falsey
     end
 
     it 'does not allow to arrive in day of arrival' do
       entry = calendar.entries.detect { |e| e.date == Date.new(2014, 9, 11) }
 
       expect(entry.available).to be_falsey
-      expect(entry.checkin_allowed).to be_falsey
     end
 
     it 'allows to arrive in day of departure' do
       entry = calendar.entries.detect { |e| e.date == Date.new(2014, 10, 16) }
 
       expect(entry.available).to be_truthy
-      expect(entry.checkin_allowed).to be_truthy
     end
 
     it 'returns filled entries' do
@@ -121,7 +118,6 @@ RSpec.describe Ciirus::Mappers::RoomoramaCalendar do
 
       expect(entry.nightly_rate).to eq(141.43)
       expect(entry.available).to be_truthy
-      expect(entry.checkin_allowed).to be_truthy
       expect(entry.minimum_stay).to eq(2)
     end
   end
