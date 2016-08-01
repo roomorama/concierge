@@ -69,7 +69,7 @@ module SAW
           hash[:country]      = attrs.get("country")
           hash[:city]         = attrs.get("city_region")
           hash[:neighborhood] = attrs.get("location")
-          hash[:postal_code]  = attrs.get("postalcode")
+          hash[:postal_code]  = attrs.get("postalcode").to_s.strip
         end
 
         def copy_images!(attrs, hash, image_url_rewrite)
