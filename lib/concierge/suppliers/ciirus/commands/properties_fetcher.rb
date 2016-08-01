@@ -21,12 +21,7 @@ module Ciirus
       OPERATION_NAME = :get_properties
 
       def call
-        filter_options = Ciirus::FilterOptions.new
-        search_options = Ciirus::SearchOptions.new
-        special_options = Ciirus::SpecialOptions.new
-        # Send empty arrive_date and depart_date to get all properties
-        message = xml_builder.properties(filter_options, search_options,
-                                         special_options, '', '')
+        message = xml_builder.properties
         result = remote_call(message)
         if result.success?
           result_hash = to_safe_hash(result.value)

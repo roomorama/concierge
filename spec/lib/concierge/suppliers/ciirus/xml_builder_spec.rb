@@ -100,8 +100,8 @@ RSpec.describe Ciirus::XMLBuilder do
       read_fixture('ciirus/requests/valid_properties_request.xml')
     end
     let(:message) do
-      subject.properties(filter_options, search_options, special_options,
-                         arrive_date, depart_date)
+      subject.properties(property_id: property_id, quote: true,
+                         arrive_date: arrive_date, depart_date: depart_date)
     end
 
     it { expect(message).to eq valid_request}
