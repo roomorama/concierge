@@ -108,10 +108,9 @@ module Ciirus
       end
 
       def set_rates_and_minimum_stay!(result, rates)
-        actual_rates = rates.select { |r| r.daily_rate > 0 }
-        min_price = actual_rates.map(&:daily_rate).min
+        min_price = rates.map(&:daily_rate).min
 
-        result.minimum_stay = actual_rates.map(&:min_nights_stay).min
+        result.minimum_stay = rates.map(&:min_nights_stay).min
         result.nightly_rate = min_price
         result.weekly_rate  = (min_price * 7).round(2)
         result.monthly_rate = (min_price * 30).round(2)

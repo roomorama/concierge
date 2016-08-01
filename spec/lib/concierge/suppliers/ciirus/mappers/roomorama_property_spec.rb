@@ -49,12 +49,6 @@ RSpec.describe Ciirus::Mappers::RoomoramaProperty do
         DateTime.new(2014, 10, 16),
         2,
         141.43
-      ),
-      Ciirus::Entities::PropertyRate.new(
-        DateTime.new(2014, 10, 17),
-        DateTime.new(2014, 11, 16),
-        1,
-        0.0
       )
     ]
   end
