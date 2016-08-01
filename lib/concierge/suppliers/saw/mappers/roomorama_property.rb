@@ -40,7 +40,7 @@ module SAW
         property.neighborhood = detailed_property.neighborhood
         property.postal_code = detailed_property.postal_code
         property.address = detailed_property.address
-        property.amenities = detailed_property.amenities
+        property.amenities = []
 
         property.minimum_stay = 1
         property.default_to_available = true
