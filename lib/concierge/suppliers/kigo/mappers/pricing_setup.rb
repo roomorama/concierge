@@ -50,5 +50,4 @@ module Kigo::Mappers
 
   end
 
-  Period = Struct.new(:check_id, :check_out, :amount, :weekly)
 end
