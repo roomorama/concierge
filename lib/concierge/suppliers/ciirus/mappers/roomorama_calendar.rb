@@ -64,7 +64,7 @@ module Ciirus
 
       def date_reserved?(date, reservations_index)
         reservation = reservations_index[date]
-        !reservation.nil? && reservation.departure_date != date
+        reservation && reservation.departure_date != date
       end
 
       def build_reservations_index(reservations)
