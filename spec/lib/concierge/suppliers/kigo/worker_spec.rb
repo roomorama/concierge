@@ -38,10 +38,19 @@ RSpec.describe Workers::Suppliers::Kigo do
 
   context 'success' do
     let(:property_data) { JSON.parse(read_fixture('kigo/property_data.json')) }
+    let(:periodical_rates) { JSON.parse(read_fixture('kigo/pricing_setup.json')) }
+    let(:references) {
+      {
+        amenities: JSON.parse(read_fixture('kigo/amenities.json')),
+        property_types: JSON.parse(read_fixture('kigo/property_types.json')),
+      }
+    }
 
     before do
       allow_any_instance_of(Kigo::Importer).to receive(:fetch_properties) { success_result }
       allow_any_instance_of(Kigo::Importer).to receive(:fetch_data) { Result.new(property_data) }
+      allow_any_instance_of(Kigo::Importer).to receive(:fetch_prices) { Result.new(periodical_rates) }
+      allow_any_instance_of(Kigo::Importer).to receive(:fetch_references) { references }
     end
 
     it 'finalizes synchronisation' do
