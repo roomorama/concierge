@@ -22,6 +22,12 @@ RSpec.describe Ciirus::Mappers::RoomoramaCalendar do
         DateTime.new(2014, 11, 16),
         1,
         0.0
+      ),
+      Ciirus::Entities::PropertyRate.new(
+        DateTime.new(2016, 12, 1),
+        DateTime.new(2017, 10, 16),
+        2,
+        147.43
       )
     ]
   end
@@ -81,8 +87,9 @@ RSpec.describe Ciirus::Mappers::RoomoramaCalendar do
       end
     end
 
-    it 'returns calendar only after today' do
-      invalid_entries = calendar.entries.select { |e| e.date <= Date.today }
+    it 'returns calendar only from synced period' do
+      before = Date.today + described_class::PERIOD_SYNC
+      invalid_entries = calendar.entries.select { |e| e.date <= Date.today || before < e.date }
 
       expect(invalid_entries).to be_empty
     end
