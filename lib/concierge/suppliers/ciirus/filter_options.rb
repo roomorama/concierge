@@ -5,12 +5,11 @@ module Ciirus
     attr_reader :management_company_id, :property_id, :community_id,
                 :property_type, :filters
 
-    def initialize(management_company_id: 0, property_id: 0,
-                   property_type: 0, community_id: 0)
-      @management_company_id = management_company_id
+    def initialize(management_company_id: 0, property_id: 0, property_type: 0)
+    @management_company_id = management_company_id
       @property_id = property_id
       @property_type = property_type
-      @community_id = community_id
+      @community_id = 0 # always no matter what community
 
       @filters = FilterOption.new
       yield(@filters) if block_given?
