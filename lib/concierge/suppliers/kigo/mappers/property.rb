@@ -12,15 +12,15 @@ module Kigo::Mappers
   class Property
     CANCELLATION_POLICY = 'super_elite'
 
-    attr_reader :property, :payload, :references
+    attr_reader :property, :payload, :references, :pricing
 
     def initialize(references)
       @references = references
     end
 
     # manages data and returns the result with +Roomorama::Property+
-    def prepare(property_data)
-      build_room(property_data)
+    def prepare(property_data, pricing)
+      build_room(property_data, pricing)
       property.instant_booking!
 
       set_base_info
@@ -30,19 +30,18 @@ module Kigo::Mappers
       set_property_type
       set_price
 
-      # set_deposit
-      # set_cleaning_service
+      set_deposit
+      set_cleaning_service
 
-      # set_images
-      #
       Result.new(property)
     end
 
     private
 
-    def build_room(property_data)
+    def build_room(property_data, pricing)
       @payload  = Concierge::SafeAccessHash.new(property_data)
       @property = Roomorama::Property.new(property_data['PROP_ID'].to_s)
+      @pricing  = pricing
     end
 
     def info
@@ -122,36 +121,23 @@ module Kigo::Mappers
     end
 
     def set_deposit
-
+      deposit                          = pricing['DEPOSIT']
+      property.security_deposit_amount = deposit['VALUE'].to_f if deposit
     end
 
     def set_cleaning_service
-      return if pricing_setup["PRICING"].nil? || pricing_setup["PRICING"]["FEES"].nil? # No fees information
-      fees          = pricing_setup["PRICING"]["FEES"]["FEES"]
-      fees_currency = pricing_setup["PRICING"]["CURRENCY"]
-      return if fees.empty? # No fees
+      cleaning_fee = pricing['FEES']['FEES'].find { |fee| fee['FEE_TYPE_ID'] == code_for(:cleaning_fee) }
 
-      kigo_fees        = self.fees_mapping
-      kigo_fees_hashed = kigo_fees.inject({}) do |hashed, kfee|
-        hashed[kfee["FEE_TYPE_ID"]] = kfee
-        hashed
-      end
+      return unless cleaning_fee
 
-      fees_description = ""
-      fees.each do |fee|
-        fee_type = fee["FEE_TYPE_ID"]
-        if fee_type == 3
-          room.cleaningservice          = true
-          room.cleaningservice_cost     = get_fee_value(fee)
-          room.cleaningservice_required = !!fee["INCLUDE_IN_RENT"]
-        elsif get_fee_value(fee) > 0
-          fees_description = "\n\n *** Room Fees ***\n" if fees_description.empty?
-          fees_description << "#{kigo_fees_hashed[fee_type]['FEE_TYPE_LABEL']}: #{fees_currency} #{display_fee_and_unit(fee)}\n"
-        end
-      end
+      property.services_cleaning = true
+      property.services_cleaning_required = cleaning_fee['INCLUDE_IN_RENT']
+      property.services_cleaning_rate = get_fee_amount(cleaning_fee['VALUE']).to_f
+    end
 
-      room.descriptions[:en] << fees_description if room.descriptions[:en]
-
+    def get_fee_amount(amount)
+      return amount if amount.is_a?(String)
+      amount['AMOUNT_ADULT']
     end
 
     def set_images
@@ -181,6 +167,7 @@ module Kigo::Mappers
 
     def code_for(item)
       {
+        cleaning_fee:    3,
         smoking_allowed: 81,
         pets_allowed:    83
       }.fetch(item)
