@@ -35,16 +35,14 @@ module Ciirus
                                            departure_date,
                                            guest)
         result = remote_call(message)
-        if result.success?
-          result_hash = to_safe_hash(result.value)
-          if valid_result?(result_hash)
-            reservation = mapper.build(params, result_hash)
-            Result.new(reservation)
-          else
-            error_result(result_hash)
-          end
+        return result unless result.success?
+
+        result_hash = to_safe_hash(result.value)
+        if valid_result?(result_hash)
+          reservation = mapper.build(params, result_hash)
+          Result.new(reservation)
         else
-          result
+          error_result(result_hash)
         end
       end
 
