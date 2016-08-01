@@ -88,70 +88,44 @@ module Workers::Suppliers::Ciirus
       rates.select { |r| rate_validator(r, today).valid? }
     end
 
-    def fetch_images(property_id)
-      result = importer.fetch_images(property_id)
-
-      unless result.success?
-        with_context_enabled do
-          message = "Failed to fetch images for property `#{property_id}`"
-          augment_context_error(message)
+    def report_error(message)
+      yield.tap do |result|
+        unless result.success?
+          with_context_enabled { augment_context_error(message) }
         end
       end
+    end
 
-      result
+    def fetch_images(property_id)
+      report_error("Failed to fetch images for property `#{property_id}`") do
+        importer.fetch_images(property_id)
+      end
     end
 
     def fetch_description(property_id)
-      result = importer.fetch_description(property_id)
-
-      unless result.success?
-        with_context_enabled do
-          message = "Failed to fetch description for property `#{property_id}`"
-          augment_context_error(message)
-        end
+      report_error("Failed to fetch description for property `#{property_id}`") do
+        importer.fetch_description(property_id)
       end
-
-      result
     end
 
     def fetch_rates(property_id)
-      result = importer.fetch_rates(property_id)
-
-      unless result.success?
-        with_context_enabled do
-          message = "Failed to fetch rates for property `#{property_id}`"
-          augment_context_error(message)
-        end
+      report_error("Failed to fetch rates for property `#{property_id}`") do
+        importer.fetch_rates(property_id)
       end
-
-      result
     end
 
     def fetch_permissions(property_id)
-      result = importer.fetch_permissions(property_id)
-
-      unless result.success?
-        with_context_enabled do
-          message = "Failed to fetch permissions for property `#{property_id}`"
-          augment_context_error(message)
-        end
+      report_error("Failed to fetch permissions for property `#{property_id}`") do
+        importer.fetch_permissions(property_id)
       end
-
-      result
     end
 
     def fetch_security_deposit(property_id)
-      result = importer.fetch_security_deposit(property_id)
-
-      unless result.success?
-        with_context_enabled do
-          message = "Failed to fetch security deposit info for property `#{property_id}`. " \
+      message = "Failed to fetch security deposit info for property `#{property_id}`. " \
             "But continue to sync the property as well as security deposit is optional information."
-          augment_context_error(message)
-        end
+      report_error(message) do
+        importer.fetch_security_deposit(property_id)
       end
-
-      result
     end
 
     def with_context_enabled
