@@ -77,7 +77,7 @@ module Ciirus
       end
 
       def copy_bathrooms!(hash, attrs)
-        attrs[:bathrooms] = Float(hash[:bathrooms])
+        attrs[:bathrooms] = hash[:bathrooms].to_f
       end
 
       def copy_king_beds!(hash, attrs)
