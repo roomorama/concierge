@@ -30,10 +30,10 @@ RSpec.describe Woori::Commands::Booking do
 
   it "successfully creates reservation" do
     holding_json = read_fixture("woori/reservations/holding_success.json")
-    stub_call(:get, holding_url) { [200, {}, holding_json] }
+    stub_call(:post, holding_url) { [200, {}, holding_json] }
 
     confirm_json = read_fixture("woori/reservations/confirm_success.json")
-    stub_call(:get, confirm_url) { [200, {}, confirm_json] }
+    stub_call(:post, confirm_url) { [200, {}, confirm_json] }
 
     result = subject.call(reservation_params)
     expect(result.success?).to be true
@@ -43,10 +43,10 @@ RSpec.describe Woori::Commands::Booking do
 
   it "creates reservation record in repository" do
     holding_json = read_fixture("woori/reservations/holding_success.json")
-    stub_call(:get, holding_url) { [200, {}, holding_json] }
+    stub_call(:post, holding_url) { [200, {}, holding_json] }
 
     confirm_json = read_fixture("woori/reservations/confirm_success.json")
-    stub_call(:get, confirm_url) { [200, {}, confirm_json] }
+    stub_call(:post, confirm_url) { [200, {}, confirm_json] }
 
     subject.call(reservation_params)
 
@@ -56,7 +56,7 @@ RSpec.describe Woori::Commands::Booking do
 
   it "fails when holding request gets a message that unit is already booked" do
     holding_json = read_fixture("woori/reservations/holding_already_booked_error.json")
-    stub_call(:get, holding_url) { [400, {}, holding_json] }
+    stub_call(:post, holding_url) { [400, {}, holding_json] }
 
     result = subject.call(reservation_params)
     expect(result.success?).to be false
@@ -65,7 +65,7 @@ RSpec.describe Woori::Commands::Booking do
 
   it "fails when holding request gets invalid JSON response" do
     holding_json = read_fixture("woori/bad_response.json")
-    stub_call(:get, holding_url) { [200, {}, holding_json] }
+    stub_call(:post, holding_url) { [200, {}, holding_json] }
 
     result = subject.call(reservation_params)
 
@@ -74,7 +74,7 @@ RSpec.describe Woori::Commands::Booking do
   end
 
   it "fails when holding request times out" do
-    stub_call(:get, holding_url) { raise Faraday::TimeoutError }
+    stub_call(:post, holding_url) { raise Faraday::TimeoutError }
 
     result = subject.call(reservation_params)
 
@@ -85,10 +85,10 @@ RSpec.describe Woori::Commands::Booking do
 
   it "fails when confirm request was performed when unit was already booked" do
     holding_json = read_fixture("woori/reservations/holding_success.json")
-    stub_call(:get, holding_url) { [200, {}, holding_json] }
+    stub_call(:post, holding_url) { [200, {}, holding_json] }
 
     confirm_json = read_fixture("woori/reservations/confirm_already_booked_error.json")
-    stub_call(:get, confirm_url) { [400, {}, confirm_json] }
+    stub_call(:post, confirm_url) { [400, {}, confirm_json] }
 
     result = subject.call(reservation_params)
     expect(result).not_to be_success
@@ -97,10 +97,10 @@ RSpec.describe Woori::Commands::Booking do
 
   it "fails when confirm request gets invalid JSON response" do
     holding_json = read_fixture("woori/reservations/holding_success.json")
-    stub_call(:get, holding_url) { [200, {}, holding_json] }
+    stub_call(:post, holding_url) { [200, {}, holding_json] }
 
     confirm_json = read_fixture("woori/bad_response.json")
-    stub_call(:get, confirm_url) { [200, {}, confirm_json] }
+    stub_call(:post, confirm_url) { [200, {}, confirm_json] }
 
     result = subject.call(reservation_params)
 
@@ -110,8 +110,8 @@ RSpec.describe Woori::Commands::Booking do
 
   it "fails when confirm request times out" do
     holding_json = read_fixture("woori/reservations/holding_success.json")
-    stub_call(:get, holding_url) { [200, {}, holding_json] }
-    stub_call(:get, confirm_url) { raise Faraday::TimeoutError }
+    stub_call(:post, holding_url) { [200, {}, holding_json] }
+    stub_call(:post, confirm_url) { raise Faraday::TimeoutError }
 
     result = subject.call(reservation_params)
 
