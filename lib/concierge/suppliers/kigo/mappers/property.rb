@@ -29,6 +29,7 @@ module Kigo::Mappers
       set_amenities
       set_property_type
       set_price
+      set_images
 
       set_deposit
       set_cleaning_service
@@ -141,18 +142,17 @@ module Kigo::Mappers
     end
 
     def set_images
-      images = payload['MediaV2'][0]['TypeContents']
-
-      images.each do |image|
-        url        = image['Versions'][0]['URL'] # biggest
-        identifier = url.split('/').last # filename
-
-        roomorama_image = Roomorama::Image.new(identifier).tap do |i|
-          i.url     = ['http://', url].join
-          i.caption = image['Tag']
+      images = payload['PROP_PHOTOS']
+      images.each do |image_data|
+        url        = image_data['PHOTO_ID']
+        identifier = url.split('/').last
+        caption    = image_data['PHOTO_NAME']
+        image      = Roomorama::Image.new(identifier).tap do |i|
+          i.url     = ['https:', url].join
+          i.caption = caption
         end
 
-        property.add_image(roomorama_image)
+        property.add_image(image)
       end
     end
 
