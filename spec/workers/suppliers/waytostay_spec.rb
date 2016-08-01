@@ -24,7 +24,7 @@ RSpec.describe Workers::Suppliers::Waytostay do
     end
   end
 
-  describe "last_synced_timestamp" do
+  describe "#last_synced_timestamp" do
     context "there are no successful syncs" do
       it { expect(subject.send(:last_synced_timestamp)).to be_nil }
     end
@@ -35,6 +35,15 @@ RSpec.describe Workers::Suppliers::Waytostay do
       end
 
       it { expect(subject.send(:last_synced_timestamp)).to be_a Integer }
+    end
+  end
+
+  describe "#load_existing" do
+    context "ref is not found in database" do
+      it "should fetch from api if ref is not found in database" do
+        expect(subject.client).to receive(:get_property).once
+        subject.send(:load_existing, "non_existing_ref")
+      end
     end
   end
 
@@ -70,7 +79,8 @@ RSpec.describe Workers::Suppliers::Waytostay do
 
     end
 
-    describe "perform" do
+
+    describe "#perform" do
       before do
         stub_call(:put, "https://api.roomorama.com/v1.0/host/update_calendar") {
           [202, {}, [""]]
