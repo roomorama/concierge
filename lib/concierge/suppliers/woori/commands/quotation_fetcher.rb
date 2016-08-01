@@ -64,10 +64,6 @@ module Woori
 
       private
       def build_request_params(params)
-        # not used now:
-        # property_id: params[:property_id],
-        # num_guests:  params[:guests]
-
         {
           roomCode:        params[:unit_id],
           searchStartDate: params[:check_in],
