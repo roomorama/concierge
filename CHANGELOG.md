@@ -23,6 +23,7 @@ how this file is formatted and how the process works.
 - Add check support for waytostay damage deposit
 - Rake task to dispatch missing amenities as diff operation
 - View suppliers, reservations and synchronisation process history on the `web` app
+- Synchronisation with Kigo
 
 ### Changed
 - `Workers::PropertySynchronisation` doesn't update sync_processes' counters if Roomorama call failed
