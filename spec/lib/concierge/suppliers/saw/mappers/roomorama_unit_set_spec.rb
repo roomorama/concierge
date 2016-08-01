@@ -106,6 +106,16 @@ module SAW
       end
     end
 
+    it "adds amenities information to units" do
+      units = described_class.build(basic_property, detailed_property)
+
+      units_info.each do |unit_info|
+        created_unit = units.detect { |u| u.identifier == unit_info["@id"] }
+
+        expect(created_unit.amenities).to eq(detailed_property.amenities)
+      end
+    end
+
     it "adds price information from property to units" do
       units = described_class.build(basic_property, detailed_property)
 
