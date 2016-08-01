@@ -36,7 +36,9 @@ module Workers::Suppliers::Ciirus
 
                 result = fetch_rates(property_id)
                 next result unless result.success?
-                rates = result.value
+                rates = filter_rates(result.value)
+
+                next empty_rates_error(property_id) if rates.empty?
 
                 result = fetch_security_deposit(property_id)
                 security_deposit = result.success? ? result.value : nil
@@ -57,6 +59,8 @@ module Workers::Suppliers::Ciirus
       end
     end
 
+    private
+
     def invalid_permissions_error(permissions)
       with_context_enabled do
         message = "Invalid permissions for property `#{permissions.property_id}`. " \
@@ -66,7 +70,23 @@ module Workers::Suppliers::Ciirus
       Result.error(:invalid_permissions_error)
     end
 
-    private
+    def empty_rates_error(property_id)
+      with_context_enabled do
+        message = "After filtering actual rates for property `#{property_id}` we got empty rates." \
+          "Sync property with empty rates doesn't make sense."
+        augment_context_error(message)
+      end
+      Result.error(:empty_rates_error)
+    end
+
+    def rate_validator(rate, today)
+      Ciirus::Validators::RateValidator.new(rate, today)
+    end
+
+    def filter_rates(rates)
+      today = Date.today
+      rates.select { |r| rate_validator(r, today).valid? }
+    end
 
     def fetch_images(property_id)
       result = importer.fetch_images(property_id)
