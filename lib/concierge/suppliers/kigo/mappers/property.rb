@@ -7,6 +7,7 @@ module Kigo::Mappers
   #
   # * +property+   - +Roomorama::Property+ instance
   # * +payload+    - hash based Kigo payload
+  # * +pricing+    - property prices details
   # * +references+ - list of references data
   #
   class Property
@@ -113,7 +114,7 @@ module Kigo::Mappers
     end
 
     def amenities_mapper
-      Amenities.new(references[:amenities])
+      Amenities.new(references[:amenities]['AMENITY'])
     end
 
     def set_property_type
