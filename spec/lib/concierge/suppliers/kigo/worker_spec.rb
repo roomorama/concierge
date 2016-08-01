@@ -5,7 +5,7 @@ RSpec.describe Workers::Suppliers::Kigo do
   include Support::Factories
 
   let(:supplier) { create_supplier(name: 'Kigo') }
-  let(:host) { create_host(supplier_id: supplier.id) }
+  let(:host) { create_host(supplier_id: supplier.id, identifier: '14908') }
   let(:properties_list) { JSON.parse(read_fixture('kigo/properties_list.json')) }
   let(:success_result) { Result.new(properties_list) }
 
@@ -34,6 +34,13 @@ RSpec.describe Workers::Suppliers::Kigo do
     expect(error.operation).to eq 'sync'
     expect(error.code).to eq 'connection_timeout'
     expect(error.supplier).to eq 'Kigo'
+  end
+
+  it 'does not process properties with unknown host' do
+    unknown_host = create_host(supplier_id: supplier.id, identifier: 'unknown')
+    subject =  described_class.new(unknown_host)
+
+    expect(subject.synchronisation).not_to receive(:finish!)
   end
 
   context 'success' do

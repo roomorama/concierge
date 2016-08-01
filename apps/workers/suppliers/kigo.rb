@@ -19,9 +19,11 @@ class Workers::Suppliers::Kigo
   def perform
     result = importer.fetch_properties
     if result.success?
-      properties = result.value
+      properties = host_properties(result.value)
+
+      return if properties.empty?
+
       properties.each do |property|
-        next if property['PROP_PROVIDER'].nil?
         id = property['PROP_ID']
         data_result = importer.fetch_data(id)
 
@@ -53,6 +55,12 @@ class Workers::Suppliers::Kigo
   end
 
   private
+
+  def host_properties(properties)
+    properties.select do |property|
+      property['PROP_PROVIDER'] && property['PROP_PROVIDER']['RA_ID'] == host.identifier.to_i
+    end
+  end
 
   def importer
     @importer ||= Kigo::Importer.new(credentials, request_handler)
