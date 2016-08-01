@@ -53,8 +53,6 @@ module Ciirus
                 date:              date.to_s,
                 available:         available,
                 nightly_rate:      rate.daily_rate,
-                checkin_allowed:   available,
-                checkout_allowed:  available,
                 minimum_stay:      rate.min_nights_stay
               )
             end
