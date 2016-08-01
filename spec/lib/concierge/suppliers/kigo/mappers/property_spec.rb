@@ -16,7 +16,8 @@ RSpec.describe Kigo::Mappers::Property do
 
   describe '#prepare' do
     let(:property_data) { JSON.parse(read_fixture('kigo/property_data.json')) }
-
+    let(:pricing) { JSON.parse(read_fixture('kigo/pricing_setup.json'))['PRICING'] }
+    let(:expected_nightly_rate) { 151.98 }
     context 'images' do
       let(:image) {
         {
@@ -29,7 +30,7 @@ RSpec.describe Kigo::Mappers::Property do
 
       it 'sets proper image data' do
         property_data['PROP_PHOTOS'] = [image]
-        property = subject.prepare(property_data).value
+        property = subject.prepare(property_data, pricing).value
 
         expect(property.images.size).to eq 1
         image = property.images.first
@@ -37,30 +38,22 @@ RSpec.describe Kigo::Mappers::Property do
         expect(image.identifier).to eq 'hashed-identifier.jpg'
         expect(image.caption).to eq 'Balcony'
       end
-
     end
 
-
-    context 'rates' do
-      let(:property_rate) {
-        {
-          'PROP_RATE_CURRENCY'     => "EUR",
-          'PROP_RATE_NIGHTLY_FROM' => "151.98",
-          'PROP_RATE_NIGHTLY_TO'   => "417.18",
-          'PROP_RATE_WEEKLY_FROM'  => nil,
-          'PROP_RATE_WEEKLY_TO'    => nil,
-          'PROP_RATE_MONTHLY_FROM' => nil,
-          'PROP_RATE_MONTHLY_TO'   => nil
+    context 'stay length' do
+      context 'unit is month' do
+        let(:minimum_stay) {
+          {
+            'UNIT' => 'MONTH',
+            'NUMBER' => 1
           }
-      }
-      
-      it 'sets price of valid period' do
-        property_data['PROP_RATE'] = property_rate
-        property = subject.prepare(property_data).value
+        }
+        it 'sets value * 30' do
+          property_data['PROP_INFO']['PROP_STAYTIME_MIN'] = minimum_stay
+          property = subject.prepare(property_data, pricing).value
 
-        expect(property.nightly_rate).to eq 100
-        expect(property.weekly_rate).to eq 700
-        expect(property.monthly_rate).to eq 3000
+          expect(property.minimum_stay).to eq 30
+        end
       end
     end
 
@@ -75,15 +68,14 @@ RSpec.describe Kigo::Mappers::Property do
       it 'sets area description if origin and short description are blank' do
         property_data['PROP_INFO']['PROP_DESCRIPTION'] = ''
         property_data['PROP_INFO']['PROP_SHORTDESCRIPTION'] = ''
-        property = subject.prepare(property_data).value
+        property = subject.prepare(property_data, pricing).value
 
         expect(property.description).to eq 'Area description'
       end
     end
 
-
     it 'returns the result with roomorama property accordingly provided data' do
-      result = subject.prepare(property_data)
+      result = subject.prepare(property_data, pricing)
       expect(result).to be_success
 
       property = result.value
@@ -112,29 +104,29 @@ RSpec.describe Kigo::Mappers::Property do
       expect(property.lat).to eq '39.982447'
       expect(property.lng).to eq '18.015175'
       expect(property.number_of_double_beds).to eq 1
-      expect(property.number_of_single_beds).to eq 4
+      expect(property.number_of_single_beds).to eq 5
       expect(property.number_of_sofa_beds).to eq 0
       expect(property.amenities).to eq ['wheelchairaccess', 'tv', 'kitchen']
       expect(property.type).to eq 'house'
       expect(property.subtype).to eq 'villa'
 
-      # expect(property.security_deposit_amount).to eq 500
-      # expect(property.services_cleaning).to eq true
-      # expect(property.services_cleaning_required).to eq true
-      # expect(property.services_cleaning_rate).to eq 150
+      expect(property.security_deposit_amount).to eq 150
+      expect(property.services_cleaning).to eq true
+      expect(property.services_cleaning_required).to eq false
+      expect(property.services_cleaning_rate).to eq 30
 
-      expect(property.minimum_stay).to eq 3
-      expect(property.nightly_rate.to_i).to eq 57
-      expect(property.weekly_rate.to_i).to eq 402
-      expect(property.monthly_rate.to_i).to eq 1722
+      expect(property.minimum_stay).to eq 7
+      expect(property.nightly_rate).to eq expected_nightly_rate
+      expect(property.weekly_rate).to eq expected_nightly_rate * 7
+      expect(property.monthly_rate).to eq expected_nightly_rate * 30
 
-      # expect(property.images.size).to eq 9
-      #
-      # image = property.images.first
-      # expect(image.identifier).to eq '211498_lsr_2013110590534673451.jpg'
-      # expect(image.url).to eq 'http://cdn.leisure-group.net/photo/web/600x400/211498_lsr_2013110590534673451.jpg'
-      #
-      # expect(property.validate!).to be true
+      expect(property.images.size).to eq 27
+
+      image = property.images.first
+      expect(image.identifier).to eq '95dec679-74ea-4a5c-babc-6b76eb4ea474.jpg'
+      expect(image.url).to eq 'https://s3.amazonaws.com/cdnmedia.bookt.com/15826/95dec679-74ea-4a5c-babc-6b76eb4ea474.jpg'
+
+      expect(property.validate!).to be true
     end
   end
 end
