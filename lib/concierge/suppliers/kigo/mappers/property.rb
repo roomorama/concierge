@@ -7,8 +7,9 @@ module Kigo::Mappers
   #
   # * +property+   - +Roomorama::Property+ instance
   # * +payload+    - hash based Kigo payload
-  # * +pricing+    - property prices details
   # * +references+ - list of references data
+  # * +pricing+    - property prices details. Uses for setting deposit, cleaning service price and
+  #                  additional prices if base prices hasn't provided
   #
   class Property
     CANCELLATION_POLICY = 'super_elite'
