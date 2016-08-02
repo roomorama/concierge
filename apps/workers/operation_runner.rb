@@ -67,14 +67,5 @@ module Workers
       @roomorama_client ||= Roomorama::Client.new(host.access_token)
     end
 
-    # if the result of performing the operation was successful, we update
-    # the timestamp when the next execution of the worker should happen.
-    def update_next_run
-      one_day = 24 * 60 * 60 # TODO make this a dynamic value
-      host.next_run_at = Time.now + one_day
-
-      HostRepository.update(host)
-    end
-
   end
 end
