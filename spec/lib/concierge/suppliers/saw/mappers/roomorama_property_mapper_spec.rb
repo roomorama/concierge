@@ -118,12 +118,20 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
       neighborhood
       postal_code
       address
-      amenities
     )
 
     attributes.each do |attr|
       expect(property.send(attr)).to eq(detailed_property.send(attr))
     end
+  end
+
+  it "always keeps amenities empty" do
+    property = described_class.build(
+      basic_property,
+      detailed_property
+    )
+
+    expect(property.amenities).to eq([])
   end
 
   it "keeps images empty if there was no images given" do

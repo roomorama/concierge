@@ -38,7 +38,10 @@ module SAW
           string = bed_configuraton.get("bed_type_name")
 
           double_count = string.scan(/double/i).size
-          single_count = string.scan(/single/i).size + 2 * string.scan(/twin/i).size
+          twin_count   = string.scan(/twin/i).size
+          bunk_count   = string.scan(/bunk/i).size
+          sofa_count   = string.scan(/sofa/i).size
+          single_count = string.scan(/single/i).size + sofa_count + 2 * twin_count + 2 * bunk_count
 
           [single_count, double_count]
         end
