@@ -6,6 +6,10 @@ RSpec.describe API::Controllers::Poplidays::Quote do
   include Support::HTTPStubbing
   include Support::Fixtures
 
+  include Support::Factories
+
+  let!(:supplier) { create_supplier(name: Poplidays::Client::SUPPLIER_NAME) }
+  let!(:host) { create_host(supplier_id: supplier.id, fee_percentage: 5) }
   let(:params) {
     { property_id: '48327', check_in: '2016-12-17', check_out: '2016-12-26', guests: 2 }
   }
