@@ -1,0 +1,8 @@
+{
+    "error": "Internal Server Error",
+    "exception": "java.lang.NullPointerException",
+    "message": "No message available",
+    "path": "/v1/reservation/cancelcharge",
+    "status": 500,
+    "timestamp": "2016-08-02 08:49:29"
+}
