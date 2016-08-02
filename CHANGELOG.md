@@ -10,6 +10,7 @@ how this file is formatted and how the process works.
 
 ### Fixed
 - Crash when a property isn't included in waytostay changes, but also not in concierge database
+- Images not fetched when a waytostay property is new but id not included in media changes
 
 ## [0.5.3] - 2016-07-28
 ### Added
