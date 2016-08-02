@@ -42,7 +42,7 @@ module Woori
       def available?
         day_entries.all? do |day_entry|
           hash = Concierge::SafeAccessHash.new(day_entry)
-          hash.get("isActive") == 1
+          hash.get("isActive") == 1 && hash.get("vacancy").to_i > 0
         end
       end
 
