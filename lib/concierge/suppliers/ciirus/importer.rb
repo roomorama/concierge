@@ -6,7 +6,7 @@ module Ciirus
   # Usage
   #
   #   importer = Ciirus::Importer.new(credentials)
-  #   importer.fetch_properties
+  #   importer.fetch_properties(host)
   #   importer.fetch_images
   #   importer.fetch_description
   class Importer
@@ -17,10 +17,11 @@ module Ciirus
       @credentials = credentials
     end
 
+    # Fetches all properties for given host from Ciirus API
     # Returns the Result wrapping the array of Ciirus::Entities::Property.
-    def fetch_properties
+    def fetch_properties(host)
       fetcher = Commands::PropertiesFetcher.new(credentials)
-      fetcher.call
+      fetcher.call(mc_id: host.identifier)
     end
 
     # Returns the Result wrapping the array of images urls

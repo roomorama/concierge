@@ -11,7 +11,7 @@ module Workers::Suppliers::Ciirus
     end
 
     def perform
-      result = importer.fetch_properties
+      result = importer.fetch_properties(host)
 
       if result.success?
         properties = result.value
