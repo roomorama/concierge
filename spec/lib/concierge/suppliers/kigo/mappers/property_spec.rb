@@ -5,8 +5,8 @@ RSpec.describe Kigo::Mappers::Property do
 
   let(:references) {
     {
-      amenities: JSON.parse(read_fixture('kigo/amenities.json')),
-      property_types: JSON.parse(read_fixture('kigo/property_types.json')),
+      'amenities' => JSON.parse(read_fixture('kigo/amenities.json')),
+      'property_types' => JSON.parse(read_fixture('kigo/property_types.json')),
     }
   }
 
