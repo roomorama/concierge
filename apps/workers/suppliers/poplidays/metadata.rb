@@ -55,30 +55,24 @@ module Workers::Suppliers::Poplidays
       Result.error(:invalid_availabilities_error)
     end
 
-    def fetch_property_details(property_id)
-      result = importer.fetch_property_details(property_id)
-
-      unless result.success?
-        with_context_enabled do
-          message = "Failed to fetch details for property `#{property_id}`"
-          augment_context_error(message)
+    def report_error(message)
+      yield.tap do |result|
+        unless result.success?
+          with_context_enabled { augment_context_error(message) }
         end
       end
+    end
 
-      result
+    def fetch_property_details(property_id)
+      report_error("Failed to fetch details for property `#{property_id}`") do
+        importer.fetch_property_details(property_id)
+      end
     end
 
     def fetch_availabilities(property_id)
-      result = importer.fetch_availabilities(property_id)
-
-      unless result.success?
-        with_context_enabled do
-          message = "Failed to fetch availabilities for property `#{property_id}`"
-          augment_context_error(message)
-        end
+      report_error("Failed to fetch availabilities for property `#{property_id}`") do
+        importer.fetch_availabilities(property_id)
       end
-
-      result
     end
 
     def with_context_enabled
