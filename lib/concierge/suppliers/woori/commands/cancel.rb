@@ -38,8 +38,13 @@ module Woori
           decoded_result = json_decode(result.value.body)
 
           if decoded_result.success?
-            Concierge::SafeAccessHash.new(decoded_result.value)
-            Result.new(reservation_id)
+            safe_hash = Concierge::SafeAccessHash.new(decoded_result.value)
+
+            if safe_hash.get("message") == "success"
+              Result.new(reservation_id)
+            else
+              reservation_cancel_error(reservation_id)
+            end
           else
             decoded_result
           end
@@ -51,6 +56,21 @@ module Woori
       private
       def build_request_params(reservation_id)
         { reservationNo: reservation_id }
+      end
+
+      def reservation_cancel_error(id)
+        message = "Unknown error while reservation #{id} cancellation"
+        augment_with_error(message, caller)
+        Result.error(:reservation_cancel_error)
+      end
+
+      def augment_with_error(message, backtrace)
+        response_mismatch = Concierge::Context::ResponseMismatch.new(
+          message: message,
+          backtrace: backtrace
+        )
+
+        Concierge.context.augment(response_mismatch)
       end
     end
   end
