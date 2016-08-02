@@ -38,8 +38,7 @@ module Workers::Suppliers
           should_update_media = changes.value[:media].include?(property_ref)
 
           # This is catch new properties without images which are not listed in media changes list,
-          # either due to previous faulty syncs (concierge saved the property, /changes skips the id,
-          # but roomorama didn't publish the property) or faulty api (as seen for 173 ids in first import in July 2016)
+          # for example due to faulty `changes` api response(as seen for 173 ids in first import in July 2016)
           should_update_media ||= wrapped_property.result.images.empty?
 
           if should_update_media
