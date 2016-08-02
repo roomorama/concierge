@@ -44,7 +44,7 @@ module Ciirus
         html = result_hash.get(
           'get_descriptions_html_response.get_descriptions_html_result'
         )
-        Sanitize.clean(html, elements: ['p', 'br', 'strong', 'em'], remove_contents: ['script', 'style','img'])
+        Sanitize.fragment(html, elements: ['p', 'br', 'strong', 'em'], remove_contents: ['script', 'style','img'])
           .split(/\n|<br>|<\/br>|<p>|<\/p>/)
           .select{ |x| x.size > 100 }
           .join('<br><br>')
