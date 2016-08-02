@@ -77,15 +77,26 @@ RSpec.shared_examples "Waytostay property client" do
       it { expect(subject[:security_deposit_type]).to eq "cash" }
     end
 
-    context "when cash is not accepted" do
+    context "when cash is not accepted but card is" do
       let(:response) { Concierge::SafeAccessHash.new(
         { payment:
           { damage_deposit_payment_methods:
-            [ { "id" => 1, "name" => "visa" } ]
+            [ { "id" => 1, "name" => "credit card details will be taken" } ]
           }
         })
       }
       it { expect(subject[:security_deposit_type]).to eq "credit_card_auth" }
+    end
+
+    context "when only cheque is accepted" do
+      let(:response) { Concierge::SafeAccessHash.new(
+        { payment:
+          { damage_deposit_payment_methods:
+            [ { "id" => 1, "name" => "traveller’s cheques" } ]
+          }
+        })
+      }
+      it { expect(subject[:security_deposit_type]).to eq "check" }
     end
   end
 

@@ -8,6 +8,9 @@ how this file is formatted and how the process works.
 ### Fixed
 - amenities serialization for `Roomorama::Unit`.
 
+### Added
+- Add check support for waytostay damage deposit
+
 ## [0.5.4] - 2016-08-01
 ### Changed
 - change request log name to `environment.log` (e.g., `staging.log`)
