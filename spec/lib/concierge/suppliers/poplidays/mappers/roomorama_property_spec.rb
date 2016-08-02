@@ -47,8 +47,8 @@ RSpec.describe Poplidays::Mappers::RoomoramaProperty do
 
     expect(roomorama_property.images.length).to eq(3)
     image = roomorama_property.images.first
-    expect(image.identifier).to eq '0dd43a689c1049d4fa4e5eeb41d449da'
-    expect(image.url).to eq 'http://cdn-prod.poplidays.com/v2/pictures/8927623451-478x368.jpg'
+    expect(image.identifier).to eq '1921aa9638072e815341a09835faba4a'
+    expect(image.url).to eq 'http://cdn-prod.poplidays.com/v2/pictures/8927623451-620x465.jpg'
 
     expect(roomorama_property.minimum_stay).to eq(7)
     expect(roomorama_property.nightly_rate).to eq(78.95)
