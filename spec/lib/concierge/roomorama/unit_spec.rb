@@ -151,6 +151,7 @@ RSpec.describe Roomorama::Unit do
       subject.nightly_rate = 100
       subject.weekly_rate  = 200
       subject.monthly_rate = 300
+      subject.amenities    = ["free_cleaning", "parking", "pool", "wifi"]
 
       image = Roomorama::Image.new("image1")
       image.url = "https://www.example.org/image1.png"
@@ -166,6 +167,7 @@ RSpec.describe Roomorama::Unit do
         identifier:   "JPN123UN",
         title:        "Nice Unit",
         description:  "Largest Unit Available",
+        amenities:    "free_cleaning,parking,pool,wifi",
         nightly_rate: 100,
         weekly_rate:  200,
         monthly_rate: 300,
