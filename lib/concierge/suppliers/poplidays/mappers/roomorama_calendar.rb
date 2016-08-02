@@ -93,9 +93,7 @@ module Poplidays
               entry = Roomorama::Calendar::Entry.new(
                 date:             date.to_s,
                 nightly_rate:     0,
-                available:        false,
-                checkin_allowed:  false,
-                checkout_allowed: false
+                available:        false
               )
             end
             entries << entry
