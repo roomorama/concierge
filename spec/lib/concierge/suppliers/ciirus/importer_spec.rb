@@ -35,9 +35,10 @@ RSpec.describe Ciirus::Importer do
   end
 
   describe '#fetch_properties' do
+    let(:host) { double(identifier: 123) }
     let(:method) { Ciirus::Commands::PropertiesFetcher::OPERATION_NAME }
     let(:response) { read_fixture('ciirus/responses/properties_response.xml') }
-    let(:result) { subject.fetch_properties }
+    let(:result) { subject.fetch_properties(host) }
 
     it_behaves_like 'success response'
     it_behaves_like 'handling errors'

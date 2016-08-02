@@ -20,8 +20,10 @@ module Ciirus
 
       OPERATION_NAME = :get_properties
 
-      def call
-        message = xml_builder.properties
+      # mc_id [Fixnum] only properties of given management company will be returned,
+      #                zero means all management companies
+      def call(mc_id: 0)
+        message = xml_builder.properties(management_company_id: mc_id)
         result = remote_call(message)
         if result.success?
           result_hash = to_safe_hash(result.value)
