@@ -6,7 +6,10 @@ RSpec.describe API::Controllers::Ciirus::Quote do
   include Support::Fixtures
   include Support::HTTPStubbing
   include Support::SOAPStubbing
+  include Support::Factories
 
+  let!(:host) { create_host(fee_percentage: 7) }
+  let!(:property) { create_property(identifier: '38180', host_id: host.id) }
   let(:params) {
     { property_id: '38180', check_in: '2016-05-01', check_out: '2016-05-12', guests: 3 }
   }

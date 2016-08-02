@@ -25,7 +25,7 @@ module Ciirus
     # Ciirus, a generic error message is sent back to the caller, and the failure
     # is logged.
     def quote(params)
-      Ciirus::Commands::QuoteFetcher.new(credentials).call(params)
+      Ciirus::Price.new(credentials).quote(params)
     end
 
     # Returns a +Result+ wrapping +Reservation+ in success case.
