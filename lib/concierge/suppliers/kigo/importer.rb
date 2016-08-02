@@ -76,7 +76,7 @@ module Kigo
 
       if result.success?
         response = result.value
-        payload  = json_decode(response.body)
+        payload  = json_decode(response.body).value
         Result.new(payload['API_REPLY'])
       else
         result
