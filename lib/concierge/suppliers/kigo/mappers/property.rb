@@ -115,17 +115,17 @@ module Kigo::Mappers
     end
 
     def amenities_mapper
-      Amenities.new(references[:amenities]['AMENITY'])
+      Amenities.new(references['amenities']['AMENITY'])
     end
 
     def set_property_type
-      mapper                          = PropertyType.new(references[:property_types])
+      mapper                          = PropertyType.new(references['property_types'])
       property.type, property.subtype = mapper.map(info['PROP_TYPE_ID'])
     end
 
     def set_deposit
       deposit                          = pricing['DEPOSIT']
-      property.security_deposit_amount = deposit['VALUE'].to_f if deposit
+      property.security_deposit_amount = deposit['VALUE'].to_i if deposit
     end
 
     def set_cleaning_service

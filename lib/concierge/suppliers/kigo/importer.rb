@@ -63,10 +63,10 @@ module Kigo
 
     # references helps us to match data by their names instead of using ids
     def fetch_references
-      {
+      Result.new({
         amenities:      fetch(AMENITIES).value,
         property_types: fetch(PROPERTY_TYPES).value
-      }
+      })
     end
 
     private
