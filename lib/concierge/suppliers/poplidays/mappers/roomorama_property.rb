@@ -120,24 +120,24 @@ module Poplidays
 
       def has_pool?(features)
         features.include?('GROUPPOOL') ||
-        features.include?('PRIVATEPOOL')
+          features.include?('PRIVATEPOOL')
       end
 
       def has_outdoor_space?(features)
         features.include?('GARDENFURNITURE') ||
-        features.include?('TERRACE') ||
-        features.include?('BARBECUE') ||
-        features.include?('GARDEN') ||
-        features.include?('FIREPLACE') ||
-        features.include?('GREENAREA')
+          features.include?('TERRACE') ||
+          features.include?('BARBECUE') ||
+          features.include?('GARDEN') ||
+          features.include?('FIREPLACE') ||
+          features.include?('GREENAREA')
       end
 
       def has_kitchen?(features)
         features.include?('OVEN') ||
-        features.include?('DISHWASHER') ||
-        features.include?('MICROWAVE') ||
-        features.include?('SMALLOVEN') ||
-        features.include?('FREEZER')
+          features.include?('DISHWASHER') ||
+          features.include?('MICROWAVE') ||
+          features.include?('SMALLOVEN') ||
+          features.include?('FREEZER')
       end
 
       def set_rates_and_min_stay!(roomorama_property, details, availabilities_hash)
