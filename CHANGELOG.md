@@ -4,6 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## Unreleased
+### Fixed
+- amenities serialization for `Roomorama::Unit`.
+
 ## [0.5.4] - 2016-08-01
 ### Changed
 - change request log name to `environment.log` (e.g., `staging.log`)
