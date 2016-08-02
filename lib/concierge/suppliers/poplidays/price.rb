@@ -41,6 +41,9 @@ module Poplidays
     # for when calculating the subtotal. For that purpose, an API call to
     # the property details endpoint is made and that value is extracted.
     def quote(params)
+      host = fetch_host
+      return host_not_found unless host
+
       mandatory_services = retrieve_mandatory_services(params[:property_id])
       return mandatory_services unless mandatory_services.success?
 
@@ -48,10 +51,22 @@ module Poplidays
       return quote unless quote.success?
 
       quotation = mapper.build(params, mandatory_services.value, quote.value)
+
+      quotation.host_fee_percentage = host.fee_percentage
       Result.new(quotation)
     end
 
     private
+
+    # Get the first Poplidays host, because there should only be one host
+    def fetch_host
+        supplier = SupplierRepository.named(Poplidays::Client::SUPPLIER_NAME)
+        HostRepository.from_supplier(supplier).first
+    end
+
+    def host_not_found
+      Result.error(:host_not_found)
+    end
 
     def retrieve_quote(params)
       fetcher = Poplidays::Commands::QuoteFetcher.new(credentials)

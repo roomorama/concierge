@@ -3,7 +3,10 @@ require "spec_helper"
 RSpec.describe Poplidays::Price do
   include Support::Fixtures
   include Support::HTTPStubbing
+  include Support::Factories
 
+  let!(:supplier) { create_supplier(name: Poplidays::Client::SUPPLIER_NAME) }
+  let!(:host) { create_host(supplier_id: supplier.id, fee_percentage: 5) }
   let(:params) {
     { property_id: '3498', check_in: '2016-12-17', check_out: '2016-12-26', guests: 2 }
   }
@@ -39,6 +42,14 @@ RSpec.describe Poplidays::Price do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :connection_timeout
+    end
+
+    it 'fails if host is not found' do
+      allow(subject).to receive(:fetch_host) { nil }
+      result = subject.quote(params)
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :host_not_found
     end
 
     it 'returns the underlying network error if any happened in the call for the property endpoint' do
@@ -139,6 +150,7 @@ RSpec.describe Poplidays::Price do
       expect(quotation.check_out).to eq '2016-12-26'
       expect(quotation.guests).to eq 2
       expect(quotation.currency).to eq 'EUR'
+      expect(quotation.host_fee_percentage).to eq 5
       expect(quotation.total).to eq 3410.28 + 25 # rental + mandatory services
     end
 
