@@ -4,6 +4,7 @@
 class Workers::Suppliers::Kigo
 
   SUPPLIER_NAME = 'Kigo'
+  CACHE_PREFIX  = 'metadata.kigo'
 
   attr_reader :synchronisation, :host
 
@@ -16,8 +17,10 @@ class Workers::Suppliers::Kigo
   #
   #   * fetch_data   - performs fetching base property data
   #   * fetch_prices - returns property pricing setup. (Uses for deposit, additional price ...)
+  #
+  # uses caching for properties list to avoid the same call for different hosts
   def perform
-    result = importer.fetch_properties
+    result = with_cache('list') { importer.fetch_properties }
     if result.success?
       properties = host_properties(result.value)
 
@@ -94,6 +97,19 @@ class Workers::Suppliers::Kigo
       context:     Concierge.context.to_h,
       happened_at: Time.now
     })
+  end
+
+  def with_cache(key)
+    freshness = 60 * 60 * 3 # 3 hours
+    cache.fetch(key, freshness: freshness, serializer: json_serializer) { yield }
+  end
+
+  def json_serializer
+    @serializer ||= Concierge::Cache::Serializers::JSON.new
+  end
+
+  def cache
+    @_cache ||= Concierge::Cache.new(namespace: CACHE_PREFIX)
   end
 
 end
