@@ -71,16 +71,19 @@ module Poplidays
 
       def set_images!(result, details)
         details['photos'].each do |photo|
-          photo['pictures'].each do |pic|
-            if pic['dimension'] == '478x368'
-              url = pic['url']
-              identifier = Digest::MD5.hexdigest(url)
-              image = Roomorama::Image.new(identifier)
-              image.url = url
-              result.add_image(image)
-            end
+          image_data = photo['pictures'].max_by { |pic| dimension_to_i(pic['dimension']) }
+          if image_data
+            url = image_data['url']
+            identifier = Digest::MD5.hexdigest(url)
+            image = Roomorama::Image.new(identifier)
+            image.url = url
+            result.add_image(image)
           end
         end
+      end
+
+      def dimension_to_i(dimension_str)
+        dimension_str.split('X').reduce(1) { |mul, i| mul * i.to_i }
       end
 
       def smoking_allowed?(details)
