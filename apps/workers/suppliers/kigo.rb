@@ -20,14 +20,22 @@ class Workers::Suppliers::Kigo
   #
   # uses caching for properties list to avoid the same call for different hosts
   def perform
-    result = with_cache('list') { importer.fetch_properties }
+    references = with_cache('references') { importer.fetch_references }
+    unless references.success?
+      message = 'Failed to perform #fetch_references'
+      announce_error(message, references)
+      return message
+    end
+
+    mapper     = Kigo::Mappers::Property.new(references.value)
+    result     = with_cache('list') { importer.fetch_properties }
     if result.success?
       properties = host_properties(result.value)
 
       return if properties.empty?
 
       properties.each do |property|
-        id = property['PROP_ID']
+        id          = property['PROP_ID']
         data_result = importer.fetch_data(id)
 
         unless data_result.success?
@@ -71,10 +79,6 @@ class Workers::Suppliers::Kigo
 
   def request_handler
     Kigo::Request.new(credentials)
-  end
-
-  def mapper
-    Kigo::Mappers::Property.new(importer.fetch_references)
   end
 
   def credentials
