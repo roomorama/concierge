@@ -62,6 +62,24 @@ module Woori
       command.find_all_by_property_id(property_id)
     end
 
+    # Retrieves availabilities data and builds calendar for unit
+    #
+    # Arguments:
+    #
+    #   * +unit_id+ [String] unit id (room code hash in Woori API)
+    #
+    # Usage:
+    #
+    #   importer.fetch_unit_calendar("w_w0104006_R01")
+    #
+    # Returns a +Result+ wrapping +Roomorama::Calendar+ object
+    # when operation succeeds
+    # Returns a +Result+ with +Result::Error+ when operation fails
+    def fetch_unit_calendar(unit_id)
+      unit_calendar_fetcher = Commands::UnitCalendarFetcher.new(credentials)
+      unit_calendar_fetcher.call(unit_id)
+    end
+
     private
     def read_file(type, location)
       case type
