@@ -32,8 +32,8 @@ module Woori
     # when operation succeeds
     # Returns a +Result+ with +Result::Error+ when operation fails
     def fetch_properties(updated_at, limit, offset)
-      properties_fetcher = Commands::PropertiesFetcher.new(credentials)
-      properties_fetcher.call(updated_at, limit, offset)
+      repository = Repositories::HTTP::Properties.new(credentials)
+      repository.load_updates(updated_at, limit, offset)
     end
 
     # Retrieves the list of units for property by its id
@@ -49,9 +49,9 @@ module Woori
     # Returns a +Result+ wrapping an +Array+ of +Roomorama::Unit+ objects
     # when operation succeeds
     # Returns a +Result+ with +Result::Error+ when operation fails
-    def fetch_units(property_id)
-      units_fetcher = Commands::UnitsFetcher.new(credentials)
-      units_fetcher.call(property_id)
+    def fetch_all_property_units(property_id)
+      repository = Repositories::HTTP::Units.new(credentials)
+      repository.find_all_by_property_id(property_id)
     end
 
     # Retrieves rates for unit by unit_id
@@ -68,8 +68,8 @@ module Woori
     # when operation succeeds
     # Returns a +Result+ with +Result::Error+ when operation fails
     def fetch_unit_rates(unit_id)
-      unit_rates_fetcher = Commands::UnitRatesFetcher.new(credentials)
-      unit_rates_fetcher.call(unit_id)
+      repository = Repositories::HTTP::UnitRates.new(credentials)
+      repository.find_rates(unit_id)
     end
   end
 end

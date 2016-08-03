@@ -1,8 +1,8 @@
-module Workers::Suppliers
+module Workers::Suppliers::Woori
   # +Workers::Suppliers::Woori+
   #
   # Performs synchronisation with supplier
-  class Woori
+  class Metadata
     class PropertiesFetchError < StandardError; end
     class UnitsFetchError < StandardError; end
     class UnitRatesFetchError < StandardError; end
@@ -25,6 +25,7 @@ module Workers::Suppliers
         if result.success?
           properties = result.value
           size_fetched = properties.size
+          puts "FETCH PROPERTIES. Fetched: #{size_fetched} properties. (limit: #{BATCH_SIZE}, offset: #{offset})"
 
           properties.each do |property|
             synchronisation.start(property.identifier) do
@@ -34,12 +35,14 @@ module Workers::Suppliers
 
               if units_result.success?
                 units = units_result.value
+                puts "    FETCH UNITS: Fetched: #{units.size} units for property id=#{property.identifier}"
 
                 units.each do |unit|
                   rates_result = fetch_unit_rates(unit)
 
                   if rates_result.success?
                     rates = rates_result.value
+                    puts "      FETCH RATES: Fetched rates for unit=#{unit.identifier}. nightly_rate=#{rates.nightly_rate} weekly_rate=#{rates.weekly_rate} monthly_rate=#{rates.monthly_rate}"
 
                     unit.nightly_rate = rates.nightly_rate
                     unit.weekly_rate  = rates.weekly_rate
@@ -84,6 +87,7 @@ module Workers::Suppliers
       end
     rescue PropertiesFetchError
       if (retries -= 1) > 0
+        puts "Retry fetching properties..."
         retry
       else
         result
@@ -101,6 +105,7 @@ module Workers::Suppliers
       end
     rescue UnitsFetchError
       if (retries -= 1) > 0
+        puts "Retry fetching units..."
         retry
       else
         result
@@ -118,6 +123,7 @@ module Workers::Suppliers
       end
     rescue UnitRatesFetchError
       if (retries -= 1) > 0
+        puts "Retry fetching units rates..."
         retry
       else
         result
