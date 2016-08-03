@@ -10,6 +10,7 @@ how this file is formatted and how the process works.
 
 ### Added
 - Add check support for waytostay damage deposit
+- Rake task to dispatch missing amenities as diff operation
 
 ## [0.5.4] - 2016-08-01
 ### Changed
