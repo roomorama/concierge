@@ -134,7 +134,7 @@ module Concierge
       if SUCCESSFUL_STATUSES.include?(response.status)
         Result.new(response)
       else
-        Result.error(:"http_status_#{response.status}")
+        Result.error(:"http_status_#{response.status}", data = response.body)
       end
 
     rescue Faraday::TimeoutError => err

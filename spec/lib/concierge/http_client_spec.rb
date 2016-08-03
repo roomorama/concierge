@@ -56,6 +56,7 @@ RSpec.describe Concierge::HTTPClient do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :http_status_404
+      expect(result.error.data).to eq "Not Found"
     end
 
     it "fails if the remote server is broken" do
