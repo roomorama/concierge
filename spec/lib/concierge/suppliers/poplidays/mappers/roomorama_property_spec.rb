@@ -43,6 +43,7 @@ RSpec.describe Poplidays::Mappers::RoomoramaProperty do
     expect(roomorama_property.currency).to eq('EUR')
     expect(roomorama_property.surface).to eq(45)
     expect(roomorama_property.surface_unit).to eq('metric')
+    expect(roomorama_property.cancellation_policy).to eq(Poplidays::Mappers::RoomoramaProperty::CANCELLATION_POLICY)
 
 
     expect(roomorama_property.images.length).to eq(3)
