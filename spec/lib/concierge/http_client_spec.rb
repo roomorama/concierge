@@ -65,6 +65,7 @@ RSpec.describe Concierge::HTTPClient do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :http_status_500
+      expect(result.error.data).to be_nil
     end
   end
 
