@@ -135,8 +135,8 @@ module Workers
 
       router.dispatch(property).tap do |operation|
         if operation
-          run_operation(operation, property)
-          update_counters(operation)
+          result = run_operation(operation, property)
+          update_counters(operation) if result.success?
         end
       end
     end
@@ -190,8 +190,9 @@ module Workers
       # any errors during the request can be logged.
       Concierge.context.enable!
 
-      result = Workers::OperationRunner.new(host).perform(operation, *args)
-      announce_failure(result) unless result.success?
+      Workers::OperationRunner.new(host).perform(operation, *args).tap do |result|
+        announce_failure(result) unless result.success?
+      end
     end
 
     def missing_data(message, attributes)
