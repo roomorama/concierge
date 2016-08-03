@@ -5,6 +5,8 @@ module Poplidays
     # This class is responsible for building a +Roomorama::Property+ object
     # from data getting from Poplidays API.
     class RoomoramaProperty
+      # TODO: change the value, actually poplidays doesn't support cancellation
+      CANCELLATION_POLICY = 'moderate'
 
       # surface unit information is not included in the response, but surface
       # is always metric
@@ -63,6 +65,7 @@ module Poplidays
         roomorama_property.smoking_allowed = smoking_allowed?(details)
         roomorama_property.pets_allowed = pets_allowed?(details)
         roomorama_property.currency = CURRENCY
+        roomorama_property.cancellation_policy = CANCELLATION_POLICY
       end
 
       def build_descriptions(details)
