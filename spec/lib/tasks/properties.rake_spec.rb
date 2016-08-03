@@ -28,7 +28,8 @@ RSpec.describe "properties rake tasks" do
       expect(Workers::OperationRunner).to receive(:new).exactly(refs.count).times do
         runner
       end
-      expect(runner).to receive(:perform).exactly(refs.count).times do |operation|
+      expect(runner).to receive(:perform).exactly(refs.count).times do |operation, new_property|
+        expect(new_property).to be_a Roomorama::Property
         diff = operation.property_diff
         expect(diff.to_h[:amenities]).to eq "wifi,laundry"
         Result.error(:test)
