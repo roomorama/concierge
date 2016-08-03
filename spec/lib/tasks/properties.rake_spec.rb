@@ -13,7 +13,13 @@ RSpec.describe "properties rake tasks" do
   let(:refs) { ["001", "002"] }
 
   before do
-    refs.each { |ref| create_property(identifier: ref) }
+    refs.each do |ref|
+      create_property(identifier: ref,
+        data: {amenities: "wifi,laundry",
+          images: [
+            { identifier: "PROP1IMAGE", url: "https://www.example.org/image.png" }
+          ]})
+    end
   end
 
   describe "rake properties:patch_amenities" do
@@ -22,7 +28,9 @@ RSpec.describe "properties rake tasks" do
       expect(Workers::OperationRunner).to receive(:new).exactly(refs.count).times do
         runner
       end
-      expect(runner).to receive(:perform).exactly(refs.count).times do
+      expect(runner).to receive(:perform).exactly(refs.count).times do |operation|
+        diff = operation.property_diff
+        expect(diff.to_h[:amenities]).to eq "wifi,laundry"
         Result.error(:test)
       end
       Rake::Task["properties:patch_amenities"].invoke(refs)

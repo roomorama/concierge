@@ -12,9 +12,11 @@ namespace :properties do
 
       diff.amenities = property.data.get("amenities")
       operation = Roomorama::Client::Operations.diff(diff)
-      result = Workers::OperationRunner.new(host).perform(operation)
+      roomorama_property = Roomorama::Property.load(property.data.merge(identifier: ref))
+      next unless roomorama_property.success?
+      result = Workers::OperationRunner.new(host).perform(operation, roomorama_property.value)
       unless result.success?
-        puts "Unsuccessful: #{result}"
+        puts "Unsuccessful: #{result.error.code} #{result.error.data}"
       end
     end
   end
