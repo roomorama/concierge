@@ -19,8 +19,21 @@ module Workers::Suppliers::Woori
           Concierge.context.disable!
 
           units = all_property_units(property.identifier)
-          units.each { |unit| property.add_unit(unit) }
-          
+          units.each do |unit|
+
+            unit.number_of_units = 1
+            unit.nightly_rate = 10000.0
+            unit.weekly_rate = 70000.0
+            unit.monthly_rate = 300000.0
+
+            property.add_unit(unit)
+          end
+
+          property.nightly_rate = 10000.0
+          property.weekly_rate = 70000.0
+          property.monthly_rate = 300000.0
+
+          property.type = 'apartment'
           Result.new(property)
         end
       end
