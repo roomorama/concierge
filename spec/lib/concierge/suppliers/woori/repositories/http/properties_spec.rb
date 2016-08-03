@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Woori::Commands::PropertiesFetcher do
+RSpec.describe Woori::Repositories::HTTP::Properties do
   include Support::HTTPStubbing
   include Support::Fixtures
   include Support::Woori::LastContextEvent
@@ -16,7 +16,7 @@ RSpec.describe Woori::Commands::PropertiesFetcher do
     stub_data = read_fixture("woori/properties/success.json")
     stub_call(:get, url) { [200, {}, stub_data] }
 
-    result = subject.call(updated_at, limit, offset)
+    result = subject.load_updates(updated_at, limit, offset)
     expect(result.success?).to be true
 
     properties = result.value
@@ -29,7 +29,7 @@ RSpec.describe Woori::Commands::PropertiesFetcher do
     stub_data = read_fixture("woori/properties/one.json")
     stub_call(:get, url) { [200, {}, stub_data] }
 
-    result = subject.call(updated_at, limit, offset)
+    result = subject.load_updates(updated_at, limit, offset)
     expect(result.success?).to be true
     
     properties = result.value
@@ -42,7 +42,7 @@ RSpec.describe Woori::Commands::PropertiesFetcher do
     stub_data = read_fixture("woori/properties/empty.json")
     stub_call(:get, url) { [200, {}, stub_data] }
 
-    result = subject.call(updated_at, limit, offset)
+    result = subject.load_updates(updated_at, limit, offset)
     expect(result.success?).to be true
     
     properties = result.value
@@ -53,7 +53,7 @@ RSpec.describe Woori::Commands::PropertiesFetcher do
     stub_data = read_fixture("woori/error_500.json")
     stub_call(:get, url) { [500, {}, stub_data] }
 
-    result = subject.call(updated_at, limit, offset)
+    result = subject.load_updates(updated_at, limit, offset)
     
     expect(result.success?).to be false
     expect(result.error.code).to eq(:http_status_500)
@@ -64,7 +64,7 @@ RSpec.describe Woori::Commands::PropertiesFetcher do
       stub_data = read_fixture("woori/bad_response.json")
       stub_call(:get, url) { [200, {}, stub_data] }
 
-      result = subject.call(updated_at, limit, offset)
+      result = subject.load_updates(updated_at, limit, offset)
 
       expect(result.success?).to be false
       expect(result.error.code).to eq(:invalid_json_representation)
@@ -75,7 +75,7 @@ RSpec.describe Woori::Commands::PropertiesFetcher do
     it "returns a result with an appropriate error" do
       stub_call(:get, url) { raise Faraday::TimeoutError }
 
-      result = subject.call(updated_at, limit, offset)
+      result = subject.load_updates(updated_at, limit, offset)
 
       expect(result).not_to be_success
       expect(last_context_event[:message]).to eq("timeout")

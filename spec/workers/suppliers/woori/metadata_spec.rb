@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Workers::Suppliers::Woori do
+RSpec.describe Workers::Suppliers::Woori::Metadata do
   include Support::Factories
   include Support::HTTPStubbing
   include Support::Fixtures
