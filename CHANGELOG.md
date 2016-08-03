@@ -11,6 +11,9 @@ how this file is formatted and how the process works.
 ### Added
 - Add check support for waytostay damage deposit
 
+### Changed
+- `Workers::PropertySynchronisation` doesn't update sync_processes' counters if Roomorama call is failed
+
 ## [0.5.4] - 2016-08-01
 ### Changed
 - change request log name to `environment.log` (e.g., `staging.log`)
