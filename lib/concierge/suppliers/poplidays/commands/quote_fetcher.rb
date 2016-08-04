@@ -1,6 +1,6 @@
 module Poplidays
   module Commands
-    # +Poplidays::Commands::Booking+
+    # +Poplidays::Commands::QuoteFetcher+
     #
     # This class is responsible for performing price quotations for properties coming
     # from Poplidays, parsing the response and building the +Quotation+ object according
