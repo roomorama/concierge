@@ -26,7 +26,6 @@ RSpec.describe Poplidays::Commands::QuoteFetcher do
 
   describe '#call' do
 
-    let(:lodging_id) { '3245' }
     let(:endpoint) { 'https://api.poplidays.com/v2/bookings/easy' }
 
     it 'returns result with error if internal error happend during remote call' do
