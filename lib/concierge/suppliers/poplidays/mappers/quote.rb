@@ -41,7 +41,7 @@ module Poplidays
       end
 
       def calc_total(mandaroty_services, quote)
-        (quote.value['value'].to_f + mandaroty_services.to_f).round(2)
+        (quote.value.fetch('value').to_f + mandaroty_services.to_f).round(2)
       end
     end
   end
