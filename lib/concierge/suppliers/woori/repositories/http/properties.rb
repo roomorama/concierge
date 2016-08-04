@@ -1,12 +1,10 @@
 module Woori::Repositories::HTTP
-  # +Woori::Commands::PropertiesFetcher+
+  # +Woori::Repositories::HTTP::Properties+
   #
   # This class is responsible for wrapping the logic related to fetching 
   # properties from Woori, parsing the response, and building the +Result+ 
   # object.
   class Properties < Base
-    include Concierge::JSON
-    
     ENDPOINT = "properties"
 
     # Calls the Woori API method usung the HTTP client.
@@ -19,8 +17,8 @@ module Woori::Repositories::HTTP
     #
     # Usage
     #
-    #   command = Woori::Commands::PropertiesFetcher.new(credentials)
-    #   result = command.call(updated_at, limit, offset)
+    #   repository = Woori::Repositories::HTTP::Properties.new(credentials)
+    #   result = repository.load_updates(updated_at, limit, offset)
     #
     # Returns a +Result+ wrapping an +Array+ of +Roomorama::Property+ objects
     # when operation succeeds

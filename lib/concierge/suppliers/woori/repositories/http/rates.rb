@@ -1,12 +1,10 @@
 module Woori::Repositories::HTTP
-  # +Woori::Commands::UnitRatesFetcher+
+  # +Woori::Repositories::HTTP::UnitRates+
   #
   # This class is responsible for wrapping the logic related to fetching 
   # unit rates from Woori, parsing the response, and building the
   # +Result+ object
   class UnitRates < Base
-    include Concierge::JSON
-  
     ENDPOINT = "available"
 
     # Retrieves rates for unit by unit_id
@@ -17,8 +15,8 @@ module Woori::Repositories::HTTP
     #
     # Usage
     #
-    #   command = Woori::Commands::UnitRatesFetcher.new(credentials)
-    #   result = command.call("w_w0104006")
+    #   repository = Woori::Repositories::HTTP::UnitRates.new(credentials)
+    #   result = repository.find_rates("w_w0104006")
     #
     # Returns a +Result+ wrapping +Entities::UnitRates+ object
     # when operation succeeds
