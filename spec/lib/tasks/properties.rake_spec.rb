@@ -34,7 +34,7 @@ RSpec.describe "properties rake tasks" do
         expect(diff.to_h[:amenities]).to eq "wifi,laundry"
         Result.error(:test)
       end
-      Rake::Task["properties:patch_amenities"].invoke(refs)
+      Rake::Task["properties:patch_amenities"].invoke(refs.join(" "))
     end
   end
 end

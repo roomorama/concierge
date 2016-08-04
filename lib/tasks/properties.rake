@@ -1,7 +1,8 @@
 namespace :properties do
   desc "Patch amenities on roomorama"
   task :patch_amenities, [:refs] => :environment do |t, args|
-    args[:refs].each_with_index do |ref, index|
+    refs = args[:refs].split(" ")
+    refs.each_with_index do |ref, index|
       diff = Roomorama::Diff.new(ref)
       property = PropertyRepository.identified_by(ref).first
       unless property
