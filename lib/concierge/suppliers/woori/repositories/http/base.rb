@@ -1,5 +1,11 @@
 module Woori::Repositories::HTTP
+  # +Woori::Repositories::HTTP::Base+
+  #
+  # Class is responsible for providing basic methods needed for all inhereted
+  # classes: response_parser, http client, default headers and api locale.
   class Base
+    include Concierge::JSON
+
     attr_reader :credentials
 
     def initialize(credentials)

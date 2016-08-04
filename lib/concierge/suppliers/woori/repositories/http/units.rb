@@ -1,12 +1,10 @@
 module Woori::Repositories::HTTP
-  # +Woori::Commands::UnitsFetcher+
+  # +Woori::Repositories::HTTP::Units+
   #
   # This class is responsible for wrapping the logic related to fetching 
   # property units from Woori, parsing the response, and building the
   # +Result+ object
   class Units < Base
-    include Concierge::JSON
-  
     ENDPOINT = "properties/:property_id/roomtypes"
 
     # Retrieves the list of units for property by its id
@@ -17,8 +15,8 @@ module Woori::Repositories::HTTP
     #
     # Usage
     #
-    #   command = Woori::Commands::UnitsFetcher.new(credentials)
-    #   result = command.call("w_w0104006")
+    #   repository = Woori::Repositories::HTTP::Units.new(credentials)
+    #   result = repository.find_all_by_property_id("w_w0104006")
     #
     # Returns a +Result+ wrapping an +Array+ of +Roomorama::Unit+ objects
     # when operation succeeds
