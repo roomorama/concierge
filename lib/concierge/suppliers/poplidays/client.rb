@@ -33,18 +33,6 @@ module Poplidays
     def quote(params)
       Poplidays::Price.new(credentials).quote(params)
     end
-
-    private
-
-    def announce_error(operation, result)
-      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-        operation:   operation,
-        supplier:    SUPPLIER_NAME,
-        code:        result.error.code,
-        context:     Concierge.context.to_h,
-        happened_at: Time.now
-      })
-    end
   end
 
 end

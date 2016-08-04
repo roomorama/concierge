@@ -16,10 +16,10 @@ RSpec.describe Poplidays::Mappers::Quote do
 
   context 'for success response' do
     let(:quote) do
-      {
+      Result.new({
         'value' => 3410.28,
         'ruid'=> "09cdecc64b5ba9504c08bb598075262f"
-      }
+      })
     end
 
     it 'returns available roomorama quotation entity' do
@@ -36,14 +36,10 @@ RSpec.describe Poplidays::Mappers::Quote do
 
   context 'for response with error code' do
     let(:quote) do
-      {
-        'code' => 400,
-        'message' => 'Unauthorized arriving day',
-        'ruid' => '76b95928b4fec0ca2dc6ddb33e89b044'
-      }
+      Result.error(:some_error_happened)
     end
 
-    it 'returns available roomorama quotation entity' do
+    it 'returns not available roomorama quotation entity' do
       expect(quotation).to be_a(::Quotation)
       expect(quotation.check_in).to eq('2017-08-01')
       expect(quotation.property_id).to eq('33680')

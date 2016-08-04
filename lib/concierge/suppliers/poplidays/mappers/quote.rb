@@ -15,8 +15,8 @@ module Poplidays
       #
       #   * +params+ Roomorama quotation webhook params
       #   * +mandatory_services+ [Float] mandatory services price
-      #   * +quote+ [Hash] response from Poplidays booking/easy method
-      #                    in "EVALUATION" mode
+      #   * +quote+ [Result] result which contains response from Poplidays booking/easy method
+      #                      in "EVALUATION" mode
       #
       # Returns a +Roomorama::Quotation+
       def build(params, mandaroty_services, quote)
@@ -37,11 +37,11 @@ module Poplidays
       private
 
       def available?(quote)
-        !quote['value'].nil?
+        quote.success?
       end
 
       def calc_total(mandaroty_services, quote)
-        (quote['value'].to_f + mandaroty_services.to_f).round(2)
+        (quote.value['value'].to_f + mandaroty_services.to_f).round(2)
       end
     end
   end
