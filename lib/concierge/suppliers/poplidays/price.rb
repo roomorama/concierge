@@ -69,8 +69,8 @@ module Poplidays
 
     # Get the first Poplidays host, because there should only be one host
     def fetch_host
-        supplier = SupplierRepository.named(Poplidays::Client::SUPPLIER_NAME)
-        HostRepository.from_supplier(supplier).first
+      supplier = SupplierRepository.named(Poplidays::Client::SUPPLIER_NAME)
+      HostRepository.from_supplier(supplier).first
     end
 
     def host_not_found
