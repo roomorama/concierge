@@ -134,7 +134,8 @@ module Concierge
       if SUCCESSFUL_STATUSES.include?(response.status)
         Result.new(response)
       else
-        Result.error(:"http_status_#{response.status}")
+        data = extract_error_data(response)
+        Result.error(:"http_status_#{response.status}", data = data)
       end
 
     rescue Faraday::TimeoutError => err
@@ -149,6 +150,10 @@ module Concierge
     rescue Faraday::Error => err
       announce_error(err)
       Result.error(:network_failure)
+    end
+
+    def extract_error_data(response)
+      response.body if 400 <= response.status && response.status < 500
     end
 
     def announce_request(method, path, params, headers)

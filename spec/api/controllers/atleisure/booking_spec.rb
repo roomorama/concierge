@@ -40,7 +40,7 @@ RSpec.describe API::Controllers::AtLeisure::Booking do
 
 
     it "returns proper error if external request failed" do
-      stub_call(:post, endpoint) { Faraday::ClientError }
+      stub_call(:post, endpoint) { raise Faraday::TimeoutError }
 
       expect(response.status).to eq 503
       expect(response.body["status"]).to eq "error"
