@@ -7,7 +7,6 @@ module Woori
   # For more information on how to interact with Woori, check the project Wiki.
   class Client
     SUPPLIER_NAME = "Woori"
-    MAXIMUM_STAY_LENGTH = 6 # days
 
     attr_reader :credentials
 
