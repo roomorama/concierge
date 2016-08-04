@@ -65,7 +65,7 @@ RSpec.describe API::Controllers::Poplidays::Quote do
 
     it 'returns unavailable quotation when the supplier responds so' do
       stub_call(:get, property_details_endpoint) { [200, {}, read_fixture('poplidays/property_details.json')] }
-      stub_call(:post, quote_endpoint) { [200, {}, unavailable_quote_response] }
+      stub_call(:post, quote_endpoint) { [400, {}, unavailable_quote_response] }
 
       response = parse_response(described_class.new.call(params))
 

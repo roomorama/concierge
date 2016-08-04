@@ -48,15 +48,24 @@ module Poplidays
       return mandatory_services unless mandatory_services.success?
 
       quote = retrieve_quote(params)
-      return quote unless quote.success?
 
-      quotation = mapper.build(params, mandatory_services.value, quote.value)
+      return quote if unknown_errors?(quote)
+
+      quotation = mapper.build(params, mandatory_services.value, quote)
 
       quotation.host_fee_percentage = host.fee_percentage
       Result.new(quotation)
     end
 
     private
+
+    # Some unsuccessful (not 20X) http statuses of quote request
+    # are valid business cases for us and should be handled:
+    #   409 - stay specified in booking is no more available
+    #   400 - bad arrival/departure date
+    def unknown_errors?(quote)
+      !quote.success? && ![:http_status_400, :http_status_409].include?(quote.error.code)
+    end
 
     # Get the first Poplidays host, because there should only be one host
     def fetch_host

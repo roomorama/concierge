@@ -36,7 +36,7 @@ RSpec.describe Poplidays::Price do
     let(:property_details_endpoint) { 'https://api.poplidays.com/v2/lodgings/3498' }
     let(:quote_endpoint) { 'https://api.poplidays.com/v2/bookings/easy' }
 
-    it 'returns the underlying network error if any happened in the call for the calendar endpoint' do
+    it 'returns the underlying network error if any happened in the call for the property endpoint' do
       stub_call(:get, property_details_endpoint) { raise Faraday::TimeoutError }
       result = subject.quote(params)
 
@@ -52,7 +52,7 @@ RSpec.describe Poplidays::Price do
       expect(result.error.code).to eq :host_not_found
     end
 
-    it 'returns the underlying network error if any happened in the call for the property endpoint' do
+    it 'returns the underlying network error if any happened in the call for the quote endpoint' do
       stub_with_fixture(property_details_endpoint, 'poplidays/property_details.json')
       stub_call(:post, quote_endpoint) { raise Faraday::TimeoutError }
 
@@ -116,26 +116,36 @@ RSpec.describe Poplidays::Price do
       expect(event.to_h[:type]).to eq 'response_mismatch'
     end
 
-    it 'returns an unavailable quotation in case there is no availability' do
+    [400, 409].each do |status|
+      it "returns an unavailable quotation for poplidays response with #{status} status" do
+        stub_with_fixture(property_details_endpoint, 'poplidays/property_details.json')
+        stub_call(:post, quote_endpoint) { [status, {}, unavailable_quote_response] }
+        result = subject.quote(params)
+
+        expect(result).to be_success
+        quotation = result.value
+
+        expect(quotation).to be_a Quotation
+        expect(quotation.available).to eq false
+        expect(quotation.property_id).to eq '3498'
+        expect(quotation.check_in).to eq '2016-12-17'
+        expect(quotation.check_out).to eq '2016-12-26'
+        expect(quotation.guests).to eq 2
+        expect(quotation.currency).to be_nil
+        expect(quotation.total).to be_nil
+      end
+    end
+
+    it "returns not success result for poplidays response with 500 status" do
       stub_with_fixture(property_details_endpoint, 'poplidays/property_details.json')
-      stub_with_string(quote_endpoint, unavailable_quote_response)
+      stub_call(:post, quote_endpoint) { [500, {}, unavailable_quote_response] }
       result = subject.quote(params)
 
-      expect(result).to be_success
-      quotation = result.value
-
-      expect(quotation).to be_a Quotation
-      expect(quotation.available).to eq false
-      expect(quotation.property_id).to eq '3498'
-      expect(quotation.check_in).to eq '2016-12-17'
-      expect(quotation.check_out).to eq '2016-12-26'
-      expect(quotation.guests).to eq 2
-      expect(quotation.currency).to be_nil
-      expect(quotation.total).to be_nil
+      expect(result).not_to be_success
     end
 
     it 'returns an available quotation properly priced according to the response' do
-      stub_with_string(quote_endpoint, quote_response)
+      stub_call(:post, quote_endpoint) { [200, {}, quote_response] }
       stub_with_fixture(property_details_endpoint, 'poplidays/property_details.json')
 
       result = subject.quote(params)
@@ -157,10 +167,6 @@ RSpec.describe Poplidays::Price do
     def stub_with_fixture(endpoint, name)
       poplidays_response = read_fixture(name)
       stub_call(:get, endpoint) { [200, {}, poplidays_response] }
-    end
-
-    def stub_with_string(endpoint, response)
-      stub_call(:post, endpoint) { [200, {}, response] }
     end
   end
 end
