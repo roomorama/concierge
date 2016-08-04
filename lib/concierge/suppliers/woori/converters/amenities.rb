@@ -29,13 +29,9 @@ module Woori
       def convert
         roomorama_amenities = facility_services.map do |service_name|
           supported_amenities.fetch(service_name, nil)
-        end.compact
-
-        if roomorama_amenities.any?
-          roomorama_amenities.uniq
-        else
-          []
         end
+
+        roomorama_amenities.compact.uniq
       end
       
       # Keeps only facility services which has no matches to Roomorama API
@@ -54,7 +50,7 @@ module Woori
         additional_amenities = []
 
         facility_services.each do |service_name|
-          match = supported_amenities.fetch(service_name, nil)
+          match = supported_amenities[service_name]
           additional_amenities << service_name unless match
         end
 
