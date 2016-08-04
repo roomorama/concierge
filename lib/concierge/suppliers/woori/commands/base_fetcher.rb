@@ -7,10 +7,6 @@ module Woori
         @credentials = credentials
       end
 
-      def response_parser
-        @response_parser ||= Woori::ResponseParser.new
-      end
-
       def http
         @http_client ||= Concierge::HTTPClient.new(credentials.url)
       end
