@@ -14,6 +14,7 @@ post '/ciirus/booking',      to: 'ciirus#booking'
 post '/kigo/booking',        to: 'kigo#booking'
 post '/kigo/legacy/booking', to: 'kigo/legacy#booking'
 post '/saw/booking',         to: 's_a_w#booking'
+post '/poplidays/booking',   to: 'poplidays#booking'
 
 post 'waytostay/cancel',   to: 'waytostay#cancel'
 post 'ciirus/cancel',      to: 'ciirus#cancel'

@@ -33,6 +33,22 @@ module Poplidays
     def quote(params)
       Poplidays::Price.new(credentials).quote(params)
     end
+
+    # Returns a +Result+ wrapping +Reservation+ in success case.
+    # If an error happens in any step in the process of getting a response back from
+    # Poplidays, a generic error message is sent back to the caller, and the failure
+    # is logged.
+    def book(params)
+      Poplidays::Booking.new(credentials).book(params).tap do |reservation|
+        database.create(reservation.value) if reservation.success?
+      end
+    end
+
+    private
+
+    def database
+      @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
+    end
   end
 
 end
