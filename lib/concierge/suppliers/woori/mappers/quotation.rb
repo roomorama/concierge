@@ -40,10 +40,20 @@ module Woori
       end
 
       def available?
-        day_entries.all? do |day_entry|
-          hash = Concierge::SafeAccessHash.new(day_entry)
-          hash.get("isActive") == 1 && hash.get("vacancy").to_i > 0
-        end
+        day_entries.all? { |day_entry| available_day_entry?(day_entry) }
+      end
+
+      def available_day_entry?(day_entry)
+        hash = Concierge::SafeAccessHash.new(day_entry)
+        day_entry_active?(hash) && have_vacancy?(hash)
+      end
+
+      def day_entry_active?(hash)
+        hash.get("active") == true
+      end
+
+      def have_vacancy?(hash)
+        hash.get("vacancy").to_i > 0
       end
 
       def total_price
