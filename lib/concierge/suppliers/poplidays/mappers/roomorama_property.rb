@@ -5,12 +5,19 @@ module Poplidays
     # This class is responsible for building a +Roomorama::Property+ object
     # from data getting from Poplidays API.
     class RoomoramaProperty
-      # TODO: change the value, actually poplidays doesn't support cancellation
-      CANCELLATION_POLICY = 'moderate'
+      # NOTE: actually Poplidays API doesn't support cancellation
+      CANCELLATION_POLICY = 'super_elite'
 
       # surface unit information is not included in the response, but surface
       # is always metric
       SURFACE_UNIT = 'metric'
+
+      # When the local agent does not indicate the amount of the deposit,
+      # Poplidays, indicates that studio is around 300 € and villas can be up to 1000€.
+      SECURITY_DEPOSIT_AMOUNT = {
+        'APARTMENT' => 300.0,
+        'HOUSE'     => 1000.0
+      }
 
       # currency information is not included in the response, but prices are
       # always quoted in EUR.
@@ -39,6 +46,7 @@ module Poplidays
         set_images!(roomorama_property, details)
         set_amenities!(roomorama_property, details)
         set_rates_and_min_stay!(roomorama_property, details, availabilities)
+        set_security_deposit!(roomorama_property, details)
 
         Result.new(roomorama_property)
       end
@@ -66,6 +74,15 @@ module Poplidays
         roomorama_property.pets_allowed = pets_allowed?(details)
         roomorama_property.currency = CURRENCY
         roomorama_property.cancellation_policy = CANCELLATION_POLICY
+      end
+
+      def set_security_deposit!(roomorama_property, details)
+        roomorama_property.security_deposit_currency_code = CURRENCY
+        if details['caution'] == 'unknown'
+          roomorama_property.security_deposit_amount = SECURITY_DEPOSIT_AMOUNT[details['type']]
+        else
+          roomorama_property.security_deposit_amount = details['caution'].to_f
+        end
       end
 
       def build_descriptions(details)
