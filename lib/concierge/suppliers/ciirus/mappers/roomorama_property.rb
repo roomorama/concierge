@@ -5,7 +5,7 @@ module Ciirus
     # This class is responsible for building a +Roomorama::Property+ object
     # from data getting from Ciirus API.
     class RoomoramaProperty
-      CANCELLATION_POLICY = 'moderate'
+      CANCELLATION_POLICY = 'super_elite'
 
       # Maps Ciirus PropertyType to Roomorama property type/subtype.
       # There are also `Unspecified` and `Hotel` types in Ciirus API
