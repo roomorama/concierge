@@ -14,6 +14,23 @@ RSpec.describe Poplidays::Mappers::RoomoramaProperty do
 
   subject { described_class.new }
 
+  it 'sets default security deposit info for unknown caution' do
+    details = {
+      'caution' => 'unknown',
+      'type' => 'APARTMENT',
+      'address' => {},
+      'description' => {},
+      'features' => {},
+      'photos' => {},
+      'mandatoryServicesPrice' => 0
+    }
+    result = subject.build(property, details, availabilities)
+
+    roomorama_property = result.value
+    expect(roomorama_property.security_deposit_amount).to eq(300.0)
+    expect(roomorama_property.security_deposit_currency_code).to eq('EUR')
+  end
+
   it 'returns result with mapped roomorama property' do
     result = subject.build(property, details, availabilities)
 
@@ -44,6 +61,8 @@ RSpec.describe Poplidays::Mappers::RoomoramaProperty do
     expect(roomorama_property.surface).to eq(45)
     expect(roomorama_property.surface_unit).to eq('metric')
     expect(roomorama_property.cancellation_policy).to eq(Poplidays::Mappers::RoomoramaProperty::CANCELLATION_POLICY)
+    expect(roomorama_property.security_deposit_amount).to eq(500.0)
+    expect(roomorama_property.security_deposit_currency_code).to eq('EUR')
 
 
     expect(roomorama_property.images.length).to eq(3)
