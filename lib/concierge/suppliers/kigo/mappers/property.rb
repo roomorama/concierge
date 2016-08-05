@@ -178,7 +178,7 @@ module Kigo::Mappers
     end
 
     def amenity_ids
-      payload['PROP_INFO']['PROP_AMENITIES']
+      Array(payload['PROP_INFO']['PROP_AMENITIES'])
     end
 
   end
