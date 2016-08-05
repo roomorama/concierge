@@ -5,15 +5,16 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
-### Fixed
-- amenities serialization for `Roomorama::Unit`.
-
 ### Added
 - Add check support for waytostay damage deposit
 - Rake task to dispatch missing amenities as diff operation
+- View suppliers, reservations and synchronisation process history on the `web` app
 
 ### Changed
-- `Workers::PropertySynchronisation` doesn't update sync_processes' counters if Roomorama call is failed
+- `Workers::PropertySynchronisation` doesn't update sync_processes' counters if Roomorama call failed
+
+### Fixed
+- amenities serialization for `Roomorama::Unit`.
 
 ## [0.5.4] - 2016-08-01
 ### Changed
@@ -51,10 +52,8 @@ how this file is formatted and how the process works.
 ### Added
 - Cancellation webhook mappings
 - Waytostay security deposit information
-- View suppliers, reservations and synchronisation process history on the `web` app
 
 ### Changed
-- Waytostay images that has `is_visible=false` should not be imported
 - Waytostay `security_deposit` parses into either `cash` or `credit_card_auth` or nothing
 - Waytostay images that has `is_visible=false` should not be imported
 - Waytostay sync calls /calendar instead of /availabilities api
