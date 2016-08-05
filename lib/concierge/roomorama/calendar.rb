@@ -12,13 +12,14 @@ module Roomorama
   #
   #   calendar = Roomorama::Calendar.new(property_identifier)
   #   entry = Roomorama::Calendar::Entry.new(
-  #     date:             "2016-05-22",
-  #     available:        true,
-  #     nightly_rate:     100,
-  #     weekly_rate:      500,
-  #     monthly_rate:     1000,
-  #     checkin_allowed:  true,
-  #     checkout_allowed: false
+  #     date:               "2016-05-22",
+  #     available:          true,
+  #     nightly_rate:       100,
+  #     weekly_rate:        500,
+  #     monthly_rate:       1000,
+  #     checkin_allowed:    true,
+  #     valid_stay_lengths: true,
+  #     checkout_allowed:   false
   #   )
   #
   #   calendar.add(entry)
@@ -50,6 +51,7 @@ module Roomorama
       attribute :minimum_stay
       attribute :checkin_allowed
       attribute :checkout_allowed
+      attribute :valid_stay_lengths
 
       def initialize(attributes)
         initialize_checkin_rules(attributes)
@@ -123,6 +125,7 @@ module Roomorama
         weekly_prices:     parsed.rates.weekly,
         monthly_prices:    parsed.rates.monthly,
         minimum_stays:     parsed.minimum_stays,
+        valid_stay_lengths: parsed.valid_stay_lengths,
         checkin_allowed:   parsed.checkin_rules,
         checkout_allowed:  parsed.checkout_rules,
 
@@ -156,6 +159,10 @@ module Roomorama
           payload.delete(:units)
         end
 
+        if payload[:valid_stay_lengths].nil? || payload[:valid_stay_lengths].all?(&:nil?)
+          payload.delete(:valid_stay_lengths)
+        end
+
       end
     end
 
@@ -163,7 +170,7 @@ module Roomorama
 
     Rates         = Struct.new(:nightly, :weekly, :monthly)
     ParsedEntries = Struct.new(
-      :start_date, :availabilities, :checkin_rules, :checkout_rules, :minimum_stays, :rates
+      :start_date, :availabilities, :checkin_rules, :checkout_rules, :minimum_stays, :rates, :valid_stay_lengths
     )
 
     # parses the collection of +entries+ given on the lifecycle of this instance,
@@ -177,7 +184,7 @@ module Roomorama
       end_date       = sorted_entries.last.date
 
       rates          = Rates.new([], [], [])
-      parsed_entries = ParsedEntries.new(start_date, "", "", "", [], rates)
+      parsed_entries = ParsedEntries.new(start_date, "", "", "", [], rates, [])
 
       # index all entries by date, to make the lookup for a given date faster.
       # Index once, and then all lookups can be performed in constant time,
@@ -193,13 +200,14 @@ module Roomorama
       (start_date..end_date).each do |date|
         entry = index[date] || default_entry(date)
 
-        parsed_entries.availabilities << boolean_to_string(entry.available)
-        parsed_entries.rates.nightly  << entry.nightly_rate
-        parsed_entries.rates.weekly   << entry.weekly_rate
-        parsed_entries.rates.monthly  << entry.monthly_rate
-        parsed_entries.minimum_stays  << entry.minimum_stay
-        parsed_entries.checkin_rules  << boolean_to_string(entry.checkin_allowed)
-        parsed_entries.checkout_rules << boolean_to_string(entry.checkout_allowed)
+        parsed_entries.availabilities     << boolean_to_string(entry.available)
+        parsed_entries.rates.nightly      << entry.nightly_rate
+        parsed_entries.rates.weekly       << entry.weekly_rate
+        parsed_entries.rates.monthly      << entry.monthly_rate
+        parsed_entries.minimum_stays      << entry.minimum_stay
+        parsed_entries.valid_stay_lengths << entry.valid_stay_lengths
+        parsed_entries.checkin_rules      << boolean_to_string(entry.checkin_allowed)
+        parsed_entries.checkout_rules     << boolean_to_string(entry.checkout_allowed)
       end
 
       parsed_entries

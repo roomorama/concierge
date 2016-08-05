@@ -37,6 +37,12 @@ RSpec.describe Roomorama::Calendar do
 
       expect(subject.validate!).to eq true
     end
+
+    it "is valid if valid_stay_lengths is given as an array" do
+      entry_attributes[:valid_stay_lengths] = [1, 7, 14]
+      subject.add(entry)
+      expect(subject.validate!).to eq true
+    end
   end
 
   describe "#empty?" do
