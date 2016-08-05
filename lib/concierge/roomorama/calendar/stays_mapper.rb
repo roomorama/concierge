@@ -52,17 +52,9 @@ class Roomorama::Calendar
     end
 
     def minimum_nightly_rate(date)
-      stays.select { checkin_before(date) }.
-        select { checkout_after(date) }.
+      stays.select { |stay| stay[:checkin] <= date }.
+        select { |stay| stay[:checkout] >= date }.
         min_by { |s| s[:rate] }[:rate]
-    end
-
-    def checkin_before(date)
-      Proc.new { |stay| stay[:checkin] < date }
-    end
-
-    def checkout_after(date)
-      Proc.new { |stay| stay[:checkout] > date }
     end
 
     def stay_length(stay)
