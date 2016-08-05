@@ -13,7 +13,7 @@
                 "discountPrice": 0.0,
                 "discountStartDate": null
             },
-            "isActive": 1,
+            "active": true,
             "maxVacancy": 1,
             "minPrice": 0.0,
             "price": 80000.0,
@@ -33,7 +33,7 @@
                 "discountPrice": 0.0,
                 "discountStartDate": null
             },
-            "isActive": 1,
+            "active": true,
             "maxVacancy": 1,
             "minPrice": 0.0,
             "price": 80000.0,
