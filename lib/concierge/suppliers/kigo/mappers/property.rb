@@ -139,7 +139,7 @@ module Kigo::Mappers
     end
 
     def get_fee_amount(amount)
-      return amount if amount.is_a?(String)
+      return amount if amount.is_a?(Integer)
       amount['AMOUNT_ADULT']
     end
 
