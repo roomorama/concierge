@@ -47,18 +47,9 @@ module AtLeisure
     #     # ...
     #   end
     #
-    # Returns a +Result+ wrapping a +Reservation+ when operation succeeds
-    # Returns a +Result+ wrapping a nil object when operation fails
+    # Returns a +Result+ wrapping a +Reservation+ when operation succeeds.
     def book(params)
-      result = AtLeisure::Booking.new(credentials).book(params)
-      database.create(result.value) if result.success? # workaround to keep booking code for reservation
-      result
-    end
-
-    private
-
-    def database
-      @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
+      AtLeisure::Booking.new(credentials).book(params)
     end
 
   end

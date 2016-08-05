@@ -25,12 +25,15 @@ collection :reservations do
   repository ReservationRepository
 
   attribute :id,               Integer
+  attribute :supplier,         String
   attribute :property_id,      String
   attribute :unit_id,          String
   attribute :check_in,         String
   attribute :check_out,        String
   attribute :guests,           Integer
   attribute :reference_number, String
+  attribute :created_at,       Time
+  attribute :updated_at,       Time
 end
 
 collection :suppliers do

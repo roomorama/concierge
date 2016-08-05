@@ -13,6 +13,16 @@ class PropertyRepository
     query.count
   end
 
+  # filters properties that belong to any host of a given +supplier+, which is
+  # expected to be an instance of the +Supplier+ entity.
+  def self.from_supplier(supplier)
+    hosts = HostRepository.from_supplier(supplier)
+
+    query do
+      where(host_id: hosts.map(&:id))
+    end
+  end
+
   # filters properties that belong to a given +host+, which is expected to be
   # a persisted instance of +Host+.
   def self.from_host(host)

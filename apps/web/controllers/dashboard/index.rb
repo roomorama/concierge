@@ -5,10 +5,11 @@ module Web::Controllers::Dashboard
     include Web::Action
     include Web::Controllers::InternalError
 
-    expose :concierge
+    expose :concierge, :suppliers
 
     def call(params)
       @concierge = Web::Support::StatusCheck.new
+      @suppliers = SupplierRepository.all
     end
   end
 end

@@ -1,6 +1,6 @@
 module API::Controllers::Params
 
-  # +API::Controllers::Params::Booking
+  # +API::Controllers::Params::Booking+
   #
   # Parameters declaration and validation for create booking. This is
   # shared among all partner booking calls, and ensures that required parameters

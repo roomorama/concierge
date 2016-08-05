@@ -14,7 +14,7 @@ module Web::Views::ExternalErrors
     # Receives an instance of +ExternalError+ and formats the
     # +happened_at+ column for display.
     def format_time(error)
-      error.happened_at.strftime("%B %d, %Y at %H:%M")
+      time_formatter.present(error.happened_at)
     end
 
     # receives an instance of +ExternalError+ and generates a link to the
@@ -22,6 +22,12 @@ module Web::Views::ExternalErrors
     def error_link(error)
       name = ["#", error.id].join
       link_to name, routes.error_path(error.id)
+    end
+
+    private
+
+    def time_formatter
+      @time_formatter ||= Web::Support::Formatters::Time.new
     end
   end
 end

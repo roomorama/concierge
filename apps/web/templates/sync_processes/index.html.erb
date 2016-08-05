@@ -1,0 +1,75 @@
+<div class="content">
+  <h2 class="content-subhead">Synchronisation History</h2>
+  <div class="section-intro">
+    Suppliers have multiple hosts, whose properties are synchronised periodically.
+    This page displays the most recent synchronisation processes that have been executed
+    on Concierge, both for property metadata (title, description, images, etc), as well
+    as for the availabilities calendar (including rates).
+  </div>
+
+  <h3>Property Data and Images</h3>
+
+  <table class="concierge-table pure-table pure-table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Supplier</th>
+        <th>Host</th>
+        <th>Started</th>
+        <th>Finished</th>
+        <th>Properties Created</th>
+        <th>Properties Deleted</th>
+        <th>Properties Updated</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% metadata_processes.each do |sync| %>
+        <% host = host_for(sync) %>
+        <tr class="<%= worker_status_row(sync) %>">
+          <td><%= sync.id %></td>
+          <td><%= supplier_for(host).name %></td>
+          <td><%= host.username %></td>
+          <td><%= format_time sync.started_at %></td>
+          <td><%= format_time sync.finished_at %></td>
+          <td><%= format_number sync.stats[:properties_created] %></td>
+          <td><%= format_number sync.stats[:properties_updated] %></td>
+          <td><%= format_number sync.stats[:properties_deleted] %></td>
+        <% end %>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Availabilities Calendar and Rates</h3>
+
+  <table class="concierge-table pure-table pure-table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Supplier</th>
+        <th>Host</th>
+        <th>Started</th>
+        <th>Finished</th>
+        <th>Properties Updated</th>
+        <th>Available Dates</th>
+        <th>Unavailable Dates</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% availabilities_processes.each do |sync| %>
+        <% host = host_for(sync) %>
+        <tr class="<%= worker_status_row(sync) %>">
+          <td><%= sync.id %></td>
+          <td><%= supplier_for(host).name %></td>
+          <td><%= host.username %></td>
+          <td><%= format_time sync.started_at %></td>
+          <td><%= format_time sync.finished_at %></td>
+          <td><%= format_number sync.stats[:properties_processed] %></td>
+          <td><%= format_number sync.stats[:available_records] %></td>
+          <td><%= format_number sync.stats[:unavailable_records] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

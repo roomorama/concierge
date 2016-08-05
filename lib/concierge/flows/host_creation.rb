@@ -105,6 +105,13 @@ module Concierge::Flows
           return workers_definition unless workers_definition.success?
 
           workers_definition.value.each do |type, data|
+            # if there is an +absence+ field for a given worker definition, it means
+            # the worker is not supported, and the +absence+ field indicates the reason
+            # that worker is not implemented for a given supplier.
+            #
+            # In such case, the +BackgroundWorker+ record should not be created.
+            next if data.to_h["absence"]
+
             result = BackgroundWorkerCreation.new(
               host_id:     host.id,
               interval:    data.to_h["every"],

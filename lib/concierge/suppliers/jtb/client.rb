@@ -48,16 +48,15 @@ module JTB
     #     # ...
     #   end
     #
-    # Returns a +Result+ wrapping a +Reservation+ when operation succeeds
-    # Returns a +Result+ wrapping a nil object when operation fails
+    # Returns a +Result+ wrapping a +Reservation+ when operation succeeds.
     def book(params)
       result = JTB::Booking.new(credentials).book(params)
       if result.success?
-        res = Reservation.new(params).tap do |reservation|
-          reservation.reference_number = result.value
-          database.create(reservation) # workaround to keep reservation.reference_number
+        reservation = Reservation.new(params).tap do |res|
+          res.reference_number = result.value
         end
-        Result.new(res)
+
+        Result.new(reservation)
       else
         result
       end
@@ -65,12 +64,10 @@ module JTB
 
     private
 
-    def database
-      @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
-    end
-
     def stay_too_long_error
-      Result.error(:stay_too_long, { quote: "Maximum length of stay must be less than #{MAXIMUM_STAY_LENGTH} nights." })
+      Result.error(:stay_too_long, {
+        quote: "Maximum length of stay must be less than #{MAXIMUM_STAY_LENGTH} nights."
+      })
     end
 
   end
