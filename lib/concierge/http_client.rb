@@ -166,7 +166,8 @@ module Concierge
     end
 
     def announce_response(response)
-      Concierge::Announcer.trigger(ON_RESPONSE, response.status, response.headers, response.body)
+      encoded_body = response.body.force_encoding('utf-8')
+      Concierge::Announcer.trigger(ON_RESPONSE, response.status, response.headers, encoded_body)
     end
 
     def announce_error(error)
