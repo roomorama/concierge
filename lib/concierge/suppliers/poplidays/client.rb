@@ -39,15 +39,7 @@ module Poplidays
     # Poplidays, a generic error message is sent back to the caller, and the failure
     # is logged.
     def book(params)
-      Poplidays::Booking.new(credentials).book(params).tap do |reservation|
-        database.create(reservation.value) if reservation.success?
-      end
-    end
-
-    private
-
-    def database
-      @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
+      Poplidays::Booking.new(credentials).book(params)
     end
   end
 
