@@ -99,7 +99,12 @@ module Kigo::Mappers
     end
 
     def street_address
-      addresses = [info['PROP_STREETNO'], info['PROP_ADDR1'], info['PROP_ADDR2'], info['PROP_ADDR3']].reject(&:empty?)
+      addresses = [
+        info['PROP_STREETNO'],
+        info['PROP_ADDR1'],
+        info['PROP_ADDR2'],
+        info['PROP_ADDR3']
+      ].reject { |addr| addr.to_s.empty? }
       addresses.join(', ')
     end
 
