@@ -81,6 +81,7 @@ module Kigo::Mappers
 
     # returns days count computed by NIGHT, MONTH, YEAR unit
     def stay_length(period)
+      return 1 if period['NUMBER'].zero?
       multiplier = { 'MONTH' => 30, 'YEAR' => 365 }.fetch(period['UNIT'], 1)
       period['NUMBER'] * multiplier
     end
