@@ -8,7 +8,7 @@ RSpec.describe Kigo::Mappers::PricingSetup do
 
   subject { described_class.new(base_rate, periodical_rates) }
 
-  it { expect(subject.currency).to eq 'AFN' }
+  it { expect(subject.currency).to eq 'EUR' }
   it { expect(subject.nightly_rate).to eq 151.98 }
   it { expect(subject.weekly_rate).to eq subject.nightly_rate * 7 }
   it { expect(subject.monthly_rate).to eq subject.nightly_rate * 30 }
@@ -33,7 +33,7 @@ RSpec.describe Kigo::Mappers::PricingSetup do
 
     context 'base rate without data' do
       let(:base_rate) { {} }
-      it { expect(subject.nightly_rate).to eq 35 }
+      it { expect(subject.nightly_rate).to eq 23.46 }
     end
   end
 
