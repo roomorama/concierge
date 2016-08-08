@@ -47,7 +47,7 @@ class Result
     @result = result
   end
 
-  # Determines if the operation was succesful. Every error must have a code,
+  # Determines if the operation was successful. Every error must have a code,
   # so if there is a code associated with this operation error, the operation
   # was not successful.
   def success?
