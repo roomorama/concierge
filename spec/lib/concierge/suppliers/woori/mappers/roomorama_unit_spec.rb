@@ -29,6 +29,30 @@ module Woori
       expect(unit.number_of_bedrooms).to eq(1)
     end
 
+    it "sets images if images are present" do
+      unit = mapper.build_unit
+      expect(unit.images).to be_kind_of(Array)
+      expect(unit.images.size).to eq(8)
+      expect(unit.images).to all(be_kind_of(Roomorama::Image))
+    end
+
+    it "keeps images empty images are not present" do
+      unit_hash["data"]["images"] = []
+      unit = mapper.build_unit
+      expect(unit.images).to be_kind_of(Array)
+      expect(unit.images.size).to eq(0)
+
+      unit_hash["data"]["images"] = nil
+      unit = mapper.build_unit
+      expect(unit.images).to be_kind_of(Array)
+      expect(unit.images.size).to eq(0)
+
+      unit_hash["data"].delete("images")
+      unit = mapper.build_unit
+      expect(unit.images).to be_kind_of(Array)
+      expect(unit.images.size).to eq(0)
+    end
+
     it "sets amenities" do
       unit_hash["data"]["facilities"] = ["TV"]
       unit = mapper.build_unit
