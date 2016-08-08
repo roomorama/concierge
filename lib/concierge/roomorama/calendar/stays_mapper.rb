@@ -29,14 +29,14 @@ class Roomorama::Calendar
     end
 
     def map
-      (earliest_checkin..latest_checkout).collect do |date|
+      dates_with_stay.collect do |date|
         default_entry(date).tap do |entry|
-          if stays_by_checkin.include? date
+          if stays_by_checkin.include? date.to_s
             entry.checkin_allowed = true
             entry.valid_stay_lengths = collect_stay_lengths(date)
           end
 
-          entry.checkout_allowed = true if stays_by_checkout.include? date
+          entry.checkout_allowed = true if stays_by_checkout.include? date.to_s
 
           entry.nightly_rate = minimum_nightly_rate(date)
         end
@@ -51,11 +51,17 @@ class Roomorama::Calendar
       end
     end
 
+    # stays should have at least one entry include the given date
+    #
     def minimum_nightly_rate(date)
-      stays.select { |stay| stay[:checkin] <= date }.
-        select { |stay| stay[:checkout] >= date }.
+      stays.select { |stay| include_date?(stay, date) }.
         min_by { |s| s[:rate] }[:rate]
     end
+
+    def include_date?(stay, date)
+      Date.parse(stay[:checkin]) <= date && date <= Date.parse(stay[:checkout])
+    end
+
 
     def stay_length(stay)
       diff = Date.parse(stay[:checkout]) - Date.parse(stay[:checkin])
@@ -68,6 +74,12 @@ class Roomorama::Calendar
 
     def stays_by_checkout
       @stays_by_checkout || stays.group_by { |s| s[:checkout] }
+    end
+
+    def dates_with_stay
+      (Date.parse(earliest_checkin)..Date.parse(latest_checkout)).select { |d|
+        stays.any? { |stay| include_date?(stay, d) }
+      }
     end
 
     def earliest_checkin

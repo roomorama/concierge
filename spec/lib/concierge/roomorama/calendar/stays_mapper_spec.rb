@@ -13,13 +13,18 @@ RSpec.describe Roomorama::Calendar::StaysMapper do
         checkout:   "2016-01-15",
         stay_price: 700, # 50 per night
         available:  true
+      }, {
+        checkin:    "2016-02-02",
+        checkout:   "2016-02-09",
+        stay_price: 70,  # 10 per night
+        available: true
       }]
     }
 
     subject { described_class.new(stays).map }
 
     it "should return expected availabilities" do
-      expect(subject.count).to eq 15 # 01 Jan to 15 Jan
+      expect(subject.count).to eq 23 # 01 Jan to 15 Jan and 01 Feb to 09 Feb
       expect(subject.first.to_h).to eq({
         date:               Date.parse("2016-01-01"),
         available:          true,
@@ -36,17 +41,17 @@ RSpec.describe Roomorama::Calendar::StaysMapper do
         checkout_allowed:   false
       })
       expect(subject[-2].to_h).to eq({
-        date:               Date.parse("2016-01-14"),
+        date:               Date.parse("2016-02-08"),
         available:          true,
         checkin_allowed:    false,
-        nightly_rate:       50,
+        nightly_rate:       10,
         checkout_allowed:   false
       })
       expect(subject.last.to_h).to eq({
-        date:               Date.parse("2016-01-15"),
+        date:               Date.parse("2016-02-09"),
         available:          true,
         checkin_allowed:    false,
-        nightly_rate:       50,
+        nightly_rate:       10,
         checkout_allowed:   true
       })
     end

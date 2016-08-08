@@ -18,7 +18,7 @@ module Roomorama
   #     weekly_rate:        500,
   #     monthly_rate:       1000,
   #     checkin_allowed:    true,
-  #     valid_stay_lengths: true,
+  #     valid_stay_lengths: [1, 7],
   #     checkout_allowed:   false
   #   )
   #
