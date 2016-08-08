@@ -105,9 +105,11 @@ how this file is formatted and how the process works.
 
 ### Changed
 - `Workers::PropertySynchronisation` doesn't update sync_processes' counters if Roomorama call failed
+- `Kigo::Request` and `Kigo::LegacyRequest` - changed optional settings for http client
 
 ### Fixed
 - amenities serialization for `Roomorama::Unit`.
+- `Concierge::Context::NetworkResponse` - convert response body in UTF-8 encoding type
 
 ## [0.5.4] - 2016-08-01
 ### Changed
