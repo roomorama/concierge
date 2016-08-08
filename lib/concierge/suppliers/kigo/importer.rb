@@ -84,12 +84,13 @@ module Kigo
       response = result.value
       payload  = json_decode(response.body)
 
-      if payload.success?
+      return payload unless payload.success?
+
+      if payload.value['API_RESULT_CODE'] == 'E_OK'
         Result.new(payload.value['API_REPLY'])
       else
-        payload
+        Result.error(:invalid_request)
       end
-
     end
 
     def http
