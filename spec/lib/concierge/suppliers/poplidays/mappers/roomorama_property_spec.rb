@@ -11,12 +11,8 @@ RSpec.describe Poplidays::Mappers::RoomoramaProperty do
   let(:details) { JSON.parse(read_fixture('poplidays/property_details2.json')) }
   let(:availabilities) { JSON.parse(read_fixture('poplidays/availabilities_calendar2.json')) }
   let(:description) { "Text here\n\nAnother text here" }
-
-  subject { described_class.new }
-
-  it 'sets default security deposit info for unknown caution' do
-    details = {
-      'caution' => 'unknown',
+  let(:minimum_details) do
+    {
       'type' => 'APARTMENT',
       'address' => {},
       'description' => {},
@@ -24,11 +20,26 @@ RSpec.describe Poplidays::Mappers::RoomoramaProperty do
       'photos' => {},
       'mandatoryServicesPrice' => 0
     }
+  end
+
+  subject { described_class.new }
+
+  it 'sets default security deposit info for unknown caution' do
+    details = minimum_details.merge({'caution' => 'unknown'})
     result = subject.build(property, details, availabilities)
 
     roomorama_property = result.value
     expect(roomorama_property.security_deposit_amount).to eq(300.0)
     expect(roomorama_property.security_deposit_currency_code).to eq('EUR')
+  end
+
+  it 'does not set surface if it is zero' do
+    details = minimum_details.merge({'surface' => 0})
+    result = subject.build(property, details, availabilities)
+
+    roomorama_property = result.value
+    expect(roomorama_property.surface).to be_nil
+    expect(roomorama_property.surface_unit).to be_nil
   end
 
   it 'returns result with mapped roomorama property' do
