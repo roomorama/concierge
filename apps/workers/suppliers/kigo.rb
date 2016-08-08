@@ -3,7 +3,6 @@
 # Performs synchronisation with supplier
 class Workers::Suppliers::Kigo
 
-  SUPPLIER_NAME = 'Kigo'
   CACHE_PREFIX  = 'metadata.kigo'
 
   attr_reader :synchronisation, :host
@@ -27,34 +26,25 @@ class Workers::Suppliers::Kigo
       return
     end
 
-    mapper     = Kigo::Mappers::Property.new(references.value)
-    result     = with_cache('list') { importer.fetch_properties }
+    mapper = Kigo::Mappers::Property.new(references.value)
+    result = with_cache('list') { importer.fetch_properties }
     if result.success?
       properties = host_properties(result.value)
 
       return if properties.empty?
 
       properties.each do |property|
-        id          = property['PROP_ID']
-        data_result = importer.fetch_data(id)
-
-        unless data_result.success?
-          message = "Failed to perform the `#fetch_data` operation, with identifier: `#{id}`"
-          announce_error(message, data_result)
-          next data_result
-        end
-        # TODO: mark non instant booking property and skip it for the next sync process
-        next unless data_result.value['PROP_INSTANT_BOOK']
-
+        id = property['PROP_ID']
         synchronisation.start(id) do
+          data_result = importer.fetch_data(id)
+
+          next data_result unless data_result.success?
+          next non_ib_result unless data_result.value['PROP_INSTANT_BOOK']
+
           price_result = importer.fetch_prices(id)
 
-          unless price_result.success?
-            synchronisation.failed!
-            message = "Failed to perform the `#fetch_prices` operation, with identifier: `#{id}`"
-            announce_error(message, price_result)
-            next price_result
-          end
+          next price_result unless price_result.success?
+
           mapper.prepare(data_result.value, price_result.value['PRICING'])
         end
       end
@@ -69,8 +59,12 @@ class Workers::Suppliers::Kigo
 
   def host_properties(properties)
     properties.select do |property|
-      property['PROP_PROVIDER'] && property['PROP_PROVIDER']['RA_ID'] == host.identifier.to_i
+      wrapped_payload(property).get("PROP_PROVIDER.RA_ID") == host.identifier.to_i
     end
+  end
+
+  def wrapped_payload(payload)
+    Concierge::SafeAccessHash.new(payload)
   end
 
   def importer
@@ -78,11 +72,19 @@ class Workers::Suppliers::Kigo
   end
 
   def request_handler
-    Kigo::Request.new(credentials)
+    Kigo::Request.new(credentials, timeout: 40)
   end
 
   def credentials
-    Concierge::Credentials.for(SUPPLIER_NAME)
+    Concierge::Credentials.for(supplier_name)
+  end
+
+  def supplier_name
+    Kigo::Client::SUPPLIER_NAME
+  end
+
+  def non_ib_result
+    Result.error(:non_ib_property)
   end
 
   def announce_error(message, result)
@@ -96,7 +98,7 @@ class Workers::Suppliers::Kigo
 
     Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
       operation:   'sync',
-      supplier:    SUPPLIER_NAME,
+      supplier:    supplier_name,
       code:        result.error.code,
       context:     Concierge.context.to_h,
       happened_at: Time.now
