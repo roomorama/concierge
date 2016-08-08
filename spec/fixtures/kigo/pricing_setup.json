@@ -1,20 +1,16 @@
 {
   "PRICING": {
-    "CURRENCY": "AFN",
+    "CURRENCY": "EUR",
     "RENT": {
-      "PERGUEST_CHARGE": {
-        "TYPE": "ADULTS_CHILDREN",
-        "STANDARD": 1,
-        "MAX": 3
-      },
+      "PERGUEST_CHARGE": null,
       "PERIODS": [
         {
-          "CHECK_IN": "2013-01-01",
-          "CHECK_OUT": "2013-12-31",
+          "CHECK_IN": "2016-07-01",
+          "CHECK_OUT": "2016-09-01",
           "NAME": "",
           "STAY_MIN": {
             "UNIT": "NIGHT",
-            "NUMBER": 2
+            "NUMBER": 5
           },
           "WEEKLY": false,
           "NIGHTLY_AMOUNTS": [
@@ -31,9 +27,9 @@
               ],
               "STAY_FROM": {
                 "UNIT": "NIGHT",
-                "NUMBER": 1
+                "NUMBER": 3
               },
-              "AMOUNT": "60.00"
+              "AMOUNT": "23.46"
             },
             {
               "GUESTS_FROM": 1,
@@ -48,9 +44,9 @@
               ],
               "STAY_FROM": {
                 "UNIT": "NIGHT",
-                "NUMBER": 7
+                "NUMBER": 5
               },
-              "AMOUNT": "50.00"
+              "AMOUNT": "23.46"
             },
             {
               "GUESTS_FROM": 1,
@@ -64,122 +60,20 @@
                 7
               ],
               "STAY_FROM": {
-                "UNIT": "MONTH",
-                "NUMBER": 1
-              },
-              "AMOUNT": "40.00"
-            },
-            {
-              "GUESTS_FROM": 2,
-              "WEEK_NIGHTS": [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7
-              ],
-              "STAY_FROM": {
                 "UNIT": "NIGHT",
-                "NUMBER": 1
+                "NUMBER": 8
               },
-              "AMOUNT": "60.00"
-            },
-            {
-              "GUESTS_FROM": 2,
-              "WEEK_NIGHTS": [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7
-              ],
-              "STAY_FROM": {
-                "UNIT": "NIGHT",
-                "NUMBER": 7
-              },
-              "AMOUNT": "50.00"
-            },
-            {
-              "GUESTS_FROM": 2,
-              "WEEK_NIGHTS": [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7
-              ],
-              "STAY_FROM": {
-                "UNIT": "MONTH",
-                "NUMBER": 1
-              },
-              "AMOUNT": "40.00"
-            },
-            {
-              "GUESTS_FROM": 3,
-              "WEEK_NIGHTS": [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7
-              ],
-              "STAY_FROM": {
-                "UNIT": "NIGHT",
-                "NUMBER": 1
-              },
-              "AMOUNT": "70.00"
-            },
-            {
-              "GUESTS_FROM": 3,
-              "WEEK_NIGHTS": [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7
-              ],
-              "STAY_FROM": {
-                "UNIT": "NIGHT",
-                "NUMBER": 7
-              },
-              "AMOUNT": "60.00"
-            },
-            {
-              "GUESTS_FROM": 3,
-              "WEEK_NIGHTS": [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7
-              ],
-              "STAY_FROM": {
-                "UNIT": "MONTH",
-                "NUMBER": 1
-              },
-              "AMOUNT": "50.00"
+              "AMOUNT": "23.46"
             }
           ]
         },
         {
-          "CHECK_IN": "2013-12-31",
-          "CHECK_OUT": "2014-04-30",
+          "CHECK_IN": "2016-09-01",
+          "CHECK_OUT": "2016-11-01",
           "NAME": "",
           "STAY_MIN": {
             "UNIT": "NIGHT",
-            "NUMBER": 4
+            "NUMBER": 3
           },
           "WEEKLY": false,
           "NIGHTLY_AMOUNTS": [
@@ -196,9 +90,9 @@
               ],
               "STAY_FROM": {
                 "UNIT": "NIGHT",
-                "NUMBER": 1
+                "NUMBER": 3
               },
-              "AMOUNT": "45.00"
+              "AMOUNT": "29.24"
             },
             {
               "GUESTS_FROM": 1,
@@ -213,9 +107,9 @@
               ],
               "STAY_FROM": {
                 "UNIT": "NIGHT",
-                "NUMBER": 7
+                "NUMBER": 5
               },
-              "AMOUNT": "40.00"
+              "AMOUNT": "29.24"
             },
             {
               "GUESTS_FROM": 1,
@@ -229,122 +123,20 @@
                 7
               ],
               "STAY_FROM": {
-                "UNIT": "MONTH",
-                "NUMBER": 1
-              },
-              "AMOUNT": "35.00"
-            },
-            {
-              "GUESTS_FROM": 2,
-              "WEEK_NIGHTS": [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7
-              ],
-              "STAY_FROM": {
                 "UNIT": "NIGHT",
-                "NUMBER": 1
+                "NUMBER": 8
               },
-              "AMOUNT": "45.00"
-            },
-            {
-              "GUESTS_FROM": 2,
-              "WEEK_NIGHTS": [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7
-              ],
-              "STAY_FROM": {
-                "UNIT": "NIGHT",
-                "NUMBER": 7
-              },
-              "AMOUNT": "40.00"
-            },
-            {
-              "GUESTS_FROM": 2,
-              "WEEK_NIGHTS": [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7
-              ],
-              "STAY_FROM": {
-                "UNIT": "MONTH",
-                "NUMBER": 1
-              },
-              "AMOUNT": "35.00"
-            },
-            {
-              "GUESTS_FROM": 3,
-              "WEEK_NIGHTS": [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7
-              ],
-              "STAY_FROM": {
-                "UNIT": "NIGHT",
-                "NUMBER": 1
-              },
-              "AMOUNT": "55.00"
-            },
-            {
-              "GUESTS_FROM": 3,
-              "WEEK_NIGHTS": [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7
-              ],
-              "STAY_FROM": {
-                "UNIT": "NIGHT",
-                "NUMBER": 7
-              },
-              "AMOUNT": "50.00"
-            },
-            {
-              "GUESTS_FROM": 3,
-              "WEEK_NIGHTS": [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7
-              ],
-              "STAY_FROM": {
-                "UNIT": "MONTH",
-                "NUMBER": 1
-              },
-              "AMOUNT": "40.00"
+              "AMOUNT": "29.24"
             }
           ]
         },
         {
-          "CHECK_IN": "2014-04-30",
-          "CHECK_OUT": "2014-12-31",
+          "CHECK_IN": "2016-11-01",
+          "CHECK_OUT": "2018-01-22",
           "NAME": "",
           "STAY_MIN": {
             "UNIT": "NIGHT",
-            "NUMBER": 2
+            "NUMBER": 8
           },
           "WEEKLY": false,
           "NIGHTLY_AMOUNTS": [
@@ -361,9 +153,9 @@
               ],
               "STAY_FROM": {
                 "UNIT": "NIGHT",
-                "NUMBER": 1
+                "NUMBER": 3
               },
-              "AMOUNT": "45.00"
+              "AMOUNT": "30.86"
             },
             {
               "GUESTS_FROM": 1,
@@ -378,9 +170,9 @@
               ],
               "STAY_FROM": {
                 "UNIT": "NIGHT",
-                "NUMBER": 7
+                "NUMBER": 5
               },
-              "AMOUNT": "40.00"
+              "AMOUNT": "30.86"
             },
             {
               "GUESTS_FROM": 1,
@@ -394,112 +186,10 @@
                 7
               ],
               "STAY_FROM": {
-                "UNIT": "MONTH",
-                "NUMBER": 1
-              },
-              "AMOUNT": "35.00"
-            },
-            {
-              "GUESTS_FROM": 2,
-              "WEEK_NIGHTS": [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7
-              ],
-              "STAY_FROM": {
                 "UNIT": "NIGHT",
-                "NUMBER": 1
+                "NUMBER": 8
               },
-              "AMOUNT": "45.00"
-            },
-            {
-              "GUESTS_FROM": 2,
-              "WEEK_NIGHTS": [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7
-              ],
-              "STAY_FROM": {
-                "UNIT": "NIGHT",
-                "NUMBER": 7
-              },
-              "AMOUNT": "40.00"
-            },
-            {
-              "GUESTS_FROM": 2,
-              "WEEK_NIGHTS": [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7
-              ],
-              "STAY_FROM": {
-                "UNIT": "MONTH",
-                "NUMBER": 1
-              },
-              "AMOUNT": "35.00"
-            },
-            {
-              "GUESTS_FROM": 3,
-              "WEEK_NIGHTS": [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7
-              ],
-              "STAY_FROM": {
-                "UNIT": "NIGHT",
-                "NUMBER": 1
-              },
-              "AMOUNT": "55.00"
-            },
-            {
-              "GUESTS_FROM": 3,
-              "WEEK_NIGHTS": [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7
-              ],
-              "STAY_FROM": {
-                "UNIT": "NIGHT",
-                "NUMBER": 7
-              },
-              "AMOUNT": "45.00"
-            },
-            {
-              "GUESTS_FROM": 3,
-              "WEEK_NIGHTS": [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7
-              ],
-              "STAY_FROM": {
-                "UNIT": "MONTH",
-                "NUMBER": 1
-              },
-              "AMOUNT": "40.00"
+              "AMOUNT": "30.86"
             }
           ]
         }
@@ -508,47 +198,46 @@
     "FEES": {
       "FEES": [
         {
-          "FEE_TYPE_ID": 1,
-          "INCLUDE_IN_RENT": false,
-          "UNIT": "PERCENT_RENT",
-          "VALUE": "3.00"
-        },
-        {
           "FEE_TYPE_ID": 3,
           "INCLUDE_IN_RENT": false,
           "UNIT": "AMOUNT",
-          "VALUE": "30.00"
+          "VALUE": 150,
+          "LABEL": "Housekeeping - 150"
         },
         {
-          "FEE_TYPE_ID": 10,
+          "FEE_TYPE_ID": 16,
           "INCLUDE_IN_RENT": false,
-          "UNIT": "AMOUNT_PER_NIGHT_PER_GUEST",
-          "VALUE": {
-            "AMOUNT_ADULT": "0.65",
-            "AMOUNT_CHILD": "0.00",
-            "AMOUNT_BABY": "0.00"
-          }
+          "UNIT": "PERCENT_RENT",
+          "VALUE": 0.07,
+          "LABEL": "Sales Tax"
         }
       ]
     },
     "DISCOUNTS": {
-      "EARLY_BIRD": {
-        "DAYS": 365,
-        "PERCENT": "10.00"
-      },
-      "LAST_MINUTE": [
-        {
-          "DAYS": 7,
-          "PERCENT": "15.00"
-        }
-      ],
+      "EARLY_BIRD": null,
+      "LAST_MINUTE": null,
       "SPECIAL": [
 
       ]
     },
     "DEPOSIT": {
       "UNIT": "AMOUNT",
-      "VALUE": "150.00"
+      "VALUE": 300,
+      "LABEL": "Refundable Security Deposit"
+    },
+    "DEPOSITS_MAY_APPLY": true,
+    "DEPOSITS": [
+      {
+        "UNIT": "AMOUNT",
+        "VALUE": 300,
+        "LABEL": "Refundable Security Deposit"
+      }
+    ],
+    "MIN_STAY": {
+      "DEFAULT_VALUE": 0,
+      "MIN_STAY_RULES": [
+
+      ]
     }
   }
 }
