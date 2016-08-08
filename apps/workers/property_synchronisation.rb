@@ -169,8 +169,8 @@ module Workers
       purge = all_identifiers - processed
 
       unless purge.empty?
-        run_operation(disable_op(purge))
-        counters.deleted = purge.size
+        result = run_operation(disable_op(purge))
+        counters.deleted = purge.size if result.success?
       end
     end
 

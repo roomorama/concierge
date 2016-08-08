@@ -109,13 +109,25 @@ RSpec.describe Workers::PropertySynchronisation do
       end
     end
 
-    it "does not updates counters if operation fails" do
+    it "does not updates created, updated counters if operation fails" do
       stub_call(:post, "https://api.roomorama.com/v1.0/host/publish") {
         [422, {}, read_fixture("roomorama/invalid_type.json")]
       }
+      stub_call(:put, "https://api.roomorama.com/v1.0/host/apply") {
+        [422, {}, read_fixture("roomorama/invalid_type.json")]
+      }
+
+      create_property(host_id: host.id, identifier: "prop2", data: roomorama_property.to_h.merge!(identifier: "prop2"))
 
       # create
       subject.start("prop1") { Result.new(roomorama_property) }
+
+      # update
+      subject.start("prop2") {
+        roomorama_property.identifier = "prop2"
+        roomorama_property.title = "Changed Title"
+        Result.new(roomorama_property)
+      }
 
       expect {
         subject.finish!
@@ -304,5 +316,31 @@ RSpec.describe Workers::PropertySynchronisation do
       expect(sync.stats[:properties_updated]).to eq 1
       expect(sync.stats[:properties_deleted]).to eq 1
     end
+
+
+    it "does not update deleted counter if operation fails" do
+      stub_call(:delete, "https://api.roomorama.com/v1.0/host/disable") {
+        [422, {}, read_fixture("roomorama/invalid_type.json")]
+      }
+
+      create_property(host_id: host.id, identifier: "prop3", data: roomorama_property.to_h.merge!(identifier: "prop3"))
+
+      # prop3 is not included - should be deleted
+      #
+      expect {
+        subject.finish!
+      }.to change { SyncProcessRepository.count }.by(1)
+
+      sync = SyncProcessRepository.last
+      expect(sync).to            be_a SyncProcess
+      expect(sync.host_id).to    eq   host.id
+      expect(sync.successful).to eq   true
+      expect(sync.started_at).not_to  be_nil
+      expect(sync.finished_at).not_to be_nil
+      expect(sync.stats[:properties_created]).to eq 0
+      expect(sync.stats[:properties_updated]).to eq 0
+      expect(sync.stats[:properties_deleted]).to eq 0
+    end
+
   end
 end
