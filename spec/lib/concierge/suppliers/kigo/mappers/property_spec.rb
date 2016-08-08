@@ -109,10 +109,10 @@ RSpec.describe Kigo::Mappers::Property do
       expect(property.type).to eq 'house'
       expect(property.subtype).to eq 'villa'
 
-      expect(property.security_deposit_amount).to eq 150
+      expect(property.security_deposit_amount).to eq 300
       expect(property.services_cleaning).to eq true
       expect(property.services_cleaning_required).to eq false
-      expect(property.services_cleaning_rate).to eq 30
+      expect(property.services_cleaning_rate).to eq 150
 
       expect(property.minimum_stay).to eq 7
       expect(property.nightly_rate).to eq expected_nightly_rate
