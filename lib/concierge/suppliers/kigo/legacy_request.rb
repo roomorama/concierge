@@ -13,10 +13,11 @@ module Kigo
   class LegacyRequest
     BASE_URI = "https://app.kigo.net"
 
-    attr_reader :credentials
+    attr_reader :credentials, :options
 
-    def initialize(credentials)
+    def initialize(credentials, options = {})
       @credentials = credentials
+      @options     = options.merge(auth_options)
     end
 
     def base_uri
@@ -26,10 +27,7 @@ module Kigo
     # Kigo Legacy API uses HTTP Basic Authentication to authenticate with
     # their servers. A username and password combination is required.
     def http_client
-      @http_client ||= Concierge::HTTPClient.new(base_uri, timeout: 40, basic_auth: {
-        username: credentials.username,
-        password: credentials.password
-      })
+      @http_client ||= Concierge::HTTPClient.new(base_uri, options)
     end
 
     def endpoint_for(api_method)
@@ -70,6 +68,15 @@ module Kigo
     end
 
     private
+
+    def auth_options
+      {
+        basic_auth: {
+          username: credentials.username,
+          password: credentials.password
+        }
+      }
+    end
 
     def builder
       @builder ||= Kigo::Request.new(credentials)
