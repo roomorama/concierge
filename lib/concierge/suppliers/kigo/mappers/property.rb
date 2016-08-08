@@ -145,9 +145,10 @@ module Kigo::Mappers
       property.services_cleaning_rate     = get_fee_amount(cleaning_fee['VALUE']).to_f
     end
 
+    # Kigo +amount+ might be hash or integer
+    # KigoLegacy +amount+ might be hash or string
     def get_fee_amount(amount)
-      return amount if amount.is_a?(Integer)
-      amount['AMOUNT_ADULT']
+      amount.is_a?(Hash) ? amount['AMOUNT_ADULT'] : amount
     end
 
     # images payload has two attributes for caption PHOTO_NAME and PHOTO_COMMENTS
