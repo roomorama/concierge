@@ -63,24 +63,33 @@ module Kigo
 
     # references helps us to match data by their names instead of using ids
     def fetch_references
-      Result.new({
-                   'amenities'      => fetch(AMENITIES).value,
-                   'property_types' => fetch(PROPERTY_TYPES).value
-                 })
+      amenities_result = fetch(AMENITIES)
+      return amenities_result unless amenities_result.success?
+
+      property_types_result = fetch(PROPERTY_TYPES)
+      return property_types_result unless property_types_result.success?
+
+      references = { 'amenities' => amenities_result.value, 'property_types' => property_types_result.value }
+      Result.new(references)
     end
 
     private
 
     def fetch(request_method, params = nil)
-      result = http.post(endpoint(request_method), json_encode(params), headers)
+      headers = { "Content-Type" => "application/json" }
+      result  = http.post(endpoint(request_method), json_encode(params), headers)
 
-      if result.success?
-        response = result.value
-        payload  = json_decode(response.body).value
-        Result.new(payload['API_REPLY'])
+      return result unless result.success?
+
+      response = result.value
+      payload  = json_decode(response.body)
+
+      if payload.success?
+        Result.new(payload.value['API_REPLY'])
       else
-        result
+        payload
       end
+
     end
 
     def http
@@ -90,11 +99,6 @@ module Kigo
     def endpoint(request_method)
       request_handler.endpoint_for(request_method)
     end
-
-    def headers
-      { "Content-Type" => "application/json" }
-    end
-
   end
 end
 
