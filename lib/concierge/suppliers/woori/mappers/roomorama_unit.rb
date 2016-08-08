@@ -36,10 +36,19 @@ module Woori
         unit.max_guests         = safe_hash.get("data.capacity")
         unit.number_of_bedrooms = safe_hash.get("data.roomCount")
 
+        set_images!(unit)
+
         unit
       end
 
       private
+      def set_images!(unit)
+        image_hashes = safe_hash.get("data.images")
+
+        mapper = Mappers::RoomoramaImageSet.new(image_hashes)
+        mapper.build_images.each { |image| unit.add_image(image) }
+      end
+
       def additional_amenities
         amenities_converter.select_not_supported_amenities
       end
