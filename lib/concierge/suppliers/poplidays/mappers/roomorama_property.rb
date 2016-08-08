@@ -68,12 +68,16 @@ module Poplidays
         roomorama_property.lat = details['latitude']
         roomorama_property.lng = details['longitude']
         roomorama_property.number_of_bathrooms = details['bathrooms']
-        roomorama_property.surface = details['surface']
-        roomorama_property.surface_unit = SURFACE_UNIT
         roomorama_property.smoking_allowed = smoking_allowed?(details)
         roomorama_property.pets_allowed = pets_allowed?(details)
         roomorama_property.currency = CURRENCY
         roomorama_property.cancellation_policy = CANCELLATION_POLICY
+
+        # Some properties have 0 value
+        if details['surface'] != 0
+          roomorama_property.surface = details['surface']
+          roomorama_property.surface_unit = SURFACE_UNIT
+        end
       end
 
       def set_security_deposit!(roomorama_property, details)
