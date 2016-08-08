@@ -22,9 +22,9 @@ class Workers::Suppliers::Kigo
   def perform
     references = with_cache('references') { importer.fetch_references }
     unless references.success?
-      message = 'Failed to perform #fetch_references'
+      message = 'Failed to perform `#fetch_references`'
       announce_error(message, references)
-      return message
+      return
     end
 
     mapper     = Kigo::Mappers::Property.new(references.value)
