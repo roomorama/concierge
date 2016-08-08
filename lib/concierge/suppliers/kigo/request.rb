@@ -14,10 +14,11 @@ module Kigo
   class Request
     BASE_URI = "https://www.kigoapis.com"
 
-    attr_reader :credentials
+    attr_reader :credentials, :options
 
-    def initialize(credentials)
+    def initialize(credentials, options = {})
       @credentials = credentials
+      @options     = options
     end
 
     # Returns a String with the base URL of the API.
@@ -29,7 +30,7 @@ module Kigo
     # For Kigo's new API, authentication happens by appending a parameter
     # to the URL, so this just returns a regular +Concierge::HTTPClient+ instance.
     def http_client
-      @http_client ||= Concierge::HTTPClient.new(base_uri, timeout: 40)
+      @http_client ||= Concierge::HTTPClient.new(base_uri, options)
     end
 
     # builds the URL path to be used to perform a given +api_method+. For Kigo's new
