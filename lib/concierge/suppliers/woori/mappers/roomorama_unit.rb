@@ -35,6 +35,7 @@ module Woori
         unit.amenities          = amenities_converter.convert
         unit.max_guests         = safe_hash.get("data.capacity")
         unit.number_of_bedrooms = safe_hash.get("data.roomCount")
+        unit.number_of_units    = 1
 
         set_images!(unit)
 
