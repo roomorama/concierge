@@ -111,6 +111,7 @@ RSpec.describe Ciirus::Mappers::RoomoramaProperty do
 
     expect(roomorama_property.security_deposit_amount).to eq(2500.0)
     expect(roomorama_property.security_deposit_currency_code).to eq('USD')
+    expect(roomorama_property.security_deposit_type).to eq('unknown')
   end
 
   it 'works fine if security_deposit is nil' do
@@ -118,6 +119,7 @@ RSpec.describe Ciirus::Mappers::RoomoramaProperty do
 
     expect(roomorama_property.security_deposit_amount).to be_nil
     expect(roomorama_property.security_deposit_currency_code).to be_nil
+    expect(roomorama_property.security_deposit_type).to be_nil
   end
 
   context 'when country is unknown' do

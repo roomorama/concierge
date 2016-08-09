@@ -6,6 +6,8 @@ module Ciirus
     # from data getting from Ciirus API.
     class RoomoramaProperty
       CANCELLATION_POLICY = 'super_elite'
+      # Until we hear from ciirus on how to determine this field, it will be.. unknown
+      SECURITY_DEPOSIT_TYPE = 'unknown'
 
       # Maps Ciirus PropertyType to Roomorama property type/subtype.
       # There are also `Unspecified` and `Hotel` types in Ciirus API
@@ -121,8 +123,7 @@ module Ciirus
         if amount
           result.security_deposit_currency_code = property.currency_code
           result.security_deposit_amount = amount
-          # Until we hear from ciirus on how to determine this field, it will be.. unknown
-          result.security_deposit_type = "unknown"
+          result.security_deposit_type = SECURITY_DEPOSIT_TYPE
         end
       end
 
