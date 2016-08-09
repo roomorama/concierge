@@ -31,6 +31,7 @@ RSpec.describe Poplidays::Mappers::RoomoramaProperty do
     roomorama_property = result.value
     expect(roomorama_property.security_deposit_amount).to eq(300.0)
     expect(roomorama_property.security_deposit_currency_code).to eq('EUR')
+    expect(roomorama_property.security_deposit_type).to eq('unknown')
   end
 
   it 'does not set surface if it is zero' do
@@ -71,9 +72,10 @@ RSpec.describe Poplidays::Mappers::RoomoramaProperty do
     expect(roomorama_property.currency).to eq('EUR')
     expect(roomorama_property.surface).to eq(45)
     expect(roomorama_property.surface_unit).to eq('metric')
-    expect(roomorama_property.cancellation_policy).to eq(Poplidays::Mappers::RoomoramaProperty::CANCELLATION_POLICY)
+    expect(roomorama_property.cancellation_policy).to eq('super_elite')
     expect(roomorama_property.security_deposit_amount).to eq(500.0)
     expect(roomorama_property.security_deposit_currency_code).to eq('EUR')
+    expect(roomorama_property.security_deposit_type).to eq('unknown')
 
 
     expect(roomorama_property.images.length).to eq(3)

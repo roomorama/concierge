@@ -8,6 +8,11 @@ module Poplidays
       # NOTE: actually Poplidays API doesn't support cancellation
       CANCELLATION_POLICY = 'super_elite'
 
+      # Apparently Poplidays does not have the "security deposit method",
+      # and they ask the guest to figure out directly with the host.
+      # Use "unknown" deposit type
+      SECURITY_DEPOSIT_TYPE = 'unknown'
+
       # surface unit information is not included in the response, but surface
       # is always metric
       SURFACE_UNIT = 'metric'
@@ -82,6 +87,7 @@ module Poplidays
 
       def set_security_deposit!(roomorama_property, details)
         roomorama_property.security_deposit_currency_code = CURRENCY
+        roomorama_property.security_deposit_type = SECURITY_DEPOSIT_TYPE
         if details['caution'] == 'unknown'
           roomorama_property.security_deposit_amount = SECURITY_DEPOSIT_AMOUNT[details['type']]
         else
