@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Poplidays::Commands::AvailabilitiesFetcher do
+RSpec.describe Poplidays::Commands::ExtrasFetcher do
   include Support::Fixtures
   include Support::HTTPStubbing
 
@@ -9,7 +9,7 @@ RSpec.describe Poplidays::Commands::AvailabilitiesFetcher do
   describe '#call' do
 
     let(:lodging_id) { '3456' }
-    let(:lodgings_endpoint) { "https://api.poplidays.com/v2/lodgings/#{lodging_id}/availabilities" }
+    let(:lodgings_endpoint) { "https://api.poplidays.com/v2/lodgings/#{lodging_id}/extras" }
 
     it 'returns result with error if internal error happened during remote call' do
       stub_call(:get, lodgings_endpoint) { raise Faraday::TimeoutError }
@@ -28,22 +28,10 @@ RSpec.describe Poplidays::Commands::AvailabilitiesFetcher do
     end
 
     it 'returns a hash in success case' do
-      stub_with_fixture(lodgings_endpoint, 'poplidays/availabilities_calendar.json')
+      stub_with_fixture(lodgings_endpoint, 'poplidays/extras.json')
       result = subject.call(lodging_id)
 
       expect(result.success?).to be(true)
-      expect(result.value).to be_a(Hash)
-    end
-
-    it 'caches result for the same call' do
-      stub_with_fixture(lodgings_endpoint, 'poplidays/availabilities_calendar.json')
-
-      expect{ subject.call(lodging_id) }.to change { Concierge::Cache::EntryRepository.count }
-
-      result = subject.call(lodging_id)
-      expect(result).to be_a Result
-      expect(result).to be_success
-
       expect(result.value).to be_a(Hash)
     end
   end

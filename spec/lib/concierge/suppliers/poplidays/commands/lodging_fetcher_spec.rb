@@ -11,7 +11,7 @@ RSpec.describe Poplidays::Commands::LodgingFetcher do
     let(:lodging_id) { '3245' }
     let(:lodgings_endpoint) { "https://api.poplidays.com/v2/lodgings/#{lodging_id}" }
 
-    it 'returns result with error if internal error happend during remote call' do
+    it 'returns result with error if internal error happened during remote call' do
       stub_call(:get, lodgings_endpoint) { raise Faraday::TimeoutError }
       result = subject.call(lodging_id)
 

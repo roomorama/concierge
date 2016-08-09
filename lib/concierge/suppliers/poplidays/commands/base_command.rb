@@ -19,7 +19,7 @@ module Poplidays
       CACHE_PREFIX = 'poplidays'
 
       # Http timeout in seconds
-      DEFAULT_TIMEOUT = 15
+      DEFAULT_TIMEOUT = 10
 
       # Poplidays support XML and JSON responses, the former being the default.
       # Therefore, every API call need to explicitly indicate that a JSON
