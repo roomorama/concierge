@@ -17,19 +17,6 @@ module Ciirus
       @credentials = credentials
     end
 
-    def is_property_available(property_id, check_in, check_out)
-      message = builder.new do |xml|
-        xml.root do
-          xml.APIUsername credentials.username
-          xml.APIPassword credentials.password
-          xml.PropertyID property_id
-          xml.ArrivalDate check_in
-          xml.DepartureDate check_out
-        end
-      end
-      message.doc.root.children.to_xml
-    end
-
     def property_rates(property_id)
       message = builder.new do |xml|
         xml.root do
