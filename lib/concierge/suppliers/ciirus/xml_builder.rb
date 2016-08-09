@@ -7,7 +7,7 @@ module Ciirus
   # Usage
   #
   #   builder = Ciirus::XMLBuilder.new(credentials)
-  #   message = builder.is_property_available(request_params)
+  #   message = builder.image_list(property_id)
   #   message # => xml string
   class XMLBuilder
 
