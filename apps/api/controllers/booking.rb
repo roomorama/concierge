@@ -49,6 +49,7 @@ module API::Controllers
 
         if reservation_result.success?
           @reservation = reservation_result.value
+          persist_reservation(@reservation)
           self.body = API::Views::Booking.render(exposures)
         else
           announce_error(reservation_result)
@@ -75,6 +76,16 @@ module API::Controllers
         context:     Concierge.context.to_h,
         happened_at: Time.now
       })
+    end
+
+    # saves the returned +Reservation+ instance to the databse, in case the booking
+    # was successful. This allow us to analyse booking data, as well as to keep the
+    # booking reference with the supplier.
+    def persist_reservation(reservation)
+      database = Concierge::OptionalDatabaseAccess.new(ReservationRepository)
+      reservation.supplier = supplier_name
+
+      database.create(reservation)
     end
 
     # Create booking with client

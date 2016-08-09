@@ -1,0 +1,43 @@
+<div class="content">
+  <h2 class="content-subhead">Reservations</h2>
+  <div class="section-intro">
+    Reservations are bookings performed either by Roomorama or by its
+    distributors, connected via webhooks. A reservation is a confirmed
+    booking that has already been paid for.
+  </div>
+
+  <table class="concierge-table pure-table pure-table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Supplier</th>
+        <th>Property</th>
+        <th>Check-in</th>
+        <th>Check-out</th>
+        <th>Guests</th>
+        <th>Code</th>
+        <th>Created At</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% reservations.each do |reservation| %>
+        <tr>
+          <td><%= reservation.id %></td>
+          <td><%= reservation.supplier %></td>
+          <td>
+            <code><%= reservation.property_id %></code>
+            <% unless reservation.unit_id.to_s.strip.empty? %>
+              / <code><%= reservation.unit_id %></code>
+            <% end %>
+          </td>
+          <td><%= reservation.check_in %></td>
+          <td><%= reservation.check_out %></td>
+          <td><%= reservation.guests %></td>
+          <td><code><%= reservation.reference_number %></code></td>
+          <td><%= format_time(reservation) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

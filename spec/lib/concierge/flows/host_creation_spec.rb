@@ -125,6 +125,20 @@ RSpec.describe Concierge::Flows::HostCreation do
       expect(metadata_worker.interval).to eq 2 * 24 * 60 * 60 # 2 days
     end
 
+    it "does not create workers for which there is an +absence+ entry" do
+      config_suppliers "availabilities_absence.yml"
+
+      expect {
+        described_class.new(parameters).perform
+      }.to change { BackgroundWorkerRepository.count }.by(1)
+
+      host     = HostRepository.last
+      workers  = BackgroundWorkerRepository.for_host(host).to_a
+
+      expect(workers.size).to eq 1
+      expect(workers.first.type).to eq "metadata"
+    end
+
     context "interval parsing" do
       it "understands seconds notation" do
         config_suppliers "seconds_interval.yml"

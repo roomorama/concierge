@@ -8,13 +8,29 @@ module Support
   module Factories
     def create_sync_process(overrides = {})
       attributes  = {
-        type: "metadata",
-        started_at: Time.now - 10 * 60, # 10 minutes ago
+        type:        "metadata",
+        host_id:     create_host.id,
+        successful:  true,
+        started_at:  Time.now - 10 * 60, # 10 minutes ago
         finished_at: Time.now
       }.merge(overrides)
 
       process = SyncProcess.new(attributes)
       SyncProcessRepository.create(process)
+    end
+
+    def create_reservation(overrides = {})
+      attributes = {
+        supplier:         "Supplier X",
+        property_id:      create_property.id,
+        check_in:         Date.today.to_s,
+        check_out:        (Date.today + 3).to_s,
+        guests:           2,
+        reference_number: "ABC123",
+      }.merge(overrides)
+
+      reservation = Reservation.new(attributes)
+      ReservationRepository.create(reservation)
     end
 
     def create_property(overrides = {})
@@ -30,17 +46,17 @@ module Support
         },
       }.merge(overrides)
 
-      property   = Property.new(attributes)
+      property = Property.new(attributes)
       PropertyRepository.create(property)
     end
 
     def create_host(overrides = {})
       attributes = {
-        identifier:   "host",
-        username:     "concierge_host",
-        access_token: "abc123",
+        identifier:     "host",
+        username:       "concierge_host",
+        access_token:   SecureRandom.hex(32),
         fee_percentage: 0,
-        supplier_id:  create_supplier.id
+        supplier_id:    create_supplier.id
       }.merge(overrides)
 
       host = Host.new(attributes)

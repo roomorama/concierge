@@ -9,6 +9,9 @@ module Web::Views::Dashboard
   # for more information on API status check being exposed as
   # +concierge+. Check the documentation of that class for further
   # information on API status check.
+  #
+  # The +suppliers+ exposure is expected to contain an Array of
+  # +Supplier+ instances.
   class Index
     include Web::View
 
@@ -18,6 +21,18 @@ module Web::Views::Dashboard
 
     def concierge_healthy
       label(success: "Yes", failure: "No") { concierge.healthy? }
+    end
+
+    def total_reservations
+      number_formatter.present(ReservationRepository.count)
+    end
+
+    def total_hosts_for(supplier)
+      number_formatter.present(HostRepository.from_supplier(supplier).count)
+    end
+
+    def total_properties_for(supplier)
+      number_formatter.present(PropertyRepository.from_supplier(supplier).count)
     end
 
     # +concierge.response+ is a +Result+ instance that wraps a
@@ -37,6 +52,10 @@ module Web::Views::Dashboard
       else
         html.span failure, class: "concierge-failure"
       end
+    end
+
+    def number_formatter
+      @number_formatter ||= Web::Support::Formatters::Number.new
     end
   end
 end

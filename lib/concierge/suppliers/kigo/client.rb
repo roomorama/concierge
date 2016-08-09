@@ -40,16 +40,9 @@ module Kigo
     # Returns a +Result+ with error if booking fails.
     # Uses an instance +Kigo::Request+ to dictate parameters and endpoints.
     def book(params)
-      result = Kigo::Booking.new(credentials).book(params)
-      database.create(result.value) if result.success?
-      result
+      Kigo::Booking.new(credentials).book(params)
     end
 
-    private
-
-    def database
-      @database ||= Concierge::OptionalDatabaseAccess.new(ReservationRepository)
-    end
   end
 
 end

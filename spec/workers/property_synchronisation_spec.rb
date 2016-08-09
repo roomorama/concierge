@@ -32,7 +32,10 @@ RSpec.describe Workers::PropertySynchronisation do
   describe "#start" do
     it "pushes the property to processing if there are no errors" do
       operation = nil
-      expect(subject).to receive(:run_operation) { |op| operation = op }
+      expect(subject).to receive(:run_operation) do |op|
+        operation = op
+        double(success?: true)
+      end
 
       subject.start("prop1") { Result.new(roomorama_property) }
       expect(operation).to be_a Roomorama::Client::Operations::Publish
@@ -105,6 +108,41 @@ RSpec.describe Workers::PropertySynchronisation do
         }.not_to change { ExternalErrorRepository.count }
       end
     end
+
+    it "does not updates created, updated counters if operation fails" do
+      stub_call(:post, "https://api.roomorama.com/v1.0/host/publish") {
+        [422, {}, read_fixture("roomorama/invalid_type.json")]
+      }
+      stub_call(:put, "https://api.roomorama.com/v1.0/host/apply") {
+        [422, {}, read_fixture("roomorama/invalid_type.json")]
+      }
+
+      create_property(host_id: host.id, identifier: "prop2", data: roomorama_property.to_h.merge!(identifier: "prop2"))
+
+      # create
+      subject.start("prop1") { Result.new(roomorama_property) }
+
+      # update
+      subject.start("prop2") {
+        roomorama_property.identifier = "prop2"
+        roomorama_property.title = "Changed Title"
+        Result.new(roomorama_property)
+      }
+
+      expect {
+        subject.finish!
+      }.to change { SyncProcessRepository.count }.by(1)
+
+      sync = SyncProcessRepository.last
+      expect(sync).to            be_a SyncProcess
+      expect(sync.host_id).to    eq   host.id
+      expect(sync.successful).to eq   true
+      expect(sync.started_at).not_to  be_nil
+      expect(sync.finished_at).not_to be_nil
+      expect(sync.stats[:properties_created]).to eq 0
+      expect(sync.stats[:properties_updated]).to eq 0
+      expect(sync.stats[:properties_deleted]).to eq 0
+    end
   end
 
   describe "#finish!" do
@@ -142,7 +180,7 @@ RSpec.describe Workers::PropertySynchronisation do
       expect(prop2).to be_a Property
 
       prop3 = PropertyRepository.from_host(host).identified_by("prop3").first
-      expect(prop2).to be_a Property
+      expect(prop3).to be_a Property
     end
 
     it "enqueues a disable operation with non-processed identifiers" do
@@ -160,7 +198,10 @@ RSpec.describe Workers::PropertySynchronisation do
       create_property(identifier: "prop3", host_id: host.id)
 
       operations = []
-      expect(subject).to receive(:run_operation) { |arg| operations << arg }.twice
+      expect(subject).to receive(:run_operation) do |arg|
+        operations << arg
+        double(success?: true)
+      end.twice
 
       subject.start("prop1") { Result.new(roomorama_property) }
       subject.finish!
@@ -275,5 +316,31 @@ RSpec.describe Workers::PropertySynchronisation do
       expect(sync.stats[:properties_updated]).to eq 1
       expect(sync.stats[:properties_deleted]).to eq 1
     end
+
+
+    it "does not update deleted counter if operation fails" do
+      stub_call(:delete, "https://api.roomorama.com/v1.0/host/disable") {
+        [422, {}, read_fixture("roomorama/invalid_type.json")]
+      }
+
+      create_property(host_id: host.id, identifier: "prop3", data: roomorama_property.to_h.merge!(identifier: "prop3"))
+
+      # prop3 is not included - should be deleted
+      #
+      expect {
+        subject.finish!
+      }.to change { SyncProcessRepository.count }.by(1)
+
+      sync = SyncProcessRepository.last
+      expect(sync).to            be_a SyncProcess
+      expect(sync.host_id).to    eq   host.id
+      expect(sync.successful).to eq   true
+      expect(sync.started_at).not_to  be_nil
+      expect(sync.finished_at).not_to be_nil
+      expect(sync.stats[:properties_created]).to eq 0
+      expect(sync.stats[:properties_updated]).to eq 0
+      expect(sync.stats[:properties_deleted]).to eq 0
+    end
+
   end
 end

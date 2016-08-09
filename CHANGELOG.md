@@ -4,6 +4,18 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.5.5] - 2016-08-09
+### Added
+- Add check support for waytostay damage deposit
+- Rake task to dispatch missing amenities as diff operation
+- View suppliers, reservations and synchronisation process history on the `web` app
+
+### Changed
+- `Workers::PropertySynchronisation` doesn't update sync_processes' counters if Roomorama call failed
+
+### Fixed
+- amenities serialization for `Roomorama::Unit`.
+
 ## [0.5.4] - 2016-08-01
 ### Changed
 - change request log name to `environment.log` (e.g., `staging.log`)

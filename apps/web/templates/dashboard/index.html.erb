@@ -10,4 +10,33 @@
       <li><strong>Error:</strong> <%= error_message %></li>
     <% end %>
   </ul>
+
+  <h2>Overview</h2>
+  <h3>Reservations</h3>
+  <p>A total of <%= total_reservations %> reservations have been created on Concierge.
+  (<%= link_to "view details", routes.reservations_path %>)</p>
+
+  <h3>Suppliers</h3>
+  <p>Currently integrated Roomorama suppliers:</p>
+  <table class="concierge-table pure-table pure-table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Hosts</th>
+        <th>Properties</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% suppliers.each do |supplier| %>
+        <tr>
+          <td><%= link_to supplier.id, routes.supplier_path(supplier.id) %></td>
+          <td><%= supplier.name %></td>
+          <td><%= total_hosts_for(supplier) %></td>
+          <td><%= total_properties_for(supplier) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>

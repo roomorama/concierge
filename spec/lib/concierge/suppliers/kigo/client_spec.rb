@@ -56,10 +56,11 @@ RSpec.describe Kigo::Client do
       allow_any_instance_of(Kigo::Booking).to receive(:book) { Result.new(successful_reservation) }
 
       result = subject.book(params)
-      reservation = ReservationRepository.last
-
       expect(result).to be_success
-      expect(reservation.reference_number).to eq '123'
+
+      reservation = result.value
+      expect(reservation).to be_a Reservation
+      expect(reservation.reference_number).to eq  "123"
     end
 
     it "returns a quotation object with a generic error message on failure" do
