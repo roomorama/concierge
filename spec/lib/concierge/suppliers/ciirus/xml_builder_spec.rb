@@ -7,18 +7,6 @@ RSpec.describe Ciirus::XMLBuilder do
 
   subject { described_class.new(credentials) }
 
-  describe '#is_property_available' do
-    let(:property_id) { 10 }
-    let(:check_in) { Date.new(2016, 6, 3) }
-    let(:check_out) { Date.new(2016, 7, 2) }
-    let(:valid_request) do
-      read_fixture('ciirus/requests/valid_is_property_available_request.xml')
-    end
-    let(:message) { subject.is_property_available(property_id, check_in, check_out) }
-
-    it { expect(message).to eq valid_request}
-  end
-
   describe '#property_rates' do
     let(:property_id) { 10 }
     let(:valid_request) do
