@@ -23,7 +23,7 @@ class Workers::Suppliers::KigoCalendar
         reservations = importer.fetch_reservations(id)
         next reservations unless reservations.success?
 
-        calendar = Kigo::Calendar.new(id)
+        calendar = Kigo::Calendar.new(property)
         calendar.perform(pricing, availabilities, reservations)
       end
     end

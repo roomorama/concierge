@@ -17,11 +17,11 @@ module Kigo
   # to +Roomorama::Calendar+ instance
   class Calendar
 
-    attr_reader :property_identifier, :entries
+    attr_reader :property, :entries
 
-    def initialize(identifier)
-      @property_identifier = identifier
-      @entries = []
+    def initialize(property)
+      @property = property
+      @entries  = []
     end
 
     def perform(pricing, availabilities)
@@ -38,12 +38,12 @@ module Kigo
     private
 
     def calendar
-      @calendar ||= Roomorama::Calendar.new(property_identifier)
+      @calendar ||= Roomorama::Calendar.new(property.identifier)
     end
 
     def process_periods(pricing)
       periods = wrapped(pricing).get('PRICING.RENT.PERIODS')
-      return if periods.empty?
+      return unless periods
       periods.each do |period|
         period = wrap_period(period)
         entries.concat(period.entries) if period.valid?
