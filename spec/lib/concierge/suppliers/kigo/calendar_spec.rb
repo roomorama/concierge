@@ -55,6 +55,5 @@ RSpec.describe Kigo::Calendar do
       end
     end
 
-
   end
 end

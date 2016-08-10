@@ -58,6 +58,10 @@ module Kigo
       end
     end
 
+    # marks existent +entries+ as available or not otherwise create default entry
+    # availability influenced by two params:
+    #   * MAX_LOS - maximum stay length. Zero means unavailable
+    #   * AVAILABLE_UNITS - supplier's property might be multi unit
     def set_availabilities(availabilities)
       availabilities['AVAILABILITY'].each do |availability|
         date      = availability['DATE']

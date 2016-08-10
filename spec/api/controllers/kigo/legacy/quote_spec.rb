@@ -21,7 +21,7 @@ RSpec.describe API::Controllers::Kigo::Legacy::Quote do
   end
 
   it_behaves_like "external error reporting" do
-    let(:supplier_name) { "Kigo Legacy" }
+    let(:supplier_name) { "KigoLegacy" }
 
     def provoke_failure!
       stub_call(:post, endpoint) { raise Faraday::TimeoutError }
