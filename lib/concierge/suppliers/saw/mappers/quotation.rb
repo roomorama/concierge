@@ -13,7 +13,7 @@ module SAW
       #
       # Returns [Quotation]
       def self.build(params, property_rate)
-        requested_unit = property_rate.find_unit(params[:unit_id].to_i)
+        requested_unit = property_rate.find_unit(params[:unit_id])
 
         ::Quotation.new(
           property_id: params[:property_id],

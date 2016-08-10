@@ -50,6 +50,7 @@ RSpec.describe Workers::Suppliers::SAW do
     it "calls synchronisation block for every property id" do
       mock_request(:country, :one)
       mock_request(:propertysearch, :success)
+      mock_request(:propertyrates, :success)
 
       expected_property_ids = [1787, 1757, 2721, 2893, 1766]
 
@@ -66,7 +67,7 @@ RSpec.describe Workers::Suppliers::SAW do
       mock_request(:propertydetail, :error)
 
       property = SAW::Entities::BasicProperty.new
-      result = worker.fetch_details_and_build_property(property)
+      result = worker.fetch_details_and_build_property(property, nil)
 
       expect(result).to be_kind_of(Result)
       expect(result).not_to be_success
@@ -85,7 +86,7 @@ RSpec.describe Workers::Suppliers::SAW do
       mock_request(:propertydetail, :success)
 
       property = SAW::Entities::BasicProperty.new
-      result = worker.fetch_details_and_build_property(property)
+      result = worker.fetch_details_and_build_property(property, nil)
 
       expect(result).to be_kind_of(Result)
       expect(result).to be_success

@@ -19,6 +19,8 @@ module SAW
   #   importer.fetch_properties_by_country(country)
   #   importer.fetch_properties_by_countries(countries)
   #   importer.fetch_detailed_property(property_id)
+  #   importer.fetch_unit_rates_by_property_ids(property_ids)
+  #   importer.fetch_all_unit_rates_for_properties(properties)
   class Importer
 
     attr_reader :credentials
@@ -118,6 +120,42 @@ module SAW
     def fetch_detailed_property(property_id)
       property_fetcher = Commands::DetailedPropertyFetcher.new(credentials)
       property_fetcher.call(property_id)
+    end
+
+    # Retrieves rates for units by given property ids
+    #
+    # Returns a +Result+ wrapping an array of +SAW::Entities::PropertyRate+
+    # objects when operation succeeds
+    # Returns a +Result+ with +Result::Error+ when operation fails
+    def fetch_unit_rates_by_property_ids(ids)
+      bulk_rates_fetcher = Commands::BulkRatesFetcher.new(credentials)
+      bulk_rates_fetcher.call(ids)
+    end
+
+    # Retrieves rates for properties
+    #
+    # It groups properties by currency because SAW API doesn't support
+    # fetching property rates when multiple currencies are given.
+    #
+    # Limits to send maximum 20 property ids (API limitation)
+    #
+    # Returns a +Result+ wrapping an array of +SAW::Entities::PropertyRate+
+    # objects when operation succeeds
+    # Returns a +Result+ with +Result::Error+ when operation fails
+    def fetch_all_unit_rates_for_properties(properties)
+      all_rates = []
+
+      properties.group_by { |p| p.currency_code }.each do |_, batch|
+        batch.map(&:internal_id).each_slice(20) do |ids|
+          result = fetch_unit_rates_by_property_ids(ids)
+
+          return result unless result.success?
+
+          all_rates = all_rates + result.value
+        end
+      end
+
+      Result.new(all_rates)
     end
   end
 end

@@ -57,38 +57,40 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
     )
   end
 
+  let(:rates) { nil }
+
   it "returns roomorama property entity" do
-    property = described_class.build(basic_property, detailed_property)
+    property = described_class.build(basic_property, detailed_property, rates)
     expect(property).to be_a(Roomorama::Property)
   end
 
   it "adds multi-unit flag" do
-    property = described_class.build(basic_property, detailed_property)
+    property = described_class.build(basic_property, detailed_property, rates)
     expect(property.multi_unit?).to eq(basic_property.multi_unit?)
   end
 
   it "adds instant_booking flag" do
-    property = described_class.build(basic_property, detailed_property)
+    property = described_class.build(basic_property, detailed_property, rates)
     expect(property.instant_booking?).to eq(true)
   end
 
   it "adds default_to_available flag" do
-    property = described_class.build(basic_property, detailed_property)
+    property = described_class.build(basic_property, detailed_property, rates)
     expect(property.default_to_available).to eq(true)
   end
 
   it "adds minimum_stay" do
-    property = described_class.build(basic_property, detailed_property)
+    property = described_class.build(basic_property, detailed_property, rates)
     expect(property.minimum_stay).to eq(1)
   end
 
   it "adds cancellation policy" do
-    property = described_class.build(basic_property, detailed_property)
+    property = described_class.build(basic_property, detailed_property, rates)
     expect(property.cancellation_policy).to eq('moderate')
   end
 
   it "adds to result property needed attributes from basic property" do
-    property = described_class.build(basic_property, detailed_property)
+    property = described_class.build(basic_property, detailed_property, rates)
 
     attributes = %i(
       type
@@ -110,7 +112,7 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
   end
 
   it "adds to result property needed attributes from detailed property" do
-    property = described_class.build(basic_property, detailed_property)
+    property = described_class.build(basic_property, detailed_property, rates)
 
     attributes = %i(
       description
@@ -126,10 +128,7 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
   end
 
   it "always keeps amenities empty" do
-    property = described_class.build(
-      basic_property,
-      detailed_property
-    )
+    property = described_class.build(basic_property, detailed_property, rates)
 
     expect(property.amenities).to eq([])
   end
@@ -137,19 +136,13 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
   it "keeps images empty if there was no images given" do
     detailed_property.images = []
 
-    property = described_class.build(
-      basic_property,
-      detailed_property
-    )
+    property = described_class.build(basic_property, detailed_property, rates)
 
     expect(property.images).to eq([])
   end
 
   it "adds images if there was images provided" do
-    property = described_class.build(
-      basic_property,
-      detailed_property
-    )
+    property = described_class.build(basic_property, detailed_property, rates)
 
     expect(property.images).not_to eq([])
     expect(property.images.size).to eq(detailed_property.images.size)
@@ -157,10 +150,7 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
   end
 
   it "keeps units empty if there was no bed_configurations and accommodations" do
-    property = described_class.build(
-      basic_property,
-      detailed_property
-    )
+    property = described_class.build(basic_property, detailed_property, rates)
 
     expect(property.units).to eq([])
   end
@@ -214,7 +204,8 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
     it "adds units" do
       property = described_class.build(
         basic_property,
-        detailed_property_with_units
+        detailed_property_with_units,
+        rates
       )
 
       expect(property.units).not_to eq([])
@@ -228,7 +219,8 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
 
       property = described_class.build(
         basic_property,
-        detailed_property
+        detailed_property,
+        rates
       )
 
       expect(property.description).to eq(
@@ -245,7 +237,8 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
 
         property = described_class.build(
           basic_property,
-          detailed_property
+          detailed_property,
+          rates
         )
 
         expect(property.description).to eq("Additional amenities: foo, bar")
@@ -257,7 +250,8 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
 
       property = described_class.build(
         basic_property,
-        detailed_property
+        detailed_property,
+        rates
       )
 
       expect(property.description).to eq("Description Detailed")
@@ -269,7 +263,8 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
 
       property = described_class.build(
         basic_property,
-        detailed_property
+        detailed_property,
+        rates
       )
 
       expect(property.description).to eq(nil)

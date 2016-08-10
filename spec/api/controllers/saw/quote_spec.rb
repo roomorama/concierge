@@ -10,7 +10,7 @@ RSpec.describe API::Controllers::SAW::Quote do
   let(:params) do
     {
       property_id: 1,
-      unit_id: 10612,
+      unit_id: '10612',
       check_in: "2015-02-26",
       check_out: "2015-02-28",
       guests: 2

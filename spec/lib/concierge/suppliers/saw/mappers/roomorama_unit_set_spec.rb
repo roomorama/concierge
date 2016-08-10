@@ -75,12 +75,18 @@ module SAW
       ]
     end
 
+    let(:unit_rates) { nil }
+
     let(:images) do
       images_attributes.map { |image_hash| Roomorama::Image.new(image_hash) }
     end
 
     it "builds units" do
-      units = described_class.build(basic_property, detailed_property)
+      units = described_class.build(
+        basic_property,
+        detailed_property,
+        unit_rates
+      )
       expect(units.size).to eq(5)
 
       units_info.each do |unit_info|
@@ -95,7 +101,11 @@ module SAW
     it "does not copies images to unit from detailed_property" do
       detailed_property.images = images
 
-      units = described_class.build(basic_property, detailed_property)
+      units = described_class.build(
+        basic_property,
+        detailed_property,
+        unit_rates
+      )
       expect(units.size).to eq(5)
 
       units_info.each do |unit_info|
@@ -107,7 +117,11 @@ module SAW
     end
 
     it "adds amenities information to units" do
-      units = described_class.build(basic_property, detailed_property)
+      units = described_class.build(
+        basic_property,
+        detailed_property,
+        unit_rates
+      )
 
       units_info.each do |unit_info|
         created_unit = units.detect { |u| u.identifier == unit_info["@id"] }
@@ -117,7 +131,11 @@ module SAW
     end
 
     it "adds price information from property to units" do
-      units = described_class.build(basic_property, detailed_property)
+      units = described_class.build(
+        basic_property,
+        detailed_property,
+        unit_rates
+      )
 
       units_info.each do |unit_info|
         created_unit = units.detect { |u| u.identifier == unit_info["@id"] }
@@ -129,7 +147,11 @@ module SAW
     end
 
     it "adds description from property to units" do
-      units = described_class.build(basic_property, detailed_property)
+      units = described_class.build(
+        basic_property,
+        detailed_property,
+        unit_rates
+      )
 
       units_info.each do |unit_info|
         created_unit = units.detect { |u| u.identifier == unit_info["@id"] }
@@ -139,7 +161,11 @@ module SAW
     end
 
     it "adds number of units information" do
-      units = described_class.build(basic_property, detailed_property)
+      units = described_class.build(
+        basic_property,
+        detailed_property,
+        unit_rates
+      )
 
       units_info.each do |unit_info|
         created_unit = units.detect { |u| u.identifier == unit_info["@id"] }
@@ -210,7 +236,8 @@ module SAW
       it "builds units" do
         units = described_class.build(
           basic_property,
-          detailed_property_with_accommodations
+          detailed_property_with_accommodations,
+          unit_rates
         )
         expect(units.size).to eq(5)
       end
@@ -222,7 +249,11 @@ module SAW
       end
 
       it "builds units" do
-        units = described_class.build(basic_property, detailed_property)
+        units = described_class.build(
+          basic_property,
+          detailed_property,
+          unit_rates
+        )
         expect(units.size).to eq(1)
       end
     end
@@ -249,7 +280,11 @@ module SAW
 
       RSpec.shared_examples "units mapper" do
         it "builds units" do
-          units = described_class.build(basic_property, detailed_property_with_beds)
+          units = described_class.build(
+            basic_property,
+            detailed_property_with_beds,
+            unit_rates
+          )
           expect(units.size).to eq(5)
 
           unit_with_beds = units.detect { |u| u.identifier == "8367" }
@@ -259,25 +294,41 @@ module SAW
         end
 
         it "parses number_of_bedrooms for Studio" do
-          units = described_class.build(basic_property, detailed_property_with_beds)
+          units = described_class.build(
+            basic_property,
+            detailed_property_with_beds,
+            unit_rates
+          )
           unit_with_beds = units.detect { |u| u.identifier == "8367" }
           expect(unit_with_beds.number_of_bedrooms).to eq(1)
         end
 
         it "parses number_of_bedrooms for 1-Bedroom" do
-          units = described_class.build(basic_property, detailed_property_with_beds)
+          units = described_class.build(
+            basic_property,
+            detailed_property_with_beds,
+            unit_rates
+          )
           unit_with_beds = units.detect { |u| u.identifier == "8368" }
           expect(unit_with_beds.number_of_bedrooms).to eq(1)
         end
 
         it "parses number_of_bedrooms for 2-Bedroom" do
-          units = described_class.build(basic_property, detailed_property_with_beds)
+          units = described_class.build(
+            basic_property,
+            detailed_property_with_beds,
+            unit_rates
+          )
           unit_with_beds = units.detect { |u| u.identifier == "10614" }
           expect(unit_with_beds.number_of_bedrooms).to eq(2)
         end
 
         it "parses number_of_bedrooms for unknown names" do
-          units = described_class.build(basic_property, detailed_property_with_beds)
+          units = described_class.build(
+            basic_property,
+            detailed_property_with_beds,
+            unit_rates
+          )
           unit_with_beds = units.detect { |u| u.identifier == "10612" }
           expect(unit_with_beds.number_of_bedrooms).to eq(1)
         end
@@ -311,6 +362,97 @@ module SAW
         end
 
         it_behaves_like "units mapper"
+      end
+    end
+
+    context "when custom property rates are given" do
+      let(:unit_rates) do
+        SAW::Entities::PropertyRate.new(
+          id: '123',
+          currency: 'USD',
+          units: [
+            SAW::Entities::UnitRate.new(id: '8368', price: 200.04, available: true, max_guests: 7),
+            SAW::Entities::UnitRate.new(id: '10614', price: 201.04, available: true, max_guests: 8),
+            SAW::Entities::UnitRate.new(id: '10612', price: 202.04, available: true, max_guests: 5),
+            SAW::Entities::UnitRate.new(id: '8367', price: 203.04, available: true, max_guests: 5),
+          ]
+        )
+      end
+
+      it "copies rates from units, not from property" do
+        units = described_class.build(
+          basic_property,
+          detailed_property,
+          unit_rates
+        )
+        expect(units.size).to eq(5)
+
+        created_unit = units.detect { |u| u.identifier == '8368' }
+        expect(created_unit.nightly_rate).to eq(200.04)
+        expect(created_unit.weekly_rate).to eq(1400.28)
+        expect(created_unit.monthly_rate).to eq(6001.2)
+
+        created_unit = units.detect { |u| u.identifier == '10614' }
+        expect(created_unit.nightly_rate).to eq(201.04)
+        expect(created_unit.weekly_rate).to eq(1407.28)
+        expect(created_unit.monthly_rate).to eq(6031.2)
+
+        created_unit = units.detect { |u| u.identifier == '10612' }
+        expect(created_unit.nightly_rate).to eq(202.04)
+        expect(created_unit.weekly_rate).to eq(1414.28)
+        expect(created_unit.monthly_rate).to eq(6061.2)
+
+        created_unit = units.detect { |u| u.identifier == '8367' }
+        expect(created_unit.nightly_rate).to eq(203.04)
+        expect(created_unit.weekly_rate).to eq(1421.28)
+        expect(created_unit.monthly_rate).to eq(6091.2)
+      end
+
+      it "sets rates from property if one of the units has no rates" do
+        units = described_class.build(
+          basic_property,
+          detailed_property,
+          unit_rates
+        )
+        expect(units.size).to eq(5)
+
+        created_unit = units.detect { |u| u.identifier == '10613' }
+        expect(created_unit.nightly_rate).to eq(10.35)
+        expect(created_unit.weekly_rate).to eq(70.11)
+        expect(created_unit.monthly_rate).to eq(300)
+      end
+
+      it "sets max_guests from units rate data" do
+        units = described_class.build(
+          basic_property,
+          detailed_property,
+          unit_rates
+        )
+        expect(units.size).to eq(5)
+
+        created_unit = units.detect { |u| u.identifier == '8368' }
+        expect(created_unit.max_guests).to eq(7)
+
+        created_unit = units.detect { |u| u.identifier == '10614' }
+        expect(created_unit.max_guests).to eq(8)
+
+        created_unit = units.detect { |u| u.identifier == '10612' }
+        expect(created_unit.max_guests).to eq(5)
+
+        created_unit = units.detect { |u| u.identifier == '8367' }
+        expect(created_unit.max_guests).to eq(5)
+      end
+
+      it "sets max_guests from bed_configurations if one of the units has no rates" do
+        units = described_class.build(
+          basic_property,
+          detailed_property,
+          unit_rates
+        )
+        expect(units.size).to eq(5)
+
+        created_unit = units.detect { |u| u.identifier == '10613' }
+        expect(created_unit.max_guests).to be_nil
       end
     end
   end

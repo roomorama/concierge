@@ -8,12 +8,14 @@ module SAW
     #
     # Attributes
     #
+    # +id+      - property id
     # +units+   - array of SAW::Entities::UnitRate objects
     # +current+ - currency code
     class PropertyRate
-      attr_reader :units, :currency
+      attr_reader :id, :units, :currency
 
-      def initialize(units:, currency:)
+      def initialize(id:, units:, currency:)
+        @id = id
         @units = units
         @currency = currency
       end

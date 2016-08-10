@@ -15,11 +15,12 @@ module SAW
       #   roomorama_property = SAW::Mappers::RoomoramaProperty.build(
       #     property,
       #     detailed_property,
+      #     unit_rates
       #   )
       #   => Roomorama::Property object
       #
       # Returns [Roomorama::Property] Roomorama property
-      def self.build(basic_property, detailed_property)
+      def self.build(basic_property, detailed_property, unit_rates)
         property = Roomorama::Property.new(basic_property.internal_id.to_s)
         property.type = basic_property.type
         property.title = basic_property.title
@@ -47,7 +48,7 @@ module SAW
         property.cancellation_policy = CANCELLATION_POLICY
         property.instant_booking!
 
-        set_units!(property, basic_property, detailed_property)
+        set_units!(property, basic_property, detailed_property, unit_rates)
         set_images!(property, detailed_property.images)
         property
       end
@@ -58,10 +59,11 @@ module SAW
         images.each { |image| property.add_image(image) }
       end
 
-      def self.set_units!(property, basic_property, detailed_property)
+      def self.set_units!(property, basic_property, detailed_property, rates)
         units = SAW::Mappers::RoomoramaUnitSet.build(
           basic_property,
-          detailed_property
+          detailed_property,
+          rates
         )
 
         units.each { |unit| property.add_unit(unit) }

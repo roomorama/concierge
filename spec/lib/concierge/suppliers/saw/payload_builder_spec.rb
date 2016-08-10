@@ -282,6 +282,43 @@ RSpec.describe SAW::PayloadBuilder do
     end
   end
 
+  describe '#build_property_rate_request' do
+    let(:params) do
+      {
+        ids: "1, 2, 3, 4",
+        check_in: "01/06/2016",
+        check_out: "02/06/2016",
+        guests: 99
+      }
+    end
+
+    it 'embedds username and password to request' do
+      response = to_hash(payload_builder.build_property_rate_request(params))
+
+      response_attrs = response.fetch("request")
+      username = response_attrs.fetch("username")
+      password = response_attrs.fetch("password")
+
+      expect(username).to eq(username)
+      expect(password).to eq(password)
+    end
+
+    it 'embedds given ids to request' do
+      response = to_hash(payload_builder.build_property_rate_request(params))
+
+      response_attrs = response.fetch("request")
+      expect(response_attrs.fetch("propertyid")).to eq(params[:ids])
+    end
+
+    it 'embedds check_in and check_out to request' do
+      response = to_hash(payload_builder.build_property_rate_request(params))
+
+      response_attrs = response.fetch("request")
+      expect(response_attrs.fetch("check_in")).to eq(params[:check_in])
+      expect(response_attrs.fetch("check_out")).to eq(params[:check_out])
+    end
+  end
+
   private
   def to_hash(response)
     Nori.new.parse(response)

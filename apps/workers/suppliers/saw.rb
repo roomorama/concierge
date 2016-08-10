@@ -31,18 +31,29 @@ module Workers::Suppliers
         return
       end
 
+      result = importer.fetch_all_unit_rates_for_properties(properties)
+
+      if result.success?
+        all_unit_rates = result.value
+      else
+        message = "Failed to perform the `#fetch_rates_for_properties` operation"
+        announce_error(message, result)
+        return
+      end
+
       properties.each do |property|
         synchronisation.start(property.internal_id) do
           Concierge.context.disable!
 
-          fetch_details_and_build_property(property)
+          unit_rates = find_rates(property.internal_id, all_unit_rates)
+          fetch_details_and_build_property(property, unit_rates)
         end
       end
 
       synchronisation.finish!
     end
 
-    def fetch_details_and_build_property(property)
+    def fetch_details_and_build_property(property, rates)
       result = importer.fetch_detailed_property(property.internal_id)
 
       if result.success?
@@ -50,7 +61,8 @@ module Workers::Suppliers
 
         roomorama_property = ::SAW::Mappers::RoomoramaProperty.build(
           property,
-          detailed_property
+          detailed_property,
+          rates
         )
 
         Result.new(roomorama_property)
@@ -86,6 +98,10 @@ module Workers::Suppliers
         context:     Concierge.context.to_h,
         happened_at: Time.now
       })
+    end
+
+    def find_rates(property_id, all_unit_rates)
+      all_unit_rates.find { |rate| rate.id == property_id.to_s }
     end
   end
 end

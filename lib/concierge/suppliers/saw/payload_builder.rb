@@ -96,6 +96,24 @@ module SAW
       }
     end
 
+    def build_property_rate_request(ids:, check_in:, check_out:, guests:)
+      %{
+        <request>
+          #{build_username_and_password}
+          <propertyid>#{ids}</propertyid>
+          <check_in>#{check_in}</check_in>
+          <check_out>#{check_out}</check_out>
+
+          <apartments>
+            <accommodation_type>
+              <accommodation_typeid>#{ALL_ACCOMODATIONS_TYPE_CODE}</accommodation_typeid>
+              <number_of_guests>#{guests}</number_of_guests>
+            </accommodation_type>
+          </apartments>
+        </request>
+      }
+    end
+
     def build_cancel_request(reservation_id)
       %{
         <request>
