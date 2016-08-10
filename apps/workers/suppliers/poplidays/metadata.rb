@@ -33,7 +33,10 @@ module Workers::Suppliers::Poplidays
 
               next invalid_availabilities_error unless availabilities_validator(availabilities).valid?
 
-              mapper.build(property, details, availabilities)
+              result = fetch_extras(property_id)
+              extras = result.success? ? result.value : nil
+
+              mapper.build(property, details, availabilities, extras)
             end
           end
         end
@@ -72,6 +75,14 @@ module Workers::Suppliers::Poplidays
     def fetch_availabilities(property_id)
       report_error("Failed to fetch availabilities for property `#{property_id}`") do
         importer.fetch_availabilities(property_id)
+      end
+    end
+
+    def fetch_extras(property_id)
+      message = "Failed to fetch extras info for property `#{property_id}`. " \
+            "But continue to sync the property as well as extras is optional information."
+      report_error(message) do
+        importer.fetch_extras(property_id)
       end
     end
 

@@ -10,6 +10,10 @@ RSpec.describe Poplidays::Mappers::RoomoramaProperty do
   let(:property) { {'id' => '8927439190'} }
   let(:details) { JSON.parse(read_fixture('poplidays/property_details2.json')) }
   let(:availabilities) { JSON.parse(read_fixture('poplidays/availabilities_calendar2.json')) }
+  let(:extras_with_cleaning) { JSON.parse(read_fixture('poplidays/extras_with_cleaning.json')) }
+  let(:extras_with_dependent_cleaning) { JSON.parse(read_fixture('poplidays/extras_with_dependent_cleaning.json')) }
+  let(:extras_without_cleaning) { JSON.parse(read_fixture('poplidays/extras.json')) }
+  let(:extras_with_mandatory_cleaning) { JSON.parse(read_fixture('poplidays/extras_with_mandatory_cleaning.json')) }
   let(:description) { "Text here\n\nAnother text here" }
   let(:minimum_details) do
     {
@@ -26,7 +30,7 @@ RSpec.describe Poplidays::Mappers::RoomoramaProperty do
 
   it 'sets default security deposit info for unknown caution' do
     details = minimum_details.merge({'caution' => 'unknown'})
-    result = subject.build(property, details, availabilities)
+    result = subject.build(property, details, availabilities, nil)
 
     roomorama_property = result.value
     expect(roomorama_property.security_deposit_amount).to eq(300.0)
@@ -36,15 +40,42 @@ RSpec.describe Poplidays::Mappers::RoomoramaProperty do
 
   it 'does not set surface if it is zero' do
     details = minimum_details.merge({'surface' => 0})
-    result = subject.build(property, details, availabilities)
+    result = subject.build(property, details, availabilities, extras_without_cleaning)
 
     roomorama_property = result.value
     expect(roomorama_property.surface).to be_nil
     expect(roomorama_property.surface_unit).to be_nil
   end
 
+  it 'does not set cleaning info if there is no cleaning extra' do
+    result = subject.build(property, minimum_details, availabilities, extras_without_cleaning)
+
+    roomorama_property = result.value
+    expect(roomorama_property.services_cleaning).to be_nil
+    expect(roomorama_property.services_cleaning_required).to be_nil
+    expect(roomorama_property.services_cleaning_rate).to be_nil
+  end
+
+  it 'set right cleaning info for mandatory cleaning extra' do
+    result = subject.build(property, minimum_details, availabilities, extras_with_mandatory_cleaning)
+
+    roomorama_property = result.value
+    expect(roomorama_property.services_cleaning).to be false
+    expect(roomorama_property.services_cleaning_required).to be_nil
+    expect(roomorama_property.services_cleaning_rate).to be_nil
+  end
+
+  it 'set right cleaning info for dependent cleaning extra' do
+    result = subject.build(property, minimum_details, availabilities, extras_with_dependent_cleaning)
+
+    roomorama_property = result.value
+    expect(roomorama_property.services_cleaning).to be_nil
+    expect(roomorama_property.services_cleaning_required).to be_nil
+    expect(roomorama_property.services_cleaning_rate).to be_nil
+  end
+
   it 'returns result with mapped roomorama property' do
-    result = subject.build(property, details, availabilities)
+    result = subject.build(property, details, availabilities, extras_with_cleaning)
 
     expect(result).to be_a(Result)
     expect(result.success?).to be_truthy
@@ -76,6 +107,9 @@ RSpec.describe Poplidays::Mappers::RoomoramaProperty do
     expect(roomorama_property.security_deposit_amount).to eq(500.0)
     expect(roomorama_property.security_deposit_currency_code).to eq('EUR')
     expect(roomorama_property.security_deposit_type).to eq('unknown')
+    expect(roomorama_property.services_cleaning).to be(true)
+    expect(roomorama_property.services_cleaning_required).to be(false)
+    expect(roomorama_property.services_cleaning_rate).to eq(50)
 
 
     expect(roomorama_property.images.length).to eq(3)

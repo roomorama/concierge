@@ -54,4 +54,13 @@ RSpec.describe Poplidays::Importer do
     it_behaves_like 'success response'
     it_behaves_like 'handling errors'
   end
+
+  describe '#fetch_extras' do
+    let(:endpoint) { "https://api.poplidays.com/v2/lodgings/#{property_id}/extras" }
+    let(:fixture) { read_fixture('poplidays/extras.json') }
+    let(:result) { subject.fetch_extras(property_id) }
+
+    it_behaves_like 'success response'
+    it_behaves_like 'handling errors'
+  end
 end

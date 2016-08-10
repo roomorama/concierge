@@ -44,7 +44,7 @@ module Poplidays
       end
 
       def protocol
-        'http'
+        'https'
       end
     end
   end

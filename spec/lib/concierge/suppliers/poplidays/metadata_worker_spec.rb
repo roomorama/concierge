@@ -9,6 +9,7 @@ RSpec.describe Workers::Suppliers::Poplidays::Metadata do
   let(:properties_list) { parse_json(read_fixture('poplidays/lodgings.json')) }
   let(:property_details) { parse_json(read_fixture('poplidays/property_details.json')) }
   let(:availabilities) { parse_json(read_fixture('poplidays/availabilities_calendar.json')) }
+  let(:extras) { parse_json(read_fixture('poplidays/extras.json')) }
 
   subject { described_class.new(host) }
 
@@ -93,12 +94,38 @@ RSpec.describe Workers::Suppliers::Poplidays::Metadata do
     end
   end
 
+  context 'fetching cleaning extra' do
+    before do
+      allow_any_instance_of(Poplidays::Importer).to receive(:fetch_properties) { Result.new(properties_list) }
+      allow_any_instance_of(Poplidays::Importer).to receive(:fetch_property_details) { Result.new(property_details) }
+      allow_any_instance_of(Poplidays::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }
+      allow_any_instance_of(Poplidays::Importer).to receive(:fetch_extras) { Result.error(:timeout_error) }
+    end
+
+    context 'even without cleaning extra' do
+      it 'finalizes synchronisation' do
+        allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
+
+        expect(subject.synchronisation).to receive(:finish!)
+        subject.perform
+      end
+
+      it 'creates valid properties in database' do
+        allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
+        expect {
+          subject.perform
+        }.to change { PropertyRepository.count }.by(2)
+      end
+    end
+  end
+
   context 'success' do
 
     before do
       allow_any_instance_of(Poplidays::Importer).to receive(:fetch_properties) { Result.new(properties_list) }
       allow_any_instance_of(Poplidays::Importer).to receive(:fetch_property_details) { Result.new(property_details) }
       allow_any_instance_of(Poplidays::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }
+      allow_any_instance_of(Poplidays::Importer).to receive(:fetch_extras) { Result.new(extras) }
     end
 
     it 'finalizes synchronisation' do
