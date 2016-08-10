@@ -7,6 +7,7 @@ module Concierge::Flows
   #
   class RemoteHostCreation
     include Hanami::Validations
+    include Concierge::JSON
 
     attribute :identifier,     presence: true # host's identifier on supplier's system
     attribute :username,       presence: true # username on roomorama
@@ -27,12 +28,13 @@ module Concierge::Flows
                                   access_token)
       return res unless res.success?
 
-      response = JSON.parse(res.value.body)
+      parsed_response = json_decode(res.value.body)
+      return parsed_response unless parsed_response.success?
       Concierge::Flows::HostCreation.new(
         supplier:       supplier,
         identifier:     identifier,
         username:       username,
-        access_token:   response["access_token"],
+        access_token:   parsed_response.value["access_token"],
         fee_percentage: fee_percentage,
         config_path:    Hanami.root.join("config", "suppliers.yml").to_s
       ).perform
