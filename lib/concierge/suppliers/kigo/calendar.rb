@@ -59,7 +59,32 @@ module Kigo
     end
 
     def set_availabilities(availabilities)
+      availabilities['AVAILABILITY'].each do |availability|
+        date      = availability['DATE']
+        available = availability['MAX_LOS'] > 0 && availability['AVAILABLE_UNITS'] > 0
+        entry     = find_entry(date)
 
+        unless entry
+          entry              = build_entry(date)
+          entry.nightly_rate = default_nightly_rate
+          entries << entry
+        end
+
+        entry.available = available
+      end
+    end
+
+    def find_entry(date)
+      return if entries.empty?
+      entries.find { |entry| entry.date.to_s == date }
+    end
+
+    def build_entry(date)
+      Roomorama::Calendar::Entry.new(date: date)
+    end
+
+    def default_nightly_rate
+      property.data[:nightly_rate]
     end
 
     def wrapped(hash)
