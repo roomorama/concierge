@@ -29,5 +29,10 @@ module Poplidays
       fetcher = Commands::AvailabilitiesFetcher.new(credentials)
       fetcher.call(property_id)
     end
+
+    def fetch_extras(property_id)
+      fetcher = Commands::ExtrasFetcher.new(credentials)
+      fetcher.call(property_id)
+    end
   end
 end

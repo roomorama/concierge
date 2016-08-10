@@ -41,9 +41,10 @@ module Poplidays
       #   * +property+ [Hash] basic property info
       #   * +details+ [Hash] details property info
       #   * +availabilities+ [Hash] contains 'availabilities' key
+      #   * +extras+ [Array] array of extra Hashes, can be nil
       #
       # Returns result wrapped a +Roomorama::Property+
-      def build(property, details, availabilities)
+      def build(property, details, availabilities, extras)
         roomorama_property = Roomorama::Property.new(property['id'].to_s)
         roomorama_property.instant_booking!
 
@@ -52,6 +53,7 @@ module Poplidays
         set_amenities!(roomorama_property, details)
         set_rates_and_min_stay!(roomorama_property, details, availabilities)
         set_security_deposit!(roomorama_property, details)
+        set_cleaning_info!(roomorama_property, extras)
 
         Result.new(roomorama_property)
       end
@@ -199,6 +201,44 @@ module Poplidays
         roomorama_property.weekly_rate = (daily_rate * 7).round(2)
         roomorama_property.monthly_rate = (daily_rate * 30).round(2)
         roomorama_property.minimum_stay = min_stay
+      end
+
+      def set_cleaning_info!(roomorama_property, extras)
+        if extras
+          cleaning_extra = find_cleaning_extra(extras['extras'])
+          return unless cleaning_extra
+
+          if cleaning_extra['mandatory']
+            # Cleaning fee already included in booking price
+            roomorama_property.services_cleaning = false
+          else
+            roomorama_property.services_cleaning = true
+            roomorama_property.services_cleaning_required = false
+            roomorama_property.services_cleaning_rate = cleaning_extra['_price']
+          end
+        end
+      end
+
+      # Finds cleaning extra among others.
+      # If cleaning depends on other services returns nil
+      def find_cleaning_extra(extras)
+        cleaning_extra = extras.detect { |e| e['code'] == 'CLEANING_DURING_THE_STAY' }
+        return unless cleaning_extra
+
+        price = calc_cleaning_extra_price(cleaning_extra)
+        return unless price
+
+        cleaning_extra['_price'] = price
+        cleaning_extra
+      end
+
+      # An extra is selectable by user and sometimes its price depends on others extras.
+      # That's why, an extra has more than one price.
+      # But we need info only about cleaning extra (without others)
+      def calc_cleaning_extra_price(cleaning_extra)
+        prices = cleaning_extra['prices']
+        price = prices.detect { |p| p['selectedCodes'].nil? }
+        price['value'] if price
       end
     end
   end
