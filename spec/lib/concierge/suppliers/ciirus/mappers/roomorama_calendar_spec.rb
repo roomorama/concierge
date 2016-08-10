@@ -71,7 +71,7 @@ RSpec.describe Ciirus::Mappers::RoomoramaCalendar do
     it 'returns roomorama calendar' do
       expect(calendar).to be_a(Roomorama::Calendar)
       expect { calendar.validate! }.to_not raise_error
-      expect(calendar.property_identifier).to eq(property_id)
+      expect(calendar.identifier).to eq(property_id)
     end
 
     it 'returns not empty calendar' do
