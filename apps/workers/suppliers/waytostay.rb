@@ -35,7 +35,13 @@ module Workers::Suppliers
             next wrapped_property
           end
 
-          if changes.value[:media].include?(property_ref)
+          should_update_media = changes.value[:media].include?(property_ref)
+
+          # This is catch new properties without images which are not listed in media changes list,
+          # for example due to faulty `changes` api response(as seen for 173 ids in first import in July 2016)
+          should_update_media ||= wrapped_property.result.images.empty?
+
+          if should_update_media
             wrapped_property = client.update_media(wrapped_property.result)
             next wrapped_property unless wrapped_property.success?
           end
