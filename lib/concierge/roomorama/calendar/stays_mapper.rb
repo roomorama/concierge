@@ -69,11 +69,11 @@ class Roomorama::Calendar
     end
 
     def stays_by_checkin
-      @stays_by_checkin || stays.group_by { |s| s[:checkin] }
+      @stays_by_checkin ||= stays.group_by { |s| s[:checkin] }
     end
 
     def stays_by_checkout
-      @stays_by_checkout || stays.group_by { |s| s[:checkout] }
+      @stays_by_checkout ||= stays.group_by { |s| s[:checkout] }
     end
 
     def dates_with_stay
@@ -83,11 +83,11 @@ class Roomorama::Calendar
     end
 
     def earliest_checkin
-      @earliest_checkin || stays_by_checkin.keys.sort.first
+      @earliest_checkin ||= stays_by_checkin.keys.sort.first
     end
 
     def latest_checkout
-      @latest_checkout || stays_by_checkout.keys.sort.last
+      @latest_checkout ||= stays_by_checkout.keys.sort.last
     end
 
     def default_entry(date)
