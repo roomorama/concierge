@@ -1,15 +1,17 @@
 class Kigo::Calendar
-
   TimeInterval = Struct.new(:interval) do
     # returns days count computed by NIGHT, MONTH, YEAR unit
     # for some reasons period number might be zero
     def days
       return if interval['NUMBER'].zero?
       multiplier = { 'MONTH' => 30, 'YEAR' => 365 }.fetch(interval['UNIT'], 1)
-      interval['NUMBER'] * multiplier
+      interval['NUMBER'].to_i * multiplier
     end
   end
 
+  # +Kigo::Calendar::Period+
+  #
+  # performs availabilities list by specific periods
   class Period
 
     attr_reader :start_date, :end_date, :min_stay, :amounts
@@ -53,7 +55,7 @@ class Kigo::Calendar
     end
 
     def minimum_stay
-      TimeInterval.new(min_stay).days
+      Kigo::TimeInterval.new(min_stay).days
     end
 
     def valid_range
