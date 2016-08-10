@@ -9,7 +9,7 @@ module Kigo
   # For more information on how to interact with Kigo Channels API and the Kigo
   # Legacy API, check the project Wiki.
   class Legacy
-    SUPPLIER_NAME = "Kigo Legacy"
+    SUPPLIER_NAME = "KigoLegacy"
 
     attr_reader :credentials
 
