@@ -33,7 +33,7 @@ RSpec.describe Poplidays::Mappers::RoomoramaCalendar do
 
       expect { calendar.validate! }.to_not raise_error
       expect(calendar).to be_a(Roomorama::Calendar)
-      expect(calendar.property_identifier).to eq(property_id)
+      expect(calendar.identifier).to eq(property_id)
     end
 
     it 'returns unavailable entry for on request stays' do
