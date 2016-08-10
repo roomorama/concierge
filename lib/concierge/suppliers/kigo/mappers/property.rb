@@ -84,7 +84,7 @@ module Kigo::Mappers
     end
 
     def stay_length(interval)
-      Kigo::Calendar::TimeInterval.new(interval).days
+      Kigo::TimeInterval.new(interval).days
     end
 
     def set_description
