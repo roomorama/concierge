@@ -9,8 +9,9 @@ module Concierge::Flows
     include Hanami::Validations
 
     attribute :host_identifier, presence: true
-    attribute :config,          presence: true # should have keys "phone" and "fee_percentage"
-    attribute :supplier,       presence: true
+    attribute :fee_percentage,  presence: true
+    attribute :phone,           presence: true
+    attribute :supplier,        presence: true
     attribute :access_token,    presence: true
 
     def perform
@@ -20,7 +21,7 @@ module Concierge::Flows
 
       res = create_roomorama_host(host_identifier,
                                   supplier.name,
-                                  config["phone"],
+                                  phone,
                                   access_token)
       return res unless res.success?
 
@@ -30,7 +31,7 @@ module Concierge::Flows
         identifier:     host_identifier,
         username:       username(host_identifier),
         access_token:   response["access_token"],
-        fee_percentage: config["fee_percentage"],
+        fee_percentage: fee_percentage,
         config_path:    Hanami.root.join("config", "suppliers.yml").to_s
       ).perform
     end

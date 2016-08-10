@@ -10,9 +10,10 @@ RSpec.describe Concierge::Flows::RemoteHostCreation do
   let(:parameters) {
     {
       host_identifier: "host1",
-      config:          {"phone": "+6598765432", "fee_percentage": 7},
+      phone:           "+6598765432",
+      fee_percentage:  7,
       supplier:        supplier,
-      access_token:    "a1b2c3",
+      access_token:    "a1b2c3"
     }
   }
 

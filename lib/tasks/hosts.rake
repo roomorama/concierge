@@ -1,4 +1,5 @@
 require "yaml"
+require "csv"
 
 namespace :hosts do
   desc "Updates background worker definitions for all hosts"
@@ -21,30 +22,30 @@ namespace :hosts do
     puts "Done. All hosts updated."
   end
 
+  # csv_path should point to a file with the following: identifier and fee_percentage:
+  #   id1,7
+  #   id2,8
+  #
   desc "Create hosts as declared in yml"
-  task :create_from_yaml, [:roomorama_access_token] => :environment do |t, args|
-    path = Hanami.root.join("config", "hosts.yml").to_s
-
-    hosts_by_supplier = YAML.load_file(path)
-
-    hosts_by_supplier.each do |supplier_name, hosts_config|
-      supplier = Supplier.named(supplier_name)
-      unless supplier
-        puts "Cannot find supplier: #{supplier_name}"
-        next
-      end
-
-      hosts_config.each do |host_identifier, config|
-        res = Concierge::Flows::RemoteHostCreation.new(identifier: host_identifier,
-                                                 config: config,
-                                                 supplier: supplier,
-                                                 access_token: args[:roomorama_access_token]
-                                                ).perform
-        if res.success?
-          puts "Created #{supplier_name};#{host_identifier}"
-        else
-          puts "Error : #{res.error.code} #{res.error.data}"
-        end
+  task :create_from_csv, [:csv_path, :supplier_name, :roomorama_access_token] => :environment do |t, args|
+    supplier_name = args[:supplier_name]
+    supplier = SupplierRepository.named(supplier_name)
+    unless supplier
+      puts "Cannot find supplier: #{supplier_name}"
+      next
+    end
+    # args[:csv_path] should point to a csv of hosts for a particular supplier
+    CSV.foreach(args[:csv_path]) do |row|
+      res = Concierge::Flows::RemoteHostCreation.new(identifier: row[0],
+                                                     fee_percentage: row[1],
+                                                     phone: "+85258087855", # default customer service number
+                                                     supplier: supplier,
+                                                     access_token: args[:roomorama_access_token]
+                                                    ).perform
+      if res.success?
+        puts "Created #{supplier_name}: #{row[0]}"
+      else
+        puts "Error : #{res.error.code} #{res.error.data}"
       end
     end
   end
