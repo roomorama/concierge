@@ -8,18 +8,20 @@ module Concierge::Flows
   class RemoteHostCreation
     include Hanami::Validations
 
-    attribute :host_identifier, presence: true
-    attribute :fee_percentage,  presence: true
-    attribute :phone,           presence: true
-    attribute :supplier,        presence: true
-    attribute :access_token,    presence: true
+    attribute :identifier,     presence: true # host's identifier on supplier's system
+    attribute :username,       presence: true # username on roomorama
+    attribute :fee_percentage, presence: true
+    attribute :phone,          presence: true
+    attribute :supplier,       presence: true
+    attribute :access_token,   presence: true
 
     def perform
-      if HostRepository.identified_by(host_identifier).any?
-        return Result.error(:host_exists, "Found #{host_identifier} on concierge repository")
+      if HostRepository.identified_by(identifier).any?
+        return Result.error(:host_exists, "Found #{identifier} on concierge repository")
       end
 
-      res = create_roomorama_host(host_identifier,
+      res = create_roomorama_host(identifier,
+                                  username,
                                   supplier.name,
                                   phone,
                                   access_token)
@@ -28,8 +30,8 @@ module Concierge::Flows
       response = JSON.parse(res.value.body)
       Concierge::Flows::HostCreation.new(
         supplier:       supplier,
-        identifier:     host_identifier,
-        username:       username(host_identifier),
+        identifier:     identifier,
+        username:       username,
         access_token:   response["access_token"],
         fee_percentage: fee_percentage,
         config_path:    Hanami.root.join("config", "suppliers.yml").to_s
@@ -38,20 +40,14 @@ module Concierge::Flows
 
     private
 
-    def create_roomorama_host(identifier, supplier_name, phone, access_token)
+    def create_roomorama_host(identifier, username, supplier_name, phone, access_token)
       create_host = Roomorama::Client::Operations.create_host(name: identifier,
-                                                              username: username(identifier),
+                                                              username: username,
                                                               email: "#{supplier_name}@roomorama.com",
                                                               phone: phone,
                                                               supplier_name: supplier_name)
       client = Roomorama::Client.new(access_token)
       client.perform(create_host)
-    end
-
-    # Transform supplier's host identifier to Roomorama's
-    # Currently returns the same thing
-    def username(identifier)
-      identifier
     end
   end
 end

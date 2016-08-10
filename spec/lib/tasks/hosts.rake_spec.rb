@@ -23,10 +23,12 @@ RSpec.describe "hosts rake tasks" do
     let(:path) { Hanami.root.join("spec", "fixtures", "hosts.csv").to_s }
     let(:supplier) { create_supplier }
     let(:access_token) { "test_token" }
-    let(:ids) { ["abc", "def"] }
+    let(:usernames) { ["abc", "def"] }
+    let(:ids) { ["123", "234"] }
     let(:remote_host_creation) { double("RemoteHostCreation") }
     it "should call remote host creation for each row" do
       expect(Concierge::Flows::RemoteHostCreation).to receive(:new).twice do |**args|
+        expect(usernames.include?(args[:username])).to be true
         expect(ids.include?(args[:identifier])).to be true
         expect(args[:supplier]).to be_a Supplier
         remote_host_creation

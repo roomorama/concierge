@@ -23,8 +23,10 @@ namespace :hosts do
   end
 
   # csv_path should point to a file with the following: identifier and fee_percentage:
-  #   id1,7
-  #   id2,8
+  # # example.csv
+  #   username,identifier,fee_percentage
+  #   id1,123,7
+  #   id2,124,8
   #
   desc "Create hosts as declared in yml"
   task :create_from_csv, [:csv_path, :supplier_name, :roomorama_access_token] => :environment do |t, args|
@@ -35,9 +37,10 @@ namespace :hosts do
       next
     end
     # args[:csv_path] should point to a csv of hosts for a particular supplier
-    CSV.foreach(args[:csv_path]) do |row|
-      res = Concierge::Flows::RemoteHostCreation.new(identifier: row[0],
-                                                     fee_percentage: row[1],
+    CSV.foreach(args[:csv_path], headers: true) do |row|
+      res = Concierge::Flows::RemoteHostCreation.new(identifier: row["identifier"],
+                                                     fee_percentage: row["fee_percentage"],
+                                                     username: row["username"],
                                                      phone: "+85258087855", # default customer service number
                                                      supplier: supplier,
                                                      access_token: args[:roomorama_access_token]
