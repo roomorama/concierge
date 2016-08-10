@@ -28,8 +28,12 @@ class Roomorama::Client
       UpdateCalendar.new(calendar)
     end
 
-    def self.create_host(identifier)
-      CreateHost.new(identifier)
+    def self.create_host(name:, username:, email:, phone:, supplier_name:)
+      CreateHost.new(name:          name,
+                     username:      username,
+                     email:         email,
+                     phone:         phone,
+                     supplier_name: supplier_name)
     end
 
   end
