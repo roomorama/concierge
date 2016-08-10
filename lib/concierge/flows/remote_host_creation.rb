@@ -17,8 +17,8 @@ module Concierge::Flows
     attribute :access_token,   presence: true
 
     def perform
-      if HostRepository.identified_by(identifier).any?
-        return Result.error(:host_exists, "Found #{identifier} on concierge repository")
+      if HostRepository.identified_by(identifier).from_supplier(supplier).any?
+        return Result.error(:host_exists, "Found #{supplier.name}: #{identifier} on concierge repository")
       end
 
       res = create_roomorama_host(identifier,

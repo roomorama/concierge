@@ -9,11 +9,11 @@ RSpec.describe Concierge::Flows::RemoteHostCreation do
 
   let(:parameters) {
     {
-      host_identifier: "host1",
-      phone:           "+6598765432",
-      fee_percentage:  7,
-      supplier:        supplier,
-      access_token:    "a1b2c3"
+      identifier:     "host1",
+      phone:          "+6598765432",
+      fee_percentage: 7,
+      supplier:       supplier,
+      access_token:   "a1b2c3"
     }
   }
 
@@ -21,7 +21,7 @@ RSpec.describe Concierge::Flows::RemoteHostCreation do
 
   describe "#perform" do
     it "returns an error if host exists" do
-      create_host(identifier: parameters[:host_identifier])
+      create_host(identifier: parameters[:identifier], supplier_id: supplier.id)
       res = subject.perform
       expect(res.error.code).to eq :host_exists
     end
