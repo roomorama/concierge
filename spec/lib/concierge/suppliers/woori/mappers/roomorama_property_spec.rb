@@ -21,7 +21,7 @@ module Woori
     
     it "sets type to the property" do
       property = mapper.build_property
-      expect(property.type).to eq("property")
+      expect(property.type).to eq("apartment")
     end
 
     it "sets address information to the property" do
