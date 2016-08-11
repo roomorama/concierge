@@ -3,17 +3,19 @@ class Roomorama::Calendar
   #
   # Example:
   #   stays = [
-  #     {
+  #     Roomrama::Calendar::Stay.new({
   #       checkin:    "2016-01-01",
-  #       checkout:   "2016-01-07",
-  #       stay_price: 100,
+  #       checkout:   "2016-01-08",
+  #       stay_price: 700, # 100 per night
   #       available:  true
-  #     }, {
+  #     }),
+  #     Roomrama::Calendar::Stay.new({
   #       checkin:    "2016-01-01",
-  #       checkout:   "2016-01-14",
-  #       stay_price: 100,
+  #       checkout:   "2016-01-15",
+  #       stay_price: 700, # 50 per night
   #       available:  true
-  #     }]
+  #     })
+  #   ]
   #
   #   entries = StaysMapper.new(stays).map
   #
@@ -24,19 +26,18 @@ class Roomorama::Calendar
     attr_reader :stays
 
     def initialize(stays)
-      @stays = stays.dup
-      @stays.each { |s| s[:rate] = s[:stay_price] / stay_length(s) }
+      @stays = stays
     end
 
     def map
       dates_with_stay.collect do |date|
         default_entry(date).tap do |entry|
-          if stays_by_checkin.include? date.to_s
+          if stays_by_checkin.include? date
             entry.checkin_allowed = true
             entry.valid_stay_lengths = collect_stay_lengths(date)
           end
 
-          entry.checkout_allowed = true if stays_by_checkout.include? date.to_s
+          entry.checkout_allowed = true if stays_by_checkout.include? date
 
           entry.nightly_rate = minimum_nightly_rate(date)
         end
@@ -46,39 +47,28 @@ class Roomorama::Calendar
     private
 
     def collect_stay_lengths(date)
-      stays_by_checkin[date.to_s].collect do |stay|
-        stay_length(stay)
-      end
+      stays_by_checkin[date].collect(&:stay_length)
     end
 
     # stays should have at least one entry include the given date
     #
     def minimum_nightly_rate(date)
-      stays.select { |stay| include_date?(stay, date) }.
-        min_by { |s| s[:rate] }[:rate]
-    end
-
-    def include_date?(stay, date)
-      Date.parse(stay[:checkin]) <= date && date <= Date.parse(stay[:checkout])
-    end
-
-
-    def stay_length(stay)
-      diff = Date.parse(stay[:checkout]) - Date.parse(stay[:checkin])
-      return diff.to_i
+      min_stay = stays.select { |stay| stay.include?(date) }.
+        min_by { |s| s.rate }
+      min_stay.rate
     end
 
     def stays_by_checkin
-      @stays_by_checkin ||= stays.group_by { |s| s[:checkin] }
+      @stays_by_checkin ||= stays.group_by { |s| s.checkin }
     end
 
     def stays_by_checkout
-      @stays_by_checkout ||= stays.group_by { |s| s[:checkout] }
+      @stays_by_checkout ||= stays.group_by { |s| s.checkout }
     end
 
     def dates_with_stay
-      (Date.parse(earliest_checkin)..Date.parse(latest_checkout)).select { |d|
-        stays.any? { |stay| include_date?(stay, d) }
+      (earliest_checkin..latest_checkout).select { |date|
+        stays.any? { |stay| stay.include?(date) }
       }
     end
 

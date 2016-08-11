@@ -3,22 +3,25 @@ require "spec_helper"
 RSpec.describe Roomorama::Calendar::StaysMapper do
   describe "#map" do
     let(:stays) {
-      [{
-        checkin:    "2016-01-01",
-        checkout:   "2016-01-08",
-        stay_price: 700, # 100 per night
-        available:  true
-      }, {
-        checkin:    "2016-01-01",
-        checkout:   "2016-01-15",
-        stay_price: 700, # 50 per night
-        available:  true
-      }, {
-        checkin:    "2016-02-02",
-        checkout:   "2016-02-09",
-        stay_price: 70,  # 10 per night
-        available: true
-      }]
+      [ Roomorama::Calendar::Stay.new({
+          checkin:    "2016-01-01",
+          checkout:   "2016-01-08",
+          stay_price: 700, # 100 per night
+          available:  true
+        }),
+        Roomorama::Calendar::Stay.new({
+          checkin:    "2016-01-01",
+          checkout:   "2016-01-15",
+          stay_price: 700, # 50 per night
+          available:  true
+        }),
+        Roomorama::Calendar::Stay.new({
+          checkin:    "2016-02-02",
+          checkout:   "2016-02-09",
+          stay_price: 70, # 10 per night
+          available:  true
+        })
+      ]
     }
 
     subject { described_class.new(stays).map }
