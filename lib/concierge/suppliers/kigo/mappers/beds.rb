@@ -4,7 +4,7 @@ module Kigo::Mappers
   # This class performs bed types matched by provided ids with reference data
   class Beds
     SINGLE_BED_IDS       = [4, 5, 9, 11]
-    TWICE_SINGLE_BED_IDS = [13, 14]
+    TWICE_SINGLE_BED_IDS = [13, 14]  # twin bed, trundle bed
     DOUBLE_BED_IDS       = [1, 2, 3]
     SOFA_BED_IDS         = [8, 9, 15]
 
@@ -14,23 +14,22 @@ module Kigo::Mappers
       @ids = ids
     end
 
-    def single_beds
-      ids.select { |id| SINGLE_BED_IDS.include?(id) } + twice_single_beds
+    def single_beds_size
+      total(SINGLE_BED_IDS) + (total(TWICE_SINGLE_BED_IDS) * 2)
     end
 
-    def double_beds
-      ids.select { |id| DOUBLE_BED_IDS.include?(id) }
+    def double_beds_size
+      total(DOUBLE_BED_IDS)
     end
 
-    def sofa_beds
-      ids.select { |id| SOFA_BED_IDS.include?(id) }
+    def sofa_beds_size
+      total(SOFA_BED_IDS)
     end
 
     private
 
-    # Kigo provides some bed types which match as 2 single beds (twin bed, trundle bed)
-    def twice_single_beds
-      ids.select { |id| TWICE_SINGLE_BED_IDS.include?(id) } * 2
+    def total(other_ids)
+      ids.select { |id| other_ids.include?(id) }.size
     end
   end
 end
