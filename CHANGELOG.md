@@ -7,6 +7,7 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Added
 - Support for multi-unit availabilities on `Roomorama::Calendar`.
+- Ciirus integrations: quote, book, cancel and synchronisation
 
 ## [0.5.5] - 2016-08-09
 ### Added
