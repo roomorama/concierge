@@ -5,6 +5,7 @@ module Woori
     # This class is responsible for building a +Roomorama::Property+ object.
     class RoomoramaProperty
       MINIMUM_STAY = 1
+      DEFAULT_PROPERTY_RATE = 999999
       CANCELLATION_POLICY = 'moderate'
 
       attr_reader :safe_hash, :amenities_converter, :country_code_converter
@@ -30,7 +31,7 @@ module Woori
       def build_property
         property = Roomorama::Property.new(safe_hash.get("hash"))
         property.title                = safe_hash.get("data.name")
-        property.type                 = safe_hash.get("type")
+        property.type                 = 'apartment'
         property.lat                  = safe_hash.get("data.latitude")
         property.lng                  = safe_hash.get("data.longitude")
         property.currency             = safe_hash.get("data.currency")
@@ -43,6 +44,9 @@ module Woori
         property.amenities            = amenities_converter.convert
         property.country_code         = country_code
         property.description          = description_with_additional_amenities
+        property.nightly_rate         = DEFAULT_PROPERTY_RATE
+        property.weekly_rate          = DEFAULT_PROPERTY_RATE
+        property.monthly_rate         = DEFAULT_PROPERTY_RATE
         property.minimum_stay         = MINIMUM_STAY
         property.cancellation_policy  = CANCELLATION_POLICY
         property.default_to_available = true

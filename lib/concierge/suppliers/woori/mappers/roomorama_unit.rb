@@ -4,6 +4,8 @@ module Woori
     #
     # This class is responsible for building a +Roomorama::Unit+ object.
     class RoomoramaUnit
+      DEFAULT_UNIT_RATE = 999999
+
       attr_reader :safe_hash, :amenities_converter
       
       # Initialize RoomoramaUnit mapper
@@ -36,6 +38,9 @@ module Woori
         unit.max_guests         = safe_hash.get("data.capacity")
         unit.number_of_bedrooms = safe_hash.get("data.roomCount")
         unit.number_of_units    = 1
+        unit.nightly_rate       = DEFAULT_UNIT_RATE
+        unit.weekly_rate        = DEFAULT_UNIT_RATE
+        unit.monthly_rate       = DEFAULT_UNIT_RATE
 
         set_images!(unit)
 
