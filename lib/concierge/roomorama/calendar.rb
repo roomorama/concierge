@@ -118,16 +118,16 @@ module Roomorama
       parsed = parse_entries
 
       {
-        identifier:        identifier,
-        start_date:        parsed.start_date.to_s,
-        availabilities:    parsed.availabilities,
-        nightly_prices:    parsed.rates.nightly,
-        weekly_prices:     parsed.rates.weekly,
-        monthly_prices:    parsed.rates.monthly,
-        minimum_stays:     parsed.minimum_stays,
+        identifier:         identifier,
+        start_date:         parsed.start_date.to_s,
+        availabilities:     parsed.availabilities,
+        nightly_prices:     parsed.rates.nightly,
+        weekly_prices:      parsed.rates.weekly,
+        monthly_prices:     parsed.rates.monthly,
+        minimum_stays:      parsed.minimum_stays,
         valid_stay_lengths: parsed.valid_stay_lengths,
-        checkin_allowed:   parsed.checkin_rules,
-        checkout_allowed:  parsed.checkout_rules,
+        checkin_allowed:    parsed.checkin_rules,
+        checkout_allowed:   parsed.checkout_rules,
 
         # units should be instances of +Roomorama::Calendar+ as well, so they
         # are serialised with +to_h+, this very method.
@@ -217,7 +217,7 @@ module Roomorama
     # the empty counterpart of the fields.
     def empty_response
       rates = Rates.new([], [], [])
-      ParsedEntries.new("", "", "", "", [], rates)
+      ParsedEntries.new("", "", "", "", [], rates, [])
     end
 
     # builds a placeholder calendar entry to be used when there are gaps
