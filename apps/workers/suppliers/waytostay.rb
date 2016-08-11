@@ -46,7 +46,7 @@ module Workers::Suppliers
       end
       property_sync.finish!
 
-      changes.value[:availability].each do |property_ref|
+      availability_changes(changes.value[:availability]).each do |property_ref|
         sync_calendar(property_ref)
       end
       calendar_sync.finish!
@@ -129,6 +129,14 @@ module Workers::Suppliers
       else
         Roomorama::Property.load(existing.data.merge(identifier: ref))
       end
+    end
+
+    # ids - the list of WayToStay property IDs for which availability changes occurred.
+    #
+    # This method filters the given list of IDs returned by WayToStay's diff API, and returns
+    # only those which were previously synchronised by Concierge.
+    def availability_changes(ids)
+      PropertyRepository.from_host(host).identified_by(ids).map(&:identifier)
     end
 
   end
