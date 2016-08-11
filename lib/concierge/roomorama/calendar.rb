@@ -159,7 +159,7 @@ module Roomorama
           payload.delete(:units)
         end
 
-        if payload[:valid_stay_lengths].nil? || payload[:valid_stay_lengths].all?(&:nil?)
+        if payload[:valid_stay_lengths].all?(&:nil?)
           payload.delete(:valid_stay_lengths)
         end
 
