@@ -51,11 +51,9 @@ RSpec.describe Workers::Suppliers::Waytostay do
     let(:changes) { {
       properties:   ["001", "002"],
       media:        ["003", "004"],
-      availability: ["005", "001"], # 001 is updated in both categories, but should only be dispatched once.
-      # rates:        [], #["006"],
-      # reviews:        [], #["006"],
-      # bookings:     []
+      availability: ["005", "001"] # 001 is updated in both categories, but should only be dispatched once.
     }}
+
     before do
       allow(subject).to receive(:last_synced_timestamp) { Time.now().to_i }
       allow(subject.client).to receive(:get_changes_since).and_return(Result.new(changes))
@@ -76,9 +74,7 @@ RSpec.describe Workers::Suppliers::Waytostay do
       create_property(identifier: "004", host_id: host.id)
       create_property(identifier: "005", host_id: host.id)
       create_property(identifier: "006", host_id: host.id)
-
     end
-
 
     describe "#perform" do
       before do
@@ -90,8 +86,15 @@ RSpec.describe Workers::Suppliers::Waytostay do
       context "when successful" do
         it "should start property attributes synchronisation" do
           properties_to_update_count = 5 # 001 to 005. changes in 006 rates is not dispatched
+
           expect(subject.property_sync.router).to receive(:dispatch)
             .exactly(properties_to_update_count).times
+
+          # property "005" is known (was created on the database on the +before+
+          # block), whereas "001" is not
+          expect(subject).to receive(:sync_calendar).with("005")
+          expect(subject).not_to receive(:sync_calendar).with("001")
+
           subject.perform
         end
       end
