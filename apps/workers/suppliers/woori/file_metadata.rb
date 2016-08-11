@@ -20,33 +20,12 @@ module Workers::Suppliers::Woori
       all_properties.each do |property|
         synchronisation.start(property.identifier) do
           puts "Starting sync for #{property.identifier}"
-          Concierge.context.disable!
+          # Concierge.context.disable!
 
           units = all_property_units(property.identifier)
           puts "  Found #{units.size} units for #{property.identifier}"
-          units.each do |unit|
-            puts "    Fetching rates for #{unit.identifier}..."
-            rates_result = fetch_unit_rates(unit)
+          units.each { |unit| property.add_unit(unit) }
 
-            if rates_result.success?
-              rates = rates_result.value
-
-              unit.nightly_rate = rates.nightly_rate
-              unit.weekly_rate  = rates.weekly_rate
-              unit.monthly_rate = rates.monthly_rate
-            else
-              announce_property_unit_rates_fetch_error(unit, rates_result)
-              rates_result
-            end
-
-            property.add_unit(unit)
-          end
-
-          property.nightly_rate = units.map(&:nightly_rate).max
-          property.weekly_rate = units.map(&:weekly_rate).max
-          property.monthly_rate = units.map(&:monthly_rate).max
-
-          property.type = 'apartment'
           Result.new(property)
         end
       end
