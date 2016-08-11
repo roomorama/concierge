@@ -3,7 +3,7 @@ class Kigo::Calendar
   #
   # performs availabilities list by specific periods
   # where checkin/out allowed only on the week day when period starts
-  class WeeklyPeriod < Period
+  class WeeklyPeriod
 
     attr_reader :start_date, :end_date, :min_stay, :amounts
 
