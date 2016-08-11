@@ -21,7 +21,7 @@ RSpec.describe Workers::Suppliers::Audit do
 
   before do
     # do NOT make API calls during tests
-    allow_any_instance_of(Workers::PropertySynchronisation).to receive(:run_operation).and_return(nil)
+    allow_any_instance_of(Workers::PropertySynchronisation).to receive(:run_operation).and_return(double(:result, :"success?" => true))
     allow_any_instance_of(Workers::CalendarSynchronisation).to receive(:run_operation).and_return(nil)
 
     # keep track of counters
@@ -48,7 +48,15 @@ RSpec.describe Workers::Suppliers::Audit do
 
     context "fetched new property" do
       it { is_expected.to change { keyvalue(@property_counters) }.to eq(created: 1, updated: 0, deleted: 0) }
-      it { is_expected.to change { keyvalue(@calendar_counters) }.to eq(available: 3, unavailable: 0) }
+      it { is_expected.not_to change { keyvalue(@calendar_counters) } }
+
+      context "property was synchronised by Concierge" do
+        before do
+          allow_any_instance_of(Workers::CalendarSynchronisation).to receive(:synchronised?).and_return(true)
+        end
+
+        it { is_expected.to change { keyvalue(@calendar_counters) }.to eq(available: 3, unavailable: 0) }
+      end
     end
 
     context "fetched existing property" do
