@@ -61,7 +61,7 @@ RSpec.describe Kigo::Mappers::Property do
         property_data['PROP_INFO']['PROP_DESCRIPTION'] = ''
         property = subject.prepare(property_data, pricing).value
 
-        expect(property.description).to eq 'Short description'
+        expect(property.description).to eq "Short description\nArea description"
       end
 
       it 'sets area description if origin and short description are blank' do

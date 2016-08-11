@@ -22,7 +22,7 @@ module Kigo::Mappers
 
     # manages data and returns the result with +Roomorama::Property+
     def prepare(property_data, pricing)
-      build_room(property_data, pricing)
+      build_property(property_data, pricing)
       property.instant_booking!
 
       set_base_info
@@ -41,10 +41,10 @@ module Kigo::Mappers
 
     private
 
-    def build_room(property_data, pricing)
+    def build_property(property_data, pricing)
       @payload  = Concierge::SafeAccessHash.new(property_data)
       @property = Roomorama::Property.new(property_data['PROP_ID'].to_s)
-      @pricing  = pricing
+      @pricing  = Concierge::SafeAccessHash.new(pricing)
     end
 
     def info
@@ -62,11 +62,15 @@ module Kigo::Mappers
       property.pets_allowed          = amenity_ids.include?(code_for(:pets_allowed))
       property.smoking_allowed       = amenity_ids.include?(code_for(:smoking_allowed))
       property.cancellation_policy   = CANCELLATION_POLICY
-      property.default_to_available  = true
       property.check_in_time         = info['PROP_CIN_TIME']
       property.check_out_time        = info['PROP_COUT_TIME']
       property.check_in_instructions = info['PROP_ARRIVAL_SHEET']
       property.minimum_stay          = stay_length(info['PROP_STAYTIME_MIN'])
+
+      # Kigo properties are available by default, but most of them has a periodical rate
+      # which covers almost all days. The days which not in periodical rates
+      # have unavailable availabilities for these days
+      property.default_to_available  = true
 
       property.country_code     = info['PROP_COUNTRY']
       property.city             = info['PROP_CITY']
@@ -82,17 +86,21 @@ module Kigo::Mappers
     # returns days count computed by NIGHT, MONTH, YEAR unit
     # for some reasons period number might be zero
     def stay_length(period)
-      return 1 if period['NUMBER'].zero?
+      return if period['NUMBER'].zero?
       multiplier = { 'MONTH' => 30, 'YEAR' => 365 }.fetch(period['UNIT'], 1)
-      period['NUMBER'] * multiplier
+      period['NUMBER'].to_i * multiplier
     end
 
     def set_description
-      description = info['PROP_DESCRIPTION']
-      description = info['PROP_SHORTDESCRIPTION'] if description.strip.empty?
-      description = info['PROP_AREADESCRIPTION'] if description.strip.empty?
+      description      = strip(info['PROP_DESCRIPTION'])
+      description      = strip(info['PROP_SHORTDESCRIPTION']) unless description
+      area_description = strip(info['PROP_AREADESCRIPTION'])
 
-      property.description = description
+      property.description = [description, area_description].compact.join("\n")
+    end
+
+    def strip(string)
+      string.to_s.strip unless string.to_s.strip.empty?
     end
 
     def surface_unit(name)
@@ -100,13 +108,12 @@ module Kigo::Mappers
     end
 
     def street_address
-      addresses = [
+      [
         info['PROP_STREETNO'],
         info['PROP_ADDR1'],
         info['PROP_ADDR2'],
         info['PROP_ADDR3']
-      ].reject { |addr| addr.to_s.empty? }
-      addresses.join(', ')
+      ].reject { |addr| addr.to_s.empty? }.join(', ')
     end
 
     def set_beds_count
@@ -154,7 +161,7 @@ module Kigo::Mappers
     # images payload has two attributes for caption PHOTO_NAME and PHOTO_COMMENTS
     # the PHOTO_NAME is the short version of PHOTO_COMMENTS
     def set_images
-      images = payload['PROP_PHOTOS']
+      images = Array(payload['PROP_PHOTOS'])
       images.each do |image_data|
         url        = image_data['PHOTO_ID']
         identifier = url.split('/').last
