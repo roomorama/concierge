@@ -119,9 +119,9 @@ module Kigo::Mappers
     def set_beds_count
       mapper = Beds.new(info['PROP_BED_TYPES'])
 
-      property.number_of_double_beds = mapper.double_beds.size
-      property.number_of_single_beds = mapper.single_beds.size
-      property.number_of_sofa_beds   = mapper.sofa_beds.size
+      property.number_of_double_beds = mapper.double_beds_size
+      property.number_of_single_beds = mapper.single_beds_size
+      property.number_of_sofa_beds   = mapper.sofa_beds_size
     end
 
     def set_amenities
