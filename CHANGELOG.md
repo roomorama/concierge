@@ -7,6 +7,7 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Added
 - Support for multi-unit availabilities on `Roomorama::Calendar`.
+- Roomorama::Calendar::Stay and StayMapper to map supplier's format into Roomorama::Calendar:Entry
 - Ciirus integrations: quote, book, cancel and synchronisation
 
 ### Changed
