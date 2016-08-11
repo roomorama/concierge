@@ -21,7 +21,7 @@ class Workers::Suppliers::KigoCalendar
         next availabilities unless availabilities.success?
 
         calendar = Kigo::Calendar.new(property)
-        calendar.perform(pricing, availabilities)
+        calendar.perform(pricing.value, availabilities.value)
       end
     end
 
