@@ -20,3 +20,10 @@ WayToStay:
       every: "1d"
     availabilities:
       absence: "WayToStay calendar is synchronised with property metadata, due to the diff-like API provided."
+
+Ciirus:
+  workers:
+    metadata:
+      every: "1d"
+    availabilities:
+      every: "5h"

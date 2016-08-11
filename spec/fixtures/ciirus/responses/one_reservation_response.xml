@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope
+        xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <soap:Body>
+    <GetReservationsResponse
+            xmlns="http://xml.ciirus.com/">
+      <GetReservationsResult>
+        <Reservations>
+          <ArrivalDate>2016-07-05T00:00:00</ArrivalDate>
+          <DepartureDate>2016-07-19T00:00:00</DepartureDate>
+          <BookingID>6507374</BookingID>
+          <HasPoolHeat>false</HasPoolHeat>
+        </Reservations>
+      </GetReservationsResult>
+    </GetReservationsResponse>
+  </soap:Body>
+</soap:Envelope>

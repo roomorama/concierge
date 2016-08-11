@@ -1,0 +1,11 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <soap:Body>
+    <GetImageListResponse xmlns="http://xml.ciirus.com/">
+      <GetImageListResult>
+        <string>http://images.ciirus.com/properties/25559/51502/images/ccpdemo1.jpg</string>
+        <string>http://images.ciirus.com/properties/25559/51502/images/ccpdemo2.jpg</string>
+        <string>http://images.ciirus.com/properties/25559/51502/images/ccpdemo3.jpg</string>
+      </GetImageListResult>
+    </GetImageListResponse>
+  </soap:Body>
+</soap:Envelope>

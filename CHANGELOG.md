@@ -7,6 +7,7 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Added
 - Support for multi-unit availabilities on `Roomorama::Calendar`.
+- Ciirus integrations: quote, book, cancel and synchronisation
 
 ### Changed
 - Do not attempt to update calendar for properties not previously synchronised.

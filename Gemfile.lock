@@ -13,6 +13,7 @@ GEM
     builder (3.2.2)
     byebug (9.0.5)
     chronic (0.10.2)
+    crass (1.0.2)
     database_cleaner (1.5.1)
     diff-lcs (1.2.5)
     dotenv (2.1.0)
@@ -63,6 +64,7 @@ GEM
       url_mount (~> 0.2.1)
     httpi (2.4.1)
       rack
+    iso_country_codes (0.7.5)
     jmespath (1.2.4)
       json_pure (>= 1.8.1)
     json_pure (1.8.3)
@@ -77,6 +79,8 @@ GEM
     multipart-post (2.0.0)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
+    nokogumbo (1.4.7)
+      nokogiri
     nori (2.6.0)
     oauth2 (1.0.0)
       faraday (>= 0.8, < 0.10)
@@ -106,6 +110,10 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
+    sanitize (4.0.1)
+      crass (~> 1.0.2)
+      nokogiri (>= 1.4.4)
+      nokogumbo (~> 1.4.1)
     savon (2.11.1)
       akami (~> 1.2)
       builder (>= 2.1.2)
@@ -143,6 +151,7 @@ DEPENDENCIES
   faraday (~> 0.9)
   hanami (= 0.7.2)
   hanami-model (~> 0.5)
+  iso_country_codes (~> 0.7.4)
   oauth2
   patron (~> 0.5)
   pg
@@ -150,6 +159,7 @@ DEPENDENCIES
   rake
   rollbar (~> 2.8)
   rspec (~> 3.4.0)
+  sanitize (~> 4.0.1)
   savon
   unicorn (~> 5.0)
   whenever (~> 0.9)

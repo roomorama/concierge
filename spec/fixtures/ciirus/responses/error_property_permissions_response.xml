@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope
+        xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <soap:Body>
+    <GetPropertyPermissionsResponse xmlns="http://xml.ciirus.com/">
+      <GetPropertyPermissionsResult>
+        <PropertyID>336801</PropertyID>
+        <MCEnableProperty>false</MCEnableProperty>
+        <AgentEnableProperty>false</AgentEnableProperty>
+        <AgentUserID>38716</AgentUserID>
+        <MCUserID>0</MCUserID>
+        <NativeProperty>false</NativeProperty>
+        <CalendarSyncProperty>false</CalendarSyncProperty>
+        <AOAProperty>false</AOAProperty>
+        <ErrorMsg>Error (1001) This property has been orphaned, and does not have an MC.
+          Error (1010) No agent relation is configured between the supplier and the agent. Please contact Ciirus.
+        </ErrorMsg>
+        <TimeShare>false</TimeShare>
+        <OnlineBookingAllowed>false</OnlineBookingAllowed>
+      </GetPropertyPermissionsResult>
+    </GetPropertyPermissionsResponse>
+  </soap:Body>
+</soap:Envelope>
