@@ -8,6 +8,9 @@ how this file is formatted and how the process works.
 ### Added
 - Support for multi-unit availabilities on `Roomorama::Calendar`.
 
+### Changed
+- Do not attempt to update calendar for properties not previously synchronised.
+
 ## [0.5.5] - 2016-08-09
 ### Added
 - Add check support for waytostay damage deposit
