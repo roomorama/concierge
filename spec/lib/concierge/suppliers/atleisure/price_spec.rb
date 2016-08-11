@@ -3,6 +3,7 @@ require "spec_helper"
 RSpec.describe AtLeisure::Price do
   include Support::Fixtures
   include Support::HTTPStubbing
+  include Support::Factories
 
   let(:credentials) { double(username: "roomorama", password: "atleisure-roomorama") }
   let(:params) {
@@ -10,6 +11,9 @@ RSpec.describe AtLeisure::Price do
   }
 
   before do
+    supplier = create_supplier(name: AtLeisure::Client::SUPPLIER_NAME)
+    create_host(supplier_id: supplier.id, fee_percentage: 7.0)
+
     allow_any_instance_of(Concierge::JSONRPC).to receive(:request_id) { 888888888888 }
   end
 
@@ -115,6 +119,15 @@ RSpec.describe AtLeisure::Price do
       expect(quotation.guests).to eq 2
       expect(quotation.currency).to eq "EUR"
       expect(quotation.total).to eq 150
+      expect(quotation.host_fee_percentage).to eq(7)
+    end
+
+    it 'fails if host is not found' do
+      allow(subject).to receive(:fetch_host) { nil }
+      result = subject.quote(params)
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :host_not_found
     end
 
     def stub_with_fixture(name)

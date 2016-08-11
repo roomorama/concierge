@@ -9,7 +9,7 @@ module API::Controllers::AtLeisure
     include API::Controllers::Quote
 
     def quote_price(params)
-      credentials = Concierge::Credentials.for("AtLeisure")
+      credentials = Concierge::Credentials.for(supplier_name)
       AtLeisure::Client.new(credentials).quote(params)
     end
 

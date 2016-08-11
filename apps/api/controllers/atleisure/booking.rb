@@ -9,7 +9,7 @@ module API::Controllers::AtLeisure
     include API::Controllers::Booking
 
     def create_booking(params)
-      credentials = Concierge::Credentials.for("AtLeisure")
+      credentials = Concierge::Credentials.for(supplier_name)
       AtLeisure::Client.new(credentials).book(params)
     end
 
