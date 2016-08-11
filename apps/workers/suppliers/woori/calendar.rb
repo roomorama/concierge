@@ -1,5 +1,7 @@
-module Workers::Suppliers
-  class Woori::Calendar
+module Workers::Suppliers::Woori
+  class Calendar
+    attr_reader :synchronisation, :host
+
     def initialize(host)
       @host = host
       @sync = Workers::CalendarSynchronisation.new(host)
@@ -7,19 +9,16 @@ module Workers::Suppliers
 
     def perform
       synced_properties.each do |property|
-        property.data["units"].each do |unit|
+        sync.start(property.identifier) do
+          Concierge.context.disable!
 
-          sync.start(unit["identifier"]) do
-            Concierge.context.disable!
+          calendar_result = importer.fetch_calendar(property)
 
-            calendar_result = fetch_unit_calendar(unit)
-
-            if calendar_result.success?
-              calendar_result.value
-            else
-              announce_calendar_fetch_error(unit, calendar_result)
-              calendar_result
-            end
+          if calendar_result.success?
+            calendar_result.value
+          else
+            announce_calendar_fetch_error(unit, calendar_result)
+            calendar_result
           end
         end
       end
@@ -40,23 +39,6 @@ module Workers::Suppliers
 
     def synced_properties
       PropertyRepository.from_host(host)
-    end
-
-    def fetch_unit_rates(unit)
-      retries ||= 3
-      result = importer.fetch_unit_rates(unit.identifier)
-
-      if result.success?
-        result
-      else
-        raise UnitRatesFetchError
-      end
-    rescue UnitRatesFetchError
-      if (retries -= 1) > 0
-        retry
-      else
-        result
-      end
     end
 
     def announce_error(message, result)

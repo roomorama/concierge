@@ -1,12 +1,13 @@
 module Woori
   module Mappers
-    # +Woori::Mappers::RoomoramaCalendar+
+    # +Woori::Mappers::RoomoramaUnitCalendar+
     #
-    # This class is responsible for building a +Roomorama::Calendar+ object.
-    class RoomoramaCalendar
+    # This class is responsible for building a +Roomorama::UnitCalendar+
+    # object.
+    class RoomoramaUnitCalendar
       attr_reader :safe_hash
 
-      # Initialize RoomoramaCalendar mapper
+      # Initialize RoomoramaUnitCalendar mapper
       #
       # Arguments:
       #
@@ -19,7 +20,8 @@ module Woori
       #
       # Usage:
       #
-      #   Mappers::RoomoramaCalendar.build_calendar(safe_hash)
+      #   mapper = Mappers::RoomoramaUnitCalendar.new(hash)
+      #   mapper.build_calendar
       #
       # Returns +Roomorama::Calendar+ Unit calendar object
       def build_calendar

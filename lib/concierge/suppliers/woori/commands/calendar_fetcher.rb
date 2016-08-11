@@ -1,30 +1,43 @@
 module Woori
   module Commands
-    # +Woori::Commands::UnitCalendarFetcher+
+    # +Woori::Commands::CalendarFetcher+
     #
     # This class is responsible for wrapping the logic related to fetching
-    # unit calendar from Woori, parsing the response, and building a
+    # property calendar from Woori, parsing the response, and building a
     # +Result+ which wraps +Roomorama::Calendar+ object.
-    class UnitCalendarFetcher < BaseFetcher
+    class CalendarFetcher < BaseFetcher
       include Concierge::JSON
 
       ENDPOINT = "available"
 
-      # Retrieves availabilities for unit by unit_id and builds calendar
+      # Retrieves availabilities for property and builds calendar
       #
       # Arguments
       #
-      #   * +unit_id+ [String] unit id (room code hash)
+      #   * +property+ [Property] property to fetch calendar for
       #
       # Usage
       #
-      #   command = Woori::Commands::UnitCalendarFetcher.new(credentials)
-      #   result = command.call("w_w0104006")
+      #   command = Woori::Commands::CalendarFetcher.new(credentials)
+      #   result = command.call(property)
       #
       # Returns a +Result+ wrapping +Roomorama::Calendar+ object
       # when operation succeeds
       # Returns a +Result+ with +Result::Error+ when operation fails
-      def call(unit_id)
+      def call(property)
+        calendar = Roomorama::Calendar.new(property.identifier)
+
+        units = Array(property.data["units"])
+        units.each do |unit|
+          unit_calendar = fetch_and_build_unit_calendar(unit["identifier"])
+          calendar.add_unit(unit_calendar.value)
+        end
+
+        calendar
+      end
+
+      private
+      def fetch_and_build_unit_calendar(unit_id)
         params = build_request_params(unit_id)
         result = http.get(ENDPOINT, params, headers)
 
@@ -33,9 +46,8 @@ module Woori
 
           if decoded_result.success?
             safe_hash = Concierge::SafeAccessHash.new(decoded_result.value)
-            mapper = Woori::Mappers::RoomoramaCalendar.new(safe_hash)
-            calendar = mapper.build_calendar
-            Result.new(calendar)
+            mapper = Woori::Mappers::RoomoramaUnitCalendar.new(safe_hash)
+            Result.new(mapper.build_calendar)
           else
             decoded_result
           end
@@ -44,7 +56,6 @@ module Woori
         end
       end
 
-      private
       def build_request_params(unit_id)
         current_date = Time.now
 
