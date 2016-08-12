@@ -21,6 +21,13 @@ WayToStay:
     availabilities:
       absence: "WayToStay calendar is synchronised with property metadata, due to the diff-like API provided."
 
+Audit:
+  workers:
+    metadata:
+      every: "1h"
+    availabilities:
+      every: "1h"
+
 Ciirus:
   workers:
     metadata:
