@@ -4,7 +4,7 @@ class Roomorama::Calendar::Stay
   DATE_FORMAT = /\d\d\d\d-\d\d-\d\d/
   attribute :checkin,   presence: true, type: Date, format: DATE_FORMAT
   attribute :checkout,  presence: true, type: Date, format: DATE_FORMAT
-  attribute :price,     presence:true
+  attribute :price,     presence:true,  type: Float
   attribute :available, presence:true
 
   def length
