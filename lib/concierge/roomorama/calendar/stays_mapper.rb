@@ -6,13 +6,13 @@ class Roomorama::Calendar
   #     Roomrama::Calendar::Stay.new({
   #       checkin:    "2016-01-01",
   #       checkout:   "2016-01-08",
-  #       stay_price: 700, # 100 per night
+  #       price: 700, # 100 per night
   #       available:  true
   #     }),
   #     Roomrama::Calendar::Stay.new({
   #       checkin:    "2016-01-01",
   #       checkout:   "2016-01-15",
-  #       stay_price: 700, # 50 per night
+  #       price: 700, # 50 per night
   #       available:  true
   #     })
   #   ]
@@ -47,7 +47,7 @@ class Roomorama::Calendar
     private
 
     def collect_stay_lengths(date)
-      stays_by_checkin[date].collect(&:stay_length)
+      stays_by_checkin[date].collect(&:length)
     end
 
     # stays should have at least one entry include the given date
