@@ -6,6 +6,7 @@ module Kigo::Mappers
   # ==== Attributes
   #
   # * +property+   - +Roomorama::Property+ instance
+  # * +resolver+   - helps resolve differences between Kigo and Kigo Legacy
   # * +payload+    - hash based Kigo payload
   # * +references+ - list of references data
   # * +pricing+    - property prices details. Uses for setting deposit, cleaning service price and
@@ -14,10 +15,11 @@ module Kigo::Mappers
   class Property
     CANCELLATION_POLICY = 'super_elite'
 
-    attr_reader :property, :payload, :references, :pricing
+    attr_reader :property, :payload, :references, :pricing, :resolver
 
-    def initialize(references)
+    def initialize(references, resolver:)
       @references = references
+      @resolver = resolver
     end
 
     # manages data and returns the result with +Roomorama::Property+
@@ -154,21 +156,11 @@ module Kigo::Mappers
       amount.is_a?(Hash) ? amount['AMOUNT_ADULT'] : amount
     end
 
-    # images payload has two attributes for caption PHOTO_NAME and PHOTO_COMMENTS
-    # the PHOTO_NAME is the short version of PHOTO_COMMENTS
+    # images has differences between Kigo and KigoLegacy
+    # using +resolver+ to resolve differences
     def set_images
-      images = Array(payload['PROP_PHOTOS'])
-      images.each do |image_data|
-        url        = image_data['PHOTO_ID']
-        identifier = url.split('/').last
-        caption    = image_data['PHOTO_COMMENTS']
-        image      = Roomorama::Image.new(identifier).tap do |i|
-          i.url     = ['https:', url].join
-          i.caption = caption
-        end
-
-        property.add_image(image)
-      end
+      images = resolver.images(payload['PROP_PHOTOS'])
+      images.each { |image| property.add_image(image) }
     end
 
     def set_price
