@@ -53,17 +53,16 @@ class Roomorama::Calendar
     # stays should have at least one entry include the given date
     #
     def minimum_nightly_rate(date)
-      min_stay = stays.select { |stay| stay.include?(date) }.
-        min_by { |s| s.rate }
-      min_stay.rate
+      stays.select { |stay| stay.include?(date) }.
+        min_by { |s| s.rate }.rate
     end
 
     def stays_by_checkin
-      @stays_by_checkin ||= stays.group_by { |s| s.checkin }
+      @stays_by_checkin ||= stays.group_by(&:checkin)
     end
 
     def stays_by_checkout
-      @stays_by_checkout ||= stays.group_by { |s| s.checkout }
+      @stays_by_checkout ||= stays.group_by(&:checkout)
     end
 
     def dates_with_stay
@@ -85,7 +84,7 @@ class Roomorama::Calendar
         date:             date.to_s,
         available:        true,
         checkin_allowed:  false,
-        checkout_allowed: false,
+        checkout_allowed: false
       })
     end
   end
