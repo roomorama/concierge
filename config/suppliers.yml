@@ -41,3 +41,8 @@ Kigo:
       every: "1d"
     availabilities:
       every: "5h"
+
+KigoLegacy:
+  workers:
+    metadata:
+      every: "1d"
