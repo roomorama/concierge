@@ -16,10 +16,11 @@ module Web::Controllers::ExternalErrors
     def call(params)
       page     = params[:page] && params[:page].to_i
       per      = params[:per]  && params[:per].to_i
-      supplier = params[:supplier]
 
-      @external_errors = ExternalErrorRepository.from_supplier(supplier).
-                           reverse_occurrence.paginate(page: page, per: per)
+      relevant_errors = ExternalErrorRepository.reverse_occurrence
+      relevant_errors = relevant_errors.from_supplier_named(params[:supplier]) if params[:supplier]
+
+      @external_errors = relevant_errors.paginate(page: page, per: per)
     end
   end
 end

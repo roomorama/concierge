@@ -19,9 +19,9 @@ class ExternalErrorRepository
     scope.to_a.first
   end
 
-  def self.from_supplier(s)
+  def self.from_supplier_named(s)
     query do
-      where(supplier: s) if s
+      where(supplier: s)
     end
   end
 
