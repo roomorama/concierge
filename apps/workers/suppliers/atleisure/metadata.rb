@@ -1,9 +1,8 @@
-module Workers::Suppliers
-  # +Workers::Suppliers::AtLeisure+
+module Workers::Suppliers::AtLeisure
+  # +Workers::Suppliers::AtLeisure::Metadata+
   #
-  # Performs synchronisation with supplier
-  class AtLeisure
-    SUPPLIER_NAME = 'AtLeisure'
+  # Performs properties synchronisation with supplier
+  class Metadata
     BATCH_SIZE = 50
 
     attr_reader :synchronisation, :host
@@ -89,7 +88,7 @@ module Workers::Suppliers
 
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
         operation:   'sync',
-        supplier:    SUPPLIER_NAME,
+        supplier:    AtLeisure::Client::SUPPLIER_NAME,
         code:        result.error.code,
         context:     Concierge.context.to_h,
         happened_at: Time.now
@@ -100,6 +99,6 @@ end
 
 # listen supplier worker
 Concierge::Announcer.on("metadata.AtLeisure") do |host, args|
-  Workers::Suppliers::AtLeisure.new(host).perform
+  Workers::Suppliers::AtLeisure::Metadata.new(host).perform
   Result.new({})
 end

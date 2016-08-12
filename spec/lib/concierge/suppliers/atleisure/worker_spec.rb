@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Workers::Suppliers::AtLeisure do
+RSpec.describe Workers::Suppliers::AtLeisure::Metadata do
   include Support::Fixtures
   include Support::Factories
 
