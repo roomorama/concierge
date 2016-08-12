@@ -26,7 +26,7 @@ class Workers::Suppliers::Kigo
       return
     end
 
-    mapper = Kigo::Mappers::Property.new(references.value)
+    mapper = Kigo::Mappers::Property.new(references.value, resolver: mapper_resolver)
     result = with_cache('list') { importer.fetch_properties }
     if result.success?
       properties = host_properties(result.value)
@@ -87,6 +87,10 @@ class Workers::Suppliers::Kigo
     Result.error(:non_ib_property)
   end
 
+  def mapper_resolver
+    Kigo::Mappers::Resolver.new
+  end
+
   def announce_error(message, result)
     message = {
       label:     'Synchronisation Failure',
@@ -121,6 +125,6 @@ class Workers::Suppliers::Kigo
 end
 
 # listen supplier worker
-Concierge::Announcer.on("metadata.Kigo") do |host|
+Concierge::Announcer.on("metadata.#{Kigo::Client::SUPPLIER_NAME}") do |host|
   Workers::Suppliers::Kigo.new(host).perform
 end
