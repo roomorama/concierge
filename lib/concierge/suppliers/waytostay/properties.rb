@@ -172,7 +172,7 @@ module Waytostay
       if missing_keys.empty?
         property = Roomorama::Property.new(response.get("reference"))
         property_attributes_from(response).each do |key, value|
-          property[key] = value if value
+          property[key] = value unless value.nil?
         end
         Result.new(property)
       else

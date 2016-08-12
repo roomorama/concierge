@@ -127,7 +127,7 @@ RSpec.shared_examples "Waytostay property client" do
         )
         room_without_images = expected_room_load.result.to_h
         room_without_images[:images] = []
-        expect(subject.result.to_h).to match room_without_images
+        expect(subject.value.to_h).to match room_without_images
         expect(required_attributes - subject.result.to_h.keys).to be_empty
       end
     end
