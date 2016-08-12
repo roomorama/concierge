@@ -3,6 +3,7 @@ require 'spec_helper'
 RSpec.describe Kigo::Mappers::Property do
   include Support::Fixtures
 
+  let(:resolver) { Kigo::Mappers::Resolver.new }
   let(:references) {
     {
       'amenities' => JSON.parse(read_fixture('kigo/amenities.json')),
@@ -11,33 +12,12 @@ RSpec.describe Kigo::Mappers::Property do
   }
 
 
-  subject { described_class.new(references) }
+  subject { described_class.new(references, resolver: resolver) }
 
   describe '#prepare' do
     let(:property_data) { JSON.parse(read_fixture('kigo/property_data.json')) }
     let(:pricing) { JSON.parse(read_fixture('kigo/pricing_setup.json'))['PRICING'] }
     let(:expected_nightly_rate) { 151.98 }
-    context 'images' do
-      let(:image) {
-        {
-          'PHOTO_ID'        => '//supper-fantastic.url/hashed-identifier.jpg',
-          'PHOTO_PANORAMIC' => false,
-          'PHOTO_NAME'      => 'Balcony',
-          'PHOTO_COMMENTS'  => 'Balcony with foosball table'
-        }
-      }
-
-      it 'sets proper image data' do
-        property_data['PROP_PHOTOS'] = [image]
-        property = subject.prepare(property_data, pricing).value
-
-        expect(property.images.size).to eq 1
-        image = property.images.first
-        expect(image.url).to eq 'https://supper-fantastic.url/hashed-identifier.jpg'
-        expect(image.identifier).to eq 'hashed-identifier.jpg'
-        expect(image.caption).to eq 'Balcony with foosball table'
-      end
-    end
 
     context 'stay length' do
       context 'unit is month' do
