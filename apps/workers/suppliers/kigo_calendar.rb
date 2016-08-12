@@ -3,10 +3,11 @@
 # Performs updating properties calendar
 class Workers::Suppliers::KigoCalendar
 
-  attr_reader :synchronisation, :host
+  attr_reader :synchronisation, :host, :identifiers
 
-  def initialize(host)
+  def initialize(host, identifiers = [])
     @host            = host
+    @identifiers     = identifiers
     @synchronisation = Workers::CalendarSynchronisation.new(host)
   end
 
@@ -31,7 +32,9 @@ class Workers::Suppliers::KigoCalendar
   private
 
   def properties
-    @properties ||= PropertyRepository.from_host(host).identified_by(identifiers).all
+    properties = PropertyRepository.from_host(host)
+    properties.identified_by(identifiers) if identifiers.any?
+    properties
   end
 
   def importer
@@ -49,24 +52,6 @@ class Workers::Suppliers::KigoCalendar
   def supplier_name
     Kigo::Client::SUPPLIER_NAME
   end
-
-  def identifiers
-    # diff_uid = with_cache('diff_uid') { importer.fetch_prices_diff }
-  end
-
-  def with_cache(key)
-    freshness = 60 * 60 * 3 # 3 hours
-    cache.fetch(key, freshness: freshness, serializer: json_serializer) { yield }
-  end
-
-  def json_serializer
-    @serializer ||= Concierge::Cache::Serializers::JSON.new
-  end
-
-  def cache
-    @_cache ||= Concierge::Cache.new(namespace: 'kigo.diff')
-  end
-
 end
 
 # listen supplier worker
