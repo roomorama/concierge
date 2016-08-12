@@ -24,10 +24,12 @@ RSpec.describe Roomorama::Property do
   describe ".load" do
     let(:attributes) {
       {
-        identifier:   "prop1",
-        title:        "Studio Apartment in Chicago",
-        max_guests:   2,
-        nightly_rate: 100,
+        identifier:           "prop1",
+        title:                "Studio Apartment in Chicago",
+        max_guests:           2,
+        nightly_rate:         100,
+        pets_allowed:         false,
+        default_to_available: false,
 
         images: [
           {
@@ -80,6 +82,8 @@ RSpec.describe Roomorama::Property do
       expect(property.title).to eq "Studio Apartment in Chicago"
       expect(property.max_guests).to eq 2
       expect(property.nightly_rate).to eq 100
+      expect(property.pets_allowed).to eq false
+      expect(property.default_to_available).to eq false
       expect(property).to be_multi_unit
 
       images = property.images
