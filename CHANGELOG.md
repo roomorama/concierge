@@ -12,6 +12,9 @@ how this file is formatted and how the process works.
 ### Changed
 - Do not attempt to update calendar for properties not previously synchronised.
 
+### Fixed
+- error with saving response with ASCII-8BIT encoding type
+
 ## [0.5.5] - 2016-08-09
 ### Added
 - Add check support for waytostay damage deposit
