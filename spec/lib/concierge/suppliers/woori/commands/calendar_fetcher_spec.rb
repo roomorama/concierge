@@ -1,20 +1,44 @@
 require "spec_helper"
 
-RSpec.describe Woori::Commands::UnitCalendarFetcher do
+RSpec.describe Woori::Commands::CalendarFetcher do
   include Support::HTTPStubbing
   include Support::Fixtures
   include Support::Woori::LastContextEvent
 
   let(:credentials) { Concierge::Credentials.for("Woori") }
   let(:subject) { described_class.new(credentials) }
-  let(:unit_id) { "w_w0104006_R01" }
+  let(:property) do
+    Property.new(
+      id: 1,
+      identifier: '123',
+      data: Concierge::SafeAccessHash.new(units: units)
+    )
+  end
+
+  let(:units) do
+    [{ identifier: '1'}, { identifier: '2'} ]
+  end
+
   let(:url) { "http://my.test/available" }
+
+  context "when there is no units in property" do
+    let(:units) { [] }
+
+    it "returns empty calendar when there is not units in property" do
+      result = subject.call(property)
+      expect(result.success?).to be true
+
+      calendar = result.value
+      expect(calendar).to be_kind_of(Roomorama::Calendar)
+      expect(calendar.entries).to eq([])
+    end
+  end
 
   it "returns result wrapping a calendar object" do
     stub_data = read_fixture("woori/unit_rates/success.json")
     stub_call(:get, url) { [200, {}, stub_data] }
 
-    result = subject.call(unit_id)
+    result = subject.call(property)
     expect(result.success?).to be true
 
     calendar = result.value
@@ -25,18 +49,19 @@ RSpec.describe Woori::Commands::UnitCalendarFetcher do
     stub_data = read_fixture("woori/unit_rates/empty.json")
     stub_call(:get, url) { [200, {}, stub_data] }
 
-    result = subject.call(unit_id)
+    result = subject.call(property)
     expect(result.success?).to be true
 
-    unit_rates = result.value
-    expect(unit_rates).to be_nil
+    calendar = result.value
+    expect(calendar).to be_kind_of(Roomorama::Calendar)
+    expect(calendar.entries).to eq([])
   end
 
   it "returns failure result when Woori API returns an error" do
     stub_data = read_fixture("woori/error_500.json")
     stub_call(:get, url) { [500, {}, stub_data] }
 
-    result = subject.call(unit_id)
+    result = subject.call(property)
 
     expect(result.success?).to be false
     expect(result.error.code).to eq(:http_status_500)
@@ -47,7 +72,7 @@ RSpec.describe Woori::Commands::UnitCalendarFetcher do
       stub_data = read_fixture("woori/bad_response.json")
       stub_call(:get, url) { [200, {}, stub_data] }
 
-      result = subject.call(unit_id)
+      result = subject.call(property)
 
       expect(result.success?).to be false
       expect(result.error.code).to eq(:invalid_json_representation)
@@ -58,7 +83,7 @@ RSpec.describe Woori::Commands::UnitCalendarFetcher do
     it "returns a result with an appropriate error" do
       stub_call(:get, url) { raise Faraday::TimeoutError }
 
-      result = subject.call(unit_id)
+      result = subject.call(property)
 
       expect(result).not_to be_success
       expect(last_context_event[:message]).to eq("timeout")

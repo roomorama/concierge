@@ -78,7 +78,7 @@ module Woori
     # Returns a +Result+ with +Result::Error+ when operation fails
     def fetch_calendar(property)
       calendar_fetcher = Commands::CalendarFetcher.new(credentials)
-      calendar_fetcher.call(unit_id)
+      calendar_fetcher.call(property)
     end
 
     private

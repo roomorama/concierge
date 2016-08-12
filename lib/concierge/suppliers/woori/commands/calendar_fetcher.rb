@@ -29,11 +29,14 @@ module Woori
 
         units = Array(property.data["units"])
         units.each do |unit|
-          unit_calendar = fetch_and_build_unit_calendar(unit["identifier"])
-          calendar.add_unit(unit_calendar.value)
+          calendar_result = fetch_and_build_unit_calendar(unit["identifier"])
+
+          return calendar_result unless calendar_result.success?
+
+          calendar.add_unit(calendar_result.value)
         end
 
-        calendar
+        Result.new(calendar)
       end
 
       private
@@ -46,7 +49,10 @@ module Woori
 
           if decoded_result.success?
             safe_hash = Concierge::SafeAccessHash.new(decoded_result.value)
-            mapper = Woori::Mappers::RoomoramaUnitCalendar.new(safe_hash)
+            mapper = Woori::Mappers::RoomoramaUnitCalendar.new(
+              unit_id,
+              safe_hash
+            )
             Result.new(mapper.build_calendar)
           else
             decoded_result
