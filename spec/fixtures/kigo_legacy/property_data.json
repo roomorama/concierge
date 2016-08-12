@@ -1,0 +1,144 @@
+{
+  "PROP_ID": 101124,
+  "PROP_PROVIDER": {
+    "PROVIDER_TYPE": "RA",
+    "RA_ID": 508
+  },
+  "PROP_INSTANT_BOOK": false,
+  "PROP_INFO": {
+    "PROP_NAME": "House Kranjci",
+    "PROP_STREETNO": "12",
+    "PROP_ADDR1": "Kranjci",
+    "PROP_ADDR2": "",
+    "PROP_ADDR3": "",
+    "PROP_APTNO": "",
+    "PROP_POSTCODE": "52220",
+    "PROP_CITY": "Labin",
+    "PROP_REGION": "Istria",
+    "PROP_COUNTRY": "HR",
+    "PROP_LATLNG": {
+      "LATITUDE": "45.066500",
+      "LONGITUDE": "14.115670"
+    },
+    "PROP_PHONE": "",
+    "PROP_AXSCODE": "",
+    "PROP_BEDROOMS": 2,
+    "PROP_BEDS": 3,
+    "PROP_BED_TYPES": [
+      3,
+      3,
+      3
+    ],
+    "PROP_BATHROOMS": 1,
+    "PROP_TOILETS": 1,
+    "PROP_TYPE_ID": 6,
+    "PROP_SIZE": 116,
+    "PROP_SIZE_UNIT": "SQMETER",
+    "PROP_MAXGUESTS": 4,
+    "PROP_MAXGUESTS_ADULTS": 4,
+    "PROP_MAXGUESTS_CHILDREN": 2,
+    "PROP_MAXGUESTS_BABIES": 2,
+    "PROP_FLOOR": "2",
+    "PROP_ELEVATOR": false,
+    "PROP_CIN_TIME": "16:00",
+    "PROP_COUT_TIME": "10:00",
+    "PROP_CLEAN_TIME": "03:00",
+    "PROP_STAYTIME_MIN": {
+      "UNIT": "NIGHT",
+      "NUMBER": 1
+    },
+    "PROP_STAYTIME_MAX": {
+      "UNIT": "YEAR",
+      "NUMBER": 1
+    },
+    "PROP_SHORTDESCRIPTION": "This beautiful family house is situated in a small village Kranjci Istria (Old town Labin) near Labin and it has two bedrooms and one folding sofa, bathroom, kitchen and dining room.The house has two terraces and a swimming pool which guests can use.",
+    "PROP_DESCRIPTION": "This beautiful family house is situated in a small village Kranjci Istria (Old town Labin) near Labin. In a quiet environment and surrounded by beautiful nature, the house was completely reconstructed in 2009. Around the house is a garden which is spread over 300 m².\n\nThe house has two bedrooms and one folding sofa, bathroom, kitchen and dining room. The interior is fully equipped with all appliances and necessary utensils, plates, etc.\nThere is a terrace in front of the second terrace back of the house and a private pool.",
+    "PROP_AREADESCRIPTION": "This beautiful house offers a great location nearby the beautiful sea, places full of nature, historical sights, and amazing food. \nIn the vicinity there are plenty of small stores and food markets with fresh fruit, vegetables, fish, meat... and for gourmets there are lots of restaurants and rustic taverns that offer traditional Istrian dishes, Istrian wine and olive oil.This rental unit is a private house and will be exclusively yours.\n\nThis can be your destination for both romantic and active vacation. The house is less than one hour drive from each larger Istrian town, like Pula, Pazin, Opatija, Rovinj or Poreč. \nIf you are active cyclists have many cycling paths and you can go right from the house and get to know the landscape.\n\nThe most beautiful Istrian beaches located in Prtlog, Sveta Marina, Ravni or Rabac are within 10-15 minutes car drive from the house.\nThe house has a position close to bike trails for those who want a little adrenaline and stay in nature",
+    "PROP_RENTAL_DETAILS": "Guests can use private parking, private pool, Wifi and air conditioning without charge.",
+    "PROP_INVENTORY": "",
+    "PROP_ARRIVAL_SHEET": "",
+    "PROP_AMENITIES": [
+      6,
+      11,
+      14,
+      15,
+      16,
+      22,
+      42,
+      43,
+      44,
+      45,
+      46,
+      49,
+      50,
+      52,
+      53,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      71,
+      75,
+      76,
+      77,
+      78,
+      82,
+      92,
+      102,
+      109
+    ],
+    "PROP_ACTIVITIES": [
+      1,
+      3,
+      5,
+      6,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20,
+      21,
+      22,
+      24,
+      29,
+      30
+    ]
+  },
+  "PROP_RATE": {
+    "PROP_RATE_CURRENCY": "EUR",
+    "PROP_RATE_NIGHTLY_FROM": "88.00",
+    "PROP_RATE_NIGHTLY_TO": "88.00",
+    "PROP_RATE_WEEKLY_FROM": "616.00",
+    "PROP_RATE_WEEKLY_TO": "616.00",
+    "PROP_RATE_MONTHLY_FROM": "2640.00",
+    "PROP_RATE_MONTHLY_TO": "2640.00"
+  },
+  "PROP_PHOTOS": [
+    {
+      "PHOTO_ID": "fc06ea04798c74f43639285a86096068bf585b22f1259529a7372aea693f979d",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "House Kranjci 1",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "273d916aeb60f3934cec18c82ed632b996a25c1dd310f40cefd01250b8de8393",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "House Kranjci 2 ",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "ecdf2ff0e946ed438ae6c1440521d2f7e24aca4bc62af2c5be910300e5395678",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    }
+  ],
+  "PROP_UDPA": [
+
+  ]
+}
