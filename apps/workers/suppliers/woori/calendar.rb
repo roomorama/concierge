@@ -33,10 +33,6 @@ module Workers::Suppliers
       Concierge::Credentials.for(::Woori::Client::SUPPLIER_NAME)
     end
 
-    def mapper
-      @mapper ||= Woori::Mappers::Calendar.new
-    end
-
     def synced_properties
       PropertyRepository.from_host(host)
     end
