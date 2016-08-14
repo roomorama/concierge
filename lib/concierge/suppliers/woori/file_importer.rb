@@ -39,9 +39,9 @@ module Woori
 
     def unit_files
       [
-        '/Users/ruslansharipov/Downloads/YTL_bulk_data_160801/bulk_roomtypes_0_to_10000.json',
-        '/Users/ruslansharipov/Downloads/YTL_bulk_data_160801/bulk_roomtypes_10000_to_20000.json',
-        '/Users/ruslansharipov/Downloads/YTL_bulk_data_160801/bulk_roomtypes_20000_to_30000.json'
+        '/Users/ruslansharipov/Downloads/YTL_bulk_data_160805/bulk_roomtypes_0_to_10000.json',
+        '/Users/ruslansharipov/Downloads/YTL_bulk_data_160805/bulk_roomtypes_10000_to_20000.json',
+        '/Users/ruslansharipov/Downloads/YTL_bulk_data_160805/bulk_roomtypes_20000_to_30000.json'
       ]
     end
   end
