@@ -70,7 +70,7 @@ module Workers::Suppliers::AtLeisure
     end
 
     def credentials
-      Concierge::Credentials.for(SUPPLIER_NAME)
+      Concierge::Credentials.for(AtLeisure::Client::SUPPLIER_NAME)
     end
 
     def mapper

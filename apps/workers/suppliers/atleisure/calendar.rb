@@ -1,101 +1,98 @@
-module Workers::Suppliers::AtLeisure
-  # +Workers::Suppliers::AtLeisure::Calendar+
-  #
-  # Performs properties availabilities synchronisation with supplier
-  class Calendar
-    attr_reader :synchronisation, :host
+module Workers
+  module Suppliers
+    module AtLeisure
+      # +Workers::Suppliers::AtLeisure::Calendar+
+      #
+      # Performs properties availabilities synchronisation with supplier
+      class Calendar
+        BATCH_SIZE = 50
 
-    def initialize(host)
-      @host            = host
-      @synchronisation = Workers::CalendarSynchronisation.new(host)
-    end
+        attr_reader :synchronisation, :host
 
-    def perform
-      identifiers = all_identifiers
+        def initialize(host)
+          @host            = host
+          @synchronisation = Workers::CalendarSynchronisation.new(host)
+        end
 
-      identifiers.each_slice(BATCH_SIZE) do |ids|
-        result = fetch_availabilities(ids)
-        if result.success?
-          synchronisation.start(property_id) do
-            Concierge.context.disable!
+        def perform
+          today = Date.today
+          identifiers = all_identifiers
 
-            result = fetch_availabilities(property_id)
-            next result unless result.success?
-            rates = result.value
-
-            result = fetch_reservations(property_id)
-            next result unless result.success?
-            reservations = result.value
-
-            roomorama_calendar = mapper.build(property_id, rates, reservations)
-            Result.new(roomorama_calendar)
+          identifiers.each_slice(BATCH_SIZE) do |ids|
+            result = importer.fetch_availabilities(ids)
+            if result.success?
+              availabilities = result.value
+              property_id = availabilities['HouseCode']
+              synchronisation.start(property_id) do
+                stays = []
+                availabilities.map do |availability|
+                  if validator(availability, today).valid?
+                    stays << to_stay(availability)
+                  end
+                end
+                build_calendar(property_id, stays)
+              end
+            else
+              synchronisation.failed!
+              message = "Failed to perform the `#fetch_availabilities` operation, with properties: `#{ids}`"
+              announce_error(message, result)
+            end
           end
-        else
-          synchronisation.failed!
-          message = "Failed to perform the `#fetch_availabilities` operation, with properties: `#{ids}`"
-          announce_error(message, result)
+          synchronisation.finish!
+        end
+
+        private
+
+        def to_stay(availability)
+          Roomorama::Calendar::Stay.new({
+            checkin:    availability['ArrivalDate'],
+            checkout:   availability['DepartureDate'],
+            price:      availability['Price'].to_f,
+            available:  true
+          })
+        end
+
+        def build_calendar(property_id, stays)
+          calendar = Roomorama::Calendar.new(property_id).tap do |c|
+            entries = StaysMapper.new(stays).map
+            entries.each { |entry| c.add(entry) }
+          end
+
+          Result.new(calendar)
+        end
+
+
+        def all_identifiers
+          PropertyRepository.from_host(host).only(:identifier).map(&:identifier)
+        end
+
+        def validator(availability, today)
+          ::AtLeisure::AvailabilityValidator.new(availability, today)
+        end
+
+        def importer
+          @importer ||= ::AtLeisure::Importer.new(credentials)
+        end
+
+        def credentials
+          Concierge::Credentials.for(AtLeisure::Client::SUPPLIER_NAME)
+        end
+
+        def augment_context_error(message)
+          message = {
+            label: 'Synchronisation Failure',
+            message: message,
+            backtrace: caller
+          }
+          context = Concierge::Context::Message.new(message)
+          Concierge.context.augment(context)
         end
       end
-      synchronisation.finish!
-    end
-
-    private
-
-    def report_error(message)
-      yield.tap do |result|
-        unless result.success?
-          with_context_enabled { augment_context_error(message) }
-        end
-      end
-    end
-
-    def fetch_rates(property_id)
-      report_error("Failed to fetch rates for property `#{property_id}`") do
-        importer.fetch_rates(property_id)
-      end
-    end
-
-    def fetch_reservations(property_id)
-      report_error("Failed to fetch reservations for property `#{property_id}`") do
-        importer.fetch_reservations(property_id)
-      end
-    end
-
-    def with_context_enabled
-      Concierge.context.enable!
-      yield
-      Concierge.context.disable!
-    end
-
-    def all_identifiers
-      PropertyRepository.from_host(host).only(:identifier).map(&:identifier)
-    end
-
-    def mapper
-      @mapper ||= ::Ciirus::Mappers::RoomoramaCalendar.new
-    end
-
-    def importer
-      @importer ||= ::Ciirus::Importer.new(credentials)
-    end
-
-    def credentials
-      Concierge::Credentials.for(Ciirus::Client::SUPPLIER_NAME)
-    end
-
-    def augment_context_error(message)
-      message = {
-        label: 'Synchronisation Failure',
-        message: message,
-        backtrace: caller
-      }
-      context = Concierge::Context::Message.new(message)
-      Concierge.context.augment(context)
     end
   end
 end
 
 # listen supplier worker
-Concierge::Announcer.on('calendar.Ciirus') do |host|
-  Workers::Suppliers::Ciirus::Calendar.new(host).perform
+Concierge::Announcer.on('calendar.AtLeisure') do |host|
+  Workers::Suppliers::Atleisure::Calendar.new(host).perform
 end

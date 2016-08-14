@@ -54,6 +54,31 @@ RSpec.describe AtLeisure::Importer do
     let(:fixture) { jsonrpc_fixture('atleisure/property_data.json') }
 
     it_behaves_like 'handling errors'
+
+    it 'returns hash in success case' do
+      stub_call(:post, endpoint) { [200, {}, fixture] }
+      result = subject.fetch_data([])
+
+      expect(result.success?).to be true
+      expect(result.value).to be_an(Hash)
+    end
+  end
+
+  describe '#fetch_availabilities' do
+    let(:endpoint) { 'https://dataofhousesv1.jsonrpc-partner.net/cgi/lars/jsonrpc-partner/jsonrpc.htm' }
+    let(:result) { subject.fetch_availabilities([]) }
+    # Here we can use fixtures from property_data method
+    let(:fixture) { jsonrpc_fixture('atleisure/property_data.json') }
+
+    it_behaves_like 'handling errors'
+
+    it 'returns hash in success case' do
+      stub_call(:post, endpoint) { [200, {}, fixture] }
+      result = subject.fetch_availabilities([])
+
+      expect(result.success?).to be true
+      expect(result.value).to be_an(Hash)
+    end
   end
 
   private

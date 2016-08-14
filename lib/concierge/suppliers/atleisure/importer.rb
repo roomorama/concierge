@@ -48,6 +48,7 @@ module AtLeisure
       client_for(endpoint).invoke(endpoint, params.merge(authentication_params))
     end
 
+    # fetches availabilities for properties by their identifiers
     def fetch_availabilities(identifiers)
       params   = { 'HouseCodes' => identifiers, 'Items' => ['AvailabilityPeriodV1'] }
       endpoint = ENDPOINT_METHODS.fetch(:properties_data)
