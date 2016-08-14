@@ -6,6 +6,8 @@ module Woori
     # property calendar from Woori, parsing the response, and building a
     # +Result+ which wraps +Roomorama::Calendar+ object.
     class CalendarFetcher < BaseFetcher
+      class AvailabilitiesFetchError < StandardError; end
+
       include Concierge::JSON
 
       ENDPOINT = "available"
@@ -41,6 +43,8 @@ module Woori
 
       private
       def fetch_and_build_unit_calendar(unit_id)
+        retries ||= 3
+
         params = build_request_params(unit_id)
         result = http.get(ENDPOINT, params, headers)
 
@@ -57,6 +61,12 @@ module Woori
           else
             decoded_result
           end
+        else
+          raise AvailabilitiesFetchError
+        end
+      rescue AvailabilitiesFetchError
+        if (retries -= 1) > 0
+          retry
         else
           result
         end

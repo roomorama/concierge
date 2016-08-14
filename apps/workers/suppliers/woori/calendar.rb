@@ -1,6 +1,6 @@
 module Workers::Suppliers
   class Woori::Calendar
-    attr_reader :synchronisation, :host
+    attr_reader :sync, :host
 
     def initialize(host)
       @host = host
@@ -15,9 +15,9 @@ module Workers::Suppliers
           calendar_result = importer.fetch_calendar(property)
 
           if calendar_result.success?
-            calendar_result.value
+            calendar_result
           else
-            announce_calendar_fetch_error(unit, calendar_result)
+            announce_calendar_fetch_error(property, calendar_result)
             calendar_result
           end
         end
@@ -59,8 +59,8 @@ module Workers::Suppliers
       })
     end
 
-    def announce_calendar_fetch_error(unit, result)
-      message = "Failed to perform the `fetch unit calendar` operation for unit with id #{unit.identifier}"
+    def announce_calendar_fetch_error(property, result)
+      message = "Failed to perform the `fetch calendar` operation for property with id #{property.identifier}"
       announce_error(message, result)
     end
   end
