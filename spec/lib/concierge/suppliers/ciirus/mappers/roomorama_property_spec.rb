@@ -12,6 +12,7 @@ RSpec.describe Ciirus::Mappers::RoomoramaProperty do
       {
         property_id: '33680',
         property_name: "Mandy's Magic Villa",
+        mc_property_name: "Mandy's Magic Villa",
         address: '1234 Dahlia Reserve Drive',
         zip: '34744',
         city: 'Kissimmee',
@@ -128,6 +129,43 @@ RSpec.describe Ciirus::Mappers::RoomoramaProperty do
       roomorama_property = subject.build(property, images, rates, description, security_deposit)
 
       expect(roomorama_property.country_code).to be_nil
+    end
+  end
+
+  context 'when property name is empty' do
+    let(:property) do
+      Ciirus::Entities::Property.new(
+        {
+          property_id: '33680',
+          property_name: nil,
+          mc_property_name: "Mandy's Magic Villa",
+          address: '1234 Dahlia Reserve Drive',
+          zip: '34744',
+          city: 'Kissimmee',
+          bedrooms: 6,
+          sleeps: 6,
+          min_nights_stay: 0,
+          type: 'Villa',
+          country: country,
+          xco: '28.2238577',
+          yco: '-81.4975719',
+          bathrooms: 4,
+          king_beds: 1,
+          queen_beds: 2,
+          full_beds: 3,
+          twin_beds: 4,
+          extra_bed: true,
+          sofa_bed: true,
+          pets_allowed: true,
+          currency_code: 'USD',
+          amenities: amenities
+        }
+      )
+    end
+    it 'uses mc_property_name' do
+      roomorama_property = subject.build(property, images, rates, description, security_deposit)
+
+      expect(roomorama_property.title).to eq("Mandy's Magic Villa")
     end
   end
 end
