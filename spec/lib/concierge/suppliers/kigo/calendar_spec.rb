@@ -20,7 +20,7 @@ RSpec.describe Kigo::Calendar do
       expect(result).to be_success
 
       calendar = result.value
-      expect(calendar.property_identifier).to eq property.identifier
+      expect(calendar.identifier).to eq property.identifier
       expect(calendar.entries.size).to eq 368
 
       entry = calendar.entries.first
