@@ -33,9 +33,8 @@ module Workers
                 build_calendar(property_id, stays)
               end
             else
-              synchronisation.failed!
               message = "Failed to perform the `#fetch_availabilities` operation, with properties: `#{ids}`"
-              announce_error(message, result)
+              augment_context_error(message)
             end
           end
           synchronisation.finish!
@@ -75,7 +74,7 @@ module Workers
         end
 
         def credentials
-          Concierge::Credentials.for(AtLeisure::Client::SUPPLIER_NAME)
+          Concierge::Credentials.for(::AtLeisure::Client::SUPPLIER_NAME)
         end
 
         def augment_context_error(message)
