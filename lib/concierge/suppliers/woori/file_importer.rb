@@ -4,6 +4,12 @@ module Woori
   # This class provides an interface for the bulk import of Woori properties
   # +Woori::FileImporter+ imports data from files (from .json files)
   class FileImporter
+    attr_reader :credentials
+
+    def initialize(credentials)
+      @credentials = credentials
+    end
+
     # Retrieves the list of all properties
     #
     # Returns an +Array+ of +Roomorama::Property+ objects
@@ -34,14 +40,14 @@ module Woori
 
     private
     def properties_file
-      '/Users/ruslansharipov/Downloads/YTL_bulk_data_160801/bulk_properties.json'
+      "#{credentials.import_files_dir}/bulk_properties.json"
     end
 
     def unit_files
       [
-        '/Users/ruslansharipov/Downloads/YTL_bulk_data_160805/bulk_roomtypes_0_to_10000.json',
-        '/Users/ruslansharipov/Downloads/YTL_bulk_data_160805/bulk_roomtypes_10000_to_20000.json',
-        '/Users/ruslansharipov/Downloads/YTL_bulk_data_160805/bulk_roomtypes_20000_to_30000.json'
+        "#{credentials.import_files_dir}/bulk_roomtypes_0_to_10000.json",
+        "#{credentials.import_files_dir}/bulk_roomtypes_10000_to_20000.json",
+        "#{credentials.import_files_dir}/bulk_roomtypes_20000_to_30000.json"
       ]
     end
   end

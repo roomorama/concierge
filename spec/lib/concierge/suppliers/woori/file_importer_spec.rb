@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 RSpec.describe Woori::FileImporter do
-  let(:importer) { described_class.new }
+  let(:credentials) { Concierge::Credentials.for("Woori") }
+  let(:importer) { described_class.new(credentials) }
 
   describe "#fetch_all_properties" do
     it "calls file property repository to load properties" do

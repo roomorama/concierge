@@ -36,7 +36,7 @@ module Workers::Suppliers::Woori
     private
 
     def file_importer
-      @file_importer ||= ::Woori::FileImporter.new
+      @file_importer ||= ::Woori::FileImporter.new(credentials)
     end
 
     def api_importer
