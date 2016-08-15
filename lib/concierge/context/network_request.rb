@@ -59,7 +59,6 @@ class Concierge::Context
         [url, "?", query_string].join
       end
     end
-
   end
 
 end

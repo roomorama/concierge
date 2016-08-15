@@ -1,0 +1,27 @@
+<APIUsername>Foo</APIUsername><APIPassword>123</APIPassword><ArriveDate>1 May 2016</ArriveDate><DepartDate>10 May 2016</DepartDate><FilterOptions>
+  <ManagementCompanyID>0</ManagementCompanyID>
+  <CommunityID>0</CommunityID>
+  <PropertyID>10</PropertyID>
+  <PropertyType>0</PropertyType>
+  <HasPool>2</HasPool>
+  <HasSpa>2</HasSpa>
+  <PrivacyFence>2</PrivacyFence>
+  <CommunalGym>2</CommunalGym>
+  <HasGamesRoom>2</HasGamesRoom>
+  <IsGasFree>false</IsGasFree>
+  <Sleeps>0</Sleeps>
+  <PropertyClass>0</PropertyClass>
+  <ConservationView>2</ConservationView>
+  <Bedrooms>0</Bedrooms>
+  <WaterView>2</WaterView>
+  <LakeView>2</LakeView>
+  <WiFi>2</WiFi>
+  <PetsAllowed>2</PetsAllowed>
+  <OnGolfCourse>2</OnGolfCourse>
+  <SouthFacingPool>2</SouthFacingPool>
+</FilterOptions><SearchOptions>
+  <ReturnTopX>0</ReturnTopX>
+  <ReturnFullDetails>true</ReturnFullDetails>
+  <ReturnQuote>true</ReturnQuote>
+  <IncludePoolHeatInQuote>false</IncludePoolHeatInQuote>
+</SearchOptions><xmlMsg/><jSonMsg/>

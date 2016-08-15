@@ -37,6 +37,12 @@ RSpec.describe Roomorama::Calendar do
 
       expect(subject.validate!).to eq true
     end
+
+    it "is valid if valid_stay_lengths is given as an array" do
+      entry_attributes[:valid_stay_lengths] = [1, 7, 14]
+      subject.add(entry)
+      expect(subject.validate!).to eq true
+    end
   end
 
   describe "#empty?" do
@@ -104,6 +110,38 @@ RSpec.describe Roomorama::Calendar do
         availabilities:    "",
         nightly_prices:    []
       })
+    end
+
+    context "multi-unit support" do
+      let(:unit_identifier) { "unit1" }
+      let(:unit_calendar)   { described_class.new(unit_identifier) }
+
+      before do
+        subject.add(entry)
+      end
+
+      it "includes the calendars for each included unit" do
+        unit_entry = create_entry(available: true, nightly_rate: 200)
+        unit_calendar.add(unit_entry)
+
+        subject.add_unit(unit_calendar)
+
+        expect(subject.to_h).to eq({
+          identifier:        "prop1",
+          start_date:        "2016-05-22",
+          availabilities:    "0",
+          nightly_prices:    [100],
+
+          units: [
+            {
+              identifier:        "unit1",
+              start_date:        "2016-05-22",
+              availabilities:    "1",
+              nightly_prices:    [200]
+            }
+          ]
+        })
+      end
     end
   end
 

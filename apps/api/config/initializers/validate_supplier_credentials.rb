@@ -6,6 +6,7 @@ if enforce_on_envs.include?(Hanami.env)
     jtb:        %w(id user password company url),
     kigo:       %w(subscription_key),
     kigolegacy: %w(username password),
-    waytostay:  %w(client_id client_secret url token_url)
+    waytostay:  %w(client_id client_secret url token_url),
+    ciirus:     %w(url username password)
   })
 end

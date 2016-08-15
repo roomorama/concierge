@@ -1,0 +1,18 @@
+<APIUsername>Foo</APIUsername><APIPassword>123</APIPassword><BD>
+  <ArrivalDate>1 May 2016</ArrivalDate>
+  <DepartureDate>10 May 2016</DepartureDate>
+  <PropertyID>10</PropertyID>
+  <GuestName>John Buttler</GuestName>
+  <GuestEmailAddress>my@email.com</GuestEmailAddress>
+  <GuestTelephone>+3 675 45879</GuestTelephone>
+  <GuestAddress>Long Island 123</GuestAddress>
+  <GuestList>
+    <sGuests>
+      <Name>John Buttler</Name>
+      <Age>-1</Age>
+    </sGuests>
+  </GuestList>
+  <PoolHeatRequired>false</PoolHeatRequired>
+  <xmlMsg/>
+  <jSonMsg/>
+</BD>

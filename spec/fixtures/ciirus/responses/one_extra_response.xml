@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope
+        xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <soap:Body>
+    <GetExtrasResponse xmlns="http://xml.ciirus.com/">
+      <GetExtrasResult>
+        <RowCount>22</RowCount>
+        <Extras>
+          <PropertyExtras>
+            <PropertyID>33692</PropertyID>
+            <ItemCode>SD</ItemCode>
+            <ItemDescription>Security Deposit</ItemDescription>
+            <FlatFee>true</FlatFee>
+            <FlatFeeAmount>2500.00</FlatFeeAmount>
+            <DailyFee>false</DailyFee>
+            <DailyFeeAmount>0</DailyFeeAmount>
+            <PercentageFee>false</PercentageFee>
+            <Percentage>0</Percentage>
+            <Mandatory>false</Mandatory>
+            <MinimumCharge>0.00</MinimumCharge>
+            <ChargeTax1>true</ChargeTax1>
+            <ChargeTax2>true</ChargeTax2>
+            <ChargeTax3>true</ChargeTax3>
+          </PropertyExtras>
+        </Extras>
+      </GetExtrasResult>
+    </GetExtrasResponse>
+  </soap:Body>
+</soap:Envelope>

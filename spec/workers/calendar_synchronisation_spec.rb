@@ -32,7 +32,9 @@ RSpec.describe Workers::CalendarSynchronisation do
       operation = nil
       expect(subject).to receive(:run_operation) { |op| operation = op }
 
+      create_property(identifier: "prop1", host_id: host.id)
       subject.start("prop1") { Result.new(calendar) }
+
       expect(operation).to be_a Roomorama::Client::Operations::UpdateCalendar
       expect(operation.calendar).to eq calendar
     end
@@ -40,6 +42,8 @@ RSpec.describe Workers::CalendarSynchronisation do
     context "error handling" do
       it "announces an error if the calendar returned does not pass validations" do
         calendar.entries.first.date = nil
+
+        create_property(identifier: "prop1", host_id: host.id)
         subject.start("prop1") { Result.new(calendar) }
 
         error = ExternalErrorRepository.last
@@ -82,6 +86,8 @@ RSpec.describe Workers::CalendarSynchronisation do
           [422, {}, read_fixture("roomorama/invalid_start_date.json")]
         }
 
+        create_property(identifier: "prop1", host_id: host.id)
+
         expect {
           subject.start("prop1") { Result.new(calendar) }
         }.to change { ExternalErrorRepository.count }.by(1)
@@ -104,6 +110,14 @@ RSpec.describe Workers::CalendarSynchronisation do
           subject.start("prop1") { Result.new(calendar) }
         }.not_to change { ExternalErrorRepository.count }
       end
+
+      it "skips calendar synchronisation if the property was not previously created by Concierge" do
+        expect {
+          subject.start("prop1") { Result.new(calendar) }
+        }.not_to change { ExternalErrorRepository.count }
+
+        expect(Roomorama::Client::Operations).not_to receive(:update_calendar)
+      end
     end
   end
 
@@ -113,6 +127,9 @@ RSpec.describe Workers::CalendarSynchronisation do
     end
 
     it "creates a sync_process record when there is an error with the synchronisation" do
+      create_property(identifier: "prop1", host_id: host.id)
+      create_property(identifier: "prop2", host_id: host.id)
+
       subject.start("prop1") { Result.new(calendar) }
       subject.start("prop2") { Result.error(:http_status_500) }
 

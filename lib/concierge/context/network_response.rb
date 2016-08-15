@@ -25,7 +25,7 @@ class Concierge::Context
     def initialize(status:, headers:, body:)
       @status    = status
       @headers   = headers
-      @body      = body
+      @body      = encoded_utf(body)
       @timestamp = Time.now
     end
 
@@ -39,6 +39,13 @@ class Concierge::Context
       }
     end
 
-  end
+    private
 
+    # +ascii-8bit+ response fails with saving context in database.
+    # this workaround converts response to +utf-8+ encoding type
+    def encoded_utf(body)
+      body.to_s.force_encoding('utf-8')
+    end
+
+  end
 end

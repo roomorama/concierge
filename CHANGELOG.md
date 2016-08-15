@@ -4,6 +4,19 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.6.0] - 2016-08-15
+### Added
+- Support for multi-unit availabilities on `Roomorama::Calendar`.
+- `Roomorama::Calendar::Stay` and `StayMapper` to map supplier's format into `Roomorama::Calendar:Entry`
+- CiiRUS integrations: quote, book, cancel and synchronisation
+
+### Changed
+- Do not attempt to update calendar for properties not previously synchronised.
+
+### Fixed
+- error with saving response with ASCII-8BIT encoding type
+- `Roomorama::Property.load` method incorrectly handled attributes set to `false`
+
 ## [0.5.5] - 2016-08-09
 ### Added
 - Add check support for waytostay damage deposit

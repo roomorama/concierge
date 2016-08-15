@@ -4,7 +4,7 @@
   <img src="https://circleci.com/gh/roomorama/concierge.svg?style=shield&circle-token=bd8f156b6313c0c08cfd943593287516720250fb" />
 </a>
 
-![Concierge Web App](https://cloud.githubusercontent.com/assets/613784/15269423/900f7efa-1a30-11e6-9f61-aaf48ac71ab4.png)
+![Concierge Web App](https://cloud.githubusercontent.com/assets/613784/17511395/40fa0f92-5e55-11e6-9d9e-a026cd4c6540.png)
 
 `Concierge` performs calls to Roomorama suppliers. It is able to make booking quotations
 and making actual bookings with partners.

@@ -36,7 +36,7 @@ module Roomorama
       instance = new(attributes[:identifier])
 
       ATTRIBUTES.each do |attr|
-        if attributes[attr]
+        unless attributes[attr].nil?
           instance[attr] = attributes[attr]
         end
       end
