@@ -21,6 +21,7 @@ module Kigo
     AVAILABILITIES      = 'listPropertyAvailability'
     AVAILABILITIES_DIFF = 'diffPropertyAvailability'
     RESERVATIONS        = 'listPropertyCalendarReservations'
+    IMAGE           = 'readPropertyPhotoFile'
 
     # references
     AMENITIES           = 'listKigoPropertyAmenities'
@@ -81,6 +82,10 @@ module Kigo
 
       references = { 'amenities' => amenities_result.value, 'property_types' => property_types_result.value }
       Result.new(references)
+    end
+
+    def fetch_image(prop_id, photo_id)
+      fetch(IMAGE, PROP_ID: prop_id, PHOTO_ID: photo_id)
     end
 
     private
