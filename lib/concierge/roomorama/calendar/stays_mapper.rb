@@ -68,9 +68,9 @@ class Roomorama::Calendar
     end
 
     def dates_with_stay
-      @dates_with_stay ||= (earliest_checkin..latest_checkout).select { |date|
+      @dates_with_stay ||= Set.new((earliest_checkin..latest_checkout).select { |date|
         stays.any? { |stay| stay.include?(date) }
-      }
+      })
     end
 
     def earliest_checkin
