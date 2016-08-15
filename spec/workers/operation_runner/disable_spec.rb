@@ -14,7 +14,7 @@ RSpec.describe Workers::OperationRunner::Disable do
 
   describe "#perform" do
     it "returns the underlying network problem, if any" do
-      stub_call(:delete, endpoint) { raise Faraday::TimeoutError }
+      stub_call(:put, endpoint) { raise Faraday::TimeoutError }
       result = subject.perform
 
       expect(result).to be_a Result
@@ -23,7 +23,7 @@ RSpec.describe Workers::OperationRunner::Disable do
     end
 
     it "saves the context information" do
-      stub_call(:delete, endpoint) { raise Faraday::TimeoutError }
+      stub_call(:put, endpoint) { raise Faraday::TimeoutError }
 
       expect {
         subject.perform
@@ -44,7 +44,7 @@ RSpec.describe Workers::OperationRunner::Disable do
       # properties from different hosts, but same identifier - should not be deleted
       create_property(identifier: "prop1", host_id: create_host.id)
 
-      stub_call(:delete, endpoint) { [202, {}, [""]] }
+      stub_call(:put, endpoint) { [202, {}, [""]] }
       result = subject.perform
 
       expect(result).to be_a Result
