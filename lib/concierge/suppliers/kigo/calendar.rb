@@ -7,7 +7,7 @@ module Kigo
     def days
       return 1 if interval['NUMBER'].zero?
       multiplier = { 'MONTH' => 30, 'YEAR' => 365 }.fetch(interval['UNIT'], 1)
-      interval['NUMBER'] * multiplier
+      interval['NUMBER'].to_i * multiplier
     end
   end
 
@@ -42,9 +42,8 @@ module Kigo
     end
 
     def process_periods(pricing)
-      periods = wrapped(pricing).get('PRICING.RENT.PERIODS')
-      return unless periods
-      periods.each do |period|
+      periods = safe_access(pricing).get('PRICING.RENT.PERIODS')
+      Array(periods).each do |period|
         period = wrap_period(period)
         entries.concat(period.entries) if period.valid?
       end
@@ -91,7 +90,7 @@ module Kigo
       property.data[:nightly_rate]
     end
 
-    def wrapped(hash)
+    def safe_access(hash)
       Concierge::SafeAccessHash.new(hash)
     end
   end
