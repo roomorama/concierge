@@ -16,6 +16,7 @@ how this file is formatted and how the process works.
 ### Fixed
 - error with saving response with ASCII-8BIT encoding type
 - `Roomorama::Property.load` method incorrectly handled attributes set to `false`
+- Room disable operation should be :put instead of :delete
 
 ## [0.5.5] - 2016-08-09
 ### Added
