@@ -27,8 +27,9 @@ RSpec.describe Roomorama::Calendar::StaysMapper do
     subject { described_class.new(stays).map }
 
     it "should return expected availabilities" do
-      expect(subject.count).to eq 23 # 01 Jan to 15 Jan and 01 Feb to 09 Feb
-      expect(subject.first.to_h).to eq({
+      expect(subject.count).to eq 40 # 01 Jan to 09 Feb
+      av = lambda { |date| subject.find { |e| e.date == Date.parse(date) }.to_h }
+      expect(av.call "2016-01-01").to eq({
         date:               Date.parse("2016-01-01"),
         available:          true,
         checkin_allowed:    true,
@@ -36,21 +37,27 @@ RSpec.describe Roomorama::Calendar::StaysMapper do
         nightly_rate:       50, # Takes to minimum rate of the 2 stays
         valid_stay_lengths: [7, 14]
       })
-      expect(subject[2].to_h).to eq({
+      expect(av.call "2016-01-03").to eq({
         date:               Date.parse("2016-01-03"),
         available:          true,
         checkin_allowed:    false,
         nightly_rate:       50,
         checkout_allowed:   false
       })
-      expect(subject[-2].to_h).to eq({
+      expect(av.call "2016-01-28").to eq({
+        date:               Date.parse("2016-01-28"),
+        available:          false,
+        checkin_allowed:    false,
+        checkout_allowed:   false
+      })
+      expect(av.call "2016-02-08").to eq({
         date:               Date.parse("2016-02-08"),
         available:          true,
         checkin_allowed:    false,
         nightly_rate:       10,
         checkout_allowed:   false
       })
-      expect(subject.last.to_h).to eq({
+      expect(av.call "2016-02-09").to eq({
         date:               Date.parse("2016-02-09"),
         available:          true,
         checkin_allowed:    false,

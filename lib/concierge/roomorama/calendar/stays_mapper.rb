@@ -30,8 +30,10 @@ class Roomorama::Calendar
     end
 
     def map
-      dates_with_stay.collect do |date|
+      (earliest_checkin..latest_checkout).collect do |date|
         default_entry(date).tap do |entry|
+          entry.available = dates_with_stay.include? date
+
           if stays_by_checkin.include? date
             entry.checkin_allowed = true
             entry.valid_stay_lengths = collect_stay_lengths(date)
@@ -39,7 +41,7 @@ class Roomorama::Calendar
 
           entry.checkout_allowed = true if stays_by_checkout.include? date
 
-          entry.nightly_rate = minimum_nightly_rate(date)
+          entry.nightly_rate = minimum_nightly_rate(date) if entry.available
         end
       end
     end
@@ -66,7 +68,7 @@ class Roomorama::Calendar
     end
 
     def dates_with_stay
-      (earliest_checkin..latest_checkout).select { |date|
+      @dates_with_stay ||= (earliest_checkin..latest_checkout).select { |date|
         stays.any? { |stay| stay.include?(date) }
       }
     end
