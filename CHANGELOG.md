@@ -11,6 +11,7 @@ how this file is formatted and how the process works.
 
 ### Changed
 - Do not store sync errors for Ciirus properties with bad permissions
+- Use `MCPropertyName` to avoid empty property title during Ciirus sync
 
 ### Fixed
 - Availabilities worker event name for Ciirus
