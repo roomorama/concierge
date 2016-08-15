@@ -1,5 +1,5 @@
-module Workers::Suppliers
-  class Woori::Calendar
+module Workers::Suppliers::Woori
+  class Calendar
     attr_reader :sync, :host
 
     def initialize(host)
