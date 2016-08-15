@@ -95,6 +95,12 @@ module Concierge
     rescue Savon::Error => err
       announce_error(err)
       Result.error(:savon_error)
+    rescue Net::ReadTimeout => err
+      announce_error(err)
+      Result.error(:read_timeout_error)
+    rescue Net::OpenTimeout => err
+      announce_error(err)
+      Result.error(:open_timeout_error)
     end
 
     def announce_request(operation, locals)

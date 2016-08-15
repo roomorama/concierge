@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope
+        xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <soap:Body>
+    <GetPropertyPermissionsResponse
+            xmlns="http://xml.ciirus.com/">
+      <GetPropertyPermissionsResult>
+        <PropertyID>33680</PropertyID>
+        <MCEnableProperty>true</MCEnableProperty>
+        <AgentEnableProperty>true</AgentEnableProperty>
+        <AgentUserID>38716</AgentUserID>
+        <MCUserID>11006</MCUserID>
+        <NativeProperty>false</NativeProperty>
+        <CalendarSyncProperty>false</CalendarSyncProperty>
+        <AOAProperty>false</AOAProperty>
+        <TimeShare>false</TimeShare>
+        <OnlineBookingAllowed>true</OnlineBookingAllowed>
+      </GetPropertyPermissionsResult>
+    </GetPropertyPermissionsResponse>
+  </soap:Body>
+</soap:Envelope>

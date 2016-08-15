@@ -12,16 +12,27 @@ module Roomorama
   #
   #   calendar = Roomorama::Calendar.new(property_identifier)
   #   entry = Roomorama::Calendar::Entry.new(
-  #     date:             "2016-05-22",
-  #     available:        true,
-  #     nightly_rate:     100,
-  #     weekly_rate:      500,
-  #     monthly_rate:     1000,
-  #     checkin_allowed:  true,
-  #     checkout_allowed: false
+  #     date:               "2016-05-22",
+  #     available:          true,
+  #     nightly_rate:       100,
+  #     weekly_rate:        500,
+  #     monthly_rate:       1000,
+  #     checkin_allowed:    true,
+  #     valid_stay_lengths: [1, 7],
+  #     checkout_allowed:   false
   #   )
   #
   #   calendar.add(entry)
+  #
+  #   # for multi-unit properties
+  #   unit_calendar = Roomorama::Calendar.new(unit_identifier)
+  #   entry = Roomorama::Calendar::Entry.new(
+  #     date:             "2016-05-22",
+  #     available:        false,
+  #     nightly_rate:     200
+  #   )
+  #   unit_calendar.add(entry)
+  #   calendar.add_unit(unit_calendar)
   #
   # Note that +weekly_rate+, +monthly_rate+, +checkin_allowed+ and +checkout_allowed+
   # are optional fields in +Roomorama::Calendar::Entry+. If the supplier API does not
@@ -40,6 +51,7 @@ module Roomorama
       attribute :minimum_stay
       attribute :checkin_allowed
       attribute :checkout_allowed
+      attribute :valid_stay_lengths
 
       def initialize(attributes)
         initialize_checkin_rules(attributes)
@@ -68,18 +80,26 @@ module Roomorama
       end
     end
 
-    attr_reader :property_identifier, :entries
+    attr_reader :identifier, :entries, :units
 
-    # identifier - the identifier property identifier to which the calendar refers to.
+    # identifier - the property/unit identifier to which the calendar refers to.
     def initialize(identifier)
-      @entries             = []
-      @property_identifier = identifier
+      @entries    = []
+      @units      = []
+      @identifier = identifier
     end
 
     # includes a new calendar entry in the calendar instance. +entry+ is expected
     # to be a +Roomorama::Calendar::Entry+ instance.
     def add(entry)
       entries << entry
+    end
+
+    # calendar - an instance of +Roomorama::Calendar+
+    #
+    # includes the availabilities calendar for a unit of the parent property.
+    def add_unit(calendar)
+      @units << calendar
     end
 
     # validates if all entries passed to this calendar instance via +add+ are valid.
@@ -98,15 +118,20 @@ module Roomorama
       parsed = parse_entries
 
       {
-        identifier:        property_identifier,
-        start_date:        parsed.start_date.to_s,
-        availabilities:    parsed.availabilities,
-        nightly_prices:    parsed.rates.nightly,
-        weekly_prices:     parsed.rates.weekly,
-        monthly_prices:    parsed.rates.monthly,
-        minimum_stays:     parsed.minimum_stays,
-        checkin_allowed:   parsed.checkin_rules,
-        checkout_allowed:  parsed.checkout_rules
+        identifier:         identifier,
+        start_date:         parsed.start_date.to_s,
+        availabilities:     parsed.availabilities,
+        nightly_prices:     parsed.rates.nightly,
+        weekly_prices:      parsed.rates.weekly,
+        monthly_prices:     parsed.rates.monthly,
+        minimum_stays:      parsed.minimum_stays,
+        valid_stay_lengths: parsed.valid_stay_lengths,
+        checkin_allowed:    parsed.checkin_rules,
+        checkout_allowed:   parsed.checkout_rules,
+
+        # units should be instances of +Roomorama::Calendar+ as well, so they
+        # are serialised with +to_h+, this very method.
+        units: units.map(&:to_h)
       }.tap do |payload|
 
         # we do not need to send a potentially large array of +nulls+ if a supplier
@@ -128,6 +153,16 @@ module Roomorama
           end
         end
 
+        # if a property is not multi-unit, no need to include an empty
+        # +units+ field
+        if payload[:units].empty?
+          payload.delete(:units)
+        end
+
+        if payload[:valid_stay_lengths].all?(&:nil?)
+          payload.delete(:valid_stay_lengths)
+        end
+
       end
     end
 
@@ -135,7 +170,7 @@ module Roomorama
 
     Rates         = Struct.new(:nightly, :weekly, :monthly)
     ParsedEntries = Struct.new(
-      :start_date, :availabilities, :checkin_rules, :checkout_rules, :minimum_stays, :rates
+      :start_date, :availabilities, :checkin_rules, :checkout_rules, :minimum_stays, :rates, :valid_stay_lengths
     )
 
     # parses the collection of +entries+ given on the lifecycle of this instance,
@@ -149,7 +184,7 @@ module Roomorama
       end_date       = sorted_entries.last.date
 
       rates          = Rates.new([], [], [])
-      parsed_entries = ParsedEntries.new(start_date, "", "", "", [], rates)
+      parsed_entries = ParsedEntries.new(start_date, "", "", "", [], rates, [])
 
       # index all entries by date, to make the lookup for a given date faster.
       # Index once, and then all lookups can be performed in constant time,
@@ -165,13 +200,14 @@ module Roomorama
       (start_date..end_date).each do |date|
         entry = index[date] || default_entry(date)
 
-        parsed_entries.availabilities << boolean_to_string(entry.available)
-        parsed_entries.rates.nightly  << entry.nightly_rate
-        parsed_entries.rates.weekly   << entry.weekly_rate
-        parsed_entries.rates.monthly  << entry.monthly_rate
-        parsed_entries.minimum_stays  << entry.minimum_stay
-        parsed_entries.checkin_rules  << boolean_to_string(entry.checkin_allowed)
-        parsed_entries.checkout_rules << boolean_to_string(entry.checkout_allowed)
+        parsed_entries.availabilities     << boolean_to_string(entry.available)
+        parsed_entries.rates.nightly      << entry.nightly_rate
+        parsed_entries.rates.weekly       << entry.weekly_rate
+        parsed_entries.rates.monthly      << entry.monthly_rate
+        parsed_entries.minimum_stays      << entry.minimum_stay
+        parsed_entries.valid_stay_lengths << entry.valid_stay_lengths
+        parsed_entries.checkin_rules      << boolean_to_string(entry.checkin_allowed)
+        parsed_entries.checkout_rules     << boolean_to_string(entry.checkout_allowed)
       end
 
       parsed_entries
@@ -181,7 +217,7 @@ module Roomorama
     # the empty counterpart of the fields.
     def empty_response
       rates = Rates.new([], [], [])
-      ParsedEntries.new("", "", "", "", [], rates)
+      ParsedEntries.new("", "", "", "", [], rates, [])
     end
 
     # builds a placeholder calendar entry to be used when there are gaps
@@ -202,15 +238,6 @@ module Roomorama
 
     def boolean_to_string(bool)
       bool ? "1" : "0"
-    end
-
-    def validate_entry!(entry)
-      if !entry.is_a?(Roomorama::Calendar::Entry)
-        message = "expected calendar entry to be a Roomorama::Calendar::Entry instance, but instead is #{entry.class}"
-        raise ValidationError.new(message)
-      elsif !entry.valid?
-        raise ValidationError.new("Calendar parameters are invalid: #{entry.errors}")
-      end
     end
   end
 

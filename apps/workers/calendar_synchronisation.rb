@@ -86,6 +86,12 @@ module Workers
     private
 
     def process(calendar)
+      # if the property trying to have its calendar synchronised was not
+      # synchronised by Concierge, then do not attempt to update its calendar,
+      # since the API call to Roomorama is going to fail (the +identifier+
+      # will not be recognised.)
+      return unless synchronised?(calendar.identifier)
+
       calendar.validate!
       update_counters(calendar)
       operation = Roomorama::Client::Operations.update_calendar(calendar)
@@ -124,6 +130,10 @@ module Workers
 
       result = Workers::OperationRunner.new(host).perform(operation, operation.calendar)
       announce_failure(result) unless result.success?
+    end
+
+    def synchronised?(property_identifier)
+      !!(PropertyRepository.from_host(host).identified_by(property_identifier).first)
     end
 
     def missing_data(message, attributes)
