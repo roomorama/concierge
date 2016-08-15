@@ -27,7 +27,7 @@ class Roomorama::Client::Operations
     end
 
     def request_method
-      :delete
+      :put
     end
 
     def request_data

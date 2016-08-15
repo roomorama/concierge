@@ -218,7 +218,7 @@ RSpec.describe Workers::PropertySynchronisation do
     end
 
     it "announces the error in case the synchronisation with Roomorama fails" do
-      stub_call(:delete, "https://api.roomorama.com/v1.0/host/disable") {
+      stub_call(:put, "https://api.roomorama.com/v1.0/host/disable") {
         [500, {}, [""]]
       }
 
@@ -278,7 +278,7 @@ RSpec.describe Workers::PropertySynchronisation do
     end
 
     it "registers updates and deletions when successful" do
-      stub_call(:delete, "https://api.roomorama.com/v1.0/host/disable")    { [200, {}, [""]] }
+      stub_call(:put, "https://api.roomorama.com/v1.0/host/disable")    { [200, {}, [""]] }
 
       create_property(host_id: host.id, identifier: "prop1", data: roomorama_property.to_h)
       create_property(host_id: host.id, identifier: "prop2", data: roomorama_property.to_h.merge!(identifier: "prop2"))
@@ -319,7 +319,7 @@ RSpec.describe Workers::PropertySynchronisation do
 
 
     it "does not update deleted counter if operation fails" do
-      stub_call(:delete, "https://api.roomorama.com/v1.0/host/disable") {
+      stub_call(:put, "https://api.roomorama.com/v1.0/host/disable") {
         [422, {}, read_fixture("roomorama/invalid_type.json")]
       }
 

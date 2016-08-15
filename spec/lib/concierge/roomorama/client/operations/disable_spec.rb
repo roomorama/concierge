@@ -13,7 +13,7 @@ RSpec.describe Roomorama::Client::Operations::Disable do
 
   describe "#method" do
     it "knows the request method to be used when publishing" do
-      expect(subject.request_method).to eq :delete
+      expect(subject.request_method).to eq :put
     end
   end
 
