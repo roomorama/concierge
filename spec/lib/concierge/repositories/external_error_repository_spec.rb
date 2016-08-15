@@ -57,4 +57,16 @@ RSpec.describe ExternalErrorRepository do
       expect(described_class.reverse_occurrence.to_a).to eq [recent_error, old_error]
     end
   end
+
+  describe ".from_supplier_named" do
+    before do
+      2.times { create_external_error(supplier: "A") }
+      3.times { create_external_error(supplier: "B") }
+    end
+
+    it "returns error from a particular error only" do
+      expect(described_class.from_supplier_named("A").count).to eq 2
+      expect(described_class.from_supplier_named("B").count).to eq 3
+    end
+  end
 end

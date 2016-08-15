@@ -7,6 +7,7 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Added
 - Host fee percentage for AtLeisure
+- External errors per supplier on the web ui
 
 ## [0.6.0] - 2016-08-15
 ### Added
