@@ -5,6 +5,12 @@ require_relative "../shared/external_error_reporting"
 RSpec.describe API::Controllers::AtLeisure::Quote do
   include Support::HTTPStubbing
   include Support::Fixtures
+  include Support::Factories
+
+  before do
+    supplier = create_supplier(name: AtLeisure::Client::SUPPLIER_NAME)
+    create_host(supplier_id: supplier.id, fee_percentage: 7.0)
+  end
 
   let(:params) {
     { property_id: "AT-123", check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
@@ -16,7 +22,7 @@ RSpec.describe API::Controllers::AtLeisure::Quote do
   end
 
   it_behaves_like "external error reporting" do
-    let(:supplier_name) { "AtLeisure" }
+    let(:supplier_name) { AtLeisure::Client::SUPPLIER_NAME }
 
     def provoke_failure!
       stub_call(:post, endpoint) { raise Faraday::TimeoutError }
