@@ -5,6 +5,9 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+### Fixed
+- Dates not covered by stays wrongly sent as available to Roomorama
+
 ### Added
 - Host fee percentage for AtLeisure
 - External errors per supplier on the web ui
