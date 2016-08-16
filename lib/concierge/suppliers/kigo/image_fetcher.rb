@@ -1,12 +1,13 @@
 module Kigo
   class ImageFetcher
 
-    def fetch(property_id, image_id)
+    def fetch(property_id:, image_id:)
       result = importer.fetch_image(property_id, image_id)
       if result.success?
         file_from_base64(result.value)
       else
         announce_error(result)
+        result
       end
     end
 
@@ -25,7 +26,8 @@ module Kigo
     end
 
     def file_from_base64(string)
-      StringIO.new(Base64.decode64(string))
+      file = StringIO.new(Base64.decode64(string))
+      Result.new(file)
     end
 
     def announce_error(result)
