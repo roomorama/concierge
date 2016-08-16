@@ -9,6 +9,9 @@ how this file is formatted and how the process works.
 - Host fee percentage for AtLeisure
 - External errors per supplier on the web ui
 
+### Fixed
+- Availabilities worker event name for Ciirus
+
 ## [0.6.0] - 2016-08-15
 ### Added
 - Support for multi-unit availabilities on `Roomorama::Calendar`.
