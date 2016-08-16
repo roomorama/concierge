@@ -84,8 +84,8 @@ module Kigo
       Result.new(references)
     end
 
-    def fetch_image(prop_id, photo_id)
-      fetch(IMAGE, PROP_ID: prop_id, PHOTO_ID: photo_id)
+    def fetch_image(prop_id, image_id)
+      fetch(IMAGE, PROP_ID: prop_id, PHOTO_ID: image_id)
     end
 
     private
