@@ -18,6 +18,9 @@ how this file is formatted and how the process works.
 - Pagination params validations
 - `Roomorama::Calendar::StaysMapper` maps valid entries from tomorrow
 
+### Changed
+- Remove `Roomorama::Calendar::Stay.available` field
+
 ## [0.7.0] - 2016-08-16
 ### Added
 - Host fee percentage for AtLeisure
