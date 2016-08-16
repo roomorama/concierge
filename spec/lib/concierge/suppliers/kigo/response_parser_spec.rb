@@ -205,4 +205,49 @@ RSpec.describe Kigo::ResponseParser do
       expect(reservation.reference_number).to eq "24985"
     end
   end
+
+  describe "#parse_cancellation" do
+    let(:request_params) {
+      { reference_number: 123 }
+    }
+
+    it "fails if the API response does not indicate success" do
+      response = read_fixture("kigo/e_nosuch.json")
+      result   = nil
+
+      expect {
+        result = subject.parse_cancellation(response)
+      }.to change { Concierge.context.events.size }
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :reservation_not_found
+
+      event = Concierge.context.events.last
+      expect(event.to_h[:type]).to eq "response_mismatch"
+    end
+
+    it "fails if the reservation already cancelled" do
+      response = read_fixture("kigo/already_cancelled.json")
+      result   = nil
+
+      expect {
+        result = subject.parse_cancellation(response)
+      }.to change { Concierge.context.events.size }
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :already_cancelled
+
+      event = Concierge.context.events.last
+      expect(event.to_h[:type]).to eq "response_mismatch"
+    end
+
+    it "returns result with reference number on success" do
+      response = read_fixture("kigo/cancel.json")
+      result = subject.parse_cancellation(response)
+
+      expect(result).to be_success
+      expect(result.value).to eq 123
+    end
+
+  end
 end
