@@ -18,92 +18,32 @@ module Poplidays
       #   * +availabilities_hash+ [Hash] contains `availabilities` key
       def build(property_id, details, availabilities_hash)
         availabilities = availabilities_hash['availabilities']
-
-        calendar = Roomorama::Calendar.new(property_id)
-
         entries = build_entries(details, availabilities)
-        entries.each { |entry| calendar.add(entry) }
 
-        calendar
+        Roomorama::Calendar.new(property_id).tap do |c|
+          entries.each { |entry| c.add(entry) }
+        end
       end
 
       private
 
-      # Prepares each stay from availabilities (parses dates, add useful fields)
-      # and build index by dates.
-      #
-      # Returns a hash:
-      #
-      # {
-      #   date1 => [all stays including the date1],
-      #   date2 => [all stays including the date2]
-      #   ...
-      # }
-      def prepare_availabilities(availabilities, mandatory_service_price)
-        prepared_availabilities = availabilities.select do |stay|
-          availability_validator(stay).valid?
-        end.map do |stay|
-          stay.dup.tap do |s|
-            from = Date.parse(s['arrival'])
-            to = Date.parse(s['departure'])
-            s['arrival'] = from
-            s['departure'] = to
-            s['length'] = (to - from).to_i
-            subtotal = mandatory_service_price + s['price']
-            s['daily_price'] = (subtotal.to_f / s['length']).round(2)
-          end
-        end
-        Hash.new { |h, key| h[key] = [] }
-          .tap do |i|
-            prepared_availabilities.each do |s|
-              (s['arrival']..s['departure']).each do |date|
-                i[date] << s
-              end
-            end
-          end
-      end
-
       def build_entries(details, availabilities)
-        entries = []
-        unless availabilities.empty?
-          max_date = availabilities.map { |s| Date.parse(s['departure']) }.max
-          mandatory_services = details['mandatoryServicesPrice']
-          prepared_availabilities = prepare_availabilities(availabilities, mandatory_services)
-          tomorrow = Date.today + 1
-
-          (tomorrow..max_date).each do |date|
-            if prepared_availabilities.key?(date)
-              date_availabilities = prepared_availabilities[date]
-              checkin_allowed = date_availabilities.any? { |s| s['arrival'] == date }
-              checkout_allowed = date_availabilities.any? { |s| s['departure'] == date }
-              daily_rate = date_availabilities.map { |s| s['daily_price'] }.min
-              entry = Roomorama::Calendar::Entry.new(
-                date:             date.to_s,
-                nightly_rate:     daily_rate,
-                available:        true,
-                checkin_allowed:  checkin_allowed,
-                checkout_allowed: checkout_allowed,
-              )
-              if checkin_allowed
-                min_stay = date_availabilities.map { |s| s['length'] }.min
-                entry.minimum_stay = min_stay
-              end
-            else
-              # If date isn't inside any availability's range the date is unavailable
-              entry = Roomorama::Calendar::Entry.new(
-                date:             date.to_s,
-                nightly_rate:     0,
-                available:        false
-              )
-            end
-            entries << entry
-          end
+        today = Date.today
+        mandatory_services = details['mandatoryServicesPrice']
+        stays = availabilities.map do |a|
+          Roomorama::Calendar::Stay.new({
+            checkin:   a['arrival'],
+            checkout:  a['departure'],
+            price:     mandatory_services + a['price'],
+            available: availability_validator(a, today).valid?
+          })
         end
-        entries
+        return [] if stays.empty?
+        Roomorama::Calendar::StaysMapper.new(stays, today).map
       end
 
-      def availability_validator(availability)
-        Poplidays::Validators::AvailabilityValidator.new(availability)
+      def availability_validator(availability, today)
+        Poplidays::Validators::AvailabilityValidator.new(availability, today)
       end
 
       def date_reserved?(date, reservations_index)

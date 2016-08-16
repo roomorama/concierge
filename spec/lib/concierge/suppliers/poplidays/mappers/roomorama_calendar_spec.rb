@@ -166,36 +166,6 @@ RSpec.describe Poplidays::Mappers::RoomoramaCalendar do
       expect(entry.nightly_rate).to eq(61.0)
     end
 
-    it 'fills minimum_stay for start date of each stay' do
-      availabilities_hash = {
-        'availabilities' => [
-          {
-            'arrival' => '20160901',
-            'basePrice' => 960.0,
-            'departure' => '20160913',
-            'discountPercent' => 0.0,
-            'price' => 960.0,
-            'priceEnabled' => true,
-            'requestOnly' => false
-          },
-          {
-            'arrival' => '20160901',
-            'basePrice' => 860.0,
-            'departure' => '20160910',
-            'discountPercent' => 0.0,
-            'price' => 860.0,
-            'priceEnabled' => true,
-            'requestOnly' => false
-          }
-        ]
-      }
-
-      calendar = subject.build(property_id, property_details, availabilities_hash)
-      expect { calendar.validate! }.to_not raise_error
-
-      entry = calendar.entries.detect { |e| e.date == Date.new(2016, 9, 1)}
-      expect(entry.minimum_stay).to eq(9)
-    end
 
     it 'returns empty calendar for empty availabilities' do
       availabilities_hash = {
