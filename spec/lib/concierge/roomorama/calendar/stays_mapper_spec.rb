@@ -6,20 +6,17 @@ RSpec.describe Roomorama::Calendar::StaysMapper do
       [ Roomorama::Calendar::Stay.new({
           checkin:    "2016-01-01",
           checkout:   "2016-01-08",
-          price: 700, # 100 per night
-          available:  true
+          price: 700 # 100 per night
         }),
         Roomorama::Calendar::Stay.new({
           checkin:    "2016-01-01",
           checkout:   "2016-01-15",
-          price: 700, # 50 per night
-          available:  true
+          price: 700 # 50 per night
         }),
         Roomorama::Calendar::Stay.new({
           checkin:    "2016-02-02",
           checkout:   "2016-02-09",
-          price: 70, # 10 per night
-          available:  true
+          price: 70 # 10 per night
         })
       ]
     }

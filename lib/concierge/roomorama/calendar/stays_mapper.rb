@@ -7,13 +7,11 @@ class Roomorama::Calendar
   #       checkin:    "2016-01-01",
   #       checkout:   "2016-01-08",
   #       price: 700, # 100 per night
-  #       available:  true
   #     }),
   #     Roomrama::Calendar::Stay.new({
   #       checkin:    "2016-01-01",
   #       checkout:   "2016-01-15",
   #       price: 700, # 50 per night
-  #       available:  true
   #     })
   #   ]
   #
