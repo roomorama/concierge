@@ -15,7 +15,6 @@ module Workers
         end
 
         def perform
-          today = Date.today
           identifiers = all_identifiers
 
           identifiers.each_slice(BATCH_SIZE) do |ids|
@@ -23,15 +22,7 @@ module Workers
             if result.success?
               availabilities = result.value
               property_id = availabilities['HouseCode']
-              synchronisation.start(property_id) do
-                stays = []
-                availabilities.map do |availability|
-                  if validator(availability, today).valid?
-                    stays << to_stay(availability)
-                  end
-                end
-                build_calendar(property_id, stays)
-              end
+              synchronisation.start(property_id) { mapper.build(availabilities) }
             else
               message = "Failed to perform the `#fetch_availabilities` operation, with properties: `#{ids}`"
               augment_context_error(message)
@@ -42,31 +33,12 @@ module Workers
 
         private
 
-        def to_stay(availability)
-          Roomorama::Calendar::Stay.new({
-            checkin:    availability['ArrivalDate'],
-            checkout:   availability['DepartureDate'],
-            price:      availability['Price'].to_f,
-            available:  true
-          })
-        end
-
-        def build_calendar(property_id, stays)
-          calendar = Roomorama::Calendar.new(property_id).tap do |c|
-            entries = StaysMapper.new(stays).map
-            entries.each { |entry| c.add(entry) }
-          end
-
-          Result.new(calendar)
-        end
-
-
         def all_identifiers
           PropertyRepository.from_host(host).only(:identifier).map(&:identifier)
         end
 
-        def validator(availability, today)
-          ::AtLeisure::AvailabilityValidator.new(availability, today)
+        def mapper
+          @mapper ||= AtLeisure::Mappers::Calendar.new
         end
 
         def importer
