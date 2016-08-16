@@ -7,14 +7,17 @@ module Poplidays
     #
     #   * stay is on request only
     #   * property price is only available through call center
-    #
+    #   * stay is too old
     class AvailabilityValidator
-      attr_reader :availability
+      attr_reader :availability, :today
 
       # availability is a hash representation of each element
-      # from availabilities collection of Poplidays availabilies response
-      def initialize(availability)
+      # from availabilities collection of Poplidays availabilies response.
+      # today is today date, the purpose of the argument to save consistency of more
+      # then one availability validation process.
+      def initialize(availability, today)
         @availability = availability
+        @today = today
       end
 
       def valid?
@@ -29,6 +32,10 @@ module Poplidays
 
       def price_enabled?
         availability['priceEnabled']
+      end
+
+      def actual?
+        Date.parse(s['arrival']) > today
       end
     end
   end

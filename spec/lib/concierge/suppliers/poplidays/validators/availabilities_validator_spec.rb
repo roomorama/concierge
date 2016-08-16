@@ -2,36 +2,25 @@ require 'spec_helper'
 
 RSpec.describe Poplidays::Validators::AvailabilitiesValidator do
 
-  let(:invalid_cases) do
-    [
-      {'availabilities' => []}, # empty
-      {
-        'availabilities' => [
-          {'requestOnly' => true, 'priceEnabled' => true},
-          {'requestOnly' => false, 'priceEnabled' => false}
-        ]
-      } # empty valid
-    ]
-  end
-  let(:valid_case) do
-    {
-      'availabilities' => [
-        {'requestOnly' => false, 'priceEnabled' => true}
-      ]
-    }
-  end
-
   describe '#valid?' do
-    it 'returns true for valid case' do
-      validator = described_class.new(valid_case)
+    let(:availabilities_stub) { {'availabilities' => [1, 2, 3]} }
+
+    it 'returns true for all valid' do
+      allow_any_instance_of(Poplidays::Validators::AvailabilityValidator).to receive(:valid?).and_return(true, true, true)
+      validator = described_class.new(availabilities_stub, double)
       expect(validator.valid?).to be_truthy
     end
 
-    it 'returns false for on invalid cases' do
-      invalid_cases.each do |c|
-        validator = described_class.new(c)
-        expect(validator.valid?).to be_falsey
-      end
+    it 'returns false if all availabilities invalid' do
+      allow_any_instance_of(Poplidays::Validators::AvailabilityValidator).to receive(:valid?).and_return(false, false, false)
+      validator = described_class.new(availabilities_stub, double)
+      expect(validator.valid?).to be_falsey
+    end
+
+    it 'returns true if at least one is valid' do
+      allow_any_instance_of(Poplidays::Validators::AvailabilityValidator).to receive(:valid?).and_return(false, true, false)
+      validator = described_class.new(availabilities_stub, double)
+      expect(validator.valid?).to be_falsey
     end
   end
 end
