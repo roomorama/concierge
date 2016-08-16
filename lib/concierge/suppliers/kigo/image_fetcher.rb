@@ -1,17 +1,10 @@
 module Kigo
   class ImageFetcher
 
-    attr_reader :path
-
-    def initialize(path = './public/images')
-      FileUtils.mkdir_p(path) unless File.exists?(path)
-      @path = path
-    end
-
-    def fetch(property_id, photo_id)
-      result = importer.fetch_image(property_id, photo_id)
+    def fetch(property_id, image_id)
+      result = importer.fetch_image(property_id, image_id)
       if result.success?
-        build_image_from_base64(photo_id, result.value)
+        file_from_base64(result.value)
       else
         announce_error(result)
       end
@@ -31,11 +24,8 @@ module Kigo
       Kigo::LegacyRequest.new(credentials, timeout: 60)
     end
 
-    def build_image_from_base64(photo_id, string)
-      image_url = File.join(path, "#{photo_id}.jpg")
-      File.open(image_url, 'w') do |file|
-        file.write(Base64.decode64(string))
-      end
+    def file_from_base64(string)
+      StringIO.new(Base64.decode64(string))
     end
 
     def announce_error(result)
