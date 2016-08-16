@@ -1,28 +1,26 @@
-require_relative "../internal_error"
-require_relative "../params/paginated"
-
 module Web::Controllers::KigoImage
   class Show
     include Web::Action
 
     params do
       param :property_id, presence: true
-      param :image_id,    presence: true
+      param :image_id, presence: true
     end
 
     expose :identifier
 
     def call(params)
       if params.valid?
-        property_id = params[:property_id].to_i
-        image_id    = params[:image_id]
-        image       = fetcher.fetch(property_id, image_id)
-
-        self.status = 200
-        self.body   = image
-        self.headers.merge!({ 'Content-Type' => 'image/jpeg' })
+        result = fetcher.fetch(params)
+        if result.success?
+          self.status = 200
+          self.body   = image
+          self.headers.merge!({ 'Content-Type' => 'image/jpeg' })
+        else
+          status 503, invalid_request(result.error)
+        end
       else
-
+        status 404
       end
     end
 
@@ -30,6 +28,10 @@ module Web::Controllers::KigoImage
 
     def fetcher
       Kigo::ImageFetcher.new
+    end
+
+    def invalid_request(error)
+      { status: 'error', errors: error }.to_json
     end
   end
 end
