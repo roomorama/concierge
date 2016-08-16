@@ -38,6 +38,7 @@ module Ciirus
 
       def copy_property_name!(hash, attrs)
         attrs[:property_name] = hash[:website_property_name]
+        attrs[:mc_property_name] = hash[:mc_property_name]
       end
 
       def copy_address!(hash, attrs)
