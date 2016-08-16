@@ -5,15 +5,16 @@ module Kigo::Mappers
   # to avoid duplication in +Kigo::Mappers::Property+
   class LegacyResolver
 
+    # generates the list of images with urls pointed to +Web::Controllers::KigoImage::Show+
     # images payload has two attributes for caption PHOTO_NAME and PHOTO_COMMENTS
     # the PHOTO_COMMENTS are almost always blank
-    def images(payload)
+    def images(payload, property_id)
       images = Array(payload)
       images.map do |image|
         identifier = image['PHOTO_ID']
         caption    = image['PHOTO_NAME']
         Roomorama::Image.new(identifier).tap do |i|
-          i.url     = image_url(identifier)
+          i.url     = image_url(property_id, identifier)
           i.caption = caption
         end
       end
@@ -21,8 +22,8 @@ module Kigo::Mappers
 
     private
 
-    def image_url(identifier)
-      "https://concierge-staging.roomorama.com/kigo/legacy/image/#{identifier}"
+    def image_url(property_id, identifier)
+      File.join(ENV['CONCIERGE_URL'], 'kigo_image', property_id.to_s, identifier)
     end
   end
 end

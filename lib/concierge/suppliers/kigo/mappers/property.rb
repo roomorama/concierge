@@ -159,7 +159,7 @@ module Kigo::Mappers
     # images has differences between Kigo and KigoLegacy
     # using +resolver+ to resolve differences
     def set_images
-      images = resolver.images(payload['PROP_PHOTOS'])
+      images = resolver.images(payload['PROP_PHOTOS'], property.identifier)
       images.each { |image| property.add_image(image) }
     end
 

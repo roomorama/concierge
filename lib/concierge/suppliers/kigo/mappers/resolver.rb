@@ -7,7 +7,7 @@ module Kigo::Mappers
 
     # images payload has two attributes for caption PHOTO_NAME and PHOTO_COMMENTS
     # the PHOTO_NAME is the short version of PHOTO_COMMENTS
-    def images(payload)
+    def images(payload, _)
       images = Array(payload)
       images.map do |image|
         url        = image['PHOTO_ID']
