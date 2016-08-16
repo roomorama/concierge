@@ -30,12 +30,14 @@ module Poplidays
       def build_entries(details, availabilities)
         today = Date.today
         mandatory_services = details['mandatoryServicesPrice']
-        stays = availabilities.map do |a|
+        stays = availabilities.select do |a|
+          availability_validator(a, today).valid?
+        end.map do |a|
           Roomorama::Calendar::Stay.new({
             checkin:   a['arrival'],
             checkout:  a['departure'],
             price:     mandatory_services + a['price'],
-            available: availability_validator(a, today).valid?
+            available: true
           })
         end
         return [] if stays.empty?
