@@ -1,7 +1,14 @@
 module Kigo
   class ImageFetcher
 
-    def fetch(property_id:, image_id:)
+    attr_reader :property_id, :image_id
+
+    def initialize(property_id, image_id)
+      @property_id = property_id.to_i
+      @image_id    = image_id
+    end
+
+    def fetch
       result = importer.fetch_image(property_id, image_id)
       if result.success?
         file_from_base64(result.value)
