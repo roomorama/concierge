@@ -62,6 +62,15 @@ RSpec.describe Poplidays::Mappers::RoomoramaCalendar do
       availabilities_hash = {
         'availabilities' => [
           {
+            'arrival' => '20160820',
+            'basePrice' => 960.0,
+            'departure' => '20160825',
+            'discountPercent' => 0.0,
+            'price' => 960.0,
+            'priceEnabled' => true,
+            'requestOnly' => false
+          },
+          {
             'arrival' => '20160831',
             'basePrice' => 960.0,
             'departure' => '20160924',
@@ -69,7 +78,16 @@ RSpec.describe Poplidays::Mappers::RoomoramaCalendar do
             'price' => 960.0,
             'priceEnabled' => false,
             'requestOnly' => false
-          }
+          },
+          {
+            'arrival' => '20160926',
+            'basePrice' => 960.0,
+            'departure' => '20160930',
+            'discountPercent' => 0.0,
+            'price' => 960.0,
+            'priceEnabled' => true,
+            'requestOnly' => false
+          },
         ]
       }
       calendar = subject.build(property_id, property_details, availabilities_hash)
