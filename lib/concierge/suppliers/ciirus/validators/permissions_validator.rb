@@ -7,6 +7,7 @@ module Ciirus
     #
     #   * online booking is not allowed
     #   * property is timeshare (as well as GetReservations method doesn't support such properties)
+    #   * properties with AOA(Allocation On Arrival) Bookings Mode
     #
     class PermissionsValidator
       attr_reader :permissions
@@ -16,7 +17,7 @@ module Ciirus
       end
 
       def valid?
-        online_booking_allowed? && !timeshare?
+        online_booking_allowed? && !timeshare? && !allocation_on_arrival?
       end
 
       private
@@ -27,6 +28,10 @@ module Ciirus
 
       def timeshare?
         permissions.time_share
+      end
+
+      def allocation_on_arrival?
+        permissions.aoa_property
       end
     end
   end

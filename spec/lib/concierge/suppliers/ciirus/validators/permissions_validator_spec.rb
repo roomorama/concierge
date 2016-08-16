@@ -2,24 +2,30 @@ require 'spec_helper'
 
 RSpec.describe Ciirus::Validators::PermissionsValidator do
 
-  let(:property_without_booking) { double(online_booking_allowed: false, time_share: false)}
-  let(:timeshare_property) { double(online_booking_allowed: true, time_share: true)}
-  let(:valid_permissions) { double(online_booking_allowed: true, time_share: false)}
+  let(:invalid_cases) do
+    [
+      double(online_booking_allowed: false, time_share: false, aoa_property: false),
+      double(online_booking_allowed: true, time_share: true, aoa_property: false),
+      double(online_booking_allowed: true, time_share: false, aoa_property: true)
+    ]
+  end
+  let(:valid_permissions) do
+    double(online_booking_allowed: true,
+           time_share: false,
+           aoa_property: false)
+  end
 
   describe '#valid?' do
+    it 'returns false for invalid cases' do
+      invalid_cases.each do |p|
+        validator = described_class.new(p)
+        expect(validator.valid?).to be_falsey
+      end
+    end
+
     it 'returns true for valid permissions' do
       validator = described_class.new(valid_permissions)
       expect(validator.valid?).to be_truthy
-    end
-
-    it 'returns false when online booking forbidden' do
-      validator = described_class.new(property_without_booking)
-      expect(validator.valid?).to be_falsey
-    end
-
-    it 'returns false for timeshare property' do
-      validator = described_class.new(timeshare_property)
-      expect(validator.valid?).to be_falsey
     end
   end
 end

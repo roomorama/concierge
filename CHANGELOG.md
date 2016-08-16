@@ -11,6 +11,7 @@ how this file is formatted and how the process works.
 ### Added
 - Host fee percentage for AtLeisure
 - External errors per supplier on the web ui
+- Filter out AOA(allocation on arrival) properties for Ciirus supplier
 
 ### Changed
 - Do not store sync errors for Ciirus properties with bad permissions
