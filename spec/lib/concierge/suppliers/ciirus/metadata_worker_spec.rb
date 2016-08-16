@@ -150,16 +150,14 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
       expect(error.code).to eq 'soap_error'
     end
 
-    it 'announces an error if permissions are invalid' do
+    it 'does not announce an error if permissions are invalid' do
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_permissions) { Result.new(permissions) }
       allow_any_instance_of(Ciirus::Validators::PermissionsValidator).to receive(:valid?) { false }
       subject.perform
 
       error = ExternalErrorRepository.last
 
-      expect(error.operation).to eq 'sync'
-      expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
-      expect(error.code).to eq 'invalid_permissions_error'
+      expect(error).to be_nil
     end
 
     it 'doesnt finalize synchronisation with external error' do
@@ -307,6 +305,14 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
     it 'does not create invalid properties in database' do
       allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
       allow_any_instance_of(Ciirus::Validators::PropertyValidator).to receive(:valid?) { false }
+      expect {
+        subject.perform
+      }.to_not change { PropertyRepository.count }
+    end
+
+    it 'does not create properties with invalid permissions in database' do
+      allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
+      allow_any_instance_of(Ciirus::Validators::PermissionsValidator).to receive(:valid?) { false }
       expect {
         subject.perform
       }.to_not change { PropertyRepository.count }

@@ -4,11 +4,28 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.7.0] - 2016-08-16
+### Added
+- Host fee percentage for AtLeisure
+- External errors per supplier on the web ui
+- Filter out AOA(allocation on arrival) properties for Ciirus supplier
+- Ciirus integrations: quote, book, cancel and synchronisation
+
+### Changed
+- Do not store sync errors for Ciirus properties with bad permissions
+- Use `MCPropertyName` to avoid empty property title during Ciirus sync
+- Do not disable context during Ciirus sync processes
+- SAW integrations: quote, book, cancel and synchronisation
+
+### Fixed
+- Dates not covered by stays wrongly sent as available to Roomorama
+- Availabilities worker event name for Ciirus
+
 ## [0.6.0] - 2016-08-15
 ### Added
 - Support for multi-unit availabilities on `Roomorama::Calendar`.
 - `Roomorama::Calendar::Stay` and `StayMapper` to map supplier's format into `Roomorama::Calendar:Entry`
-- CiiRUS integrations: quote, book, cancel and synchronisation
+- Ciirus integrations: quote, book, cancel and synchronisation
 
 ### Changed
 - Do not attempt to update calendar for properties not previously synchronised.

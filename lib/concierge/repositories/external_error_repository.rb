@@ -19,6 +19,12 @@ class ExternalErrorRepository
     scope.to_a.first
   end
 
+  def self.from_supplier_named(s)
+    query do
+      where(supplier: s)
+    end
+  end
+
   # returns a sorted scope of external errors where the most recent error
   # is first.
   def self.reverse_occurrence

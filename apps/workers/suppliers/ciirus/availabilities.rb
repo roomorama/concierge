@@ -15,7 +15,6 @@ module Workers::Suppliers::Ciirus
 
       identifiers.each do |property_id|
         synchronisation.start(property_id) do
-          Concierge.context.disable!
 
           result = fetch_rates(property_id)
           next result unless result.success?
@@ -36,9 +35,7 @@ module Workers::Suppliers::Ciirus
 
     def report_error(message)
       yield.tap do |result|
-        unless result.success?
-          with_context_enabled { augment_context_error(message) }
-        end
+        augment_context_error(message) unless result.success?
       end
     end
 
@@ -52,12 +49,6 @@ module Workers::Suppliers::Ciirus
       report_error("Failed to fetch reservations for property `#{property_id}`") do
         importer.fetch_reservations(property_id)
       end
-    end
-
-    def with_context_enabled
-      Concierge.context.enable!
-      yield
-      Concierge.context.disable!
     end
 
     def all_identifiers
@@ -89,6 +80,6 @@ module Workers::Suppliers::Ciirus
 end
 
 # listen supplier worker
-Concierge::Announcer.on('calendar.Ciirus') do |host|
+Concierge::Announcer.on('availabilities.Ciirus') do |host|
   Workers::Suppliers::Ciirus::Calendar.new(host).perform
 end

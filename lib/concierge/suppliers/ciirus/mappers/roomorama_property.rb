@@ -59,7 +59,7 @@ module Ciirus
       private
 
       def set_base_info!(result, property)
-        result.title = property.property_name
+        result.title = fetch_title(property)
         result.type = PROPERTY_TYPES.get("#{property.type}.type")
         result.subtype = PROPERTY_TYPES.get("#{property.type}.subtype")
         result.address = property.address
@@ -81,6 +81,14 @@ module Ciirus
 
         country_code = country_converter.code_by_name(property.country)
         result.country_code = country_code.value if country_code.success?
+      end
+
+      def fetch_title(property)
+        if property.property_name.to_s.empty?
+          property.mc_property_name
+        else
+          property.property_name
+        end
       end
 
       def set_description!(result, description)

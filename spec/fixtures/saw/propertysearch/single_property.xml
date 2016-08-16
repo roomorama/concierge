@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<response>
+  <properties>
+    <property id="1394">
+      <name>Ascott Sathorn</name>
+      <image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=4761</image_url>
+      <city_region>Bangkok</city_region>
+      <location>Sathorn</location>
+      <map_location>
+        <latitude>13.71702</latitude>
+        <longitude>100.52724</longitude>
+      </map_location>
+      <our_rating>
+        <our_rating_value>9</our_rating_value>
+        <our_rating_description>SUPERIOR</our_rating_description>
+      </our_rating>
+      <customer_rating/>
+      <summary>TEST SUMMARY</summary>
+      <currency_code>USD</currency_code>
+      <price>128.26</price>
+      <flag_on_request>N</flag_on_request>
+      <default_currency_code>USD</default_currency_code>
+      <flag_great_deal>N</flag_great_deal>
+    </property>
+  </properties>
+</response>
