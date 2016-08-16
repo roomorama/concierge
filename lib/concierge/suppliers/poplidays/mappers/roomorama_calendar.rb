@@ -39,24 +39,11 @@ module Poplidays
           })
         end
         return [] if stays.empty?
-        Roomorama::Calendar::StaysMapper.new(stays, today).map
+        Roomorama::Calendar::StaysMapper.new(stays).map
       end
 
       def availability_validator(availability, today)
         Poplidays::Validators::AvailabilityValidator.new(availability, today)
-      end
-
-      def date_reserved?(date, reservations_index)
-        reservation = reservations_index[date]
-        !reservation.nil? && reservation.departure_date != date
-      end
-
-      def build_reservations_index(reservations)
-        {}.tap do |i|
-          reservations.each do |r|
-            (r.arrival_date..r.departure_date).each { |d| i[d] = r }
-          end
-        end
       end
     end
   end
