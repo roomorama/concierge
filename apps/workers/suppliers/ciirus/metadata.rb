@@ -57,7 +57,7 @@ module Workers::Suppliers::Ciirus
     private
 
     def empty_rates_error(property_id)
-      message = "After filtering actual rates for property `#{property_id}` we got empty rates." \
+      message = "After filtering actual rates for property `#{property_id}` we got empty rates. " \
         "Sync property with empty rates doesn't make sense."
       augment_context_error(message)
       Result.error(:empty_rates_error)
