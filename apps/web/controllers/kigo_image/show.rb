@@ -11,13 +11,13 @@ module Web::Controllers::KigoImage
 
     def call(params)
       if params.valid?
-        result = fetcher.fetch(params)
+        result = fetcher(params).fetch
         if result.success?
           self.status = 200
-          self.body   = image
+          self.body   = result.value
           self.headers.merge!({ 'Content-Type' => 'image/jpeg' })
         else
-          status 503, invalid_request(result.error)
+          status 503, invalid_request(result.error.code)
         end
       else
         status 404
@@ -26,8 +26,8 @@ module Web::Controllers::KigoImage
 
     private
 
-    def fetcher
-      Kigo::ImageFetcher.new
+    def fetcher(params)
+      Kigo::ImageFetcher.new(params[:property_id], params[:image_id])
     end
 
     def invalid_request(error)
