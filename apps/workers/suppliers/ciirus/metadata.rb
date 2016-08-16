@@ -23,7 +23,6 @@ module Workers::Suppliers::Ciirus
 
             if permissions_validator(permissions.value).valid?
               synchronisation.start(property_id) do
-                Concierge.context.disable!
                 result = fetch_images(property_id)
                 next result unless result.success?
                 images = result.value
