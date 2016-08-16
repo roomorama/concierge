@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<response>
+  <property id="1394">
+    <name>Citadines Barcelona Ramblas</name>
+    <check_in>10/06/2016</check_in>
+    <check_out>15/06/2016</check_out>
+    <currency_code>EUR</currency_code>
+    <default_currency_code>EUR</default_currency_code>
+    <apartments>
+      <accommodation_type id="95">
+        <property_accommodation id="10612">
+          <property_accommodation_name>Classic Room</property_accommodation_name>
+          <number_of_guests>1</number_of_guests>
+          <maximum_guests>1</maximum_guests>
+          <bed_types/>
+          <status>
+            <flag_fair_warning>N</flag_fair_warning>
+            <flag_no_allocation>N</flag_no_allocation>
+            <flag_free_sale>Y</flag_free_sale>
+            <flag_great_deal>N</flag_great_deal>
+          </status>
+          <flag_dynamic>Y</flag_dynamic>
+          <price_detail>
+            <net>
+              <date_range>
+                <date_info>
+                  <date>10/06/2016</date>
+                  <price>128</price>
+                </date_info>
+                <date_info>
+                  <date>11/06/2016</date>
+                  <price>128</price>
+                </date_info>
+                <date_info>
+                  <date>12/06/2016</date>
+                  <price>128</price>
+                </date_info>
+                <date_info>
+                  <date>13/06/2016</date>
+                  <price>128</price>
+                </date_info>
+                <date_info>
+                  <date>14/06/2016</date>
+                  <price>128</price>
+                </date_info>
+              </date_range>
+              <average_price>
+                <price>128.26</price>
+              </average_price>
+              <total_price>
+                <price>641.30</price>
+              </total_price>
+            </net>
+            <rate_plans>
+              <rate_plan_code>NMUH</rate_plan_code>
+              <condition_type/>
+              <cancellation_policies/>
+            </rate_plans>
+          </price_detail>
+          <flag_bookable_property_accommodation>N</flag_bookable_property_accommodation>
+        </property_accommodation>
+      </accommodation_type>
+    </apartments>
+    <thirtyday_rates>N</thirtyday_rates>
+    <flag_supported_currency>Y</flag_supported_currency>
+    <flag_payable_currency>Y</flag_payable_currency>
+    <flag_bookable_property>Y</flag_bookable_property>
+    <flag_breakfast_included>N</flag_breakfast_included>
+    <affiliate_message/>
+    <cancellation_message>A cancellation period of 5 days applies</cancellation_message>
+    <cancellation_days>5</cancellation_days>
+    <payment_notice/>
+    <propertyimportantpoints/>
+  </property>
+</response>

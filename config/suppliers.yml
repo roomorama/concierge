@@ -27,3 +27,10 @@ Ciirus:
       every: "1d"
     availabilities:
       every: "5h"
+
+SAW:
+  workers:
+    metadata:
+      every: "1d"
+    availabilities:
+      absence: "SAW does not provide a way to fetch the calendar of availabilities. Default availability is assumed."

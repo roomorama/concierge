@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<response>
+  <errors>
+    <error>
+      <code>9007</code>
+      <description>The valid booking_ref_number tag is not supplied</description>
+    </error>
+  </errors>
+</response>

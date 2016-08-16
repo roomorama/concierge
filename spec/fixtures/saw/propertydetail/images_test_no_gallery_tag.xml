@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+  <property id="1394">
+    <name>Citadines Barcelona Ramblas</name>
+    <image_url>http://staging.servicedapartmentsworldwide.net/ImageHandler.jpg?ImageInstanceId=34900</image_url>
+    <country>Spain</country>
+    <location>La Rambla</location>
+    <city_region>Barcelona</city_region>
+    <checkin_time>2:00PM</checkin_time>
+    <checkout_time>12:00PM</checkout_time>
+    <phone>111111111</phone>
+    <fax>2222222</fax>
+    <email>reservations@mansleyapartments.com</email>
+    <postalcode>08002</postalcode>
+    <rooms>131</rooms>
+    <flag_breakfast_included>N</flag_breakfast_included>
+    <cancellation_message>A cancellation period of 5 days applies</cancellation_message>
+    <cancellation_days>5</cancellation_days>
+    <our_rating>
+      <our_rating_value>9</our_rating_value>
+      <our_rating_description>SUPERIOR</our_rating_description>
+    </our_rating>
+    <customer_rating/>
+    <property_description> Citadines Barcelona Ramblas offers 131 apartments in 2 wings with Studios for 2 people having either a double or twin beds and the 1 bedroom apartments for up to 4 people having a sofa or pullout beds in the lounge and either a a double or twin beds in the bedroom.  All Apartments are air-conditioned and have a well fitted kitchenette. Tea and coffee are provided.
+
+In 2013 the property was renovated in Mediterranean contemporary style to give you better comfort.
+
+The location is excellent for visiting all the main landmarkes and attractions of one of Europes finest cities.
+
+Maid service is done on a weekly basis. If you are staying for 7 nights or more then it is done during the middle of the stay. If you are staying for less than 7 nights then you pay directly at the property for additional maid service.
+
+Breakfast available, payable to the property.
+
+City Tax which is not included in the rate and is approx 0.72 per person per night, this is payable direct to the property.
+
+Nearest public transport.
+Airport : El Prat (20 minutes by car).
+Underground : Station Plaa de Catalunya (5 minutes on foot).
+Taxi : front of the Apart'hotel.
+
+
+
+
+
+</property_description>
+    <accommodations>
+      <accommodation_type id="-1">
+        <accommodation_name>All</accommodation_name>
+      </accommodation_type>
+      <accommodation_type id="95">
+        <accommodation_name>1-Bedroom</accommodation_name>
+      </accommodation_type>
+    </accommodations>
+    <beddingconfigurations/>
+    <property_accommodations>
+      <accommodation_type id="95">
+        <accommodation_name>1-Bedroom</accommodation_name>
+        <property_accommodation id="8368">
+          <property_accommodation_name>1 Bedroom</property_accommodation_name>
+        </property_accommodation>
+        <property_accommodation id="10614">
+          <property_accommodation_name>1-Bedroom apartment</property_accommodation_name>
+        </property_accommodation>
+        <property_accommodation id="10612">
+          <property_accommodation_name>Classic Room</property_accommodation_name>
+        </property_accommodation>
+        <property_accommodation id="8367">
+          <property_accommodation_name>Studio</property_accommodation_name>
+        </property_accommodation>
+        <property_accommodation id="10613">
+          <property_accommodation_name>Studio</property_accommodation_name>
+        </property_accommodation>
+      </accommodation_type>
+    </property_accommodations>
+    <propertyimportantpoints/>
+    <facility_services>
+      <facility_service>24 Hour Reception/Concierge</facility_service>
+      <facility_service>Air-Conditioning/Cooling</facility_service>
+      <facility_service>Baby Amenities</facility_service>
+      <facility_service>Babysitting (On Request)</facility_service>
+      <facility_service>Bathroom Welcome Pack</facility_service>
+      <facility_service>Breakfast Room</facility_service>
+      <facility_service>Burners / Hobs</facility_service>
+      <facility_service>Business Facilities</facility_service>
+      <facility_service>Coffee Maker</facility_service>
+      <facility_service>Coffee Shop Nearby</facility_service>
+      <facility_service>Deposit Box</facility_service>
+      <facility_service>Digital TV</facility_service>
+      <facility_service>Direct Dial Telephone</facility_service>
+      <facility_service>Dishwasher</facility_service>
+      <facility_service>Dry Cleaning (Extra Cost)</facility_service>
+      <facility_service>Fridge / Freezer</facility_service>
+      <facility_service>Garage</facility_service>
+      <facility_service>Hairdryer</facility_service>
+      <facility_service>Iron and Ironing Board</facility_service>
+      <facility_service>Kettle</facility_service>
+      <facility_service>Laundry Facilities On-Site</facility_service>
+      <facility_service>Lift</facility_service>
+      <facility_service>Maid Service Weekly</facility_service>
+      <facility_service>Microwave </facility_service>
+      <facility_service>Parking On-Site</facility_service>
+      <facility_service>Pets Allowed (Extra Cost)</facility_service>
+      <facility_service>Restaurant Nearby</facility_service>
+      <facility_service>Room Safe</facility_service>
+      <facility_service>Supermarket Nearby</facility_service>
+      <facility_service>Toaster</facility_service>
+      <facility_service>WIFI Free of Charge</facility_service>
+    </facility_services>
+    <local_attractions>
+      <local_attraction>The Old Gothic Quarter</local_attraction>
+      <local_attraction>Miro Museum</local_attraction>
+      <local_attraction>The Cathedral</local_attraction>
+      <local_attraction>Ramblas</local_attraction>
+      <local_attraction>Olympic Stadium</local_attraction>
+      <local_attraction>Plaa Catalunya</local_attraction>
+      <local_attraction>Picasso Museum</local_attraction>
+      <local_attraction>Sagrada Familia</local_attraction>
+      <local_attraction>Gaudi's unfinished cathedral</local_attraction>
+      <local_attraction>Ciutadella Park. </local_attraction>
+    </local_attractions>
+    <map_location>
+      <latitude>41.38386</latitude>
+      <longitude>2.17133</longitude>
+      <full_address>Address1 Address2 Barcelona Spain</full_address>
+    </map_location>
+  </property>
+</response>
