@@ -87,6 +87,11 @@ how this file is formatted and how the process works.
 - Support for multi-unit availabilities on `Roomorama::Calendar`.
 - `Roomorama::Calendar::Stay` and `StayMapper` to map supplier's format into `Roomorama::Calendar:Entry`
 - Ciirus integrations: quote, book, cancel and synchronisation
+- Synchronisation with Kigo
+- Synchronisation with KigoLegacy
+- Kigo Legacy images fetching through controller
+- environment variable CONCIERGE_URL
+
 
 ### Changed
 - Do not attempt to update calendar for properties not previously synchronised.
@@ -101,7 +106,6 @@ how this file is formatted and how the process works.
 - Add check support for waytostay damage deposit
 - Rake task to dispatch missing amenities as diff operation
 - View suppliers, reservations and synchronisation process history on the `web` app
-- Synchronisation with Kigo
 
 ### Changed
 - `Workers::PropertySynchronisation` doesn't update sync_processes' counters if Roomorama call failed
