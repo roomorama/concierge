@@ -23,7 +23,6 @@ module Workers::Suppliers::Ciirus
 
             if permissions_validator(permissions.value).valid?
               synchronisation.start(property_id) do
-                Concierge.context.disable!
                 result = fetch_images(property_id)
                 next result unless result.success?
                 images = result.value
@@ -58,11 +57,9 @@ module Workers::Suppliers::Ciirus
     private
 
     def empty_rates_error(property_id)
-      with_context_enabled do
-        message = "After filtering actual rates for property `#{property_id}` we got empty rates." \
-          "Sync property with empty rates doesn't make sense."
-        augment_context_error(message)
-      end
+      message = "After filtering actual rates for property `#{property_id}` we got empty rates. " \
+        "Sync property with empty rates doesn't make sense."
+      augment_context_error(message)
       Result.error(:empty_rates_error)
     end
 
@@ -77,9 +74,7 @@ module Workers::Suppliers::Ciirus
 
     def report_error(message)
       yield.tap do |result|
-        unless result.success?
-          with_context_enabled { augment_context_error(message) }
-        end
+        augment_context_error(message) unless result.success?
       end
     end
 
@@ -114,12 +109,6 @@ module Workers::Suppliers::Ciirus
       report_error(message) do
         importer.fetch_security_deposit(property_id)
       end
-    end
-
-    def with_context_enabled
-      Concierge.context.enable!
-      yield
-      Concierge.context.disable!
     end
 
     def mapper
