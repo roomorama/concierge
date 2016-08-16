@@ -9,6 +9,9 @@ how this file is formatted and how the process works.
 - Host fee percentage for AtLeisure
 - External errors per supplier on the web ui
 
+### Changed
+- Do not store sync errors for Ciirus properties with bad permissions
+
 ### Fixed
 - Availabilities worker event name for Ciirus
 

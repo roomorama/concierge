@@ -18,14 +18,12 @@ module Workers::Suppliers::Ciirus
         properties.each do |property|
           property_id = property.property_id
           if validator(property).valid?
-            synchronisation.start(property_id) do
-              Concierge.context.disable!
+            permissions = fetch_permissions(property_id)
+            next unless permissions.success?
 
-              result = fetch_permissions(property_id)
-              next result unless result.success?
-              permissions = result.value
-
-              if permissions_validator(permissions).valid?
+            if permissions_validator(permissions.value).valid?
+              synchronisation.start(property_id) do
+                Concierge.context.disable!
                 result = fetch_images(property_id)
                 next result unless result.success?
                 images = result.value
@@ -45,8 +43,6 @@ module Workers::Suppliers::Ciirus
 
                 roomorama_property = mapper.build(property, images, rates, description, security_deposit)
                 Result.new(roomorama_property)
-              else
-                invalid_permissions_error(permissions)
               end
             end
           end
@@ -60,15 +56,6 @@ module Workers::Suppliers::Ciirus
     end
 
     private
-
-    def invalid_permissions_error(permissions)
-      with_context_enabled do
-        message = "Invalid permissions for property `#{permissions.property_id}`. " \
-          "The property should be online bookable and not timeshare: `#{permissions.to_h}`"
-        augment_context_error(message)
-      end
-      Result.error(:invalid_permissions_error)
-    end
 
     def empty_rates_error(property_id)
       with_context_enabled do
@@ -115,8 +102,9 @@ module Workers::Suppliers::Ciirus
     end
 
     def fetch_permissions(property_id)
-      report_error("Failed to fetch permissions for property `#{property_id}`") do
-        importer.fetch_permissions(property_id)
+      importer.fetch_permissions(property_id).tap do |result|
+        message = "Failed to fetch permissions for property `#{property_id}`"
+        announce_error(message, result) unless result.success?
       end
     end
 
