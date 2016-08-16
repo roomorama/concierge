@@ -15,8 +15,6 @@ module Workers::Suppliers::Ciirus
 
       identifiers.each do |property_id|
         synchronisation.start(property_id) do
-          Concierge.context.disable!
-
           result = fetch_rates(property_id)
           next result unless result.success?
           rates = result.value
