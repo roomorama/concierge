@@ -16,6 +16,7 @@ how this file is formatted and how the process works.
 ### Fixed
 - Include CiiRUS `quote` endpoint in the routes file
 - Pagination params validations
+- `Roomorama::Calendar::StaysMapper` maps valid entries from tomorrow
 
 ## [0.7.0] - 2016-08-16
 ### Added
