@@ -3,6 +3,7 @@ require 'spec_helper'
 RSpec.describe Kigo::Mappers::Resolver do
 
   describe '#images' do
+    let(:property_id) { 123 }
     let(:image) {
       {
         'PHOTO_ID'        => '//supper-fantastic.url/hashed-identifier.jpg',
@@ -13,7 +14,7 @@ RSpec.describe Kigo::Mappers::Resolver do
     }
 
     it 'sets proper image data' do
-      images = subject.images([image])
+      images = subject.images([image], property_id)
 
       expect(images.size).to eq 1
       image = images.first
