@@ -30,6 +30,7 @@ class Roomorama::Calendar
     end
 
     def map
+      return [] if stays.empty?
       (from_date..latest_checkout).collect do |date|
         default_entry(date).tap do |entry|
           entry.available = dates_with_stay.include? date

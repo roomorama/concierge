@@ -17,6 +17,7 @@ how this file is formatted and how the process works.
 - Include CiiRUS `quote` endpoint in the routes file
 - Pagination params validations
 - `Roomorama::Calendar::StaysMapper` maps valid entries from tomorrow
+- `Roomorama::Calendar::StaysMapper` for empty stays case
 
 ### Changed
 - Remove `Roomorama::Calendar::Stay.available` field

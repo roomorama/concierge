@@ -72,6 +72,14 @@ RSpec.describe Roomorama::Calendar::StaysMapper do
         checkout_allowed:   true
       })
     end
+
+    context 'when stays is empty' do
+      let(:stays) { [] }
+
+      it 'returns empty entries' do
+        expect(subject.count).to eq(0)
+      end
+    end
   end
 end
 
