@@ -8,11 +8,14 @@ module Poplidays
     #   * list of valid availabilities is empty
     #
     class AvailabilitiesValidator
-      attr_reader :availabilities
+      attr_reader :availabilities, :today
 
       # availabilities is a hash representation of Poplidays availabilies response
-      def initialize(availabilities)
+      # today is date, the purpose of the argument to save consistency of more
+      # then one availability validation process.
+      def initialize(availabilities, today)
         @availabilities = availabilities
+        @today = today
       end
 
       def valid?
@@ -28,7 +31,7 @@ module Poplidays
       end
 
       def availability_validator(availability)
-        Poplidays::Validators::AvailabilityValidator.new(availability)
+        Poplidays::Validators::AvailabilityValidator.new(availability, today)
       end
     end
   end

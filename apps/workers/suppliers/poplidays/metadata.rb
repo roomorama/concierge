@@ -14,6 +14,7 @@ module Workers::Suppliers::Poplidays
       result = importer.fetch_properties
 
       if result.success?
+        today = Date.today
         properties = result.value
         properties.each do |property|
           if validator(property).valid?
@@ -31,7 +32,7 @@ module Workers::Suppliers::Poplidays
               next result unless result.success?
               availabilities = result.value
 
-              next invalid_availabilities_error unless availabilities_validator(availabilities).valid?
+              next invalid_availabilities_error unless availabilities_validator(availabilities, today).valid?
 
               result = fetch_extras(property_id)
               extras = result.success? ? result.value : nil
@@ -108,8 +109,8 @@ module Workers::Suppliers::Poplidays
       Poplidays::Validators::PropertyDetailsValidator.new(details)
     end
 
-    def availabilities_validator(details)
-      Poplidays::Validators::AvailabilitiesValidator.new(details)
+    def availabilities_validator(details, today)
+      Poplidays::Validators::AvailabilitiesValidator.new(details, today)
     end
 
     def credentials
