@@ -83,15 +83,6 @@ how this file is formatted and how the process works.
 - Support for multi-unit availabilities on `Roomorama::Calendar`.
 - `Roomorama::Calendar::Stay` and `StayMapper` to map supplier's format into `Roomorama::Calendar:Entry`
 - Ciirus integrations: quote, book, cancel and synchronisation
-- Synchronisation with Kigo
-- Synchronisation with KigoLegacy
-- `Kigo::ImageFetcher` - to download images by Kigo's API
-- environment variable CONCIERGE_URL
-- Kigo Legacy images fetching through controller
-- `CONCIERGE_API_SECRET` for signing `GET` requests
-- `Roomorama::Client::Operations::DisableHost` to deactivate hosts on roomorama
-- host deletion flow
-
 
 ### Changed
 - Do not attempt to update calendar for properties not previously synchronised.
