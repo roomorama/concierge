@@ -9,9 +9,11 @@ module Web::Controllers::Params
   #   +per+:  how many records per page should be presented.
   #
   # Both parameters are optional.
-  class Paginated < Web::Action::Params
-    param :page, type: Integer
-    param :per,  type: Integer
+  module Paginated
+    def self.included(base)
+      base.param :page, type: Integer
+      base.param :per,  type: Integer
+    end
   end
 
 end

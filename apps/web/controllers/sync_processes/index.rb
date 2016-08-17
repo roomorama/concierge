@@ -6,13 +6,15 @@ module Web::Controllers::SyncProcesses
     include Web::Action
     include Web::Controllers::InternalError
 
-    params Web::Controllers::Params::Paginated
+    params do
+      include Web::Controllers::Params::Paginated
+    end
 
     expose :metadata_processes, :availabilities_processes
 
     def call(params)
-      page = params[:page] && params[:page].to_i
-      per  = params[:per]  && params[:per].to_i
+      page = params[:page]
+      per  = params[:per]
 
       @metadata_processes = SyncProcessRepository.
         most_recent.
