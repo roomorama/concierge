@@ -23,7 +23,7 @@ module Kigo::Mappers
     private
 
     def image_url(property_id, identifier)
-      File.join(ENV['CONCIERGE_URL'], 'kigo_image', property_id.to_s, identifier)
+      [ENV['CONCIERGE_URL'], 'kigo/image', property_id, identifier].join('/')
     end
   end
 end
