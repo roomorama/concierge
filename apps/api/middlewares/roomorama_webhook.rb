@@ -265,6 +265,13 @@ module API
         status, headers, body = response
         json_response         = json_decode(body.first)
 
+        # do not touch the response if the route is not found (i.e., status +404+).
+        # In such cases, the logic was all within Hanami and no valid JSON is
+        # returned
+        if status.to_i == 404
+          return response
+        end
+
         # this is not a valid Rack response, but the response here is a valid
         # JSON since it came from Concierge.
         return false unless json_response.success?

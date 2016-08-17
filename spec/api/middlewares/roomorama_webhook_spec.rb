@@ -51,6 +51,8 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
     }
   }
 
+  subject { described_class.new(upstream) }
+
   describe "invalid webhooks" do
     context "invalid JSON request body" do
       let(:request_body) { StringIO.new("invalid json") }
@@ -209,7 +211,13 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
     end
   end
 
-  subject { described_class.new(upstream) }
+  context "404" do
+    let(:upstream) { lambda { |env| [404, {}, ["Not Found"]] } }
+
+    it "does not touch the response in case the route is not defined" do
+      expect(post("/invalid", headers)).to eq [404, { "Content-Length" => "9" }, "Not Found"]
+    end
+  end
 
   def invalid_webhook
     [422, { "Content-Length" => "15" }, "Invalid webhook"]
