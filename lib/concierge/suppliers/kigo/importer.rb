@@ -21,7 +21,7 @@ module Kigo
     AVAILABILITIES      = 'listPropertyAvailability'
     AVAILABILITIES_DIFF = 'diffPropertyAvailability'
     RESERVATIONS        = 'listPropertyCalendarReservations'
-    IMAGE           = 'readPropertyPhotoFile'
+    IMAGE               = 'readPropertyPhotoFile'
 
     # references
     AMENITIES           = 'listKigoPropertyAmenities'

@@ -17,3 +17,4 @@ post 'waytostay/cancel', to: 'waytostay#cancel'
 post 'ciirus/cancel',    to: 'ciirus#cancel'
 
 post 'checkout', to: 'static#checkout'
+get '/kigo/image/:property_id/:image_id', to: 'kigo#image'

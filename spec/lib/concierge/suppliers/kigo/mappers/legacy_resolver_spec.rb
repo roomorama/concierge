@@ -18,7 +18,7 @@ RSpec.describe Kigo::Mappers::LegacyResolver do
 
       expect(images.size).to eq 1
       image = images.first
-      expect(image.url).to eq "#{ENV['CONCIERGE_URL']}/kigo_image/123/12345"
+      expect(image.url).to eq "#{ENV['CONCIERGE_URL']}/kigo/image/123/12345"
       expect(image.identifier).to eq '12345'
       expect(image.caption).to eq 'Balcony'
     end
