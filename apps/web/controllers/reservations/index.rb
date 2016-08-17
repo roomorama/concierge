@@ -6,15 +6,14 @@ module Web::Controllers::Reservations
     include Web::Action
     include Web::Controllers::InternalError
 
-    params Web::Controllers::Params::Paginated
+    params do
+      include Web::Controllers::Params::Paginated
+    end
 
     expose :reservations
 
     def call(params)
-      page = params[:page] && params[:page].to_i
-      per  = params[:per]  && params[:per].to_i
-
-      @reservations = ReservationRepository.reverse_date.paginate(page: page, per: per)
+      @reservations = ReservationRepository.reverse_date.paginate(page: params[:page], per: params[:per])
     end
   end
 end

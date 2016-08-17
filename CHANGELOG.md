@@ -4,6 +4,15 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.7.1] - 2016-08-17
+### Changed
+- Better error handling for 404 and 500 scenarios on Roomorama webhook
+- Upgraded Rollbar to `2.12.0`
+
+### Fixed
+- Include CiiRUS `quote` endpoint in the routes file
+- Pagination params validations
+
 ## [0.7.0] - 2016-08-16
 ### Added
 - Host fee percentage for AtLeisure
