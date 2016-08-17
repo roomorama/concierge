@@ -279,7 +279,7 @@ module API
           error = RuntimeError.new(message)
 
           Rollbar.error(error)
-          return [500, {}, "Internal Server Error"]
+          return [500, {}, ["Internal Server Error"]]
         end
 
         data  = json_response.value
