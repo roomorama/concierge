@@ -5,6 +5,9 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+### Changed
+- Better error handling for 404 and 500 scenarios on Roomorama webhook
+
 ### Fixed
 - Include CiiRUS `quote` endpoint in the routes file
 
