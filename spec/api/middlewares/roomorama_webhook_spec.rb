@@ -219,6 +219,18 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
     end
   end
 
+  context "invalid JSON response from Concierge" do
+    let(:upstream) { lambda { |env| [201, {}, ["Invalid JSON"]] } }
+
+    it "returns a proper internal server error message and reports the occurrence" do
+      error = nil
+      expect(Rollbar).to receive(:error) { |exception| error = exception }
+
+      expect(post("/", headers)).to eq [500, { "Content-Length" => "21" }, "Internal Server Error"]
+      expect(error.message).to eq "Invalid JSON from Concierge. Status: 201, Body: Invalid JSON"
+    end
+  end
+
   def invalid_webhook
     [422, { "Content-Length" => "15" }, "Invalid webhook"]
   end

@@ -272,9 +272,15 @@ module API
           return response
         end
 
-        # this is not a valid Rack response, but the response here is a valid
-        # JSON since it came from Concierge.
-        return false unless json_response.success?
+        # in case Concierge did not return valid JSON, something is very wrong.
+        # Notify via Rollbar and return an internal server error.
+        unless json_response.success?
+          message = "Invalid JSON from Concierge. Status: #{status}, Body: #{body.first}"
+          error = RuntimeError.new(message)
+
+          Rollbar.error(error)
+          return [500, {}, "Internal Server Error"]
+        end
 
         data  = json_response.value
         event = webhook_payload["event"]
