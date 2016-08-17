@@ -1,6 +1,6 @@
-module Web::Controllers::KigoImage
-  class Show
-    include Web::Action
+module API::Controllers::Kigo
+  class Image
+    include API::Action
 
     params do
       param :property_id, presence: true
