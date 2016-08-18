@@ -7,30 +7,31 @@ class Roomorama::Calendar
   #       checkin:    "2016-01-01",
   #       checkout:   "2016-01-08",
   #       price: 700, # 100 per night
-  #       available:  true
   #     }),
   #     Roomrama::Calendar::Stay.new({
   #       checkin:    "2016-01-01",
   #       checkout:   "2016-01-15",
   #       price: 700, # 50 per night
-  #       available:  true
   #     })
   #   ]
   #
-  #   entries = StaysMapper.new(stays).map
+  #   entries = StaysMapper.new(stays, Date.today).map
   #
   # See more detailed example in specs
   #
   class StaysMapper
 
-    attr_reader :stays
+    attr_reader :stays, :day
 
-    def initialize(stays)
+    # mapper starts fill entries from day after day, so usually `day = Date.today`
+    def initialize(stays, day)
       @stays = stays
+      @day = day
     end
 
     def map
-      (earliest_checkin..latest_checkout).collect do |date|
+      return [] if stays.empty?
+      (from_date..latest_checkout).collect do |date|
         default_entry(date).tap do |entry|
           entry.available = dates_with_stay.include? date
 
@@ -68,13 +69,13 @@ class Roomorama::Calendar
     end
 
     def dates_with_stay
-      @dates_with_stay ||= Set.new((earliest_checkin..latest_checkout).select { |date|
+      @dates_with_stay ||= Set.new((from_date..latest_checkout).select { |date|
         stays.any? { |stay| stay.include?(date) }
       })
     end
 
-    def earliest_checkin
-      @earliest_checkin ||= stays_by_checkin.keys.sort.first
+    def from_date
+      day + 1
     end
 
     def latest_checkout
@@ -86,7 +87,8 @@ class Roomorama::Calendar
         date:             date.to_s,
         available:        true,
         checkin_allowed:  false,
-        checkout_allowed: false
+        checkout_allowed: false,
+        nightly_rate:     0
       })
     end
   end
