@@ -29,6 +29,17 @@ module SAW
       def find_unit(id)
         units.detect { |u| u.id == id }
       end
+
+      # Determines whether unit with given +id+ is present in property rate
+      # object or not.
+      #
+      # Arguments
+      #   * +id+
+      #
+      # Returns [Boolean] flag indicating the presence of rates for unit
+      def has_unit?(id)
+        !!find_unit(id)
+      end
     end
   end
 end
