@@ -5,6 +5,9 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+### Fixed
+- Room disable operation should actually be :delete instead of :put
+
 ### Added
 - Support for owner information when creating a `Roomorama::Property`
 
