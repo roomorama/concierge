@@ -279,6 +279,7 @@ RSpec.describe Roomorama::Property do
       subject.description  = "Bonjour!"
       subject.nightly_rate = 100
       subject.currency     = "EUR"
+      subject.owner_city   = "Seoul"
 
       image         = Roomorama::Image.new("IMG1")
       image.url     = "https://www.example.org/image1.png"
@@ -331,6 +332,7 @@ RSpec.describe Roomorama::Property do
         nightly_rate:    100,
         currency:        "EUR",
         multi_unit:      true,
+        owner_city:      "Seoul",
         instant_booking: false,
 
         images: [
