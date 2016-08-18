@@ -47,6 +47,15 @@ RSpec.describe Poplidays::Mappers::RoomoramaCalendar do
             'price' => 960.0,
             'priceEnabled' => true,
             'requestOnly' => true
+          },
+          {
+            'arrival' => '20160926',
+            'basePrice' => 960.0,
+            'departure' => '20160930',
+            'discountPercent' => 0.0,
+            'price' => 960.0,
+            'priceEnabled' => true,
+            'requestOnly' => false
           }
         ]
       }
@@ -61,15 +70,6 @@ RSpec.describe Poplidays::Mappers::RoomoramaCalendar do
     it 'returns unavailable entry for price disabled stays' do
       availabilities_hash = {
         'availabilities' => [
-          {
-            'arrival' => '20160820',
-            'basePrice' => 960.0,
-            'departure' => '20160825',
-            'discountPercent' => 0.0,
-            'price' => 960.0,
-            'priceEnabled' => true,
-            'requestOnly' => false
-          },
           {
             'arrival' => '20160831',
             'basePrice' => 960.0,
