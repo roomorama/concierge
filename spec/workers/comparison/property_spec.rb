@@ -7,6 +7,7 @@ RSpec.describe Workers::Comparison::Property do
       property.description = "With open garden space"
       property.max_guests  = 10
       property.amenities   = "parking,wifi"
+      property.owner_email = "owner@example.org"
 
       image = Roomorama::Image.new("img1")
       image.url     = "https://www.example.org/img1"
@@ -25,11 +26,15 @@ RSpec.describe Workers::Comparison::Property do
 
   let(:new) {
     Roomorama::Property.new("property1").tap do |property|
-      property.title       = "Large House in Singapore"
+      property.title = "Large House in Singapore"
+      # added owner phone number
+      property.owner_phone_number = "+1 12345678"
+      # edited owner email
+      property.owner_email = "newowner@example.org"
       # edited description
       property.description = "With open garden space and a private swimming pool"
       # one more amenity
-      property.amenities   = "parking,wifi,internet"
+      property.amenities = "parking,wifi,internet"
 
       # no max_guests information
 
@@ -72,6 +77,8 @@ RSpec.describe Workers::Comparison::Property do
       expect(diff).to be_a Roomorama::Diff
       expect(diff.identifier).to eq "property1"
       expect(diff.description).to eq "With open garden space and a private swimming pool"
+      expect(diff.owner_phone_number).to eq "+1 12345678"
+      expect(diff.owner_email).to eq "newowner@example.org"
       expect(diff.amenities).to eq "parking,wifi,internet"
       expect(diff.erased).to eq %w(max_guests)
 
