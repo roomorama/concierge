@@ -8,6 +8,13 @@ how this file is formatted and how the process works.
 ### Added
 - Support for owner information when creating a `Roomorama::Property`
 
+### Fixed
+- `Roomorama::Calendar::StaysMapper` maps valid entries from tomorrow
+- `Roomorama::Calendar::StaysMapper` for empty stays case
+
+### Changed
+- Remove `Roomorama::Calendar::Stay.available` field
+
 ## [0.7.1] - 2016-08-17
 ### Changed
 - Better error handling for 404 and 500 scenarios on Roomorama webhook
@@ -16,11 +23,6 @@ how this file is formatted and how the process works.
 ### Fixed
 - Include CiiRUS `quote` endpoint in the routes file
 - Pagination params validations
-- `Roomorama::Calendar::StaysMapper` maps valid entries from tomorrow
-- `Roomorama::Calendar::StaysMapper` for empty stays case
-
-### Changed
-- Remove `Roomorama::Calendar::Stay.available` field
 
 ## [0.7.0] - 2016-08-16
 ### Added
