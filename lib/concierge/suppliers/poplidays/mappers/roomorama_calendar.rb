@@ -41,7 +41,7 @@ module Poplidays
           })
         end
         return [] if stays.empty?
-        Roomorama::Calendar::StaysMapper.new(stays).map
+        Roomorama::Calendar::StaysMapper.new(stays, today).map
       end
 
       def availability_validator(availability, today)
