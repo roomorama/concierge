@@ -32,6 +32,7 @@ module AtLeisure
       set_property_type
       set_images
       set_price_and_availabilities
+      set_owner_info
 
       Result.new(property)
     end
@@ -64,6 +65,37 @@ module AtLeisure
       property.postal_code  = info['ZipPostalCode']
       property.lat          = info['WGS84Latitude']
       property.lng          = info['WGS84Longitude']
+    end
+
+    def set_owner_info
+      property.owner_email = 'belvillapt@belvilla.com'
+      country_info = {
+        'FR' => ['France', '0800 905 849'],
+        'IT' => ['Italy', '800 871005'],
+        'DE' => ['Germany', '0800 1826013'],
+        'AT' => ['Austria', '0800 296669'],
+        'NL' => ['Netherlands', '(+31) 088 202 12 12'],
+        'BE' => ['Belgium', '(+32) 03 808 09 54'],
+        'ES' => ['Spain', '900 983103'],
+        'GB' => ['United Kingdom', '0800 0516731'],
+        'PT' => ['Portugal', '8008 31532'],
+        'CH' => ['Switzerland', '0800 561913'],
+        'PL' => ['Poland', '(+48) 22 3988048'],
+        'SE' => ['Sweden', '020 794849'],
+        'LU' => ['Luxembourg', '8002 6106'],
+        'DK' => ['Denmark', '8088 7970'],
+        'NO' => ['Norway', '800 19321']
+        #'CZ' => ['', ''],
+        #'HR' => ['', ''],
+        #'GR' => ['', ''],
+        #'HU' => ['', ''],
+        #'TR' => ['', ''],
+        #'SK' => ['', ''],
+      }
+      info = meta_data['BasicInformationV3']
+      if country_info.has_key?(info['Country'])
+        property.owner_city, property.owner_phone_number = country_info[info['Country']]
+      end
     end
 
     # payload presents beds size as different named items
