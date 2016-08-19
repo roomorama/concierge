@@ -7,6 +7,8 @@ module AtLeisure
 
     attr_reader :availability, :today
 
+    # Today arg is today date. It allows to save consistency of more
+    # then one availability validation process.
     def initialize(availability, today)
       @availability = availability
       @today = today
