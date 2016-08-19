@@ -146,6 +146,11 @@ RSpec.describe AtLeisure::Mapper do
       expect(property.nightly_rate.to_i).to eq 57
       expect(property.weekly_rate.to_i).to eq 402
       expect(property.monthly_rate.to_i).to eq 1722
+
+      expect(property.owner_email).to eq 'belvillapt@belvilla.com'
+      expect(property.owner_phone_number).to eq '(+32) 03 808 09 54'
+      expect(property.owner_city).to eq 'Belgium'
+
       expect(property.images.size).to eq 9
 
       image = property.images.first
