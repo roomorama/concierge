@@ -33,18 +33,24 @@ RSpec.describe Public::Controllers::Kigo::Image do
     end
 
     it 'fails with external error' do
-      allow_any_instance_of(Kigo::ImageFetcher).to receive(:fetch) { Result.error(:connection_timeout) }
+      allow_any_instance_of(Kigo::Importer).to receive(:fetch) { Result.error(:connection_timeout) }
 
       response = parse_response(subject.call(params))
 
       expect(response.status).to eq 503
       expect(response.body['errors']).to eq 'connection_timeout'
+
+      external_error = ExternalErrorRepository.last
+
+      expect(external_error.code).to eq 'connection_timeout'
+      expect(external_error.supplier).to eq 'KigoLegacy'
+      expect(external_error.operation).to eq 'public'
     end
 
     it 'returns image' do
       decoded_image_string = StringIO.new('huge string')
       expected_headers     = { 'Content-Type' => 'image/jpeg' }
-      
+
       allow_any_instance_of(Kigo::ImageFetcher).to receive(:fetch) { Result.new(decoded_image_string) }
 
       response = subject.call(params)

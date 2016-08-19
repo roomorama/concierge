@@ -47,7 +47,7 @@ module Kigo
       Concierge.context.augment(context)
 
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-        operation:   'sync',
+        operation:   'public',
         supplier:    Kigo::Legacy::SUPPLIER_NAME,
         code:        result.error.code,
         context:     Concierge.context.to_h,
