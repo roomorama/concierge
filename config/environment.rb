@@ -7,7 +7,8 @@ apps = {
   api:     %w(api),
   web:     %w(web),
   workers: %w(workers),
-  all:     %w(api web workers)
+  public:  %w(public),
+  all:     %w(api web workers public)
 }
 
 unless apps.keys.include?(Concierge.app)
@@ -24,8 +25,12 @@ Hanami::Container.configure do
     mount API::Application, at: "/"
   when :web
     mount Web::Application, at: "/"
+  when :public
+    mount Public::Application, at: "/public"
+
   when :all
     mount API::Application, at: "/api"
     mount Web::Application, at: "/web"
+    mount Public::Application, at: "/public"
   end
 end
