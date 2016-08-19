@@ -35,7 +35,9 @@ RSpec.describe Workers::Suppliers::AtLeisure::Calendar do
   context 'success' do
 
     before do
-      allow_any_instance_of(AtLeisure::Importer).to receive(:fetch_availabilities) { Result.new({}) }
+      allow_any_instance_of(AtLeisure::Importer).to receive(:fetch_availabilities) do
+        Result.new({'HouseCode' => '1', 'AvailabilityPeriodV1' => []})
+      end
     end
 
     it 'finalizes synchronisation' do

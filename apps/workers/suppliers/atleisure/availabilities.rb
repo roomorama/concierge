@@ -25,7 +25,7 @@ module Workers
               synchronisation.start(property_id) { mapper.build(availabilities) }
             else
               message = "Failed to perform the `#fetch_availabilities` operation, with properties: `#{ids}`"
-              augment_context_error(message)
+              announce_error(message, result)
             end
           end
           synchronisation.finish!
@@ -38,7 +38,7 @@ module Workers
         end
 
         def mapper
-          @mapper ||= AtLeisure::Mappers::Calendar.new
+          @mapper ||= ::AtLeisure::Mappers::Calendar.new
         end
 
         def importer
@@ -49,7 +49,7 @@ module Workers
           Concierge::Credentials.for(::AtLeisure::Client::SUPPLIER_NAME)
         end
 
-        def augment_context_error(message)
+        def announce_error(message, result)
           message = {
             label: 'Synchronisation Failure',
             message: message,
@@ -57,6 +57,14 @@ module Workers
           }
           context = Concierge::Context::Message.new(message)
           Concierge.context.augment(context)
+
+          Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
+            operation:   'sync',
+            supplier:    ::AtLeisure::Client::SUPPLIER_NAME,
+            code:        result.error.code,
+            context:     Concierge.context.to_h,
+            happened_at: Time.now
+          })
         end
       end
     end
