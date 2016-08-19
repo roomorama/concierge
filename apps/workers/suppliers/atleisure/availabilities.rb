@@ -21,8 +21,10 @@ module Workers
             result = importer.fetch_availabilities(ids)
             if result.success?
               availabilities = result.value
-              property_id = availabilities['HouseCode']
-              synchronisation.start(property_id) { mapper.build(availabilities) }
+              availabilities.each do |availability|
+                property_id = availability['HouseCode']
+                synchronisation.start(property_id) { mapper.build(availability) }
+              end
             else
               message = "Failed to perform the `#fetch_availabilities` operation, with properties: `#{ids}`"
               announce_error(message, result)
