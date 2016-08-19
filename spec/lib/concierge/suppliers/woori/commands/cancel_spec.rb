@@ -7,12 +7,12 @@ RSpec.describe Woori::Commands::Cancel do
 
   let(:credentials) { Concierge::Credentials.for("Woori") }
   let(:subject) { described_class.new(credentials) }
-  let(:url) { "http://my.test/reservation/cancelcharge" }
+  let(:url) { "http://my.test/reservation/cancel" }
   let(:reservation_id) { "w_WP20160801020909446E" }
 
   it "successfully cancels the reservation" do
     stub_data = read_fixture("woori/cancellations/success.json")
-    stub_call(:get, url) { [200, {}, stub_data] }
+    stub_call(:post, url) { [200, {}, stub_data] }
 
     result = subject.call(reservation_id)
     expect(result).to be_success
@@ -21,7 +21,7 @@ RSpec.describe Woori::Commands::Cancel do
 
   it "returns a result with error if reservation failed by unknown reason" do
     stub_data = read_fixture("woori/cancellations/unknown_error.json")
-    stub_call(:get, url) { [200, {}, stub_data] }
+    stub_call(:post, url) { [200, {}, stub_data] }
 
     result = subject.call(reservation_id)
     expect(result).not_to be_success
@@ -36,7 +36,7 @@ RSpec.describe Woori::Commands::Cancel do
   context "when response from the Woori api is not well-formed json" do
     it "returns a result with an appropriate error" do
       stub_data = read_fixture("woori/bad_response.json")
-      stub_call(:get, url) { [200, {}, stub_data] }
+      stub_call(:post, url) { [200, {}, stub_data] }
 
       result = subject.call(reservation_id)
 
@@ -48,7 +48,7 @@ RSpec.describe Woori::Commands::Cancel do
   context "when incorrect booking_ref_number is provided" do
     it "returns a result with an appropriate error" do
       stub_data = read_fixture("woori/cancellations/unknown_error.json")
-      stub_call(:get, url) { [500, {}, stub_data] }
+      stub_call(:post, url) { [500, {}, stub_data] }
 
       result = subject.call(reservation_id)
 
@@ -59,7 +59,7 @@ RSpec.describe Woori::Commands::Cancel do
 
   context "when request fails due to timeout error" do
     it "returns a result with an appropriate error" do
-      stub_call(:get, url) { raise Faraday::TimeoutError }
+      stub_call(:post, url) { raise Faraday::TimeoutError }
 
       result = subject.call(reservation_id)
 

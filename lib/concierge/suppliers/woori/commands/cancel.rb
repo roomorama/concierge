@@ -9,12 +9,12 @@ module Woori
     # * cancel (reservation/cancel)
     # * cancelcharge (reservation/cancelcharge)
     #
-    # Real cancellation of already booked rooms is performed by cancelcharge,
+    # Real cancellation of already booked rooms is performed by cancel,
     # so this class uses this endpoint.
     class Cancel < BaseFetcher
       include Concierge::JSON
 
-      ENDPOINT = "reservation/cancelcharge"
+      ENDPOINT = "reservation/cancel"
 
       # Cancels reservation by its id (reservation code)
       #
@@ -32,7 +32,8 @@ module Woori
       # Returns a +Result+ with +Result::Error+ when operation fails
       def call(reservation_id)
         params = build_request_params(reservation_id)
-        result = http.get(ENDPOINT, params, headers)
+
+        result = http.post(ENDPOINT, params, headers)
 
         if result.success?
           decoded_result = json_decode(result.value.body)
