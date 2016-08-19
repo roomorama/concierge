@@ -233,8 +233,10 @@ module AtLeisure
     end
 
     def set_price_and_availabilities
-      periods        = meta_data['AvailabilityPeriodV1'].map { |period| AvailabilityPeriod.new(period) }
-      actual_periods = periods.select(&:valid?)
+      today = Date.today
+      actual_periods = meta_data['AvailabilityPeriodV1'].select { |availability|
+        validator(availability, today).valid?
+      }.map { |period| AvailabilityPeriod.new(period) }
 
       min_price  = actual_periods.map(&:daily_price).min
       dates_size = actual_periods.map { |period| period.dates.size }
@@ -258,6 +260,11 @@ module AtLeisure
       cost['TypeDescriptions'].find { |d| d['Language'] == 'EN' }['Description']
     end
 
+    private
+
+    def validator(availability, today)
+      ::AtLeisure::AvailabilityValidator.new(availability, today)
+    end
   end
 end
 

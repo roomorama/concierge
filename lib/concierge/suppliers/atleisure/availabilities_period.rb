@@ -20,13 +20,5 @@ module AtLeisure
     def daily_price
       price / dates.size
     end
-
-    def valid?
-      check_in > Date.today && !on_request?
-    end
-
-    def on_request?
-      @on_request
-    end
   end
 end
