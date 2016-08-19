@@ -70,6 +70,22 @@ RSpec.describe Roomorama::Calendar do
       })
     end
 
+    it "adds valid_stay_length field if at least one entry has the field" do
+      subject.add(create_entry(date: "2016-05-22", available: true,  nightly_rate: 100, valid_stay_lengths: [2]))
+      subject.add(create_entry(date: "2016-05-23", available: false, nightly_rate: 120))
+      subject.add(create_entry(date: "2016-05-24", available: true,  nightly_rate: 150))
+      subject.add(create_entry(date: "2016-05-25", available: true,  nightly_rate: 150))
+      subject.add(create_entry(date: "2016-05-26", available: true,  nightly_rate: 150))
+
+      expect(subject.to_h).to eq({
+        identifier:        "prop1",
+        start_date:        "2016-05-22",
+        availabilities:    "10111",
+        nightly_prices:    [100, 120, 150, 150, 150],
+        valid_stay_lengths: [[2], nil, nil, nil, nil]
+      })
+    end
+
     it "overwrites given weekly/monthly rates as well as check-in/check-out rules and minimum stays" do
       subject.add(create_entry(date: "2016-05-22", available: true,  nightly_rate: 100, weekly_rate: 500, checkin_allowed: false))
       subject.add(create_entry(date: "2016-05-23", available: false, nightly_rate: 120, monthly_rate: 1000, checkin_allowed: true))
