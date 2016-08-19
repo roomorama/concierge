@@ -67,30 +67,30 @@ module AtLeisure
       property.lng          = info['WGS84Longitude']
     end
 
+    # Information taken from https://www.belvilla.com/contact-us
+    # For some countries there are no information provided
     def set_owner_info
       property.owner_email = 'belvillapt@belvilla.com'
       country_info = {
-        'FR' => ['France', '0800 905 849'],
-        'IT' => ['Italy', '800 871005'],
-        'DE' => ['Germany', '0800 1826013'],
+        'AU' => ['Australia', '1800 442586'],
         'AT' => ['Austria', '0800 296669'],
-        'NL' => ['Netherlands', '(+31) 088 202 12 12'],
         'BE' => ['Belgium', '(+32) 03 808 09 54'],
-        'ES' => ['Spain', '900 983103'],
-        'GB' => ['United Kingdom', '0800 0516731'],
-        'PT' => ['Portugal', '8008 31532'],
-        'CH' => ['Switzerland', '0800 561913'],
-        'PL' => ['Poland', '(+48) 22 3988048'],
-        'SE' => ['Sweden', '020 794849'],
-        'LU' => ['Luxembourg', '8002 6106'],
+        'CA' => ['Canada', '1800 4045160'],
         'DK' => ['Denmark', '8088 7970'],
-        'NO' => ['Norway', '800 19321']
-        #'CZ' => ['', ''],
-        #'HR' => ['', ''],
-        #'GR' => ['', ''],
-        #'HU' => ['', ''],
-        #'TR' => ['', ''],
-        #'SK' => ['', ''],
+        'FR' => ['France', '0800 905 849'],
+        'DE' => ['Germany', '0800 1826013'],
+        'IE' => ['Ireland', '1800 552175'],
+        'IT' => ['Italy', '800 871005'],
+        'LU' => ['Luxembourg', '8002 6106'],
+        'NL' => ['Netherlands', '(+31) 088 202 12 12'],
+        'NO' => ['Norway', '800 19321'],
+        'PL' => ['Poland', '(+48) 22 3988048'],
+        'PT' => ['Portugal', '8008 31532'],
+        'ES' => ['Spain', '900 983103'],
+        'SE' => ['Sweden', '020 794849'],
+        'CH' => ['Switzerland', '0800 561913'],
+        'GB' => ['United Kingdom', '0800 0516731'],
+        'US' => ['United States', '1 800 7197573']
       }
       info = meta_data['BasicInformationV3']
       if country_info.has_key?(info['Country'])
