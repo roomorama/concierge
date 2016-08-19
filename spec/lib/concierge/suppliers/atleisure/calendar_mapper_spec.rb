@@ -38,12 +38,6 @@ RSpec.describe AtLeisure::Mappers::Calendar do
         'HouseCode' => property_id,
         'AvailabilityPeriodV1' => [
           {
-            'ArrivalDate' => '2016-08-20',
-            'Price' => 960,
-            'DepartureDate' => '2016-08-25',
-            'OnRequest' => 'No'
-          },
-          {
             'ArrivalDate' => '2016-08-31',
             'Price' => 961,
             'DepartureDate' => '2016-09-24',

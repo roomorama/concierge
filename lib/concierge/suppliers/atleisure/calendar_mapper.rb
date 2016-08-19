@@ -23,7 +23,7 @@ module AtLeisure
           validator(availability, today).valid?
         }.map { |availability| to_stay(availability) }
 
-        build_calendar(property_id, stays)
+        build_calendar(property_id, stays, today)
       end
 
       private
@@ -41,9 +41,9 @@ module AtLeisure
         })
       end
 
-      def build_calendar(property_id, stays)
+      def build_calendar(property_id, stays, today)
         calendar = Roomorama::Calendar.new(property_id).tap do |c|
-          entries = Roomorama::Calendar::StaysMapper.new(stays).map
+          entries = Roomorama::Calendar::StaysMapper.new(stays, today).map
           entries.each { |entry| c.add(entry) }
         end
 
