@@ -89,7 +89,7 @@ how this file is formatted and how the process works.
 - Ciirus integrations: quote, book, cancel and synchronisation
 - Synchronisation with Kigo
 - Synchronisation with KigoLegacy
-- Kigo Legacy images fetching through controller
+- `Kigo::ImageFetcher` - to download images by Kigo's API
 - environment variable CONCIERGE_URL
 
 
