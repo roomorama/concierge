@@ -41,16 +41,14 @@ RSpec.describe Workers::Suppliers::Poplidays::Metadata do
       expect(error.code).to eq 'timeout_error'
     end
 
-    it 'announces an error if property details is invalid' do
+    it 'does not announces an error if property details is invalid' do
       allow_any_instance_of(Poplidays::Importer).to receive(:fetch_property_details) { Result.new(property_details) }
       allow_any_instance_of(Poplidays::Validators::PropertyDetailsValidator).to receive(:valid?) { false }
       subject.perform
 
       error = ExternalErrorRepository.last
 
-      expect(error.operation).to eq 'sync'
-      expect(error.supplier).to eq Poplidays::Client::SUPPLIER_NAME
-      expect(error.code).to eq 'invalid_property_details_error'
+      expect(error).to be_nil
     end
 
     it 'doesnt finalize synchronisation with external error' do

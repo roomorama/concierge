@@ -19,15 +19,12 @@ module Workers::Suppliers::Poplidays
         properties.each do |property|
           if validator(property).valid?
             property_id = property['id']
+
+            details = fetch_property_details(property_id)
+            next unless details.success? && details_validator(details.value).valid?
+
             synchronisation.start(property_id) do
               Concierge.context.disable!
-
-              result = fetch_property_details(property_id)
-              next result unless result.success?
-              details = result.value
-
-              next invalid_details_error unless details_validator(details).valid?
-
               result = fetch_availabilities(property_id)
               next result unless result.success?
               availabilities = result.value
@@ -37,7 +34,7 @@ module Workers::Suppliers::Poplidays
               result = fetch_extras(property_id)
               extras = result.success? ? result.value : nil
 
-              mapper.build(property, details, availabilities, extras)
+              mapper.build(property, details.value, availabilities, extras)
             end
           end
         end
@@ -50,10 +47,6 @@ module Workers::Suppliers::Poplidays
     end
 
     private
-
-    def invalid_details_error
-      Result.error(:invalid_property_details_error)
-    end
 
     def invalid_availabilities_error
       Result.error(:invalid_availabilities_error)
@@ -68,8 +61,9 @@ module Workers::Suppliers::Poplidays
     end
 
     def fetch_property_details(property_id)
-      report_error("Failed to fetch details for property `#{property_id}`") do
-        importer.fetch_property_details(property_id)
+      importer.fetch_property_details(property_id).tap do |result|
+        message = "Failed to fetch details for property `#{property_id}`"
+        announce_error(message, result) unless result.success?
       end
     end
 
