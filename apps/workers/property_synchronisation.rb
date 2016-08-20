@@ -44,7 +44,7 @@ module Workers
       @host        = host
       @router      = Workers::Router.new(host)
       @sync_record = init_sync_record(host)
-      @counters    = PropertyCounters.new(0, 0, 0)
+      @counters    = PropertyCounters.new(0, 0, 0, 0)
       @processed   = []
       @purge       = true
     end
