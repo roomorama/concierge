@@ -24,6 +24,18 @@ module Web::Views::ExternalErrors
       link_to name, routes.error_path(error.id)
     end
 
+    # next page link
+    def next_link(cur_page)
+      next_page = cur_page.to_i <= 0 ? 2 : cur_page.to_i + 1
+      link_to 'Next ❯', routes.errors_path({page: next_page})
+    end
+
+    # prev page link
+    def prev_link(cur_page)
+      prev_page = cur_page.to_i - 1
+      link_to '❮ Prev', routes.errors_path({page: prev_page}) if prev_page > 0
+    end
+
     private
 
     def time_formatter

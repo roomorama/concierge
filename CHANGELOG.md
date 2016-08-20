@@ -14,6 +14,7 @@ how this file is formatted and how the process works.
 - Support for owner information when creating a `Roomorama::Property`
 - Owner info for AtLeisure properties
 - Skipped properties counters for metadata sync process 
+- Simple pagination widget for external errors UI table
 
 ### Fixed
 - `Roomorama::Calendar::StaysMapper` maps valid entries from tomorrow
