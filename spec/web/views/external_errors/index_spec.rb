@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe Web::Views::ExternalErrors::Index do
   let(:errors)    { 2.times.map { |n| generate_error(n + 1) } }
-  let(:exposures) { Hash[external_errors: errors] }
+  let(:exposures) { Hash[external_errors: errors, params: {}] }
   let(:template)  { Hanami::View::Template.new('apps/web/templates/external_errors/index.html.erb') }
   let(:view)      { described_class.new(template, exposures) }
   let(:rendered)  { view.render }
