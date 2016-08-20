@@ -20,6 +20,7 @@
         <th>Properties Created</th>
         <th>Properties Deleted</th>
         <th>Properties Updated</th>
+        <th>Properties Skipped</th>
       </tr>
     </thead>
 
@@ -35,6 +36,7 @@
           <td><%= format_number sync.stats[:properties_created] %></td>
           <td><%= format_number sync.stats[:properties_updated] %></td>
           <td><%= format_number sync.stats[:properties_deleted] %></td>
+          <td><%= format_number sync.stats[:properties_skipped] %></td>
         <% end %>
       </tr>
     </tbody>
