@@ -13,12 +13,12 @@ module AtLeisure
     CANCELLATION_POLICY = 'super_elite'
 
     CODES = {
-      property_type: 10,
-      main_items: 50,
-      beds: 200,
-      room_items: 400,
+      property_type:   10,
+      main_items:      50,
+      beds:            200,
+      room_items:      400,
       smoking_allowed: 504,
-      wifi: 510
+      wifi:            510
     }
 
     attr_reader :layout_items, :property, :meta_data
