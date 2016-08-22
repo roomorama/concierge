@@ -43,7 +43,11 @@ module Workers::Suppliers::Ciirus
                 roomorama_property = mapper.build(property, images, rates, description, security_deposit)
                 Result.new(roomorama_property)
               end
+            else
+              synchronisation.skip_property
             end
+          else
+            synchronisation.skip_property
           end
         end
         synchronisation.finish!

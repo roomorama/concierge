@@ -13,6 +13,7 @@ how this file is formatted and how the process works.
 ### Added
 - Support for owner information when creating a `Roomorama::Property`
 - Owner info for AtLeisure properties
+- Skipped properties counters for metadata sync process 
 
 ### Fixed
 - `Roomorama::Calendar::StaysMapper` maps valid entries from tomorrow

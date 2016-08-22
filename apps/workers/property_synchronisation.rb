@@ -35,7 +35,7 @@ module Workers
     # Calendar availabilities is tackled by +Workers::CalendarSynchronisation+
     WORKER_TYPE = "metadata"
 
-    PropertyCounters = Struct.new(:created, :updated, :deleted)
+    PropertyCounters = Struct.new(:created, :updated, :deleted, :skipped)
 
     attr_reader :host, :router, :sync_record, :counters, :processed, :purge
 
@@ -44,7 +44,7 @@ module Workers
       @host        = host
       @router      = Workers::Router.new(host)
       @sync_record = init_sync_record(host)
-      @counters    = PropertyCounters.new(0, 0, 0)
+      @counters    = PropertyCounters.new(0, 0, 0, 0)
       @processed   = []
       @purge       = true
     end
@@ -122,6 +122,23 @@ module Workers
       save_sync_process
     end
 
+    # Allows client to count skipped (not instant bookable, etc) properties during sync process,
+    # skipped counter will be saved at the end of sync process
+    #
+    # Usage:
+    #
+    # if permissions_validator(permissions.value).valid?
+    #   synchronisation.start(property_id) do
+    #    ...
+    #   end
+    # else
+    #   synchronisation.skip_property
+    # end
+    #
+    def skip_property
+      counters.skipped += 1
+    end
+
     private
 
     # when a new property is pushed for synchronisation, this class register
@@ -180,6 +197,7 @@ module Workers
       sync_record.stats[:properties_created] = counters.created
       sync_record.stats[:properties_updated] = counters.updated
       sync_record.stats[:properties_deleted] = counters.deleted
+      sync_record.stats[:properties_skipped] = counters.skipped
       sync_record.finished_at = Time.now
 
       database.create(sync_record)
