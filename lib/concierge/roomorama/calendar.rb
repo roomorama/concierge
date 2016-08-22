@@ -142,13 +142,13 @@ module Roomorama
         #   since that is already the default of the API endpoint.
 
         [:weekly_prices, :monthly_prices, :minimum_stays].each do |name|
-          unless payload[name].any? { |x| !x.nil? }
+          if payload[name].all?(&:nil?)
             payload.delete(name)
           end
         end
 
         [:checkin_allowed, :checkout_allowed].each do |name|
-          unless payload[name].to_s.chars.any? { |e| e == "0" }
+          if payload[name].to_s.chars.all? { |e| e == "1" }
             payload.delete(name)
           end
         end
@@ -159,7 +159,7 @@ module Roomorama
           payload.delete(:units)
         end
 
-        unless payload[:valid_stay_lengths].any? { |a| !a.empty? }
+        if payload[:valid_stay_lengths].all?(&:empty?)
           payload.delete(:valid_stay_lengths)
         end
 
