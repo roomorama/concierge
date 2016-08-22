@@ -19,6 +19,9 @@ how this file is formatted and how the process works.
 ### Changed
 - Remove `Roomorama::Calendar::Stay.available` field
 
+### Changed
+- Make location info for Waytostay sync
+
 ## [0.7.1] - 2016-08-17
 ### Changed
 - Better error handling for 404 and 500 scenarios on Roomorama webhook
