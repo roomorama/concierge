@@ -1,9 +1,9 @@
-module Public::Controllers::Kigo
-  # +Public::Controllers::Kigo::Image+
+module API::Controllers::Kigo
+  # +API::Controllers::Kigo::Image+
   #
   # this class responsible for sending images from KigoLegacy API
   class Image
-    include Public::Action
+    include API::Action
 
     params do
       param :property_id, presence: true
