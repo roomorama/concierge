@@ -169,6 +169,7 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
   context 'fetching images' do
     before do
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_properties) { success_result }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_rates) { Result.new(rates) }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_permissions) { Result.new(permissions) }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_images) { Result.error(:soap_error) }
     end
@@ -195,6 +196,7 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_permissions) { Result.new(permissions) }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_images) { Result.new(images) }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_description) { Result.error(:soap_error) }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_rates) { Result.new(rates) }
     end
 
     it 'announces an error if fetching description fails' do
@@ -222,26 +224,19 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_rates) { Result.error(:soap_error) }
     end
 
-    it 'announces an error if fetching rates fails' do
+    it 'does not start synchronsiation if fetching rates fails' do
+      # We expect rates error, and purge the property instead
       subject.perform
 
-      error = ExternalErrorRepository.last
-
-      expect(error.operation).to eq 'sync'
-      expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
-      expect(error.code).to eq 'soap_error'
+      expect(subject.synchronisation).to_not receive(:start)
     end
 
-    it 'announces an error if list of actual rates is empty' do
+    it 'does not start synchronisation if list of actual rates is empty' do
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_rates) { Result.new(rates) }
       allow_any_instance_of(Ciirus::Validators::RateValidator).to receive(:valid?) { false }
       subject.perform
 
-      error = ExternalErrorRepository.last
-
-      expect(error.operation).to eq 'sync'
-      expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
-      expect(error.code).to eq 'empty_rates_error'
+      expect(subject.synchronisation).to_not receive(:start)
     end
 
     it 'doesnt finalize synchronisation with external error' do
