@@ -82,7 +82,7 @@ RSpec.describe Roomorama::Calendar do
         start_date:        "2016-05-22",
         availabilities:    "10111",
         nightly_prices:    [100, 120, 150, 150, 150],
-        valid_stay_lengths: [[2], nil, nil, nil, nil]
+        valid_stay_lengths: [[2], [], [], [], []]
       })
     end
 
