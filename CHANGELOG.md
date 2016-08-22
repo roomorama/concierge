@@ -18,6 +18,7 @@ how this file is formatted and how the process works.
 
 ### Changed
 - Remove `Roomorama::Calendar::Stay.available` field
+- Empty rates and ones with errors will be purged instead of raising an external error
 
 ## [0.7.1] - 2016-08-17
 ### Changed
