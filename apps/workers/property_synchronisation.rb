@@ -47,6 +47,7 @@ module Workers
       @counters    = PropertyCounters.new(0, 0, 0, 0)
       @processed   = []
       @purge       = true
+      initialize_context(nil)
     end
 
     # Indicates that the property with the given +identifier+ is being synchronised.
@@ -258,6 +259,5 @@ module Workers
         stats:      {}
       )
     end
-
   end
 end

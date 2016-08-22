@@ -41,6 +41,7 @@ module Workers
       @sync_record = init_sync_record(host)
       @processed   = 0
       @counters    = AvailabilityCounters.new(0, 0)
+      initialize_context(nil)
     end
 
     # starts the process of fetching the calendar of availabilities for
@@ -164,6 +165,5 @@ module Workers
         stats:      {}
       )
     end
-
   end
 end

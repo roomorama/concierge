@@ -57,7 +57,6 @@ module Workers::Suppliers
     # Starts a new context, run the block that augments to context
     # Then announce if any error was returned from the block
     def get_new_waytostay_changes
-      initialize_overall_sync_context
       client.get_changes_since(last_synced_timestamp).tap do |result|
         announce_error(result) unless result.success?
       end
@@ -86,16 +85,6 @@ module Workers::Suppliers
         context:     Concierge.context.to_h,
         happened_at: Time.now
       })
-    end
-
-    def initialize_overall_sync_context
-      Concierge.context = Concierge::Context.new(type: "batch")
-      sync_process = Concierge::Context::SyncProcess.new(
-        worker:     Workers::PropertySynchronisation::WORKER_TYPE,
-        host_id:    host.id,
-        identifier: nil
-      )
-      Concierge.context.augment(sync_process)
     end
 
     # Flatten and compact the `changes` hash
