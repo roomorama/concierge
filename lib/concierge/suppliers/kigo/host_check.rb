@@ -10,7 +10,7 @@ module Kigo
     end
 
     def deactivated?
-      result = request_handler.http_client.post(endpoint, json_encode(fake_params), { "Content-Type" => "application/json" })
+      result = http.post(endpoint, json_encode(fake_params), { "Content-Type" => "application/json" })
 
       return unless result.success?
 
@@ -23,6 +23,10 @@ module Kigo
 
     def endpoint
       request_handler.endpoint_for(Kigo::Price::API_METHOD)
+    end
+
+    def http
+      request_handler.http_client
     end
 
     def fake_params
