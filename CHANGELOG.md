@@ -17,6 +17,7 @@ how this file is formatted and how the process works.
 ### Fixed
 - `Roomorama::Calendar::StaysMapper` maps valid entries from tomorrow
 - `Roomorama::Calendar::StaysMapper` for empty stays case
+- Send `[]` instead of `nil` for `Roomorama::Calendar::Entry.valid_stay_length`
 
 ### Changed
 - Remove `Roomorama::Calendar::Stay.available` field

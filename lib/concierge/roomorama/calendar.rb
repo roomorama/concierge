@@ -159,7 +159,7 @@ module Roomorama
           payload.delete(:units)
         end
 
-        if payload[:valid_stay_lengths].all?(&:nil?)
+        if payload[:valid_stay_lengths].all?(&:empty?)
           payload.delete(:valid_stay_lengths)
         end
 
@@ -205,9 +205,10 @@ module Roomorama
         parsed_entries.rates.weekly       << entry.weekly_rate
         parsed_entries.rates.monthly      << entry.monthly_rate
         parsed_entries.minimum_stays      << entry.minimum_stay
-        parsed_entries.valid_stay_lengths << entry.valid_stay_lengths
+        parsed_entries.valid_stay_lengths << entry.valid_stay_lengths.to_a
         parsed_entries.checkin_rules      << boolean_to_string(entry.checkin_allowed)
         parsed_entries.checkout_rules     << boolean_to_string(entry.checkout_allowed)
+
       end
 
       parsed_entries
