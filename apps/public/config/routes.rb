@@ -1,1 +1,0 @@
-get '/kigo/image/:property_id/:image_id', to: 'kigo#image'

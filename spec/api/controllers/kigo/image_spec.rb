@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Public::Controllers::Kigo::Image do
+RSpec.describe API::Controllers::Kigo::Image do
   include Support::HTTPStubbing
   include Support::Factories
 
@@ -44,7 +44,7 @@ RSpec.describe Public::Controllers::Kigo::Image do
 
       expect(external_error.code).to eq 'connection_timeout'
       expect(external_error.supplier).to eq 'KigoLegacy'
-      expect(external_error.operation).to eq 'public'
+      expect(external_error.operation).to eq 'sync'
     end
 
     it 'returns image' do
