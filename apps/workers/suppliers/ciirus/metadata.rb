@@ -11,6 +11,7 @@ module Workers::Suppliers::Ciirus
     end
 
     def perform
+      initialize_overall_sync_context
       result = importer.fetch_properties(host)
 
       if result.success?
@@ -156,6 +157,16 @@ module Workers::Suppliers::Ciirus
         context:     Concierge.context.to_h,
         happened_at: Time.now
       })
+    end
+
+    def initialize_overall_sync_context
+      Concierge.context = Concierge::Context.new(type: "batch")
+      sync_process = Concierge::Context::SyncProcess.new(
+        worker:     Workers::PropertySynchronisation::WORKER_TYPE,
+        host_id:    host.id,
+        identifier: nil
+      )
+      Concierge.context.augment(sync_process)
     end
   end
 end
