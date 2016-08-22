@@ -13,9 +13,7 @@ how this file is formatted and how the process works.
 - Synchronisation with KigoLegacy
 - `Kigo::ImageFetcher` - to download images by Kigo's API
 - environment variable CONCIERGE_URL
-- new `public` app
 - Kigo Legacy images fetching through controller
-- new `public` operation for `ExternalError`
 
 
 ### Changed
