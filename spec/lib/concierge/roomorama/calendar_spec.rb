@@ -128,6 +128,50 @@ RSpec.describe Roomorama::Calendar do
       })
     end
 
+
+    context 'when all entries contain nil/empty fields' do
+      it "doesn't serialize prices/minimum_stays" do
+        subject.add(create_entry(date: "2016-05-22", available: true,  nightly_rate: 100, weekly_rate: nil, monthly_rate: nil, minimum_stay: nil))
+        subject.add(create_entry(date: "2016-05-23", available: false, nightly_rate: 120, weekly_rate: nil, monthly_rate: nil, minimum_stay: nil))
+        subject.add(create_entry(date: "2016-05-24", available: true,  nightly_rate: 150, weekly_rate: nil, monthly_rate: nil, minimum_stay: nil))
+
+        expect(subject.to_h).to eq({
+          identifier:        "prop1",
+          start_date:        "2016-05-22",
+          availabilities:    "101",
+          nightly_prices:    [100, 120, 150],
+        })
+      end
+
+      it "doesn't serialize checkin_allowed/checkout_allowed if all are true" do
+        subject.add(create_entry(date: "2016-05-22", available: true,  nightly_rate: 100, checkin_allowed: true, checkout_allowed: true))
+        subject.add(create_entry(date: "2016-05-23", available: false, nightly_rate: 120, checkin_allowed: true, checkout_allowed: true))
+        subject.add(create_entry(date: "2016-05-24", available: true,  nightly_rate: 150, checkin_allowed: true, checkout_allowed: true))
+
+        expect(subject.to_h).to eq({
+          identifier:        "prop1",
+          start_date:        "2016-05-22",
+          availabilities:    "101",
+          nightly_prices:    [100, 120, 150],
+        })
+      end
+
+      it "doesn't serialize valid_stay_lengths" do
+        subject.add(create_entry(date: "2016-05-22", available: true,  nightly_rate: 100, valid_stay_lengths: []))
+        subject.add(create_entry(date: "2016-05-23", available: false, nightly_rate: 120, valid_stay_lengths: []))
+        subject.add(create_entry(date: "2016-05-24", available: true,  nightly_rate: 150, valid_stay_lengths: []))
+        subject.add(create_entry(date: "2016-05-25", available: true,  nightly_rate: 150, valid_stay_lengths: []))
+        subject.add(create_entry(date: "2016-05-26", available: true,  nightly_rate: 150, valid_stay_lengths: []))
+
+        expect(subject.to_h).to eq({
+          identifier:        "prop1",
+          start_date:        "2016-05-22",
+          availabilities:    "10111",
+          nightly_prices:    [100, 120, 150, 150, 150],
+        })
+      end
+    end
+
     context "multi-unit support" do
       let(:unit_identifier) { "unit1" }
       let(:unit_calendar)   { described_class.new(unit_identifier) }

@@ -142,13 +142,13 @@ module Roomorama
         #   since that is already the default of the API endpoint.
 
         [:weekly_prices, :monthly_prices, :minimum_stays].each do |name|
-          if payload[name].all?(&:nil?)
+          unless payload[name].any? { |x| !x.nil? }
             payload.delete(name)
           end
         end
 
         [:checkin_allowed, :checkout_allowed].each do |name|
-          if payload[name].to_s.chars.all? { |e| e == "1" }
+          unless payload[name].to_s.chars.any? { |e| e == "0" }
             payload.delete(name)
           end
         end
@@ -159,7 +159,7 @@ module Roomorama
           payload.delete(:units)
         end
 
-        if payload[:valid_stay_lengths].all?(&:nil?)
+        unless payload[:valid_stay_lengths].any? { |a| !a.empty? }
           payload.delete(:valid_stay_lengths)
         end
 
@@ -197,9 +197,6 @@ module Roomorama
         end
       end
 
-      # Add valid_stay_length only if at least one entry contains the value
-      parse_stay_lengths = entries.any? { |e| !e.valid_stay_lengths.nil? }
-
       (start_date..end_date).each do |date|
         entry = index[date] || default_entry(date)
 
@@ -208,10 +205,10 @@ module Roomorama
         parsed_entries.rates.weekly       << entry.weekly_rate
         parsed_entries.rates.monthly      << entry.monthly_rate
         parsed_entries.minimum_stays      << entry.minimum_stay
+        parsed_entries.valid_stay_lengths << entry.valid_stay_lengths.to_a
         parsed_entries.checkin_rules      << boolean_to_string(entry.checkin_allowed)
         parsed_entries.checkout_rules     << boolean_to_string(entry.checkout_allowed)
 
-        parsed_entries.valid_stay_lengths << entry.valid_stay_lengths.to_a if parse_stay_lengths
       end
 
       parsed_entries
