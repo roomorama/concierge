@@ -38,6 +38,28 @@ RSpec.describe Workers::Suppliers::Waytostay do
     end
   end
 
+  context 'there are events from previous syncs in current context' do
+    before do
+      Concierge.context = Concierge::Context.new(type: "batch")
+
+      sync_process = Concierge::Context::SyncProcess.new(
+        worker:     "metadata",
+        host_id:    "UNRELATED_HOST",
+        identifier: "UNRELATED_PROPERTY"
+      )
+      Concierge.context.augment(sync_process)
+      allow(subject.client).to receive(:get_changes_since) do
+        subject.client.send(:augment_missing_fields, ["expected_key"])
+        Result.error(:unrecognised_response)
+      end
+    end
+    it 'announces an error without any unrelated context' do
+      subject.perform
+      error = ExternalErrorRepository.last
+      expect(error.context.get("events").to_s).to_not include("UNRELATED_PROPERTY")
+    end
+  end
+
   describe "#load_existing" do
     context "ref is not found in database" do
       it "should fetch from api if ref is not found in database" do

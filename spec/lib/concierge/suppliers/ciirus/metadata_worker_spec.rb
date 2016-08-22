@@ -122,6 +122,25 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
 
   subject { described_class.new(host) }
 
+  context 'there are events from previous syncs in current context' do
+    before do
+      Concierge.context = Concierge::Context.new(type: "batch")
+
+      sync_process = Concierge::Context::SyncProcess.new(
+        worker:     "metadata",
+        host_id:    "UNRELATED_HOST",
+        identifier: "UNRELATED_PROPERTY"
+      )
+      Concierge.context.augment(sync_process)
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_properties) { Result.error(:soap_error) }
+    end
+    it 'announces an error without any unrelated context' do
+      subject.perform
+      error = ExternalErrorRepository.last
+      expect(error.context.get("events").to_s).to_not include("UNRELATED_PROPERTY")
+    end
+  end
+
   it 'announces an error if fetching properties fails' do
     allow_any_instance_of(Ciirus::Importer).to receive(:fetch_properties) { Result.error(:soap_error) }
 
