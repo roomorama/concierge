@@ -210,7 +210,7 @@ module AtLeisure
         when 160 # Apartment
           property.type    = 'apartment'
           property.subtype = 'apartment'
-        when 70, 90, 95, 100, 145, 150, 170 # Farmhouse, Boat, House Boat, Holiday Home, Riad, Mobile Home
+        when 70, 90, 95, 100, 145, 150, 170 # Farmhouse, Boat, House Boat, Holiday Home, Riad, Mobile Home, Cave house
           property.type    = 'house'
           property.subtype = 'house'
       end
