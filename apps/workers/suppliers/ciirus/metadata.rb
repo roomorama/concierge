@@ -84,8 +84,9 @@ module Workers::Suppliers::Ciirus
     end
 
     def fetch_rates(property_id)
-      report_error("Failed to fetch rates for property `#{property_id}`") do
-        importer.fetch_rates(property_id)
+      importer.fetch_rates(property_id).tap do |result|
+        message = "Failed to fetch rates for property `#{property_id}`"
+        announce_error(message, result) unless result.success?
       end
     end
 
