@@ -33,6 +33,10 @@ class Workers::Suppliers::KigoLegacy
 
       return if properties.empty?
 
+      if host_deactivated?(properties.first)
+        delete_host! and return
+      end
+
       properties.each do |property|
         id = property['PROP_ID']
         synchronisation.start(id) do
@@ -64,6 +68,14 @@ class Workers::Suppliers::KigoLegacy
     properties.select do |property|
       wrapped_payload(property).get("PROP_PROVIDER.RA_ID") == host.identifier.to_i
     end
+  end
+
+  def host_deactivated?(property)
+    Kigo::HostCheck.new(property['PROP_ID'], request_handler: request_handler).deactivated?
+  end
+
+  def delete_host!
+    HostRepository.delete(host)
   end
 
   def wrapped_payload(payload)
