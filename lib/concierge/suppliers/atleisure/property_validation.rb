@@ -21,7 +21,8 @@ module AtLeisure
       no_errors? &&
         valid_payload? &&
         instant_bookable? &&
-        no_deposit_upfront?
+        no_deposit_upfront? &&
+        acceptable_type?
     end
 
     private
@@ -38,6 +39,14 @@ module AtLeisure
       payload['AvailabilityPeriodV1'].any? { |availability| availability['OnRequest'] == 'No' }
     end
 
+    def acceptable_type?
+      properties_array = payload['PropertiesV1']
+      room_type_hash   = properties_array.find { |data_hash| data_hash['TypeNumber'] == code_for(:property_type) }
+      room_type_number = room_type_hash['TypeContents'].first
+      # ignore hotel (130), mill (172), tent lodge (175)
+      ![130, 172, 175].include?(room_type_number)
+    end
+
     def no_deposit_upfront?
       deposit['Items'].find { |item| item['Payment'] == 'MandatoryDepositUpFront' }.nil?
     end
@@ -48,6 +57,10 @@ module AtLeisure
 
     def find_en(item)
       item['TypeDescriptions'].find { |desc| desc['Language'] == 'EN' }['Description']
+    end
+
+    def code_for(item)
+      AtLeisure::Mapper::CODES.fetch(item)
     end
   end
 end

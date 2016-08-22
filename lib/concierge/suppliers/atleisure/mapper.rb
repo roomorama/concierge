@@ -12,6 +12,15 @@ module AtLeisure
   class Mapper
     CANCELLATION_POLICY = 'super_elite'
 
+    CODES = {
+      property_type: 10,
+      main_items: 50,
+      beds: 200,
+      room_items: 400,
+      smoking_allowed: 504,
+      wifi: 510
+    }
+
     attr_reader :layout_items, :property, :meta_data
 
     def initialize(layout_items:)
@@ -168,6 +177,8 @@ module AtLeisure
       room_type_hash   = properties_array.find { |data_hash| data_hash['TypeNumber'] == code_for(:property_type) }
       room_type_number = room_type_hash['TypeContents'].first
 
+      # There are also hotel (130), mill (172), tent lodge (175)
+      # we ignore them and filter them out during property validation
       case room_type_number
         when 20 # Castle
           property.type    = 'house'
@@ -193,16 +204,13 @@ module AtLeisure
         when 120 # Penthouse
           property.type    = 'apartment'
           property.subtype = 'luxury_apartment'
-        when 130 # Hotel
-          property.type    = 'others'
-          property.subtype = 'hotel'
         when 140 # Lodge
           property.type    = 'house'
           property.subtype = 'cabin'
         when 160 # Apartment
           property.type    = 'apartment'
           property.subtype = 'apartment'
-        when 70, 90, 95, 100, 145, 150 # Farmhouse, Boat, House Boat, Holiday Home, Riad, Mobile Home
+        when 70, 90, 95, 100, 145, 150, 170 # Farmhouse, Boat, House Boat, Holiday Home, Riad, Mobile Home
           property.type    = 'house'
           property.subtype = 'house'
       end
@@ -238,14 +246,7 @@ module AtLeisure
     end
 
     def code_for(item)
-      {
-        property_type:   10,
-        main_items:      50,
-        beds:            200,
-        room_items:      400,
-        smoking_allowed: 504,
-        wifi:            510
-      }.fetch(item)
+      CODES.fetch(item)
     end
 
     def find_cost(name)
