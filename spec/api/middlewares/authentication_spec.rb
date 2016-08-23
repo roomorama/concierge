@@ -27,6 +27,12 @@ RSpec.describe API::Middlewares::Authentication do
     expect(post("/checkout", headers)).to eq success
   end
 
+  it "is valid if it is a GET with content-signature" do
+    path = "/kigo/image/123/45"
+    get_headers = { "HTTP_CONTENT_SIGNATURE" => sign(path, secret)}
+    expect(get(path, get_headers)).to eq success
+  end
+
   it "is forbidden without a request body" do
     headers.delete(:input)
     expect(post("/supplier/quote", headers)).to eq forbidden
@@ -74,7 +80,7 @@ RSpec.describe API::Middlewares::Authentication do
   end
 
   def get(path, headers = {})
-    to_rack(app.get(path))
+    to_rack(app.get(path, headers))
   end
 
   def post(path, params = {})
