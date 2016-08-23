@@ -4,30 +4,25 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
-## Unreleased
-- SAW: return error when rates are not found in the response for requested unit
-
-### Fixed
-- Room disable operation should actually be :delete instead of :put
-
+## [0.7.2] - 2016-08-23
 ### Added
-- Synchronisation#new_context to contextualize work that may announce error in a supplier worker implementation
+- `Synchronisation#new_context` to contextualize work that may announce error in a supplier worker implementation
 - Support for owner information when creating a `Roomorama::Property`
 - Owner info for AtLeisure properties
 - Skipped properties counters for metadata sync process
 - Simple pagination widget for external errors UI table
 
-### Fixed
-- `Roomorama::Calendar::StaysMapper` maps valid entries from tomorrow
-- `Roomorama::Calendar::StaysMapper` for empty stays case
-- Send `[]` instead of `nil` for `Roomorama::Calendar::Entry.valid_stay_length`
-
 ### Changed
 - Remove `Roomorama::Calendar::Stay.available` field
 - Empty rates and ones with errors will be purged instead of raising an external error
-
-### Changed
+- SAW: return error when rates are not found in the response for requested unit
 - Make location info for Waytostay sync
+
+### Fixed
+- `Roomorama::Calendar::StaysMapper` maps valid entries from tomorrow
+- `Roomorama::Calendar::StaysMapper` for empty stays case
+- Room disable operation should actually be :delete instead of :put
+- Send `[]` instead of `nil` for `Roomorama::Calendar::Entry.valid_stay_length`
 
 ## [0.7.1] - 2016-08-17
 ### Changed
