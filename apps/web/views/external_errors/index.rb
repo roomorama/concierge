@@ -28,9 +28,7 @@ module Web::Views::ExternalErrors
     #
     # params - the request params, a Hash with String keys
     def next_link(params)
-      cur_page  = params["page"].to_i
-      next_page = cur_page <= 0 ? 2 : cur_page + 1
-
+      next_page = params.fetch("page", 1).to_i + 1
       link_to "Next ❯", routes.errors_path(params.merge("page" => next_page))
     end
 
@@ -38,9 +36,7 @@ module Web::Views::ExternalErrors
     #
     # params - the request params, a Hash with String keys
     def prev_link(params)
-      cur_page = params["page"].to_i
-      prev_page = cur_page - 1
-
+      prev_page = params.fetch("page", 1).to_i - 1
       link_to "❮ Prev", routes.errors_path(params.merge("page" => prev_page)) if prev_page > 0
     end
 
