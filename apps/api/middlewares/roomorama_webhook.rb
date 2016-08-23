@@ -222,6 +222,7 @@ module API
       def call(env)
         @env = env
 
+        # skipping non webhook format requests such as getting image file
         return app.call(env) if http_get?
 
         if webhook_to_concierge
