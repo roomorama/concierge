@@ -30,11 +30,14 @@ RSpec.describe API::Middlewares::Authentication do
   end
 
   it "is valid if it is a GET with content-signature" do
+    previous = ENV["CONCIERGE_API_SECRET"]
     ENV["CONCIERGE_API_SECRET"] = secret
     path = "/kigo/image/123/45"
     get_headers = { "HTTP_CONTENT_SIGNATURE" => sign(path, secret)}
 
     expect(get(path, get_headers)).to eq success
+
+    ENV["CONCIERGE_API_SECRET"] = previous
   end
 
   it "is forbidden without a request body" do
