@@ -10,8 +10,6 @@ module API::Controllers::Kigo
       param :image_id, presence: true
     end
 
-    expose :identifier
-
     def call(params)
       if params.valid?
         return not_found_response if property_not_found(params[:property_id])

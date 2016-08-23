@@ -14,10 +14,13 @@ how this file is formatted and how the process works.
 - `Kigo::ImageFetcher` - to download images by Kigo's API
 - environment variable CONCIERGE_URL
 - Kigo Legacy images fetching through controller
+- `CONCIERGE_API_SECRET` for signing `GET` requests
 
 
 ### Changed
 - Do not attempt to update calendar for properties not previously synchronised.
+- `API::Middlewares::Authentication` with get request condition
+- `API::Middlewares::RoomoramaWebhook` with get request condition
 
 ### Fixed
 - error with saving response with ASCII-8BIT encoding type
