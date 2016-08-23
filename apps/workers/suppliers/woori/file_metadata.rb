@@ -16,14 +16,11 @@ module Workers::Suppliers::Woori
     end
 
     def perform
-      puts "Parsing properties..."
       all_properties.each do |property|
         synchronisation.start(property.identifier) do
-          puts "Starting sync for #{property.identifier}"
           # Concierge.context.disable!
 
           units = all_property_units(property.identifier)
-          puts "  Found #{units.size} units for #{property.identifier}"
           units.each { |unit| property.add_unit(unit) }
 
           Result.new(property)
@@ -66,10 +63,8 @@ module Workers::Suppliers::Woori
       end
     rescue UnitRatesFetchError
       if (retries -= 1) > 0
-        puts "Failed to fetch rates for #{unit.identifier}. Retrying..."
         retry
       else
-        puts "No more retries for #{unit.identifier}"
         result
       end
     end
