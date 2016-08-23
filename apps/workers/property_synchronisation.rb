@@ -35,7 +35,7 @@ module Workers
     # Calendar availabilities is tackled by +Workers::CalendarSynchronisation+
     WORKER_TYPE = "metadata"
 
-    PropertyCounters = Struct.new(:created, :updated, :deleted)
+    PropertyCounters = Struct.new(:created, :updated, :deleted, :skipped)
 
     attr_reader :host, :router, :sync_record, :counters, :processed, :purge
 
@@ -44,7 +44,7 @@ module Workers
       @host        = host
       @router      = Workers::Router.new(host)
       @sync_record = init_sync_record(host)
-      @counters    = PropertyCounters.new(0, 0, 0)
+      @counters    = PropertyCounters.new(0, 0, 0, 0)
       @processed   = []
       @purge       = true
     end
@@ -72,16 +72,17 @@ module Workers
     #   is encouraged to have augmented +Concierge.context+ with meaningful information
     #   to aid debugging.
     def start(identifier)
-      initialize_context(identifier)
-      result = yield(self)
+      new_context(identifier) do
+        result = yield(self)
 
-      if result.success?
-        property = result.value
-        process(property)
-      else
-        failed!
-        announce_failure(result)
-        false
+        if result.success?
+          property = result.value
+          process(property)
+        else
+          failed!
+          announce_failure(result)
+          false
+        end
       end
     end
 
@@ -122,6 +123,47 @@ module Workers
       save_sync_process
     end
 
+    # Allows client to count skipped (not instant bookable, etc) properties during sync process,
+    # skipped counter will be saved at the end of sync process
+    #
+    # Usage:
+    #
+    # if permissions_validator(permissions.value).valid?
+    #   synchronisation.start(property_id) do
+    #    ...
+    #   end
+    # else
+    #   synchronisation.skip_property
+    # end
+    #
+    def skip_property
+      counters.skipped += 1
+    end
+
+    # Used to initialize a clean context for a property id.
+    #
+    # Users of synchronisation should call this for work related
+    # to the host and property identifer, that could create ExternalError:
+    #
+    #   sync.new_context(property_id) do
+    #     # .. do stuff that might announce ExternalErrors
+    #   end
+    #
+    # This is already called in #start, so only call this
+    # for work done outside of #start.
+    def new_context(identifier=nil)
+      Concierge.context = Concierge::Context.new(type: "batch")
+
+      sync_process = Concierge::Context::SyncProcess.new(
+        worker:     WORKER_TYPE,
+        host_id:    host.id,
+        identifier: identifier
+      )
+
+      Concierge.context.augment(sync_process)
+      yield
+    end
+
     private
 
     # when a new property is pushed for synchronisation, this class register
@@ -139,18 +181,6 @@ module Workers
           update_counters(operation) if result.success?
         end
       end
-    end
-
-    def initialize_context(identifier)
-      Concierge.context = Concierge::Context.new(type: "batch")
-
-      sync_process = Concierge::Context::SyncProcess.new(
-        worker:     WORKER_TYPE,
-        host_id:    host.id,
-        identifier: identifier
-      )
-
-      Concierge.context.augment(sync_process)
     end
 
     def process(property)
@@ -180,6 +210,7 @@ module Workers
       sync_record.stats[:properties_created] = counters.created
       sync_record.stats[:properties_updated] = counters.updated
       sync_record.stats[:properties_deleted] = counters.deleted
+      sync_record.stats[:properties_skipped] = counters.skipped
       sync_record.finished_at = Time.now
 
       database.create(sync_record)
@@ -240,6 +271,5 @@ module Workers
         stats:      {}
       )
     end
-
   end
 end

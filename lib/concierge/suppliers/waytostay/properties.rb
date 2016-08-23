@@ -15,12 +15,8 @@ module Waytostay
       title:                     "general.name",
       description:               "descriptions.description",
       type:                      "general.type",
-      country_code:              "location.country.iso",
       lat:                       "location.coord.lat",
       lng:                       "location.coord.lng",
-      address:                   "location.address.address",
-      postal_code:               "location.address.postcode",
-      city:                      "location.city.name",
       number_of_bedrooms:        "general.bedrooms",
       number_of_bathrooms:       "general.bathrooms",
       surface:                   "general.sqm",
@@ -199,8 +195,18 @@ module Waytostay
       attr.merge! parse_amenities(response)
       attr.merge! parse_approximate_rates(response)
       attr.merge! parse_security_deposit_method(response)
+      attr.merge! parse_extra_location_info(response)
 
       attr.merge! parse_property_state(response)
+    end
+
+    def parse_extra_location_info(response)
+      {
+        country_code: response.get("location.country.iso"),
+        address:      response.get("location.address.address"),
+        city:         response.get("location.city.name"),
+        postal_code:  response.get("location.address.postcode")
+      }
     end
 
     def parse_approximate_rates(response)

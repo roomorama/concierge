@@ -115,9 +115,9 @@ RSpec.shared_examples "Waytostay property client" do
 
     context "when property is valid and active" do
       let(:property_id) { valid_property_id }
-      let(:required_attributes) { [:identifier, :type, :title, :address, :postal_code,
-      :city, :description, :number_of_bedrooms, :max_guests, :minimum_stay,
-      :nightly_rate, :weekly_rate, :monthly_rate, :default_to_available] }
+      let(:required_attributes) { [:identifier, :type, :title,
+        :description, :number_of_bedrooms, :max_guests, :minimum_stay,
+        :nightly_rate, :weekly_rate, :monthly_rate, :default_to_available] }
 
       it "should return a Roomorama::Property" do
         expected_room_load = Roomorama::Property.load(
@@ -144,7 +144,11 @@ RSpec.shared_examples "Waytostay property client" do
 
     context "when property has empty postal code" do
       let(:property_id) { "empty_postal_code" }
-      it { expect(subject.error.code).to eq :unrecognised_response }
+      it "should be successful" do
+        expect(subject).to be_success
+        expect(subject.value.to_h[:postal_code]).to be_nil
+        expect(subject.value.to_h[:address]).to_not be_nil
+      end
     end
   end
 

@@ -218,7 +218,7 @@ RSpec.describe Workers::PropertySynchronisation do
     end
 
     it "announces the error in case the synchronisation with Roomorama fails" do
-      stub_call(:put, "https://api.roomorama.com/v1.0/host/disable") {
+      stub_call(:delete, "https://api.roomorama.com/v1.0/host/disable") {
         [500, {}, [""]]
       }
 
@@ -277,8 +277,8 @@ RSpec.describe Workers::PropertySynchronisation do
       expect(sync.stats[:properties_deleted]).to eq 0
     end
 
-    it "registers updates and deletions when successful" do
-      stub_call(:put, "https://api.roomorama.com/v1.0/host/disable")    { [200, {}, [""]] }
+    it "registers updates, skips and deletions when successful" do
+      stub_call(:delete, "https://api.roomorama.com/v1.0/host/disable")    { [200, {}, [""]] }
 
       create_property(host_id: host.id, identifier: "prop1", data: roomorama_property.to_h)
       create_property(host_id: host.id, identifier: "prop2", data: roomorama_property.to_h.merge!(identifier: "prop2"))
@@ -300,6 +300,9 @@ RSpec.describe Workers::PropertySynchronisation do
         Result.new(roomorama_property)
       }
 
+      # create
+      subject.skip_property
+
       # prop3 is not included - should be deleted
       #
       expect {
@@ -315,11 +318,12 @@ RSpec.describe Workers::PropertySynchronisation do
       expect(sync.stats[:properties_created]).to eq 1
       expect(sync.stats[:properties_updated]).to eq 1
       expect(sync.stats[:properties_deleted]).to eq 1
+      expect(sync.stats[:properties_skipped]).to eq 1
     end
 
 
     it "does not update deleted counter if operation fails" do
-      stub_call(:put, "https://api.roomorama.com/v1.0/host/disable") {
+      stub_call(:delete, "https://api.roomorama.com/v1.0/host/disable") {
         [422, {}, read_fixture("roomorama/invalid_type.json")]
       }
 

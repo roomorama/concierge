@@ -141,4 +141,16 @@ RSpec.describe API::Controllers::SAW::Quote do
       expect(quotation.available).to be true
     end
   end
+
+  context "when there is no rates for given unit" do
+    it "returns an error" do
+      params[:unit_id] = "1111"
+      mock_request(:propertyrates, :success_multiple_units)
+
+      result = controller.quote_price(params)
+      expect(result.success?).to be false
+      expect(result).to be_kind_of(Result)
+      expect(result.error.code).to eq(:unavailable_unit_rates_error)
+    end
+  end
 end

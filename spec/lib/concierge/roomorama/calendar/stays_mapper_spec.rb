@@ -6,29 +6,35 @@ RSpec.describe Roomorama::Calendar::StaysMapper do
       [ Roomorama::Calendar::Stay.new({
           checkin:    "2016-01-01",
           checkout:   "2016-01-08",
-          price: 700, # 100 per night
-          available:  true
+          price: 700 # 100 per night
         }),
         Roomorama::Calendar::Stay.new({
           checkin:    "2016-01-01",
           checkout:   "2016-01-15",
-          price: 700, # 50 per night
-          available:  true
+          price: 700 # 50 per night
         }),
         Roomorama::Calendar::Stay.new({
           checkin:    "2016-02-02",
           checkout:   "2016-02-09",
-          price: 70, # 10 per night
-          available:  true
+          price: 70 # 10 per night
         })
       ]
     }
+    let(:day) { Date.new(2015, 12, 25) }
 
-    subject { described_class.new(stays).map }
+    subject { described_class.new(stays, day).map }
 
     it "should return expected availabilities" do
-      expect(subject.count).to eq 40 # 01 Jan to 09 Feb
+      expect(subject.count).to eq 46 # 25 Dec 2015 to 09 Feb 2016
+      expect(subject.all?(&:valid?)).to be true
       av = lambda { |date| subject.find { |e| e.date == Date.parse(date) }.to_h }
+      expect(av.call "2015-12-30").to eq({
+         date:               Date.parse("2015-12-30"),
+         available:          false,
+         checkin_allowed:    false,
+         checkout_allowed:   false,
+         nightly_rate:       0
+       })
       expect(av.call "2016-01-01").to eq({
         date:               Date.parse("2016-01-01"),
         available:          true,
@@ -48,7 +54,8 @@ RSpec.describe Roomorama::Calendar::StaysMapper do
         date:               Date.parse("2016-01-28"),
         available:          false,
         checkin_allowed:    false,
-        checkout_allowed:   false
+        checkout_allowed:   false,
+        nightly_rate:       0
       })
       expect(av.call "2016-02-08").to eq({
         date:               Date.parse("2016-02-08"),
@@ -64,6 +71,14 @@ RSpec.describe Roomorama::Calendar::StaysMapper do
         nightly_rate:       10,
         checkout_allowed:   true
       })
+    end
+
+    context 'when stays is empty' do
+      let(:stays) { [] }
+
+      it 'returns empty entries' do
+        expect(subject.count).to eq(0)
+      end
     end
   end
 end

@@ -24,6 +24,22 @@ module Web::Views::ExternalErrors
       link_to name, routes.error_path(error.id)
     end
 
+    # next page link
+    #
+    # params - the request params, a Hash with String keys
+    def next_link(params)
+      next_page = params.fetch("page", 1).to_i + 1
+      link_to "Next ❯", routes.errors_path(params.merge("page" => next_page))
+    end
+
+    # prev page link
+    #
+    # params - the request params, a Hash with String keys
+    def prev_link(params)
+      prev_page = params.fetch("page", 1).to_i - 1
+      link_to "❮ Prev", routes.errors_path(params.merge("page" => prev_page)) if prev_page > 0
+    end
+
     private
 
     def time_formatter
