@@ -102,9 +102,13 @@ module Workers::Suppliers::Ciirus
 
     def fetch_rates(property_id)
       importer.fetch_rates(property_id).tap do |result|
-        if !result.success? && !ignorable_error(result)
-          message = "Failed to fetch rates for property `#{property_id}`"
-          announce_error(message, result)
+        unless result.success?
+          if ignorable_error(result)
+            synchronisation.skip_property
+          else
+            message = "Failed to fetch rates for property `#{property_id}`"
+            announce_error(message, result)
+          end
         end
       end
     end
