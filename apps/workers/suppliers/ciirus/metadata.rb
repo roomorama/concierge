@@ -11,14 +11,18 @@ module Workers::Suppliers::Ciirus
     end
 
     def perform
-      result = importer.fetch_properties(host)
+      result = synchronisation.new_context(nil) do
+        importer.fetch_properties(host)
+      end
 
       if result.success?
         properties = result.value
         properties.each do |property|
           property_id = property.property_id
           if validator(property).valid?
-            permissions = fetch_permissions(property_id)
+            permissions = synchronisation.new_context(property_id) do
+              fetch_permissions(property_id)
+            end
             next unless permissions.success?
 
             if permissions_validator(permissions.value).valid?

@@ -17,7 +17,9 @@ module Workers::Suppliers
     end
 
     def synchronise
-      changes = get_new_waytostay_changes
+      changes = property_sync.new_context(nil) do
+        get_new_waytostay_changes
+      end
       return unless changes.success?
 
       uniq_properties_in(changes.value).each do |property_ref|
