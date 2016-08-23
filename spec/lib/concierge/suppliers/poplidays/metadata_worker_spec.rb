@@ -79,16 +79,14 @@ RSpec.describe Workers::Suppliers::Poplidays::Metadata do
       subject.perform
     end
 
-    it 'announces an error if availabilities is invalid' do
+    it 'doesnt announce an error if availabilities is invalid' do
       allow_any_instance_of(Poplidays::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }
       allow_any_instance_of(Poplidays::Validators::AvailabilitiesValidator).to receive(:valid?) { false }
       subject.perform
 
       error = ExternalErrorRepository.last
 
-      expect(error.operation).to eq 'sync'
-      expect(error.supplier).to eq Poplidays::Client::SUPPLIER_NAME
-      expect(error.code).to eq 'invalid_availabilities_error'
+      expect(error).to be_nil
     end
   end
 
