@@ -4,6 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## Unreleased
+### Changed
+- Stop creating external errors for expected messages from Ciirus
+
 ## [0.7.2] - 2016-08-23
 ### Added
 - `Synchronisation#new_context` to contextualize work that may announce error in a supplier worker implementation
