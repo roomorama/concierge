@@ -48,6 +48,8 @@ module Workers::Suppliers::AtLeisure
 
               mapper.prepare(property)
             }
+          else
+            synchronisation.skip_property
           end
         end
       else

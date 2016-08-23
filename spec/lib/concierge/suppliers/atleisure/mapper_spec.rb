@@ -92,7 +92,7 @@ RSpec.describe AtLeisure::Mapper do
         property_data['AvailabilityPeriodV1'] = [on_request_period, valid_period]
         property = subject.prepare(property_data).value
 
-        expect(property.minimum_stay).to eq 8
+        expect(property.minimum_stay).to eq 7
         expect(property.nightly_rate).to eq 100
         expect(property.weekly_rate).to eq 700
         expect(property.monthly_rate).to eq 3000
@@ -142,7 +142,7 @@ RSpec.describe AtLeisure::Mapper do
       expect(property.smoking_allowed).to eq false
       expect(property.type).to eq 'house'
       expect(property.subtype).to eq 'house'
-      expect(property.minimum_stay).to eq 3
+      expect(property.minimum_stay).to eq 2
       expect(property.nightly_rate.to_i).to eq 57
       expect(property.weekly_rate.to_i).to eq 402
       expect(property.monthly_rate.to_i).to eq 1722
