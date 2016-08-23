@@ -11,9 +11,10 @@ how this file is formatted and how the process works.
 - Room disable operation should actually be :delete instead of :put
 
 ### Added
+- Synchronisation#new_context to contextualize work that may announce error in a supplier worker implementation
 - Support for owner information when creating a `Roomorama::Property`
 - Owner info for AtLeisure properties
-- Skipped properties counters for metadata sync process 
+- Skipped properties counters for metadata sync process
 - Simple pagination widget for external errors UI table
 
 ### Fixed
