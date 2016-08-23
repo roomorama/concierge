@@ -44,7 +44,7 @@ RSpec.describe API::Controllers::Kigo::Image do
 
       expect(external_error.code).to eq 'connection_timeout'
       expect(external_error.supplier).to eq 'KigoLegacy'
-      expect(external_error.operation).to eq 'sync'
+      expect(external_error.operation).to eq 'image'
     end
 
     it 'returns image' do

@@ -53,14 +53,14 @@ module API::Controllers::Kigo
     def announce_error(result)
       message = {
         label:     'Kigo image fetching failure',
-        message:   'failed to perform `#fetch_images` operation',
+        message:   'Failed to perform `#fetch_images` operation',
         backtrace: caller
       }
       context = Concierge::Context::Message.new(message)
       Concierge.context.augment(context)
 
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-        operation:   'sync',
+        operation:   'image',
         supplier:    Kigo::Legacy::SUPPLIER_NAME,
         code:        result.error.code,
         context:     Concierge.context.to_h,
