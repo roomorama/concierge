@@ -29,7 +29,7 @@ module Web::Views::ExternalErrors
     # params - the request params, a Hash with String keys
     def next_link(params)
       cur_page  = params["page"].to_i
-      next_page = cur_page <= 0 ? 2 : cur_page.to_i + 1
+      next_page = cur_page <= 0 ? 2 : cur_page + 1
 
       link_to "Next ❯", routes.errors_path(params.merge("page" => next_page))
     end
