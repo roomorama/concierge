@@ -39,15 +39,19 @@ module Woori
     end
 
     private
+    def import_file(file_name)
+      File.join(credentials.import_files_dir, file_name)
+    end
+
     def properties_file
-      "#{credentials.import_files_dir}/bulk_properties.json"
+       import_file("bulk_properties.json")
     end
 
     def unit_files
       [
-        "#{credentials.import_files_dir}/bulk_roomtypes_0_to_10000.json",
-        "#{credentials.import_files_dir}/bulk_roomtypes_10000_to_20000.json",
-        "#{credentials.import_files_dir}/bulk_roomtypes_20000_to_30000.json"
+        import_file("bulk_roomtypes_0_to_10000.json"),
+        import_file("bulk_roomtypes_10000_to_20000.json"),
+        import_file("bulk_roomtypes_20000_to_30000.json")
       ]
     end
   end
