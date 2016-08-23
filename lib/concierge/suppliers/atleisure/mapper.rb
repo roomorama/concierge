@@ -235,9 +235,9 @@ module AtLeisure
       }.map { |period| AvailabilityPeriod.new(period) }
 
       min_price  = actual_periods.map(&:daily_price).min
-      dates_size = actual_periods.map { |period| period.dates.size }
+      min_stay = actual_periods.map(&:nights).min
 
-      property.minimum_stay = dates_size.min
+      property.minimum_stay = min_stay
       property.nightly_rate = min_price
       property.weekly_rate  = min_price * 7
       property.monthly_rate = min_price * 30

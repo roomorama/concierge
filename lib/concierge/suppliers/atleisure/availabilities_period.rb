@@ -17,6 +17,10 @@ module AtLeisure
       (check_in..check_out).to_a
     end
 
+    def nights
+      (check_out - check_in).to_i
+    end
+
     def daily_price
       price / dates.size
     end
