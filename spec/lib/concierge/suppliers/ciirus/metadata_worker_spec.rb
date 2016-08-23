@@ -230,6 +230,10 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
       subject.perform
 
       expect(subject.synchronisation).to_not receive(:start)
+      error = ExternalErrorRepository.last
+      expect(error.operation).to eq 'sync'
+      expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
+      expect(error.code).to eq 'soap_error'
     end
 
     it 'does not start synchronisation if list of actual rates is empty' do
