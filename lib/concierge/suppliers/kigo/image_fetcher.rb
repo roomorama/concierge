@@ -13,7 +13,6 @@ module Kigo
       if result.success?
         file_from_base64(result.value)
       else
-        announce_error(result)
         result
       end
     end
@@ -37,22 +36,5 @@ module Kigo
       Result.new(file)
     end
 
-    def announce_error(result)
-      message = {
-        label:     'Kigo image fetching failure',
-        message:   'failed to perform `#fetch_images` operation',
-        backtrace: caller
-      }
-      context = Concierge::Context::Message.new(message)
-      Concierge.context.augment(context)
-
-      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-        operation:   'sync',
-        supplier:    Kigo::Legacy::SUPPLIER_NAME,
-        code:        result.error.code,
-        context:     Concierge.context.to_h,
-        happened_at: Time.now
-      })
-    end
   end
 end
