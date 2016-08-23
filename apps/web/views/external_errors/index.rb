@@ -25,15 +25,23 @@ module Web::Views::ExternalErrors
     end
 
     # next page link
-    def next_link(cur_page)
-      next_page = cur_page.to_i <= 0 ? 2 : cur_page.to_i + 1
-      link_to 'Next ❯', routes.errors_path({page: next_page})
+    #
+    # params - the request params, a Hash with String keys
+    def next_link(params)
+      cur_page  = params["page"].to_i
+      next_page = cur_page <= 0 ? 2 : cur_page.to_i + 1
+
+      link_to "Next ❯", routes.errors_path(params.merge("page" => next_page))
     end
 
     # prev page link
-    def prev_link(cur_page)
-      prev_page = cur_page.to_i - 1
-      link_to '❮ Prev', routes.errors_path({page: prev_page}) if prev_page > 0
+    #
+    # params - the request params, a Hash with String keys
+    def prev_link(params)
+      cur_page = params["page"].to_i
+      prev_page = cur_page - 1
+
+      link_to "❮ Prev", routes.errors_path(params.merge("page" => prev_page)) if prev_page > 0
     end
 
     private
