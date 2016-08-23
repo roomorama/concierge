@@ -11,7 +11,7 @@ module Workers::Suppliers::Poplidays
     end
 
     def perform
-      result = importer.fetch_properties
+      result = synchronisation.new_context { importer.fetch_properties }
 
       if result.success?
         today = Date.today
@@ -20,22 +20,32 @@ module Workers::Suppliers::Poplidays
           if validator(property).valid?
             property_id = property['id']
 
-            details = fetch_property_details(property_id)
-            next unless details.success? && details_validator(details.value).valid?
+            details = synchronisation.new_context { fetch_property_details(property_id) }
+            next unless details.success?
+
+            unless details_validator(details.value).valid?
+              synchronisation.skip_property
+              next
+            end
+
+            availabilities = fetch_availabilities(property_id)
+            next unless availabilities.success?
+
+            unless availabilities_validator(availabilities.value, today).valid?
+              synchronisation.skip_property
+              next
+            end
 
             synchronisation.start(property_id) do
               Concierge.context.disable!
-              result = fetch_availabilities(property_id)
-              next result unless result.success?
-              availabilities = result.value
-
-              next invalid_availabilities_error unless availabilities_validator(availabilities, today).valid?
 
               result = fetch_extras(property_id)
-              extras = result.success? ? result.value : nil
+              extras = result.value if result.success?
 
-              mapper.build(property, details.value, availabilities, extras)
+              mapper.build(property, details.value, availabilities.value, extras)
             end
+          else
+            synchronisation.skip_property
           end
         end
         synchronisation.finish!
@@ -47,10 +57,6 @@ module Workers::Suppliers::Poplidays
     end
 
     private
-
-    def invalid_availabilities_error
-      Result.error(:invalid_availabilities_error)
-    end
 
     def report_error(message)
       yield.tap do |result|
@@ -68,8 +74,9 @@ module Workers::Suppliers::Poplidays
     end
 
     def fetch_availabilities(property_id)
-      report_error("Failed to fetch availabilities for property `#{property_id}`") do
-        importer.fetch_availabilities(property_id)
+      importer.fetch_availabilities(property_id).tap do |result|
+        message = "Failed to fetch availabilities for property `#{property_id}`"
+        announce_error(message, result) unless result.success?
       end
     end
 
