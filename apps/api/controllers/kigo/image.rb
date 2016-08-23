@@ -20,6 +20,7 @@ module API::Controllers::Kigo
           self.body   = result.value
           self.headers.merge!({ 'Content-Type' => 'image/jpeg' })
         else
+          announce_error(result)
           status 503, invalid_request(result.error.code)
         end
       else
@@ -47,6 +48,24 @@ module API::Controllers::Kigo
 
     def not_found_response
       status 404, { property_id: 'property not found' }.to_json
+    end
+
+    def announce_error(result)
+      message = {
+        label:     'Kigo image fetching failure',
+        message:   'failed to perform `#fetch_images` operation',
+        backtrace: caller
+      }
+      context = Concierge::Context::Message.new(message)
+      Concierge.context.augment(context)
+
+      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
+        operation:   'sync',
+        supplier:    Kigo::Legacy::SUPPLIER_NAME,
+        code:        result.error.code,
+        context:     Concierge.context.to_h,
+        happened_at: Time.now
+      })
     end
   end
 end
