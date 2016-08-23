@@ -54,16 +54,17 @@ module Workers
     # result is not successful, an external error is persisted to the database and the method
     # terminates with no API calls being performed to Roomorama.
     def start(identifier)
-      initialize_context(identifier)
-      result = yield(self)
-      @processed += 1
+      new_context(identifier) do
+        result = yield(self)
+        @processed += 1
 
-      if result.success?
-        calendar = result.value
-        process(calendar)
-      else
-        announce_failure(result)
-        false
+        if result.success?
+          calendar = result.value
+          process(calendar)
+        else
+          announce_failure(result)
+          false
+        end
       end
     end
 
@@ -81,6 +82,30 @@ module Workers
 
       database.create(sync_record)
       true
+    end
+
+    # Used to initialize a clean context for a property id.
+    #
+    # Users of synchronisation should call this for work related
+    # to the host and property identifer, that could create ExternalError:
+    #
+    #   sync.new_context(property_id) do
+    #     # .. do stuff that might announce ExternalErrors
+    #   end
+    #
+    # This is already called in #start, so only call this
+    # for work done outside of #start.
+    def new_context(identifier)
+      Concierge.context = Concierge::Context.new(type: "batch")
+
+      sync_process = Concierge::Context::SyncProcess.new(
+        worker:     WORKER_TYPE,
+        host_id:    host.id,
+        identifier: identifier
+      )
+
+      Concierge.context.augment(sync_process)
+      yield
     end
 
     private
@@ -109,18 +134,6 @@ module Workers
 
       counters.available   += Array(mapping["1"]).size
       counters.unavailable += Array(mapping["0"]).size
-    end
-
-    def initialize_context(identifier)
-      Concierge.context = Concierge::Context.new(type: "batch")
-
-      sync_process = Concierge::Context::SyncProcess.new(
-        worker:     WORKER_TYPE,
-        host_id:    host.id,
-        identifier: identifier
-      )
-
-      Concierge.context.augment(sync_process)
     end
 
     def run_operation(operation)
@@ -164,6 +177,5 @@ module Workers
         stats:      {}
       )
     end
-
   end
 end

@@ -72,16 +72,17 @@ module Workers
     #   is encouraged to have augmented +Concierge.context+ with meaningful information
     #   to aid debugging.
     def start(identifier)
-      initialize_context(identifier)
-      result = yield(self)
+      new_context(identifier) do
+        result = yield(self)
 
-      if result.success?
-        property = result.value
-        process(property)
-      else
-        failed!
-        announce_failure(result)
-        false
+        if result.success?
+          property = result.value
+          process(property)
+        else
+          failed!
+          announce_failure(result)
+          false
+        end
       end
     end
 
@@ -139,6 +140,30 @@ module Workers
       counters.skipped += 1
     end
 
+    # Used to initialize a clean context for a property id.
+    #
+    # Users of synchronisation should call this for work related
+    # to the host and property identifer, that could create ExternalError:
+    #
+    #   sync.new_context(property_id) do
+    #     # .. do stuff that might announce ExternalErrors
+    #   end
+    #
+    # This is already called in #start, so only call this
+    # for work done outside of #start.
+    def new_context(identifier=nil)
+      Concierge.context = Concierge::Context.new(type: "batch")
+
+      sync_process = Concierge::Context::SyncProcess.new(
+        worker:     WORKER_TYPE,
+        host_id:    host.id,
+        identifier: identifier
+      )
+
+      Concierge.context.augment(sync_process)
+      yield
+    end
+
     private
 
     # when a new property is pushed for synchronisation, this class register
@@ -156,18 +181,6 @@ module Workers
           update_counters(operation) if result.success?
         end
       end
-    end
-
-    def initialize_context(identifier)
-      Concierge.context = Concierge::Context.new(type: "batch")
-
-      sync_process = Concierge::Context::SyncProcess.new(
-        worker:     WORKER_TYPE,
-        host_id:    host.id,
-        identifier: identifier
-      )
-
-      Concierge.context.augment(sync_process)
     end
 
     def process(property)
@@ -258,6 +271,5 @@ module Workers
         stats:      {}
       )
     end
-
   end
 end
