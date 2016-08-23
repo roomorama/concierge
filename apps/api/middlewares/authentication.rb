@@ -46,6 +46,7 @@ module API
       #   secrets.for(request_path) # => X32842I
       class Secrets
         APP_SECRETS = {
+          "/kigo/image"  => ENV["CONCIERGE_API_SECRET"],
           "/jtb"         => ENV["ROOMORAMA_SECRET_JTB"],
           "/kigo/legacy" => ENV["ROOMORAMA_SECRET_KIGO_LEGACY"],
           "/kigo"        => ENV["ROOMORAMA_SECRET_KIGO"],
@@ -134,7 +135,8 @@ module API
       end
 
       def valid_non_webhook_request?(env)
-        expected_signature = sign(request_path(env), secret: ENV["CONCIERGE_API_SECRET"])
+        secret = secrets.for(request_path(env))
+        expected_signature = sign(request_path(env), secret: secret) if secret
         env[SIGNATURE_HEADER] == expected_signature
        end
 

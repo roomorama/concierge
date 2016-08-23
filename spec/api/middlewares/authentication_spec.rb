@@ -11,9 +11,12 @@ RSpec.describe API::Middlewares::Authentication do
       "HTTP_CONTENT_SIGNATURE" => sign(body, secret)
     }
   }
-  let(:secret) { ENV["CONCIERGE_API_SECRET"] }
+  let(:secret) { "secret-key" }
   let(:secret_mapping) {
-    { "/supplier" => secret }
+    {
+      "/supplier"   => secret,
+      "/kigo/image" => secret
+    }
   }
   let(:secrets) { API::Middlewares::Authentication::Secrets.new(secret_mapping) }
 
