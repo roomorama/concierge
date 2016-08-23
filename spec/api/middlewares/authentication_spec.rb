@@ -14,8 +14,7 @@ RSpec.describe API::Middlewares::Authentication do
   let(:secret) { "secret-key" }
   let(:secret_mapping) {
     {
-      "/supplier"   => secret,
-      "/kigo/image" => secret
+      "/supplier"   => secret
     }
   }
   let(:secrets) { API::Middlewares::Authentication::Secrets.new(secret_mapping) }
@@ -31,8 +30,10 @@ RSpec.describe API::Middlewares::Authentication do
   end
 
   it "is valid if it is a GET with content-signature" do
+    ENV["CONCIERGE_API_SECRET"] = secret
     path = "/kigo/image/123/45"
     get_headers = { "HTTP_CONTENT_SIGNATURE" => sign(path, secret)}
+
     expect(get(path, get_headers)).to eq success
   end
 
