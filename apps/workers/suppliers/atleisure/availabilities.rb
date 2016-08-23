@@ -18,7 +18,9 @@ module Workers
           identifiers = all_identifiers
 
           identifiers.each_slice(BATCH_SIZE) do |ids|
-            result = importer.fetch_availabilities(ids)
+            result = synchronisation.new_context(nil) do
+              importer.fetch_availabilities(ids)
+            end
             if result.success?
               availabilities = result.value
               availabilities.each do |availability|
