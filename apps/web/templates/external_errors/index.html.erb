@@ -34,7 +34,7 @@
   </table>
 
   <div class="pagination">
-    <%= prev_link(params['page'])%>
-    <%= next_link(params['page'])%>
+    <%= prev_link(params.to_h) %>
+    <%= next_link(params.to_h) %>
   </div>
 </div>
