@@ -23,6 +23,7 @@ how this file is formatted and how the process works.
 
 ### Changed
 - Remove `Roomorama::Calendar::Stay.available` field
+- Empty rates and ones with errors will be purged instead of raising an external error
 
 ### Changed
 - Make location info for Waytostay sync

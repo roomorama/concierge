@@ -21,6 +21,12 @@ module Workers::Suppliers::Ciirus
             permissions = fetch_permissions(property_id)
             next unless permissions.success?
 
+            # Rates are needed for a property. Skip (and purge) properties that
+            # has no rates or has error when retrieving rates.
+            result = fetch_rates(property_id)
+            rates  = filter_rates(result.value) if result.success?
+            next if rates.nil? || rates.empty?
+
             if permissions_validator(permissions.value).valid?
               synchronisation.start(property_id) do
                 result = fetch_images(property_id)
@@ -30,12 +36,6 @@ module Workers::Suppliers::Ciirus
                 result = fetch_description(property_id)
                 next result unless result.success?
                 description = result.value
-
-                result = fetch_rates(property_id)
-                next result unless result.success?
-                rates = filter_rates(result.value)
-
-                next empty_rates_error(property_id) if rates.empty?
 
                 result = fetch_security_deposit(property_id)
                 security_deposit = result.success? ? result.value : nil
@@ -59,13 +59,6 @@ module Workers::Suppliers::Ciirus
     end
 
     private
-
-    def empty_rates_error(property_id)
-      message = "After filtering actual rates for property `#{property_id}` we got empty rates. " \
-        "Sync property with empty rates doesn't make sense."
-      augment_context_error(message)
-      Result.error(:empty_rates_error)
-    end
 
     def rate_validator(rate, today)
       Ciirus::Validators::RateValidator.new(rate, today)
@@ -95,8 +88,9 @@ module Workers::Suppliers::Ciirus
     end
 
     def fetch_rates(property_id)
-      report_error("Failed to fetch rates for property `#{property_id}`") do
-        importer.fetch_rates(property_id)
+      importer.fetch_rates(property_id).tap do |result|
+        message = "Failed to fetch rates for property `#{property_id}`"
+        announce_error(message, result) unless result.success?
       end
     end
 
