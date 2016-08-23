@@ -24,8 +24,13 @@ module Workers::Suppliers::Ciirus
             # Rates are needed for a property. Skip (and purge) properties that
             # has no rates or has error when retrieving rates.
             result = fetch_rates(property_id)
-            rates  = filter_rates(result.value) if result.success?
-            next if rates.nil? || rates.empty?
+            next unless result.success?
+
+            rates  = filter_rates(result.value)
+            if rates.empty?
+              synchronisation.skip_property
+              next
+            end
 
             if permissions_validator(permissions.value).valid?
               synchronisation.start(property_id) do
