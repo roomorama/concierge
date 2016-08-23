@@ -222,6 +222,8 @@ module API
       def call(env)
         @env = env
 
+        return app.call(env) if http_get?
+
         if webhook_to_concierge
           response = app.call(env)
           concierge_to_webhook(response)
@@ -282,6 +284,10 @@ module API
         when "cancelled"
           webhook_response.cancelled(status, headers, data)
         end
+      end
+
+      def http_get?
+        env["REQUEST_METHOD"] == "GET"
       end
 
       def request_path

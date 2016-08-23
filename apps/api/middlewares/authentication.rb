@@ -89,8 +89,9 @@ module API
 
       def call(env)
         valid_webhook = http_post?(env) && headers_present?(env) && valid_signature?(env)
+        valid_request = valid_non_webhook_request?(env)
 
-        if valid_webhook
+        if valid_webhook || valid_request
           app.call(env)
         else
           [403, {}, ["Forbidden"]]
@@ -113,21 +114,29 @@ module API
 
       def valid_signature?(env)
         request_body = read_request_body(env)
-        request_path = env["PATH_INFO"] || env["REQUEST_PATH"]
 
-        return true if whitelisted?(request_path)
+        return true if whitelisted?(request_path(env))
 
         valid_request_body = request_body && !request_body.empty?
-        secret             = secrets.for(request_path)
+        secret             = secrets.for(request_path(env))
         expected_signature = sign(request_body, secret: secret) if secret
         signatures_match   = (env[SIGNATURE_HEADER] == expected_signature)
 
         valid_request_body && secret && signatures_match
       end
 
+      def request_path(env)
+        env["PATH_INFO"] || env["REQUEST_PATH"]
+      end
+
       def whitelisted?(path)
         WHITELIST.include?(path)
       end
+
+      def valid_non_webhook_request?(env)
+        expected_signature = sign(request_path(env), secret: ENV["CONCIERGE_API_SECRET"])
+        env[SIGNATURE_HEADER] == expected_signature
+       end
 
       # +env["rack.input"]+ is a IO-like object. According to the Rack spec,
       # it must respond to +read+ and +rewind+ methods without throwing errors.
