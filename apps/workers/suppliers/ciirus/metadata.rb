@@ -11,7 +11,7 @@ module Workers::Suppliers::Ciirus
     end
 
     def perform
-      result = synchronisation.new_context(nil) do
+      result = synchronisation.new_context do
         importer.fetch_properties(host)
       end
 

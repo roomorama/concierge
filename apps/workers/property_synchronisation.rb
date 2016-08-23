@@ -151,7 +151,7 @@ module Workers
     #
     # This is already called in #start, so only call this
     # for work done outside of #start.
-    def new_context(identifier)
+    def new_context(identifier=nil)
       Concierge.context = Concierge::Context.new(type: "batch")
 
       sync_process = Concierge::Context::SyncProcess.new(
