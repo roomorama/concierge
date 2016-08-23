@@ -8,7 +8,7 @@ module Workers::Suppliers::Woori
     class UnitRatesFetchError < StandardError; end
 
     attr_reader :synchronisation, :host
-    
+
     BATCH_SIZE     = 30
 
     def initialize(host)
@@ -20,49 +20,49 @@ module Workers::Suppliers::Woori
       offset = 0
 
       begin
-        result = fetch_properties(last_synced_date, BATCH_SIZE, offset)
+        result = synchronisation.new_context do
+          fetch_properties(last_synced_date, BATCH_SIZE, offset).tap do |result|
+            announce_properties_fetch_error(result) unless result.success?
+          end
+        end
 
-        if result.success?
-          properties = result.value
-          size_fetched = properties.size
+        return unless result.success?
 
-          properties.each do |property|
-            synchronisation.start(property.identifier) do
-              Concierge.context.disable!
+        properties = result.value
+        size_fetched = properties.size
 
-              units_result = fetch_property_units(property)
+        properties.each do |property|
+          synchronisation.start(property.identifier) do
+            Concierge.context.disable!
 
-              if units_result.success?
-                units = units_result.value
+            units_result = fetch_property_units(property)
 
-                units.each do |unit|
-                  rates_result = fetch_unit_rates(unit)
+            if units_result.success?
+              units = units_result.value
 
-                  if rates_result.success?
-                    rates = rates_result.value
+              units.each do |unit|
+                rates_result = fetch_unit_rates(unit)
 
-                    unit.nightly_rate = rates.nightly_rate
-                    unit.weekly_rate  = rates.weekly_rate
-                    unit.monthly_rate = rates.monthly_rate
+                if rates_result.success?
+                  rates = rates_result.value
 
-                    property.add_unit(unit)
-                  else
-                    announce_property_unit_rates_fetch_error(unit, result)
-                    rates_result
-                  end
+                  unit.nightly_rate = rates.nightly_rate
+                  unit.weekly_rate  = rates.weekly_rate
+                  unit.monthly_rate = rates.monthly_rate
+
+                  property.add_unit(unit)
+                else
+                  announce_property_unit_rates_fetch_error(unit, result)
                 end
-
-                Result.new(property)
-              else
-                announce_property_units_fetch_error(property, result)
-                units_result
               end
+
+              Result.new(property)
+            else
+              announce_property_units_fetch_error(property, result)
+              units_result
             end
           end
 
-        else
-          announce_properties_fetch_error(result)
-          return
         end
 
         offset = offset + size_fetched
