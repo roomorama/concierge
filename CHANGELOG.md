@@ -6,6 +6,7 @@ how this file is formatted and how the process works.
 
 ## Unreleased
 ### Changed
+- Represent empty arrays as `[]` during formatting external errors' JSON 
 - Stop creating external errors for expected messages from Ciirus
 
 ## [0.7.2] - 2016-08-23

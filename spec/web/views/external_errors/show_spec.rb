@@ -116,6 +116,17 @@ RSpec.describe Web::Views::ExternalErrors::Show do
       expect(pretty).to eq "invalid-json"
     end
 
+    it "returns the properly formatted JSON with empty arrays" do
+      pretty = view.pretty_print('{"array": [1], "empty_array": [   ]}', "application/json")
+      expect(pretty).to eq  "" +
+        %({\n\n) +
+        %(  &quot;array&quot;: [\n\n) +
+        %(    1\n\n) +
+        %(  ],\n\n) +
+        %(  &quot;empty_array&quot;: []\n\n) +
+        %(})
+    end
+
     it "returns the properly formatted, escaped JSON string in case it is valid" do
       content = { key: "value" }.to_json
       pretty  = view.pretty_print(content, "application/json")
