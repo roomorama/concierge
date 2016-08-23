@@ -12,7 +12,7 @@ module Woori
       # Arguments
       #   
       #   * +facility_services+ [Array<String>] array with Woori amenities
-      def initialize(facility_services = [])
+      def initialize(facility_services)
         @facility_services = Array(facility_services)
       end
 
@@ -28,7 +28,7 @@ module Woori
       # Returns +Array<String>+ array with uniq supported amenitites
       def convert
         roomorama_amenities = facility_services.map do |service_name|
-          supported_amenities.fetch(service_name, nil)
+          supported_amenities[service_name]
         end
 
         roomorama_amenities.compact.uniq
@@ -47,16 +47,8 @@ module Woori
       #
       # Returns +Array<String>+ array with uniq unsupported amenitites
       def select_not_supported_amenities
-        additional_amenities = []
-
-        facility_services.each do |service_name|
-          match = supported_amenities[service_name]
-          additional_amenities << service_name unless match
-        end
-
-        additional_amenities.uniq
+        (facility_services - supported_amenities.keys).uniq
       end
-
 
       # Returns a hash with mapping between Woori facility services and 
       # Roomorama API supported amenities
@@ -85,7 +77,10 @@ module Woori
       end
 
       def amenities_file_path
-        File.expand_path('../config/amenities.json', __FILE__)
+        Hanami.root.join(
+          "lib/concierge/suppliers/woori/converters/config",
+          "amenities.json"
+        ).to_s
       end
     end
   end
