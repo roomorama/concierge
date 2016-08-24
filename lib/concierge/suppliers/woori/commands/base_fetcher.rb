@@ -3,6 +3,8 @@ module Woori
     class BaseFetcher
       attr_reader :credentials
 
+      DEFAULT_LOCALE = "en-US"
+
       def initialize(credentials)
         @credentials = credentials
       end
@@ -16,10 +18,6 @@ module Woori
           "Content-Type" => "application/json",
           "Authorization" => credentials.api_key
         }
-      end
-
-      def default_locale
-        "en-US"
       end
     end
   end
