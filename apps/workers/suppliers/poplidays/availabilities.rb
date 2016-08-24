@@ -1,8 +1,8 @@
 module Workers::Suppliers::Poplidays
-  # +Workers::Suppliers::Poplidays::Metadata+
+  # +Workers::Suppliers::Poplidays::Availabilities+
   #
   # Performs properties availabilities synchronisation with supplier
-  class Calendar
+  class Availabilities
     attr_reader :synchronisation, :host
 
     def initialize(host)
@@ -102,5 +102,5 @@ end
 
 # listen supplier worker
 Concierge::Announcer.on('availabilities.Poplidays') do |host|
-  Workers::Suppliers::Poplidays::Calendar.new(host).perform
+  Workers::Suppliers::Poplidays::Availabilities.new(host).perform
 end
