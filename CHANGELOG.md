@@ -8,6 +8,9 @@ how this file is formatted and how the process works.
 ### Changed
 - Stop creating external errors for expected messages from Ciirus
 
+### Fixed
+- Backticks formatting for failure to quote price for SAW units.
+
 ## [0.7.2] - 2016-08-23
 ### Added
 - `Synchronisation#new_context` to contextualize work that may announce error in a supplier worker implementation
