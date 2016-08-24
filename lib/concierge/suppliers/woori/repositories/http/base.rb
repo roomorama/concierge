@@ -13,7 +13,7 @@ module Woori::Repositories::HTTP
     end
 
     def http
-      @http_client ||= Concierge::HTTPClient.new(credentials.url, timeout: 30)
+      @http_client ||= Concierge::HTTPClient.new(credentials.url)
     end
   
     def headers
