@@ -35,15 +35,9 @@ module Woori
         expect(image.caption).to eq(hash[:content])
       end
     end
-    
+
     it "returns empty array when no image_gallery attribute is there" do
       mapper = described_class.new([])
-      images = mapper.build_images
-      expect(images).to eq([])
-    end
-    
-    it "returns empty array when image_gallery is nil" do
-      mapper = described_class.new(nil)
       images = mapper.build_images
       expect(images).to eq([])
     end

@@ -22,8 +22,6 @@ module Woori
       #
       # Returns +Array<Roomorama::Image>+ array of images
       def build_images
-        return [] unless image_hashes
-        
         image_hashes.map do |h| 
           safe_hash = Concierge::SafeAccessHash.new(h)
           build_image(safe_hash)

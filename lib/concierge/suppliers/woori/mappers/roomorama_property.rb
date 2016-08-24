@@ -60,7 +60,7 @@ module Woori
 
       private
       def set_images!(property)
-        image_hashes = safe_hash.get("data.images")
+        image_hashes = Array(safe_hash.get("data.images"))
 
         mapper = Mappers::RoomoramaImageSet.new(image_hashes)
         mapper.build_images.each { |image| property.add_image(image) }
