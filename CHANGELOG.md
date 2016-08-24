@@ -6,10 +6,11 @@ how this file is formatted and how the process works.
 
 ## Unreleased
 ### Changed
-- Represent empty arrays as `[]` during formatting external errors' JSON 
+- Represent empty arrays as `[]` during formatting external errors' JSON
 - Stop creating external errors for expected messages from Ciirus
 
 ### Fixed
+- Waytostay property batch fetching should include disabled properties
 - Backticks formatting for failure to quote price for SAW units.
 
 ## [0.7.2] - 2016-08-23

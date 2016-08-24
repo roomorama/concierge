@@ -152,8 +152,8 @@ RSpec.shared_examples "Waytostay property client" do
     end
   end
 
-  describe "#get_active_properties_by_ids" do
-    subject { stubbed_client.get_active_properties_by_ids(["016233", "016206"]) }
+  describe "#get_properties_by_ids" do
+    subject { stubbed_client.get_properties_by_ids(["016233", "016206"]) }
     before do
         stubbed_client.oauth2_client.oauth_client.connection = stub_call(:get, base_url + Waytostay::Properties::INDEX_ENDPOINT) {
           [200, {}, read_fixture("waytostay/properties.json")]
@@ -206,7 +206,7 @@ RSpec.shared_examples "Waytostay property client" do
     subject { stubbed_client.get_property_from_batch("002", ["001", "002"]) }
 
     it "calls batch properties api" do
-      expect_any_instance_of(Waytostay::Client).to receive(:get_active_properties_by_ids) do |client, ids|
+      expect_any_instance_of(Waytostay::Client).to receive(:get_properties_by_ids) do |client, ids|
         Result.new ids.collect { |ref| Roomorama::Property.load(
             Concierge::SafeAccessHash.new(
               JSON.parse(read_fixture("waytostay/properties/#{ref}.roomorama-attributes.json"))
