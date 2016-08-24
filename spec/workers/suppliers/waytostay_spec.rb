@@ -64,7 +64,8 @@ RSpec.describe Workers::Suppliers::Waytostay do
   describe "#load_existing" do
     context "ref is not found in database" do
       it "should fetch from api if ref is not found in database" do
-        expect(subject.client).to receive(:get_property).once
+        expect(subject.client).to receive(:get_property).once { Result.new }
+        expect(subject.client).to receive(:update_media).once {}
         subject.send(:load_existing, "non_existing_ref")
       end
     end

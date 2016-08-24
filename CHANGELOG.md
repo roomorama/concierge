@@ -10,6 +10,7 @@ how this file is formatted and how the process works.
 
 ### Fixed
 - Backticks formatting for failure to quote price for SAW units.
+- Missing images for unpublished properties
 
 ## [0.7.2] - 2016-08-23
 ### Added
