@@ -172,56 +172,6 @@ RSpec.describe Concierge::HTTPClient do
       end
     end
 
-    context "basic authentication" do
-      let(:faraday_instance) { double("faraday") }
-
-      before do
-        allow(described_class).to receive(:_connection).and_return faraday_instance
-      end
-
-      context "with username & password" do
-        let(:options) do
-          {
-            basic_auth: {
-              username: user_name,
-              password: password
-            }
-          }
-        end
-
-        let(:user_name) { "test_user" }
-        let(:password) { "password_1" }
-
-
-        it do
-          expect(faraday_instance).to receive(:basic_auth).exactly(1).times
-          expect(faraday_instance).not_to receive(:authorization)
-          request_instance = described_class.new(url, options)
-        end
-      end
-
-      context "with Authorization api key/token" do
-        let(:options) do
-          {
-            basic_auth: {
-              Authorization: "12345"
-            }
-          }
-        end
-
-        it do
-          expect(faraday_instance).not_to receive(:basic_auth)
-          expect(faraday_instance).to receive(:authorization).exactly(1).times
-          request_instance = described_class.new(url, options)
-        end
-      end
-    end
-  end
-
-  describe "#_connection" do
-    it do
-      # expect(described_class._connection).to be_nil
-    end
   end
 
   describe "#get" do
