@@ -38,7 +38,7 @@ module Workers::Suppliers
           end
 
           if changes.value[:media].include?(property_ref)
-            wrapped_property = client.update_media(wrapped_property.result)
+            wrapped_property = client.update_media(wrapped_property.value)
             next wrapped_property unless wrapped_property.success?
           end
 
@@ -114,11 +114,13 @@ module Workers::Suppliers
       if existing.nil?
         # This property isn't included in the new property changes, but we don't have
         # in our database either. This could be due to a faild publish in a previouse sync.
-        # In this case we fallback to fetching from api and carry on. Dispatcher
-        # will publish this and all will be well
-        client.get_property(ref)
+        # In this case we fallback to fetching from api, append images and carry on.
+        # Dispatcher will publish this and all will be well
+        client.get_property(ref).tap do |result|
+          client.update_media(result.value) if result.success?
+        end
       else
-        Roomorama::Property.load(existing.data.merge(identifier: ref))
+        Roomorama::Property.load(existing.data)
       end
     end
 

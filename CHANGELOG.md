@@ -12,6 +12,7 @@ how this file is formatted and how the process works.
 ### Fixed
 - Waytostay property batch fetching should include disabled properties
 - Backticks formatting for failure to quote price for SAW units.
+- Missing images for unpublished properties
 
 ## [0.7.2] - 2016-08-23
 ### Added
