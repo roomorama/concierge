@@ -82,17 +82,21 @@ module Woori
       expect(property.images).to all(be_kind_of(Roomorama::Image))
     end
     
-    it "keeps images empty images are not present" do
+    it "keeps images empty when images attribute is an empty array" do
       property_hash["data"]["images"] = []
       property = mapper.build_property
       expect(property.images).to be_kind_of(Array)
       expect(property.images.size).to eq(0)
-      
+    end
+
+    it "keeps images empty when images attribute is nil" do
       property_hash["data"]["images"] = nil
       property = mapper.build_property
       expect(property.images).to be_kind_of(Array)
       expect(property.images.size).to eq(0)
-      
+    end
+
+    it "keeps images empty when images attribute is not present" do
       property_hash["data"].delete("images")
       property = mapper.build_property
       expect(property.images).to be_kind_of(Array)
