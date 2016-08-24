@@ -11,6 +11,10 @@ RSpec.describe Workers::Suppliers::Poplidays::Metadata do
   let(:availabilities) { parse_json(read_fixture('poplidays/availabilities_calendar.json')) }
   let(:extras) { parse_json(read_fixture('poplidays/extras.json')) }
 
+  before do
+    allow(Date).to receive(:today).and_return(Date.new(2016, 6, 18))
+  end
+
   subject { described_class.new(host) }
 
   it 'announces an error if fetching properties fails' do
@@ -95,7 +99,6 @@ RSpec.describe Workers::Suppliers::Poplidays::Metadata do
       allow_any_instance_of(Poplidays::Importer).to receive(:fetch_properties) { Result.new(properties_list) }
       allow_any_instance_of(Poplidays::Importer).to receive(:fetch_property_details) { Result.new(property_details) }
       allow_any_instance_of(Poplidays::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }
-      allow_any_instance_of(Poplidays::Validators::AvailabilitiesValidator).to receive(:valid?) { true }
       allow_any_instance_of(Poplidays::Importer).to receive(:fetch_extras) { Result.error(:timeout_error) }
     end
 
@@ -122,7 +125,6 @@ RSpec.describe Workers::Suppliers::Poplidays::Metadata do
       allow_any_instance_of(Poplidays::Importer).to receive(:fetch_properties) { Result.new(properties_list) }
       allow_any_instance_of(Poplidays::Importer).to receive(:fetch_property_details) { Result.new(property_details) }
       allow_any_instance_of(Poplidays::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }
-      allow_any_instance_of(Poplidays::Validators::AvailabilitiesValidator).to receive(:valid?) { true }
       allow_any_instance_of(Poplidays::Importer).to receive(:fetch_extras) { Result.new(extras) }
     end
 

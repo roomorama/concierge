@@ -6,10 +6,10 @@ RSpec.describe Poplidays::Validators::AvailabilityValidator do
     [
       {'requestOnly' => true, 'priceEnabled' => true, 'arrival' => '2016-06-20'}, # on requests stay
       {'requestOnly' => false, 'priceEnabled' => false, 'arrival' => '2016-06-20'}, # price disabled stay
-      {'requestOnly' => false, 'priceEnabled' => false, 'arrival' => '2016-06-18'} # too old
+      {'requestOnly' => false, 'priceEnabled' => true, 'arrival' => '2016-06-18'} # too old
     ]
   end
-  let(:valid_availability) { {'requestOnly' => false, 'priceEnabled' => true} }
+  let(:valid_availability) { {'requestOnly' => false, 'priceEnabled' => true, 'arrival' => '2016-06-20'} }
   let(:today) { Date.new(2016, 6, 18) }
 
   describe '#valid?' do
