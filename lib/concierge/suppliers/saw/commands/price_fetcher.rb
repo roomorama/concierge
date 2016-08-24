@@ -67,7 +67,8 @@ module SAW
       private
       def build_property_rate(hash)
         rates_hash = hash.get("response.property")
-        safe_hash = Concierge::SafeAccessHash.new(rates_hash)
+        safe_hash  = Concierge::SafeAccessHash.new(rates_hash)
+
         SAW::Mappers::PropertyRate.build(safe_hash)
       end
 
@@ -82,8 +83,8 @@ module SAW
       end
 
       def unavailable_unit_rates_error_result(property_id, unit_id)
-        code = :unavailable_unit_rates_error
-        description = "Rates for `property_id=#{property_id}` `unit_id=#{unit_id}` don't exist in returned response"
+        code        = :unavailable_unit_rates_error
+        description = "Rates for property_id=#{property_id} unit_id=#{unit_id} do not exist in returned response."
 
         augment_with_error(code, description, caller)
         Result.error(code)
