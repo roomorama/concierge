@@ -9,6 +9,10 @@ RSpec.describe Workers::Suppliers::AtLeisure::Metadata do
   let(:properties_list) { JSON.parse(read_fixture('atleisure/properties_list.json')) }
   let(:success_result) { Result.new(properties_list) }
 
+  before do
+    allow(Date).to receive(:today).and_return(Date.new(2016, 6, 18))
+  end
+
   subject { described_class.new(host) }
 
   it 'announces an error if fetching properties fails' do
