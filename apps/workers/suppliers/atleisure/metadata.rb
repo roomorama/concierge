@@ -14,7 +14,7 @@ module Workers::Suppliers::AtLeisure
 
     def perform
       today = Date.today
-      result = importer.fetch_properties
+      result = synchronisation.new_context { importer.fetch_properties }
       if result.success?
         grouped_actual_properties(result.value).each do |properties|
           fetch_data_and_process(properties, today)
@@ -36,7 +36,7 @@ module Workers::Suppliers::AtLeisure
 
     def fetch_data_and_process(properties, today)
       ids = identifiers(properties)
-      result = importer.fetch_data(ids)
+      result = synchronisation.new_context { importer.fetch_data(ids) }
       if result.success?
         properties_data = result.value
         properties_data.map do |property|
