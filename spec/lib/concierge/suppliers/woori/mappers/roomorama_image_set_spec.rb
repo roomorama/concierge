@@ -6,13 +6,13 @@ module Woori
       [
         {
             "category": "main",
-            "content": "\ud39c\uc158\ub300\ud45c\uc774\ubbf8\uc9c0",
+            "content": "퇴실시간",
             "format": "jpg",
             "url": "http://image.wooripension.com/pension_images/w0104006/201652792223.jpg"
         },
         {
             "category": "ex",
-            "content": "\ud39c\uc158\ud39c\uc158 \uc678\uacbd27",
+            "content": "입실시간",
             "format": "jpg",
             "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/20107301818486.jpg"
         }
