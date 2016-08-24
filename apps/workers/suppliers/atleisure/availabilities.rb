@@ -18,9 +18,7 @@ module Workers
           identifiers = all_identifiers
 
           identifiers.each_slice(BATCH_SIZE) do |ids|
-            result = synchronisation.new_context do
-              importer.fetch_availabilities(ids)
-            end
+            result = synchronisation.new_context { importer.fetch_availabilities(ids) }
             if result.success?
               availabilities = result.value
               availabilities.each do |availability|
@@ -30,7 +28,6 @@ module Workers
 
                   mapper.build(availability)
                 end
-
               end
             else
               message = "Failed to perform the `#fetch_availabilities` operation, with properties: `#{ids}`"
