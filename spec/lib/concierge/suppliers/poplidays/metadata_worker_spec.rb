@@ -85,7 +85,9 @@ RSpec.describe Workers::Suppliers::Poplidays::Metadata do
 
     it 'doesnt announce an error if availabilities is invalid' do
       allow_any_instance_of(Poplidays::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }
-      allow_any_instance_of(Poplidays::Validators::AvailabilitiesValidator).to receive(:valid?) { false }
+      # All availabilities will be too old
+      allow(Date).to receive(:today).and_return(Date.new(2030, 6, 18))
+
       subject.perform
 
       error = ExternalErrorRepository.last

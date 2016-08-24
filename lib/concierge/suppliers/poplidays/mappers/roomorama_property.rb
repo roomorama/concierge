@@ -40,7 +40,7 @@ module Poplidays
       #
       #   * +property+ [Hash] basic property info
       #   * +details+ [Hash] details property info
-      #   * +availabilities+ [Hash] contains 'availabilities' key
+      #   * +availabilities+ [Array] availabilities
       #   * +extras+ [Array] array of extra Hashes, can be nil
       #
       # Returns result wrapped a +Roomorama::Property+
@@ -175,28 +175,11 @@ module Poplidays
           features.include?('FREEZER')
       end
 
-      def set_rates_and_min_stay!(roomorama_property, details, availabilities_hash)
+      def set_rates_and_min_stay!(roomorama_property, details, availabilities)
+        mandatory_services = details['mandatoryServicesPrice']
+        min_stay = availabilities.map { |stay| nights(stay) }.min
+        daily_rate = availabilities.map { |stay| daily_rate(stay, mandatory_services) }.min
 
-        availabilities = availabilities_hash['availabilities']
-
-        min_daily_rate = nil
-        min_stay = nil
-        availabilities.each do |stay|
-          next if stay['requestOnly'] && !stay['priceEnabled']
-
-          start_date = Date.parse(stay['arrival'])
-          end_date   = Date.parse(stay['departure'])
-          length = (end_date - start_date).to_i
-
-          mandatory_services = details['mandatoryServicesPrice']
-          subtotal = mandatory_services + stay['price']
-          price_per_day = subtotal.to_f / length
-
-          min_daily_rate = [min_daily_rate, price_per_day].compact.min
-          min_stay = [min_stay, length].compact.min
-        end
-
-        daily_rate = min_daily_rate.round(2)
         roomorama_property.nightly_rate = daily_rate
         roomorama_property.weekly_rate = (daily_rate * 7).round(2)
         roomorama_property.monthly_rate = (daily_rate * 30).round(2)
@@ -239,6 +222,20 @@ module Poplidays
         prices = cleaning_extra['prices']
         price = prices.detect { |p| p['selectedCodes'].nil? }
         price['value'] if price
+      end
+
+      def nights(stay)
+        start_date = Date.parse(stay['arrival'])
+        end_date   = Date.parse(stay['departure'])
+        (end_date - start_date).to_i
+      end
+
+      def daily_rate(stay, mandatory_services)
+        start_date = Date.parse(stay['arrival'])
+        end_date   = Date.parse(stay['departure'])
+        length = (end_date - start_date).to_i
+        subtotal = mandatory_services + stay['price']
+        (subtotal.to_f / length).round(2)
       end
     end
   end

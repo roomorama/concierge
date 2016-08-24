@@ -9,7 +9,7 @@ RSpec.describe Poplidays::Mappers::RoomoramaProperty do
   end
   let(:property) { {'id' => '8927439190'} }
   let(:details) { JSON.parse(read_fixture('poplidays/property_details2.json')) }
-  let(:availabilities) { JSON.parse(read_fixture('poplidays/availabilities_calendar2.json')) }
+  let(:availabilities) { JSON.parse(read_fixture('poplidays/availabilities_calendar2.json'))['availabilities'] }
   let(:extras_with_cleaning) { JSON.parse(read_fixture('poplidays/extras_with_cleaning.json')) }
   let(:extras_with_dependent_cleaning) { JSON.parse(read_fixture('poplidays/extras_with_dependent_cleaning.json')) }
   let(:extras_without_cleaning) { JSON.parse(read_fixture('poplidays/extras.json')) }
