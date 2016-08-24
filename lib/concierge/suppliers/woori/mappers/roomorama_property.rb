@@ -6,6 +6,7 @@ module Woori
     class RoomoramaProperty
       MINIMUM_STAY = 1
       DEFAULT_PROPERTY_RATE = 999999
+      DEFAULT_PROPERTY_TYPE = 'apartment'
       CANCELLATION_POLICY = 'moderate'
 
       attr_reader :safe_hash, :amenities_converter, :country_code_converter
@@ -31,7 +32,7 @@ module Woori
       def build_property
         property = Roomorama::Property.new(safe_hash.get("hash"))
         property.title                = safe_hash.get("data.name")
-        property.type                 = 'apartment'
+        property.type                 = DEFAULT_PROPERTY_TYPE
         property.lat                  = safe_hash.get("data.latitude")
         property.lng                  = safe_hash.get("data.longitude")
         property.currency             = safe_hash.get("data.currency")
