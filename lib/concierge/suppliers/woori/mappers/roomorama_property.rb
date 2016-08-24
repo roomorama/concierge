@@ -114,8 +114,6 @@ module Woori
 
         if description_parts.any?
           description_parts.join('. ')
-        else
-          nil
         end
       end
 
