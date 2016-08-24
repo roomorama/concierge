@@ -17,10 +17,12 @@ module AtLeisure
       175  # Tent Lodge
     ]
 
-    attr_reader :payload
+    attr_reader :payload, :today
 
-    def initialize(payload)
+    # today is date for relevance check of availabilities
+    def initialize(payload, today)
       @payload = payload
+      @today = today
     end
 
     def valid?
@@ -42,7 +44,7 @@ module AtLeisure
     end
 
     def instant_bookable?
-      payload['AvailabilityPeriodV1'].any? { |availability| availability['OnRequest'] == 'No' }
+      payload['AvailabilityPeriodV1'].any? { |availability| availability_validator(availability).valid? }
     end
 
     def acceptable_type?
@@ -62,6 +64,10 @@ module AtLeisure
 
     def find_en(item)
       item['TypeDescriptions'].find { |desc| desc['Language'] == 'EN' }['Description']
+    end
+
+    def availability_validator(availability)
+      ::AtLeisure::AvailabilityValidator.new(availability, today)
     end
 
     def code_for(item)

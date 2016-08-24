@@ -9,6 +9,10 @@ RSpec.describe Workers::Suppliers::AtLeisure::Calendar do
   let(:supplier) { create_supplier(name: AtLeisure::Client::SUPPLIER_NAME) }
   let(:host) { create_host(supplier_id: supplier.id) }
 
+  before do
+    allow(Date).to receive(:today).and_return(Date.new(2016, 6, 18))
+  end
+
   subject { described_class.new(host) }
 
   context 'fetching availabilities' do

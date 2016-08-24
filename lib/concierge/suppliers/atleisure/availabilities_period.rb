@@ -10,7 +10,6 @@ module AtLeisure
       @check_in   = Date.parse(period['ArrivalDate'])
       @check_out  = Date.parse(period['DepartureDate'])
       @price      = period['Price'].to_f
-      @on_request = period['OnRequest'] == 'Yes'
     end
 
     def dates
