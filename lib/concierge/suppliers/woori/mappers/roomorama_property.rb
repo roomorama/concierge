@@ -85,7 +85,7 @@ module Woori
 
       def find_time_record_by_id(id)
         times_array = safe_hash.get("data.times")
-        times_array.select { |hash| hash["id"] == id  }.first
+        times_array.find { |hash| hash["id"] == id }
       end
 
       def full_address
