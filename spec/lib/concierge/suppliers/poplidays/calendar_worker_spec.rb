@@ -11,6 +11,10 @@ RSpec.describe Workers::Suppliers::Poplidays::Calendar do
   let(:property_details) { parse_json(read_fixture('poplidays/property_details.json')) }
   let(:availabilities) { parse_json(read_fixture('poplidays/availabilities_calendar.json')) }
 
+  before do
+    allow(Date).to receive(:today).and_return(Date.new(2016, 6, 18))
+  end
+
   subject { described_class.new(host) }
 
   context 'fetching property details' do
