@@ -46,9 +46,9 @@ module AtLeisure
     end
 
     def acceptable_type?
-      properties_array = payload['PropertiesV1']
-      room_type_hash   = properties_array.find { |data_hash| data_hash['TypeNumber'] == code_for(:property_type) }
-      room_type_number = room_type_hash['TypeContents'].first
+      properties_array = Array(payload['PropertiesV1'])
+      room_type_hash   = properties_array.find { |data_hash| data_hash['TypeNumber'] == code_for(:property_type) }.to_h
+      room_type_number = Array(room_type_hash['TypeContents']).first
       !IGNORE_ROOM_TYPES.include?(room_type_number)
     end
 

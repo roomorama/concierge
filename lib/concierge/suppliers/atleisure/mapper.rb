@@ -173,9 +173,9 @@ module AtLeisure
 
     # sets type and subtype accordingly related code
     def set_property_type
-      properties_array = meta_data['PropertiesV1']
-      room_type_hash   = properties_array.find { |data_hash| data_hash['TypeNumber'] == code_for(:property_type) }
-      room_type_number = room_type_hash['TypeContents'].first
+      properties_array = Array(meta_data['PropertiesV1'])
+      room_type_hash   = properties_array.find { |data_hash| data_hash['TypeNumber'] == code_for(:property_type) }.to_h
+      room_type_number = Array(room_type_hash['TypeContents']).first
 
       # There are also hotel (130), mill (172), tent lodge (175)
       # we ignore them and filter them out during property validation
