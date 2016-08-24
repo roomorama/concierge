@@ -21,7 +21,7 @@ module Poplidays
       end
 
       def valid?
-        !on_request_only? && price_enabled?
+        !on_request_only? && price_enabled? && actual?
       end
 
       private
@@ -35,7 +35,7 @@ module Poplidays
       end
 
       def actual?
-        Date.parse(s['arrival']) > today
+        Date.parse(availability['arrival']) > today
       end
     end
   end
