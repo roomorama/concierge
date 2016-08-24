@@ -94,10 +94,17 @@ RSpec.describe Workers::Suppliers::Waytostay do
         Result.new properties
       end
 
-      create_property(identifier: "003", host_id: host.id)
-      create_property(identifier: "004", host_id: host.id)
-      create_property(identifier: "005", host_id: host.id)
-      create_property(identifier: "006", host_id: host.id)
+      data = {
+        title: "Studio Apartment in Madrid",
+        nightly_rate: 10,
+        images: [
+          { identifier: "PROP1IMAGE", url: "https://www.example.org/image.png" }
+        ]
+      }
+      create_property(identifier: "003", host_id: host.id, data: data.merge({identifier: "003"}))
+      create_property(identifier: "004", host_id: host.id, data: data.merge({identifier: "004"}))
+      create_property(identifier: "005", host_id: host.id, data: data.merge({identifier: "005"}))
+      create_property(identifier: "006", host_id: host.id, data: data.merge({identifier: "006"}))
     end
 
     describe "#perform" do

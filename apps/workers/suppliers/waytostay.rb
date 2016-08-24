@@ -120,7 +120,7 @@ module Workers::Suppliers
           client.update_media(result.value) if result.success?
         end
       else
-        Roomorama::Property.load(existing.data.merge(identifier: ref))
+        Roomorama::Property.load(existing.data)
       end
     end
 
