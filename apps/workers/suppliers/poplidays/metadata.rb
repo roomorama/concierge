@@ -14,7 +14,6 @@ module Workers::Suppliers::Poplidays
       result = synchronisation.new_context { importer.fetch_properties }
 
       if result.success?
-        today = Date.today
         properties = result.value
         properties.each do |property|
           if validator(property).valid?
@@ -28,10 +27,12 @@ module Workers::Suppliers::Poplidays
               next
             end
 
-            availabilities = fetch_availabilities(property_id)
-            next unless availabilities.success?
+            result = fetch_availabilities(property_id)
+            next unless result.success?
 
-            unless availabilities_validator(availabilities.value, today).valid?
+            availabilities = filter_availabilities(result.value)
+
+            if availabilities.empty?
               synchronisation.skip_property
               next
             end
@@ -42,7 +43,7 @@ module Workers::Suppliers::Poplidays
               result = fetch_extras(property_id)
               extras = result.value if result.success?
 
-              mapper.build(property, details.value, availabilities.value, extras)
+              mapper.build(property, details.value, availabilities, extras)
             end
           else
             synchronisation.skip_property
@@ -57,6 +58,14 @@ module Workers::Suppliers::Poplidays
     end
 
     private
+
+    def filter_availabilities(availabilities)
+      today = Date.today
+
+      availabilities['availabilities'].select do |availability|
+        availability_validator(availability, today).valid?
+      end
+    end
 
     def report_error(message)
       yield.tap do |result|
@@ -110,8 +119,8 @@ module Workers::Suppliers::Poplidays
       Poplidays::Validators::PropertyDetailsValidator.new(details)
     end
 
-    def availabilities_validator(details, today)
-      Poplidays::Validators::AvailabilitiesValidator.new(details, today)
+    def availability_validator(details, today)
+      Poplidays::Validators::AvailabilityValidator.new(details, today)
     end
 
     def credentials
