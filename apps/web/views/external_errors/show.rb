@@ -108,9 +108,11 @@ module Web::Views::ExternalErrors
         return content unless parsed.success?
 
         # uses the +pretty+ and +indent+ options provided by +Yajl::Encoder+ to
-        # format the parsed JSON. Generates two line breaks per line to make
-        # the final content more readable.
-        double_line_breaks Yajl::Encoder.encode(parsed.value, pretty: true, indent: " " * 2)
+        # format the parsed JSON. Generates two line breaks per line (not for empty arrays)
+        # to make the final content more readable.
+        compact_empty_arrays(
+          double_line_breaks Yajl::Encoder.encode(parsed.value, pretty: true, indent: " " * 2)
+        )
 
       when XML
         # pretty printing XML is not reliable using Ruby's default +REXML+ library.
@@ -177,6 +179,10 @@ module Web::Views::ExternalErrors
 
     def double_line_breaks(str)
       str.gsub("\n", "\n\n")
+    end
+
+    def compact_empty_arrays(str)
+      str.gsub(/\[\s*\]/, '[]')
     end
   end
 end
