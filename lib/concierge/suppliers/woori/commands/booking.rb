@@ -70,7 +70,7 @@ module Woori
       end
 
       def build_confirm_request_params(reservation_params)
-        {
+        json_encode(
           roomtypeCode:  reservation_params.get("unit_id"),
           checkInDate:   format_date(reservation_params.get("check_in")),
           checkOutDate:  format_date(reservation_params.get("check_out")),
@@ -80,7 +80,7 @@ module Woori
           childrenCount: 0,
           paidPrice:     reservation_params.get("subtotal"),
           currency:      reservation_params.get("currency_code")
-        }.to_json
+        )
       end
 
       def format_date(date)
