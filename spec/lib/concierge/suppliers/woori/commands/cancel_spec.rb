@@ -27,7 +27,7 @@ RSpec.describe Woori::Commands::Cancel do
     expect(result).not_to be_success
     expect(result.error.code).to eq(:reservation_cancel_error)
     expect(last_context_event[:message]).to eq(
-      "Unknown error while reservation #{reservation_id} cancellation"
+      "Unknown error during cancellation of reservation `#{reservation_id}`"
     )
     expect(last_context_event[:backtrace]).to be_kind_of(Array)
     expect(last_context_event[:backtrace].any?).to be true
