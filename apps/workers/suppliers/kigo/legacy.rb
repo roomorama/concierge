@@ -72,7 +72,7 @@ module Workers::Suppliers::Kigo
     end
 
     def host_deactivated?(property)
-      Kigo::HostCheck.new(property['PROP_ID'], request_handler: request_handler).deactivated?
+      Kigo::HostCheck.new(property['PROP_ID'], request_handler).deactivated?
     end
 
     def delete_host!
