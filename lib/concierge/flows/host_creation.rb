@@ -77,6 +77,8 @@ module Concierge::Flows
   class HostCreation
     include Hanami::Validations
 
+    IDLE = "idle"
+
     attribute :supplier,       presence: true
     attribute :identifier,     presence: true
     attribute :username,       presence: true
@@ -116,7 +118,7 @@ module Concierge::Flows
               host_id:     host.id,
               interval:    data.to_h["every"],
               type:        type.to_s,
-              status:      "idle"
+              status:      IDLE
             ).perform
 
             return result unless result.success?

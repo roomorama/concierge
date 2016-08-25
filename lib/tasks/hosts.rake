@@ -1,5 +1,15 @@
 require "yaml"
 
+# +HostCreationError+
+#
+# Error raised when the result of a host creation operation is not successful.
+# Receives the result error code when initialized.
+class HostCreationError < RuntimeError
+  def initialize(code)
+    super("Host creation failure unsuccessful: #{code}")
+  end
+end
+
 namespace :hosts do
   desc "Updates background worker definitions for all hosts"
   task update_worker_definitions: :environment do
@@ -14,10 +24,10 @@ namespace :hosts do
           access_token:   host.access_token,
           fee_percentage: host.fee_percentage,
           config_path:    path
-        ).perform
+        ).perform.tap do |result|
+          raise HostCreationError.new(result.error.code) unless result.success?
+        end
       end
     end
-
-    puts "Done. All hosts updated."
   end
 end
