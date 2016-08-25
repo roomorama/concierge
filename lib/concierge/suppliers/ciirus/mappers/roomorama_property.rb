@@ -14,22 +14,22 @@ module Ciirus
       # but roomorama doesn't support them.
       PROPERTY_TYPES = Concierge::SafeAccessHash.new({
         'Condo'           => {type: 'apartment', subtype: 'condo'},
-        'Townhouse'       => {type: 'house', subtype: 'townhouse'},
-        'Apartment'       => {type: 'apartment', subtype: 'apartment'},
+        'Townhouse'       => {type: 'house'},
+        'Apartment'       => {type: 'apartment'},
         'Villa'           => {type: 'house', subtype: 'villa'},
         'Signature Villa' => {type: 'house', subtype: 'villa'},
-        'House'           => {type: 'house', subtype: 'house'},
+        'House'           => {type: 'house'},
         'Cottage'         => {type: 'house', subtype: 'cottage'},
         'B+B'             => {type: 'bnb'},
         'Cabin'           => {type: 'house', subtype: 'cabin'},
-        'Motel'           => {type: 'others', subtype: 'room'},
-        'Office'          => {type: 'others', subtype: 'office'},
-        'Studio'          => {type: 'apartment', subtype: 'studio/bachelor'},
-        'Barn'            => {type: 'others', subtype: 'barn'},
-        'Resort'          => {type: 'others', subtype: 'resort'},
-        'Resort Home'     => {type: 'house', subtype: 'house'},
+        'Motel'           => {type: 'room'},
+        # 'Office'          => {type: 'others', subtype: 'office'}, # TODO decide if we can support this in 2nd round of review
+        'Studio'          => {type: 'apartment', subtype: 'studio_bachelor'},
+        # 'Barn'            => {type: 'others', subtype: 'barn'}, # TODO decide if we can support this in 2nd round of review
+        # 'Resort'          => {type: 'others', subtype: 'resort'}, # TODO decide if we can support this in 2nd round of review
+        'Resort Home'     => {type: 'house'},
         'Private Room'    => {type: 'room'},
-        'Finca'           => {type: 'house', subtype: 'house'}
+        'Finca'           => {type: 'house'}
       })
 
 

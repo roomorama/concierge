@@ -22,8 +22,8 @@ module Ciirus
       private
 
       def valid_property_type?
-        # Roomorama doesn't import hotels
-        !(['Unspecified', 'Hotel'].include?(property.type))
+        # TODO: Review and add support
+        !(['Office', 'Barn', 'Resort', 'Unspecified', 'Hotel'].include?(property.type))
       end
     end
   end
