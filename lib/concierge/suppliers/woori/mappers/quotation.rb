@@ -36,7 +36,7 @@ module Woori
       private
 
       def day_entries
-        safe_hash.get("data")
+        Array(safe_hash.get("data"))
       end
 
       def available?
