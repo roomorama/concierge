@@ -87,6 +87,13 @@ RSpec.describe SAW::PayloadBuilder do
       id = accommodation_type.fetch("accommodation_typeid")
       expect(id).to eq(payload_builder.class::ALL_ACCOMODATIONS_TYPE_CODE.to_s)
     end
+
+    it 'embedds flag_rateplan tag (used to fetch only best available rates)' do
+      response = to_hash(payload_builder.build_compute_pricing(payload))
+
+      response_attrs = response.fetch("request")
+      expect(response_attrs.fetch("flag_rateplan")).to eq("N")
+    end
   end
 
   describe '#build_booking_request' do
@@ -316,6 +323,13 @@ RSpec.describe SAW::PayloadBuilder do
       response_attrs = response.fetch("request")
       expect(response_attrs.fetch("check_in")).to eq(params[:check_in])
       expect(response_attrs.fetch("check_out")).to eq(params[:check_out])
+    end
+
+    it 'embedds flag_rateplan tag (used to fetch only best available rates)' do
+      response = to_hash(payload_builder.build_property_rate_request(params))
+
+      response_attrs = response.fetch("request")
+      expect(response_attrs.fetch("flag_rateplan")).to eq("N")
     end
   end
 
