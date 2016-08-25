@@ -78,7 +78,7 @@ module Web::Views::Suppliers
     #
     # If there are no +workers+ entry or no +metadata+ entry in the workers
     # definition on +config/suppliers.yml+, this method returns +NO_WORKERS_DEFINED+.
-    def calendar_frequency(supplier)
+    def availabilities_frequency(supplier)
       definition = workers_definitions[supplier.name]
       unless definition && definition["workers"]
         return NO_WORKERS_DEFINED
