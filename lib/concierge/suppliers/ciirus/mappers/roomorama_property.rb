@@ -23,10 +23,7 @@ module Ciirus
         'B+B'             => {type: 'bnb'},
         'Cabin'           => {type: 'house', subtype: 'cabin'},
         'Motel'           => {type: 'room'},
-        # 'Office'          => {type: 'others', subtype: 'office'}, # TODO decide if we can support this in 2nd round of review
         'Studio'          => {type: 'apartment', subtype: 'studio_bachelor'},
-        # 'Barn'            => {type: 'others', subtype: 'barn'}, # TODO decide if we can support this in 2nd round of review
-        # 'Resort'          => {type: 'others', subtype: 'resort'}, # TODO decide if we can support this in 2nd round of review
         'Resort Home'     => {type: 'house'},
         'Private Room'    => {type: 'room'},
         'Finca'           => {type: 'house'}

@@ -9,6 +9,7 @@ module Ciirus
     #   * unknown country
     #
     class PropertyValidator
+      SUPPORTED_PROPERTY_TYPES = ['Office', 'Barn', 'Resort', 'Unspecified', 'Hotel']
       attr_reader :property
 
       def initialize(property)
@@ -22,8 +23,7 @@ module Ciirus
       private
 
       def valid_property_type?
-        # TODO: Review and add support
-        !(['Office', 'Barn', 'Resort', 'Unspecified', 'Hotel'].include?(property.type))
+        ! SUPPORTED_PROPERTY_TYPES.include?(property.type)
       end
     end
   end
