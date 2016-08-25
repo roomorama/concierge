@@ -23,7 +23,7 @@ module Woori
     #   comamnd = Woori::Client.new(credentials)
     #   result = command.quote(params)
     #
-    #   if result.sucess?
+    #   if result.success?
     #     # ...
     #   end
     #
