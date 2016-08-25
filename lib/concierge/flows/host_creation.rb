@@ -107,16 +107,21 @@ module Concierge::Flows
           return workers_definition unless workers_definition.success?
 
           workers_definition.value.each do |type, data|
+            data = data.to_h
+
+            validation = compile_definition(data)
+            return validation unless validation.success?
+
             # if there is an +absence+ field for a given worker definition, it means
             # the worker is not supported, and the +absence+ field indicates the reason
             # that worker is not implemented for a given supplier.
             #
             # In such case, the +BackgroundWorker+ record should not be created.
-            next if data.to_h["absence"]
+            next if data["absence"]
 
             result = BackgroundWorkerCreation.new(
               host_id:     host.id,
-              interval:    data.to_h["every"],
+              interval:    data["every"],
               type:        type.to_s,
               status:      IDLE
             ).perform
@@ -156,6 +161,26 @@ module Concierge::Flows
         Result.new(definition["workers"].to_h)
       else
         Result.error(:no_workers_definition)
+      end
+    end
+
+    # makes sure there are no conflicting keys in a worker definition.
+    # Namely:
+    #
+    # * if the +absence+ field is declared, there is no point to have either
+    #   the +every+ or the +aggregated+ field. That is flagged as an error.
+    #
+    # Returns a +Result+ instance indicating whether or not the +definition+
+    # given is valid.
+    def compile_definition(definition)
+      absence    = definition.key?("absence")
+      interval   = definition.key?("every")
+      aggregated = definition.key?("aggregated")
+
+      if absence && (interval || aggregated)
+        Result.error(:invalid_worker_definition)
+      else
+        Result.new(definition)
       end
     end
 

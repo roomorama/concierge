@@ -75,6 +75,21 @@ RSpec.describe Concierge::Flows::HostCreation do
       expect(result.error.code).to eq :invalid_parameters
     end
 
+    context "conflicting keys" do
+      %w(absence_interval absence_aggregated).each do |scenario|
+        fields = scenario.sub("_", " and ") # "absence_interval" => "absence and interval"
+
+        it "returns an unsuccessful result if the definition has both #{fields}" do
+          config_suppliers "conflicting_#{scenario}.yml"
+
+          result = subject.perform
+          expect(result).to be_a Result
+          expect(result).not_to be_success
+          expect(result.error.code).to eq :invalid_worker_definition
+        end
+      end
+    end
+
     it "creates the host and associated workers" do
       expect {
         expect {
