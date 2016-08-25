@@ -10,7 +10,7 @@ module Kigo
     end
 
     def deactivated?
-      result = http.post(endpoint, json_encode(fake_params), { "Content-Type" => "application/json" })
+      result = http.post(endpoint, json_encode(fake_params.value), { "Content-Type" => "application/json" })
 
       return unless result.success?
 

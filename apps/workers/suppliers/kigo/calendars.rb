@@ -17,7 +17,7 @@ module Workers::Suppliers::Kigo
       prices_ids = fetch_prices_ids
       return unless prices_ids.success?
 
-      availabilities_ids = fetch_availabilities_ids
+      availabilities_ids = fetch_availability_ids
       return unless availabilities_ids.success?
 
       hosts.each do |host|

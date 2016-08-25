@@ -19,7 +19,7 @@ module Kigo::Mappers
 
     def initialize(references, resolver:)
       @references = references
-      @resolver = resolver
+      @resolver   = resolver
     end
 
     # manages data and returns the result with +Roomorama::Property+
@@ -80,9 +80,12 @@ module Kigo::Mappers
       property.postal_code      = info['PROP_POSTCODE']
       property.address          = street_address
       property.apartment_number = info['PROP_APTNO']
-      coordinates               = info['PROP_LATLNG']
-      property.lat              = coordinates['LATITUDE']
-      property.lng              = coordinates['LONGITUDE']
+
+      coordinates = info['PROP_LATLNG']
+      if coordinates
+        property.lat = coordinates['LATITUDE']
+        property.lng = coordinates['LONGITUDE']
+      end
     end
 
     def stay_length(interval)
