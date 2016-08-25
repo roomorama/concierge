@@ -24,6 +24,9 @@ module Woori::Repositories::File
 
     private
 
+    # Method doesn't convert `Hash` object to `Concierge::SafeAccessHash`
+    # because `decoded_result` is a big object and it doesn't make sense to
+    # perform this convertion just for two key access operations.
     def raw_units
       items = []
 
