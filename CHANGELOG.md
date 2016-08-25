@@ -4,6 +4,16 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.7.3] - 2016-08-25
+### Changed
+- Represent empty arrays as `[]` during formatting external errors' JSON
+- Stop creating external errors for expected messages from Ciirus
+
+### Fixed
+- Waytostay property batch fetching should include disabled properties
+- Backticks formatting for failure to quote price for SAW units.
+- Missing images for unpublished properties
+
 ## [0.7.2] - 2016-08-23
 ### Added
 - `Synchronisation#new_context` to contextualize work that may announce error in a supplier worker implementation

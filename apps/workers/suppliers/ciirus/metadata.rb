@@ -4,6 +4,10 @@ module Workers::Suppliers::Ciirus
   # Performs properties synchronisation with supplier
   class Metadata
     attr_reader :synchronisation, :host
+    IGNORABLE_ERROR_MESSAGES = [
+      "(soap:Server) Server was unable to process request. ---> GetPropertyRates: Error - No Rate Assigned by user. Please contact the user and request they populate this data.",
+      "(soap:Server) Server was unable to process request. ---> GetPropertyRates: Error - No Rate Rows Returned"
+    ]
 
     def initialize(host)
       @host            = host
@@ -98,8 +102,14 @@ module Workers::Suppliers::Ciirus
 
     def fetch_rates(property_id)
       importer.fetch_rates(property_id).tap do |result|
-        message = "Failed to fetch rates for property `#{property_id}`"
-        announce_error(message, result) unless result.success?
+        unless result.success?
+          if ignorable(result.error)
+            synchronisation.skip_property
+          else
+            message = "Failed to fetch rates for property `#{property_id}`"
+            announce_error(message, result)
+          end
+        end
       end
     end
 
@@ -116,6 +126,15 @@ module Workers::Suppliers::Ciirus
       report_error(message) do
         importer.fetch_security_deposit(property_id)
       end
+    end
+
+    # Args:
+    #   error: a Result#error
+    #
+    def ignorable(error)
+      return IGNORABLE_ERROR_MESSAGES.any? { |err_msg|
+        error.data&.include? err_msg
+      }
     end
 
     def mapper

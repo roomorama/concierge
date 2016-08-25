@@ -11,6 +11,12 @@ module AtLeisure
   #
   class PropertyValidation
 
+    IGNORE_ROOM_TYPES = [
+      130, # Hotel
+      172, # Mill
+      175  # Tent Lodge
+    ]
+
     attr_reader :payload
 
     def initialize(payload)
@@ -21,7 +27,8 @@ module AtLeisure
       no_errors? &&
         valid_payload? &&
         instant_bookable? &&
-        no_deposit_upfront?
+        no_deposit_upfront? &&
+        acceptable_type?
     end
 
     private
@@ -38,6 +45,13 @@ module AtLeisure
       payload['AvailabilityPeriodV1'].any? { |availability| availability['OnRequest'] == 'No' }
     end
 
+    def acceptable_type?
+      properties_array = Array(payload['PropertiesV1'])
+      room_type_hash   = properties_array.find { |data_hash| data_hash['TypeNumber'] == code_for(:property_type) }.to_h
+      room_type_number = Array(room_type_hash['TypeContents']).first
+      !IGNORE_ROOM_TYPES.include?(room_type_number)
+    end
+
     def no_deposit_upfront?
       deposit['Items'].find { |item| item['Payment'] == 'MandatoryDepositUpFront' }.nil?
     end
@@ -48,6 +62,10 @@ module AtLeisure
 
     def find_en(item)
       item['TypeDescriptions'].find { |desc| desc['Language'] == 'EN' }['Description']
+    end
+
+    def code_for(item)
+      AtLeisure::Mapper::CODES.fetch(item)
     end
   end
 end

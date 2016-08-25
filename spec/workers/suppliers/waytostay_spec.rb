@@ -64,7 +64,8 @@ RSpec.describe Workers::Suppliers::Waytostay do
   describe "#load_existing" do
     context "ref is not found in database" do
       it "should fetch from api if ref is not found in database" do
-        expect(subject.client).to receive(:get_property).once
+        expect(subject.client).to receive(:get_property).once { Result.new }
+        expect(subject.client).to receive(:update_media).once {}
         subject.send(:load_existing, "non_existing_ref")
       end
     end
@@ -83,7 +84,7 @@ RSpec.describe Workers::Suppliers::Waytostay do
 
       # properties 001 and 002 is stubbed for client fetches,
       # 003, 004 and 005 stubbed for concierge database
-      allow_any_instance_of(Waytostay::Client).to receive(:get_active_properties_by_ids) do |ids|
+      allow_any_instance_of(Waytostay::Client).to receive(:get_properties_by_ids) do |ids|
         properties = ids.collect do |ref|
           Roomorama::Property.load(
             Concierge::SafeAccessHash.new(
@@ -93,10 +94,17 @@ RSpec.describe Workers::Suppliers::Waytostay do
         Result.new properties
       end
 
-      create_property(identifier: "003", host_id: host.id)
-      create_property(identifier: "004", host_id: host.id)
-      create_property(identifier: "005", host_id: host.id)
-      create_property(identifier: "006", host_id: host.id)
+      data = {
+        title: "Studio Apartment in Madrid",
+        nightly_rate: 10,
+        images: [
+          { identifier: "PROP1IMAGE", url: "https://www.example.org/image.png" }
+        ]
+      }
+      create_property(identifier: "003", host_id: host.id, data: data.merge({identifier: "003"}))
+      create_property(identifier: "004", host_id: host.id, data: data.merge({identifier: "004"}))
+      create_property(identifier: "005", host_id: host.id, data: data.merge({identifier: "005"}))
+      create_property(identifier: "006", host_id: host.id, data: data.merge({identifier: "006"}))
     end
 
     describe "#perform" do
@@ -141,7 +149,7 @@ RSpec.describe Workers::Suppliers::Waytostay do
 
       context "when rate limit is hit" do
         it "should stop making any more calls" do
-          expect(subject.client).to receive(:get_active_properties_by_ids).once do
+          expect(subject.client).to receive(:get_properties_by_ids).once do
             Result.error(:http_status_429)
           end
           expect(subject.client).to_not receive(:update_media)

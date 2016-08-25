@@ -235,24 +235,42 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
     end
   end
 
-  context 'fetching rates' do
+  describe 'fetching rates' do
     before do
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_properties) { success_result }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_permissions) { Result.new(permissions) }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_images) { Result.new(images) }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_description) { Result.new(description) }
-      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_rates) { Result.error(:soap_error) }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_rates) { Result.error(:soap_error, error_message) }
     end
 
-    it 'does not start synchronsiation if fetching rates fails' do
-      # We expect rates error, and purge the property instead
-      subject.perform
+    context "when it fails with unexpected error" do
+      let(:error_message) { "New weird error" }
+      it 'does not start synchronsiation, but create an external error' do
+        # We expect rates error, and purge the property instead
+        expect { subject.perform }.to change { ExternalErrorRepository.count }.by 1
 
-      expect(subject.synchronisation).to_not receive(:start)
-      error = ExternalErrorRepository.last
-      expect(error.operation).to eq 'sync'
-      expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
-      expect(error.code).to eq 'soap_error'
+        expect(subject.synchronisation).to_not receive(:start)
+        error = ExternalErrorRepository.last
+        expect(error.operation).to eq 'sync'
+        expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
+        expect(error.code).to eq 'soap_error'
+      end
+
+      it 'doesnt finalize synchronisation with external error' do
+        expect(Roomorama::Client::Operations).to_not receive(:disable)
+        subject.perform
+      end
+    end
+
+    [described_class::IGNORABLE_ERROR_MESSAGES].each do |msg|
+      context "when it fails with expected error: #{msg}" do
+        let(:error_message) { msg }
+        it "does not create external errors" do
+          expect(subject.synchronisation).to_not receive(:start)
+          expect { subject.perform }.to_not change { ExternalErrorRepository.count }
+        end
+      end
     end
 
     it 'does not start synchronisation if list of actual rates is empty' do
@@ -263,10 +281,6 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
       expect(subject.synchronisation).to_not receive(:start)
     end
 
-    it 'doesnt finalize synchronisation with external error' do
-      expect(Roomorama::Client::Operations).to_not receive(:disable)
-      subject.perform
-    end
   end
 
   context 'fetching security deposit' do

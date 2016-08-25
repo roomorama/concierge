@@ -5,7 +5,8 @@ RSpec.describe AtLeisure::PropertyValidation do
 
   describe '#valid?' do
 
-    %w(on_request_property property_with_mandatory_cost not_found).each do |failed_data|
+    %w(on_request_property property_with_mandatory_cost not_found
+       hotel mill tent_lodge).each do |failed_data|
       it "fails with #{failed_data}" do
         validation = described_class.new(build_property(failed_data))
         expect(validation.valid?).to be false

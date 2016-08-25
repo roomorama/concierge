@@ -65,7 +65,7 @@ module Waytostay
       def fetch_all(client, ids)
         properties = []
         ids.each_slice(PER_PAGE) do |batch|
-          result = client.get_active_properties_by_ids(batch)
+          result = client.get_properties_by_ids(batch)
           return result unless result.success?
           properties << result.value
         end
@@ -97,12 +97,11 @@ module Waytostay
     # Caller should only use this with a batch of 25 properties each time to avoid
     # having to fetch multiple pages, and to avoid `414 Request-URI Too Large`
     #
-    def get_active_properties_by_ids(ids)
+    def get_properties_by_ids(ids)
       result = oauth2_client.get(
         INDEX_ENDPOINT,
         params: { references: ids.join(","),
-                  payment_option: Waytostay::Client::SUPPORTED_PAYMENT_METHOD,
-                  active: true },
+                  payment_option: Waytostay::Client::SUPPORTED_PAYMENT_METHOD},
         headers: headers)
       return result unless result.success?
       response = Concierge::SafeAccessHash.new(result.value)

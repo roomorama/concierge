@@ -91,7 +91,7 @@ module Concierge
       Result.error(:unknown_operation)
     rescue Savon::SOAPFault => err
       announce_error(err)
-      Result.error(:soap_error)
+      Result.error(:soap_error, err.message)
     rescue Savon::Error => err
       announce_error(err)
       Result.error(:savon_error)
