@@ -15,10 +15,11 @@ module API::Controllers::Woori
     #
     # Usage
     #
-    #   It returns a +Reservation+ object in both success and fail cases:
-    #
     #   API::Controllers::Woori::Booking.create_booking(selected_params)
     #   => Reservation(..)
+    #
+    # Returns a +Result+ wrapping a +Reservation+ when operation succeeds
+    # Returns a +Result+ with +Result::Error+ when operation fails
     def create_booking(params)
       credentials = Concierge::Credentials.for(supplier_name)
       Woori::Client.new(credentials).book(params)
