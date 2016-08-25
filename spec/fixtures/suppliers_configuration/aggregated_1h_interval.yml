@@ -1,0 +1,7 @@
+Supplier X:
+  workers:
+    metadata:
+      every: "1d"
+    availabilities:
+      every: "1h"
+      aggregated: true

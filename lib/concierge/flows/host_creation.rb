@@ -11,14 +11,101 @@ module Concierge::Flows
 
     INTERVAL_FORMAT = /^\s*(?<amount>\d+)\s*(?<unit>[smhd])\s*$/
 
-    attribute :host_id,     presence: true
-    attribute :interval,    presence: true, format:    INTERVAL_FORMAT
-    attribute :type,        presence: true, inclusion: BackgroundWorker::TYPES
-    attribute :status,      presence: true, inclusion: BackgroundWorker::STATUSES
+    attribute :supplier_id
+    attribute :host_id
+    attribute :interval, presence: true, format:    INTERVAL_FORMAT
+    attribute :type,     presence: true, inclusion: BackgroundWorker::TYPES
+    attribute :status,   presence: true, inclusion: BackgroundWorker::STATUSES
+
+    attr_reader :worker_lookup
+
+    # The worker lookup classes below are expected to implement two methods
+    #
+    # +find_existing+ (type: String)
+    # Searches the +background_workers+ table for a record associated with the
+    # record (host or supplier) given on initialization of the given +type+.
+    # If found, the method is supposed to return a +BackgroundWorker+ instance;
+    # otherwise +nil+.
+    #
+    # +build_new+
+    # Builds a new, non-persisted +BackgroundWorker+ instance associated with
+    # the given record (host or supplier)
+    #
+    # Each different implementation performs the operation above for either
+    # +Host+ or +Supplier+.
+
+    # +Concierge::Flows::BackgroundWorkerCreation::HostWorkerLookup+
+    #
+    # This class knows how to lookup background workers associated with
+    # hosts.
+    class HostWorkerLookup
+      attr_reader :host
+
+      # host - a +Host+ instance.
+      def initialize(host)
+        @host = host
+      end
+
+      def find_existing(type)
+        workers = BackgroundWorkerRepository.for_host(host)
+        workers.find { |worker| worker.type == type }
+      end
+
+      def build_new
+        BackgroundWorker.new(host_id: host.id)
+      end
+    end
+
+    # +Concierge::Flows::BackgroundWorkerCreation::HostWorkerLookup+
+    #
+    # This class knows how to lookup background workers associated with
+    # suppliers (for aggregated synchronisation processes).
+    class SupplierWorkerLookup
+      attr_reader :supplier
+
+      # supplier - a +Supplier+ instance.
+      def initialize(supplier)
+        @supplier = supplier
+      end
+
+      def find_existing(type)
+        workers = BackgroundWorkerRepository.for_supplier(supplier)
+        workers.find { |worker| worker.type == type }
+      end
+
+      def build_new
+        BackgroundWorker.new(supplier_id: supplier.id)
+      end
+    end
+
+    # overrides the class initialization (already provided by +Hanami::Validations+)
+    # in order to read the +worker_lookup+ attribute, which should be an instance
+    # of either +HostWorkerLookup+ or +SupplierWorkerLookup+.
+    def initialize(attributes)
+      @worker_lookup = attributes.delete(:worker_lookup)
+      super
+    end
+
+    # apart from the validations already performed by the attributes declaration in
+    # this class, this method makes sure that at least one of +supplier_id+ or +host_id+
+    # are given. This is to ensure no instances will be created without proper foreign
+    # keys (or with duplicated foreign keys.)
+    def valid?
+      builtin_validations = super
+
+      has_host_id         = host_id.to_i > 0
+      has_supplier_id     = supplier_id.to_i > 0
+
+      # if a host id was given, the record is only valid if *no supplier id was given*
+      # (since only one must be set at a time); otherwise, it needs to have a supplier id.
+      valid_foreign_key = has_host_id ? (!has_supplier_id) : has_supplier_id
+
+      builtin_validations && valid_foreign_key
+    end
 
     def perform
       if valid?
-        worker = find_existing || build_new
+        worker = worker_lookup.find_existing(type) || worker_lookup.build_new
 
         # set the values passed to make sure that changes in the parameters update
         # existing records.
@@ -34,15 +121,6 @@ module Concierge::Flows
     end
 
     private
-
-    def find_existing
-      workers = BackgroundWorkerRepository.for_host(host).to_a
-      workers.find { |worker| worker.type == type }
-    end
-
-    def build_new
-      BackgroundWorker.new(host_id: host_id)
-    end
 
     def interpret_interval(interval)
       match    = INTERVAL_FORMAT.match(interval)
@@ -62,6 +140,10 @@ module Concierge::Flows
 
     def host
       @host ||= HostRepository.find(host_id)
+    end
+
+    def supplier
+      @supplier ||= SupplierRepository.find(supplier_id)
     end
 
     def attributes
@@ -119,14 +201,10 @@ module Concierge::Flows
             # In such case, the +BackgroundWorker+ record should not be created.
             next if data["absence"]
 
-            result = BackgroundWorkerCreation.new(
-              host_id:     host.id,
-              interval:    data["every"],
-              type:        type.to_s,
-              status:      IDLE
-            ).perform
-
-            return result unless result.success?
+            attributes = worker_attributes(host, supplier, type, data)
+            BackgroundWorkerCreation.new(attributes).perform.tap do |result|
+              return result unless result.success?
+            end
           end
 
           Result.new(host)
@@ -182,6 +260,26 @@ module Concierge::Flows
       else
         Result.new(definition)
       end
+    end
+
+    def worker_attributes(host, supplier, type, data)
+      if data["aggregated"]
+        attributes = {
+          supplier_id:   supplier.id,
+          worker_lookup: Concierge::Flows::BackgroundWorkerCreation::SupplierWorkerLookup.new(supplier)
+        }
+      else
+        attributes = {
+          host_id:       host.id,
+          worker_lookup: Concierge::Flows::BackgroundWorkerCreation::HostWorkerLookup.new(host)
+        }
+      end
+
+      {
+        interval: data["every"],
+        type:     type.to_s,
+        status:   IDLE
+      }.merge!(attributes)
     end
 
     def suppliers_config
