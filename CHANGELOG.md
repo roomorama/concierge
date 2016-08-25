@@ -4,7 +4,7 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
-## Unreleased
+## [0.7.3] - 2016-08-25
 ### Changed
 - Represent empty arrays as `[]` during formatting external errors' JSON
 - Stop creating external errors for expected messages from Ciirus
