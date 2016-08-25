@@ -12,6 +12,9 @@
 # +id+          - the ID of the the record on the database, automatically generated.
 # +host_id+     - a foreign key to the +hosts+ table, indicating which host
 #                 the background worker is associated with.
+# +supplier_id+ - a foreign key to the +suppliers+ table, indicating which supplier
+#                 the background worker is associated with. Either this column or
+#                 +host_id+ must be set.
 # +next_run_at+ - a timestamp that indicates when the background worker should be
 #                 invoked next.
 # +interval+    - how often (in seconds), the background worker should be invoked.
@@ -36,7 +39,7 @@ class BackgroundWorker
   #             be rescheduled.
   STATUSES = %w(idle running)
 
-  attributes :id, :host_id, :next_run_at, :interval, :type, :status,
+  attributes :id, :host_id, :supplier_id, :next_run_at, :interval, :type, :status,
     :created_at, :updated_at
 
   def running?

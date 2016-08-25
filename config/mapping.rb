@@ -93,6 +93,7 @@ collection :background_workers do
 
   attribute :id,          Integer
   attribute :host_id,     Integer
+  attribute :supplier_id, Integer
   attribute :next_run_at, Time
   attribute :interval,    Integer
   attribute :type,        String
