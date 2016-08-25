@@ -132,6 +132,9 @@ module Kigo
       when 'E_ALREADY'
         mismatch('The reservation already cancelled', caller)
         Result.error(:already_cancelled)
+      else
+        mismatch('Undefined error result', caller)
+        Result.error(:cancellation_failed)
       end
     end
 
