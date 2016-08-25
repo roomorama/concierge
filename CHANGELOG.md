@@ -10,6 +10,7 @@ how this file is formatted and how the process works.
 
 ### Fixed
 - SAW: ignore non-refundable prices for units while rates fetching
+- Ignore unsupported ciirus property types until another review
 
 ## [0.7.3] - 2016-08-25
 ### Changed
