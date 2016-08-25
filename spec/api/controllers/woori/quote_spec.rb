@@ -74,12 +74,16 @@ RSpec.describe API::Controllers::Woori::Quote do
         }
       end
 
-      it "respond with the stay_too_long error" do
+      it "respond with unavailable quotation" do
         response = parse_response(subject.call(params))
-        expect(response.status).to eq 503
-        expect(response.body["errors"]).to eq(
-          { "quote" => "Maximum length of stay must be less than 30 nights." }
-        )
+        expect(response.status).to eq 200
+        expect(response.body['status']).to eq("ok")
+        expect(response.body['available']).to be false
+        expect(response.body['property_id']).to eq("J123")
+        expect(response.body['unit_id']).to eq("123J")
+        expect(response.body['check_in']).to eq("2016-02-22")
+        expect(response.body['check_out']).to eq("2016-03-25")
+        expect(response.body['guests']).to eq(2)
       end
     end
   end
