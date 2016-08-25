@@ -35,7 +35,10 @@ module Workers::Suppliers::Kigo
         return if properties.empty?
 
         if host_deactivated?(properties.first)
-          delete_host! and return
+          unless delete_host!
+            announce_error('Failed to perform `#delete_host` operation')
+          end
+          return
         end
 
         properties.each do |property|
@@ -76,7 +79,7 @@ module Workers::Suppliers::Kigo
     end
 
     def delete_host!
-      HostRepository.delete(host)
+      Concierge::Flows::HostDeletion.new(host).delete
     end
 
     def wrapped_payload(payload)
