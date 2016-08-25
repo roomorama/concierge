@@ -42,7 +42,7 @@ module Woori
       # The +call+ method returns a +Result+ object that, when successful,
       # encapsulates the resulting +Quotation+ object.
       def call(quotation_params)
-        return stay_too_long_error if quotation_params.stay_length > MAXIMUM_STAY_LENGTH
+        return unavailable_quotation(quotation_params) if stay_too_long?(quotation_params)
 
         params = build_request_params(quotation_params)
         result = http.get(ENDPOINT, params, headers)
@@ -71,9 +71,21 @@ module Woori
         }
       end
 
-      def stay_too_long_error
-        message = "Maximum length of stay must be less than #{MAXIMUM_STAY_LENGTH} nights."
-        Result.error(:stay_too_long, { quote: message })
+      def stay_too_long?(quotation_params)
+        quotation_params.stay_length > MAXIMUM_STAY_LENGTH
+      end
+
+      def unavailable_quotation(params)
+        quotation = ::Quotation.new(
+          property_id: params[:property_id],
+          unit_id:     params[:unit_id],
+          check_in:    params[:check_in].to_s,
+          check_out:   params[:check_out].to_s,
+          guests:      params[:guests],
+          available:   false
+        )
+
+        Result.new(quotation)
       end
     end
   end
