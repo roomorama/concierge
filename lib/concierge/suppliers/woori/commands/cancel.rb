@@ -60,7 +60,7 @@ module Woori
       end
 
       def reservation_cancel_error(id)
-        message = "Unknown error while reservation #{id} cancellation"
+        message = "Unknown error during cancellation of reservation `#{id}`"
         augment_with_error(message, caller)
         Result.error(:reservation_cancel_error)
       end
