@@ -4,6 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## Unreleased
+### Fixed
+- SAW: ignore non-refundable prices for units while rates fetching
+
 ## [0.7.3] - 2016-08-25
 ### Changed
 - Represent empty arrays as `[]` during formatting external errors' JSON
