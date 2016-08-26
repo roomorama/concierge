@@ -7,6 +7,9 @@ module SAW
     # Need to fetch all available accomodations
     ALL_ACCOMODATIONS_TYPE_CODE = -1
 
+    # Fetch only best available rates (ignore non-refundable rates)
+    FLAG_RATEPLAN = "N"
+
     def initialize(credentials)
       @credentials = credentials
     end
@@ -22,6 +25,7 @@ module SAW
           <propertyid>#{property_id}</propertyid>
           <check_in>#{check_in}</check_in>
           <check_out>#{check_out}</check_out>
+          <flag_rateplan>#{FLAG_RATEPLAN}</flag_rateplan>
 
           <apartments>
             <accommodation_type>
@@ -103,6 +107,7 @@ module SAW
           <propertyid>#{ids}</propertyid>
           <check_in>#{check_in}</check_in>
           <check_out>#{check_out}</check_out>
+          <flag_rateplan>#{FLAG_RATEPLAN}</flag_rateplan>
 
           <apartments>
             <accommodation_type>
