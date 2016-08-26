@@ -1,4 +1,8 @@
 module Concierge::Flows
+  # +Concierge::Flows::HostDeletion+
+  #
+  # this class responsible for removing all entities related to host and
+  # calling roomorama API to deactivate host. Returns +Result+ instance
   class HostDeletion
 
     attr_reader :host
@@ -9,10 +13,14 @@ module Concierge::Flows
 
     def call
       result = deactivate_roomorama_host
-      return unless result.success?
+      return result unless result.success?
 
       delete_background_workers
+      delete_sync_processes
+      delete_properties
       delete_host
+
+      Result.new(:host_has_deleted)
     end
 
     private
@@ -24,6 +32,18 @@ module Concierge::Flows
     def delete_background_workers
       BackgroundWorkerRepository.for_host(host).each do |worker|
         BackgroundWorkerRepository.delete(worker)
+      end
+    end
+
+    def delete_sync_processes
+      SyncProcessRepository.for_host(host).each do |sync|
+        SyncProcessRepository.delete(sync)
+      end
+    end
+
+    def delete_properties
+      PropertyRepository.from_host(host).each do |property|
+        PropertyRepository.delete(property)
       end
     end
 

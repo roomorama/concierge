@@ -19,14 +19,28 @@ RSpec.describe Workers::Suppliers::Kigo::Legacy do
 
   context 'deactivated host' do
 
-    it 'deletes host if his properties deactivated' do
+    before do
       allow_any_instance_of(Kigo::Importer).to receive(:fetch_properties) { Result.new(properties_list) }
       allow_any_instance_of(Kigo::HostCheck).to receive(:deactivated?) { true }
+    end
 
+    it 'announces an error with failed deletion' do
+      expect(subject).to receive(:delete_host!) { Result.error(:connection_timeout) }
       expect(subject.synchronisation).not_to receive(:start)
+
       subject.perform
 
-      expect(HostRepository.find(host.id)).to be_nil
+      error = ExternalErrorRepository.last
+
+      expect(error.operation).to eq 'sync'
+      expect(error.code).to eq 'connection_timeout'
+      expect(error.supplier).to eq 'KigoLegacy'
+    end
+
+    it 'deletes host if his properties deactivated' do
+      expect(subject).to receive(:delete_host!) { Result.new(:host_has_deleted) }
+      expect(subject.synchronisation).not_to receive(:start)
+      subject.perform
     end
 
   end
