@@ -8,30 +8,14 @@ RSpec.describe SyncProcessRepository do
     let(:factory) { -> { create_sync_process } }
   end
 
-  describe ".recent_successful_sync_for_host" do
-    let(:now) { Time.new(2016, 06, 06) }
-    let(:one_hour_ago)       { now -  1 * 60 * 60 }
-    let(:twenty_minutes_ago) { now - 20 * 60 }
-    let(:ten_minutes_ago)    { now - 10 * 60 }
-    let(:five_minutes_ago)   { now -  5 * 60 }
-    let(:host) { create_host }
+  describe ".successful" do
+    let!(:successful_sync) { create_sync_process(successful: true) }
+    let!(:unsuccessful_sync) { create_sync_process(successful: false) }
 
-    before(:each)do
-      create_sync_process(successful: false, started_at: one_hour_ago, host_id: host.id)
-      create_sync_process(successful: true,  started_at: twenty_minutes_ago, host_id: host.id)
-      create_sync_process(successful: true,  started_at: ten_minutes_ago, host_id: host.id)
-      create_sync_process(successful: false, started_at: five_minutes_ago, host_id: host.id)
-    end
+    subject { described_class.successful.to_a }
 
-    subject { described_class.recent_successful_sync_for_host(host) }
-    it { expect(subject.first.started_at).to eq ten_minutes_ago }
-    it { expect(subject.all.last.started_at).to eq twenty_minutes_ago }
-
-    context "when there is no successful sync" do
-      subject { described_class.recent_successful_sync_for_host(create_host) }
-      it { expect(subject.first).to be_nil }
-    end
-
+    it { expect(subject).to include successful_sync }
+    it { expect(subject).not_to include unsuccessful_sync }
   end
 
   describe ".most_recent" do
@@ -45,6 +29,17 @@ RSpec.describe SyncProcessRepository do
 
       expect(described_class.most_recent.to_a).to eq [recent, old]
     end
+  end
+
+  describe ".for_host" do
+    let(:host) { create_host }
+    let!(:sync_with_host) { create_sync_process(host_id: host.id) }
+    let!(:sync_without_host) { create_sync_process }
+
+    subject { described_class.for_host(host).to_a }
+
+    it { expect(subject).to include sync_with_host }
+    it { expect(subject).not_to include sync_without_host }
   end
 
   describe ".of_type" do
