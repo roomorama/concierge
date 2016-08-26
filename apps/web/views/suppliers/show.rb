@@ -97,8 +97,29 @@ module Web::Views::Suppliers
       end
     end
 
+    def aggregated_label(type)
+      if aggregated?(type)
+        html.span "*", class: "aggregated-label"
+      end
+    end
+
+    def aggregated?(type)
+      definitions     = workers_definitions[supplier.name] && workers_definitions[supplier.name]["workers"]
+      type_definition = definitions && definitions[type]
+
+      !!(type_definition && type_definition["aggregated"])
+    end
+
+    def any_aggregated_worker?
+      aggregated?("metadata") || aggregated?("availabilities")
+    end
+
     def workers_for(host)
       BackgroundWorkerRepository.for_host(host)
+    end
+
+    def aggregated_workers_for(supplier)
+      BackgroundWorkerRepository.for_supplier(supplier)
     end
 
     # Creates an HTML button/label for the status of a worker. +status+ is expected

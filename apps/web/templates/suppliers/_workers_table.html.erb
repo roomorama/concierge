@@ -1,0 +1,19 @@
+<table class="concierge-table pure-table">
+  <thead>
+    <tr>
+      <th>Worker</th>
+      <th>Status</th>
+      <th>Scheduled to Run At</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% workers.each do |worker| %>
+      <tr>
+        <td><%= worker.type %></td>
+        <td><%= status_label(worker.status) %></td>
+        <td><%= format_time(worker)%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

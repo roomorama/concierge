@@ -16,6 +16,16 @@ RSpec.describe Web::Views::Suppliers::Show do
     2.times { |n|
       create_host(supplier_id: supplier.id, identifier: "host#{n}", access_token: "token#{n}")
     }
+
+    # Hanami has a weird issue when rendering partials on the test environment when
+    # the views are initialized as above (as suggested on the official guides). For some
+    # reason, the format is not recognised, and it fails to render with a cryptic error
+    # message.
+    #
+    # Hardcoding the format to +html+ for the rendered view allows the specs to pass.
+    # TODO get rid of this when upgrading Hanami, hopefully it will have been fixed.
+    scope = view.instance_variable_get(:@scope)
+    def scope.format; :html; end
   end
 
   it "includes the number of integrated hosts and properties" do
@@ -57,6 +67,9 @@ RSpec.describe Web::Views::Suppliers::Show do
       next_run_at: Time.new(2016, 5, 22, 12, 32)
     )
 
+    # no aggregated synchronisation for this supplier
+    expect(sanitized).not_to include %(<h4>Aggregated synchrnonisation</h4>)
+
     expect(sanitized).to include %(<td>metadata</td>)
     expect(sanitized).to include %(<td>availabilities</td>)
 
@@ -66,5 +79,4 @@ RSpec.describe Web::Views::Suppliers::Show do
     expect(sanitized).to include %(<td>Soon (in at most 10 minutes)</td>)
     expect(sanitized).to include %(<td>May 22, 2016 at 12:32</td>)
   end
-
 end
