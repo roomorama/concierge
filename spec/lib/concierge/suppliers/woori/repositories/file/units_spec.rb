@@ -1,10 +1,9 @@
 require "spec_helper"
 
 RSpec.describe Woori::Repositories::File::Units do
-  let(:credentials) { Concierge::Credentials.for("Woori") }
-  let(:filename) { "bulk_properties.json" }
-  let(:files) { [File.join(credentials.import_files_dir, filename )] }
-  let(:subject) { described_class.new(files) }
+  let(:import_files_path) { "spec/fixtures/woori/import_files" }
+  let(:locations) { [Hanami.root.join(import_files_path, filename)] }
+  let(:subject) { described_class.new(locations) }
 
   context "when file is empty" do
     let(:filename) { "empty_bulk_roomtypes_0_to_10000.json" }

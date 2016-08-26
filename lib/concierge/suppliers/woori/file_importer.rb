@@ -14,7 +14,9 @@ module Woori
     #
     # Returns an +Array+ of +Roomorama::Property+ objects
     def fetch_all_properties
-      repository = Repositories::File::Properties.new(properties_file)
+      location = credentials.properties_import_file
+
+      repository = Repositories::File::Properties.new(location)
       repository.all
     end
 
@@ -22,7 +24,13 @@ module Woori
     #
     # Returns an +Array+ of +Roomorama::Unit+ objects
     def fetch_all_units
-      repository = Repositories::File::Units.new(unit_files)
+      locations = [
+        credentials.units_1_import_file,
+        credentials.units_2_import_file,
+        credentials.units_3_import_file
+      ]
+
+      repository = Repositories::File::Units.new(locations)
       repository.all
     end
 
@@ -34,25 +42,14 @@ module Woori
     #
     # Returns an +Array+ of +Roomorama::Unit+ objects
     def fetch_all_property_units(property_id)
-      repository = Repositories::File::Units.new(unit_files)
-      repository.find_all_by_property_id(property_id)
-    end
-
-    private
-    def import_file(file_name)
-      File.join(credentials.import_files_dir, file_name)
-    end
-
-    def properties_file
-       import_file("bulk_properties.json")
-    end
-
-    def unit_files
-      [
-        import_file("bulk_roomtypes_0_to_10000.json"),
-        import_file("bulk_roomtypes_10000_to_20000.json"),
-        import_file("bulk_roomtypes_20000_to_30000.json")
+      locations = [
+        credentials.units_1_import_file,
+        credentials.units_2_import_file,
+        credentials.units_3_import_file
       ]
+
+      repository = Repositories::File::Units.new(locations)
+      repository.find_all_by_property_id(property_id)
     end
   end
 end
