@@ -46,14 +46,15 @@ module API
       #   secrets.for(request_path) # => X32842I
       class Secrets
         APP_SECRETS = {
-          "/jtb"         => ENV["ROOMORAMA_SECRET_JTB"],
-          "/kigo/legacy" => ENV["ROOMORAMA_SECRET_KIGO_LEGACY"],
-          "/kigo"        => ENV["ROOMORAMA_SECRET_KIGO"],
-          "/atleisure"   => ENV["ROOMORAMA_SECRET_ATLEISURE"],
-          "/poplidays"   => ENV["ROOMORAMA_SECRET_POPLIDAYS"],
-          "/waytostay"   => ENV["ROOMORAMA_SECRET_WAYTOSTAY"],
-          "/ciirus"      => ENV["ROOMORAMA_SECRET_CIIRUS"],
-          "/saw"         => ENV["ROOMORAMA_SECRET_SAW"]
+          "/jtb"            => ENV["ROOMORAMA_SECRET_JTB"],
+          "/kigo/legacy"    => ENV["ROOMORAMA_SECRET_KIGO_LEGACY"],
+          "/kigo"           => ENV["ROOMORAMA_SECRET_KIGO"],
+          "/atleisure"      => ENV["ROOMORAMA_SECRET_ATLEISURE"],
+          "/poplidays"      => ENV["ROOMORAMA_SECRET_POPLIDAYS"],
+          "/waytostay"      => ENV["ROOMORAMA_SECRET_WAYTOSTAY"],
+          "/ciirus"         => ENV["ROOMORAMA_SECRET_CIIRUS"],
+          "/saw"            => ENV["ROOMORAMA_SECRET_SAW"],
+          "/rentals_united" => ENV["ROOMORAMA_SECRET_RENTALS_UNITED"]
         }
 
         attr_reader :mapping
