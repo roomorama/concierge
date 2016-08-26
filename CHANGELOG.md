@@ -93,12 +93,15 @@ how this file is formatted and how the process works.
 - environment variable CONCIERGE_URL
 - Kigo Legacy images fetching through controller
 - `CONCIERGE_API_SECRET` for signing `GET` requests
+- `Roomorama::Client::Operations::DisableHost` to deactivate hosts on roomorama
+- host deletion flow
 
 
 ### Changed
 - Do not attempt to update calendar for properties not previously synchronised.
 - `API::Middlewares::Authentication` with get request condition
 - `API::Middlewares::RoomoramaWebhook` with get request condition
+- `SyncProcess.recent_successful_sync_for_host` separated on `.successful` and `.for_host` methods
 
 ### Fixed
 - error with saving response with ASCII-8BIT encoding type
