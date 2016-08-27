@@ -6,7 +6,7 @@ require "yaml"
 # Receives the result error code when initialized.
 class HostCreationError < RuntimeError
   def initialize(code)
-    super("Host creation failure unsuccessful: #{code}")
+    super("Host creation unsuccessful: #{code}")
   end
 end
 
