@@ -21,6 +21,8 @@ gem 'aws-sdk', '~> 2.3'
 gem 'whenever', '~> 0.9', require: false
 gem 'sanitize', '~> 4.0.1'
 gem 'iso_country_codes', '~> 0.7.4'
+gem 'rubyzip', '~> 1.2.0'
+gem 'nokogiri', '~> 1.6.7'
 
 group :test do
   gem 'rspec', '~> 3.4.0'
