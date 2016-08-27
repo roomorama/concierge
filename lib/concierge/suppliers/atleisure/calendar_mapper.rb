@@ -19,7 +19,7 @@ module AtLeisure
         today = Date.today
         property_id = availabilities['HouseCode']
 
-        stays = availabilities['AvailabilityPeriodV1'].select { |availability|
+        stays = Array(availabilities['AvailabilityPeriodV1']).select { |availability|
           validator(availability, today).valid?
         }.map { |availability| to_stay(availability) }
 
