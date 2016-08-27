@@ -199,7 +199,7 @@ RSpec.describe Concierge::Flows::HostCreation do
 
       expect(worker.interval).to eq 2 * 60 * 60 # 2h
 
-      # updates metadata worker interval to every 2 days
+      # updates availabilities worker interval to every 2 days
       config_suppliers "aggregated_1h_interval.yml"
 
       expect {
