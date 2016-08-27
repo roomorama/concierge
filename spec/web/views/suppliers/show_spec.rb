@@ -5,7 +5,16 @@ RSpec.describe Web::Views::Suppliers::Show do
 
   let(:supplier)  { create_supplier(name: "Supplier Y") }
   let(:hosts)     { HostRepository.from_supplier(supplier) }
-  let(:exposures) { Hash[supplier: supplier, hosts: hosts] }
+
+  # Hanami has a weird issue when rendering partials on the test environment when
+  # the views are initialized as above (as suggested on the official guides). For some
+  # reason, the format is not recognised, and it fails to render with a cryptic error
+  # message.
+  #
+  # Hardcoding the format to +html+ for the rendered view allows the specs to pass.
+  # TODO get rid of this when upgrading Hanami, hopefully it will have been fixed.
+  let(:exposures) { Hash[supplier: supplier, hosts: hosts, format: :html] }
+
   let(:template)  { Hanami::View::Template.new('apps/web/templates/suppliers/show.html.erb') }
   let(:view)      { described_class.new(template, exposures) }
   let(:rendered)  { view.render }
@@ -16,16 +25,6 @@ RSpec.describe Web::Views::Suppliers::Show do
     2.times { |n|
       create_host(supplier_id: supplier.id, identifier: "host#{n}", access_token: "token#{n}")
     }
-
-    # Hanami has a weird issue when rendering partials on the test environment when
-    # the views are initialized as above (as suggested on the official guides). For some
-    # reason, the format is not recognised, and it fails to render with a cryptic error
-    # message.
-    #
-    # Hardcoding the format to +html+ for the rendered view allows the specs to pass.
-    # TODO get rid of this when upgrading Hanami, hopefully it will have been fixed.
-    scope = view.instance_variable_get(:@scope)
-    def scope.format; :html; end
   end
 
   it "includes the number of integrated hosts and properties" do
