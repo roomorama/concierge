@@ -1,5 +1,8 @@
 module Workers::Suppliers::Woori
-  class Calendar
+  # +Workers::Suppliers::Woori::Availabilities+
+  #
+  # Performs properties availabilities synchronisation with supplier
+  class Availabilities
     attr_reader :sync, :host
 
     def initialize(host)
@@ -63,5 +66,5 @@ module Workers::Suppliers::Woori
 end
 
 Concierge::Announcer.on("calendar.Woori") do |host|
-  Workers::Suppliers::Woori::Calendar.new(host).perform
+  Workers::Suppliers::Woori::Availabilities.new(host).perform
 end
