@@ -9,6 +9,6 @@ if enforce_on_envs.include?(Hanami.env)
     waytostay:  %w(client_id client_secret url token_url),
     ciirus:     %w(url username password),
     saw:        %w(username password url),
-    woori:      %w(url api_key properties_import_file units_1_import_file units_2_import_file units_3_import_file)
+    woori:      %w(url api_key import_files_type properties_import_file units_1_import_file units_2_import_file units_3_import_file)
   })
 end

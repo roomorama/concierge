@@ -1,17 +1,14 @@
-require 'open-uri'
-
 module Woori::Repositories::File
   class Units < Base
-    attr_reader :data_sources
+    attr_reader :files
 
     # Initialize a new `Woori::Repositories::File::Units` object.
     #
-    # It's possible for the `locations` argument to be:
+    # Usage:
     #
-    #   * array of paths to a local file in the filesystem
-    #   * array of file urls
-    def initialize(locations)
-      @data_sources = locations.map { |location| open(location) }
+    #   Repositories::File::Units.new(files)
+    def initialize(files)
+      @files = files
     end
 
     def all
@@ -38,7 +35,7 @@ module Woori::Repositories::File
     def raw_units
       items = []
 
-      data_sources.each do |data_source|
+      files.each do |data_source|
         decoded_result = json_decode(data_source)
         
         units_data = decoded_result.value["data"]

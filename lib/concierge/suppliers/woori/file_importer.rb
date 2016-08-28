@@ -10,13 +10,19 @@ module Woori
       @credentials = credentials
     end
 
+    # Get type of import files ("local-files" or "remote-files")
+    def import_type
+      credentials.import_files_type
+    end
+
     # Retrieves the list of all properties
     #
     # Returns an +Array+ of +Roomorama::Property+ objects
     def fetch_all_properties
       location = credentials.properties_import_file
+      file = read_file(import_type, location)
 
-      repository = Repositories::File::Properties.new(location)
+      repository = Repositories::File::Properties.new(file)
       repository.all
     end
 
@@ -30,7 +36,9 @@ module Woori
         credentials.units_3_import_file
       ]
 
-      repository = Repositories::File::Units.new(locations)
+      files = locations.map { |location| read_file(import_type, location) }
+
+      repository = Repositories::File::Units.new(files)
       repository.all
     end
 
@@ -48,8 +56,20 @@ module Woori
         credentials.units_3_import_file
       ]
 
-      repository = Repositories::File::Units.new(locations)
+      files = locations.map { |location| read_file(import_type, location) }
+
+      repository = Repositories::File::Units.new(files)
       repository.find_all_by_property_id(property_id)
+    end
+
+    private
+    def read_file(type, location)
+      case type
+      when "local-files"
+        File.new(location, 'r')
+      when "remote-files"
+        URI.parse(location).open
+      end
     end
   end
 end
