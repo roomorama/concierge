@@ -3,7 +3,8 @@ require "spec_helper"
 RSpec.describe Woori::Repositories::File::Units do
   let(:import_files_path) { "spec/fixtures/woori/import_files" }
   let(:locations) { [Hanami.root.join(import_files_path, filename)] }
-  let(:subject) { described_class.new(locations) }
+  let(:files) { locations.map { |location| File.new(location, 'r') } }
+  let(:subject) { described_class.new(files) }
 
   context "when file is empty" do
     let(:filename) { "empty_bulk_roomtypes_0_to_10000.json" }

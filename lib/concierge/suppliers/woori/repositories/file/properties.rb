@@ -1,22 +1,14 @@
-require 'open-uri'
-
 module Woori::Repositories::File
   class Properties < Base
-    attr_reader :data_source
+    attr_reader :file
 
     # Initialize a new `Woori::Repositories::File::Properties` object.
     #
-    # It's possible for the `location` argument to be:
-    #
-    #   * path to a local file in the filesystem
-    #   * url to download the file
-    #
     # Usage:
     #
-    #   Repositories::File::Properties.new("/data/properties.json")
-    #   Repositories::File::Properties.new("http://site.co/properties.json")
-    def initialize(location)
-      @data_source = open(location)
+    #   Repositories::File::Properties.new(file)
+    def initialize(file)
+      @file = file
     end
 
     def all
@@ -43,7 +35,7 @@ module Woori::Repositories::File
     end
 
     def properties_result
-      json_decode(data_source)
+      json_decode(file)
     end
 
     def properties_hash
