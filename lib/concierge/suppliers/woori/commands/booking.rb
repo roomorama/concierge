@@ -19,7 +19,7 @@ module Woori
     class Booking < BaseFetcher
       include Concierge::JSON
 
-      RESERVATION_CONFIRM_ENDPOINT = "reservation/confirm"
+      ENDPOINT = "reservation/confirm"
 
       # Calls the Woori API method usung the HTTP client.
       #
@@ -50,7 +50,7 @@ module Woori
       # encapsulates the resulting +Reservation+ object.
       def call(reservation_params)
         params = build_confirm_request_params(reservation_params)
-        result = http.post(RESERVATION_CONFIRM_ENDPOINT, params, headers)
+        result = http.post(ENDPOINT, params, headers)
 
         if result.success?
           decoded_result = json_decode(result.value.body)
