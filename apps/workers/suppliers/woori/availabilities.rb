@@ -59,7 +59,7 @@ module Workers::Suppliers::Woori
     end
 
     def announce_calendar_fetch_error(property, result)
-      message = "Failed to perform the `fetch calendar` operation for property with id #{property.identifier}"
+      message = "Failed to perform the `fetch calendar` operation for property with id `#{property.identifier}`"
       announce_error(message, result)
     end
   end
