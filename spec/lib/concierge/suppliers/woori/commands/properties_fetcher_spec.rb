@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Woori::Repositories::File::Properties do
+RSpec.describe Woori::Commands::PropertiesFetcher do
   let(:import_files_path) { "spec/fixtures/woori/import_files" }
   let(:location) { Hanami.root.join(import_files_path, filename) }
   let(:file) { File.new(location, 'r') }
@@ -10,7 +10,7 @@ RSpec.describe Woori::Repositories::File::Properties do
     let(:filename) { "empty_bulk_properties.json" }
 
     it "returns result wrapping a unit rates object" do
-      properties = subject.all
+      properties = subject.load_all_properties
       expect(properties).to eq([])
     end
   end
@@ -19,7 +19,7 @@ RSpec.describe Woori::Repositories::File::Properties do
     let(:filename) { "bulk_properties.json" }
 
     it "returns result wrapping a unit rates object" do
-      properties = subject.all
+      properties = subject.load_all_properties
       expect(properties.size).to eq(2)
       expect(properties).to all(be_kind_of(Roomorama::Property))
     end

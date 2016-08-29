@@ -22,8 +22,8 @@ module Woori
       location = credentials.properties_import_file
       file = read_file(import_type, location)
 
-      repository = Repositories::File::Properties.new(file)
-      repository.all
+      command = Commands::PropertiesFetcher.new(file)
+      command.load_all_properties
     end
 
     # Retrieves the list of all units
@@ -38,8 +38,8 @@ module Woori
 
       files = locations.map { |location| read_file(import_type, location) }
 
-      repository = Repositories::File::Units.new(files)
-      repository.all
+      command = Commands::UnitsFetcher.new(files)
+      command.load_all_units
     end
 
     # Retrieves the list of units for a given property by its id
@@ -58,8 +58,8 @@ module Woori
 
       files = locations.map { |location| read_file(import_type, location) }
 
-      repository = Repositories::File::Units.new(files)
-      repository.find_all_by_property_id(property_id)
+      command = Commands::UnitsFetcher.new(files)
+      command.find_all_by_property_id(property_id)
     end
 
     private

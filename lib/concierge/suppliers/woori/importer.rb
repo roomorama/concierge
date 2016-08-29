@@ -29,8 +29,8 @@ module Woori
     # when operation succeeds
     # Returns a +Result+ with +Result::Error+ when operation fails
     def fetch_unit_rates(unit_id)
-      repository = Repositories::HTTP::UnitRates.new(credentials)
-      repository.find_rates(unit_id)
+      command = Commands::UnitRatesFetcher.new(credentials)
+      command.find_rates(unit_id)
     end
   end
 end

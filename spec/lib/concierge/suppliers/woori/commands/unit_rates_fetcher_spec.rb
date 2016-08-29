@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Woori::Repositories::HTTP::UnitRates do
+RSpec.describe Woori::Commands::UnitRatesFetcher do
   include Support::HTTPStubbing
   include Support::Fixtures
 

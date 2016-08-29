@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Woori::Repositories::File::Units do
+RSpec.describe Woori::Commands::UnitsFetcher do
   let(:import_files_path) { "spec/fixtures/woori/import_files" }
   let(:locations) { [Hanami.root.join(import_files_path, filename)] }
   let(:files) { locations.map { |location| File.new(location, 'r') } }
@@ -11,7 +11,7 @@ RSpec.describe Woori::Repositories::File::Units do
 
     describe "#all" do
       it "returns an empty array of units" do
-        units = subject.all
+        units = subject.load_all_units
         expect(units).to eq([])
       end
     end
@@ -38,7 +38,7 @@ RSpec.describe Woori::Repositories::File::Units do
 
     describe "#all" do
       it "returns array of units" do
-        units = subject.all
+        units = subject.load_all_units
         expect(units.size).to eq(3)
         expect(units).to all(be_kind_of(Roomorama::Unit))
       end
