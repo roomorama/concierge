@@ -3,7 +3,6 @@ require "spec_helper"
 RSpec.describe Woori::Commands::CalendarFetcher do
   include Support::HTTPStubbing
   include Support::Fixtures
-  include Support::Woori::LastContextEvent
 
   let(:credentials) { Concierge::Credentials.for("Woori") }
   let(:subject) { described_class.new(credentials) }
@@ -86,7 +85,7 @@ RSpec.describe Woori::Commands::CalendarFetcher do
       result = subject.call(property)
 
       expect(result).not_to be_success
-      expect(last_context_event[:message]).to eq("timeout")
+      expect(Concierge.context.events.last.to_h[:message]).to eq("timeout")
       expect(result.error.code).to eq :connection_timeout
     end
   end
