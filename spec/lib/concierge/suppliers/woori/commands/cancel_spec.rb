@@ -3,7 +3,6 @@ require "spec_helper"
 RSpec.describe Woori::Commands::Cancel do
   include Support::HTTPStubbing
   include Support::Fixtures
-  include Support::Woori::LastContextEvent
 
   let(:credentials) { Concierge::Credentials.for("Woori") }
   let(:subject) { described_class.new(credentials) }
@@ -26,11 +25,13 @@ RSpec.describe Woori::Commands::Cancel do
     result = subject.call(reservation_id)
     expect(result).not_to be_success
     expect(result.error.code).to eq(:reservation_cancel_error)
-    expect(last_context_event[:message]).to eq(
+
+    context_event = Concierge.context.events.last.to_h
+    expect(context_event[:message]).to eq(
       "Unknown error during cancellation of reservation `#{reservation_id}`"
     )
-    expect(last_context_event[:backtrace]).to be_kind_of(Array)
-    expect(last_context_event[:backtrace].any?).to be true
+    expect(context_event[:backtrace]).to be_kind_of(Array)
+    expect(context_event[:backtrace].any?).to be true
   end
 
   context "when response from the Woori api is not well-formed json" do
@@ -64,7 +65,7 @@ RSpec.describe Woori::Commands::Cancel do
       result = subject.call(reservation_id)
 
       expect(result).not_to be_success
-      expect(last_context_event[:message]).to eq("timeout")
+      expect(Concierge.context.events.last.to_h[:message]).to eq("timeout")
       expect(result.error.code).to eq :connection_timeout
     end
   end
