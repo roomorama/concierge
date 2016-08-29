@@ -9,7 +9,8 @@ module Woori
       DEFAULT_PROPERTY_TYPE = 'apartment'
       CANCELLATION_POLICY = 'moderate'
 
-      attr_reader :safe_hash, :amenities_converter, :country_code_converter
+      attr_reader :safe_hash, :amenities_converter, :country_code_converter,
+                  :description_converter
 
       # Initialize RoomoramaProperty mapper
       #
@@ -20,6 +21,10 @@ module Woori
         @safe_hash = safe_hash
         @amenities_converter = Converters::Amenities.new(safe_hash.get("data.facilities"))
         @country_code_converter = Converters::CountryCode.new
+        @description_converter = Converters::Description.new(
+          safe_hash.get("data.description"),
+          amenities_converter
+        )
       end
 
       # Builds Roomorama::Property object
@@ -44,7 +49,7 @@ module Woori
         property.address              = full_address
         property.amenities            = amenities_converter.convert
         property.country_code         = country_code
-        property.description          = description_with_additional_amenities
+        property.description          = description_converter.convert
         property.nightly_rate         = DEFAULT_PROPERTY_RATE
         property.weekly_rate          = DEFAULT_PROPERTY_RATE
         property.monthly_rate         = DEFAULT_PROPERTY_RATE
@@ -98,32 +103,6 @@ module Woori
       def country_code
         country_name = safe_hash.get("data.country")
         country_code_converter.code_by_name(country_name)
-      end
-
-      def additional_amenities
-        amenities_converter.select_not_supported_amenities
-      end
-
-      def description_with_additional_amenities
-        description = safe_hash.get("data.description")
-        
-        text = description.to_s.strip.gsub(/\.\z/, "")
-        text_amenities = formatted_additional_amenities
-
-        description_parts = [text, text_amenities].reject(&:empty?)
-
-        if description_parts.any?
-          description_parts.join('. ')
-        end
-      end
-
-      def formatted_additional_amenities
-        if additional_amenities.any?
-          text = 'Additional amenities: '
-          text += additional_amenities.join(', ')
-        else
-          ""
-        end
       end
     end
   end

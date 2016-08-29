@@ -6,7 +6,7 @@ module Woori
     class RoomoramaUnit
       DEFAULT_UNIT_RATE = 999999
 
-      attr_reader :safe_hash, :amenities_converter
+      attr_reader :safe_hash, :amenities_converter, :description_converter
       
       # Initialize RoomoramaUnit mapper
       #
@@ -16,6 +16,10 @@ module Woori
       def initialize(safe_hash)
         @safe_hash = safe_hash
         @amenities_converter = Converters::Amenities.new(safe_hash.get("data.facilities"))
+        @description_converter = Converters::Description.new(
+          safe_hash.get("data.description"),
+          amenities_converter
+        )
       end
 
       # Builds Roomorama::Unit object
@@ -33,7 +37,7 @@ module Woori
         unit = Roomorama::Unit.new(safe_hash.get("hash"))
 
         unit.title              = safe_hash.get("data.name")
-        unit.description        = description_with_additional_amenities
+        unit.description        = description_converter.convert
         unit.amenities          = amenities_converter.convert
         unit.max_guests         = safe_hash.get("data.capacity")
         unit.number_of_bedrooms = safe_hash.get("data.roomCount")
@@ -53,34 +57,6 @@ module Woori
 
         mapper = Mappers::RoomoramaImageSet.new(image_hashes)
         mapper.build_images.each { |image| unit.add_image(image) }
-      end
-
-      def additional_amenities
-        amenities_converter.select_not_supported_amenities
-      end
-
-      def description_with_additional_amenities
-        description = safe_hash.get("data.description")
-        
-        text = description.to_s.strip.gsub(/\.\z/, "")
-        text_amenities = formatted_additional_amenities
-
-        description_parts = [text, text_amenities].reject(&:empty?)
-
-        if description_parts.any?
-          description_parts.join('. ')
-        else
-          nil
-        end
-      end
-
-      def formatted_additional_amenities
-        if additional_amenities.any?
-          text = 'Additional amenities: '
-          text += additional_amenities.join(', ')
-        else
-          ""
-        end
       end
     end
   end
