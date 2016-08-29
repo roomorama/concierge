@@ -45,7 +45,11 @@ module Kigo::Mappers
     def minimum_periodical_nightly_rate
       periods = periodical_rate['RENT']['PERIODS']
       Array(periods).map do |period|
-        period['NIGHTLY_AMOUNTS'].map { |d| d['AMOUNT'].to_f }
+        if period['WEEKLY']
+          period['WEEKLY_AMOUNTS'].map { |d| d['AMOUNT'].to_f / 7 }
+        else
+          period['NIGHTLY_AMOUNTS'].map { |d| d['AMOUNT'].to_f }
+        end
       end.flatten.min
     end
 
