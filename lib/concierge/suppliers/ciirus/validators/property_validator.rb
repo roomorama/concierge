@@ -9,6 +9,7 @@ module Ciirus
     #   * unknown country
     #
     class PropertyValidator
+      UNSUPPORTED_PROPERTY_TYPES = ['Office', 'Barn', 'Resort', 'Unspecified', 'Hotel']
       attr_reader :property
 
       def initialize(property)
@@ -22,8 +23,7 @@ module Ciirus
       private
 
       def valid_property_type?
-        # Roomorama doesn't import hotels
-        !(['Unspecified', 'Hotel'].include?(property.type))
+        ! UNSUPPORTED_PROPERTY_TYPES.include?(property.type)
       end
     end
   end
