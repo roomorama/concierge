@@ -20,7 +20,7 @@ module Workers::Suppliers::Woori
           if calendar_result.success?
             calendar_result
           else
-            announce_calendar_fetch_error(property, calendar_result)
+            augment_calendar_fetch_error(property)
             calendar_result
           end
         end
@@ -40,7 +40,12 @@ module Workers::Suppliers::Woori
       PropertyRepository.from_host(host)
     end
 
-    def announce_error(message, result)
+    def augment_calendar_fetch_error(property)
+      message = "Failed to perform the `fetch_calendar` operation for property with id `#{property.identifier}`"
+      augment_context_error(message)
+    end
+
+    def augment_context_error(message)
       message = {
         label: 'Synchronisation Failure',
         message: message,
@@ -48,19 +53,6 @@ module Workers::Suppliers::Woori
       }
       context = Concierge::Context::Message.new(message)
       Concierge.context.augment(context)
-
-      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-        operation:   'sync',
-        supplier:    ::Woori::Client::SUPPLIER_NAME,
-        code:        result.error.code,
-        context:     Concierge.context.to_h,
-        happened_at: Time.now
-      })
-    end
-
-    def announce_calendar_fetch_error(property, result)
-      message = "Failed to perform the `fetch calendar` operation for property with id `#{property.identifier}`"
-      announce_error(message, result)
     end
   end
 end
