@@ -5,10 +5,11 @@ RSpec.describe Workers::Suppliers::Kigo::Calendar do
   include Support::Factories
 
   let(:supplier) { create_supplier(name: 'Kigo') }
+  let(:identifier) { '123' }
   let(:host) { create_host(supplier_id: supplier.id, identifier: '14908') }
-  let!(:property) { create_property(host_id: host.id) }
+  let!(:property) { create_property(host_id: host.id, identifier: identifier) }
 
-  subject { described_class.new(host) }
+  subject { described_class.new(host, [identifier]) }
 
   before do
     allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }

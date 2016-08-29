@@ -20,6 +20,7 @@ module Workers::Suppliers::Kigo
       availabilities_ids = fetch_availability_ids
       return unless availabilities_ids.success?
 
+      identifiers = prices_ids.value['PROP_ID'] | availabilities_ids.value['PROP_ID']
       hosts.each do |host|
         Workers::Suppliers::Kigo::Calendar.new(host, identifiers).perform
       end
@@ -44,12 +45,9 @@ module Workers::Suppliers::Kigo
     end
 
     def fetch_prices_ids
-      result = importer.fetch_prices_diff(prices_diff_id)
-
-      return result unless result.success?
-
-      refresh_cache(PRICES_DIFF_KEY, result.value['DIFF_ID'])
-      result.value['PROP_ID']
+      importer.fetch_prices_diff(prices_diff_id).tap do |result|
+        refresh_cache(PRICES_DIFF_KEY, result.value['DIFF_ID'])
+      end
     end
 
     def availabilities_diff_id
@@ -57,12 +55,9 @@ module Workers::Suppliers::Kigo
     end
 
     def fetch_availability_ids
-      result = importer.fetch_availabilities_diff(availabilities_diff_id)
-
-      return result unless result.success?
-
-      refresh_cache(AVAILABILITIES_DIFF_KEY, result.value['DIFF_ID'])
-      result.value['PROP_ID']
+      importer.fetch_availabilities_diff(availabilities_diff_id).tap do |result|
+        refresh_cache(AVAILABILITIES_DIFF_KEY, result.value['DIFF_ID']) if result.success?
+      end
     end
 
     def refresh_cache(key, value)
