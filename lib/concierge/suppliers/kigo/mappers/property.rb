@@ -139,18 +139,22 @@ module Kigo::Mappers
     end
 
     def set_deposit
-      deposit                          = pricing['DEPOSIT']
-      property.security_deposit_amount = deposit['VALUE'].to_i if deposit
+      deposit = pricing['DEPOSIT']
+      #  STAYLENGTH unit means deposit has different prices for night, week, month
+      if deposit && deposit['UNIT'] != 'STAYLENGTH'
+        property.security_deposit_amount = deposit['VALUE'].to_i
+      end
     end
 
     def set_cleaning_service
-      cleaning_fee = pricing['FEES']['FEES'].find { |fee| fee['FEE_TYPE_ID'] == code_for(:cleaning_fee) }
+      fees         = Array(pricing.get('FEES.FEES'))
+      cleaning_fee = fees.find { |fee| fee['FEE_TYPE_ID'] == code_for(:cleaning_fee) }
 
-      return unless cleaning_fee
-
-      property.services_cleaning          = true
-      property.services_cleaning_required = cleaning_fee['INCLUDE_IN_RENT']
-      property.services_cleaning_rate     = get_fee_amount(cleaning_fee['VALUE']).to_f
+      if cleaning_fee && cleaning_fee['UNIT'] != 'STAYLENGTH'
+        property.services_cleaning          = true
+        property.services_cleaning_required = cleaning_fee['INCLUDE_IN_RENT']
+        property.services_cleaning_rate     = get_fee_amount(cleaning_fee['VALUE']).to_f
+      end
     end
 
     # Kigo +amount+ might be hash or integer
