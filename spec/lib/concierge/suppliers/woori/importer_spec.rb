@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Woori::FileImporter do
+RSpec.describe Woori::Importer do
   let(:credentials) { Concierge::Credentials.for("Woori") }
   let(:importer) { described_class.new(credentials) }
 

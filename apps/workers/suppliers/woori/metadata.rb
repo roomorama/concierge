@@ -1,15 +1,15 @@
 module Workers::Suppliers::Woori
-  # +Workers::Suppliers::Woori::FileImporter+
+  # +Workers::Suppliers::Woori::Metadata+
   #
   # Performs synchronisation with supplier using files provided by supplier.
   #
-  # There is no event listener for this worker, synchronisation should be 
+  # There is no event listener for this worker, synchronisation should be
   # started manually.
-  class FileMetadata
+  class Metadata
     class UnitRatesFetchError < StandardError; end
 
     attr_reader :synchronisation, :host
-    
+
     def initialize(host)
       @host            = host
       @synchronisation = Workers::PropertySynchronisation.new(host)
@@ -30,8 +30,8 @@ module Workers::Suppliers::Woori
 
     private
 
-    def file_importer
-      @file_importer ||= ::Woori::FileImporter.new(credentials)
+    def importer
+      @importer ||= ::Woori::Importer.new(credentials)
     end
 
     def credentials
@@ -39,11 +39,11 @@ module Workers::Suppliers::Woori
     end
 
     def all_properties
-      @all_properties ||= file_importer.fetch_all_properties
+      @all_properties ||= importer.fetch_all_properties
     end
 
     def all_property_units(property_id)
-      @all_units ||= file_importer.fetch_all_property_units(property_id)
+      @all_units ||= importer.fetch_all_property_units(property_id)
     end
   end
 end

@@ -1,9 +1,9 @@
 module Woori
-  # +Woori::FileImporter+
+  # +Woori::Importer+
   #
   # This class provides an interface for the bulk import of Woori properties
-  # +Woori::FileImporter+ imports data from files (from .json files)
-  class FileImporter
+  # +Woori::Importer+ imports data from files (from .json files)
+  class Importer
     attr_reader :credentials
 
     def initialize(credentials)
