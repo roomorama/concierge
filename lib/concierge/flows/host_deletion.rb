@@ -26,7 +26,7 @@ module Concierge::Flows
     private
 
     def deactivate_roomorama_host
-      client.perform(operation)
+      client.perform(host_disable_operation)
     end
 
     def delete_background_workers
@@ -42,7 +42,12 @@ module Concierge::Flows
     end
 
     def delete_properties
-      PropertyRepository.from_host(host).each do |property|
+      properties  = PropertyRepository.from_host(host).all
+      identifiers = properties.map(&:identifier)
+
+      client.perform(disable_operation(identifiers))
+
+      properties.each do |property|
         PropertyRepository.delete(property)
       end
     end
@@ -55,8 +60,12 @@ module Concierge::Flows
       @client ||= Roomorama::Client.new(host.access_token)
     end
 
-    def operation
+    def host_disable_operation
       Roomorama::Client::Operations::DisableHost.new
+    end
+
+    def disable_operation(ids)
+      Roomorama::Client::Operations::Disable.new(ids)
     end
   end
 end
