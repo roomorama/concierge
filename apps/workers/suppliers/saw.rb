@@ -106,6 +106,7 @@ module Workers::Suppliers
   end
 end
 
-Concierge::Announcer.on("metadata.SAW") do |host|
+Concierge::Announcer.on("metadata.SAW") do |host, args|
   Workers::Suppliers::SAW.new(host).perform
+  Result.new({})
 end
