@@ -20,7 +20,10 @@ module Workers::Suppliers::Kigo
     #
     # uses caching for properties list to avoid the same call for different hosts
     def perform
-      references = with_cache('references') { importer.fetch_references }
+      references = synchronisation.new_context do
+        with_cache('references') { importer.fetch_references }
+      end
+
       unless references.success?
         message = 'Failed to perform `#fetch_references`'
         announce_error(message, references)
