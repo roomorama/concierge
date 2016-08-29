@@ -42,6 +42,12 @@ body {
   color: #ca3c3c;
 }
 
+.aggregated-label {
+  color: #2ebbab;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
 #layout,
 #menu,
 .menu-link {
@@ -96,7 +102,6 @@ body {
   font-weight: 300;
   color: #888;
 }
-
 #menu {
   margin-left: -150px;
   width: 200px;

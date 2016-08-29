@@ -28,6 +28,21 @@ RSpec.describe BackgroundWorkerRepository do
     end
   end
 
+  describe ".for_supplier" do
+    it "returns an empty collection when there are no workers" do
+      expect(described_class.for_supplier(create_supplier).to_a).to eq []
+    end
+
+    it "returns workers associated with the given supplier only" do
+      supplier              = create_supplier(name: "Supplier 1")
+      supplier_worker       = create_background_worker(supplier_id: supplier.id)
+      other_supplier_worker = create_background_worker(supplier_id: create_supplier(name: "Supplier 2").id)
+      host_worker           = create_background_worker(host_id: create_host.id)
+
+      expect(described_class.for_supplier(supplier).to_a).to eq [supplier_worker]
+    end
+  end
+
   describe ".pending" do
     let(:one_hour) { 60 * 60 }
     let(:now) { Time.now }

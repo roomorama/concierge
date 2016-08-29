@@ -39,6 +39,15 @@ RSpec.describe Concierge::Flows::HostCreation do
       end
     end
 
+    it "returns an unsuccessful result if neither host_id or supplier_id are given" do
+      allow(subject).to receive(:create_host) { double(id: nil) }
+
+      result = subject.perform
+      expect(result).to be_a Result
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :invalid_parameters
+    end
+
     it "returns an unsuccessful result without a workers definition" do
       config_suppliers "no_supplier_x.yml"
 
@@ -73,6 +82,21 @@ RSpec.describe Concierge::Flows::HostCreation do
       expect(result).to be_a Result
       expect(result).not_to be_success
       expect(result.error.code).to eq :invalid_parameters
+    end
+
+    context "conflicting keys" do
+      %w(absence_interval absence_aggregated).each do |scenario|
+        fields = scenario.sub("_", " and ") # "absence_interval" => "absence and interval"
+
+        it "returns an unsuccessful result if the definition has both #{fields}" do
+          config_suppliers "conflicting_#{scenario}.yml"
+
+          result = subject.perform
+          expect(result).to be_a Result
+          expect(result).not_to be_success
+          expect(result.error.code).to eq :invalid_worker_definition
+        end
+      end
     end
 
     it "creates the host and associated workers" do
@@ -137,6 +161,55 @@ RSpec.describe Concierge::Flows::HostCreation do
 
       expect(workers.size).to eq 1
       expect(workers.first.type).to eq "metadata"
+    end
+
+    it "creates workers for the supplier and not for the host if the declared as aggregated" do
+      config_suppliers "aggregated.yml"
+
+      expect {
+        described_class.new(parameters).perform
+      }.to change { BackgroundWorkerRepository.count }.by(2)
+
+      host = HostRepository.last
+      host_workers = BackgroundWorkerRepository.for_host(host).to_a
+      expect(host_workers.size).to eq 1
+
+      worker = host_workers.first
+      expect(worker.host_id).to eq host.id
+      expect(worker.supplier_id).to be_nil
+      expect(worker.type).to eq "metadata"
+      expect(worker.interval).to eq 24 * 60 * 60 # 1d
+
+      supplier_workers = BackgroundWorkerRepository.for_supplier(supplier).to_a
+      expect(supplier_workers.size).to eq 1
+
+      worker = supplier_workers.first
+      expect(worker.host_id).to be_nil
+      expect(worker.supplier_id).to eq supplier.id
+      expect(worker.type).to eq "availabilities"
+      expect(worker.interval).to eq 2 * 60 * 60 # 2h
+    end
+
+    it "updates changed data on consecutive runs for aggregated suppliers" do
+      config_suppliers "aggregated.yml"
+      subject.perform
+
+      workers = BackgroundWorkerRepository.for_supplier(supplier).to_a
+      worker = workers.find { |w| w.type == "availabilities" }
+
+      expect(worker.interval).to eq 2 * 60 * 60 # 2h
+
+      # updates availabilities worker interval to every 2 days
+      config_suppliers "aggregated_1h_interval.yml"
+
+      expect {
+        expect {
+          described_class.new(parameters).perform
+        }.not_to change { HostRepository.count }
+      }.not_to change { BackgroundWorkerRepository.for_supplier(supplier).to_a }
+
+      worker = BackgroundWorkerRepository.find(worker.id)
+      expect(worker.interval).to eq 60 * 60 # 1h
     end
 
     context "interval parsing" do
