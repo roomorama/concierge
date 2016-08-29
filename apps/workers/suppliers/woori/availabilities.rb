@@ -13,8 +13,6 @@ module Workers::Suppliers::Woori
     def perform
       synced_properties.each do |property|
         sync.start(property.identifier) do
-          Concierge.context.disable!
-
           calendar_result = importer.fetch_calendar(property)
 
           if calendar_result.success?
