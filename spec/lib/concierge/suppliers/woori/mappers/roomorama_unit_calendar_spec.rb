@@ -25,18 +25,22 @@ module Woori
       expect(entries).to all(be_kind_of(Roomorama::Calendar::Entry))
     end
 
-    it "returns nil if days is nil" do
+    it "returns empty calendar if days array is nil" do
       calendar_data["data"] = nil
       calendar = mapper.build_calendar
 
-      expect(calendar).to be_nil
+      expect(calendar).to be_kind_of(Roomorama::Calendar)
+      expect(calendar.identifier).to eq(unit_id)
+      expect(calendar.entries).to eq([])
     end
 
-    it "returns nil if days is empty" do
+    it "returns empty calendar if days array is empty" do
       calendar_data["data"] = []
       calendar = mapper.build_calendar
 
-      expect(calendar).to be_nil
+      expect(calendar).to be_kind_of(Roomorama::Calendar)
+      expect(calendar.identifier).to eq(unit_id)
+      expect(calendar.entries).to eq([])
     end
 
     context "builds correct calendar entries" do

@@ -27,8 +27,6 @@ module Woori
       #
       # Returns +Roomorama::Calendar+ Unit calendar object
       def build_calendar
-        return nil unless raw_entries && raw_entries.any?
-
         unit_calendar = Roomorama::Calendar.new(unit_id)
         unit_calendar_entries.each do |entry|
           unit_calendar.add(entry)
@@ -39,7 +37,7 @@ module Woori
 
       private
       def raw_entries
-        @days ||= safe_hash.get("data")
+        @days ||= Array(safe_hash.get("data"))
       end
 
       def unit_calendar_entries
