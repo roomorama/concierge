@@ -2,8 +2,8 @@ module Woori
   module Mappers
     # +Woori::Mappers::RoomoramaImageSet+
     #
-    # This class is responsible for building an array of images for the
-    # property. 
+    # This class is responsible for building an array of images for
+    # properties and units.
     #
     # Array of images includes +Roomorama::Image+ objects
     class RoomoramaImageSet
