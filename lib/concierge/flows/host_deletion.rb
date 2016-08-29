@@ -20,7 +20,7 @@ module Concierge::Flows
       delete_properties
       delete_host
 
-      Result.new(:host_has_deleted)
+      Result.new(:host_deleted)
     end
 
     private
