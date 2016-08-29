@@ -1,0 +1,46 @@
+{
+    "data": [
+        {
+            "cancellationCharge": 12345.0,
+            "cancellationChargeRate": 100,
+            "cancellationDate": "2016-09-18 00:00:00"
+        },
+        {
+            "cancellationCharge": 8641.5,
+            "cancellationChargeRate": 70,
+            "cancellationDate": "2016-09-17 00:00:00"
+        },
+        {
+            "cancellationCharge": 6172.5,
+            "cancellationChargeRate": 50,
+            "cancellationDate": "2016-09-16 00:00:00"
+        },
+        {
+            "cancellationCharge": 3703.5,
+            "cancellationChargeRate": 30,
+            "cancellationDate": "2016-09-15 00:00:00"
+        },
+        {
+            "cancellationCharge": 2469.0,
+            "cancellationChargeRate": 20,
+            "cancellationDate": "2016-09-14 00:00:00"
+        },
+        {
+            "cancellationCharge": 1234.5,
+            "cancellationChargeRate": 10,
+            "cancellationDate": "2016-09-13 00:00:00"
+        },
+        {
+            "cancellationCharge": 1234.5,
+            "cancellationChargeRate": 10,
+            "cancellationDate": "2016-09-12 00:00:00"
+        },
+        {
+            "cancellationCharge": 1234.5,
+            "cancellationChargeRate": 10,
+            "cancellationDate": "2016-09-11 00:00:00"
+        }
+    ],
+    "message": "success",
+    "status": 200
+}
