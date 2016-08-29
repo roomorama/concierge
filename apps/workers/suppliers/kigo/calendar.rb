@@ -6,9 +6,9 @@ module Workers::Suppliers::Kigo
 
     attr_reader :synchronisation, :host, :identifiers
 
-    def initialize(host, identifiers = [])
+    def initialize(host, identifiers)
       @host            = host
-      @identifiers     = identifiers
+      @identifiers     = identifiers.map(&:to_s)
       @synchronisation = Workers::CalendarSynchronisation.new(host)
     end
 
@@ -43,7 +43,7 @@ module Workers::Suppliers::Kigo
     end
 
     def request_handler
-      Kigo::Request.new(credentials, timeout: 40)
+      Kigo::Request.new(credentials)
     end
 
     def credentials
