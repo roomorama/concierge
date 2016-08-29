@@ -17,7 +17,7 @@ RSpec.describe Kigo::Mappers::PricingSetup do
 
     it 'uses base weekly price if daily nil' do
       base_rate['PROP_RATE_NIGHTLY_FROM'] = nil
-      base_rate['PROP_RATE_WEEKLY_FROM'] = '700.00'
+      base_rate['PROP_RATE_WEEKLY_FROM']  = '700.00'
 
       subject = described_class.new(base_rate, periodical_rates)
       expect(subject.nightly_rate).to eq 100
@@ -31,10 +31,35 @@ RSpec.describe Kigo::Mappers::PricingSetup do
       expect(subject.nightly_rate).to eq 100
     end
 
-    context 'base rate without data' do
+    context 'periodical price' do
       let(:base_rate) { {} }
+      let(:weekly_rates) {
+        [
+          {
+            'CHECK_IN'       => '2014-01-06',
+            'CHECK_OUT'      => '2014-06-02',
+            'NAME'           => 'Low Season',
+            'STAY_MIN'       => { 'UNIT' => 'NIGHT', 'NUMBER' => 7 },
+            'WEEKLY'         => true,
+            'WEEKLY_AMOUNTS' => [
+              { 'GUESTS_FROM' => 1, 'AMOUNT' => '3000.00' }
+            ]
+          }
+        ]
+      }
+
       it { expect(subject.nightly_rate).to eq 23.46 }
+
+      it 'returns daily price according to weekly rates' do
+        periodical_rates['RENT']['PERIODS'] = weekly_rates
+
+        expected_rate = 3000.0 / 7
+        subject = described_class.new(base_rate, periodical_rates)
+
+        expect(subject.nightly_rate).to eq expected_rate
+      end
     end
+
   end
 
 end
