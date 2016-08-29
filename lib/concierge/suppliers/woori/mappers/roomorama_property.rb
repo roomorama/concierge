@@ -9,8 +9,7 @@ module Woori
       DEFAULT_PROPERTY_TYPE = 'apartment'
       CANCELLATION_POLICY = 'moderate'
 
-      attr_reader :safe_hash, :amenities_converter, :country_code_converter,
-                  :description_converter
+      attr_reader :safe_hash, :amenities_converter, :country_code_converter
 
       # Initialize RoomoramaProperty mapper
       #
@@ -21,13 +20,12 @@ module Woori
         @safe_hash = safe_hash
         @amenities_converter = Converters::Amenities.new(safe_hash.get("data.facilities"))
         @country_code_converter = Converters::CountryCode.new
-        @description_converter = Converters::Description.new(
-          safe_hash.get("data.description"),
-          amenities_converter
-        )
       end
 
       # Builds Roomorama::Property object
+      #
+      # It skips mapping the +description+ property field due to auto-translated
+      # bad descriptions coming from Woori.
       #
       # Usage:
       #
@@ -49,7 +47,7 @@ module Woori
         property.address              = full_address
         property.amenities            = amenities_converter.convert
         property.country_code         = country_code
-        property.description          = description_converter.convert
+        property.description          = nil
         property.nightly_rate         = DEFAULT_PROPERTY_RATE
         property.weekly_rate          = DEFAULT_PROPERTY_RATE
         property.monthly_rate         = DEFAULT_PROPERTY_RATE
