@@ -32,7 +32,7 @@ module Woori
         expect(image.identifier).not_to be_nil
         expect(image.identifier).not_to eq("")
         expect(image.url).to eq(hash[:url])
-        expect(image.caption).to eq(hash[:content])
+        expect(image.caption).to eq(nil)
       end
     end
 

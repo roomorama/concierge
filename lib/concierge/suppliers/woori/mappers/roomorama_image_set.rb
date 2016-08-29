@@ -29,21 +29,20 @@ module Woori
       end
 
       private
+      # Image captions are not set because all captions in Korean language
       def build_image(hash)
-        url, title, identifier = fetch_image_data(hash)
+        url, identifier = fetch_image_data(hash)
 
         image = Roomorama::Image.new(identifier)
         image.url = url
-        image.caption = title
         image
       end
 
       def fetch_image_data(hash)
         url = hash.get("url")
-        title = hash.get("content")
         identifier = Digest::MD5.hexdigest(url)
 
-        [url, title, identifier]
+        [url, identifier]
       end
     end
   end
