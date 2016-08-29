@@ -1,11 +1,11 @@
-module Workers::Suppliers
+module Workers::Suppliers::Woori
   # +Workers::Suppliers::Woori::FileImporter+
   #
   # Performs synchronisation with supplier using files provided by supplier.
   #
   # There is no event listener for this worker, synchronisation should be 
   # started manually.
-  class Woori::FileMetadata
+  class FileMetadata
     class UnitRatesFetchError < StandardError; end
 
     attr_reader :synchronisation, :host
