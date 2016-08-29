@@ -6,25 +6,25 @@ RSpec.describe Woori::FileImporter do
 
   describe "#fetch_all_properties" do
     it "calls file property repository to load properties" do
-      fetcher_class = Woori::Repositories::File::Properties
+      fetcher_class = Woori::Commands::PropertiesFetcher
 
-      expect_any_instance_of(fetcher_class).to(receive(:all))
+      expect_any_instance_of(fetcher_class).to(receive(:load_all_properties))
       importer.fetch_all_properties
     end
   end
 
   describe "#fetch_all_units" do
     it "calls file unit repository to load units" do
-      fetcher_class = Woori::Repositories::File::Units
+      fetcher_class = Woori::Commands::UnitsFetcher
 
-      expect_any_instance_of(fetcher_class).to(receive(:all))
+      expect_any_instance_of(fetcher_class).to(receive(:load_all_units))
       importer.fetch_all_units
     end
   end
 
   describe "#fetch_all_property_units" do
     it "calls file unit repository to load units for properties" do
-      fetcher_class = Woori::Repositories::File::Units
+      fetcher_class = Woori::Commands::UnitsFetcher
       property_id = "abcd"
 
       expect_any_instance_of(fetcher_class).to(

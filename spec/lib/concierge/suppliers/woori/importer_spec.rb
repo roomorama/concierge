@@ -6,7 +6,7 @@ RSpec.describe Woori::Importer do
 
   describe "#fetch_unit_rates" do
     it "calls http unit rates repository to load properties" do
-      fetcher_class = Woori::Repositories::HTTP::UnitRates
+      fetcher_class = Woori::Commands::UnitRatesFetcher
       unit_id = "abcd"
 
       expect_any_instance_of(fetcher_class).to(
