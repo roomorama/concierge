@@ -20,12 +20,17 @@ module Woori
 
       # Builds an array of property images
       #
+      # If image URL is not valid (contains a space sign) then image is not
+      # included in the result array.
+      #
       # Returns +Array<Roomorama::Image>+ array of images
       def build_images
-        image_hashes.map do |h| 
+        all_images = image_hashes.map do |h|
           safe_hash = Concierge::SafeAccessHash.new(h)
           build_image(safe_hash)
         end
+
+        filter_images_with_only_valid_urls(all_images)
       end
 
       private
@@ -43,6 +48,10 @@ module Woori
         identifier = Digest::MD5.hexdigest(url)
 
         [url, identifier]
+      end
+
+      def filter_images_with_only_valid_urls(images)
+        images.reject { |image| image.url.include?(" ") }
       end
     end
   end

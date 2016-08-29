@@ -41,5 +41,38 @@ module Woori
       images = mapper.build_images
       expect(images).to eq([])
     end
+
+    context "when there is invalid URLs in images hash" do
+      let(:image_hashes) do
+        [
+          {
+              "category": "main",
+              "content": "퇴실시간",
+              "format": "jpg",
+              "url": "http://image.wooripension.com/pension_images/w0209023/exterior_files/20108515249.8.1 169.jpg"
+          },
+          {
+              "category": "ex",
+              "content": "입실시간",
+              "format": "jpg",
+              "url": "http://image.wooripension.com/pension_images/w0104006/exterior_files/20107301818486.jpg"
+          }
+        ]
+      end
+
+      it "doesn't return images with spaces in URL" do
+        mapper = described_class.new(image_hashes)
+        images = mapper.build_images
+
+        expect(images.size).to eq(1)
+        expect(images).to all(be_kind_of(Roomorama::Image))
+
+        image = images[0]
+        expect(image.identifier).not_to be_nil
+        expect(image.identifier).not_to eq("")
+        expect(image.url).to eq(image_hashes[1][:url])
+        expect(image.caption).to eq(nil)
+      end
+    end
   end
 end
