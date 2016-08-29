@@ -21,7 +21,7 @@ RSpec.describe Workers::Suppliers::Kigo::Legacy do
 
     before do
       allow_any_instance_of(Kigo::Importer).to receive(:fetch_properties) { Result.new(properties_list) }
-      allow_any_instance_of(Kigo::HostCheck).to receive(:deactivated?) { true }
+      allow_any_instance_of(Kigo::HostCheck).to receive(:check) { Result.new(true) }
     end
 
     it 'announces an error with failed deletion' do
@@ -47,7 +47,7 @@ RSpec.describe Workers::Suppliers::Kigo::Legacy do
 
   before do
     allow_any_instance_of(Kigo::Importer).to receive(:fetch_references) { references }
-    allow_any_instance_of(Kigo::HostCheck).to receive(:deactivated?) { false }
+    allow_any_instance_of(Kigo::HostCheck).to receive(:check) { Result.new(false) }
   end
 
   it 'announces an error if fetching properties fails' do
@@ -65,7 +65,7 @@ RSpec.describe Workers::Suppliers::Kigo::Legacy do
   it 'announces an error if fetching data fails' do
     allow_any_instance_of(Kigo::Importer).to receive(:fetch_properties) { Result.new(properties_list) }
     allow_any_instance_of(Kigo::Importer).to receive(:fetch_data) { Result.error(:connection_timeout) }
-    allow_any_instance_of(Kigo::HostCheck).to receive(:deactivated?) { false }
+    allow_any_instance_of(Kigo::HostCheck).to receive(:check) { Result.new(false) }
 
     subject.perform
 

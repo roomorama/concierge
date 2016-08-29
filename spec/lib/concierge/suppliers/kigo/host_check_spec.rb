@@ -10,22 +10,31 @@ RSpec.describe Kigo::HostCheck do
 
   subject { described_class.new(property_id, request_handler) }
 
-  describe '#deactivated?' do
+  describe '#check' do
     let(:endpoint) { 'https://app.kigo.net/api/ra/v1/computePricing' }
 
     it 'returns false with successful response' do
       stub_call(:post, endpoint) { [200, {}, read_fixture('kigo/success.json')] }
-      expect(subject.deactivated?).to be_falsey
+      result = subject.check
+
+      expect(result).to be_success
+      expect(result.value).to be_falsey
     end
 
     it 'returns false with failed response' do
       stub_call(:post, endpoint) { raise Faraday::TimeoutError }
-      expect(subject.deactivated?).to be_falsey
+      result = subject.check
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :connection_timeout
     end
 
     it 'returns true with response determined host as deactivated' do
       stub_call(:post, endpoint) { [200, {}, read_fixture('kigo/e_nosuch.json')] }
-      expect(subject.deactivated?).to be_truthy
+      result = subject.check
+
+      expect(result).to be_success
+      expect(result.value).to be_truthy
     end
   end
 end

@@ -1,4 +1,9 @@
 module Kigo
+  # +Kigo::HostCheck+
+  #
+  # KigoLegacy supplier doesn't provide data about host status (active/deactivated)
+  # in way of discussion Kigo's support offer workaround by calling price quotation
+  # to define is host deactivated
   class HostCheck
     include Concierge::JSON
 
@@ -9,14 +14,16 @@ module Kigo
       @request_handler = request_handler
     end
 
-    def deactivated?
+    def check
       result = http.post(endpoint, json_encode(fake_params.value), { "Content-Type" => "application/json" })
 
-      return unless result.success?
-
-      payload = json_decode(result.value.body)
-
-      payload.value["API_RESULT_TEXT"] =~ /deactivated/
+      if result.success?
+        payload = json_decode(result.value.body)
+        is_deactivated = payload.value["API_RESULT_TEXT"].include?("deactivated")
+        Result.new(is_deactivated)
+      else
+        result
+      end
     end
 
     private
