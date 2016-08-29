@@ -107,7 +107,7 @@ module Woori
       property_hash["data"]["facilities"] = ["TV", "swimming_pool"]
       property = mapper.build_property
 
-      expect(property.amenities).to eq(["tv"])
+      expect(property.amenities).to eq(["tv", "pool"])
     end
 
     it "skips unknown amenities" do
