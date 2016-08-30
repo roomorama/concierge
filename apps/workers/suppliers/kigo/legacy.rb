@@ -4,7 +4,7 @@ module Workers::Suppliers::Kigo
   # Performs synchronisation with supplier
   class Legacy
 
-    CACHE_PREFIX  = 'metadata.kigo_legacy'
+    CACHE_PREFIX = 'metadata.kigo_legacy'
 
     attr_reader :synchronisation, :host
 
@@ -46,16 +46,17 @@ module Workers::Suppliers::Kigo
         end
 
         properties.each do |property|
-          id = property['PROP_ID']
+          id          = property['PROP_ID']
+          data_result = synchronisation.new_context(id) { importer.fetch_data(id) }
+
+          unless data_result.success?
+            announce_error('Failed to perform the `#fetch_data` operation', data_result)
+            next
+          end
+
+          next unless valid_payload?(data_result.value)
+
           synchronisation.start(id) do
-            data_result = importer.fetch_data(id)
-
-            next data_result unless data_result.success?
-
-            # in this case KigoLegacy PROP_INSTANT_BOOK=true means +false+.
-            # In the next version (Kigo) they have fixed it
-            next non_ib_result if data_result.value['PROP_INSTANT_BOOK']
-
             price_result = importer.fetch_prices(id)
 
             next price_result unless price_result.success?
@@ -116,8 +117,8 @@ module Workers::Suppliers::Kigo
       Kigo::Legacy::SUPPLIER_NAME
     end
 
-    def non_ib_result
-      Result.error(:non_ib_property)
+    def valid_payload?(payload)
+      Kigo::PayloadValidation.new(payload, ib_flag: false).valid?
     end
 
     def announce_error(message, result)
