@@ -19,6 +19,16 @@ module Concierge
   #   # => Struct(username="roomorama" password"p4ssw0rd")
   class Credentials
 
+    # +Concierge::Credentials::NoCredentialsError+
+    #
+    # Error raised when trying to read credentials for a name that is not declared
+    # under +config/credentials+ for the running environment.
+    class NoCredentialsError < RuntimeError
+      def initialize(name)
+        super("Credentials for `#{name}' could not be found.")
+      end
+    end
+
     # +Concierge::Credentials::MissingSupplierError+
     #
     # This is raised when validating credentials and there is no information found
@@ -53,7 +63,7 @@ module Concierge
       end
 
       def for(name)
-        credentials = data[name.downcase]
+        credentials = data[name.downcase] || (raise NoCredentialsError.new(name))
         Struct.new(*credentials.keys.map(&:to_sym)).new(*credentials.values)
       end
 

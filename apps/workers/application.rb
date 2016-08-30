@@ -14,14 +14,17 @@ module Workers
 
     configure :development do
       handle_exceptions false
+      Woori::Importer.file_fetcher = File
     end
 
     configure :test do
       handle_exceptions false
+      Woori::Importer.file_fetcher = File
     end
 
     configure :staging do
       handle_exceptions false
+      Woori::Importer.file_fetcher = Concierge::S3.new(Concierge::Credentials.for("aws"))
     end
 
     configure :production do
@@ -29,6 +32,8 @@ module Workers
       # handle exceptions, since we want them to be raised so that we
       # get notified.
       handle_exceptions false
+
+      Woori::Importer.file_fetcher = Concierge::S3.new(Concierge::Credentials.for("aws"))
     end
   end
 end

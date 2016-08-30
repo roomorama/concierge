@@ -1,7 +1,7 @@
 require "spec_helper"
 
 RSpec.describe Workers::Queue do
-  let(:credentials) { Concierge::Credentials.for("sqs") }
+  let(:credentials) { Concierge::Credentials.for("aws") }
   let(:element) { Workers::Queue::Element.new(operation: "background_worker", data: { key: "value" }) }
   subject { described_class.new(credentials) }
 
