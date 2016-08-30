@@ -55,6 +55,7 @@ module Workers::Suppliers::Woori
   end
 end
 
-Concierge::Announcer.on("availabilities.Woori") do |host|
+Concierge::Announcer.on("availabilities.Woori") do |host, args|
   Workers::Suppliers::Woori::Availabilities.new(host).perform
+  Result.new({})
 end
