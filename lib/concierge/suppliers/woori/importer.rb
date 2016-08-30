@@ -4,6 +4,30 @@ module Woori
   # This class provides an interface for the bulk import of Woori properties
   # +Woori::Importer+ imports data from files (from .json files)
   class Importer
+
+    class << self
+      # +file_fetcher+ - determines how to fetch property/unit files from Woori.
+      #
+      # The object assigned to this variable must follow the protocol:
+      #
+      # +read(location)+
+      # Returns a String containing the content of the file in the given +location+
+      #
+      # Useful to allow filesystem reading when on development/test environments,
+      # and to use a S3 URL when on staging/production environments.
+      attr_accessor :file_fetcher
+    end
+
+    # +Woori::Importer::NoFetcherRegisteredError+
+    #
+    # Error raised when trying to import Woori properties without previously
+    # assigning a +file_fetcher+ attribute.
+    class NoFetcherRegisteredError < RuntimeError
+      def initialize
+        super("No `file_fetcher' attribute set for Woori::Importer")
+      end
+    end
+
     attr_reader :credentials
 
     def initialize(credentials)
@@ -20,7 +44,7 @@ module Woori
     # Returns an +Array+ of +Roomorama::Property+ objects
     def fetch_all_properties
       location = credentials.properties_import_file
-      file = read_file(import_type, location)
+      file = read_file(location)
 
       command = Commands::PropertiesFetcher.new(file)
       command.load_all_properties
@@ -36,7 +60,7 @@ module Woori
         credentials.units_3_import_file
       ]
 
-      files = locations.map { |location| read_file(import_type, location) }
+      files = locations.map { |location| read_file(location) }
 
       command = Commands::UnitsFetcher.new(files)
       command.load_all_units
@@ -56,7 +80,7 @@ module Woori
         credentials.units_3_import_file
       ]
 
-      files = locations.map { |location| read_file(import_type, location) }
+      files = locations.map { |location| read_file(location) }
 
       command = Commands::UnitsFetcher.new(files)
       command.find_all_by_property_id(property_id)
@@ -82,13 +106,12 @@ module Woori
     end
 
     private
-    def read_file(type, location)
-      case type
-      when "local-files"
-        File.new(location, 'r')
-      when "remote-files"
-        URI.parse(location).open
-      end
+    def read_file(location)
+      fetcher.read(location)
+    end
+
+    def fetcher
+      self.class.file_fetcher || (raise NoFetcherRegisteredError)
     end
   end
 end
