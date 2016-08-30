@@ -1,8 +1,8 @@
-module Workers::Suppliers::Kigo
-  # +Workers::Suppliers::Kigo::Legacy+
+module Workers::Suppliers::Kigo::Legacy
+  # +Workers::Suppliers::Kigo::Legacy::Metadata+
   #
   # Performs synchronisation with supplier
-  class Legacy
+  class Metadata
 
     CACHE_PREFIX = 'metadata.kigo_legacy'
 
@@ -156,5 +156,5 @@ end
 
 # listen supplier worker
 Concierge::Announcer.on("metadata.#{Kigo::Legacy::SUPPLIER_NAME}") do |host|
-  Workers::Suppliers::Kigo::Legacy.new(host).perform
+  Workers::Suppliers::Kigo::Legacy::Metadata.new(host).perform
 end
