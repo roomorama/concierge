@@ -7,6 +7,7 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Added
 - Support for the `aggregated` flag on `config/suppliers.yml`, allowing workers to run once per supplier.
+- Allow worker implementation specify parameters for the next run.
 
 ### Fixed
 - SAW: ignore non-refundable prices for units while rates fetching
