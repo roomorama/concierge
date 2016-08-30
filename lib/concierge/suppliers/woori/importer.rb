@@ -34,11 +34,6 @@ module Woori
       @credentials = credentials
     end
 
-    # Get type of import files ("local-files" or "remote-files")
-    def import_type
-      credentials.import_files_type
-    end
-
     # Retrieves the list of all properties
     #
     # Returns an +Array+ of +Roomorama::Property+ objects
