@@ -44,7 +44,7 @@ module Woori
     # Returns an +Array+ of +Roomorama::Property+ objects
     def fetch_all_properties
       location = credentials.properties_import_file
-      file = read_file(location)
+      file = fetcher.read(location)
 
       command = Commands::PropertiesFetcher.new(file)
       command.load_all_properties
@@ -60,7 +60,7 @@ module Woori
         credentials.units_3_import_file
       ]
 
-      files = locations.map { |location| read_file(location) }
+      files = locations.map { |location| fetcher.read(location) }
 
       command = Commands::UnitsFetcher.new(files)
       command.load_all_units
@@ -80,7 +80,7 @@ module Woori
         credentials.units_3_import_file
       ]
 
-      files = locations.map { |location| read_file(location) }
+      files = locations.map { |location| fetcher.read(location) }
 
       command = Commands::UnitsFetcher.new(files)
       command.find_all_by_property_id(property_id)
@@ -106,9 +106,6 @@ module Woori
     end
 
     private
-    def read_file(location)
-      fetcher.read(location)
-    end
 
     def fetcher
       self.class.file_fetcher || (raise NoFetcherRegisteredError)
