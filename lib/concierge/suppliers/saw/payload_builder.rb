@@ -119,11 +119,11 @@ module SAW
       }
     end
 
-    def build_cancel_request(reservation_id)
+    def build_cancel_request(reference_number)
       %{
         <request>
           #{build_username_and_password}
-          <booking_ref_number>#{reservation_id}</booking_ref_number>
+          <booking_ref_number>#{reference_number}</booking_ref_number>
         </request>
       }
     end
