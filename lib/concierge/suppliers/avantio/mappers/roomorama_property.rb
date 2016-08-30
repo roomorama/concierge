@@ -11,6 +11,7 @@ module Avantio
 
       PROPERTY_TYPES = Concierge::SafeAccessHash.new({
         1  => {type: 'apartment'}, # Apartment
+        4  => {type: 'apartment'}, # Aparthotel
         2  => {type: 'house', subtype: 'villa'}, # Villa
         14 => {type: 'apartment', subtype: 'studio_bachelor'}, # Studio
         20 => {type: 'house', subtype: 'cottage'}, # Chalet
