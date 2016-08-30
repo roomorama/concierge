@@ -29,6 +29,7 @@ module Avantio
         result.instant_booking!
 
         set_base_info!(result, accommodation)
+        set_amenities!(result, accommodation)
         set_description!(result, description)
         set_images!(result, images)
         set_rates_and_minimum_stay!(result, rates)
@@ -49,23 +50,47 @@ module Avantio
         result.number_of_bedrooms = accommodation.bedrooms
         result.max_guests = accommodation.people_capacity
         result.apartment_number = accommodation.door
-
-
-
+        result.neighborhood = accommodation.district
+        result.country_code = accommodation.country_iso_code
+        result.lat = accommodation.lat
+        result.lng = accommodation.lng
         result.default_to_available = false
-        result.lat = property.xco
-        result.lng = property.yco
-        result.number_of_bathrooms = property.bathrooms
-        result.number_of_double_beds = calc_double_beds(property)
-        result.number_of_single_beds = calc_single_beds(property)
-        result.number_of_sofa_beds = calc_sofa_beds(property)
+        result.number_of_bathrooms = fetch_bathrooms(accommodation)
+        result.floor = accommodation.floor
+        result.number_of_double_beds = accommodation.double_beds
+        result.number_of_single_beds = accommodation.individual_beds # use berths?
+        result.number_of_sofa_beds = fetch_sofa_beds(accommodation)
+        result.surface = accommodation.housing_area
+        result.surface_unit = fetch_surface_unit(accommodation)
+
+
+
+
         result.amenities = property.amenities
         result.pets_allowed = property.pets_allowed
         result.currency = property.currency_code
         result.cancellation_policy = CANCELLATION_POLICY
 
-        country_code = country_converter.code_by_name(property.country)
-        result.country_code = country_code.value if country_code.success?
+      end
+
+      def fetch_surface_unit(accommodation)
+        if accommodation.housing_area && accommodation.area_unit == 'm'
+          'metric'
+        end
+      end
+
+      def fetch_sofa_beds(accommodation)
+        [
+          accommodation.individual_sofa_beds,
+          accommodation.double_sofa_beds
+        ].compact.inject(:+)
+      end
+
+      def fetch_bathrooms(accommodation)
+        [
+          accommodation.bathtub_bathrooms,
+          accommodation.shower_bathrooms
+        ].compact.inject(:+)
       end
 
       def fetch_address(accommodation)
