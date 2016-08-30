@@ -24,9 +24,10 @@ module Kigo
       @entries  = []
     end
 
-    def perform(pricing, availabilities)
+    def perform(pricing, availabilities: [], reservations: [])
       process_periods(pricing)
       set_availabilities(availabilities)
+      set_reservations(reservations)
 
       entries.each do |entry|
         calendar.add(entry)
@@ -62,18 +63,32 @@ module Kigo
     #   * MAX_LOS - maximum stay length. Zero means unavailable
     #   * AVAILABLE_UNITS - supplier's property might be multi unit
     def set_availabilities(availabilities)
-      availabilities['AVAILABILITY'].each do |availability|
+      availabilities.each do |availability|
         date      = availability['DATE']
         available = availability['MAX_LOS'] > 0 && availability['AVAILABLE_UNITS'] > 0
-        entry     = find_entry(date)
+        update_entries(date, available)
+      end
+    end
 
-        unless entry
-          entry              = build_entry(date)
-          entry.nightly_rate = default_nightly_rate
-          entries << entry
+    def update_entries(date, available)
+      entry = find_entry(date)
+
+      unless entry
+        entry              = build_entry(date)
+        entry.nightly_rate = default_nightly_rate
+        entries << entry
+      end
+
+      entry.available = available
+    end
+
+    def set_reservations(reservations)
+      reservations.each do |reservation|
+        start_date = Date.parse(reservation['RES_CHECK_IN'])
+        end_date   = Date.parse(reservation['RES_CHECK_OUT'])
+        (start_date..end_date).each do |date|
+          update_entries(date.to_s, false)
         end
-
-        entry.available = available
       end
     end
 
