@@ -38,4 +38,4 @@ SAW:
 Woori:
   workers:
     availabilities:
-      every: "5h"
+      every: "24h"
