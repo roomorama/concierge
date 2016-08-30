@@ -5,6 +5,8 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+- SAW: fixed reference_number parameter name for cancellation 
+
 ### Added
 - Support for the `aggregated` flag on `config/suppliers.yml`, allowing workers to run once per supplier.
 - Allow worker implementation specify parameters for the next run.
