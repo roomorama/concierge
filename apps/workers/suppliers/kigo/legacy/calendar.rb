@@ -1,5 +1,5 @@
-module Workers::Suppliers::Kigo
-  # +Workers::Suppliers::Kigo::Calendar+
+module Workers::Suppliers::Kigo::Legacy
+  # +Workers::Suppliers::Kigo::Legacy::Calendar+
   #
   # Performs updating properties calendar
   class Calendar
@@ -19,11 +19,11 @@ module Workers::Suppliers::Kigo
           pricing = importer.fetch_prices(id)
           next pricing unless pricing.success?
 
-          availabilities = importer.fetch_availabilities(id)
-          next availabilities unless availabilities.success?
+          reservations = importer.fetch_reservations(id)
+          next reservations unless reservations.success?
 
           calendar = Kigo::Calendar.new(property)
-          calendar.perform(pricing.value, availabilities: availabilities.value['AVAILABILITY'])
+          calendar.perform(pricing.value, reservations: reservations.value)
         end
       end
 
