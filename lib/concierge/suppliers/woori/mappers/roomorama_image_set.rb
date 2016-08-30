@@ -25,33 +25,29 @@ module Woori
       #
       # Returns +Array<Roomorama::Image>+ array of images
       def build_images
-        all_images = image_hashes.map do |h|
+        image_hashes.map do |h|
           safe_hash = Concierge::SafeAccessHash.new(h)
-          build_image(safe_hash)
-        end
-
-        filter_images_with_only_valid_urls(all_images)
+          build_image(safe_hash) unless safe_hash.get("url").include?(" ")
+        end.compact
       end
 
       private
-      # Image captions are not set because all captions in Korean language
+      # Builds an image.
+      #
+      # Image captions are not set because all captions are given in Korean
+      # language.
+      #
+      # Provided URLs contain non-ascii characters, so it's important to
+      # URI.encode url before passing it to +Roomorama::Image+ validator
+      #
+      # Returns +Roomorama::Image+ image object
       def build_image(hash)
-        url, identifier = fetch_image_data(hash)
+        url = URI.encode(hash.get("url").to_s)
+        identifier = Digest::MD5.hexdigest(url)
 
         image = Roomorama::Image.new(identifier)
         image.url = url
         image
-      end
-
-      def fetch_image_data(hash)
-        url = hash.get("url")
-        identifier = Digest::MD5.hexdigest(url)
-
-        [url, identifier]
-      end
-
-      def filter_images_with_only_valid_urls(images)
-        images.reject { |image| image.url.include?(" ") }
       end
     end
   end
