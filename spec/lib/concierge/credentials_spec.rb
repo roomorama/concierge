@@ -29,6 +29,12 @@ RSpec.describe Concierge::Credentials do
       expect(credentials.token).to eq "abc123"
       ENV["_TEST_PARTNER_TOKEN"] = nil
     end
+
+    it "raises an error if there are no credentials registered" do
+      expect {
+        described_class.for("invalid_credentials")
+      }.to raise_error Concierge::Credentials::NoCredentialsError
+    end
   end
 
   describe ".validate_credentials!" do
