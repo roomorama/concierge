@@ -55,6 +55,6 @@ module Workers::Suppliers::Woori
   end
 end
 
-Concierge::Announcer.on("calendar.Woori") do |host|
+Concierge::Announcer.on("availabilities.Woori") do |host|
   Workers::Suppliers::Woori::Availabilities.new(host).perform
 end
