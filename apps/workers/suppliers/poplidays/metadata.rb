@@ -152,6 +152,7 @@ module Workers::Suppliers::Poplidays
 end
 
 # listen supplier worker
-Concierge::Announcer.on('metadata.Poplidays') do |host|
+Concierge::Announcer.on('metadata.Poplidays') do |host, args|
   Workers::Suppliers::Poplidays::Metadata.new(host).perform
+  Result.new({})
 end
