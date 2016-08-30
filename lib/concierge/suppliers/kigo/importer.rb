@@ -14,15 +14,17 @@ module Kigo
   class Importer
     include Concierge::JSON
 
-    PROPERTIES_LIST = 'listProperties2'
-    PROPERTY_DATA   = 'readProperty2'
-    PRICES          = 'readPropertyPricingSetup'
-    AVAILABILITIES  = 'listPropertyAvailability'
-    RESERVATIONS    = 'listPropertyCalendarReservations'
+    PROPERTIES_LIST     = 'listProperties2'
+    PROPERTY_DATA       = 'readProperty2'
+    PRICES              = 'readPropertyPricingSetup'
+    PRICES_DIFF         = 'diffPropertyPricingSetup'
+    AVAILABILITIES      = 'listPropertyAvailability'
+    AVAILABILITIES_DIFF = 'diffPropertyAvailability'
+    RESERVATIONS        = 'listPropertyCalendarReservations'
 
     # references
-    AMENITIES       = 'listKigoPropertyAmenities'
-    PROPERTY_TYPES  = 'listKigoPropertyTypes'
+    AMENITIES           = 'listKigoPropertyAmenities'
+    PROPERTY_TYPES      = 'listKigoPropertyTypes'
 
     attr_reader :credentials, :request_handler
 
@@ -43,7 +45,11 @@ module Kigo
       fetch(PRICES, { PROP_ID: id })
     end
 
-    def fetch_availabilities(id, start_date:, end_date:)
+    def fetch_prices_diff(id)
+      fetch(PRICES_DIFF, { DIFF_ID: id })
+    end
+
+    def fetch_availabilities(id, start_date: Date.today, end_date: one_year_from_today)
       params = {
         PROP_ID:         id,
         LIST_START_DATE: start_date,
@@ -52,7 +58,11 @@ module Kigo
       fetch(AVAILABILITIES, params)
     end
 
-    def fetch_reservations(id, start_date:, end_date:)
+    def fetch_availabilities_diff(id)
+      fetch(AVAILABILITIES_DIFF, { DIFF_ID: id })
+    end
+
+    def fetch_reservations(id, start_date: Date.today, end_date: one_year_from_today)
       params = {
         PROP_ID:         id,
         LIST_START_DATE: start_date,
@@ -99,6 +109,10 @@ module Kigo
 
     def endpoint(request_method)
       request_handler.endpoint_for(request_method)
+    end
+
+    def one_year_from_today
+      Date.today + 365
     end
   end
 end

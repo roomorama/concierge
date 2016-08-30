@@ -83,12 +83,8 @@ module Kigo::Mappers
       property.lng              = coordinates['LONGITUDE']
     end
 
-    # returns days count computed by NIGHT, MONTH, YEAR unit
-    # for some reasons period number might be zero
-    def stay_length(period)
-      return if period['NUMBER'].zero?
-      multiplier = { 'MONTH' => 30, 'YEAR' => 365 }.fetch(period['UNIT'], 1)
-      period['NUMBER'].to_i * multiplier
+    def stay_length(interval)
+      Kigo::TimeInterval.new(interval).days
     end
 
     def set_description

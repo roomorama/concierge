@@ -3,8 +3,8 @@ module Kigo::Mappers
   #
   # It takes two prices payload from two different API calls.
   # See more details for each params:
-  #   - base_rate: +readProperty2+
-  #   - periodical_rate:   +readPropertyPricingSetup+
+  #   - base_rate:       +readProperty2+
+  #   - periodical_rate: +readPropertyPricingSetup+
   #
   # the all prices going to be calculated from +nightly_rate+
   # Currently we check the nightly rate from base_rate, and fallback
