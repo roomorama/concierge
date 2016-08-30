@@ -11,6 +11,7 @@ module Woori
       include Concierge::JSON
 
       ENDPOINT = "available"
+      ONE_MONTH_IN_SECONDS = 30 * 24 * 60 * 60
 
       # Retrieves availabilities for property and builds calendar
       #
@@ -43,8 +44,6 @@ module Woori
 
       private
       def fetch_and_build_unit_calendar(unit_id)
-        retries ||= 3
-
         params = build_request_params(unit_id)
         result = http.get(ENDPOINT, params, headers)
 
@@ -62,24 +61,24 @@ module Woori
             decoded_result
           end
         else
-          raise AvailabilitiesFetchError
-        end
-      rescue AvailabilitiesFetchError
-        if (retries -= 1) > 0
-          retry
-        else
           result
         end
       end
 
       def build_request_params(unit_id)
-        current_date = Time.now
-
         {
           roomCode: unit_id,
-          searchStartDate: current_date.strftime("%Y-%m-%d"),
-          searchEndDate: (current_date + 30 * 60 * 60 * 24).strftime("%Y-%m-%d")
+          searchStartDate: current_time.strftime("%Y-%m-%d"),
+          searchEndDate: one_month_from_now.strftime("%Y-%m-%d")
         }
+      end
+
+      def current_time
+        @time ||= Time.now
+      end
+
+      def one_month_from_now
+        current_time + ONE_MONTH_IN_SECONDS
       end
     end
   end
