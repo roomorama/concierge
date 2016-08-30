@@ -17,7 +17,7 @@ RSpec.describe Workers::Suppliers::Kigo::Calendar do
 
   describe '#perform' do
     let(:prices) { JSON.parse(read_fixture('kigo/pricing_setup.json')) }
-    let(:availabilities) { JSON.parse(read_fixture('kigo/availabilities.json'))['AVAILABILITY'] }
+    let(:availabilities) { JSON.parse(read_fixture('kigo/availabilities.json')) }
 
     it 'performs according to response' do
       allow_any_instance_of(Kigo::Importer).to receive(:fetch_prices) { Result.new(prices) }

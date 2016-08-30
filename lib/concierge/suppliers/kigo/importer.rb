@@ -21,6 +21,7 @@ module Kigo
     AVAILABILITIES      = 'listPropertyAvailability'
     AVAILABILITIES_DIFF = 'diffPropertyAvailability'
     RESERVATIONS        = 'listPropertyCalendarReservations'
+    RESERVATIONS_DIFF   = 'diffPropertyCalendarReservations'
     IMAGE               = 'readPropertyPhotoFile'
 
     # references
@@ -70,6 +71,10 @@ module Kigo
         LIST_END_DATE:   end_date
       }
       fetch(RESERVATIONS, params)
+    end
+
+    def fetch_reservations_diff(id)
+      fetch(RESERVATIONS_DIFF, { DIFF_ID: id })
     end
 
     # references helps us to match data by their names instead of using ids
