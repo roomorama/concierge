@@ -23,12 +23,19 @@ module Woori
         @file = file
       end
 
+      # Builds and returns +Roomorama::Property+ objects.
+      #
+      # There is additional filtering step which removes not active properties
+      # from the result set.
       def load_all_properties
         raw_properties.map do |propery_hash|
           safe_hash = Concierge::SafeAccessHash.new(propery_hash)
+
+          next if safe_hash.get("data.isActive") != 1
+
           mapper = Woori::Mappers::RoomoramaProperty.new(safe_hash)
           mapper.build_property
-        end
+        end.compact
       end
       
       private

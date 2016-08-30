@@ -24,4 +24,16 @@ RSpec.describe Woori::Commands::PropertiesFetcher do
       expect(properties).to all(be_kind_of(Roomorama::Property))
     end
   end
+
+  context "when file contains not active properties" do
+    let(:filename) { "bulk_properties_with_not_active.json" }
+
+    it "returns only active properties" do
+      properties = subject.load_all_properties
+      expect(properties.size).to eq(1)
+
+      property = properties.first
+      expect(property.identifier).to eq("w_w0604019")
+    end
+  end
 end
