@@ -1,10 +1,10 @@
 module Workers::Suppliers::Kigo
-  # +Workers::Suppliers::Kigo+
+  # +Workers::Suppliers::Kigo::Metadata+
   #
   # Performs synchronisation with supplier
   class Metadata
 
-    CACHE_PREFIX  = 'metadata.kigo'
+    CACHE_PREFIX = 'metadata.kigo'
 
     attr_reader :synchronisation, :host
 
@@ -20,7 +20,10 @@ module Workers::Suppliers::Kigo
     #
     # uses caching for properties list to avoid the same call for different hosts
     def perform
-      references = with_cache('references') { importer.fetch_references }
+      references = synchronisation.new_context('references') do
+        with_cache('references') { importer.fetch_references }
+      end
+
       unless references.success?
         message = 'Failed to perform `#fetch_references`'
         announce_error(message, references)
@@ -35,13 +38,17 @@ module Workers::Suppliers::Kigo
         return if properties.empty?
 
         properties.each do |property|
-          id = property['PROP_ID']
+          id          = property['PROP_ID']
+          data_result = synchronisation.new_context(id) { importer.fetch_data(id) }
+
+          unless data_result.success?
+            announce_error('Failed to perform the `#fetch_data` operation', data_result)
+            next
+          end
+
+          next unless valid_payload?(data_result.value)
+
           synchronisation.start(id) do
-            data_result = importer.fetch_data(id)
-
-            next data_result unless data_result.success?
-            next non_ib_result unless data_result.value['PROP_INSTANT_BOOK']
-
             price_result = importer.fetch_prices(id)
 
             next price_result unless price_result.success?
@@ -84,8 +91,8 @@ module Workers::Suppliers::Kigo
       Kigo::Client::SUPPLIER_NAME
     end
 
-    def non_ib_result
-      Result.error(:non_ib_property)
+    def valid_payload?(payload)
+      Kigo::PayloadValidation.new(payload).valid?
     end
 
     def mapper_resolver
