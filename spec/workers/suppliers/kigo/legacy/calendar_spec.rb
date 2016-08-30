@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Workers::Suppliers::Kigo::Calendar do
+RSpec.describe Workers::Suppliers::Kigo::Legacy::Calendar do
   include Support::Fixtures
   include Support::Factories
 
