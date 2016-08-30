@@ -14,7 +14,7 @@ module Workers::Suppliers::Kigo
 
     def perform
       properties.each do |property|
-        id = property.identifier
+        id = property.identifier.to_i
         synchronisation.start(id) do
           pricing = importer.fetch_prices(id)
           next pricing unless pricing.success?
@@ -47,16 +47,7 @@ module Workers::Suppliers::Kigo
     end
 
     def credentials
-      Concierge::Credentials.for(supplier_name)
-    end
-
-    def supplier_name
-      Kigo::Client::SUPPLIER_NAME
+      Concierge::Credentials.for(Kigo::Client::SUPPLIER_NAME)
     end
   end
-end
-
-# listen supplier worker
-Concierge::Announcer.on("availabilities.Kigo") do |host|
-  Workers::Suppliers::Kigo::Calendar.new(host).perform
 end
