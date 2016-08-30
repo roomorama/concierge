@@ -135,7 +135,8 @@ module Workers::Suppliers
   end
 end
 
-Concierge::Announcer.on("metadata.WayToStay") do |host|
+Concierge::Announcer.on("metadata.WayToStay") do |host, args|
   Workers::Suppliers::Waytostay.new(host).perform
+  Result.new({})
 end
 

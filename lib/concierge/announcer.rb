@@ -51,7 +51,7 @@ module Concierge
     #
     #   Announcer.trigger("event", call: "quote_price")
     def trigger(event, *args)
-      listeners[event].each do |listener|
+      listeners[event].map do |listener|
         listener.call(*args)
       end
     end

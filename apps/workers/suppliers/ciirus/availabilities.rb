@@ -80,6 +80,7 @@ module Workers::Suppliers::Ciirus
 end
 
 # listen supplier worker
-Concierge::Announcer.on('availabilities.Ciirus') do |host|
+Concierge::Announcer.on('availabilities.Ciirus') do |host, args|
   Workers::Suppliers::Ciirus::Calendar.new(host).perform
+  Result.new({})
 end

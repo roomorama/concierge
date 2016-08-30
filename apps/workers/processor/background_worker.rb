@@ -11,6 +11,27 @@ class Workers::Processor
   # respectively, is passed to code listening via +Concierge::Announcer+.
   class BackgroundWorker
 
+    # +Workers::Processor::BackgroundWorker::NotAResultError+
+    #
+    # Error raised when the implementation of a background worker event is run
+    # but does not return an instance of +Result+ as expected.
+    class NotAResultError < RuntimeError
+      def initialize(event, object)
+        super("Listener of event #{event} did not return a Result instance, but instead #{object.class}")
+      end
+    end
+
+    # +Workers::Processor::BackgroundWorker::NotMappableError+
+    #
+    # Error raised when the implementation of a background worker event is run
+    # and is successful, but the wrapped return is not mappable to a Ruby Hash,
+    # that is, it does not respond to the +to_h+ method.
+    class NotMappableError < RuntimeError
+      def initialize(event, object)
+        super("Listener of event #{event} returned #{object.class}, which does not respond to `to_h'")
+      end
+    end
+
     # The classes below are responsible for determining parameters to be used
     # when invoking the correct supplier implementation. They are expected to
     # implement two methods:
@@ -44,7 +65,7 @@ class Workers::Processor
       end
 
       def args
-        [host]
+        [host, worker.next_run_args]
       end
 
       private
@@ -69,7 +90,7 @@ class Workers::Processor
       end
 
       def args
-        [supplier]
+        [supplier, worker.next_run_args]
       end
     end
 
@@ -88,15 +109,19 @@ class Workers::Processor
       worker = BackgroundWorkerRepository.find(data[:background_worker_id])
       return Result.new(true) if worker.running?
 
-      runner = runner_for(worker)
+      runner    = runner_for(worker)
+      supplier  = runner.supplier
+      broadcast = [worker.type, ".", supplier.name].join
 
-      running(worker) do
+      running(broadcast, worker) do
         timing_out(worker.type, data) do
-          supplier  = runner.supplier
-          broadcast = [worker.type, ".", supplier.name].join
-
-          Concierge::Announcer.trigger(broadcast, *runner.args)
-          Result.new(true)
+          # gotcha: +Concierge::Announcer#trigger+ returns an array of the results of each
+          # listener for the given event. Here, we take the first of them assuming
+          # it will be the supplier implementation. That works since there has been no
+          # need for a supplier implementation to provide more than one listener for the
+          # same event. That is a good practice that allows arguments to be passed
+          # from one run to the next.
+          Concierge::Announcer.trigger(broadcast, *runner.args).first
         end
       end
     end
@@ -127,15 +152,22 @@ class Workers::Processor
     # the worker status to +running+, yielding the block (which is supposed to do
     # the worker's job), and ensuring that the worker's status is set back to +idle+
     # at the end of the process, as well as properly updating the +next_run_at+ column
-    # according to the specified worker +interval+.
-    def running(worker)
+    # according to the specified worker +interval+, and the +next_run_args+ column according
+    # to what is returned by the event implementation.
+    def running(event, worker)
       worker_started(worker)
-      yield
+      result = yield
+
+    rescue => error
+      result = Result.error(:integration_error)
+      raise error
 
     ensure
+      ensure_valid_result!(event, result)
+
       # reload the worker instance to make sure to account for any possible
       # changes in the process
-      worker_completed(BackgroundWorkerRepository.find(worker.id))
+      worker_completed(BackgroundWorkerRepository.find(worker.id), result)
     end
 
     def worker_started(worker)
@@ -143,11 +175,28 @@ class Workers::Processor
       BackgroundWorkerRepository.update(worker)
     end
 
-    def worker_completed(worker)
+    def worker_completed(worker, result)
       worker.status      = "idle"
       worker.next_run_at = Time.now + worker.interval
 
+      if result.success?
+        worker.next_run_args = result.value
+      end
+
       BackgroundWorkerRepository.update(worker)
+    end
+
+    # makes sure that the instance returned by an event implementation
+    # returns a +Result+ instance, and that the wrapped object responds
+    # to +to_h+.
+    def ensure_valid_result!(event, instance)
+      unless instance.is_a?(Result)
+        raise NotAResultError.new(event, instance)
+      end
+
+      if instance.success? && !instance.value.respond_to?(:to_h)
+        raise NotMappableError.new(event, instance)
+      end
     end
 
     # NOTE this time out should be shorter than the +VisibilityTimeout+ configured

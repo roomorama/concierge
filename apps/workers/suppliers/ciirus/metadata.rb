@@ -183,6 +183,7 @@ module Workers::Suppliers::Ciirus
 end
 
 # listen supplier worker
-Concierge::Announcer.on('metadata.Ciirus') do |host|
+Concierge::Announcer.on('metadata.Ciirus') do |host, args|
   Workers::Suppliers::Ciirus::Metadata.new(host).perform
+  Result.new({})
 end
