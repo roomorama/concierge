@@ -54,7 +54,7 @@ module SAW
       command.call(params)
     end
 
-    # Cancels a given reservation_id
+    # Cancels a given reference_number
     #
     # Always returns a +Result+.
     # Augments any error on the request context.
