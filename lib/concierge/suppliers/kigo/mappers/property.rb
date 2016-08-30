@@ -140,27 +140,38 @@ module Kigo::Mappers
 
     def set_deposit
       deposit = pricing['DEPOSIT']
-      #  STAYLENGTH unit means deposit has different prices for night, week, month
-      if deposit && deposit['UNIT'] != 'STAYLENGTH'
-        property.security_deposit_amount = deposit['VALUE'].to_i
-      end
+
+      return unless deposit
+
+      property.security_deposit_amount = get_fee_amount(deposit)
     end
 
     def set_cleaning_service
       fees         = Array(pricing.get('FEES.FEES'))
       cleaning_fee = fees.find { |fee| fee['FEE_TYPE_ID'] == code_for(:cleaning_fee) }
 
-      if cleaning_fee && cleaning_fee['UNIT'] != 'STAYLENGTH'
-        property.services_cleaning          = true
-        property.services_cleaning_required = cleaning_fee['INCLUDE_IN_RENT']
-        property.services_cleaning_rate     = get_fee_amount(cleaning_fee['VALUE']).to_f
+      return unless cleaning_fee
+
+      property.services_cleaning          = true
+      property.services_cleaning_required = cleaning_fee['INCLUDE_IN_RENT']
+      property.services_cleaning_rate     = get_fee_amount(cleaning_fee)
+    end
+
+    # STAYLENGTH unit means deposit has different prices for night, week, month
+    # since Roomorama doesn't support variates of deposit, to be conservative
+    # we are choosing maximum price
+    def get_fee_amount(fee)
+      if fee['UNIT'] == 'STAYLENGTH'
+        fee['VALUE'].map { |item| fee_price(item['VALUE']) }.max
+      else
+        fee_price(fee['VALUE'])
       end
     end
 
     # Kigo +amount+ might be hash or integer
     # KigoLegacy +amount+ might be hash or string
-    def get_fee_amount(amount)
-      amount.is_a?(Hash) ? amount['AMOUNT_ADULT'] : amount
+    def fee_price(amount)
+      amount.is_a?(Hash) ? amount['AMOUNT_ADULT'].to_i : amount.to_i
     end
 
     # images has differences between Kigo and KigoLegacy
