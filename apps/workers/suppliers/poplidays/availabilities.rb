@@ -101,6 +101,7 @@ module Workers::Suppliers::Poplidays
 end
 
 # listen supplier worker
-Concierge::Announcer.on('availabilities.Poplidays') do |host|
+Concierge::Announcer.on('availabilities.Poplidays') do |host, args|
   Workers::Suppliers::Poplidays::Availabilities.new(host).perform
+  Result.new({})
 end
