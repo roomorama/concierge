@@ -2,8 +2,6 @@ require 'spec_helper'
 require_relative "../shared/cancel"
 
 RSpec.describe API::Controllers::Woori::Cancel do
-  let(:params) { { reservation_id: "A123" } }
-
   it_behaves_like "cancel action" do
     let(:success_cases) {
       [

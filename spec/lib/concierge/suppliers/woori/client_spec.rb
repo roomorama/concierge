@@ -16,7 +16,7 @@ RSpec.describe Woori::Client do
   end
 
   describe "#cancel" do
-    let(:params) { { reservation_id: '123' } }
+    let(:params) { { reference_number: '123' } }
 
     it "calls cancel command class" do
       fetcher_class = Woori::Commands::Cancel

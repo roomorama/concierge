@@ -20,18 +20,18 @@ module Woori
       #
       # Arguments
       #
-      #   * +reservation_id+ [String] reservation id
+      #   * +reference_number+ [String] reservation id
       #
       # Usage
       #
       #   command = Woori::Commands::Cancel.new(credentials)
       #   result = command.call("w_WP201608011845462029")
       #
-      # Returns a +Result+ wrapping a +reservation_id+ of the cancelled
+      # Returns a +Result+ wrapping a +reference_number+ of the cancelled
       # reservation when operation succeeds.
       # Returns a +Result+ with +Result::Error+ when operation fails
-      def call(reservation_id)
-        params = build_request_params(reservation_id)
+      def call(reference_number)
+        params = build_request_params(reference_number)
 
         result = http.post(ENDPOINT, params, headers)
 
@@ -42,9 +42,9 @@ module Woori
             safe_hash = Concierge::SafeAccessHash.new(decoded_result.value)
 
             if safe_hash.get("message") == "success"
-              Result.new(reservation_id)
+              Result.new(reference_number)
             else
-              reservation_cancel_error(reservation_id)
+              reservation_cancel_error(reference_number)
             end
           else
             decoded_result
@@ -55,8 +55,8 @@ module Woori
       end
 
       private
-      def build_request_params(reservation_id)
-        { reservationNo: reservation_id }
+      def build_request_params(reference_number)
+        { reservationNo: reference_number }
       end
 
       def reservation_cancel_error(id)
