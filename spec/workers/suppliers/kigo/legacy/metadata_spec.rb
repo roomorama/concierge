@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Workers::Suppliers::Kigo::Legacy do
+RSpec.describe Workers::Suppliers::Kigo::Legacy::Metadata do
   include Support::Fixtures
   include Support::Factories
 
