@@ -9,7 +9,7 @@ RSpec.describe Woori::Commands::PropertiesFetcher do
   context "when file is empty" do
     let(:filename) { "empty_bulk_properties.json" }
 
-    it "returns result wrapping a unit rates object" do
+    it "returns an empty array" do
       properties = subject.load_all_properties
       expect(properties).to eq([])
     end
@@ -18,7 +18,7 @@ RSpec.describe Woori::Commands::PropertiesFetcher do
   context "when file is not empty" do
     let(:filename) { "bulk_properties.json" }
 
-    it "returns result wrapping a unit rates object" do
+    it "returns built properties" do
       properties = subject.load_all_properties
       expect(properties.size).to eq(2)
       expect(properties).to all(be_kind_of(Roomorama::Property))
