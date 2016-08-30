@@ -6,7 +6,7 @@ module Woori
     class RoomoramaUnit
       DEFAULT_UNIT_RATE = 999999
 
-      attr_reader :safe_hash, :amenities_converter
+      attr_reader :safe_hash, :amenities_converter, :description_converter
       
       # Initialize RoomoramaUnit mapper
       #
@@ -16,12 +16,13 @@ module Woori
       def initialize(safe_hash)
         @safe_hash = safe_hash
         @amenities_converter = Converters::Amenities.new(safe_hash.get("data.facilities"))
+        @description_converter = Converters::Description.new(
+          safe_hash.get("data.description"),
+          amenities_converter
+        )
       end
 
       # Builds Roomorama::Unit object
-      #
-      # It skips mapping the +description+ unit field due to auto-translated
-      # bad descriptions coming from Woori.
       #
       # Arguments:
       #
@@ -36,7 +37,7 @@ module Woori
         unit = Roomorama::Unit.new(safe_hash.get("hash"))
 
         unit.title              = safe_hash.get("data.name")
-        unit.description        = nil
+        unit.description        = description_converter.convert
         unit.amenities          = amenities_converter.convert
         unit.max_guests         = safe_hash.get("data.capacity")
         unit.number_of_bedrooms = safe_hash.get("data.roomCount")
