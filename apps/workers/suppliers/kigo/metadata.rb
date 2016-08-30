@@ -25,7 +25,7 @@ module Workers::Suppliers::Kigo
       end
 
       unless references.success?
-        message = 'Failed to perform `#fetch_references`'
+        message = 'Failed to perform `#fetch_references` operation'
         announce_error(message, references)
         return
       end
