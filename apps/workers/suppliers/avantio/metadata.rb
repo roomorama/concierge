@@ -170,6 +170,7 @@ module Workers::Suppliers::Avantio
 end
 
 # listen supplier worker
-Concierge::Announcer.on('metadata.Avantio') do |host|
+Concierge::Announcer.on('metadata.Avantio') do |host, args|
   Workers::Suppliers::Avantio::Metadata.new(host).perform
+  Result.new({})
 end

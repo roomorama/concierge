@@ -18,6 +18,7 @@ module Avantio
         number:                 'LocalizationData/Number',
         block:                  'LocalizationData/Block',
         door:                   'LocalizationData/Door',
+        floor:                  'LocalizationData/Floor',
         currency:               'Currency',
         people_capacity:        'Features/Distribution/PeopleCapacity',
         minimum_occupation:     'Features/Distribution/MinimumOccupation',
@@ -29,6 +30,8 @@ module Avantio
         berths:                 'Features/Distribution/Berths',
         housing_area:           'Features/Distribution/AreaHousing/Area',
         area_unit:              'Features/Distribution/AreaHousing/AreaUnit',
+        bathtub_bathrooms:      'Features/Distribution/BathroomWithBathtub',
+        shower_bathrooms:       'Features/Distribution/BathroomWithShower',
         pool_type:              'Features/HouseCharacteristics/SwimmingPool/PoolType',
         tv:                     'Features/HouseCharacteristics/TV',
         fire_place:             'Features/HouseCharacteristics/FirePlace',
@@ -61,7 +64,8 @@ module Avantio
       def convert_attrs!(attrs)
         to_i = [:people_capacity, :minimum_occupation, :bedrooms, :double_beds,
                 :individual_beds, :individual_sofa_beds, :double_sofa_beds, :berths,
-                :housing_area, :number_of_kitchens]
+                :housing_area, :number_of_kitchens, :bathtub_bathrooms,
+                :shower_bathrooms, :floor]
         to_i.each do |attr|
           value = attrs[attr]
           attrs[attr] = (value.to_i unless value.empty?)
