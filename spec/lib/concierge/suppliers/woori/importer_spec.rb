@@ -33,4 +33,17 @@ RSpec.describe Woori::Importer do
       importer.fetch_all_property_units(property_id)
     end
   end
+
+  describe "#fetch_unit_calendar" do
+    let(:property) { double }
+
+    it "calls fetcher class to load calendar" do
+      fetcher_class = Woori::Commands::CalendarFetcher
+
+      expect_any_instance_of(fetcher_class).to(
+        receive(:call).with(property)
+      )
+      importer.fetch_calendar(property)
+    end
+  end
 end

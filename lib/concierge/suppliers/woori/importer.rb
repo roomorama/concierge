@@ -62,6 +62,25 @@ module Woori
       command.find_all_by_property_id(property_id)
     end
 
+    # Retrieves availabilities data and builds calendar for property
+    # and all its units
+    #
+    # Arguments:
+    #
+    #   * +property+ [Property] property to fetch calender for
+    #
+    # Usage:
+    #
+    #   importer.fetch_calendar(property)
+    #
+    # Returns a +Result+ wrapping +Roomorama::Calendar+ object
+    # when operation succeeds
+    # Returns a +Result+ with +Result::Error+ when operation fails
+    def fetch_calendar(property)
+      calendar_fetcher = Commands::CalendarFetcher.new(credentials)
+      calendar_fetcher.call(property)
+    end
+
     private
     def read_file(type, location)
       case type
