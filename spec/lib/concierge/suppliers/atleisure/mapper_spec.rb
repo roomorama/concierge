@@ -83,8 +83,8 @@ RSpec.describe AtLeisure::Mapper do
           'DepartureTimeFrom'  => '09:00',
           'DepartureTimeUntil' => '10:00',
           'OnRequest'          => 'No',
-          'Price'              => 800,
-          'PriceExclDiscount'  => 800
+          'Price'              => 700,
+          'PriceExclDiscount'  => 700
         }
       }
 
