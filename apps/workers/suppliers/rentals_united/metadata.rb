@@ -27,6 +27,7 @@ module Workers::Suppliers::RentalsUnited
   end
 end
 
-Concierge::Announcer.on("metadata.RentalsUnited") do |host|
+Concierge::Announcer.on("metadata.RentalsUnited") do |host, args|
   Workers::Suppliers::RentalsUnited::Metadata.new(host).perform
+  Result.new({})
 end
