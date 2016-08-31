@@ -13,11 +13,8 @@ module Poplidays
 
       # availability is a hash representation of each element
       # from availabilities collection of Poplidays availabilies response.
-      # today is today date, the purpose of the argument to save consistency of more
-      # then one availability validation process.
-      def initialize(availability, today)
+      def initialize(availability)
         @availability = availability
-        @today = today
       end
 
       def valid?
@@ -35,7 +32,7 @@ module Poplidays
       end
 
       def actual?
-        Date.parse(availability['arrival']) > today
+        Date.parse(availability['arrival']) > Date.today
       end
     end
   end
