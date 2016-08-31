@@ -229,9 +229,8 @@ module AtLeisure
     end
 
     def set_price_and_availabilities
-      today = Date.today
       actual_stays = meta_data['AvailabilityPeriodV1'].select { |availability|
-        validator(availability, today).valid?
+        validator(availability).valid?
       }.map { |period| to_stay(period) }
 
       min_price  = actual_stays.map(&:rate).min
@@ -266,8 +265,8 @@ module AtLeisure
       })
     end
 
-    def validator(availability, today)
-      ::AtLeisure::AvailabilityValidator.new(availability, today)
+    def validator(availability)
+      ::AtLeisure::AvailabilityValidator.new(availability)
     end
   end
 end

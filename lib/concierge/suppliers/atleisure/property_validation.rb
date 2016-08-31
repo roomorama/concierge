@@ -17,12 +17,10 @@ module AtLeisure
       175  # Tent Lodge
     ]
 
-    attr_reader :payload, :today
+    attr_reader :payload
 
-    # today is date for relevance check of availabilities
-    def initialize(payload, today)
+    def initialize(payload)
       @payload = payload
-      @today = today
     end
 
     def valid?
@@ -67,7 +65,7 @@ module AtLeisure
     end
 
     def availability_validator(availability)
-      ::AtLeisure::AvailabilityValidator.new(availability, today)
+      ::AtLeisure::AvailabilityValidator.new(availability)
     end
 
     def code_for(item)

@@ -13,11 +13,10 @@ module Workers::Suppliers::AtLeisure
     end
 
     def perform
-      today = Date.today
       result = synchronisation.new_context { importer.fetch_properties }
       if result.success?
         grouped_actual_properties(result.value).each do |properties|
-          fetch_data_and_process(properties, today)
+          fetch_data_and_process(properties)
         end
         synchronisation.finish!
       else
@@ -34,13 +33,13 @@ module Workers::Suppliers::AtLeisure
       actual_properties.each_slice(BATCH_SIZE)
     end
 
-    def fetch_data_and_process(properties, today)
+    def fetch_data_and_process(properties)
       ids = identifiers(properties)
       result = synchronisation.new_context { importer.fetch_data(ids) }
       if result.success?
         properties_data = result.value
         properties_data.map do |property|
-          if validator(property, today).valid?
+          if validator(property).valid?
             synchronisation.start(property['HouseCode']) {
               # AtLeisure's API calls return with large result payloads while
               # synchronising properties, therefore, event tracking is disabled
@@ -64,8 +63,8 @@ module Workers::Suppliers::AtLeisure
       properties.map { |property| property['HouseCode'] }
     end
 
-    def validator(property, today)
-      ::AtLeisure::PropertyValidation.new(property, today)
+    def validator(property)
+      ::AtLeisure::PropertyValidation.new(property)
     end
 
     def importer

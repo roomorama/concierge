@@ -16,20 +16,19 @@ module AtLeisure
       #
       #  Returns +Result+ wrapping +Roomorama::Calendar+ in success case
       def build(availabilities)
-        today = Date.today
         property_id = availabilities['HouseCode']
 
         stays = Array(availabilities['AvailabilityPeriodV1']).select { |availability|
-          validator(availability, today).valid?
+          validator(availability).valid?
         }.map { |availability| to_stay(availability) }
 
-        build_calendar(property_id, stays, today)
+        build_calendar(property_id, stays)
       end
 
       private
 
-      def validator(availability, today)
-        ::AtLeisure::AvailabilityValidator.new(availability, today)
+      def validator(availability)
+        ::AtLeisure::AvailabilityValidator.new(availability)
       end
 
       def to_stay(availability)
@@ -40,9 +39,9 @@ module AtLeisure
         })
       end
 
-      def build_calendar(property_id, stays, today)
+      def build_calendar(property_id, stays)
         calendar = Roomorama::Calendar.new(property_id).tap do |c|
-          entries = Roomorama::Calendar::StaysMapper.new(stays, today).map
+          entries = Roomorama::Calendar::StaysMapper.new(stays, Date.today).map
           entries.each { |entry| c.add(entry) }
         end
 

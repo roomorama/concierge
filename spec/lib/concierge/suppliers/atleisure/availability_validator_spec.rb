@@ -46,16 +46,20 @@ RSpec.describe AtLeisure::AvailabilityValidator do
   end
   let(:today) { Date.new(2016, 11, 26) }
 
+  before do
+    allow(Date).to receive(:today).and_return(today)
+  end
+
   describe '#valid?' do
 
     it 'returns true for valid availability' do
-      validator = described_class.new(valid_availability, today)
+      validator = described_class.new(valid_availability)
       expect(validator.valid?).to be true
     end
 
     it 'returns false for invalid properties' do
       invalid_availabilities.each do |availability|
-        validator = described_class.new(availability, today)
+        validator = described_class.new(availability)
         expect(validator.valid?).to be false
       end
     end
