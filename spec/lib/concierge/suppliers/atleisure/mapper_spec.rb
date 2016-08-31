@@ -4,6 +4,10 @@ RSpec.describe AtLeisure::Mapper do
   include Support::Fixtures
 
   let(:layout_items) { JSON.parse(read_fixture('atleisure/layout_items.json')) }
+  let(:today) { Date.new(2016, 6, 18) }
+  before do
+    allow(Date).to receive(:today).and_return(Date.new(2016, 6, 18))
+  end
 
   subject { described_class.new(layout_items: layout_items) }
 

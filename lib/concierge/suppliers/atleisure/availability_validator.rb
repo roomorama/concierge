@@ -5,17 +5,14 @@ module AtLeisure
   # Each stay should be actual by date and not to be 'on request'.
   class AvailabilityValidator
 
-    attr_reader :availability, :today
+    attr_reader :availability
 
-    # Today arg is today date. It allows to save consistency of more
-    # then one availability validation process.
-    def initialize(availability, today)
+    def initialize(availability)
       @availability = availability
-      @today = today
     end
 
     def valid?
-      check_in > today && !on_request?
+      check_in > Date.today && !on_request?
     end
 
     private
