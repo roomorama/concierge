@@ -28,37 +28,28 @@ module Woori
       end
     end
 
-    attr_reader :credentials
+    attr_reader :credentials, :units_fetcher, :properties_fetcher,
+                :calendar_fetcher
 
     def initialize(credentials)
       @credentials = credentials
+      @units_fetcher = Commands::UnitsFetcher.new(units_import_files)
+      @properties_fetcher = Commands::PropertiesFetcher.new(properties_import_file)
+      @calendar_fetcher = Commands::CalendarFetcher.new(credentials)
     end
 
     # Retrieves the list of all properties
     #
     # Returns an +Array+ of +Roomorama::Property+ objects
     def fetch_all_properties
-      location = credentials.properties_import_file
-      file = fetcher.read(location)
-
-      command = Commands::PropertiesFetcher.new(file)
-      command.load_all_properties
+      properties_fetcher.load_all_properties
     end
 
     # Retrieves the list of all units
     #
     # Returns an +Array+ of +Roomorama::Unit+ objects
     def fetch_all_units
-      locations = [
-        credentials.units_1_import_file,
-        credentials.units_2_import_file,
-        credentials.units_3_import_file
-      ]
-
-      files = locations.map { |location| fetcher.read(location) }
-
-      command = Commands::UnitsFetcher.new(files)
-      command.load_all_units
+      units_fetcher.load_all_units
     end
 
     # Retrieves the list of units for a given property by its id
@@ -69,16 +60,7 @@ module Woori
     #
     # Returns an +Array+ of +Roomorama::Unit+ objects
     def fetch_all_property_units(property_id)
-      locations = [
-        credentials.units_1_import_file,
-        credentials.units_2_import_file,
-        credentials.units_3_import_file
-      ]
-
-      files = locations.map { |location| fetcher.read(location) }
-
-      command = Commands::UnitsFetcher.new(files)
-      command.find_all_by_property_id(property_id)
+      units_fetcher.find_all_by_property_id(property_id)
     end
 
     # Retrieves availabilities data and builds calendar for property
@@ -96,7 +78,6 @@ module Woori
     # when operation succeeds
     # Returns a +Result+ with +Result::Error+ when operation fails
     def fetch_calendar(property)
-      calendar_fetcher = Commands::CalendarFetcher.new(credentials)
       calendar_fetcher.call(property)
     end
 
@@ -104,6 +85,29 @@ module Woori
 
     def fetcher
       self.class.file_fetcher || (raise NoFetcherRegisteredError)
+    end
+
+    def units_import_files
+      @units_import_files ||= fetch_unit_import_files
+    end
+
+    def properties_import_file
+      @properties_import_file ||= fetch_properties_import_file
+    end
+
+    def fetch_properties_import_file
+      location = credentials.properties_import_file
+      fetcher.read(location)
+    end
+
+    def fetch_unit_import_files
+      locations = [
+        credentials.units_1_import_file,
+        credentials.units_2_import_file,
+        credentials.units_3_import_file
+      ]
+
+      locations.map { |location| fetcher.read(location) }
     end
   end
 end
