@@ -40,7 +40,7 @@ Kigo:
     metadata:
       every: "1d"
     availabilities:
-      every: "20m"
+      every: "1d"
       aggregated: true
 
 KigoLegacy:
@@ -48,5 +48,5 @@ KigoLegacy:
     metadata:
       every: "1d"
     availabilities:
-      every: "20m"
+      every: "1d"
       aggregated: true
