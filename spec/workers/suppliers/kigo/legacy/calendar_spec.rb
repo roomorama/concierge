@@ -16,12 +16,19 @@ RSpec.describe Workers::Suppliers::Kigo::Legacy::Calendar do
   end
 
   describe '#perform' do
+    let(:today) { Date.today }
+    let(:days_count) { 5 }
     let(:prices) { JSON.parse(read_fixture('kigo/pricing_setup.json')) }
-    let(:availabilities) { JSON.parse(read_fixture('kigo/availabilities.json'))['AVAILABILITY'] }
+    let(:reservations) {
+      [{
+         'RES_CHECK_IN'  => "#{today} 14:00",
+         'RES_CHECK_OUT' => "#{today + days_count} 11:00"
+       }]
+    }
 
     it 'performs according to response' do
       allow_any_instance_of(Kigo::Importer).to receive(:fetch_prices) { Result.new(prices) }
-      allow_any_instance_of(Kigo::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }
+      allow_any_instance_of(Kigo::Importer).to receive(:fetch_reservations) { Result.new(reservations) }
 
       expect { subject.perform }.to change {
         SyncProcessRepository.count
@@ -34,8 +41,8 @@ RSpec.describe Workers::Suppliers::Kigo::Legacy::Calendar do
       stats = sync_process.stats
 
       expect(stats[:properties_processed]).to eq 1
-      expect(stats[:available_records]).to eq 359
-      expect(stats[:unavailable_records]).to eq 7
+      expect(stats[:available_records]).to eq 361
+      expect(stats[:unavailable_records]).to eq days_count
     end
 
     it 'does not process property with external error' do
@@ -55,24 +62,6 @@ RSpec.describe Workers::Suppliers::Kigo::Legacy::Calendar do
       expect(stats[:unavailable_records]).to eq 0
     end
 
-    it 'sets only availabilities' do
-      empty_prices = { 'PRICING' => nil }
-      allow_any_instance_of(Kigo::Importer).to receive(:fetch_prices) { Result.new(empty_prices) }
-      allow_any_instance_of(Kigo::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }
-
-      subject.perform
-
-      sync_process = SyncProcessRepository.last
-
-      expect(sync_process.host_id).to eq host.id
-      expect(sync_process.type).to eq 'availabilities'
-
-      stats = sync_process.stats
-
-      expect(stats[:properties_processed]).to eq 1
-      expect(stats[:available_records]).to eq 1
-      expect(stats[:unavailable_records]).to eq 7
-    end
   end
 
 end

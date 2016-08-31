@@ -66,20 +66,15 @@ module Kigo
       availabilities.each do |availability|
         date      = availability['DATE']
         available = availability['MAX_LOS'] > 0 && availability['AVAILABLE_UNITS'] > 0
-        update_entries(date, available)
+        entry     = find_entry(date)
+
+        unless entry
+          entry = build_entry(date)
+          entries << entry
+        end
+
+        entry.available = available
       end
-    end
-
-    def update_entries(date, available)
-      entry = find_entry(date)
-
-      unless entry
-        entry              = build_entry(date)
-        entry.nightly_rate = default_nightly_rate
-        entries << entry
-      end
-
-      entry.available = available
     end
 
     def set_reservations(reservations)
@@ -87,7 +82,8 @@ module Kigo
         start_date = Date.parse(reservation['RES_CHECK_IN'])
         end_date   = Date.parse(reservation['RES_CHECK_OUT'])
         (start_date..end_date).each do |date|
-          update_entries(date.to_s, false)
+          entry = find_entry(date.to_s)
+          entry.available = false if entry
         end
       end
     end
@@ -98,7 +94,7 @@ module Kigo
     end
 
     def build_entry(date)
-      Roomorama::Calendar::Entry.new(date: date)
+      Roomorama::Calendar::Entry.new(date: date, nightly_rate: default_nightly_rate)
     end
 
     def default_nightly_rate
