@@ -43,7 +43,7 @@ module Workers::Suppliers::Woori
     end
 
     def all_property_units(property_id)
-      @all_units ||= importer.fetch_all_property_units(property_id)
+      importer.fetch_all_property_units(property_id)
     end
   end
 end
