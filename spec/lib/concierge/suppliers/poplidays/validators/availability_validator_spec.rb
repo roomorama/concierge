@@ -10,17 +10,19 @@ RSpec.describe Poplidays::Validators::AvailabilityValidator do
     ]
   end
   let(:valid_availability) { {'requestOnly' => false, 'priceEnabled' => true, 'arrival' => '2016-06-20'} }
-  let(:today) { Date.new(2016, 6, 18) }
+  before do
+    allow(Date).to receive(:today).and_return(Date.new(2016, 6, 18))
+  end
 
   describe '#valid?' do
     it 'returns true for valid availability' do
-      validator = described_class.new(valid_availability, today)
+      validator = described_class.new(valid_availability)
       expect(validator.valid?).to be_truthy
     end
 
     it 'returns false for on invalid availability' do
       invalid_availabilities.each do |availability|
-        validator = described_class.new(availability, today)
+        validator = described_class.new(availability)
         expect(validator.valid?).to be_falsey
       end
     end

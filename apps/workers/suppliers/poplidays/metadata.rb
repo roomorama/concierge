@@ -58,10 +58,8 @@ module Workers::Suppliers::Poplidays
     private
 
     def filter_availabilities(availabilities)
-      today = Date.today
-
       availabilities['availabilities'].select do |availability|
-        availability_validator(availability, today).valid?
+        availability_validator(availability).valid?
       end
     end
 
@@ -103,8 +101,8 @@ module Workers::Suppliers::Poplidays
       Poplidays::Validators::PropertyDetailsValidator.new(details)
     end
 
-    def availability_validator(details, today)
-      Poplidays::Validators::AvailabilityValidator.new(details, today)
+    def availability_validator(details)
+      Poplidays::Validators::AvailabilityValidator.new(details)
     end
 
     def credentials
