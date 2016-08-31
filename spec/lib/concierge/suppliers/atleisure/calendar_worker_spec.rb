@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Workers::Suppliers::AtLeisure::Calendar do
+RSpec.describe Workers::Suppliers::AtLeisure::Availabilities do
   include Support::Fixtures
   include Support::Factories
 
