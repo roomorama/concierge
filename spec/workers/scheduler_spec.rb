@@ -46,5 +46,21 @@ RSpec.describe Workers::Scheduler do
       expect(new_reloaded.status).to eq "idle"
       expect(pending_reloaded.status).to eq "idle"
     end
+
+    it "works correctly with aggregated workers" do
+      worker = create_background_worker(
+        type:        "availabilities",
+        supplier_id: create_supplier(name: "Supplier2").id,
+        host_id:     nil,
+        next_run_at: nil
+      )
+
+      expect(subject).to receive(:enqueue).once
+      subject.trigger_pending!
+
+      expect(logger.messages).to eq [
+        "action=availabilities supplier.name=Supplier2"
+      ]
+    end
   end
 end
