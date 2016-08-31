@@ -152,6 +152,10 @@ module Web::Views::ExternalErrors
       Time.parse(timestamp).strftime("%T (%z)")
     end
 
+    # Make +Hanami::Helpers::EscapeHelper#escape_html+ public
+    # and available from templates
+    public :h
+
     private
 
     def pretty_print_xml(content)
