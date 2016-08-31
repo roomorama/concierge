@@ -5,7 +5,6 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
-- SAW: fixed reference_number parameter name for cancellation 
 
 ### Added
 - Support for the `aggregated` flag on `config/suppliers.yml`, allowing workers to run once per supplier.
@@ -14,6 +13,7 @@ how this file is formatted and how the process works.
 ### Fixed
 - SAW: ignore non-refundable prices for units while rates fetching
 - Ignore unsupported ciirus property types until another review
+- SAW: fixed reference_number parameter name for cancellation
 
 ## [0.7.3] - 2016-08-25
 ### Changed
