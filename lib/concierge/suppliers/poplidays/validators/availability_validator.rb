@@ -9,7 +9,7 @@ module Poplidays
     #   * property price is only available through call center
     #   * stay is too old
     class AvailabilityValidator
-      attr_reader :availability, :today
+      attr_reader :availability
 
       # availability is a hash representation of each element
       # from availabilities collection of Poplidays availabilies response.
