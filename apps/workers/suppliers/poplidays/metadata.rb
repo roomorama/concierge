@@ -38,8 +38,6 @@ module Workers::Suppliers::Poplidays
             end
 
             synchronisation.start(property_id) do
-              Concierge.context.disable!
-
               result = fetch_extras(property_id)
               extras = result.value if result.success?
 
@@ -67,14 +65,6 @@ module Workers::Suppliers::Poplidays
       end
     end
 
-    def report_error(message)
-      yield.tap do |result|
-        unless result.success?
-          with_context_enabled { augment_context_error(message) }
-        end
-      end
-    end
-
     def fetch_property_details(property_id)
       importer.fetch_property_details(property_id).tap do |result|
         message = "Failed to fetch details for property `#{property_id}`"
@@ -90,17 +80,11 @@ module Workers::Suppliers::Poplidays
     end
 
     def fetch_extras(property_id)
-      message = "Failed to fetch extras info for property `#{property_id}`. " \
-            "But continue to sync the property as well as extras is optional information."
-      report_error(message) do
-        importer.fetch_extras(property_id)
+      importer.fetch_extras(property_id).tap do |result|
+        message = "Failed to fetch extras info for property `#{property_id}`. " \
+          "But continue to sync the property as well as extras is optional information."
+        announce_error(message, result) unless result.success?
       end
-    end
-
-    def with_context_enabled
-      Concierge.context.enable!
-      yield
-      Concierge.context.disable!
     end
 
     def mapper
