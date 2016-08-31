@@ -54,7 +54,7 @@ module SAW
       command.call(params)
     end
 
-    # Cancels a given reservation_id
+    # Cancels a given reference_number
     #
     # Always returns a +Result+.
     # Augments any error on the request context.
@@ -73,7 +73,7 @@ module SAW
     # Returns a +Result+ wrapping a nil object when operation fails
     def cancel(params)
       command = SAW::Commands::Cancel.new(credentials)
-      command.call(params[:reservation_id])
+      command.call(params[:reference_number])
     end
   end
 end
