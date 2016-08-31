@@ -62,20 +62,14 @@ module Avantio
         result.number_of_sofa_beds = fetch_sofa_beds(accommodation)
         result.surface = accommodation.housing_area
         result.surface_unit = fetch_surface_unit(accommodation)
-
-
-
-
-        result.amenities = property.amenities
-        result.pets_allowed = property.pets_allowed
-        result.currency = property.currency_code
+        result.pets_allowed = accommodation.pets_allowed
+        result.currency = accommodation.currency
         result.cancellation_policy = CANCELLATION_POLICY
-
       end
 
       def fetch_surface_unit(accommodation)
-        if accommodation.housing_area && accommodation.area_unit == 'm'
-          'metric'
+        if accommodation.housing_area
+          accommodation.area_unit == 'm' ? 'metric' : 'imperial'
         end
       end
 
