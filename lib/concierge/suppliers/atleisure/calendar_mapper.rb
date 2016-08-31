@@ -37,7 +37,6 @@ module AtLeisure
           checkin:    availability['ArrivalDate'],
           checkout:   availability['DepartureDate'],
           price:      availability['Price'].to_f,
-          available:  true
         })
       end
 

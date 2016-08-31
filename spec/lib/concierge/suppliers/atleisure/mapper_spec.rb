@@ -83,8 +83,8 @@ RSpec.describe AtLeisure::Mapper do
           'DepartureTimeFrom'  => '09:00',
           'DepartureTimeUntil' => '10:00',
           'OnRequest'          => 'No',
-          'Price'              => 800,
-          'PriceExclDiscount'  => 800
+          'Price'              => 700,
+          'PriceExclDiscount'  => 700
         }
       }
 
@@ -143,9 +143,9 @@ RSpec.describe AtLeisure::Mapper do
       expect(property.type).to eq 'house'
       expect(property.subtype).to eq 'house'
       expect(property.minimum_stay).to eq 2
-      expect(property.nightly_rate.to_i).to eq 57
-      expect(property.weekly_rate.to_i).to eq 402
-      expect(property.monthly_rate.to_i).to eq 1722
+      expect(property.nightly_rate.to_i).to eq 67
+      expect(property.weekly_rate.to_i).to eq 469
+      expect(property.monthly_rate.to_i).to eq 2010
 
       expect(property.owner_email).to eq 'belvillapt@belvilla.com'
       expect(property.owner_phone_number).to eq '(+32) 03 808 09 54'
