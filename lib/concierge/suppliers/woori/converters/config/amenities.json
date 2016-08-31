@@ -2,9 +2,15 @@
   "enabled-amenities": {
     "TV": "tv",
     "DVD": "tv",
+    "cabletv": "cabletv",
     "air conditioner": "airconditioning",
     "air_conditioner": "airconditioning",
+    "airconditioner": "airconditioning",
+    "balcony": "balcony",
+    "kitchen": "kitchen",
     "cookware": "kitchen",
+    "laundry": "laundry",
+    "pool": "pool",
     "swimming pool - 15m": "pool",
     "swimming pool": "pool",
     "swimming_pool": "pool",
@@ -12,7 +18,9 @@
     "infant's_swimming_pool": "pool",
     "free breakfast": "breakfast",
     "free_breakfast": "breakfast",
-    "internet": "internet"
+    "breakfast": "breakfast",
+    "internet": "internet",
+    "wifi": "wifi"
   },
 
   "disabled-amenities": [
