@@ -71,7 +71,7 @@ module Avantio
       def convert_attrs!(attrs)
         # Convert integer fields to integer or nil
         to_i = [:people_capacity, :minimum_occupation, :bedrooms, :double_beds,
-                :individual_beds, :individual_sofa_beds, :double_sofa_beds, :berths,
+                :individual_beds, :individual_sofa_beds, :double_sofa_beds,
                 :housing_area, :number_of_kitchens, :bathtub_bathrooms,
                 :shower_bathrooms, :floor]
         to_i.each do |attr|

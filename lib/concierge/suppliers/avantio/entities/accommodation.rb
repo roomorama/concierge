@@ -55,7 +55,7 @@ module Avantio
         @dvd                             = attrs[:dvd]
         @balcony                         = attrs[:balcony]
         @gym                             = attrs[:gym]
-        @handicapped_facilities          = attrs[:handicapped_facilities] # need to be parsed
+        @handicapped_facilities          = attrs[:handicapped_facilities]
         @number_of_kitchens              = attrs[:number_of_kitchens]
         @washing_machine                 = attrs[:washing_machine]
         @pets_allowed                    = attrs[:pets_allowed]
