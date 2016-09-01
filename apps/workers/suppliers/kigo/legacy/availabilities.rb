@@ -82,4 +82,5 @@ end
 
 Concierge::Announcer.on("reservations.KigoLegacy") do |supplier, args|
   Workers::Suppliers::Kigo::Legacy::Availabilities.new(supplier, args).perform
+  Result.new({})
 end
