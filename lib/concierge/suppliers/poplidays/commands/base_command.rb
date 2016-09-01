@@ -108,7 +108,7 @@ module Poplidays
 
       def client
         url = "#{protocol}://#{credentials.url}"
-        @client ||= Concierge::HTTPClient.new(url, options = {timeout: timeout})
+        @client ||= Concierge::HTTPClient.new(url, timeout: timeout)
       end
 
       def escape_params(params)
