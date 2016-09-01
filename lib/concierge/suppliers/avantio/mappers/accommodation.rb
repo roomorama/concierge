@@ -64,6 +64,7 @@ module Avantio
         attrs = fetch_attrs(accommodation_raw)
         convert_attrs!(attrs)
         pets_allowed!(attrs, accommodation_raw)
+        cleaning_service!(attrs, accommodation_raw)
 
         Avantio::Entities::Accommodation.new(attrs)
       end
@@ -85,7 +86,7 @@ module Avantio
       def security_deposit!(attrs, accommodation_raw)
         service_raw = accommodation_raw.at_xpath(DEPOSIT_SERVICE_SELECTOR)
         if included_in_price(service_raw) == 'false' && required?(service_raw)
-          amount = service_raw&.at_xpath('AdditionalPrice/Quantity')&.text&.to_f
+          amount = service_price(service_raw)
           type = service_raw&.at_xpath('PaymentMethod')&.text&.to_s
           unless amount == 0
             attrs[:security_deposit_amount] = amount
@@ -93,6 +94,22 @@ module Avantio
             attrs[:serucirty_deposit_currency_code] = service_raw&.at_xpath('AdditionalPrice/Currency')
           end
         end
+      end
+
+      def cleaning_service!(attrs, accommodation_raw)
+        service_raw = accommodation_raw.at_xpath(CLEANING_SERVICE_SELECTOR)
+        if included_in_price(service_raw) == 'false'
+          amount = service_price(service_raw)
+          unless amount == 0
+            attrs[:services_cleaning] = true
+            attrs[:services_cleaning_rate] = amount
+            attrs[:services_cleaning_required] = required?(service_raw)
+          end
+        end
+      end
+
+      def service_price(service_raw)
+        service_raw&.at_xpath('AdditionalPrice/Quantity')&.text&.to_f
       end
 
 
