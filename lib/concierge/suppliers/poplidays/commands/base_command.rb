@@ -3,7 +3,7 @@ module Poplidays
     # +Poplidays::Commands::BaseCommand+
     #
     # Base class for all call Poplidays API commands. Each child should
-    # implement two methods:
+    # implement three methods:
     #  - method - HTTP method to be used for remote call
     #  - path - the part of URL after domain and API's version. It can
     #           contains named parameters to be placed using sprintf function
