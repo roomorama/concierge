@@ -106,20 +106,20 @@ module Avantio
         amenities = []
         amenities << accommodation.bed_linen && accommodation.towels
         amenities << 'kitchen' if accommodation.number_of_kitchens.to_i > 0
-        # amenities << 'wifi' # from accommodation
-        # amenities << 'internet' # from accommodation
+        amenities << 'internet' if accommodation.internet
         amenities << 'tv' if accommodation.tv || accommodation.dvd
-        # amenities << 'parking' # from accommodation
-        # amenities << 'airconditioning' # from accommodation
+        amenities << 'parking' if accommodation.parking
+        amenities << 'airconditioning' if accommodation.airconditioning
         amenities << 'laundry' if accommodation.washing_machine
         amenities << 'free_cleaning' if accommodation.free_cleaning
         amenities << 'wheelchairaccess' if suitable_for_disabled?(accommodation)
         amenities << 'pool' if pool?(accommodation)
         amenities << 'gym' if accommodation.gym
-        # amenities << 'breakfast'
         amenities << 'elevator' if accommodation.elevator
         amenities << 'balcony' if accommodation.balcony
         amenities << 'outdoor_space' if outdoor_space?(accommodation)
+
+        result.amenities = amenities
       end
 
       def pool?(accommodation)
