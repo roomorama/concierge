@@ -12,6 +12,51 @@ module Workers
   # hosts were synchronised can be checked from there.
   class Scheduler
 
+    # the logger classes below aim to provide a unique interface for generating
+    # log messages for host and supplier-related workers. The methods expected to
+    # be implemented are:
+    #
+    # +initialize(worker)+
+    # Initializes the logger, receiving an instance of +BackgroundWorker+
+    #
+    # +to_s+
+    # Returns a +String+ with the scheduler message to be logged.
+
+    # +Workers::Scheduler::HostLogger+
+    #
+    # Generates log messages for host background workers being scheduled.
+    class HostLogger
+      attr_reader :worker
+
+      def initialize(worker)
+        @worker = worker
+      end
+
+      def to_s
+        host = HostRepository.find(worker.host_id)
+
+        "action=%s host.username=%s host.identifier=%s" %
+          [worker.type, host.username, host.identifier]
+      end
+    end
+
+    # +Workers::Scheduler::SupplierLogger+
+    #
+    # Generates log messages for supplier background workers (+aggregated+ type)
+    # being scheduled.
+    class SupplierLogger
+      attr_reader :worker
+
+      def initialize(worker)
+        @worker = worker
+      end
+
+      def to_s
+        supplier = SupplierRepository.find(worker.supplier_id)
+        "action=%s supplier.name=%s" % [worker.type, supplier.name]
+      end
+    end
+
     # the default path to the file where the logs of this class are written.
     LOG_PATH = Hanami.root.join("log", "scheduler.log").to_s
 
@@ -48,17 +93,23 @@ module Workers
 
     def log_event(worker)
       host = HostRepository.find(worker.host_id)
+      entity_logger = entity_logger_for(worker)
 
-      message = "action=%s host.username=%s host.identifier=%s" %
-        [worker.type, host.username, host.identifier]
-
-      logger.info(message)
+      logger.info(entity_logger.to_s)
     end
 
     def queue
       @queue ||= begin
         credentials = Concierge::Credentials.for("sqs")
         Workers::Queue.new(credentials)
+      end
+    end
+
+    def entity_logger_for(worker)
+      if worker.supplier_id
+        SupplierLogger.new(worker)
+      else
+        HostLogger.new(worker)
       end
     end
 
