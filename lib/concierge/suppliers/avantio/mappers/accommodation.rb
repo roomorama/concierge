@@ -27,7 +27,6 @@ module Avantio
         individual_beds:        'Features/Distribution/IndividualBeds',
         individual_sofa_beds:   'Features/Distribution/IndividualSofaBed',
         double_sofa_beds:       'Features/Distribution/DoubleSofaBed',
-        berths:                 'Features/Distribution/Berths',
         housing_area:           'Features/Distribution/AreaHousing/Area',
         area_unit:              'Features/Distribution/AreaHousing/AreaUnit',
         bathtub_bathrooms:      'Features/Distribution/BathroomWithBathtub',
