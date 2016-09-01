@@ -80,5 +80,5 @@ module Workers::Suppliers::Kigo
 end
 
 Concierge::Announcer.on("availabilities.Kigo") do |supplier, args|
-  Workers::Suppliers::Kigo::Availabilities.new(supplier, args[:prices_diff_id], args[:availabilities_diff_id]).perform
+  Workers::Suppliers::Kigo::Availabilities.new(supplier, args).perform
 end
