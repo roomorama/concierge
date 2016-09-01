@@ -69,4 +69,17 @@ RSpec.describe ExternalErrorRepository do
       expect(described_class.from_supplier_named("B").count).to eq 3
     end
   end
+
+  describe ".with_code" do
+    it "returns an empty collection if no records match the given code" do
+      expect(described_class.with_code("soap_error").to_a).to eq []
+    end
+
+    it "returns only errors with the code provided" do
+      soap_error   = create_external_error(code: "soap_error")
+      http_timeout = create_external_error(code: "http_timeout")
+
+      expect(described_class.with_code("soap_error").to_a).to eq [soap_error]
+    end
+  end
 end
