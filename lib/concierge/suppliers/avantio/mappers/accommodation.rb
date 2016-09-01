@@ -45,80 +45,22 @@ module Avantio
         gym:                    'Features/HouseCharacteristics/Gym',
         handicapped_facilities: 'Features/HouseCharacteristics/HandicappedFacilities',
         number_of_kitchens:     'Features/HouseCharacteristics/Kitchen/NumberOfKitchens',
-      }
-
-      PETS_SERVICE_SELECTOR = 'Features/ExtrasAndServices/SpecialServices/SpecialService[Code[text() = "9"]]'
-      DEPOSIT_SERVICE_SELECTOR = 'Features/ExtrasAndServices/SpecialServices/SpecialService[Code[text() = "11"]]'
-
-
-      SECURITY_DEPOSIT_TYPES = {
-        'DINERO'            => 'cash',
-        'TARJETA_RETENCION' => 'credit_card_auth',
-        'TARJETA_COBRO'     => 'credit_card_auth',
-        'TARJETA_GARANTIA'  => 'credit_card_auth',
-        'CHEQUE_VACANCES'   => 'check',
-        'CHEQUE'            => 'check'
+        washing_machine:        'Features/HouseCharacteristics/Kitchen/WashingMachine',
       }
 
       def build(accommodation_raw)
         attrs = fetch_attrs(accommodation_raw)
         convert_attrs!(attrs)
-        pets_allowed!(attrs, accommodation_raw)
-        cleaning_service!(attrs, accommodation_raw)
 
-        Avantio::Entities::Accommodation.new(attrs)
+        services_attrs = services_mapper.build(accommodation_raw)
+
+        Avantio::Entities::Accommodation.new(attrs.merge(services_attrs))
       end
 
       private
 
-      def pets_allowed!(attrs, accommodation_raw)
-        service_raw = accommodation_raw.at_xpath(PETS_SERVICE_SELECTOR)
-        if included_in_price(service_raw) == 'true'
-           # There also possible value "peso-menor-que" (WEIGHT-LESS-THAN)
-           # we ignore this case
-           attrs[:pets_allowed] = case service_raw.at_xpath('Allowed')&.text.to_s
-                                  when 'si' then true
-                                  when 'no' then false
-                                  end
-        end
-      end
-
-      def security_deposit!(attrs, accommodation_raw)
-        service_raw = accommodation_raw.at_xpath(DEPOSIT_SERVICE_SELECTOR)
-        if included_in_price(service_raw) == 'false' && required?(service_raw)
-          amount = service_price(service_raw)
-          type = service_raw&.at_xpath('PaymentMethod')&.text&.to_s
-          unless amount == 0
-            attrs[:security_deposit_amount] = amount
-            attrs[:sercurity_deposit_type] = SECURITY_DEPOSIT_TYPES.fetch(type, 'unknown')
-            attrs[:serucirty_deposit_currency_code] = service_raw&.at_xpath('AdditionalPrice/Currency')
-          end
-        end
-      end
-
-      def cleaning_service!(attrs, accommodation_raw)
-        service_raw = accommodation_raw.at_xpath(CLEANING_SERVICE_SELECTOR)
-        if included_in_price(service_raw) == 'false'
-          amount = service_price(service_raw)
-          unless amount == 0
-            attrs[:services_cleaning] = true
-            attrs[:services_cleaning_rate] = amount
-            attrs[:services_cleaning_required] = required?(service_raw)
-          end
-        end
-      end
-
-      def service_price(service_raw)
-        service_raw&.at_xpath('AdditionalPrice/Quantity')&.text&.to_f
-      end
-
-
-      def required?(service_raw)
-        service_raw&.at_xpath('Application')&.text.to_s == 'OBLIGATORIO-SIEMPRE'
-      end
-
-      def included_in_price(service_raw)
-        service_raw&.at_xpath('IncludedInPrice')&.text.to_s
+      def services_mapper
+        Avantio::Mappers::Services.new
       end
 
       def fetch_attrs(accommodation_raw)
@@ -140,7 +82,7 @@ module Avantio
 
         # Convert boolean fields to boolean or nil
         to_bool = [:tv, :fire_place, :garden, :bbq, :terrace, :fenced_plot,
-                   :elevator, :dvd, :balcony, :gym]
+                   :elevator, :dvd, :balcony, :gym, :washing_machine]
         to_bool.each do |attr|
           value = attrs[attr]
           attrs[attr] = (value == 'true' unless value.empty?)
