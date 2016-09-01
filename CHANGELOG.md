@@ -5,6 +5,10 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+### Changed
+- Rename class: `Workers::Suppliers::Ciirus::Calendar` -> `Workers::Suppliers::Ciirus::Availabilities`
+- Rename spec file: ciirus/calendar_worker_spec.rb -> ciirus/availabilities_spec.rb
+- Rename spec file: ciirus/metadata_worker_spec.rb -> ciirus/metadata_spec.rb
 
 ### Added
 - Support for the `aggregated` flag on `config/suppliers.yml`, allowing workers to run once per supplier.
