@@ -150,7 +150,7 @@ RSpec.describe Workers::Processor::BackgroundWorker do
       subject = described_class.new(data)
 
       error = nil
-      expect(Rollbar).to receive(:error) { |err| error = err }
+      expect(Rollbar).to receive(:warning) { |err| error = err }
 
       result = subject.run
       expect(result).to be_a Result
