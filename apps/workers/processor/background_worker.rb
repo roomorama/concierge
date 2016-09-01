@@ -11,6 +11,8 @@ class Workers::Processor
   # respectively, is passed to code listening via +Concierge::Announcer+.
   class BackgroundWorker
 
+    WORKER_NOT_FOUND = :invalid_worker_id
+
     # +Workers::Processor::BackgroundWorker::NotAResultError+
     #
     # Error raised when the implementation of a background worker event is run
@@ -118,7 +120,7 @@ class Workers::Processor
     # event on +Concierge::Announcer+.
     def run
       worker_lookup = fetch_worker(data[:background_worker_id])
-      return worker_lookup unless worker_lookup.success?
+      return worker_lookup if not_found?(worker_lookup)
 
       worker = worker_lookup.value
       return Result.new(true) if worker.running?
@@ -214,8 +216,8 @@ class Workers::Processor
     end
 
     # tries to fetch the worker with the given +id+ from the database. If there
-    # is none, notfies the occurrence to Rollbar, and returns an unsuccessful
-    # result, which will cause the processor to terminate.
+    # is none, notfies the occurrence to Rollbar, and returns a +Result+ wrapping
+    # +Workers::Processor::BackgroundWorker::WORKER_NOT_FOUND+.
     def fetch_worker(id)
       worker = BackgroundWorkerRepository.find(id)
 
@@ -225,8 +227,12 @@ class Workers::Processor
         error = UnknownWorkerError.new(id)
         Rollbar.error(error)
 
-        Result.error(:invalid_worker_id)
+        Result.new(WORKER_NOT_FOUND)
       end
+    end
+
+    def not_found?(result)
+      result.value == WORKER_NOT_FOUND
     end
 
     # NOTE this time out should be shorter than the +VisibilityTimeout+ configured
