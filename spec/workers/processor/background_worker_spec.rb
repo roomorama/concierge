@@ -61,12 +61,7 @@ RSpec.describe Workers::Processor::BackgroundWorker do
     context "background workers associated with hosts" do
       let(:worker) { create_background_worker(host_id: host.id, type: "metadata") }
 
-      it_behaves_like "returning a Result and saving next run arguments" do
-        before do
-          supplier.name = "Acme"
-          SupplierRepository.update(supplier)
-        end
-      end
+      it_behaves_like "returning a Result and saving next run arguments"
 
       it "returns early if the worker is currently busy" do
         worker.status = "running"
@@ -147,6 +142,22 @@ RSpec.describe Workers::Processor::BackgroundWorker do
           expect(reloaded_worker.status).to eq "idle"
         end
       end
+    end
+
+    it "informs an error when the enqueued ID does not exist on the database" do
+      worker  = create_background_worker
+      data    = Concierge::SafeAccessHash.new(background_worker_id: worker.id + 1)
+      subject = described_class.new(data)
+
+      error = nil
+      expect(Rollbar).to receive(:error) { |err| error = err }
+
+      result = subject.run
+      expect(result).to be_a Result
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :invalid_worker_id
+
+      expect(error).to be_a Workers::Processor::BackgroundWorker::UnknownWorkerError
     end
 
     def listening_to(event, block:)
