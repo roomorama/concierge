@@ -192,6 +192,12 @@ class Workers::Processor
     end
 
     def worker_completed(worker, result)
+      # it is possible that the worker no longer exists by the time it finished.
+      # This happens, for instance, with Kigo Legacy where, during the synchronisation
+      # process, the host can be deemed to be inactive. In such scenario the host
+      # is deleted, along with any associated background worker.
+      return unless worker
+
       worker.status      = "idle"
       worker.next_run_at = Time.now + worker.interval
 
