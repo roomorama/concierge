@@ -9,11 +9,12 @@ how this file is formatted and how the process works.
 ### Added
 - Support for the `aggregated` flag on `config/suppliers.yml`, allowing workers to run once per supplier.
 - Allow worker implementation specify parameters for the next run.
+- Better error message for unknown background worker IDs enqueued.
 
 ### Fixed
 - SAW: ignore non-refundable prices for units while rates fetching
 - Ignore unsupported ciirus property types until another review
-- SAW: fixed reference_number parameter name for cancellation
+- SAW: fixed `reference_number` parameter name for cancellation
 
 ## [0.7.3] - 2016-08-25
 ### Changed

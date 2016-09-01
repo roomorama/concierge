@@ -32,6 +32,17 @@ class Workers::Processor
       end
     end
 
+    # +Workers::Processor::BackgroundWorker::UnknownWorkerError+
+    #
+    # Error raised when the message read from the queue and processed contains an
+    # ID for which there is no corresponding +BackgroundWorker+ record on the
+    # database.
+    class UnknownWorkerError < RuntimeError
+      def initialize(id)
+        super("Background worker task with ID #{id}, which does not exist on the database. Skipping.")
+      end
+    end
+
     # The classes below are responsible for determining parameters to be used
     # when invoking the correct supplier implementation. They are expected to
     # implement two methods:
@@ -106,7 +117,10 @@ class Workers::Processor
     # parameter given on initialization), and invokes the +<worker_type>.<supplier_name>+
     # event on +Concierge::Announcer+.
     def run
-      worker = BackgroundWorkerRepository.find(data[:background_worker_id])
+      worker_lookup = fetch_worker(data[:background_worker_id])
+      return worker_lookup unless worker_lookup.success?
+
+      worker = worker_lookup.value
       return Result.new(true) if worker.running?
 
       runner    = runner_for(worker)
@@ -196,6 +210,22 @@ class Workers::Processor
 
       if instance.success? && !instance.value.respond_to?(:to_h)
         raise NotMappableError.new(event, instance)
+      end
+    end
+
+    # tries to fetch the worker with the given +id+ from the database. If there
+    # is none, notfies the occurrence to Rollbar, and returns an unsuccessful
+    # result, which will cause the processor to terminate.
+    def fetch_worker(id)
+      worker = BackgroundWorkerRepository.find(id)
+
+      if worker
+        Result.new(worker)
+      else
+        error = UnknownWorkerError.new(id)
+        Rollbar.error(error)
+
+        Result.error(:invalid_worker_id)
       end
     end
 
