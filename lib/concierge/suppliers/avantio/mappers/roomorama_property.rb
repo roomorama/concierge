@@ -104,7 +104,7 @@ module Avantio
 
       def set_amenities!(result, accommodation)
         amenities = []
-        # amenities << 'bed_linen_and_towels'
+        amenities << accommodation.bed_linen && accommodation.towels
         amenities << 'kitchen' if accommodation.number_of_kitchens.to_i > 0
         # amenities << 'wifi' # from accommodation
         # amenities << 'internet' # from accommodation
