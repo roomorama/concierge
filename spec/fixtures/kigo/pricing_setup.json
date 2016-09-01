@@ -1,0 +1,243 @@
+{
+  "PRICING": {
+    "CURRENCY": "EUR",
+    "RENT": {
+      "PERGUEST_CHARGE": null,
+      "PERIODS": [
+        {
+          "CHECK_IN": "2016-07-01",
+          "CHECK_OUT": "2016-09-01",
+          "NAME": "",
+          "STAY_MIN": {
+            "UNIT": "NIGHT",
+            "NUMBER": 5
+          },
+          "WEEKLY": false,
+          "NIGHTLY_AMOUNTS": [
+            {
+              "GUESTS_FROM": 1,
+              "WEEK_NIGHTS": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "STAY_FROM": {
+                "UNIT": "NIGHT",
+                "NUMBER": 3
+              },
+              "AMOUNT": "23.46"
+            },
+            {
+              "GUESTS_FROM": 1,
+              "WEEK_NIGHTS": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "STAY_FROM": {
+                "UNIT": "NIGHT",
+                "NUMBER": 5
+              },
+              "AMOUNT": "23.46"
+            },
+            {
+              "GUESTS_FROM": 1,
+              "WEEK_NIGHTS": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "STAY_FROM": {
+                "UNIT": "NIGHT",
+                "NUMBER": 8
+              },
+              "AMOUNT": "23.46"
+            }
+          ]
+        },
+        {
+          "CHECK_IN": "2016-09-01",
+          "CHECK_OUT": "2016-11-01",
+          "NAME": "",
+          "STAY_MIN": {
+            "UNIT": "NIGHT",
+            "NUMBER": 3
+          },
+          "WEEKLY": false,
+          "NIGHTLY_AMOUNTS": [
+            {
+              "GUESTS_FROM": 1,
+              "WEEK_NIGHTS": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "STAY_FROM": {
+                "UNIT": "NIGHT",
+                "NUMBER": 3
+              },
+              "AMOUNT": "29.24"
+            },
+            {
+              "GUESTS_FROM": 1,
+              "WEEK_NIGHTS": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "STAY_FROM": {
+                "UNIT": "NIGHT",
+                "NUMBER": 5
+              },
+              "AMOUNT": "29.24"
+            },
+            {
+              "GUESTS_FROM": 1,
+              "WEEK_NIGHTS": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "STAY_FROM": {
+                "UNIT": "NIGHT",
+                "NUMBER": 8
+              },
+              "AMOUNT": "29.24"
+            }
+          ]
+        },
+        {
+          "CHECK_IN": "2016-11-01",
+          "CHECK_OUT": "2018-01-22",
+          "NAME": "",
+          "STAY_MIN": {
+            "UNIT": "NIGHT",
+            "NUMBER": 8
+          },
+          "WEEKLY": false,
+          "NIGHTLY_AMOUNTS": [
+            {
+              "GUESTS_FROM": 1,
+              "WEEK_NIGHTS": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "STAY_FROM": {
+                "UNIT": "NIGHT",
+                "NUMBER": 3
+              },
+              "AMOUNT": "30.86"
+            },
+            {
+              "GUESTS_FROM": 1,
+              "WEEK_NIGHTS": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "STAY_FROM": {
+                "UNIT": "NIGHT",
+                "NUMBER": 5
+              },
+              "AMOUNT": "30.86"
+            },
+            {
+              "GUESTS_FROM": 1,
+              "WEEK_NIGHTS": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ],
+              "STAY_FROM": {
+                "UNIT": "NIGHT",
+                "NUMBER": 8
+              },
+              "AMOUNT": "30.86"
+            }
+          ]
+        }
+      ]
+    },
+    "FEES": {
+      "FEES": [
+        {
+          "FEE_TYPE_ID": 3,
+          "INCLUDE_IN_RENT": false,
+          "UNIT": "AMOUNT",
+          "VALUE": 150,
+          "LABEL": "Housekeeping - 150"
+        },
+        {
+          "FEE_TYPE_ID": 16,
+          "INCLUDE_IN_RENT": false,
+          "UNIT": "PERCENT_RENT",
+          "VALUE": 0.07,
+          "LABEL": "Sales Tax"
+        }
+      ]
+    },
+    "DISCOUNTS": {
+      "EARLY_BIRD": null,
+      "LAST_MINUTE": null,
+      "SPECIAL": [
+
+      ]
+    },
+    "DEPOSIT": {
+      "UNIT": "AMOUNT",
+      "VALUE": 300,
+      "LABEL": "Refundable Security Deposit"
+    },
+    "DEPOSITS_MAY_APPLY": true,
+    "DEPOSITS": [
+      {
+        "UNIT": "AMOUNT",
+        "VALUE": 300,
+        "LABEL": "Refundable Security Deposit"
+      }
+    ],
+    "MIN_STAY": {
+      "DEFAULT_VALUE": 0,
+      "MIN_STAY_RULES": [
+
+      ]
+    }
+  }
+}

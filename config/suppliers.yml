@@ -34,3 +34,8 @@ SAW:
       every: "1d"
     availabilities:
       absence: "SAW does not provide a way to fetch the calendar of availabilities. Default availability is assumed."
+
+Kigo:
+  workers:
+    metadata:
+      every: "1d"

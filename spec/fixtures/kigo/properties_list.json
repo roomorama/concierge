@@ -1,0 +1,42 @@
+[
+  {
+    "PROP_ID": 194100,
+    "PROP_PROVIDER": {
+      "PROVIDER_TYPE": "RA",
+      "RA_ID": 14908
+    },
+    "PROP_NAME": "VILLA KIRI"
+  },
+  {
+    "PROP_ID": 216169,
+    "PROP_PROVIDER": {
+      "PROVIDER_TYPE": "RA",
+      "RA_ID": 14985
+    },
+    "PROP_NAME": "Villa Patricia"
+  },
+  {
+    "PROP_ID": 146968,
+    "PROP_PROVIDER": {
+      "PROVIDER_TYPE": "RA",
+      "RA_ID": 5573
+    },
+    "PROP_NAME": "Laurel Canyon Modern Villa"
+  },
+  {
+    "PROP_ID": 180918,
+    "PROP_PROVIDER": {
+      "PROVIDER_TYPE": "RA",
+      "RA_ID": 14612
+    },
+    "PROP_NAME": "Sacred Cusco 3 Bedroom Centrally Located !! Excellent Value"
+  },
+  {
+    "PROP_ID": 237294,
+    "PROP_PROVIDER": {
+      "PROVIDER_TYPE": "RA",
+      "RA_ID": 15826
+    },
+    "PROP_NAME": "Villa immersa nel verde  700 metri primo lido "
+  }
+]
