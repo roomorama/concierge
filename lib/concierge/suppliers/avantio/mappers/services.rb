@@ -8,8 +8,11 @@ module Avantio
       PETS_SERVICE_SELECTOR = 'SpecialService[Code[text() = "9"]]'
       DEPOSIT_SERVICE_SELECTOR = 'SpecialService[Code[text() = "11"]]'
       CLEANING_SERVICE_SELECTOR = 'CommonService[Code[text() = "10"]]'
+      INTERNET_SERVICE_SELECTOR = 'CommonService[Code[text() = "8"]]'
       BED_LINEN_SERVICE_SELECTOR = 'SpecialService[Code[text() = "6"]]'
       TOWELS_SERVICE_SELECTOR = 'SpecialService[Code[text() = "7"]]'
+      PARKING_SERVICE_SELECTOR = 'SpecialService[Code[text() = "3"]]'
+      AIRCONDITIONING_SERVICE_SELECTOR = 'SpecialService[Code[text() = "2"]]'
 
       SECURITY_DEPOSIT_TYPES = {
         'DINERO'            => 'cash',
@@ -26,11 +29,14 @@ module Avantio
         @common_services_raw = accommodation_raw.at_xpath(COMMON_SERVICES_SELECTOR)
         @special_services_raw = accommodation_raw.at_xpath(SPECIAL_SERVICES_SELECTOR)
         attrs = {}
-        convert_attrs!(attrs)
         pets_allowed!(attrs)
         cleaning_service!(attrs)
+        security_deposit!(attrs)
         bed_linen_service!(attrs)
-        towel_service!(attrs)
+        towels_service!(attrs)
+        parking_service!(attrs)
+        airconditioning_service!(attrs)
+        internet_service!(attrs)
 
         attrs
       end
@@ -86,14 +92,35 @@ module Avantio
       def bed_linen_service!(attrs)
         service_raw = special_services_raw.at_xpath(BED_LINEN_SERVICE_SELECTOR)
         if service_raw && all_year_around?(service_raw)
-          attrs[:bed_linen] = !!(provided?(service_raw) && required_or_include?(service_raw))
+          attrs[:bed_linen] = provided?(service_raw) && required_or_include?(service_raw)
         end
       end
 
-      def towel_service!(attrs)
+      def towels_service!(attrs)
         service_raw = special_services_raw.at_xpath(BED_LINEN_SERVICE_SELECTOR)
         if service_raw && all_year_around?(service_raw)
-          attrs[:towels] = !!(provided?(service_raw) && required_or_include?(service_raw))
+          attrs[:towels] = provided?(service_raw) && required_or_include?(service_raw)
+        end
+      end
+
+      def parking_service!(attrs)
+        service_raw = special_services_raw.at_xpath(PARKING_SERVICE_SELECTOR)
+        if service_raw && all_year_around?(service_raw)
+          attrs[:parking] = required_or_include?(service_raw)
+        end
+      end
+
+      def airconditioning_service!(attrs)
+        service_raw = special_services_raw.at_xpath(AIRCONDITIONING_SERVICE_SELECTOR)
+        if service_raw && all_year_around?(service_raw)
+          attrs[:airconditioning] = required_or_include?(service_raw)
+        end
+      end
+
+      def internet_service!(attrs)
+        service_raw = common_services_raw.at_xpath(INTERNET_SERVICE_SELECTOR)
+        if service_raw && all_year_around?(service_raw)
+          attrs[:internet] = required_or_include?(service_raw)
         end
       end
 
