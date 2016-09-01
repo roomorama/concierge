@@ -44,7 +44,7 @@ module Avantio
       private
 
       def pets_allowed!(attrs)
-        service_raw = special_services_raw.at_xpath(PETS_SERVICE_SELECTOR)
+        service_raw = special_services_raw&.at_xpath(PETS_SERVICE_SELECTOR)
         if service_raw &&
              all_year_around?(service_raw) &&
              included_in_price(service_raw) == 'true'
@@ -58,7 +58,7 @@ module Avantio
       end
 
       def security_deposit!(attrs)
-        service_raw = special_services_raw.at_xpath(DEPOSIT_SERVICE_SELECTOR)
+        service_raw = special_services_raw&.at_xpath(DEPOSIT_SERVICE_SELECTOR)
         if service_raw &&
              all_year_around?(service_raw) &&
              included_in_price(service_raw) == 'false' &&
@@ -67,60 +67,58 @@ module Avantio
           type = service_raw&.at_xpath('PaymentMethod')&.text&.to_s
           unless amount == 0
             attrs[:security_deposit_amount] = amount
-            attrs[:sercurity_deposit_type] = SECURITY_DEPOSIT_TYPES.fetch(type, 'unknown')
-            attrs[:serucirty_deposit_currency_code] = service_raw&.at_xpath('AdditionalPrice/Currency')
+            attrs[:security_deposit_type] = SECURITY_DEPOSIT_TYPES.fetch(type, 'unknown')
+            attrs[:security_deposit_currency_code] = service_raw&.at_xpath('AdditionalPrice/Currency')&.text
           end
         end
       end
 
       def cleaning_service!(attrs)
-        service_raw = common_services_raw.at_xpath(CLEANING_SERVICE_SELECTOR)
+        service_raw = common_services_raw&.at_xpath(CLEANING_SERVICE_SELECTOR)
         if service_raw && all_year_around?(service_raw)
           amount = service_price(service_raw)
           if amount == 0
             attrs[:free_cleaning] = true
-          else
-            if included_in_price(service_raw) == 'false'
-              attrs[:services_cleaning] = true
-              attrs[:services_cleaning_rate] = amount
-              attrs[:services_cleaning_required] = required?(service_raw)
-            end
+          elsif included_in_price(service_raw) == 'false'
+            attrs[:services_cleaning] = true
+            attrs[:services_cleaning_rate] = amount
+            attrs[:services_cleaning_required] = required?(service_raw)
           end
         end
       end
 
       def bed_linen_service!(attrs)
-        service_raw = special_services_raw.at_xpath(BED_LINEN_SERVICE_SELECTOR)
+        service_raw = special_services_raw&.at_xpath(BED_LINEN_SERVICE_SELECTOR)
         if service_raw && all_year_around?(service_raw)
-          attrs[:bed_linen] = provided?(service_raw) && required_or_include?(service_raw)
+          attrs[:bed_linen] = provided?(service_raw) && required_or_included?(service_raw)
         end
       end
 
       def towels_service!(attrs)
-        service_raw = special_services_raw.at_xpath(BED_LINEN_SERVICE_SELECTOR)
+        service_raw = special_services_raw&.at_xpath(BED_LINEN_SERVICE_SELECTOR)
         if service_raw && all_year_around?(service_raw)
-          attrs[:towels] = provided?(service_raw) && required_or_include?(service_raw)
+          attrs[:towels] = provided?(service_raw) && required_or_included?(service_raw)
         end
       end
 
       def parking_service!(attrs)
-        service_raw = special_services_raw.at_xpath(PARKING_SERVICE_SELECTOR)
+        service_raw = special_services_raw&.at_xpath(PARKING_SERVICE_SELECTOR)
         if service_raw && all_year_around?(service_raw)
-          attrs[:parking] = required_or_include?(service_raw)
+          attrs[:parking] = required_or_included?(service_raw)
         end
       end
 
       def airconditioning_service!(attrs)
-        service_raw = special_services_raw.at_xpath(AIRCONDITIONING_SERVICE_SELECTOR)
+        service_raw = special_services_raw&.at_xpath(AIRCONDITIONING_SERVICE_SELECTOR)
         if service_raw && all_year_around?(service_raw)
-          attrs[:airconditioning] = required_or_include?(service_raw)
+          attrs[:airconditioning] = required_or_included?(service_raw)
         end
       end
 
       def internet_service!(attrs)
-        service_raw = common_services_raw.at_xpath(INTERNET_SERVICE_SELECTOR)
+        service_raw = common_services_raw&.at_xpath(INTERNET_SERVICE_SELECTOR)
         if service_raw && all_year_around?(service_raw)
-          attrs[:internet] = required_or_include?(service_raw)
+          attrs[:internet] = required_or_included?(service_raw)
         end
       end
 
@@ -133,7 +131,7 @@ module Avantio
         service_raw.at_xpath('AdditionalPrice/Quantity')&.text&.to_f
       end
 
-      def required_or_include?(service_raw)
+      def required_or_included?(service_raw)
         required?(service_raw) || included_in_price(service_raw) == 'true'
       end
 
@@ -146,12 +144,12 @@ module Avantio
       end
 
       def all_year_around?(service_raw)
-        start_day = service_raw.at_xpath('Season/StartDay')
-        start_month = service_raw.at_xpath('Season/StartMonth')
-        end_day = service_raw.at_xpath('Season/EndDay')
-        end_month = service_raw.at_xpath('Season/EndMonth')
+        start_day = service_raw.at_xpath('Season/StartDay')&.text
+        start_month = service_raw.at_xpath('Season/StartMonth')&.text
+        final_day = service_raw.at_xpath('Season/FinalDay')&.text
+        final_month = service_raw.at_xpath('Season/FinalMonth')&.text
 
-        start_day == '1' && start_month == '1' && end_day == '31' && end_month == '12'
+        start_day == '1' && start_month == '1' && final_day == '31' && final_month == '12'
       end
     end
   end
