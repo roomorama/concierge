@@ -31,7 +31,6 @@ module Avantio
 
       def build_accommodations(accommodations_raw)
         accommodations = accommodations_raw.xpath('/AccommodationList/AccommodationData')
-        require 'byebug'; byebug
         Array(accommodations).map { |accommodation| mapper.build(accommodation) }
       end
     end
