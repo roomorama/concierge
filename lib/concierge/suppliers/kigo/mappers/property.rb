@@ -13,6 +13,9 @@ module Kigo::Mappers
   #                  additional prices if base prices hasn't provided
   #
   class Property
+    # raises an error when base rates and +pricing+ not provided
+    class NoPriceError < StandardError; end
+
     CANCELLATION_POLICY = 'super_elite'
 
     attr_reader :property, :payload, :references, :pricing, :resolver
@@ -39,6 +42,8 @@ module Kigo::Mappers
       set_cleaning_service
 
       Result.new(property)
+    rescue NoPriceError
+      Result.error(:no_prices_provided)
     end
 
     private
@@ -183,6 +188,8 @@ module Kigo::Mappers
 
     def set_price
       pricing_mapper = PricingSetup.new(payload['PROP_RATE'], pricing)
+
+      raise NoPriceError unless pricing_mapper.valid?
 
       property.currency     = pricing_mapper.currency
       property.nightly_rate = pricing_mapper.nightly_rate

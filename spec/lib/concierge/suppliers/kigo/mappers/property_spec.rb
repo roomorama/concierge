@@ -53,6 +53,17 @@ RSpec.describe Kigo::Mappers::Property do
       end
     end
 
+    it 'returns unsuccessful result without base price and pricing setup' do
+      ['PROP_RATE_NIGHTLY_FROM', 'PROP_RATE_WEEKLY_FROM', 'PROP_RATE_MONTHLY_FROM'].each do |key|
+        property_data['PROP_RATE'][key] = nil
+      end
+      pricing = nil
+      result = subject.prepare(property_data, pricing)
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :no_prices_provided
+    end
+
     it 'returns the result with roomorama property accordingly provided data' do
       result = subject.prepare(property_data, pricing)
       expect(result).to be_success

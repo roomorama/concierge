@@ -18,6 +18,10 @@ module Kigo::Mappers
       @periodical_rate = periodical_rate
     end
 
+    def valid?
+      nightly_rate.to_f > 0
+    end
+
     def nightly_rate
       @nightly_rate ||= base_nightly_rate || minimum_periodical_nightly_rate
     end
@@ -43,7 +47,7 @@ module Kigo::Mappers
     end
 
     def minimum_periodical_nightly_rate
-      periods = periodical_rate['RENT']['PERIODS']
+      periods = periodical_rate.get('RENT.PERIODS')
       Array(periods).map do |period|
         if period['WEEKLY']
           period['WEEKLY_AMOUNTS'].map { |d| d['AMOUNT'].to_f / 7 }

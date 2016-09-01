@@ -6,7 +6,7 @@ RSpec.describe Kigo::Mappers::PricingSetup do
   let(:periodical_rates) { JSON.parse(read_fixture('kigo/pricing_setup.json'))['PRICING'] }
   let(:base_rate) { JSON.parse(read_fixture('kigo/property_data.json'))['PROP_RATE'] }
 
-  subject { described_class.new(base_rate, periodical_rates) }
+  subject { described_class.new(base_rate, wrap_hash(periodical_rates)) }
 
   it { expect(subject.currency).to eq 'EUR' }
   it { expect(subject.nightly_rate).to eq 151.98 }
@@ -20,7 +20,11 @@ RSpec.describe Kigo::Mappers::PricingSetup do
       base_rate['PROP_RATE_WEEKLY_FROM']  = '700.00'
 
       subject = described_class.new(base_rate, periodical_rates)
+
+      expect(subject).to be_valid
       expect(subject.nightly_rate).to eq 100
+      expect(subject.weekly_rate).to eq 700
+      expect(subject.monthly_rate).to eq 3000
     end
 
     it 'uses base weekly price if daily nil' do
@@ -28,7 +32,11 @@ RSpec.describe Kigo::Mappers::PricingSetup do
       base_rate['PROP_RATE_MONTHLY_FROM'] = '3000.00'
 
       subject = described_class.new(base_rate, periodical_rates)
+
+      expect(subject).to be_valid
       expect(subject.nightly_rate).to eq 100
+      expect(subject.weekly_rate).to eq 700
+      expect(subject.monthly_rate).to eq 3000
     end
 
     context 'periodical price' do
@@ -54,12 +62,27 @@ RSpec.describe Kigo::Mappers::PricingSetup do
         periodical_rates['RENT']['PERIODS'] = weekly_rates
 
         expected_rate = 3000.0 / 7
-        subject = described_class.new(base_rate, periodical_rates)
+        subject       = described_class.new(base_rate, wrap_hash(periodical_rates))
 
+        expect(subject).to be_valid
         expect(subject.nightly_rate).to eq expected_rate
+        expect(subject.weekly_rate).to eq 3000
+        expect(subject.monthly_rate).to eq expected_rate * 30
       end
+
+      it 'raises a specific error without periodical rates' do
+        subject = described_class.new(base_rate, wrap_hash({}))
+        expect(subject).not_to be_valid
+      end
+
     end
 
+  end
+
+  private
+
+  def wrap_hash(hash)
+    Concierge::SafeAccessHash.new(hash)
   end
 
 end
