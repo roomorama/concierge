@@ -33,4 +33,11 @@ class ExternalErrorRepository
     end
   end
 
+  # filters external errors with the given error +code+.
+  def self.with_code(code)
+    query do
+      where(code: code)
+    end
+  end
+
 end
