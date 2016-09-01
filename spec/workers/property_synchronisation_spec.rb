@@ -194,7 +194,7 @@ RSpec.describe Workers::PropertySynchronisation do
         ]
       }
       create_property(identifier: "prop1", host_id: host.id, data: data)
-      create_property(identifier: "prop2", host_id: host.id + 1)
+      create_property(identifier: "prop2")
       create_property(identifier: "prop3", host_id: host.id)
 
       operations = []
@@ -232,7 +232,7 @@ RSpec.describe Workers::PropertySynchronisation do
         ]
       }
       create_property(identifier: "prop1", host_id: host.id, data: data)
-      create_property(identifier: "prop2", host_id: host.id + 1)
+      create_property(identifier: "prop2")
       create_property(identifier: "prop3", host_id: host.id)
 
       subject.start("prop1") { Result.new(roomorama_property) }
