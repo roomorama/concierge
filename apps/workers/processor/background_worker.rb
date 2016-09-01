@@ -231,7 +231,7 @@ class Workers::Processor
         Result.new(worker)
       else
         error = UnknownWorkerError.new(id)
-        Rollbar.error(error)
+        Rollbar.warning(error)
 
         Result.new(WORKER_NOT_FOUND)
       end
