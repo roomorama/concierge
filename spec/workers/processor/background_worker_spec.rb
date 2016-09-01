@@ -160,6 +160,22 @@ RSpec.describe Workers::Processor::BackgroundWorker do
       expect(error).to be_a Workers::Processor::BackgroundWorker::UnknownWorkerError
     end
 
+    it "finishes gracefully if the supplier implementation deletes the worker itself" do
+      worker  = create_background_worker(type: "metadata", supplier_id: create_supplier(name: "Acme").id)
+      data    = Concierge::SafeAccessHash.new(background_worker_id: worker.id)
+      subject = described_class.new(data)
+
+      # simulate a supplier implementation that deletes the worker itself
+      expect {
+        listening_to("metadata.Acme", block: ->(*) {
+          BackgroundWorkerRepository.delete(worker)
+          Result.new({})
+        }) do
+          subject.run
+        end
+      }.not_to raise_error
+    end
+
     def listening_to(event, block:)
       Concierge::Announcer.on(event, &block)
       yield
