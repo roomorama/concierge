@@ -20,6 +20,7 @@ how this file is formatted and how the process works.
 - SAW: ignore non-refundable prices for units while rates fetching
 - Ignore unsupported ciirus property types until another review
 - SAW: fixed `reference_number` parameter name for cancellation
+- html escape for `event[:message]`
 
 ## [0.7.3] - 2016-08-25
 ### Changed
