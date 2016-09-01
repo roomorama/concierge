@@ -36,7 +36,7 @@ RSpec.describe Workers::Router do
     end
 
     it "enqueues a publish operation if a property from another host with the same identifier exists" do
-      create_property(host_id: host.id + 1, identifier: roomorama_property.identifier)
+      create_property(identifier: roomorama_property.identifier)
       operation = subject.dispatch(roomorama_property)
 
       expect(operation).to be_a Roomorama::Client::Operations::Publish
