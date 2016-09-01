@@ -102,20 +102,43 @@ module Avantio
         accommodation.city&.split('/')&.first&.strip
       end
 
-      def set_description!(result, description)
-        result.description = description
+      def set_amenities!(result, accommodation)
+        amenities = []
+        # amenities << 'bed_linen_and_towels'
+        amenities << 'kitchen' if accommodation.number_of_kitchens.to_i > 0
+        # amenities << 'wifi' # from accommodation
+        # amenities << 'internet' # from accommodation
+        amenities << 'tv' if accommodation.tv || accommodation.dvd
+        # amenities << 'parking' # from accommodation
+        # amenities << 'airconditioning' # from accommodation
+        amenities << 'laundry' if accommodation.washing_machine
+        amenities << 'free_cleaning' if accommodation.free_cleaning
+        amenities << 'wheelchairaccess' if suitable_for_disabled?(accommodation)
+        amenities << 'pool' if pool?(accommodation)
+        amenities << 'gym' if accommodation.gym
+        # amenities << 'breakfast'
+        amenities << 'elevator' if accommodation.elevator
+        amenities << 'balcony' if accommodation.balcony
+        amenities << 'outdoor_space' if outdoor_space?(accommodation)
       end
 
-      def calc_double_beds(property)
-        property.king_beds + property.queen_beds + property.full_beds
+      def pool?(accommodation)
+        !['', 'ninguna'].include?(accommodation.pool_type) ||
+          accommodation.pool_service
       end
 
-      def calc_single_beds(property)
-        property.twin_beds + (property.extra_bed ? 1 : 0)
+      def suitable_for_disabled?(accommodation)
+        # suitable for disabled, without-stairs
+        ['apta-discapacitados',
+         'sin-escaleras'].include?(accommodation.handicapped_facilities)
       end
 
-      def calc_sofa_beds(property)
-        property.sofa_bed ? 1 : 0
+      def outdoor_space?(accommodation)
+        accommodation.fire_place ||
+          accommodation.garden ||
+          accommodation.bbq ||
+          accommodation.terrace ||
+          accommodation.fenced_plot
       end
 
       def set_images!(result, images)
