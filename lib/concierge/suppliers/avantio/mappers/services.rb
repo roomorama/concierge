@@ -29,6 +29,8 @@ module Avantio
         convert_attrs!(attrs)
         pets_allowed!(attrs)
         cleaning_service!(attrs)
+        bed_linen_service!(attrs)
+        towel_service!(attrs)
 
         attrs
       end
@@ -83,12 +85,21 @@ module Avantio
 
       def bed_linen_service!(attrs)
         service_raw = special_services_raw.at_xpath(BED_LINEN_SERVICE_SELECTOR)
-        attrs[:bed_linen] = !!(service_raw && all_year_around?(service_raw) && required_or_include?(service_raw))
+        if service_raw && all_year_around?(service_raw)
+          attrs[:bed_linen] = !!(provided?(service_raw) && required_or_include?(service_raw))
+        end
       end
 
       def towel_service!(attrs)
         service_raw = special_services_raw.at_xpath(BED_LINEN_SERVICE_SELECTOR)
-        attrs[:towels] = !!(service_raw && all_year_around?(service_raw) && required_or_include?(service_raw))
+        if service_raw && all_year_around?(service_raw)
+          attrs[:towels] = !!(provided?(service_raw) && required_or_include?(service_raw))
+        end
+      end
+
+      # Actual only for towels and bed_linen services
+      def provided?(service_raw)
+        service_raw.at_xpath('Type')&.text.to_s == 'Suministrada'
       end
 
       def service_price(service_raw)
