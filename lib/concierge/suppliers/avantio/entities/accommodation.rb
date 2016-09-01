@@ -60,8 +60,8 @@ module Avantio
         @number_of_kitchens              = attrs[:number_of_kitchens]
         @pets_allowed                    = attrs[:pets_allowed]
         @security_deposit_amount         = attrs[:security_deposit_amount]
-        @sercurity_deposit_type          = attrs[:sercurity_deposit_type]
-        @serucirty_deposit_currency_code = attrs[:serucirty_deposit_currency_code]
+        @security_deposit_type           = attrs[:sercurity_deposit_type]
+        @security_deposit_currency_code  = attrs[:serucirty_deposit_currency_code]
       end
 
       # Roomorama property id for given accommodation
