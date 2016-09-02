@@ -23,15 +23,16 @@ module Avantio
       # Arguments
       #
       #   * +accommodation+ [Avantio::Entities::Accommodation]
+      #   * +accommodation+ [Avantio::Entities::Description]
       # Returns +Roomorama::Property+
-      def build(accommodation)
+      def build(accommodation, description)
         result = Roomorama::Property.new(accommodation.property_id)
         result.instant_booking!
 
         set_base_info!(result, accommodation)
         set_amenities!(result, accommodation)
-        # set_description!(result, description)
-        # set_images!(result, images)
+        set_description!(result, description)
+        set_images!(result, description)
         # set_rates_and_minimum_stay!(result, rates)
 
         result
@@ -147,8 +148,13 @@ module Avantio
           accommodation.fenced_plot
       end
 
-      def set_images!(result, images)
-        images.each do |url|
+      def set_description!(result, description)
+        sanitized = Sanitize.fragment(description.description, elements: ['br'])
+        result.description = sanitized
+      end
+
+      def set_images!(result, description)
+        description.images.each do |url|
           identifier = Digest::MD5.hexdigest(url)
           image = Roomorama::Image.new(identifier)
           image.url = url

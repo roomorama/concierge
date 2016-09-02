@@ -4,9 +4,20 @@ RSpec.describe Avantio::Mappers::RoomoramaProperty do
   include Support::Fixtures
 
   let(:accommodation_with_all_services) { accommodation_from_file('avantio/accommodation_with_all_services.xml') }
+  let(:description) { description_from_file('avantio/description.xml') }
+
+  let(:description_text) {
+    'The apartment in Benidorm  has capacity for 4 people. <br>'\
+    'The apartment is nicely furnished, is newly constructed. <br>'\
+    'The house is situated in an animated neighborhood next to the sea.<br>'\
+    'The accommodation is equipped with the following things: iron, safe, '\
+    'air conditioning (heat/cold), air conditioned in the whole house, '\
+    'communal swimming pool, garage, tv, stereo.<br>In the induction open'\
+    ' plan kitchen, refrigerator, oven, freezer, washing machine and dryer are provided.'
+  }
 
   it 'returns mapped property' do
-    property = subject.build(accommodation_with_all_services)
+    property = subject.build(accommodation_with_all_services, description)
 
     expect(property).to be_a(Roomorama::Property)
     expect(property.identifier).to eq('128498|1416325650|itsvillas')
@@ -42,10 +53,21 @@ RSpec.describe Avantio::Mappers::RoomoramaProperty do
     expect(property.services_cleaning_required).to be true
     expect(property.amenities).to eq(['bed_linen_and_towels', 'internet', 'parking', 'airconditioning',
                                       'wheelchairaccess', 'pool', 'balcony', 'outdoor_space'])
+
+    expect(property.images.length).to eq(2)
+    image = property.images.first
+    expect(image.identifier).to eq 'a137aae770da77859b6a60e0f8ac5624'
+    expect(image.url).to eq 'http://img.crs.itsolutions.es/fotos/1258485483aea4571d97cbf40fc90373c2a0883e23/12584854836f07364bd3aaa7a7e6e977f89438ce8a.jpg'
+
+    expect(property.description).to eq(description_text)
   end
 
   def accommodation_from_file(filename)
     Avantio::Mappers::Accommodation.new.build(xml_from_file(filename).at_xpath('AccommodationData'))
+  end
+
+  def description_from_file(filename)
+    Avantio::Mappers::Description.new.build(xml_from_file(filename).at_xpath('AccommodationItem'))
   end
 
   def xml_from_file(filename)
