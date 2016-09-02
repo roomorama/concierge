@@ -8,9 +8,12 @@ module Poplidays
     #  - path - the part of URL after domain and API's version. It can
     #           contains named parameters to be placed using sprintf function
     #           Example: 'lodgings/%<id>s/availabilities'
-    #  - authentication_required? - if command requires authentication
+    #  - authentication - returns BaseCommand::Authentication or BaseCommand::NullAuthentication,
+    #                     BaseCommand#with_authentication and BaseCommand#without_authentication can
+    #                     be used to create appropriate object
     class BaseCommand
       include Concierge::JSON
+
 
       # Poplidays API version
       VERSION = 'v2'
@@ -45,18 +48,13 @@ module Poplidays
       #   * +url_params+ [Hash] a hash of params to be inserted to the command path
       #                         with sprintf method
       #   * +params+ [Hash] HTTP params (POST or GET) to be sent during remote call
-      def remote_call(url_params: {}, params: {})
+      def remote_call(url_params: {})
         endpoint = sprintf("#{VERSION}/#{path}", url_params)
 
-        auth_params = {}
-        if authentication_required?
-          auth_params = { client: credentials.client_key, signature: sign_request(endpoint) }
-        end
+        endpoint += authentication.to_query(endpoint)
         if method == :get
-          params.merge!(auth_params)
-          response = client.get(endpoint, params, HEADERS)
+          response = client.get(endpoint, {}, HEADERS)
         elsif method == :post
-          endpoint += "?#{escape_params(auth_params)}"
           response = client.post(endpoint, json_encode(params), {'Content-Type' => 'application/json'}.merge!(HEADERS))
         end
 
@@ -87,9 +85,10 @@ module Poplidays
         raise NotImplementedError
       end
 
-      def authentication_required?
+      def authentication
         raise NotImplementedError
       end
+
 
       def timeout
         DEFAULT_TIMEOUT
@@ -100,6 +99,14 @@ module Poplidays
         Date.strptime(date, ROOMORAMA_DATE_FORMAT).strftime(POPLIDAYS_DATE_FORMAT)
       end
 
+      def with_authentication
+        Authentication.new(credentials)
+      end
+
+      def without_authentication
+        NullAuthentication.new
+      end
+
       private
 
       def client
@@ -107,15 +114,39 @@ module Poplidays
         @client ||= Concierge::HTTPClient.new(url, timeout: timeout)
       end
 
-      def escape_params(params)
-        URI.escape(params.collect{|k,v| "#{k}=#{v}"}.join('&'))
+      class Authentication
+        attr_reader :credentials
+
+        def initialize(credentials)
+          @credentials = credentials
+        end
+
+        def sign(path)
+          { client: credentials.client_key, signature: sign_request(path) }
+        end
+
+        def to_query(path)
+          ['?', URI.encode_www_form(sign(path))].join
+        end
+
+        private
+
+        def sign_request(path)
+          passphrase = credentials.passphrase
+          client_key = credentials.client_key
+          mixed = "#{passphrase}:/#{path}:client:#{client_key}"
+          Digest::SHA1.hexdigest(mixed)
+        end
       end
 
-      def sign_request(endpoint)
-        passphrase = credentials.passphrase
-        client_key = credentials.client_key
-        mixed = "#{passphrase}:/#{endpoint}:client:#{client_key}"
-        Digest::SHA1.hexdigest(mixed)
+      class NullAuthentication
+        def sign(path)
+          {}
+        end
+
+        def to_query(path)
+          ''
+        end
       end
     end
   end
