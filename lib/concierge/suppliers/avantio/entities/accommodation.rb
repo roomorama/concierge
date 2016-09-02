@@ -10,7 +10,7 @@ module Avantio
         :fire_place, :garden, :bbq, :terrace, :fenced_plot, :elevator, :dvd, :balcony, :gym,
         :handicapped_facilities, :number_of_kitchens, :washing_machine, :pets_allowed, :security_deposit_amount,
         :security_deposit_type, :security_deposit_currency_code, :services_cleaning, :services_cleaning_rate,
-        :services_cleaning_required, :bed_linen, :towels, :parking, :airconditioning, :internet
+        :services_cleaning_required, :bed_linen, :towels, :parking, :airconditioning, :free_cleaning, :internet
       ]
 
       attr_reader *ATTRIBUTES
@@ -69,6 +69,7 @@ module Avantio
         @towels                          = attrs[:towels]
         @parking                         = attrs[:parking]
         @airconditioning                 = attrs[:airconditioning]
+        @free_cleaning                   = attrs[:free_cleaning]
         @internet                        = attrs[:internet]
       end
 

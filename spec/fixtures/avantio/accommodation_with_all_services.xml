@@ -29,7 +29,7 @@
     </AreaDist>
     <City>
       <CityCode>1</CityCode>
-      <Name>Valencia</Name>
+      <Name>Gerona / Girona</Name>
     </City>
     <Locality>
       <LocalityCode>74</LocalityCode>
@@ -45,8 +45,8 @@
       <Name/>
     </Resort>
     <KindOfWay>CALLE</KindOfWay>
-    <Way/>
-    <Number/>
+    <Way>virgen del manzano</Way>
+    <Number>10</Number>
     <Block/>
     <Door/>
     <Floor/>
@@ -134,7 +134,7 @@
       <NumOfFans>0</NumOfFans>
       <NumOfElectronicMosquitoRepeller>0</NumOfElectronicMosquitoRepeller>
       <WindowScreens>NO</WindowScreens>
-      <HandicappedFacilities/>
+      <HandicappedFacilities>apta-discapacitados</HandicappedFacilities>
       <Kitchen>
         <KitchenType/>
         <NumberOfKitchens>0</NumberOfKitchens>

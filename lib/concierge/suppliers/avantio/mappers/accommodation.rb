@@ -79,6 +79,8 @@ module Avantio
           attrs[attr] = (value.to_i unless value.empty?)
         end
 
+        attrs.delete(:door) if attrs[:door].to_s.empty?
+
         # Convert boolean fields to boolean or nil
         to_bool = [:tv, :fire_place, :garden, :bbq, :terrace, :fenced_plot,
                    :elevator, :dvd, :balcony, :gym, :washing_machine]
