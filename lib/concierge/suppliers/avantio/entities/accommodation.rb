@@ -75,7 +75,7 @@ module Avantio
 
       # Roomorama property id for given accommodation
       def property_id
-        Avantio::PropertyId.from_avantio_ids(
+        @property_id ||= Avantio::PropertyId.from_avantio_ids(
           accommodation_code, user_code, login_ga
         ).property_id
       end
