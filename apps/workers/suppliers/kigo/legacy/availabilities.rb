@@ -80,7 +80,7 @@ module Workers::Suppliers::Kigo::Legacy
   end
 end
 
-Concierge::Announcer.on("reservations.KigoLegacy") do |supplier, args|
+Concierge::Announcer.on("availabilities.KigoLegacy") do |supplier, args|
   Workers::Suppliers::Kigo::Legacy::Availabilities.new(supplier, args).perform
   Result.new({})
 end
