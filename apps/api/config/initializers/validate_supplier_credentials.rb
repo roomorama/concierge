@@ -8,6 +8,7 @@ if enforce_on_envs.include?(Hanami.env)
     kigolegacy: %w(username password),
     waytostay:  %w(client_id client_secret url token_url),
     ciirus:     %w(url username password),
-    saw:        %w(username password url)
+    saw:        %w(username password url),
+    avantio:    %w(username password)
   })
 end
