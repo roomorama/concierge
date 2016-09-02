@@ -3,14 +3,14 @@ module Avantio
     class Accommodation
 
       ATTRIBUTES = [
-        :accommodation_code, :user_code, :login_ga, :accommodation_name, :master_kind_code, :country_iso_code,
+        :accommodation_code, :user_code, :login_ga, :name, :master_kind_code, :country_iso_code,
         :city, :lat, :lng, :district, :postal_code, :street, :number, :block, :door, :floor, :currency,
         :people_capacity, :minimum_occupation, :bedrooms, :double_beds, :individual_beds, :individual_sofa_beds,
         :double_sofa_beds, :housing_area, :area_unit, :bathtub_bathrooms, :shower_bathrooms, :pool_type, :tv,
         :fire_place, :garden, :bbq, :terrace, :fenced_plot, :elevator, :dvd, :balcony, :gym,
         :handicapped_facilities, :number_of_kitchens, :washing_machine, :pets_allowed, :security_deposit_amount,
-        :sercurity_deposit_type, :serucirty_deposit_currency_code, :services_cleaning, :services_cleaning_rate,
-        :services_cleaning_required, :bed_linen, :towel, :parking, :airconditioning, :internet
+        :security_deposit_type, :security_deposit_currency_code, :services_cleaning, :services_cleaning_rate,
+        :services_cleaning_required, :bed_linen, :towels, :parking, :airconditioning, :internet
       ]
 
       attr_reader *ATTRIBUTES
@@ -19,7 +19,7 @@ module Avantio
         @accommodation_code              = attrs[:accommodation_code]
         @user_code                       = attrs[:user_code]
         @login_ga                        = attrs[:login_ga]
-        @accommodation_name              = attrs[:accommodation_name]
+        @name                            = attrs[:accommodation_name]
         @master_kind_code                = attrs[:master_kind_code]
         @country_iso_code                = attrs[:country_iso_code]
         @city                            = attrs[:city]
@@ -60,13 +60,13 @@ module Avantio
         @washing_machine                 = attrs[:washing_machine]
         @pets_allowed                    = attrs[:pets_allowed]
         @security_deposit_amount         = attrs[:security_deposit_amount]
-        @security_deposit_type           = attrs[:sercurity_deposit_type]
-        @security_deposit_currency_code  = attrs[:serucirty_deposit_currency_code]
+        @security_deposit_type           = attrs[:security_deposit_type]
+        @security_deposit_currency_code  = attrs[:security_deposit_currency_code]
         @services_cleaning               = attrs[:services_cleaning]
         @services_cleaning_rate          = attrs[:services_cleaning_rate]
         @services_cleaning_required      = attrs[:services_cleaning_required]
         @bed_linen                       = attrs[:bed_linen]
-        @towels                          = attrs[:towel]
+        @towels                          = attrs[:towels]
         @parking                         = attrs[:parking]
         @airconditioning                 = attrs[:airconditioning]
         @internet                        = attrs[:internet]
