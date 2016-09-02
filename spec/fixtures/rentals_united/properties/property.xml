@@ -18,9 +18,9 @@
     <StandardGuests>2</StandardGuests>
     <CanSleepMax>2</CanSleepMax>
     <PropertyTypeID>1</PropertyTypeID>
-    <ObjectTypeID>3</ObjectTypeID>
+    <ObjectTypeID>35</ObjectTypeID>
     <Floor>3</Floor>
-    <Street>Pereleta 22</Street>
+    <Street>Test street address</Street>
     <ZipCode>644119</ZipCode>
     <Coordinates>
       <Latitude>55.0003426</Latitude>
@@ -76,10 +76,7 @@
     <CancellationPolicies/>
     <Descriptions>
       <Description LanguageID="1">
-        <Text><![CDATA[Best test property ever.
-
-Composition: kitchen
-Amenities: bed linen & towels, terrace, air conditioning, heating, swimming pool, wheelchair access possible, free wireless internet, free cot in the apartment, elevator, smoking allowed, free parking on the street]]></Text>
+        <Text><![CDATA[Test description]]></Text>
       </Description>
     </Descriptions>
   </Property>
