@@ -30,10 +30,9 @@ module Avantio
 
         set_base_info!(result, accommodation)
         set_amenities!(result, accommodation)
-        set_description!(result, description)
-        set_images!(result, images)
-        set_rates_and_minimum_stay!(result, rates)
-        set_security_deposit_info!(result, property, security_deposit)
+        # set_description!(result, description)
+        # set_images!(result, images)
+        # set_rates_and_minimum_stay!(result, rates)
 
         result
       end
@@ -58,13 +57,21 @@ module Avantio
         result.number_of_bathrooms = fetch_bathrooms(accommodation)
         result.floor = accommodation.floor
         result.number_of_double_beds = accommodation.double_beds
-        result.number_of_single_beds = accommodation.individual_beds # use berths?
+        result.number_of_single_beds = accommodation.individual_beds
         result.number_of_sofa_beds = fetch_sofa_beds(accommodation)
         result.surface = accommodation.housing_area
         result.surface_unit = fetch_surface_unit(accommodation)
         result.pets_allowed = accommodation.pets_allowed
         result.currency = accommodation.currency
         result.cancellation_policy = CANCELLATION_POLICY
+
+        result.security_deposit_currency_code = accommodation.security_deposit_currency_code
+        result.security_deposit_amount = accommodation.security_deposit_amount
+        result.security_deposit_type = accommodation.security_deposit_type
+
+        result.services_cleaning = accommodation.services_cleaning
+        result.services_cleaning_rate = accommodation.services_cleaning_rate
+        result.services_cleaning_required = accommodation.services_cleaning_required
       end
 
       def fetch_surface_unit(accommodation)
@@ -104,7 +111,7 @@ module Avantio
 
       def set_amenities!(result, accommodation)
         amenities = []
-        amenities << accommodation.bed_linen && accommodation.towels
+        amenities << 'bed_linen_and_towels' if accommodation.bed_linen && accommodation.towels
         amenities << 'kitchen' if accommodation.number_of_kitchens.to_i > 0
         amenities << 'internet' if accommodation.internet
         amenities << 'tv' if accommodation.tv || accommodation.dvd
@@ -157,25 +164,6 @@ module Avantio
         result.nightly_rate = min_price
         result.weekly_rate  = (min_price * 7).round(2)
         result.monthly_rate = (min_price * 30).round(2)
-      end
-
-      def set_security_deposit_info!(result, property, security_deposit)
-        amount = extract_security_deposit_amount(security_deposit)
-        if amount
-          result.security_deposit_currency_code = property.currency_code
-          result.security_deposit_amount = amount
-          result.security_deposit_type = SECURITY_DEPOSIT_TYPE
-        end
-      end
-
-      def extract_security_deposit_amount(security_deposit)
-        if security_deposit && security_deposit.mandatory && security_deposit.flat_fee && security_deposit.flat_fee_amount != 0
-          security_deposit.flat_fee_amount
-        end
-      end
-
-      def country_converter
-        @country_converter ||= Ciirus::CountryCodeConverter.new
       end
     end
   end

@@ -8,6 +8,7 @@ RSpec.describe Avantio::Mappers::Accommodation do
   it 'returns mapped accommodation' do
     accommodation = subject.build(accommodation_with_all_services)
 
+    expect(accommodation).to be_a(Avantio::Entities::Accommodation)
     expect(accommodation.property_id).to eq('128498|1416325650|itsvillas')
     expect(accommodation.name).to eq('Villa Gemma')
     expect(accommodation.security_deposit_amount).to eq(1000.0)
@@ -15,15 +16,15 @@ RSpec.describe Avantio::Mappers::Accommodation do
     expect(accommodation.security_deposit_currency_code).to eq('EUR')
     expect(accommodation.master_kind_code).to eq('2')
     expect(accommodation.country_iso_code).to eq('ES')
-    expect(accommodation.city).to eq('Valencia')
+    expect(accommodation.city).to eq('Gerona / Girona')
     expect(accommodation.lat).to eq('39.4742')
     expect(accommodation.lng).to eq('-0.380721')
     expect(accommodation.district).to eq('Sin especificar')
     expect(accommodation.postal_code).to eq('46001')
-    expect(accommodation.street).to eq('')
-    expect(accommodation.number).to eq('')
+    expect(accommodation.street).to eq('virgen del manzano')
+    expect(accommodation.number).to eq('10')
     expect(accommodation.block).to eq('')
-    expect(accommodation.door).to eq('')
+    expect(accommodation.door).to be nil
     expect(accommodation.floor).to be nil
     expect(accommodation.currency).to eq('EUR')
     expect(accommodation.people_capacity).to eq(1)
@@ -48,7 +49,7 @@ RSpec.describe Avantio::Mappers::Accommodation do
     expect(accommodation.dvd).to be false
     expect(accommodation.balcony).to be true
     expect(accommodation.gym).to be false
-    expect(accommodation.handicapped_facilities).to eq('')
+    expect(accommodation.handicapped_facilities).to eq('apta-discapacitados')
     expect(accommodation.internet).to be true
     expect(accommodation.pets_allowed).to be true
     expect(accommodation.services_cleaning).to be true
