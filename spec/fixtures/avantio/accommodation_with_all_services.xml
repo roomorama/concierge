@@ -70,7 +70,7 @@
       <Bedrooms>1</Bedrooms>
       <DoubleBeds/>
       <IndividualBeds/>
-      <IndividualSofaBed/>
+      <IndividualSofaBed>1</IndividualSofaBed>>
       <DoubleSofaBed/>
       <Toilets/>
       <BathroomWithBathtub/>
@@ -86,6 +86,26 @@
       </AreaPlot>
     </Distribution>
     <HouseCharacteristics>
+      <SwimmingPool>
+        <PoolType>comunitaria</PoolType>
+        <Dimensions>18X10</Dimensions>
+        <MinimumDepth>
+          <Unit>m</Unit>
+          <Value>1.2</Value>
+        </MinimumDepth>
+        <MaximumDepth>
+          <Unit>m</Unit>
+          <Value>3.08</Value>
+        </MaximumDepth>
+        <OpeningDate>
+          <Day/>
+          <Month/>
+        </OpeningDate>
+        <ClosingDate>
+          <Day/>
+          <Month/>
+        </ClosingDate>
+      </SwimmingPool>
       <TV>false</TV>
       <NumOfTelevisions>0</NumOfTelevisions>
       <Garden>false</Garden>
@@ -95,12 +115,12 @@
       <Barbacue>false</Barbacue>
       <Radio>false</Radio>
       <MiniBar>false</MiniBar>
-      <Terrace>false</Terrace>
+      <Terrace>true</Terrace>
       <FencedPlot>false</FencedPlot>
       <SecurityBox>false</SecurityBox>
       <Elevator>false</Elevator>
       <DVD>false</DVD>
-      <Balcony>false</Balcony>
+      <Balcony>true</Balcony>
       <JuiceSqueazer>false</JuiceSqueazer>
       <ElectricKettle>false</ElectricKettle>
       <HairDryer>false</HairDryer>
