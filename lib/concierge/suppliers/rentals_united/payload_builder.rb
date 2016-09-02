@@ -18,12 +18,20 @@ module RentalsUnited
         credentials: credentials,
         location_id: location_id
       }
-      render(:properties_fetch, template_locals)
+      render(:property_ids_fetch, template_locals)
     end
 
     def build_cities_fetch_payload
       template_locals = { credentials: credentials }
       render(:cities_fetch, template_locals)
+    end
+
+    def build_property_fetch_payload(property_id)
+      template_locals = {
+        credentials: credentials,
+        property_id: property_id
+      }
+      render(:property_fetch, template_locals)
     end
 
     private

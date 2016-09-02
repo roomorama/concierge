@@ -40,6 +40,31 @@ RSpec.describe RentalsUnited::PayloadBuilder do
     end
   end
 
+  describe '#build_property_ids_fetch_payload' do
+    let(:params) do
+      {
+        property_id: "123"
+      }
+    end
+
+    it 'embedds username and password to request' do
+      xml = builder.build_property_fetch_payload(params[:property_id])
+      hash = to_hash(xml)
+
+      authentication = hash.get("Pull_ListSpecProp_RQ.Authentication")
+      expect(authentication.get("UserName")).to eq(credentials.username)
+      expect(authentication.get("Password")).to eq(credentials.password)
+    end
+
+    it 'adds property_id to request' do
+      xml = builder.build_property_fetch_payload(params[:property_id])
+      hash = to_hash(xml)
+
+      property_id = hash.get("Pull_ListSpecProp_RQ.PropertyID")
+      expect(property_id).to eq(params[:property_id])
+    end
+  end
+
   private
   def to_hash(xml)
     Concierge::SafeAccessHash.new(Nori.new.parse(xml))

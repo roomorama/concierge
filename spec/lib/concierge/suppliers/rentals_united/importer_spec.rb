@@ -19,11 +19,22 @@ RSpec.describe RentalsUnited::Importer do
   describe "#fetch_property_ids" do
     let(:location_id) { "1234" }
 
-    it "calls fetcher class to load properties" do
+    it "calls fetcher class to load property ids" do
       fetcher_class = RentalsUnited::Commands::PropertyIdsFetcher
 
       expect_any_instance_of(fetcher_class).to(receive(:fetch_property_ids))
       importer.fetch_property_ids(location_id)
+    end
+  end
+
+  describe "#fetch_property" do
+    let(:property_id) { "588788" }
+
+    it "calls fetcher class to load property" do
+      fetcher_class = RentalsUnited::Commands::PropertyFetcher
+
+      expect_any_instance_of(fetcher_class).to(receive(:fetch_property))
+      importer.fetch_property(property_id)
     end
   end
 end

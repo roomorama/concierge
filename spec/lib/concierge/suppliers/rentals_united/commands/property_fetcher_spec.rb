@@ -1,57 +1,49 @@
 require "spec_helper"
 
-RSpec.describe RentalsUnited::Commands::PropertyIdsFetcher do
+RSpec.describe RentalsUnited::Commands::PropertyFetcher do
   include Support::HTTPStubbing
   include Support::Fixtures
 
   let(:credentials) { Concierge::Credentials.for("rentals_united") }
-  let(:location_id) { "1234" }
-  let(:subject) { described_class.new(credentials, location_id) }
+  let(:property_id) { "1234" }
+  let(:subject) { described_class.new(credentials, property_id) }
   let(:url) { credentials.url }
 
-  it "returns an empty array when there is no properties in location" do
-    stub_data = read_fixture("rentals_united/property_ids/empty_list.xml")
+  it "returns an error if property does not exist" do
+    stub_data = read_fixture("rentals_united/properties/not_found.xml")
     stub_call(:post, url) { [200, {}, stub_data] }
 
-    result = subject.fetch_property_ids
-    expect(result).to be_success
-    expect(result.value).to eq([])
+    result = subject.fetch_property
+    expect(result).not_to be_success
+    expect(result.error.code).to eq("56")
+
+    event = Concierge.context.events.last.to_h
+    expect(event[:message]).to eq(
+      "Response indicating the Status with ID `56`, and description ``"
+    )
+    expect(event[:backtrace]).to be_kind_of(Array)
+    expect(event[:backtrace].any?).to be true
   end
 
-  it "returns property idwhen there is only one property" do
-    stub_data = read_fixture("rentals_united/property_ids/one_property.xml")
+  it "returns property" do
+    stub_data = read_fixture("rentals_united/properties/property.xml")
     stub_call(:post, url) { [200, {}, stub_data] }
 
-    result = subject.fetch_property_ids
-    expect(result).to be_success
-    expect(result.value).to be_kind_of(Array)
-    expect(result.value.size).to eq(1)
-    expect(result.value).to all(be_kind_of(String))
-
-    property_id = result.value.first
-    expect(property_id).to eq("519688")
-  end
-
-  it "returns multiple city objects" do
-    stub_data = read_fixture("rentals_united/property_ids/multiple_properties.xml")
-    stub_call(:post, url) { [200, {}, stub_data] }
-
-    result = subject.fetch_property_ids
+    result = subject.fetch_property
     expect(result).to be_success
 
-    properties = result.value
-    expect(properties).to be_kind_of(Array)
-    expect(properties.size).to eq(2)
-    expect(properties).to all(be_kind_of(String))
-    expect(properties).to eq(["519688", "519689"])
+    property = result.value
+    expect(property).to be_kind_of(Roomorama::Property)
+    expect(property.identifier).to eq("519688")
+    expect(property.title).to eq("Test property")
   end
 
   context "when response from the api has error status" do
     it "returns a result with an appropriate error" do
-      stub_data = read_fixture("rentals_united/property_ids/error_status.xml")
+      stub_data = read_fixture("rentals_united/properties/error_status.xml")
       stub_call(:post, url) { [200, {}, stub_data] }
 
-      result = subject.fetch_property_ids
+      result = subject.fetch_property
 
       expect(result).not_to be_success
       expect(result.error.code).to eq("9999")
@@ -70,7 +62,7 @@ RSpec.describe RentalsUnited::Commands::PropertyIdsFetcher do
       stub_data = read_fixture("rentals_united/bad_xml.xml")
       stub_call(:post, url) { [200, {}, stub_data] }
 
-      result = subject.fetch_property_ids
+      result = subject.fetch_property
 
       expect(result).not_to be_success
       expect(result.error.code).to eq(:unrecognised_response)
@@ -88,7 +80,7 @@ RSpec.describe RentalsUnited::Commands::PropertyIdsFetcher do
     it "returns a result with an appropriate error" do
       stub_call(:post, url) { raise Faraday::TimeoutError }
 
-      result = subject.fetch_property_ids
+      result = subject.fetch_property
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :connection_timeout
