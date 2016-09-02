@@ -41,8 +41,8 @@ RSpec.describe Workers::Suppliers::Kigo::Legacy::Calendar do
       stats = sync_process.stats
 
       expect(stats[:properties_processed]).to eq 1
-      expect(stats[:available_records]).to eq 361
-      expect(stats[:unavailable_records]).to eq days_count
+      expect(stats[:available_records]).to eq 359
+      expect(stats[:unavailable_records]).to eq days_count + 1
     end
 
     it 'does not process property with external error' do

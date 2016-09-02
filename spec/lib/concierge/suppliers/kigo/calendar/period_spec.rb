@@ -71,7 +71,7 @@ RSpec.describe Kigo::Calendar::Period do
 
   describe '#entries' do
     it 'returns array of entries' do
-      expect(subject.entries.size).to eq 11
+      expect(subject.entries.size).to eq 10
 
       entry = subject.entries.first
 

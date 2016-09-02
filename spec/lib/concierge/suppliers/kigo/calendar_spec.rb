@@ -30,11 +30,11 @@ RSpec.describe Kigo::Calendar do
 
         calendar = result.value
         expect(calendar.identifier).to eq property.identifier
-        expect(calendar.entries.size).to eq 368
+        expect(calendar.entries.size).to eq 365
 
         entry = calendar.entries.first
 
-        expect(entry.nightly_rate).to eq 23.46
+        expect(entry.nightly_rate).to eq 29.24
         expect(entry.available).to eq true
         expect(entry.checkin_allowed).to eq true
         expect(entry.checkout_allowed).to eq true

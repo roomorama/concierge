@@ -18,7 +18,7 @@ class Kigo::Calendar
     end
 
     def entries
-      (start_date..end_date).map do |date|
+      (start_date...end_date).map do |date|
         build_entry(date)
       end
     end
