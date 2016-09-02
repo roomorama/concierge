@@ -50,6 +50,12 @@ module Workers::Suppliers::RentalsUnited
       end
     end
 
+    def fetch_property(property_id)
+      announce_error("Failed to fetch property with ID #{property_id}`") do
+        importer.fetch_property(property_id)
+      end
+    end
+
     def announce_error(message)
       yield.tap do |result|
         announce_context_error(message) unless result.success?

@@ -32,5 +32,14 @@ module RentalsUnited
       )
       properties_fetcher.fetch_property_ids
     end
+
+    # Retrieves property by its id.
+    def fetch_property(property_id)
+      property_fetcher = Commands::PropertyFetcher.new(
+        credentials,
+        property_id
+      )
+      property_fetcher.fetch_property
+    end
   end
 end
