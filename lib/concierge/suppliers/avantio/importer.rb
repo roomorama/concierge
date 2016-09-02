@@ -5,24 +5,23 @@ module Avantio
   #
   # Usage
   #
-  #   importer = Avantio::Importer.new(credentials)
+  #   importer = Avantio::Importer.new
   #   importer.fetch_properties(host)
-  #   importer.fetch_images
-  #   importer.fetch_description
+  #   importer.fetch_descriptions(host)
   class Importer
 
-    attr_reader :credentials
-
-    def initialize(credentials)
-      @credentials = credentials
-    end
-
-    # Fetches all properties for given host from Ciirus API
-    # Returns the Result wrapping the array of Ciirus::Entities::Property.
-    def fetch_properties()
-      fetcher = Commands::AccommodationsFetcher.new(credentials)
+    # Fetches all properties for given host from Avantio
+    # Returns the Result wrapping the array of Avantio::Entities::Accommodation
+    def fetch_properties(host)
+      fetcher = Commands::AccommodationsFetcher.new(host.identifier)
       fetcher.call
     end
 
+    # Fetches all properties for given host from Avantio
+    # Returns the Result wrapping the hash with Avantio::Entities::Description
+    def fetch_descriptions(host)
+      fetcher = Commands::DescriptionsFetcher.new(host.identifier)
+      fetcher.call
+    end
   end
 end
