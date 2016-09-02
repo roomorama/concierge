@@ -34,7 +34,7 @@ RSpec.describe Workers::Suppliers::Kigo::Calendar do
       stats = sync_process.stats
 
       expect(stats[:properties_processed]).to eq 1
-      expect(stats[:available_records]).to eq 359
+      expect(stats[:available_records]).to eq 358
       expect(stats[:unavailable_records]).to eq 7
     end
 

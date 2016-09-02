@@ -48,6 +48,7 @@ module Kigo
         period = wrap_period(period)
         entries.concat(period.entries) if period.valid?
       end
+      # byebug
     end
 
     def wrap_period(period)
