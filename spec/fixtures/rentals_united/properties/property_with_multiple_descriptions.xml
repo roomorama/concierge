@@ -1,0 +1,14 @@
+<Pull_ListSpecProp_RS>
+  <Status ID="0">Success</Status>
+  <Property>
+    <ID BuildingID="-1" BuildingName="">519688</ID>
+    <Descriptions>
+      <Description LanguageID="10">
+        <Text><![CDATA[Test description]]></Text>
+      </Description>
+      <Description LanguageID="1">
+        <Text><![CDATA[Yet another one description]]></Text>
+      </Description>
+    </Descriptions>
+  </Property>
+</Pull_ListSpecProp_RS>
