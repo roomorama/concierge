@@ -41,7 +41,7 @@ module Avantio
       private
 
       def set_base_info!(result, accommodation)
-        result.title = accommodation.accommodation_name
+        result.title = accommodation.name
         result.type = PROPERTY_TYPES.get("#{accommodation.master_kind_code}.type")
         result.subtype = PROPERTY_TYPES.get("#{accommodation.master_kind_code}.subtype")
         result.address = fetch_address(accommodation)
@@ -123,8 +123,7 @@ module Avantio
       end
 
       def pool?(accommodation)
-        !['', 'ninguna'].include?(accommodation.pool_type) ||
-          accommodation.pool_service
+        !['', 'ninguna'].include?(accommodation.pool_type)
       end
 
       def suitable_for_disabled?(accommodation)
