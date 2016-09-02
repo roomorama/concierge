@@ -8,7 +8,7 @@ module Workers::Suppliers::Kigo::Legacy
 
     attr_reader :supplier, :prices_diff_id, :reservations_diff_id
 
-    def initialize(supplier, prices_diff_id:, reservations_diff_id:)
+    def initialize(supplier, prices_diff_id: nil, reservations_diff_id: nil)
       @supplier             = supplier
       @prices_diff_id       = prices_diff_id
       @reservations_diff_id = reservations_diff_id
