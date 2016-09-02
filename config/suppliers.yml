@@ -50,3 +50,8 @@ KigoLegacy:
     availabilities:
       every: "1d"
       aggregated: true
+
+Avantio:
+  workers:
+    metadata:
+      every: "1d"
