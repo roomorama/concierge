@@ -90,7 +90,7 @@ module Poplidays
 
       lodging = result.value
       if details_validator(lodging).valid?
-        if lodging.key?('mandatoryServicesPrice')
+        if lodging['mandatoryServicesPrice']
           Result.new(lodging['mandatoryServicesPrice'])
         else
           no_mandatory_services_data
