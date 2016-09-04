@@ -177,8 +177,9 @@ module Poplidays
 
       def set_rates_and_min_stay!(roomorama_property, details, availabilities)
         mandatory_services = details['mandatoryServicesPrice']
-        min_stay = availabilities.map { |stay| nights(stay) }.min
-        daily_rate = availabilities.map { |stay| daily_rate(stay, mandatory_services) }.min
+        stays = availabilities.map { |a| to_stay(a, mandatory_services) }
+        min_stay = stays.map(&:length).min
+        daily_rate = stays.map(&:rate).min
 
         roomorama_property.nightly_rate = daily_rate
         roomorama_property.weekly_rate = (daily_rate * 7).round(2)
@@ -224,18 +225,14 @@ module Poplidays
         price['value'] if price
       end
 
-      def nights(stay)
-        start_date = Date.parse(stay['arrival'])
-        end_date   = Date.parse(stay['departure'])
-        (end_date - start_date).to_i
-      end
-
-      def daily_rate(stay, mandatory_services)
-        start_date = Date.parse(stay['arrival'])
-        end_date   = Date.parse(stay['departure'])
-        length = (end_date - start_date).to_i
-        subtotal = mandatory_services + stay['price']
-        (subtotal.to_f / length).round(2)
+      def to_stay(availability, mandatory_services)
+        Roomorama::Calendar::Stay.new(
+          {
+            checkin: availability['arrival'],
+            checkout: availability['departure'],
+            price: mandatory_services + availability['price']
+          }
+        )
       end
     end
   end
