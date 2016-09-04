@@ -48,12 +48,12 @@ module Poplidays
       #   * +url_params+ [Hash] a hash of params to be inserted to the command path
       #                         with sprintf method
       #   * +params+ [Hash] HTTP params (POST or GET) to be sent during remote call
-      def remote_call(url_params: {})
+      def remote_call(url_params: {}, params: {})
         endpoint = sprintf("#{VERSION}/#{path}", url_params)
 
         endpoint += authentication.to_query(endpoint)
         if method == :get
-          response = client.get(endpoint, {}, HEADERS)
+          response = client.get(endpoint, params, HEADERS)
         elsif method == :post
           response = client.post(endpoint, json_encode(params), {'Content-Type' => 'application/json'}.merge!(HEADERS))
         end
