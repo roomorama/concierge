@@ -66,7 +66,11 @@ module Poplidays
       end
 
       def with_cache(key, freshness: Concierge::Cache::DEFAULT_TTL)
-        cache.fetch(key, freshness: freshness) { yield }
+        if freshness == 0
+          yield
+        else
+          cache.fetch(key, freshness: freshness) { yield }
+        end
       end
 
       def cache
