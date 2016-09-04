@@ -7,7 +7,7 @@ RSpec.describe Workers::Suppliers::Poplidays::Metadata do
   let(:supplier) { create_supplier(name: Poplidays::Client::SUPPLIER_NAME) }
   let(:host) { create_host(supplier_id: supplier.id) }
   let(:properties_list) { parse_json(read_fixture('poplidays/lodgings.json')) }
-  let(:property_details) { parse_json(read_fixture('poplidays/property_details.json')) }
+  let(:property_details) { to_safe_hash(parse_json(read_fixture('poplidays/property_details.json'))) }
   let(:availabilities) { parse_json(read_fixture('poplidays/availabilities_calendar.json')) }
   let(:extras) { parse_json(read_fixture('poplidays/extras.json')) }
 
@@ -162,5 +162,9 @@ RSpec.describe Workers::Suppliers::Poplidays::Metadata do
 
   def parse_json(json_string)
     Yajl::Parser.parse(json_string)
+  end
+
+  def to_safe_hash(hash)
+    Concierge::SafeAccessHash.new(hash)
   end
 end

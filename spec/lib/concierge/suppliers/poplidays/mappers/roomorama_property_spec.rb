@@ -8,7 +8,7 @@ RSpec.describe Poplidays::Mappers::RoomoramaProperty do
      'pool', 'elevator', 'outdoor_space']
   end
   let(:property) { {'id' => '8927439190'} }
-  let(:details) { JSON.parse(read_fixture('poplidays/property_details2.json')) }
+  let(:details) { to_safe_hash(JSON.parse(read_fixture('poplidays/property_details2.json'))) }
   let(:availabilities) { JSON.parse(read_fixture('poplidays/availabilities_calendar2.json'))['availabilities'] }
   let(:extras_with_cleaning) { JSON.parse(read_fixture('poplidays/extras_with_cleaning.json')) }
   let(:extras_with_dependent_cleaning) { JSON.parse(read_fixture('poplidays/extras_with_dependent_cleaning.json')) }
@@ -16,21 +16,21 @@ RSpec.describe Poplidays::Mappers::RoomoramaProperty do
   let(:extras_with_mandatory_cleaning) { JSON.parse(read_fixture('poplidays/extras_with_mandatory_cleaning.json')) }
   let(:description) { "Text here\n\nAnother text here" }
   let(:minimum_details) do
-    {
+    to_safe_hash({
       'type' => 'APARTMENT',
       'address' => {},
       'description' => {},
-      'features' => {},
-      'photos' => {},
+      'features' => [],
+      'photos' => [],
       'mandatoryServicesPrice' => 0
-    }
+    })
   end
 
   subject { described_class.new }
 
   it 'sets default security deposit info for unknown caution' do
-    details = minimum_details.merge({'caution' => 'unknown'})
-    result = subject.build(property, details, availabilities, nil)
+    details = minimum_details.to_h.merge({'caution' => 'unknown'})
+    result = subject.build(property, to_safe_hash(details), availabilities, nil)
 
     roomorama_property = result.value
     expect(roomorama_property.security_deposit_amount).to eq(300.0)
@@ -39,8 +39,8 @@ RSpec.describe Poplidays::Mappers::RoomoramaProperty do
   end
 
   it 'does not set surface if it is zero' do
-    details = minimum_details.merge({'surface' => 0})
-    result = subject.build(property, details, availabilities, extras_without_cleaning)
+    details = minimum_details.to_h.merge({'surface' => 0})
+    result = subject.build(property, to_safe_hash(details), availabilities, extras_without_cleaning)
 
     roomorama_property = result.value
     expect(roomorama_property.surface).to be_nil
@@ -121,5 +121,9 @@ RSpec.describe Poplidays::Mappers::RoomoramaProperty do
     expect(roomorama_property.nightly_rate).to eq(78.95)
     expect(roomorama_property.weekly_rate).to eq(552.65)
     expect(roomorama_property.monthly_rate).to eq(2368.5)
+  end
+
+  def to_safe_hash(hash)
+    Concierge::SafeAccessHash.new(hash)
   end
 end

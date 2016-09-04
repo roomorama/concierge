@@ -39,7 +39,7 @@ module Poplidays
       # Arguments
       #
       #   * +property+ [Hash] basic property info
-      #   * +details+ [Hash] details property info
+      #   * +details+ [SafeAccessHash] details property info
       #   * +availabilities+ [Array] availabilities
       #   * +extras+ [Array] array of extra Hashes, can be nil
       #
@@ -64,9 +64,9 @@ module Poplidays
         roomorama_property.title = details['longLabel']
         roomorama_property.type = PROPERTY_TYPES.get("#{details['type']}.type")
         roomorama_property.subtype = PROPERTY_TYPES.get("#{details['type']}.subtype")
-        roomorama_property.address = details['address']['line1']
-        roomorama_property.postal_code = details['address']['postalCode']
-        roomorama_property.city = details['address']['city']
+        roomorama_property.address = details.get('address.line1')
+        roomorama_property.postal_code = details.get('address.postalCode')
+        roomorama_property.city = details.get('address.city')
         roomorama_property.description = build_descriptions(details)
         roomorama_property.number_of_bedrooms = details['bedrooms']
         roomorama_property.max_guests = details['personMax']
@@ -98,7 +98,7 @@ module Poplidays
       end
 
       def build_descriptions(details)
-        "#{details['description']['indoor']}\n\n#{details['description']['outdoor']}"
+        [details.get('description.indoor'), details.get('description.outdoor')].join("\n\n")
       end
 
       def set_images!(result, details)
