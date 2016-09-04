@@ -44,7 +44,7 @@ RSpec.describe Poplidays::Commands::LodgingFetcher do
       expect(result).to be_a Result
       expect(result).to be_success
 
-      expect(result.value).to be_a(Hash)
+      expect(result.value).to be_a(Concierge::SafeAccessHash)
     end
   end
 
