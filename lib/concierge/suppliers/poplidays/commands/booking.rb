@@ -36,8 +36,8 @@ module Poplidays
         PATH
       end
 
-      def authentication_required?
-        true
+      def authentication
+        with_authentication
       end
 
       def method
