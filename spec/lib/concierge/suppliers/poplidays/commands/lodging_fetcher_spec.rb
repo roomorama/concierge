@@ -32,11 +32,9 @@ RSpec.describe Poplidays::Commands::LodgingFetcher do
       result = subject.call(lodging_id)
 
       expect(result.success?).to be(true)
-      expect(result.value).to be_a(Hash)
+      expect(result.value).to be_a(Concierge::SafeAccessHash)
     end
   end
-
-
 
   def stub_with_fixture(endpoint, name)
     poplidays_response = read_fixture(name)
