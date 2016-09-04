@@ -102,8 +102,8 @@ module Poplidays
       end
 
       def set_images!(result, details)
-        details['photos'].each do |photo|
-          image_data = photo['pictures'].max_by { |pic| dimension_to_i(pic['dimension']) }
+        Array(details['photos']).each do |photo|
+          image_data = Array(photo['pictures']).max_by { |pic| dimension_to_i(pic['dimension'].to_s) }
           if image_data
             url = image_data['url']
             identifier = Digest::MD5.hexdigest(url)
@@ -115,15 +115,15 @@ module Poplidays
       end
 
       def dimension_to_i(dimension_str)
-        dimension_str.split('X').reduce(1) { |mul, i| mul * i.to_i }
+        dimension_str.split('X').map(&:to_i).inject(1, :*)
       end
 
       def smoking_allowed?(details)
-        details['features'].include?('SMOKER')
+        Array(details['features']).include?('SMOKER')
       end
 
       def pets_allowed?(details)
-        details['features'].include?('PETS')
+        Array(details['features']).include?('PETS')
       end
 
       # Currently known Poplidays property features are
@@ -137,7 +137,7 @@ module Poplidays
       def set_amenities!(roomorama_property, details)
         amenities = []
 
-        features = details['features']
+        features = Array(details['features'])
         amenities << 'kitchen' if has_kitchen?(features)
         amenities << 'internet' if features.include?('INTERNET')
         amenities << 'tv' if features.include?('TELEVISION')
@@ -188,7 +188,7 @@ module Poplidays
 
       def set_cleaning_info!(roomorama_property, extras)
         if extras
-          cleaning_extra = find_cleaning_extra(extras['extras'])
+          cleaning_extra = find_cleaning_extra(Array(extras['extras']))
           return unless cleaning_extra
 
           if cleaning_extra['mandatory']
@@ -219,7 +219,7 @@ module Poplidays
       # That's why, an extra has more than one price.
       # But we need info only about cleaning extra (without others)
       def calc_cleaning_extra_price(cleaning_extra)
-        prices = cleaning_extra['prices']
+        prices = Array(cleaning_extra['prices'])
         price = prices.detect { |p| p['selectedCodes'].nil? }
         price['value'] if price
       end
