@@ -17,7 +17,7 @@ module Poplidays
       #   * +details+ [Hash] property details
       #   * +availabilities_hash+ [Hash] contains `availabilities` key
       def build(property_id, details, availabilities_hash)
-        availabilities = availabilities_hash['availabilities']
+        availabilities = Array(availabilities_hash['availabilities'])
         entries = build_entries(details, availabilities)
 
         Roomorama::Calendar.new(property_id).tap do |c|
