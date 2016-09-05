@@ -12,41 +12,72 @@ module Workers::Suppliers::Avantio
 
     def perform
       properties = synchronisation.new_context do
-        importer.fetch_properties(host)
+        fetch_properties(host)
       end
+      return unless properties.success?
 
-      if properties.success?
-        descriptions = importer.fetch_descriptions(host)
-        if descriptions.success?
-          properties.value.each do |property|
-            property_id = property.property_id
+      descriptions = fetch_descriptions(host)
+      return unless descriptions.success?
 
-            # TODO add property validator
+      occupational_rules = fetch_occupational_rules(host)
+      return unless occupational_rules.success?
 
-            synchronisation.start(property_id) do
-              description = descriptions[property_id]
-              unless description
-                message = "Description not found for property `#{property_id}`"
-                augment_context_error(message)
-                next Result.error(:description_not_found)
-              end
-              Result.new(mapper.build(property, description))
-            end
+      properties.value.each do |property|
+        property_id = property.property_id
+
+        # TODO add property validator
+
+        synchronisation.start(property_id) do
+          description = descriptions[property_id]
+          unless description
+            message = "Description not found for property `#{property_id}`"
+            augment_context_error(message)
+            next Result.error(:description_not_found)
           end
-          synchronisation.finish!
-        else
+          occupational_rule = occupational_rules[property.occupational_rule_id]
+          unless occupational_rule
+            message = "Occupational rule not found for property `#{property_id}`"
+            augment_context_error(message)
+            next Result.error(:occupational_rule_not_found)
+          end
+          Result.new(mapper.build(property, description, occupational_rule))
+        end
+      end
+      synchronisation.finish!
+
+    end
+
+    private
+
+    def fetch_occupational_rules(host)
+      importer.fetch_occupational_rules(host).tap do |result|
+        unless result.success?
+          synchronisation.failed!
+          message = 'Failed to perform the `#fetch_occupational_rules` operation'
+          announce_error(message, result)
+        end
+      end
+    end
+
+    def fetch_properties(host)
+      importer.fetch_properties(host).tap do |result|
+        unless result.success?
+          synchronisation.failed!
+          message = 'Failed to perform the `#fetch_properties` operation'
+          announce_error(message, result)
+        end
+      end
+    end
+
+    def fetch_descriptions(host)
+      importer.fetch_properties(host).tap do |result|
+        unless result.success?
           synchronisation.failed!
           message = 'Failed to perform the `#fetch_descriptions` operation'
           announce_error(message, result)
         end
-      else
-        synchronisation.failed!
-        message = 'Failed to perform the `#fetch_properties` operation'
-        announce_error(message, result)
       end
     end
-
-    private
 
     def mapper
       @mapper ||= ::Avantio::Mappers::RoomoramaProperty.new
