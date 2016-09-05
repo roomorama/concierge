@@ -6,6 +6,7 @@ RSpec.describe Avantio::Mappers::RoomoramaProperty do
   let(:accommodation_with_all_services) { accommodation_from_file('avantio/accommodation_with_all_services.xml') }
   let(:description) { description_from_file('avantio/description.xml') }
   let(:occupational_rule) { occupational_rule_from_file('avantio/occupational_rule_with_not_actual_seasons.xml') }
+  let(:rate) { rate_from_file('avantio/rate.xml') }
 
   let(:description_text) {
     'The apartment in Benidorm  has capacity for 4 people. <br>'\
@@ -22,7 +23,7 @@ RSpec.describe Avantio::Mappers::RoomoramaProperty do
   end
 
   it 'returns mapped property' do
-    property = subject.build(accommodation_with_all_services, description, occupational_rule)
+    property = subject.build(accommodation_with_all_services, description, occupational_rule, rate)
 
     expect(property).to be_a(Roomorama::Property)
     expect(property.identifier).to eq('128498|1416325650|itsvillas')
@@ -66,6 +67,9 @@ RSpec.describe Avantio::Mappers::RoomoramaProperty do
 
     expect(property.description).to eq(description_text)
     expect(property.minimum_stay).to eq(2)
+    expect(property.nightly_rate).to eq(299)
+    expect(property.weekly_rate).to eq(2093)
+    expect(property.monthly_rate).to eq(8970)
   end
 
   def accommodation_from_file(filename)
@@ -78,6 +82,10 @@ RSpec.describe Avantio::Mappers::RoomoramaProperty do
 
   def occupational_rule_from_file(filename)
     Avantio::Mappers::OccupationalRule.new.build(xml_from_file(filename).at_xpath('OccupationalRule'))
+  end
+
+  def rate_from_file(filename)
+    Avantio::Mappers::Rate.new.build(xml_from_file(filename).at_xpath('AccommodationRS'))
   end
 
   def xml_from_file(filename)

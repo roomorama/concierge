@@ -22,6 +22,9 @@ module Workers::Suppliers::Avantio
       occupational_rules = fetch_occupational_rules(host)
       return unless occupational_rules.success?
 
+      rates = fetch_rates(host)
+      return unless rates.success?
+
       properties.value.each do |property|
         property_id = property.property_id
 
@@ -40,7 +43,13 @@ module Workers::Suppliers::Avantio
             augment_context_error(message)
             next Result.error(:occupational_rule_not_found)
           end
-          Result.new(mapper.build(property, description, occupational_rule))
+          rate = rates[property_id]
+          unless rate
+            message = "Rate not found for property `#{property_id}`"
+            augment_context_error(message)
+            next Result.error(:rate_not_found)
+          end
+          Result.new(mapper.build(property, description, occupational_rule, rate))
         end
       end
       synchronisation.finish!
@@ -74,6 +83,16 @@ module Workers::Suppliers::Avantio
         unless result.success?
           synchronisation.failed!
           message = 'Failed to perform the `#fetch_descriptions` operation'
+          announce_error(message, result)
+        end
+      end
+    end
+
+    def fetch_rates(host)
+      importer.fetch_rates(host).tap do |result|
+        unless result.success?
+          synchronisation.failed!
+          message = 'Failed to perform the `#fetch_rates` operation'
           announce_error(message, result)
         end
       end
