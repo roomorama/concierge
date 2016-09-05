@@ -16,10 +16,10 @@ module Avantio
       def actual_periods
         from = Date.today
         to = from + PERIOD_LENGTH
-        seasons.select do |s|
-          s[:rate] > 0 &&
-            from < s[:end_date] &&
-            s[:start_date] <= to
+        periods.select do |p|
+          p[:rate] > 0 &&
+            from < p[:end_date] &&
+            p[:start_date] <= to
         end
       end
 
