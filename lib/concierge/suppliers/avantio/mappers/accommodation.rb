@@ -7,6 +7,7 @@ module Avantio
         user_code:              'UserCode',
         login_ga:               'LoginGA',
         accommodation_name:     'AccommodationName',
+        occupational_rule_id:   'OccupationalRuleId',
         master_kind_code:       'MasterKind/MasterKindCode',
         country_iso_code:       'LocalizationData/Country/ISOCode',
         city:                   'LocalizationData/City/Name',
