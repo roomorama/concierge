@@ -28,6 +28,9 @@ module Poplidays
   #                             are supported at this moment.
   class Price
 
+    CACHE_PREFIX = 'poplidays'
+    MANDATORY_SERVICES_FRESHNESS = 12 * 60 * 60 # twelve hours
+
     attr_reader :credentials
 
     def initialize(credentials)
@@ -48,7 +51,6 @@ module Poplidays
       return mandatory_services unless mandatory_services.success?
 
       quote = retrieve_quote(params)
-
       return quote if unknown_errors?(quote)
 
       quotation = mapper.build(params, mandatory_services.value, quote)
@@ -79,27 +81,34 @@ module Poplidays
 
     def retrieve_quote(params)
       fetcher = Poplidays::Commands::QuoteFetcher.new(credentials)
-      fetcher.call(params)
+      key = quote_cache_key(params)
+      options = { serializer: Concierge::Cache::Serializers::JSON.new }
+      with_cache(key, options) {
+        fetcher.call(params)
+      }
     end
 
     def retrieve_mandatory_services(property_id)
-      fetcher = Poplidays::Commands::LodgingFetcher.new(credentials)
-      cache_duration = 12 * 60 * 60 # twelve hours
-      result = fetcher.call(property_id, freshness: cache_duration)
-      return result unless result.success?
+      key = ['property', property_id, 'mandatory_services'].join('.')
+      options = { freshness: MANDATORY_SERVICES_FRESHNESS }
+      with_cache(key, options) {
+        fetcher = Poplidays::Commands::LodgingFetcher.new(credentials)
+        result = fetcher.call(property_id)
+        return result unless result.success?
 
-      lodging = result.value
-      if details_validator(lodging).valid?
-        if lodging['mandatoryServicesPrice']
-          Result.new(lodging['mandatoryServicesPrice'])
+        lodging = result.value
+        if details_validator(lodging).valid?
+          if lodging['mandatoryServicesPrice']
+            Result.new(lodging['mandatoryServicesPrice'])
+          else
+            no_mandatory_services_data
+            unrecognised_response
+          end
         else
-          no_mandatory_services_data
-          unrecognised_response
+          invalid_property
+          invalid_property_error
         end
-      else
-        invalid_property
-        invalid_property_error
-      end
+      }
     end
 
     def details_validator(lodging)
@@ -109,7 +118,6 @@ module Poplidays
     def mapper
       @mapper ||= Poplidays::Mappers::Quote.new
     end
-
 
     def unrecognised_response
       Result.error(:unrecognised_response)
@@ -138,6 +146,18 @@ module Poplidays
       )
 
       Concierge.context.augment(response_mismatch)
+    end
+
+    def with_cache(key, options)
+      cache.fetch(key, options) { yield }
+    end
+
+    def cache
+      @cache ||= Concierge::Cache.new(namespace: CACHE_PREFIX)
+    end
+
+    def quote_cache_key(params)
+      [params[:property_id], params[:check_in], params[:check_out]].join('.')
     end
   end
 

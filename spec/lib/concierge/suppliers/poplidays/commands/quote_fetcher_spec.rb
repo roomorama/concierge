@@ -52,17 +52,6 @@ RSpec.describe Poplidays::Commands::QuoteFetcher do
       expect(result.success?).to be(true)
       expect(result.value).to be_a(Hash)
     end
-
-    it 'caches result for the same call' do
-      stub_with_fixture(endpoint, 'poplidays/property_details.json')
-
-      expect{ subject.call(params) }.to change { Concierge::Cache::EntryRepository.count }
-
-      result = subject.call(params)
-      expect(result).to be_a Result
-      expect(result).to be_success
-      expect(result.value).to be_a(Hash)
-    end
   end
 
   def stub_with_fixture(endpoint, name)
