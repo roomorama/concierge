@@ -44,7 +44,12 @@ module RentalsUnited
       end
 
       private
-      def set_images!(property); end
+      def set_images!(property)
+        raw_images = Array(property_hash.get("Images.Image"))
+
+        mapper = Mappers::ImageSet.new(raw_images)
+        mapper.build_images.each { |image| property.add_image(image) }
+      end
 
       def find_property_type(id)
         RentalsUnited::Dictionaries::PropertyTypes.find(id)
@@ -56,7 +61,7 @@ module RentalsUnited
           desc["@LanguageID"] == EN_DESCRIPTION_LANG_CODE
         end
 
-        en_description["Text"]
+        en_description["Text"] if en_description
       end
     end
   end

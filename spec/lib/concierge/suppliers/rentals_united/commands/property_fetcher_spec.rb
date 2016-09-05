@@ -80,6 +80,72 @@ RSpec.describe RentalsUnited::Commands::PropertyFetcher do
         expect(property.description).to eq("Yet another one description")
       end
     end
+
+    context "when no available descriptions" do
+      let(:file_name) { "rentals_united/properties/property_without_descriptions.xml" }
+
+      it "sets description to nil" do
+        expect(property.description).to be_nil
+      end
+    end
+
+    context "when mapping single image to property" do
+      let(:file_name) { "rentals_united/properties/property_with_one_image.xml" }
+
+      let(:expected_images) do
+        {
+          "a0c68acc113db3b58376155c283dfd59" => {
+            url: "https://dwe6atvmvow8k.cloudfront.net/ru/427698/519688/636082399089701851.jpg",
+            caption: 'Main image'
+          }
+        }
+      end
+
+      it "adds array of with one image to the property" do
+        expect(property.images.size).to eq(1)
+        expect(property.images).to all(be_kind_of(Roomorama::Image))
+        expect(property.images.map(&:identifier)).to eq(expected_images.keys)
+
+        property.images.each do |image|
+          expect(image.url).to eq(expected_images[image.identifier][:url])
+          expect(image.caption).to eq(expected_images[image.identifier][:caption])
+        end
+      end
+    end
+
+    context "when mapping multiple images to property" do
+      let(:expected_images) do
+        {
+          "62fc304eb20a25669b84d2ca2ea61308" => {
+            url: "https://dwe6atvmvow8k.cloudfront.net/ru/427698/519688/636082398988145159.jpg",
+            caption: 'Interior'
+          },
+          "a0c68acc113db3b58376155c283dfd59" => {
+            url: "https://dwe6atvmvow8k.cloudfront.net/ru/427698/519688/636082399089701851.jpg",
+            caption: 'Main image'
+          }
+        }
+      end
+
+      it "adds array of images to the property" do
+        expect(property.images.size).to eq(2)
+        expect(property.images).to all(be_kind_of(Roomorama::Image))
+        expect(property.images.map(&:identifier)).to eq(expected_images.keys)
+
+        property.images.each do |image|
+          expect(image.url).to eq(expected_images[image.identifier][:url])
+          expect(image.caption).to eq(expected_images[image.identifier][:caption])
+        end
+      end
+    end
+
+    context "when there is no images for property" do
+      let(:file_name) { "rentals_united/properties/property_without_images.xml" }
+
+      it "returns an empty array for property images" do
+        expect(property.images).to eq([])
+      end
+    end
   end
 
   context "when response from the api is not well-formed xml" do
