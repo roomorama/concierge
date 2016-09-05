@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Workers::Suppliers::Ciirus::Calendar do
+RSpec.describe Workers::Suppliers::Ciirus::Availabilities do
   include Support::Fixtures
   include Support::Factories
 

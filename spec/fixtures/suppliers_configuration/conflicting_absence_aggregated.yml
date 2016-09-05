@@ -1,0 +1,7 @@
+Supplier X:
+  workers:
+    metadata:
+      every: "1d"
+    availabilities:
+      aggregated: true
+      absence: "This supplier does not provide calendar information"

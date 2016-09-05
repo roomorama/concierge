@@ -9,14 +9,19 @@
 #
 # Attributes
 #
-# +id+          - the ID of the the record on the database, automatically generated.
-# +host_id+     - a foreign key to the +hosts+ table, indicating which host
-#                 the background worker is associated with.
-# +next_run_at+ - a timestamp that indicates when the background worker should be
-#                 invoked next.
-# +interval+    - how often (in seconds), the background worker should be invoked.
-# +type+        - the type of synchronisation performed by the background worker.
-# +status+      - the status of the worker, which indicate its activity at a given moment.
+# +id+            - the ID of the the record on the database, automatically generated.
+# +host_id+       - a foreign key to the +hosts+ table, indicating which host
+#                   the background worker is associated with.
+# +supplier_id+   - a foreign key to the +suppliers+ table, indicating which supplier
+#                   the background worker is associated with. Either this column or
+#                   +host_id+ must be set.
+# +next_run_at+   - a timestamp that indicates when the background worker should be
+#                   invoked next.
+# +next_run_args+ - arguments to be passed to the worker implementation (listening on the
+#                   proper event) on the next run.
+# +interval+      - how often (in seconds), the background worker should be invoked.
+# +type+          - the type of synchronisation performed by the background worker.
+# +status+        - the status of the worker, which indicate its activity at a given moment.
 class BackgroundWorker
   include Hanami::Entity
 
@@ -36,8 +41,8 @@ class BackgroundWorker
   #             be rescheduled.
   STATUSES = %w(idle running)
 
-  attributes :id, :host_id, :next_run_at, :interval, :type, :status,
-    :created_at, :updated_at
+  attributes :id, :host_id, :supplier_id, :next_run_at, :next_run_args, :interval,
+    :type, :status, :created_at, :updated_at
 
   def running?
     status == "running"

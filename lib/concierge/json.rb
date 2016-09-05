@@ -10,15 +10,16 @@ module Concierge
       Yajl::Encoder.encode(data)
     end
 
-    # Decodes a JSON string given to a Ruby data-structure.
+    # Decodes a JSON string or stream given to a Ruby data-structure.
+    # Supports IO streams (StringIO, file, socket, etc) or String.
     #
     # Returns a +Result+ instance. Check its success to be able to properly
     # handle errors.
-    def json_decode(json_string)
-      Result.new(Yajl::Parser.parse(json_string))
+    def json_decode(json_source)
+      Result.new(Yajl::Parser.parse(json_source))
     rescue Yajl::ParseError => err
       announce_parsing_error(err)
-      message = ["Error: #{err.message}", json_string.to_s].join("\n")
+      message = ["Error: #{err.message}", json_source.to_s].join("\n")
       Result.error(:invalid_json_representation)
     end
 

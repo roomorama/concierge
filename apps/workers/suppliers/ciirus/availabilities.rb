@@ -1,8 +1,8 @@
 module Workers::Suppliers::Ciirus
-  # +Workers::Suppliers::Ciirus::Calendar+
+  # +Workers::Suppliers::Ciirus::Availabilities+
   #
   # Performs properties availabilities synchronisation with supplier
-  class Calendar
+  class Availabilities
     attr_reader :synchronisation, :host
 
     def initialize(host)
@@ -80,6 +80,7 @@ module Workers::Suppliers::Ciirus
 end
 
 # listen supplier worker
-Concierge::Announcer.on('availabilities.Ciirus') do |host|
-  Workers::Suppliers::Ciirus::Calendar.new(host).perform
+Concierge::Announcer.on('availabilities.Ciirus') do |host, args|
+  Workers::Suppliers::Ciirus::Availabilities.new(host).perform
+  Result.new({})
 end

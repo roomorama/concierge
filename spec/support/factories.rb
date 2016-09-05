@@ -9,11 +9,12 @@ module Support
     def create_sync_process(overrides = {})
       attributes  = {
         type:        "metadata",
-        host_id:     create_host.id,
         successful:  true,
         started_at:  Time.now - 10 * 60, # 10 minutes ago
         finished_at: Time.now
       }.merge(overrides)
+
+      attributes[:host_id] ||= create_host.id
 
       process = SyncProcess.new(attributes)
       SyncProcessRepository.create(process)
@@ -22,12 +23,13 @@ module Support
     def create_reservation(overrides = {})
       attributes = {
         supplier:         "Supplier X",
-        property_id:      create_property.id,
         check_in:         Date.today.to_s,
         check_out:        (Date.today + 3).to_s,
         guests:           2,
         reference_number: "ABC123",
       }.merge(overrides)
+
+      attributes[:property_id] ||= create_property.id
 
       reservation = Reservation.new(attributes)
       ReservationRepository.create(reservation)
@@ -36,7 +38,6 @@ module Support
     def create_property(overrides = {})
       attributes = {
         identifier: "PROP1",
-        host_id:    create_host.id,
         data:       {
           title: "Studio Apartment in Madrid",
           nightly_rate: 10,
@@ -45,6 +46,8 @@ module Support
           ]
         },
       }.merge(overrides)
+
+      attributes[:host_id] ||= create_host.id
 
       property = Property.new(attributes)
       PropertyRepository.create(property)
@@ -56,8 +59,9 @@ module Support
         username:       "concierge_host",
         access_token:   SecureRandom.hex(32),
         fee_percentage: 0,
-        supplier_id:    create_supplier.id
       }.merge(overrides)
+
+      attributes[:supplier_id] ||= create_supplier.id
 
       host = Host.new(attributes)
       HostRepository.create(host)
@@ -104,6 +108,8 @@ module Support
         type:     "metadata",
         status:   "idle"
       }.merge(overrides)
+
+      attributes[:host_id] ||= create_host.id
 
       worker = BackgroundWorker.new(attributes)
       BackgroundWorkerRepository.create(worker)

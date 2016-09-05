@@ -3,7 +3,7 @@
 
   <h3><%= event[:label] %></h3>
 
-  <p><%= monospace(event[:message]) %></p>
+  <p><%= monospace(h(event[:message])) %></p>
 
   <% if event[:backtrace] && !event[:backtrace].empty? %>
     <p>Follows the backtrace of the notification:</p>

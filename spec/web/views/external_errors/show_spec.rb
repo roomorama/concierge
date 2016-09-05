@@ -180,4 +180,10 @@ RSpec.describe Web::Views::ExternalErrors::Show do
       expect(view.format_timestamp(error.context[:events].first[:timestamp])).to eq "19:32:51 (+0800)"
     end
   end
+
+  describe "#h" do
+    it "escapes html" do
+      expect(view.h("<h1>Foo</h1>")).to eq "&lt;h1&gt;Foo&lt;&#x2F;h1&gt;"
+    end
+  end
 end

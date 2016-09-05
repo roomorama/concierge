@@ -17,6 +17,14 @@ class BackgroundWorkerRepository
     end
   end
 
+  # returns a collection of background workers associated with the given +Supplier+
+  # instance.
+  def self.for_supplier(supplier)
+    query do
+      where(supplier_id: supplier.id)
+    end
+  end
+
   # queries for idle background workers
   def self.idle
     query do

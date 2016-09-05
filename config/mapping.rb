@@ -91,12 +91,14 @@ collection :background_workers do
   entity     BackgroundWorker
   repository BackgroundWorkerRepository
 
-  attribute :id,          Integer
-  attribute :host_id,     Integer
-  attribute :next_run_at, Time
-  attribute :interval,    Integer
-  attribute :type,        String
-  attribute :status,      String
-  attribute :created_at,  Time
-  attribute :updated_at,  Time
+  attribute :id,            Integer
+  attribute :host_id,       Integer
+  attribute :supplier_id,   Integer
+  attribute :next_run_at,   Time
+  attribute :next_run_args, Concierge::PGJSON
+  attribute :interval,      Integer
+  attribute :type,          String
+  attribute :status,        String
+  attribute :created_at,    Time
+  attribute :updated_at,    Time
 end
