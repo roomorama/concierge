@@ -34,18 +34,6 @@ RSpec.describe Poplidays::Commands::LodgingFetcher do
       expect(result.success?).to be(true)
       expect(result.value).to be_a(Concierge::SafeAccessHash)
     end
-
-    it 'caches result for the same call' do
-      stub_with_fixture(lodgings_endpoint, 'poplidays/property_details.json')
-
-      expect{ subject.call(lodging_id, freshness: 100) }.to change { Concierge::Cache::EntryRepository.count }
-
-      result = subject.call(lodging_id, freshness: 100)
-      expect(result).to be_a Result
-      expect(result).to be_success
-
-      expect(result.value).to be_a(Concierge::SafeAccessHash)
-    end
   end
 
   def stub_with_fixture(endpoint, name)

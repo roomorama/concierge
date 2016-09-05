@@ -7,7 +7,6 @@ module Poplidays
     # This class is responsible for wrapping the logic related to getting all
     # lodging's availabilities from Poplidays, parsing the response,
     # and building the +Result+ object with the raw data returned from their API.
-    # Uses cache with Concierge::Cache::DEFAULT_TTL
     #
     # Usage
     #
@@ -24,11 +23,7 @@ module Poplidays
       PATH = 'lodgings/%<id>s/availabilities'
 
       def call(lodging_id)
-        key = ['availabilities', '.', lodging_id].join
-
-        raw_availabilities = with_cache(key) do
-          remote_call(url_params: {id: lodging_id})
-        end
+        raw_availabilities = remote_call(url_params: {id: lodging_id})
 
         if raw_availabilities.success?
           json_decode(raw_availabilities.value)
