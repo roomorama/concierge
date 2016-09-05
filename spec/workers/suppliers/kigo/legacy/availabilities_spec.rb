@@ -23,7 +23,10 @@ RSpec.describe Workers::Suppliers::Kigo::Legacy::Availabilities do
       expect_any_instance_of(Kigo::Importer).
         to receive(:fetch_prices_diff).with(args[:prices_diff_id]) { Result.error(:connection_timeout) }
 
-      expect(subject.perform).to be_nil
+      result = subject.perform
+
+      expect(result).to be_success
+      expect(result.value).to eq args
 
       external_error = ExternalErrorRepository.last
 

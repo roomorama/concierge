@@ -18,13 +18,13 @@ module Workers::Suppliers::Kigo
       prices_diff = importer.fetch_prices_diff(prices_diff_id)
       unless prices_diff.success?
         announce_error('Failed to perform `#fetch_prices_diff` operation', prices_diff)
-        return
+        return initial_args_result
       end
 
       availabilities_ids = importer.fetch_availabilities_diff(availabilities_diff_id)
       unless availabilities_ids.success?
         announce_error('Failed to perform `#fetch_availabilities_diff` operation', availabilities_ids)
-        return
+        return initial_args_result
       end
 
       identifiers = prices_diff.value['PROP_ID'] | availabilities_ids.value['PROP_ID']
@@ -76,10 +76,16 @@ module Workers::Suppliers::Kigo
         happened_at: Time.now
       })
     end
+
+    def initial_args_result
+      Result.new({
+                   prices_diff_id:         prices_diff_id,
+                   availabilities_diff_id: availabilities_diff_id
+                 })
+    end
   end
 end
 
 Concierge::Announcer.on("availabilities.Kigo") do |supplier, args|
-  result = Workers::Suppliers::Kigo::Availabilities.new(supplier, args).perform
-  result.is_a?(Result) ? result : Result.new(args)
+  Workers::Suppliers::Kigo::Availabilities.new(supplier, args).perform
 end
