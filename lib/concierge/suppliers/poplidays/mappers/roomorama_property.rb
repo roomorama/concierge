@@ -98,7 +98,7 @@ module Poplidays
       end
 
       def build_descriptions(details)
-        [details.get('description.indoor'), details.get('description.outdoor')].join("\n\n")
+        [details.get('description.indoor'), details.get('description.outdoor')].compact.join("\n\n")
       end
 
       def set_images!(result, details)
