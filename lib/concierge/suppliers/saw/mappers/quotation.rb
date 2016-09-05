@@ -17,12 +17,32 @@ module SAW
 
         ::Quotation.new(
           property_id: params[:property_id],
+          unit_id:     params[:unit_id],
           check_in:    params[:check_in].to_s,
           check_out:   params[:check_out].to_s,
           guests:      params[:guests],
           currency:    property_rate.currency,
           total:       requested_unit.price,
           available:   requested_unit.available
+        )
+      end
+
+      # Builds unavailable quotation.
+      # Used in cases when rates information for unit is not available.
+      #
+      # Arguments:
+      #
+      #   * +params+ [Hash] parameters
+      #
+      # Returns [Quotation]
+      def self.build_unavailable(params)
+        ::Quotation.new(
+          property_id: params[:property_id],
+          unit_id:     params[:unit_id],
+          check_in:    params[:check_in].to_s,
+          check_out:   params[:check_out].to_s,
+          guests:      params[:guests],
+          available:   false
         )
       end
     end

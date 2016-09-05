@@ -46,16 +46,13 @@ module SAW
           if valid_result?(result_hash)
             property_rate = build_property_rate(result_hash)
 
-            if property_rate.has_unit?(params[:unit_id])
-              quotation = SAW::Mappers::Quotation.build(params, property_rate)
-
-              Result.new(quotation)
+            quotation = if property_rate.has_unit?(params[:unit_id])
+              SAW::Mappers::Quotation.build(params, property_rate)
             else
-              unavailable_unit_rates_error_result(
-                params[:property_id],
-                params[:unit_id]
-              )
+              SAW::Mappers::Quotation.build_unavailable(params)
             end
+
+            Result.new(quotation)
           else
             error_result(result_hash)
           end
@@ -80,14 +77,6 @@ module SAW
           check_out:   params[:check_out],
           num_guests:  params[:guests]
         )
-      end
-
-      def unavailable_unit_rates_error_result(property_id, unit_id)
-        code        = :unavailable_unit_rates_error
-        description = "Rates for property_id=#{property_id} unit_id=#{unit_id} do not exist in returned response."
-
-        augment_with_error(code, description, caller)
-        Result.error(code)
       end
     end
   end
