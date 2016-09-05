@@ -14,6 +14,7 @@ RSpec.describe Avantio::Mappers::Accommodation do
     expect(accommodation.security_deposit_amount).to eq(1000.0)
     expect(accommodation.security_deposit_type).to eq('cash')
     expect(accommodation.security_deposit_currency_code).to eq('EUR')
+    expect(accommodation.occupational_rule_id).to eq('204')
     expect(accommodation.master_kind_code).to eq('2')
     expect(accommodation.country_iso_code).to eq('ES')
     expect(accommodation.city).to eq('Gerona / Girona')

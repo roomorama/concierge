@@ -5,6 +5,7 @@ RSpec.describe Avantio::Mappers::RoomoramaProperty do
 
   let(:accommodation_with_all_services) { accommodation_from_file('avantio/accommodation_with_all_services.xml') }
   let(:description) { description_from_file('avantio/description.xml') }
+  let(:occupational_rule) { occupational_rule_from_file('avantio/occupational_rule_with_not_actual_seasons.xml') }
 
   let(:description_text) {
     'The apartment in Benidorm  has capacity for 4 people. <br>'\
@@ -16,8 +17,12 @@ RSpec.describe Avantio::Mappers::RoomoramaProperty do
     ' plan kitchen, refrigerator, oven, freezer, washing machine and dryer are provided.'
   }
 
+  before do
+    allow(Date).to receive(:today).and_return(Date.new(2016, 6, 25))
+  end
+
   it 'returns mapped property' do
-    property = subject.build(accommodation_with_all_services, description)
+    property = subject.build(accommodation_with_all_services, description, occupational_rule)
 
     expect(property).to be_a(Roomorama::Property)
     expect(property.identifier).to eq('128498|1416325650|itsvillas')
@@ -60,6 +65,7 @@ RSpec.describe Avantio::Mappers::RoomoramaProperty do
     expect(image.url).to eq 'http://img.crs.itsolutions.es/fotos/1258485483aea4571d97cbf40fc90373c2a0883e23/12584854836f07364bd3aaa7a7e6e977f89438ce8a.jpg'
 
     expect(property.description).to eq(description_text)
+    expect(property.minimum_stay).to eq(2)
   end
 
   def accommodation_from_file(filename)
@@ -68,6 +74,10 @@ RSpec.describe Avantio::Mappers::RoomoramaProperty do
 
   def description_from_file(filename)
     Avantio::Mappers::Description.new.build(xml_from_file(filename).at_xpath('AccommodationItem'))
+  end
+
+  def occupational_rule_from_file(filename)
+    Avantio::Mappers::OccupationalRule.new.build(xml_from_file(filename).at_xpath('OccupationalRule'))
   end
 
   def xml_from_file(filename)

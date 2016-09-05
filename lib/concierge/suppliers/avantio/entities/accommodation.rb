@@ -3,7 +3,7 @@ module Avantio
     class Accommodation
 
       ATTRIBUTES = [
-        :accommodation_code, :user_code, :login_ga, :name, :master_kind_code, :country_iso_code,
+        :accommodation_code, :user_code, :login_ga, :name, :occupational_rule_id, :master_kind_code, :country_iso_code,
         :city, :lat, :lng, :district, :postal_code, :street, :number, :block, :door, :floor, :currency,
         :people_capacity, :minimum_occupation, :bedrooms, :double_beds, :individual_beds, :individual_sofa_beds,
         :double_sofa_beds, :housing_area, :area_unit, :bathtub_bathrooms, :shower_bathrooms, :pool_type, :tv,
@@ -20,6 +20,7 @@ module Avantio
         @user_code                       = attrs[:user_code]
         @login_ga                        = attrs[:login_ga]
         @name                            = attrs[:accommodation_name]
+        @occupational_rule_id            = attrs[:occupational_rule_id]
         @master_kind_code                = attrs[:master_kind_code]
         @country_iso_code                = attrs[:country_iso_code]
         @city                            = attrs[:city]
