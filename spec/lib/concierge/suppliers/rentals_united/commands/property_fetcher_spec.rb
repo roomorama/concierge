@@ -73,6 +73,14 @@ RSpec.describe RentalsUnited::Commands::PropertyFetcher do
       expect(property.description).to eq("Test description")
     end
 
+    it "sets check_in_time to the property" do
+      expect(property.check_in_time).to eq("13:00-17:00")
+    end
+
+    it "sets check_out_time to the property" do
+      expect(property.check_out_time).to eq("11:00")
+    end
+
     context "when multiple descriptions are available" do
       let(:file_name) { "rentals_united/properties/property_with_multiple_descriptions.xml" }
 
