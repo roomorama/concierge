@@ -47,6 +47,14 @@ RSpec.describe Poplidays::Mappers::RoomoramaProperty do
     expect(roomorama_property.surface_unit).to be_nil
   end
 
+  it 'does not set surface if it is emtpy' do
+    result = subject.build(property, to_safe_hash(minimum_details), availabilities, extras_without_cleaning)
+
+    roomorama_property = result.value
+    expect(roomorama_property.surface).to be_nil
+    expect(roomorama_property.surface_unit).to be_nil
+  end
+
   it 'does not set cleaning info if there is no cleaning extra' do
     result = subject.build(property, minimum_details, availabilities, extras_without_cleaning)
 

@@ -81,7 +81,7 @@ module Poplidays
         roomorama_property.cancellation_policy = CANCELLATION_POLICY
 
         # Some properties have 0 value
-        if details['surface'] != 0
+        if details['surface'].to_i != 0
           roomorama_property.surface = details['surface']
           roomorama_property.surface_unit = SURFACE_UNIT
         end
