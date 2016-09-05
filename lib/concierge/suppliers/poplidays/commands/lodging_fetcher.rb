@@ -5,7 +5,6 @@ module Poplidays
     # This class is responsible for wrapping the logic related to getting
     # lodging details from Poplidays, parsing the response,
     # and building the +Result+ object with the raw data returned from their API.
-    # Can cache the result, by default cache is turned off
     #
     # Usage
     #
@@ -20,14 +19,9 @@ module Poplidays
     class LodgingFetcher < BaseCommand
 
       PATH = 'lodgings/%<id>s'
-      DEFAULT_FRESHNESS = 0 # no cache
 
-      def call(lodging_id, freshness: DEFAULT_FRESHNESS)
-        key = ['lodging', lodging_id].join('.')
-
-        raw_lodging = with_cache(key, freshness: freshness) do
-          remote_call(url_params: {id: lodging_id})
-        end
+      def call(lodging_id)
+        raw_lodging = remote_call(url_params: {id: lodging_id})
         if raw_lodging.success?
           result = json_decode(raw_lodging.value)
           return result unless result.success?

@@ -14,12 +14,9 @@ module Poplidays
     class BaseCommand
       include Concierge::JSON
 
-
       # Poplidays API version
       VERSION = 'v2'
       DEFAULT_PROTOCOL = 'https'
-
-      CACHE_PREFIX = 'poplidays'
 
       # Http timeout in seconds
       DEFAULT_TIMEOUT = 10
@@ -65,18 +62,6 @@ module Poplidays
         end
       end
 
-      def with_cache(key, freshness: Concierge::Cache::DEFAULT_TTL)
-        if freshness == 0
-          yield
-        else
-          cache.fetch(key, freshness: freshness) { yield }
-        end
-      end
-
-      def cache
-        @cache ||= Concierge::Cache.new(namespace: CACHE_PREFIX)
-      end
-
       def protocol
         DEFAULT_PROTOCOL
       end
@@ -92,7 +77,6 @@ module Poplidays
       def authentication
         raise NotImplementedError
       end
-
 
       def timeout
         DEFAULT_TIMEOUT

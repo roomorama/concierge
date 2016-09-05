@@ -34,18 +34,6 @@ RSpec.describe Poplidays::Commands::AvailabilitiesFetcher do
       expect(result.success?).to be(true)
       expect(result.value).to be_a(Hash)
     end
-
-    it 'caches result for the same call' do
-      stub_with_fixture(lodgings_endpoint, 'poplidays/availabilities_calendar.json')
-
-      expect{ subject.call(lodging_id) }.to change { Concierge::Cache::EntryRepository.count }
-
-      result = subject.call(lodging_id)
-      expect(result).to be_a Result
-      expect(result).to be_success
-
-      expect(result.value).to be_a(Hash)
-    end
   end
 
   def stub_with_fixture(endpoint, name)
