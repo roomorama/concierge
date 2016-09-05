@@ -96,12 +96,12 @@ RSpec.describe RentalsUnited::Commands::PropertyFetcher do
         )
       end
 
-      it "sets amenities to empty array if there is no amenities" do
-        file_name = "rentals_united/properties/property_without_amenities.xml"
+      context "and when there is no amenities" do
+        let(:file_name) { "rentals_united/properties/property_without_amenities.xml" }
 
-        expect(property.amenities).to eq(
-          ["bed_linen_and_towels", "airconditioning", "pool", "wheelchairaccess", "elevator", "parking"]
-        )
+        it "sets empty amenities" do
+          expect(property.amenities).to eq([])
+        end
       end
     end
 
