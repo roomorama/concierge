@@ -6,10 +6,10 @@ module Avantio
     class DescriptionsFetcher
       CODE = 'descriptions'
 
-      attr_reader :credentials
+      attr_reader :code_partner
 
-      def initialize(credentials)
-        @credentials = credentials
+      def initialize(code_partner)
+        @code_partner = code_partner
       end
 
       def call
@@ -22,7 +22,7 @@ module Avantio
       private
 
       def fetcher
-        @fetcher ||= Avantio::Fetcher.new(credentials.code_partner)
+        @fetcher ||= Avantio::Fetcher.new(code_partner)
       end
 
       def mapper
