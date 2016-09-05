@@ -34,6 +34,8 @@ module RentalsUnited
         property.address              = property_hash.get("Street")
         property.postal_code          = property_hash.get("ZipCode")
         property.amenities            = amenities_dictionary.convert
+        property.check_in_time        = check_in_time
+        property.check_out_time       = check_out_time
 
         property_type = find_property_type(property_hash.get("ObjectTypeID"))
 
@@ -66,6 +68,17 @@ module RentalsUnited
         end
 
         en_description["Text"] if en_description
+      end
+
+      def check_in_time
+        from = property_hash.get("CheckInOut.CheckInFrom")
+        to   = property_hash.get("CheckInOut.CheckInTo")
+
+        "#{from}-#{to}" if from && to
+      end
+
+      def check_out_time
+        property_hash.get("CheckInOut.CheckOutUntil")
       end
     end
   end
