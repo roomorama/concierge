@@ -8,7 +8,6 @@ module Poplidays
     #
     # It uses bookings/easy API endpoint with "requestType":"EVALUATION" parameter.
     # It's better then get all availabilities and search manually.
-    # Uses cache with Concierge::Cache::DEFAULT_TTL
     #
     # Usage
     #
@@ -25,9 +24,7 @@ module Poplidays
       PATH = 'bookings/easy'
 
       def call(params)
-        raw_quote = with_cache(key(params)) do
-          remote_call(params: request_json(params))
-        end
+        raw_quote = remote_call(params: request_json(params))
         if raw_quote.success?
           json_decode(raw_quote.value)
         else
