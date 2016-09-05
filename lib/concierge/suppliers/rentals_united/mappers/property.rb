@@ -6,7 +6,7 @@ module RentalsUnited
     # +RentalsUnited::Entities::Property+ object from a hash which was fetched
     # from the RentalsUnited API.
     class Property
-      attr_reader :property_hash
+      attr_reader :property_hash, :amenities_dictionary
 
       EN_DESCRIPTION_LANG_CODE = "1"
 
@@ -17,19 +17,23 @@ module RentalsUnited
       #   * +property_hash+ [Concierge::SafeAccessHash] property hash object
       def initialize(property_hash)
         @property_hash = property_hash
+        @amenities_dictionary = Dictionaries::Amenities.new(
+          property_hash.get("Amenities.Amenity")
+        )
       end
 
-      # Builds a property_hash
+      # Builds a property
       #
       # Returns [RentalsUnited::Entities::Property]
       def build_property
         property = Roomorama::Property.new(property_hash.get("ID"))
-        property.title = property_hash.get("Name")
-        property.description = en_description(property_hash)
-        property.lat   = property_hash.get("Coordinates.Latitude").to_f
-        property.lng   = property_hash.get("Coordinates.Longitude").to_f
-        property.address = property_hash.get("Street")
-        property.postal_code = property_hash.get("ZipCode")
+        property.title                = property_hash.get("Name")
+        property.description          = en_description(property_hash)
+        property.lat                  = property_hash.get("Coordinates.Latitude").to_f
+        property.lng                  = property_hash.get("Coordinates.Longitude").to_f
+        property.address              = property_hash.get("Street")
+        property.postal_code          = property_hash.get("ZipCode")
+        property.amenities            = amenities_dictionary.convert
 
         property_type = find_property_type(property_hash.get("ObjectTypeID"))
 
