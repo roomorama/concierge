@@ -34,3 +34,8 @@ SAW:
       every: "1d"
     availabilities:
       absence: "SAW does not provide a way to fetch the calendar of availabilities. Default availability is assumed."
+
+Woori:
+  workers:
+    availabilities:
+      every: "24h"

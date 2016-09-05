@@ -1,0 +1,44 @@
+{
+    "data": [
+        {
+            "blockVacancy": 1,
+            "closeToArrival": 1,
+            "closeToDeparture": 1,
+            "currency": "KRW",
+            "date": "2016-08-15 00:00:00",
+            "dayOfWeek": "mon",
+            "discountInfo": {
+                "discount": false,
+                "discountEndDate": null,
+                "discountPrice": 0.0,
+                "discountStartDate": null
+            },
+            "active": true,
+            "maxVacancy": 1,
+            "minPrice": 0.0,
+            "price": 80000.0,
+            "updatedAt": "2016-04-08 11:36:20",
+            "vacancy": 1
+        },
+        {
+            "blockVacancy": 1,
+            "closeToArrival": 1,
+            "closeToDeparture": 1,
+            "currency": "KRW",
+            "date": "2016-08-16 00:00:00",
+            "dayOfWeek": "tue",
+            "discountInfo": {
+                "discount": false,
+                "discountEndDate": null,
+                "discountPrice": 0.0,
+                "discountStartDate": null
+            },
+            "active": true,
+            "maxVacancy": 1,
+            "minPrice": 0.0,
+            "price": 200000.0,
+            "updatedAt": "2016-04-08 11:36:20",
+            "vacancy": 1
+        }
+    ]
+}

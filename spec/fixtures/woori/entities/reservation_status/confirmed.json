@@ -1,0 +1,48 @@
+{
+    "createdAt": "2016-07-29 14:19:02",
+    "data": {
+        "checkinAt": "2016-08-06 00:00:00",
+        "checkoutAt": "2016-08-07 00:00:00",
+        "confirmId": null,
+        "confirmType": null,
+        "createdAt": null,
+        "customers": [
+            {
+                "email": null,
+                "gender": null,
+                "name": "Ruslan Sharipov",
+                "nationality": null,
+                "phone": null
+            }
+        ],
+        "memo": null,
+        "receipt": {
+            "commission": 0.0,
+            "currency": "KRW",
+            "paid": 12345.0,
+            "price": 0.0,
+            "refund": null,
+            "settlement": 0.0
+        },
+        "requestedAt": "2016-07-29 14:19:01",
+        "reservationChannelType": "roomorama",
+        "rooms": [
+            {
+                "adult": 1,
+                "checkIn": "2016-08-06",
+                "checkOut": "2016-08-07",
+                "children": 0,
+                "numberOfGeusts": 1,
+                "price": null,
+                "roomtypeHash": "w_w0814002_R01",
+                "roomtypeName": "\uac1d\uc2e41"
+            }
+        ],
+        "status": "confirmed",
+        "updatedAt": null
+    },
+    "hash": "w_WP20160729141224FE3E",
+    "id": 386320,
+    "type": "reservation",
+    "updatedAt": null
+}

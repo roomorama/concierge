@@ -1,0 +1,45 @@
+{
+  "enabled-amenities": {
+    "TV": "tv",
+    "DVD": "tv",
+    "cabletv": "cabletv",
+    "air conditioner": "airconditioning",
+    "air_conditioner": "airconditioning",
+    "airconditioner": "airconditioning",
+    "balcony": "balcony",
+    "kitchen": "kitchen",
+    "cookware": "kitchen",
+    "laundry": "laundry",
+    "pool": "pool",
+    "swimming pool - 15m": "pool",
+    "swimming pool": "pool",
+    "swimming_pool": "pool",
+    "infant's swimming pool": "pool",
+    "infant's_swimming_pool": "pool",
+    "free breakfast": "breakfast",
+    "free_breakfast": "breakfast",
+    "breakfast": "breakfast",
+    "internet": "internet",
+    "wifi": "wifi"
+  },
+
+  "disabled-amenities": [
+    "bed",
+    "table",
+    "multi-media",
+    "refrigerator",
+    "fan",
+    "hair dryer",
+    "spa",
+    "DVD",
+    "fireplace",
+    "light meal service (surcharge)",
+    "light_meal_service(surcharge)",
+    "seminar room",
+    "seminar_room",
+    "projector",
+    "karaoke",
+    "basketball court",
+    "basketball_court"
+  ]
+}

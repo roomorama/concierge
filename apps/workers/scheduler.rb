@@ -100,7 +100,7 @@ module Workers
 
     def queue
       @queue ||= begin
-        credentials = Concierge::Credentials.for("sqs")
+        credentials = Concierge::Credentials.for("aws")
         Workers::Queue.new(credentials)
       end
     end

@@ -1,0 +1,77 @@
+{
+    "createdAt": "2016-05-31 17:02:30",
+    "data": {
+        "capacity": 8,
+        "description": "Test description",
+        "facilities": [
+            "cabletv",
+            "airconditioning",
+            "kitchen"
+        ],
+        "geofences": [
+            "\uc804\uad6d"
+        ],
+        "images": [
+            {
+                "category": "in",
+                "content": "\uac00\ud3c9 \ub77c\uace0\uc2a4\ud14c\ub9c8\ud39c\uc158 \ud074\ub77d \ub0b4\ubd801",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0101533/interior_files/201631017325.jpg"
+            },
+            {
+                "category": "in",
+                "content": "\uac00\ud3c9 \ub77c\uace0\uc2a4\ud14c\ub9c8\ud39c\uc158 \ud074\ub77d \ub0b4\ubd802",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0101533/interior_files/201631017326.jpg"
+            },
+            {
+                "category": "in",
+                "content": "\uac00\ud3c9 \ub77c\uace0\uc2a4\ud14c\ub9c8\ud39c\uc158 \ud074\ub77d \ub0b4\ubd803",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0101533/interior_files/2016310173261.jpg"
+            },
+            {
+                "category": "in",
+                "content": "\uac00\ud3c9 \ub77c\uace0\uc2a4\ud14c\ub9c8\ud39c\uc158 \ud074\ub77d \ub0b4\ubd804",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0101533/interior_files/201631017327.jpg"
+            },
+            {
+                "category": "in",
+                "content": "\uac00\ud3c9 \ub77c\uace0\uc2a4\ud14c\ub9c8\ud39c\uc158 \ud074\ub77d \ub0b4\ubd805",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0101533/interior_files/201631017328.jpg"
+            },
+            {
+                "category": "in",
+                "content": "\uac00\ud3c9 \ub77c\uace0\uc2a4\ud14c\ub9c8\ud39c\uc158 \ud074\ub77d \ub0b4\ubd806",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0101533/interior_files/201631017329.jpg"
+            },
+            {
+                "category": "in",
+                "content": "\uac00\ud3c9 \ub77c\uace0\uc2a4\ud14c\ub9c8\ud39c\uc158 \ud074\ub77d \ub0b4\ubd807",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0101533/interior_files/2016310173291.jpg"
+            },
+            {
+                "category": "in",
+                "content": "\uac00\ud3c9 \ub77c\uace0\uc2a4\ud14c\ub9c8\ud39c\uc158 \ud074\ub77d \ub0b4\ubd808",
+                "format": "jpg",
+                "url": "http://image.wooripension.com/pension_images/w0101533/interior_files/201631017330.jpg"
+            }
+        ],
+        "isActive": 1,
+        "maxCapacity": 13,
+        "name": "gughwa",
+        "roomCount": 1,
+        "roomSize": 66.1157,
+        "roomType": "\uadf8\ub8f9\ub8f8",
+        "roomUnit": "square meter",
+        "updatedAt": "2016-04-14 11:33:21"
+    },
+    "hash": "w_w0104006_R05",
+    "id": 14360,
+    "type": "roomtype",
+    "updatedAt": null
+}
