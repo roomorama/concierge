@@ -1,0 +1,32 @@
+<AccommodationRS>
+  <AccommodationCode>55706</AccommodationCode>
+  <LoginGA>itsalojamientos</LoginGA>
+  <UserCode>1210069498</UserCode>
+  <Name>55706</Name>
+  <OccupationalRuleId>204</OccupationalRuleId>
+  <Capacity>3</Capacity>
+  <Rates>
+    <RatePeriod>
+      <StartDate>2015-06-04</StartDate>
+      <EndDate>2018-07-10</EndDate>
+      <RoomOnly>
+        <Type>ByPax</Type>
+        <Price>299</Price>
+      </RoomOnly>
+      <Discounts/>
+      <Supplements/>
+      <Currency>EUR</Currency>
+    </RatePeriod>
+    <RatePeriod>
+      <StartDate>2022-06-01</StartDate>
+      <EndDate>2022-08-31</EndDate>
+      <RoomOnly>
+        <Type>ByPax</Type>
+        <Price>10</Price>
+      </RoomOnly>
+      <Discounts/>
+      <Supplements/>
+      <Currency>EUR</Currency>
+    </RatePeriod>
+  </Rates>
+</AccommodationRS>
