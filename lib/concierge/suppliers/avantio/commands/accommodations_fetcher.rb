@@ -6,7 +6,7 @@ module Avantio
     class AccommodationsFetcher
       CODE = 'accommodations'
 
-      attr_reader :credentials
+      attr_reader :code_partner
 
       def initialize(code_partner)
         @code_partner = code_partner
