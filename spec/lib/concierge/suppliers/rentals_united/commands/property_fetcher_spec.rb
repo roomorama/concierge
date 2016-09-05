@@ -89,6 +89,22 @@ RSpec.describe RentalsUnited::Commands::PropertyFetcher do
       end
     end
 
+    context "when mapping amenities" do
+      it "adds amenities to property" do
+        expect(property.amenities).to eq(
+          ["bed_linen_and_towels", "airconditioning", "pool", "wheelchairaccess", "elevator", "parking"]
+        )
+      end
+
+      it "sets amenities to empty array if there is no amenities" do
+        file_name = "rentals_united/properties/property_without_amenities.xml"
+
+        expect(property.amenities).to eq(
+          ["bed_linen_and_towels", "airconditioning", "pool", "wheelchairaccess", "elevator", "parking"]
+        )
+      end
+    end
+
     context "when mapping single image to property" do
       let(:file_name) { "rentals_united/properties/property_with_one_image.xml" }
 
