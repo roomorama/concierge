@@ -176,7 +176,7 @@ module Poplidays
       end
 
       def set_rates_and_min_stay!(roomorama_property, details, availabilities)
-        mandatory_services = details['mandatoryServicesPrice']
+        mandatory_services = details['mandatoryServicesPrice'].to_f
         stays = availabilities.map { |a| to_stay(a, mandatory_services) }
         min_stay = stays.map(&:length).min
         daily_rate = stays.map(&:rate).min
