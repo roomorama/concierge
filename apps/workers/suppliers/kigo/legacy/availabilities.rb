@@ -81,6 +81,6 @@ module Workers::Suppliers::Kigo::Legacy
 end
 
 Concierge::Announcer.on("availabilities.KigoLegacy") do |supplier, args|
-  Workers::Suppliers::Kigo::Legacy::Availabilities.new(supplier, args).perform
-  Result.new({})
+  result = Workers::Suppliers::Kigo::Legacy::Availabilities.new(supplier, args).perform
+  result.is_a?(Result) ? result : Result.new(args)
 end

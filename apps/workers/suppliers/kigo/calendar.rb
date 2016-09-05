@@ -33,9 +33,7 @@ module Workers::Suppliers::Kigo
     private
 
     def properties
-      properties = PropertyRepository.from_host(host)
-      properties.identified_by(identifiers) if identifiers.any?
-      properties
+      PropertyRepository.from_host(host).identified_by(identifiers)
     end
 
     def importer

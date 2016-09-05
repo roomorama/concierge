@@ -80,6 +80,6 @@ module Workers::Suppliers::Kigo
 end
 
 Concierge::Announcer.on("availabilities.Kigo") do |supplier, args|
-  Workers::Suppliers::Kigo::Availabilities.new(supplier, args).perform
-  Result.new({})
+  result = Workers::Suppliers::Kigo::Availabilities.new(supplier, args).perform
+  result.is_a?(Result) ? result : Result.new(args)
 end
