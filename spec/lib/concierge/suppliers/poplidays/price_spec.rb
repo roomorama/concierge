@@ -164,7 +164,7 @@ RSpec.describe Poplidays::Price do
       expect(quotation.total).to eq 3410.28 + 25 # rental + mandatory services
     end
 
-    it 'caches mandatory services price and quote' do
+    it 'caches mandatory services price' do
       stub_call(:post, quote_endpoint) { [200, {}, quote_response] }
       stub_with_fixture(property_details_endpoint, 'poplidays/property_details.json')
 
@@ -172,9 +172,6 @@ RSpec.describe Poplidays::Price do
       expect(result).to be_success
 
       cache_entity = Concierge::Cache::EntryRepository.by_key('poplidays.property.3498.mandatory_services')
-      expect(cache_entity).not_to be_nil
-
-      cache_entity = Concierge::Cache::EntryRepository.by_key('poplidays.3498.2016-12-17.2016-12-26')
       expect(cache_entity).not_to be_nil
     end
 
