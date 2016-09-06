@@ -2,6 +2,15 @@ module Workers::Suppliers::Avantio
   # +Workers::Suppliers::Avantio::Metadata+
   #
   # Performs properties synchronisation with supplier
+  #
+  # Avantio provides all information required for sync by files and
+  # updates them with different frequency. This frequency should affect the worker
+  # schedule.
+  # Update frequency for appropriate files:
+  #  - accommodations: twice a week
+  #  - descriptions: twice a week
+  #  - rates: every day
+  #  - occupational rules: several times a week
   class Metadata
     attr_reader :synchronisation, :host
 
@@ -29,30 +38,25 @@ module Workers::Suppliers::Avantio
       return unless rates.success?
       rates = rates.value
 
-      properties.each do |property|
+      properties[0..50].each do |property|
         property_id = property.property_id
-
-        # TODO add property validator
-
+        puts property_id
+        rate = rates[property_id]
+        unless rate
+          synchronisation.skip_property
+          next
+        end
+        description = descriptions[property_id]
+        unless description
+          synchronisation.skip_property
+          next
+        end
+        occupational_rule = occupational_rules[property.occupational_rule_id]
+        unless occupational_rule
+          synchronisation.skip_property
+          next
+        end
         synchronisation.start(property_id) do
-          description = descriptions[property_id]
-          unless description
-            message = "Description not found for property `#{property_id}`"
-            augment_context_error(message)
-            next Result.error(:description_not_found)
-          end
-          occupational_rule = occupational_rules[property.occupational_rule_id]
-          unless occupational_rule
-            message = "Occupational rule not found for property `#{property_id}`"
-            augment_context_error(message)
-            next Result.error(:occupational_rule_not_found)
-          end
-          rate = rates[property_id]
-          unless rate
-            message = "Rate not found for property `#{property_id}`"
-            augment_context_error(message)
-            next Result.error(:rate_not_found)
-          end
           Result.new(mapper.build(property, description, occupational_rule, rate))
         end
       end
