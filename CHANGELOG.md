@@ -4,17 +4,17 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
-## Unreleased
-### Changed
-- Rename class: `Workers::Suppliers::Ciirus::Calendar` -> `Workers::Suppliers::Ciirus::Availabilities`
-- Rename spec file: ciirus/calendar_worker_spec.rb -> ciirus/availabilities_spec.rb
-- Rename spec file: ciirus/metadata_worker_spec.rb -> ciirus/metadata_spec.rb
-
+## [0.7.4] - 2016-09-05
 ### Added
 - Support for the `aggregated` flag on `config/suppliers.yml`, allowing workers to run once per supplier.
 - Allow worker implementation specify parameters for the next run.
 - Better error message for unknown background worker IDs enqueued.
 - Ability to filter by error code on the `web` app.
+
+### Changed
+- Rename class: `Workers::Suppliers::Ciirus::Calendar` -> `Workers::Suppliers::Ciirus::Availabilities`
+- Rename spec file: `ciirus/calendar_worker_spec.rb` -> `ciirus/availabilities_spec.rb`
+- Rename spec file: `ciirus/metadata_worker_spec.rb` -> `ciirus/metadata_spec.rb`
 
 ### Fixed
 - SAW: ignore non-refundable prices for units while rates fetching
