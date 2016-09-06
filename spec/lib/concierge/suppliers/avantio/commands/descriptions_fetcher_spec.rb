@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-RSpec.describe Avantio::Commands::AccommodationsFetcher do
+RSpec.describe Avantio::Commands::DescriptionsFetcher do
   include Support::Fixtures
 
   let(:code_partner) { '5df48r9r6h' }
 
-  let(:accommodations_xml) { xml_from_fixture('avantio/accommodations.xml') }
+  let(:descriptions_xml) { xml_from_fixture('avantio/descriptions.xml') }
 
   subject { described_class.new(code_partner) }
 
@@ -21,15 +21,15 @@ RSpec.describe Avantio::Commands::AccommodationsFetcher do
     end
 
     context 'when xml response is correct' do
-      it 'returns success array of properties' do
-        allow_any_instance_of(Avantio::Fetcher).to receive(:fetch) { Result.new(accommodations_xml) }
+      it 'returns success hash of descriptions' do
+        allow_any_instance_of(Avantio::Fetcher).to receive(:fetch) { Result.new(descriptions_xml) }
         result = subject.call
 
         expect(result).to be_a Result
         expect(result).to be_success
-        expect(result.value).to be_an(Array)
-        expect(result.value.length).to eq(3)
-        expect(result.value).to all(be_a Avantio::Entities::Accommodation)
+        expect(result.value).to be_a(Hash)
+        expect(result.value.length).to eq(2)
+        expect(result.value.values).to all(be_a Avantio::Entities::Description)
       end
 
       it 'returns empty array for empty response' do
@@ -40,8 +40,8 @@ RSpec.describe Avantio::Commands::AccommodationsFetcher do
 
         result = subject.call
 
-        accommodations = result.value
-        expect(accommodations).to be_empty
+        descriptions = result.value
+        expect(descriptions).to be_empty
       end
 
       it 'returns empty array for unknown xml structure' do
@@ -52,8 +52,8 @@ RSpec.describe Avantio::Commands::AccommodationsFetcher do
 
         result = subject.call
 
-        accommodations = result.value
-        expect(accommodations).to be_empty
+        descriptions = result.value
+        expect(descriptions).to be_empty
       end
     end
   end
