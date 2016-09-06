@@ -3,6 +3,8 @@ module RentalsUnited
     class BaseFetcher
       attr_reader :credentials
 
+      VALID_RU_STATUS_CODES = ["0"]
+
       def initialize(credentials)
         @credentials = credentials
       end
@@ -31,12 +33,16 @@ module RentalsUnited
         status.attributes["ID"]
       end
 
+      def get_status_description(code)
+        RentalsUnited::Dictionaries::Statuses.find(code)
+      end
+
       def valid_status?(hash, root_tag_name)
         status = get_status(hash, root_tag_name)
 
         return false unless status
 
-        get_status_code(status) == "0"
+        VALID_RU_STATUS_CODES.include?(get_status_code(status))
       end
 
       def error_result(hash, root_tag_name)
@@ -44,7 +50,7 @@ module RentalsUnited
 
         if status
           code = get_status_code(status)
-          description = nil
+          description = get_status_description(code)
 
           augment_with_error(code, description, caller)
           Result.error(code)

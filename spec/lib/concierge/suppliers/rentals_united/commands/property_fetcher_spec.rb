@@ -28,7 +28,7 @@ RSpec.describe RentalsUnited::Commands::PropertyFetcher do
 
     event = Concierge.context.events.last.to_h
     expect(event[:message]).to eq(
-      "Response indicating the Status with ID `56`, and description ``"
+      "Response indicating the Status with ID `56`, and description `Property does not exist.`"
     )
     expect(event[:backtrace]).to be_kind_of(Array)
     expect(event[:backtrace].any?).to be true
