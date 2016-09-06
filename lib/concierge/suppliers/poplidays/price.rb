@@ -81,11 +81,7 @@ module Poplidays
 
     def retrieve_quote(params)
       fetcher = Poplidays::Commands::QuoteFetcher.new(credentials)
-      key = quote_cache_key(params)
-      options = { serializer: Concierge::Cache::Serializers::JSON.new }
-      with_cache(key, options) {
-        fetcher.call(params)
-      }
+      fetcher.call(params)
     end
 
     def retrieve_mandatory_services(property_id)
@@ -154,10 +150,6 @@ module Poplidays
 
     def cache
       @cache ||= Concierge::Cache.new(namespace: CACHE_PREFIX)
-    end
-
-    def quote_cache_key(params)
-      [params[:property_id], params[:check_in], params[:check_out]].join('.')
     end
   end
 
