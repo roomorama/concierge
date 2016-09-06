@@ -32,7 +32,7 @@ RSpec.describe Avantio::Commands::OccupationalRulesFetcher do
         expect(result.value.values).to all(be_a Avantio::Entities::OccupationalRule)
       end
 
-      it 'returns empty array for empty response' do
+      it 'returns empty hash for empty response' do
         allow_any_instance_of(Avantio::Fetcher).to receive(:fetch) do
           xml = Nokogiri::XML('<OccupationalRuleList></OccupationalRuleList>')
           Result.new(xml)
@@ -44,7 +44,7 @@ RSpec.describe Avantio::Commands::OccupationalRulesFetcher do
         expect(rules).to be_empty
       end
 
-      it 'returns empty array for unknown xml structure' do
+      it 'returns empty hash for unknown xml structure' do
         allow_any_instance_of(Avantio::Fetcher).to receive(:fetch) do
           xml = Nokogiri::XML('<foo></foo>')
           Result.new(xml)
@@ -52,8 +52,8 @@ RSpec.describe Avantio::Commands::OccupationalRulesFetcher do
 
         result = subject.call
 
-        descriptions = result.value
-        expect(descriptions).to be_empty
+        rules = result.value
+        expect(rules).to be_empty
       end
     end
   end
