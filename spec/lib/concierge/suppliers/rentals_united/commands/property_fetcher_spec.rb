@@ -104,7 +104,7 @@ RSpec.describe RentalsUnited::Commands::PropertyFetcher do
     end
 
     it "does not set multi-unit flag" do
-      expect(property.multi_unit).to eq(false)
+      expect(property.multi_unit).to be_nil
     end
 
     it "sets instant_booking flag" do
