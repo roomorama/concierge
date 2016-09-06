@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-RSpec.describe Avantio::Commands::DescriptionsFetcher do
+RSpec.describe Avantio::Commands::RatesFetcher do
   include Support::Fixtures
 
   let(:code_partner) { '5df48r9r6h' }
 
-  let(:descriptions_xml) { xml_from_fixture('avantio/descriptions.xml') }
+  let(:rates_xml) { xml_from_fixture('avantio/rates.xml') }
 
   subject { described_class.new(code_partner) }
 
@@ -21,27 +21,27 @@ RSpec.describe Avantio::Commands::DescriptionsFetcher do
     end
 
     context 'when xml response is correct' do
-      it 'returns success hash of descriptions' do
-        allow_any_instance_of(Avantio::Fetcher).to receive(:fetch) { Result.new(descriptions_xml) }
+      it 'returns success hash of rates' do
+        allow_any_instance_of(Avantio::Fetcher).to receive(:fetch) { Result.new(rates_xml) }
         result = subject.call
 
         expect(result).to be_a Result
         expect(result).to be_success
         expect(result.value).to be_a(Hash)
         expect(result.value.length).to eq(2)
-        expect(result.value.values).to all(be_a Avantio::Entities::Description)
+        expect(result.value.values).to all(be_a Avantio::Entities::Rate)
       end
 
       it 'returns empty hash for empty response' do
         allow_any_instance_of(Avantio::Fetcher).to receive(:fetch) do
-          xml = Nokogiri::XML('<AccommodationList></AccommodationList>')
+          xml = Nokogiri::XML('<GetRatesListRS><AccommodationList></AccommodationList></GetRatesListRS>')
           Result.new(xml)
         end
 
         result = subject.call
 
-        descriptions = result.value
-        expect(descriptions).to be_empty
+        rates = result.value
+        expect(rates).to be_empty
       end
 
       it 'returns empty hash for unknown xml structure' do
@@ -52,8 +52,8 @@ RSpec.describe Avantio::Commands::DescriptionsFetcher do
 
         result = subject.call
 
-        descriptions = result.value
-        expect(descriptions).to be_empty
+        rates = result.value
+        expect(rates).to be_empty
       end
     end
   end
