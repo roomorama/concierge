@@ -2,7 +2,24 @@ module Avantio
   module Commands
     # +Avantio::Commands::OccupationalRulesFetcher+
     #
+    # Avantio provides occupational rules in zipped file available by URL.
+    # The file contains a set of occupational rules with ids. Each Avantio
+    # accommodation has occupationalRuleId.
     #
+    # This class fetches the file and parses the occupational rules to the
+    # hash: keys are rule_id, values are instances of +Avantio::Entities::OccupationalRule+
+    #
+    # Usage
+    #
+    #   command = Avantio::Commands::OccupationalRulesFetcher.new(code_partner)
+    #   result = command.call
+    #
+    #   if result.success?
+    #     result.value # Hash
+    #   end
+    # The +call+ method returns a +Result+ object that, when successful,
+    # encapsulates the hash: keys are rule_id,
+    # values are instances of +Avantio::Entities::OccupationalRule+.
     class OccupationalRulesFetcher
       CODE = 'occupationalrules'
 
