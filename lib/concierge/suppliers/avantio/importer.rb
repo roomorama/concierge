@@ -33,7 +33,7 @@ module Avantio
 
     # Fetches all rates for given host from Avantio
     # Returns the Result wrapping the hash with +Avantio::Entities::Rate+
-    def fetch_occupational_rules(host)
+    def fetch_rates(host)
       fetcher = Commands::RatesFetcher.new(host.identifier)
       fetcher.call
     end
