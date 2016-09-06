@@ -77,7 +77,7 @@ module Poplidays
         }
       end
 
-      # Actually Poplidays waits "MISTER_AND_MADAM", "MISTER", "MADAM" or "COMPANY"
+      # Actually Poplidays expects "MISTER_AND_MADAM", "MISTER", "MADAM" or "COMPANY"
       # but while gender param is always empty, we cannot determine the civility.
       def civility(gender)
         ''
