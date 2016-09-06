@@ -22,6 +22,12 @@ RSpec.describe Poplidays::Price do
     }'
   end
 
+  let(:unexpected_quote_response) do
+    '{
+      "ruid": "09cdecc64b5ba9504c08bb598075262f"
+    }'
+  end
+
   let(:unavailable_quote_response) do
     '{
       "code": 400,
@@ -142,6 +148,18 @@ RSpec.describe Poplidays::Price do
       result = subject.quote(params)
 
       expect(result).not_to be_success
+    end
+
+    it 'returns error for unexpected quote response' do
+      stub_call(:post, quote_endpoint) { [200, {}, unexpected_quote_response] }
+      stub_with_fixture(property_details_endpoint, 'poplidays/property_details.json')
+
+      result = subject.quote(params)
+
+      expect(result).not_to be_success
+      quotation = result.value
+
+      expect(result.error.code).to eq(:unexpected_quote)
     end
 
     it 'returns an available quotation properly priced according to the response' do
