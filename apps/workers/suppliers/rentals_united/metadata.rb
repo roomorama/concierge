@@ -28,14 +28,20 @@ module Workers::Suppliers::RentalsUnited
 
       locations.each do |location|
         location.currency = currencies[location.id]
-        return unless location.currency
 
-        result = fetch_property_ids(location.id)
-        return unless result.success?
+        if location.currency
+          result = fetch_property_ids(location.id)
+          return unless result.success?
 
-        property_ids = result.value
-        property_ids.each do |property_id|
-          result = fetch_property(property_id, location)
+          property_ids = result.value
+          property_ids.each do |property_id|
+            synchronisation.start(property_id) do
+              fetch_property(property_id, location)
+            end
+          end
+        else
+          announce_context_error(message)
+          return
         end
       end
     end
@@ -65,7 +71,7 @@ module Workers::Suppliers::RentalsUnited
     end
 
     def fetch_currencies
-      announce_error("Failed to fetch currencies") do
+      announce_error("Failed to fetch locations-currencies mapping") do
         importer.fetch_currencies
       end
     end
