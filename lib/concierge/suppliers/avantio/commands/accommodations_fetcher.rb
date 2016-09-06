@@ -2,7 +2,7 @@ module Avantio
   module Commands
     # +Avantio::Commands::AccommodationsFetcher+
     #
-    # Avantio provides accommodations' information in file available by URL.
+    # Avantio provides accommodations' information in zipped file available by URL.
     # This class fetches the file and parses the accommodations to the
     # array of +Avantio::Entities::Accommodation+
     #
