@@ -74,7 +74,6 @@ module Workers::Suppliers::Avantio
     def fetch_occupational_rules(host)
       message = 'Failed to perform the `#fetch_occupational_rules` operation'
       failed_sync(message) { importer.fetch_occupational_rules(host) }
-      end
     end
 
     def fetch_properties(host)
