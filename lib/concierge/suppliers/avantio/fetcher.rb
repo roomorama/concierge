@@ -23,7 +23,10 @@ module Avantio
 
     def fetch(code)
       return Result.error(:unknown_code) unless SUPPORTED_DATA.include?(code)
-      zip = client.get(url(code)).value.body
+      zip = client.get(url(code))
+      return unless zip.success?
+
+      zip = zip.value.body
       Zip::InputStream.open(StringIO.new(zip)) do |io|
         # Archive should contain only one xml file
         # so read the first one. It is necessary to call this
