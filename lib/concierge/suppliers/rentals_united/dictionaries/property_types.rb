@@ -1,11 +1,29 @@
 module RentalsUnited
   module Dictionaries
+    # +RentalsUnited::Dictionaries::PropertyTypes+
+    #
+    # This class is responsible for mapping property types between RU and
+    # Roomorama APIs.
     class PropertyTypes
       class << self
+        # Find property type by its id
+        #
+        # Arguments
+        #
+        #   * +id+ [String] id of property type
+        #
+        # Usage
+        #
+        #   RentalsUnited::Dictionaries::PropertyTypes.find("35")
+        #
+        # Returns [Entities::PropertyType] property type object
         def find(id)
           all.find { |p| p.id == id }
         end
 
+        # Find all property types
+        #
+        # Returns [Array<Entities::PropertyType>] array of property types
         def all
           @all ||= property_hashes.map do |hash|
             Entities::PropertyType.new(
