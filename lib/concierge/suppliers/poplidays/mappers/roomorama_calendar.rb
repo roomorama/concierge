@@ -28,7 +28,7 @@ module Poplidays
       private
 
       def build_entries(details, availabilities)
-        mandatory_services = details['mandatoryServicesPrice']
+        mandatory_services = details['mandatoryServicesPrice'].to_f
         stays = availabilities.select do |a|
           availability_validator(a).valid?
         end.map do |a|
@@ -39,7 +39,6 @@ module Poplidays
             available: true
           })
         end
-        return [] if stays.empty?
         Roomorama::Calendar::StaysMapper.new(stays, Date.today).map
       end
 
