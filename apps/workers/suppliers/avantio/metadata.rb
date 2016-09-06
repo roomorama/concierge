@@ -15,17 +15,21 @@ module Workers::Suppliers::Avantio
         fetch_properties(host)
       end
       return unless properties.success?
+      properties = properties.value
 
       descriptions = fetch_descriptions(host)
       return unless descriptions.success?
+      descriptions = descriptions.value
 
       occupational_rules = fetch_occupational_rules(host)
       return unless occupational_rules.success?
+      occupational_rules = occupational_rules.value
 
       rates = fetch_rates(host)
       return unless rates.success?
+      rates = rates.value
 
-      properties.value.each do |property|
+      properties.each do |property|
         property_id = property.property_id
 
         # TODO add property validator
@@ -79,7 +83,7 @@ module Workers::Suppliers::Avantio
     end
 
     def fetch_descriptions(host)
-      importer.fetch_properties(host).tap do |result|
+      importer.fetch_descriptions(host).tap do |result|
         unless result.success?
           synchronisation.failed!
           message = 'Failed to perform the `#fetch_descriptions` operation'
