@@ -1,8 +1,20 @@
 require 'zip'
 
 module Avantio
+  # +Avantio::Fetcher+
+  #
+  # Fetches and unzips all files data provided by Avantio.
+  # To get access to the files only code_partner required.
+  #
+  # Usage:
+  #
+  # fetcher = Avantio::Fetcher.new(code_partner)
+  # result = fetcher.fetch('accommodations')
+  # result.value      # Nokogiri::XML::Document
   class Fetcher
     FILES_PATH = "http://feeds.avantio.com"
+
+    # List of files supported by Avantio
     SUPPORTED_DATA = %w(
       accommodations
       descriptions
@@ -21,10 +33,11 @@ module Avantio
       @code_partner = code_partner
     end
 
+    # Returns +Result+ wrapping +Nokogiri::XML::Document+
     def fetch(code)
       return Result.error(:unknown_code) unless SUPPORTED_DATA.include?(code)
       zip = client.get(url(code))
-      return unless zip.success?
+      return zip unless zip.success?
 
       zip = zip.value.body
       Zip::InputStream.open(StringIO.new(zip)) do |io|
@@ -33,7 +46,7 @@ module Avantio
         # method on a newly created InputStream before reading from
         # the first entry in the archive.
         io.get_next_entry
-        return Result.new(Nokogiri::XML(io.read))
+        io_to_xml(io)
       end
     end
 
@@ -45,6 +58,12 @@ module Avantio
 
     def url(code)
       "/#{code}/#{code_partner}"
+    end
+
+    def io_to_xml(io)
+      Result.new(Nokogiri::XML(io.read) { |config| config.strict })
+    rescue Nokogiri::XML::SyntaxError => e
+      Result.error(:xml_syntax_error)
     end
   end
 end
