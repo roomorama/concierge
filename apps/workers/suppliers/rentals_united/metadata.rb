@@ -11,17 +11,31 @@ module Workers::Suppliers::RentalsUnited
     end
 
     def perform
-      result = fetch_cities
+      result = fetch_location_ids
       return unless result.success?
 
-      cities = result.value
-      cities.each do |city|
-        result = fetch_property_ids(city.location_id)
+      location_ids = result.value
+
+      result = fetch_locations(location_ids)
+      return unless result.success?
+
+      locations = result.value
+
+      result = fetch_currencies
+      return unless result.success?
+
+      currencies = result.value
+
+      locations.each do |location|
+        location.currency = currencies[location.id]
+        return unless location.currency
+
+        result = fetch_property_ids(location.id)
         return unless result.success?
 
         property_ids = result.value
         property_ids.each do |property_id|
-          result = fetch_property(property_id)
+          result = fetch_property(property_id, location)
         end
       end
     end
@@ -38,9 +52,21 @@ module Workers::Suppliers::RentalsUnited
       )
     end
 
-    def fetch_cities
+    def fetch_location_ids
+      announce_error("Failed to fetch location ids") do
+        importer.fetch_location_ids
+      end
+    end
+
+    def fetch_locations(location_ids)
       announce_error("Failed to fetch locations") do
-        importer.fetch_cities
+        importer.fetch_locations(location_ids)
+      end
+    end
+
+    def fetch_currencies
+      announce_error("Failed to fetch currencies") do
+        importer.fetch_currencies
       end
     end
 
@@ -50,9 +76,9 @@ module Workers::Suppliers::RentalsUnited
       end
     end
 
-    def fetch_property(property_id)
+    def fetch_property(property_id, location)
       announce_error("Failed to fetch property with ID #{property_id}`") do
-        importer.fetch_property(property_id)
+        importer.fetch_property(property_id, location)
       end
     end
 

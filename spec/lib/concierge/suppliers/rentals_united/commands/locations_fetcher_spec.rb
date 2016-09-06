@@ -1,62 +1,36 @@
 require "spec_helper"
 
-RSpec.describe RentalsUnited::Commands::CitiesFetcher do
+RSpec.describe RentalsUnited::Commands::LocationsFetcher do
   include Support::HTTPStubbing
   include Support::Fixtures
 
   let(:credentials) { Concierge::Credentials.for("rentals_united") }
-  let(:subject) { described_class.new(credentials) }
+  let(:location_ids) { ["1505"] }
+  let(:subject) { described_class.new(credentials, location_ids) }
   let(:url) { credentials.url }
-  let(:expected_locations) {{'1505' => 1, '2503' => 1, '1144' => 2}}
 
-  it "returns an empty array when there is no active properties" do
-    stub_data = read_fixture("rentals_united/cities/empty_list.xml")
+  it "fetches and returns one location" do
+    stub_data = read_fixture("rentals_united/locations/locations.xml")
     stub_call(:post, url) { [200, {}, stub_data] }
 
-    result = subject.fetch_cities
+    result = subject.fetch_locations
     expect(result).to be_success
-    expect(result.value).to eq([])
-  end
-
-  it "returns city object when there is one city" do
-    stub_data = read_fixture("rentals_united/cities/one_city.xml")
-    stub_call(:post, url) { [200, {}, stub_data] }
-
-    result = subject.fetch_cities
-    expect(result).to be_success
-    expect(result.value).to be_kind_of(Array)
     expect(result.value.size).to eq(1)
-    expect(result.value).to all(be_kind_of(RentalsUnited::Entities::City))
 
-    city = result.value.first
-    expect(city.location_id).to eq("1505")
-    expect(city.properties_count).to eq(1)
-  end
-
-  it "returns multiple city objects" do
-    stub_data = read_fixture("rentals_united/cities/multiple_cities.xml")
-    stub_call(:post, url) { [200, {}, stub_data] }
-
-    result = subject.fetch_cities
-    expect(result).to be_success
-
-    cities = result.value
-    expect(cities).to be_kind_of(Array)
-    expect(cities.size).to eq(3)
-    expect(cities).to all(be_kind_of(RentalsUnited::Entities::City))
-
-    expected_locations.each do |location_id, properties_count|
-      city = cities.find { |c| c.location_id == location_id }
-      expect(city.properties_count).to eq(properties_count)
-    end
+    location = result.value.first
+    expect(location).to be_kind_of(RentalsUnited::Entities::Location)
+    expect(location.id).to eq("1505")
+    expect(location.city).to eq("Paris")
+    expect(location.region).to eq("Ile-de-France")
+    expect(location.country).to eq("France")
   end
 
   context "when response from the api has error status" do
     it "returns a result with an appropriate error" do
-      stub_data = read_fixture("rentals_united/cities/error_status.xml")
+      stub_data = read_fixture("rentals_united/locations/error_status.xml")
       stub_call(:post, url) { [200, {}, stub_data] }
 
-      result = subject.fetch_cities
+      result = subject.fetch_locations
 
       expect(result).not_to be_success
       expect(result.error.code).to eq("9999")
@@ -75,7 +49,7 @@ RSpec.describe RentalsUnited::Commands::CitiesFetcher do
       stub_data = read_fixture("rentals_united/bad_xml.xml")
       stub_call(:post, url) { [200, {}, stub_data] }
 
-      result = subject.fetch_cities
+      result = subject.fetch_locations
 
       expect(result).not_to be_success
       expect(result.error.code).to eq(:unrecognised_response)
@@ -93,7 +67,7 @@ RSpec.describe RentalsUnited::Commands::CitiesFetcher do
     it "returns a result with an appropriate error" do
       stub_call(:post, url) { raise Faraday::TimeoutError }
 
-      result = subject.fetch_cities
+      result = subject.fetch_locations
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :connection_timeout

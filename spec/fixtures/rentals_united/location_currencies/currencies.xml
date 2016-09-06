@@ -1,0 +1,20 @@
+<Pull_ListCurrenciesWithCities_RS>
+  <Status ID="0">Success</Status>
+  <Currencies>
+    <Currency CurrencyCode="AUD">
+      <Locations>
+        <LocationID>7892</LocationID>
+      </Locations>
+    </Currency>
+    <Currency CurrencyCode="CAD">
+      <Locations>
+        <LocationID>4530</LocationID>
+        <LocationID>4977</LocationID>
+      </Locations>
+    </Currency>
+    <Currency CurrencyCode="CHF"></Currency>
+    <Currency CurrencyCode="USD">
+      <Locations></Locations>
+    </Currency>
+  </Currencies>
+</Pull_ListCurrenciesWithCities_RS>

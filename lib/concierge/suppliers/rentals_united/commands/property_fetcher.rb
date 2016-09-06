@@ -6,7 +6,7 @@ module RentalsUnited
     # property from RentalsUnited, parsing the response, and building
     # +Result+ object.
     class PropertyFetcher < BaseFetcher
-      attr_reader :property_id
+      attr_reader :property_id, :location
 
       ROOT_TAG = "Pull_ListSpecProp_RS"
 
@@ -15,18 +15,21 @@ module RentalsUnited
       # Arguments
       #
       #   * +credentials+
-      #   * +property_id+
+      #   * +property_id+ [String]
+      #   * +location+ [Entities::Location]
       #
       # Usage:
       #
       #   RentalsUnited::Commands::PropertyFetcher.new(
       #     credentials,
-      #     property_id
+      #     property_id,
+      #     location
       #   )
-      def initialize(credentials, property_id)
+      def initialize(credentials, property_id, location)
         super(credentials)
 
         @property_id = property_id
+        @location = location
       end
 
       def fetch_property
@@ -49,7 +52,7 @@ module RentalsUnited
         property = hash.get("#{ROOT_TAG}.Property")
         return error_result(hash, ROOT_TAG) unless property
 
-        mapper = RentalsUnited::Mappers::Property.new(property)
+        mapper = RentalsUnited::Mappers::Property.new(property, location)
         mapper.build_property
       end
     end

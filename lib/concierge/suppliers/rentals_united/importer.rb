@@ -14,12 +14,32 @@ module RentalsUnited
       @credentials = credentials
     end
 
-    # Retrieves cities with active properties.
+    # Retrieves location ids with active properties.
     #
-    # Cities without active properties will be filtered out.
-    def fetch_cities
-      cities_fetcher = Commands::CitiesFetcher.new(credentials)
-      cities_fetcher.fetch_cities
+    # Locations without active properties will be filtered out.
+    def fetch_location_ids
+      fetcher = Commands::LocationIdsFetcher.new(credentials)
+      fetcher.fetch_location_ids
+    end
+
+    # Retrieves locations by given location_ids.
+    #
+    # Arguments:
+    #
+    #   * +location_ids+ [Array<String>] ids array of locations to fetch
+    #
+    # Returns [Array<Entities::Location>] array of location objects
+    def fetch_locations(location_ids)
+      fetcher = Commands::LocationsFetcher.new(credentials, location_ids)
+      fetcher.fetch_locations
+    end
+
+    # Retrieves locations - currencies mapping.
+    #
+    # Returns [Hash] hash with location_id => currency key-values
+    def fetch_location_currencies
+      fetcher = Commands::LocationCurrenciesFetcher.new(credentials)
+      fetcher.fetch_location_currencies
     end
 
     # Retrieves property ids by location id.
@@ -34,10 +54,11 @@ module RentalsUnited
     end
 
     # Retrieves property by its id.
-    def fetch_property(property_id)
+    def fetch_property(property_id, location)
       property_fetcher = Commands::PropertyFetcher.new(
         credentials,
-        property_id
+        property_id,
+        location
       )
       property_fetcher.fetch_property
     end
