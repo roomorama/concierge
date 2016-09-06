@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Poplidays::Commands::QuoteFetcher do
+RSpec.describe Poplidays::Commands::Booking do
   include Support::Fixtures
   include Support::HTTPStubbing
 
@@ -9,16 +9,30 @@ RSpec.describe Poplidays::Commands::QuoteFetcher do
            client_key: '1111',
            passphrase: '4311')
   end
+  let(:customer) do
+    {
+      first_name:  'John',
+      last_name:   'Buttler',
+      address:     'Long Island 100',
+      email:       'my@email.com',
+      phone:       '+3 675 45879',
+    }
+  end
   let(:params) do
-    API::Controllers::Params::Quote.new(property_id: 33680,
-                                        check_in: '2017-08-01',
-                                        check_out: '2017-08-05',
-                                        guests: 2)
+    {
+      property_id: '38180',
+      check_in:    '2016-05-01',
+      check_out:   '2016-05-12',
+      guests:      3,
+      subtotal:    2000,
+      customer:    customer
+    }
   end
   let(:success_response) do
     '{
-      "value": 3410.28,
-      "ruid": "09cdecc64b5ba9504c08bb598075262f"
+      "id": 9257079406,
+      "reference": "CHD00001",
+      "ruid": "f211687c1e88e065e3331cacebe4803c"
     }'
   end
   subject { described_class.new(credentials) }
@@ -45,7 +59,7 @@ RSpec.describe Poplidays::Commands::QuoteFetcher do
     end
 
     it 'returns a hash in success case' do
-      stub_with_string(endpoint, success_response)
+      stub_call(:post, endpoint) { [200, {}, success_response] }
       result = subject.call(params)
 
       expect(result.success?).to be(true)
@@ -56,9 +70,5 @@ RSpec.describe Poplidays::Commands::QuoteFetcher do
   def stub_with_fixture(endpoint, name)
     poplidays_response = read_fixture(name)
     stub_call(:post, endpoint) { [200, {}, poplidays_response] }
-  end
-
-  def stub_with_string(endpoint, string)
-    stub_call(:post, endpoint) { [200, {}, string] }
   end
 end
