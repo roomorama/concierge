@@ -6,7 +6,16 @@ RSpec.describe RentalsUnited::Commands::PropertyFetcher do
 
   let(:credentials) { Concierge::Credentials.for("rentals_united") }
   let(:property_id) { "1234" }
-  let(:subject) { described_class.new(credentials, property_id) }
+  let(:location) do
+    double(
+      id: '1505',
+      city: 'Paris',
+      neighborhood: 'Ile-de-France',
+      country: 'France',
+      currency: 'EUR'
+    )
+  end
+  let(:subject) { described_class.new(credentials, property_id, location) }
   let(:url) { credentials.url }
 
   it "returns an error if property does not exist" do
@@ -64,9 +73,10 @@ RSpec.describe RentalsUnited::Commands::PropertyFetcher do
       expect(property.lat).to eq(55.0003426)
       expect(property.lng).to eq(73.2965942999999)
       expect(property.address).to eq("Test street address")
-      # expect(property.city).to eq("Namyangju-si")
-      # expect(property.neighborhood).to eq("Gyeonggi-do")
+      expect(property.city).to eq("Paris")
+      expect(property.neighborhood).to eq("Ile-de-France")
       expect(property.postal_code).to eq("644119")
+      expect(property.country_code).to eq("FR")
     end
 
     it "sets en description to the property" do
@@ -79,6 +89,26 @@ RSpec.describe RentalsUnited::Commands::PropertyFetcher do
 
     it "sets check_out_time to the property" do
       expect(property.check_out_time).to eq("11:00")
+    end
+
+    it "sets currency to the property" do
+      expect(property.currency).to eq("EUR")
+    end
+
+    it "sets cancellation_policy to the property" do
+      expect(property.cancellation_policy).to eq("super_strict")
+    end
+
+    it "sets default_to_available flag" do
+      expect(property.default_to_available).to eq(true)
+    end
+
+    it "does not set multi-unit flag" do
+      expect(property.multi_unit).to eq(false)
+    end
+
+    it "sets instant_booking flag" do
+      expect(property.instant_booking?).to eq(true)
     end
 
     context "when multiple descriptions are available" do

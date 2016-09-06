@@ -29,12 +29,34 @@ RSpec.describe RentalsUnited::PayloadBuilder do
     end
   end
 
-  describe '#build_cities_fetch_payload' do
+  describe '#build_location_ids_fetch_payload' do
     it 'embedds username and password to request' do
-      xml = builder.build_cities_fetch_payload
+      xml = builder.build_location_ids_fetch_payload
       hash = to_hash(xml)
 
       authentication = hash.get("Pull_ListCitiesProps_RQ.Authentication")
+      expect(authentication.get("UserName")).to eq(credentials.username)
+      expect(authentication.get("Password")).to eq(credentials.password)
+    end
+  end
+
+  describe '#build_locations_fetch_payload' do
+    it 'embedds username and password to request' do
+      xml = builder.build_locations_fetch_payload
+      hash = to_hash(xml)
+
+      authentication = hash.get("Pull_ListLocations_RQ.Authentication")
+      expect(authentication.get("UserName")).to eq(credentials.username)
+      expect(authentication.get("Password")).to eq(credentials.password)
+    end
+  end
+
+  describe '#build_location_currencies_fetch_payload' do
+    it 'embedds username and password to request' do
+      xml = builder.build_location_currencies_fetch_payload
+      hash = to_hash(xml)
+
+      authentication = hash.get("Pull_ListCurrenciesWithCities_RQ.Authentication")
       expect(authentication.get("UserName")).to eq(credentials.username)
       expect(authentication.get("Password")).to eq(credentials.password)
     end

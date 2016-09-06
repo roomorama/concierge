@@ -6,17 +6,22 @@ module RentalsUnited
     # +RentalsUnited::Entities::Property+ object from a hash which was fetched
     # from the RentalsUnited API.
     class Property
-      attr_reader :property_hash, :amenities_dictionary
+      attr_reader :property_hash, :location, :amenities_dictionary
 
       EN_DESCRIPTION_LANG_CODE = "1"
+      CANCELLATION_POLICY = "super_strict"
+      DEFAULT_PROPERTY_RATE = "9999"
+      MINIMUM_STAY = nil
 
       # Initialize +RentalsUnited::Mappers::Property+
       #
       # Arguments:
       #
       #   * +property_hash+ [Concierge::SafeAccessHash] property hash object
-      def initialize(property_hash)
+      #   * +location+ [Entities::Location] location object
+      def initialize(property_hash, location)
         @property_hash = property_hash
+        @location = location
         @amenities_dictionary = Dictionaries::Amenities.new(
           property_hash.get("Amenities.Amenity")
         )
@@ -36,6 +41,17 @@ module RentalsUnited
         property.amenities            = amenities_dictionary.convert
         property.check_in_time        = check_in_time
         property.check_out_time       = check_out_time
+        property.country_code         = country_code(location)
+        property.currency             = location.currency
+        property.city                 = location.city
+        property.neighborhood         = location.neighborhood
+        property.nightly_rate         = DEFAULT_PROPERTY_RATE
+        property.weekly_rate          = DEFAULT_PROPERTY_RATE
+        property.monthly_rate         = DEFAULT_PROPERTY_RATE
+        property.minimum_stay         = MINIMUM_STAY
+        property.cancellation_policy  = CANCELLATION_POLICY
+        property.default_to_available = true
+        property.instant_booking!
 
         property_type = find_property_type(property_hash.get("ObjectTypeID"))
 
@@ -79,6 +95,10 @@ module RentalsUnited
 
       def check_out_time
         property_hash.get("CheckInOut.CheckOutUntil")
+      end
+
+      def country_code(location)
+        Converters::CountryCode.code_by_name(location.country)
       end
     end
   end

@@ -21,9 +21,19 @@ module RentalsUnited
       render(:property_ids_fetch, template_locals)
     end
 
-    def build_cities_fetch_payload
+    def build_location_ids_fetch_payload
       template_locals = { credentials: credentials }
-      render(:cities_fetch, template_locals)
+      render(:location_ids_fetch, template_locals)
+    end
+
+    def build_locations_fetch_payload
+      template_locals = { credentials: credentials }
+      render(:locations_fetch, template_locals)
+    end
+
+    def build_location_currencies_fetch_payload
+      template_locals = { credentials: credentials }
+      render(:location_currencies_fetch, template_locals)
     end
 
     def build_property_fetch_payload(property_id)
