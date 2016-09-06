@@ -62,44 +62,34 @@ module Workers::Suppliers::Avantio
 
     private
 
-    def fetch_occupational_rules(host)
-      importer.fetch_occupational_rules(host).tap do |result|
+    def failed_sync(message)
+      yield.tap do |result|
         unless result.success?
           synchronisation.failed!
-          message = 'Failed to perform the `#fetch_occupational_rules` operation'
           announce_error(message, result)
         end
+      end
+    end
+
+    def fetch_occupational_rules(host)
+      message = 'Failed to perform the `#fetch_occupational_rules` operation'
+      failed_sync(message) { importer.fetch_occupational_rules(host) }
       end
     end
 
     def fetch_properties(host)
-      importer.fetch_properties(host).tap do |result|
-        unless result.success?
-          synchronisation.failed!
-          message = 'Failed to perform the `#fetch_properties` operation'
-          announce_error(message, result)
-        end
-      end
+      message = 'Failed to perform the `#fetch_properties` operation'
+      failed_sync(message) { importer.fetch_properties(host) }
     end
 
     def fetch_descriptions(host)
-      importer.fetch_descriptions(host).tap do |result|
-        unless result.success?
-          synchronisation.failed!
-          message = 'Failed to perform the `#fetch_descriptions` operation'
-          announce_error(message, result)
-        end
-      end
+      message = 'Failed to perform the `#fetch_descriptions` operation'
+      failed_sync(message) { importer.fetch_descriptions(host) }
     end
 
     def fetch_rates(host)
-      importer.fetch_rates(host).tap do |result|
-        unless result.success?
-          synchronisation.failed!
-          message = 'Failed to perform the `#fetch_rates` operation'
-          announce_error(message, result)
-        end
-      end
+      message = 'Failed to perform the `#fetch_rates` operation'
+      failed_sync(message) { importer.fetch_rates(host) }
     end
 
     def mapper
