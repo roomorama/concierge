@@ -53,10 +53,7 @@ module Poplidays
       quote = retrieve_quote(params)
       return quote if unknown_errors?(quote)
 
-      quotation = mapper.build(params, mandatory_services.value, quote)
-
-      quotation.host_fee_percentage = host.fee_percentage
-      Result.new(quotation)
+      mapper.build(params, mandatory_services.value, quote, host.fee_percentage)
     end
 
     private
