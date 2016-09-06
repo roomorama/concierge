@@ -55,7 +55,7 @@ module Poplidays
       # my test booking in the Poplidays' sandbox shows that empty values here are also valid.
       def request_json(params)
         {
-          'requestType'   => 'BOOKED', # special type for quote
+          'requestType'   => 'BOOKED',
           'lodgingId'     => params[:property_id],
           'arrival'       => convert_date(params[:check_in]),
           'departure'     => convert_date(params[:check_out]),
