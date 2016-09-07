@@ -24,7 +24,6 @@
     <StartDate>2017-01-01</StartDate>
     <EndDate>2017-12-31</EndDate>
     <MinimumNights>1</MinimumNights>
-    <MinimumNightsOnline>1</MinimumNightsOnline>
     <CheckInDays>
       <WeekDay>MONDAY</WeekDay>
       <WeekDay>TUESDAY</WeekDay>
