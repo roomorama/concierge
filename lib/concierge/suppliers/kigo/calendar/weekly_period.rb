@@ -24,7 +24,7 @@ class Kigo::Calendar
     end
 
     def valid?
-      valid_range.include?(start_date) && valid_range.include?(end_date)
+      start_date < end_date
     end
 
     private
@@ -52,10 +52,6 @@ class Kigo::Calendar
 
     def minimum_stay
       Kigo::TimeInterval.new(min_stay).days
-    end
-
-    def valid_range
-      today..year_from_today
     end
 
     def define_start_date(date)
