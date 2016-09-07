@@ -45,7 +45,7 @@ module Workers::Suppliers::Kigo::Legacy
     end
 
     def request_handler
-      Kigo::Request.new(credentials)
+      Kigo::LegacyRequest.new(credentials)
     end
 
     def credentials

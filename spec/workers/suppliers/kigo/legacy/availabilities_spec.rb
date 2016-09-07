@@ -10,7 +10,7 @@ RSpec.describe Workers::Suppliers::Kigo::Legacy::Availabilities do
       reservations_diff_id: '321'
     }
   }
-  let(:supplier) { create_supplier(name: 'Kigo') }
+  let(:supplier) { create_supplier(name: 'KigoLegacy') }
   let!(:host) { create_host(supplier_id: supplier.id, identifier: '14908') }
 
   subject { described_class.new(supplier, args) }
@@ -30,7 +30,7 @@ RSpec.describe Workers::Suppliers::Kigo::Legacy::Availabilities do
 
       external_error = ExternalErrorRepository.last
 
-      expect(external_error.supplier).to eq 'Kigo'
+      expect(external_error.supplier).to eq 'KigoLegacy'
       expect(external_error.code).to eq 'connection_timeout'
     end
 
