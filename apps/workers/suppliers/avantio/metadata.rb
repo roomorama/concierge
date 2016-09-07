@@ -38,7 +38,7 @@ module Workers::Suppliers::Avantio
       return unless rates.success?
       rates = rates.value
 
-      properties[0..50].each do |property|
+      properties.each do |property|
         property_id = property.property_id
         puts property_id
         rate = rates[property_id]

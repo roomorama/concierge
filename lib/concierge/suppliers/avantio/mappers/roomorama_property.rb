@@ -167,7 +167,9 @@ module Avantio
       end
 
       def set_minimum_stay!(result, occupational_rule)
-        result.minimum_stay = occupational_rule.actual_seasons.map { |season| season[:min_nights] }.min
+        result.minimum_stay = occupational_rule.actual_seasons.map do |season|
+          season[:min_nights_online] || season[:min_nights]
+        end.min
       end
 
       def set_rates!(result, rate)
