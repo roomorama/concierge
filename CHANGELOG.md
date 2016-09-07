@@ -8,6 +8,9 @@ how this file is formatted and how the process works.
 ### Changed
 - SAW: return unavailable quotation instead of Result.error when rates are not returned for a unit.
 
+### Fixed
+- Cache hit rendering when the saved value is an array.
+
 ## [0.7.4] - 2016-09-05
 ### Added
 - Support for the `aggregated` flag on `config/suppliers.yml`, allowing workers to run once per supplier.
