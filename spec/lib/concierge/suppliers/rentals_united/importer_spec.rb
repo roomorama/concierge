@@ -118,4 +118,15 @@ RSpec.describe RentalsUnited::Importer do
       importer.fetch_owners
     end
   end
+
+  describe "#fetch_availabilities" do
+    let(:property_id) { "588788" }
+
+    it "calls fetcher class to load availabilities" do
+      fetcher_class = RentalsUnited::Commands::AvailabilitiesFetcher
+
+      expect_any_instance_of(fetcher_class).to(receive(:fetch_availabilities))
+      importer.fetch_availabilities(property_id)
+    end
+  end
 end

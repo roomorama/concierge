@@ -97,5 +97,23 @@ module RentalsUnited
       fetcher = Commands::OwnersFetcher.new(credentials)
       fetcher.fetch_owners
     end
+
+    # Retrieves availabilities for property by its id.
+    #
+    # Returns [Array<Entities::Availability>] array with availabilities
+    def fetch_availabilities(property_id)
+      fetcher = Commands::AvailabilitiesFetcher.new(
+        credentials,
+        property_id
+      )
+
+      fetcher.fetch_availabilities
+    end
+
+    # Retrieves rates for property by its id.
+    def fetch_rates(property_id)
+      fetcher = Commands::RatesFetcher.new(credentials, property_id)
+      fetcher.fetch_rates
+    end
   end
 end

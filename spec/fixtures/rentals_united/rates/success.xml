@@ -1,0 +1,13 @@
+<Pull_ListPropertyPrices_RS>
+  <Status ID="0">Success</Status>
+  <Prices PropertyID="562441">
+    <Season DateFrom="2016-09-07" DateTo="2016-09-30">
+      <Price>200.0000</Price>
+      <Extra>10.0000</Extra>
+    </Season>
+    <Season DateFrom="2016-10-01" DateTo="2016-10-31">
+      <Price>170.0000</Price>
+      <Extra>5.0000</Extra>
+    </Season>
+  </Prices>
+</Pull_ListPropertyPrices_RS>
