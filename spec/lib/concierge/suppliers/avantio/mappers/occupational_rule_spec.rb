@@ -22,7 +22,7 @@ RSpec.describe Avantio::Mappers::OccupationalRule do
     expect(season_two[:start_date]).to eq(Date.new(2017, 1, 1))
     expect(season_two[:end_date]).to eq(Date.new(2017, 12, 31))
     expect(season_two[:min_nights]).to eq(1)
-    expect(season_two[:min_nights_online]).to eq(1)
+    expect(season_two[:min_nights_online]).to be_nil
   end
 
   def xml_from_file(filename)
