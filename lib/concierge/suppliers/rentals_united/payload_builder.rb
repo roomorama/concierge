@@ -49,6 +49,26 @@ module RentalsUnited
       render(:owners_fetch, template_locals)
     end
 
+    def build_availabilities_fetch_payload(property_id, date_from, date_to)
+      template_locals = {
+        credentials: credentials,
+        property_id: property_id,
+        date_from: date_from,
+        date_to: date_to
+      }
+      render(:availabilities_fetch, template_locals)
+    end
+
+    def build_rates_fetch_payload(property_id, date_from, date_to)
+      template_locals = {
+        credentials: credentials,
+        property_id: property_id,
+        date_from: date_from,
+        date_to: date_to
+      }
+      render(:rates_fetch, template_locals)
+    end
+
     private
     def render(template_name, local_vars)
       path = Hanami.root.join(TEMPLATES_PATH, "#{template_name}.xml.erb")
