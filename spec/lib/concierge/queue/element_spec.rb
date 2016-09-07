@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Workers::Queue::Element do
+RSpec.describe Concierge::Queue::Element do
   let(:operation) { "background_worker" }
   let(:data)      { { key: "value" } }
 
@@ -12,7 +12,7 @@ RSpec.describe Workers::Queue::Element do
 
       expect {
         element.validate!
-      }.to raise_error Workers::Queue::Element::InvalidOperationError
+      }.to raise_error Concierge::Queue::Element::InvalidOperationError
     end
 
     it "does not allow unrecognised operations" do
@@ -20,7 +20,7 @@ RSpec.describe Workers::Queue::Element do
 
       expect {
         element.validate!
-      }.to raise_error Workers::Queue::Element::InvalidOperationError
+      }.to raise_error Concierge::Queue::Element::InvalidOperationError
     end
 
     it "accepts valid objects" do

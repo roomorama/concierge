@@ -48,7 +48,7 @@ RSpec.describe Workers::Scheduler do
     end
 
     it "works correctly with aggregated workers" do
-      worker = create_background_worker(
+      create_background_worker(
         type:        "availabilities",
         supplier_id: create_supplier(name: "Supplier2").id,
         host_id:     nil,
@@ -67,7 +67,7 @@ RSpec.describe Workers::Scheduler do
       host = create_host(username: "thehost", identifier: "thehost")
       worker = create_background_worker(type: "metadata", host_id: host.id, next_run_at: nil)
 
-      expect_any_instance_of(Workers::Queue).to receive(:add).once
+      expect_any_instance_of(Concierge::Queue).to receive(:add).once
       subject.trigger_pending!
 
       worker = BackgroundWorkerRepository.find(worker.id)

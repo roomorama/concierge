@@ -16,7 +16,7 @@ RSpec.describe Concierge::Flows::WorkerJobEnqueue do
 
   describe "#perform" do
     it "adds worker job to queue and updates worker status" do
-      expect_any_instance_of(Workers::Queue).to receive(:add)
+      expect_any_instance_of(Concierge::Queue).to receive(:add)
 
       subject.perform
 
