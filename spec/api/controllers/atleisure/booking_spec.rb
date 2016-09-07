@@ -75,6 +75,8 @@ RSpec.describe API::Controllers::AtLeisure::Booking do
       success_response = jsonrpc_fixture("atleisure/booking_success.json")
       expected_reference_number    = "175607953" # from fixture
 
+      expect_any_instance_of(AtLeisure::Booking).to receive(:enqueue_pdf_worker)
+
       stub_call(:post, endpoint) { [200, {}, success_response] }
 
       expect(response.status).to eq 200

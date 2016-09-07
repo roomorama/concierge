@@ -3,6 +3,7 @@ require "spec_helper"
 RSpec.describe AtLeisure::Booking do
   include Support::Fixtures
   include Support::HTTPStubbing
+  include Support::Factories
 
   let(:credentials) { double(username: "roomorama", password: "atleisure-roomorama", test_mode: "Yes") }
   let(:params) {
@@ -102,7 +103,6 @@ RSpec.describe AtLeisure::Booking do
 
     end
 
-
     def stub_with_fixture(name)
       atleisure_response = JSON.parse(read_fixture(name))
       response           = {
@@ -111,6 +111,15 @@ RSpec.describe AtLeisure::Booking do
       }.to_json
 
       stub_call(:post, endpoint) { [200, {}, response] }
+    end
+  end
+
+  describe "#enqueue_pdf_worker" do
+    it "adds a valid operation to sqs" do
+      expect_any_instance_of(Concierge::Queue).to receive(:add) do |queue, op|
+        expect{op.validate!}.to_not raise_error
+      end
+      subject.send(:enqueue_pdf_worker, create_reservation(attachment_url: "https://asdf"))
     end
   end
 end
