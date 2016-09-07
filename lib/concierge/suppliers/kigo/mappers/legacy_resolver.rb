@@ -15,7 +15,7 @@ module Kigo::Mappers
         caption    = image['PHOTO_NAME']
         Roomorama::Image.new(identifier).tap do |i|
           i.url     = image_url(property_id, identifier)
-          i.caption = caption
+          i.caption = caption unless caption.strip.empty?
         end
       end
     end

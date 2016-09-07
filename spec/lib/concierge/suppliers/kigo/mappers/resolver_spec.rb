@@ -22,6 +22,13 @@ RSpec.describe Kigo::Mappers::Resolver do
       expect(image.identifier).to eq 'hashed-identifier.jpg'
       expect(image.caption).to eq 'Balcony with foosball table'
     end
+
+    it 'skips caption if it blank' do
+      image['PHOTO_COMMENTS'] = ' '
+      images = subject.images([image], property_id)
+
+      expect(images.first.caption).to be_nil
+    end
   end
 
 end

@@ -22,6 +22,13 @@ RSpec.describe Kigo::Mappers::LegacyResolver do
       expect(image.identifier).to eq '12345'
       expect(image.caption).to eq 'Balcony'
     end
+
+    it 'skips caption if it blank' do
+      image['PHOTO_NAME'] = ' '
+      images = subject.images([image], property_id)
+
+      expect(images.first.caption).to be_nil
+    end
   end
 
 end
