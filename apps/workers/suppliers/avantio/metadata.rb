@@ -39,15 +39,18 @@ module Workers::Suppliers::Avantio
       rates = rates.value
 
       properties.each do |property|
+        unless validator(property).valid?
+          synchronisation.skip_property
+          next
+        end
         property_id = property.property_id
-        puts property_id
         rate = rates[property_id]
         unless rate
           synchronisation.skip_property
           next
         end
         description = descriptions[property_id]
-        unless description
+        unless description && description_validator(description).valid?
           synchronisation.skip_property
           next
         end
@@ -61,7 +64,6 @@ module Workers::Suppliers::Avantio
         end
       end
       synchronisation.finish!
-
     end
 
     private
@@ -101,6 +103,15 @@ module Workers::Suppliers::Avantio
 
     def importer
       @importer ||= ::Avantio::Importer.new
+    end
+
+
+    def validator(property)
+      Avantio::Validators::PropertyValidator.new(property)
+    end
+
+    def description_validator(description)
+      Avantio::Validators::DescriptionValidator.new(description)
     end
 
     def augment_context_error(message)

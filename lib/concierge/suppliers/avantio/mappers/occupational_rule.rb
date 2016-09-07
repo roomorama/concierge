@@ -20,8 +20,9 @@ module Avantio
         Array(seasons).map do |s|
           start_date = s.at_xpath('StartDate').text
           end_date = s.at_xpath('EndDate').text
-          min_nights_online = s.at_xpath('MinimumNightsOnline')&.text.to_i
-          min_nights = s.at_xpath('MinimumNights')&.text.to_i
+          # min_nights vars are nils if they are not presented
+          min_nights_online = s.at_xpath('MinimumNightsOnline')&.text&.to_i
+          min_nights = s.at_xpath('MinimumNights')&.text&.to_i
           {
             start_date:        Date.parse(start_date),
             end_date:          Date.parse(end_date),
