@@ -48,7 +48,6 @@ module Kigo
         period = wrap_period(period)
         entries.concat(period.entries) if period.valid?
       end
-      # byebug
     end
 
     def wrap_period(period)
@@ -66,7 +65,7 @@ module Kigo
     def set_availabilities(availabilities)
       availabilities.each do |availability|
         date      = availability['DATE']
-        available = availability['MAX_LOS'] > 0 && availability['AVAILABLE_UNITS'] > 0
+        available = availability['MAX_LOS'].to_i > 0 && availability['AVAILABLE_UNITS'].to_i > 0
         entry     = find_entry(date)
 
         unless entry
@@ -90,7 +89,6 @@ module Kigo
     end
 
     def find_entry(date)
-      return if entries.empty?
       entries.find { |entry| entry.date.to_s == date }
     end
 

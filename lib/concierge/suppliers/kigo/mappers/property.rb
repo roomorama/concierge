@@ -98,8 +98,7 @@ module Kigo::Mappers
     end
 
     def set_description
-      description      = strip(info['PROP_DESCRIPTION'])
-      description      = strip(info['PROP_SHORTDESCRIPTION']) unless description
+      description      = strip(info['PROP_DESCRIPTION']) || strip(info['PROP_SHORTDESCRIPTION'])
       area_description = strip(info['PROP_AREADESCRIPTION'])
 
       property.description = [description, area_description].compact.join("\n")
