@@ -29,6 +29,9 @@ module Avantio
       # Returns +Roomorama::Property+
       def build(accommodation, description, occupational_rule, rate)
         result = Roomorama::Property.new(accommodation.property_id)
+        if accommodation.property_id == '107075|1360001587|itsvillas'
+          require 'byebug'; byebug
+        end
         result.instant_booking!
 
         set_base_info!(result, accommodation)
@@ -169,7 +172,7 @@ module Avantio
       def set_minimum_stay!(result, occupational_rule)
         result.minimum_stay = occupational_rule.actual_seasons.map do |season|
           season[:min_nights_online] || season[:min_nights]
-        end.min
+        end.compact.min
       end
 
       def set_rates!(result, rate)
