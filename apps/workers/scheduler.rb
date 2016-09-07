@@ -83,7 +83,7 @@ module Workers
     end
 
     def enqueue(worker)
-      element = Workers::Queue::Element.new(
+      element = Concierge::Queue::Element.new(
         operation: "background_worker",
         data:      { background_worker_id: worker.id }
       )
@@ -101,7 +101,7 @@ module Workers
     def queue
       @queue ||= begin
         credentials = Concierge::Credentials.for("sqs")
-        Workers::Queue.new(credentials)
+        Concierge::Queue.new(credentials)
       end
     end
 
