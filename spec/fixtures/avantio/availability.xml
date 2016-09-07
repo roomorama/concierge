@@ -1,0 +1,23 @@
+<AccommodationRS>
+  <AccommodationCode>70931</AccommodationCode>
+  <LoginGA>itsalojamientos</LoginGA>
+  <UserCode>1276860135</UserCode>
+  <Name>Edificio ITS duplicado</Name>
+  <OccupationalRuleId>204</OccupationalRuleId>
+  <Availabilities>
+    <AvailabilityPeriod>
+      <PeriodCode>2750356800</PeriodCode>
+      <StartDate>2010-06-18</StartDate>
+      <EndDate>2016-09-11</EndDate>
+      <State>AVAILABLE</State>
+      <AccommodationUnits>1</AccommodationUnits>
+    </AvailabilityPeriod>
+    <AvailabilityPeriod>
+      <PeriodCode>2947608000</PeriodCode>
+      <StartDate>2016-09-12</StartDate>
+      <EndDate>2016-09-16</EndDate>
+      <State>UNAVAILABLE</State>
+      <AccommodationUnits>0</AccommodationUnits>
+    </AvailabilityPeriod>
+  </Availabilities>
+</AccommodationRS>
