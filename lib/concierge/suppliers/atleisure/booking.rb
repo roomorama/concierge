@@ -30,6 +30,8 @@ module AtLeisure
     # set default email to prevent emails to guest with confusing information
     DEFAULT_USER_EMAIL        = "atleisure@roomorama.com"
 
+    S3_VOUCHER_URL            = "https://s3"
+
     attr_reader :credentials
 
     def initialize(credentials)
@@ -43,13 +45,37 @@ module AtLeisure
       result = client.invoke("PlaceBookingV1", reservation_details(params))
 
       if result.success?
-        parse_book_response(params, result.value)
+        parse_book_response(params, result.value).tap do |result|
+          add_voucher_url(result) if result.success?
+        end
       else
         result
       end
     end
 
     private
+
+    # Adds voucher url to the reservation object
+    # and enqueues the pdf rendering worker
+    def add_voucher_url(result)
+      reservation = result.value
+      reservation.attachment_url = S3_VOUCHER_URL.gsub(":reservation_number", reservation.reference_number)
+      enqueue_pdf_worker(reservation)
+      Result.new(reservation)
+    end
+
+    # Enqueues an element to Concierge::Queue
+    # Reports to rollbar if there's any issue
+    def enqueue_pdf_worker(reservation)
+      credentials = Concierge::Credentials.for("sqs")
+      queue = Concierge::Queue.new(credentials)
+      operation = Concierge::Queue::Element.new(
+        operation: "pdf",
+        data: { supplier_name: AtLeisure::Client::SUPPLIER_NAME,
+                reference_number: reservation.reference_number }
+      )
+      queue.add(operation)
+    end
 
     def parse_book_response(params, response)
       reservation = build_reservation(params)

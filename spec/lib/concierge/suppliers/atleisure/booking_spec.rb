@@ -50,7 +50,11 @@ RSpec.describe AtLeisure::Booking do
       expect(result.error.code).to eq :unrecognised_response
     end
 
-    it "returns a reservation booking code according to the response" do
+    it "returns a reservation booking code according to the response, and enqueue pdf worker" do
+      expect(subject).to receive(:enqueue_pdf_worker) do |reservation|
+        expect(reservation.attachment_url).to eq "https://s3"
+      end
+
       stub_with_fixture("atleisure/booking_success.json")
       expected_code = "175607953"
       result        = subject.book(params)

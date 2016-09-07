@@ -29,6 +29,7 @@ class Reservation
   attribute :check_out,        type: String
   attribute :guests,           type: Integer
   attribute :reference_number, type: String
+  attribute :attachment_url,   type: String
   attribute :extra,            type: Hash
   attribute :customer,         type: Hash
   attribute :created_at,       type: Time
