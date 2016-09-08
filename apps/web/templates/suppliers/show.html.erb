@@ -13,6 +13,7 @@
         <th>#</th>
         <th>Identifier</th>
         <th>Roomorama Username</th>
+        <th>Fees Applied</th>
         <th>Access Token</th>
         <th># Properties</th>
       </tr>
@@ -24,6 +25,7 @@
           <td><%= host.id %></td>
           <td><code><%= host.identifier %></code></td>
           <td><%= host.username %></td>
+          <td><%= format_fee_percentage(host.fee_percentage) %></td>
           <td><code><%= format_access_token(host) %></code></td>
           <td><%= host_properties(host) %></td>
         </tr>

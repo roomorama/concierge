@@ -4,6 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## Unreleased
+### Added
+- fee percentage for hosts on Web app on suppliers#show.
+
 ## [0.8.0] - 2016-09-08
 ### Added
 - Kigo and KigoLegacy integration: metadata sync, calendar sync, quoting, booking, cancelling support.
