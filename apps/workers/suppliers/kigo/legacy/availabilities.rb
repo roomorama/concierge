@@ -8,10 +8,10 @@ module Workers::Suppliers::Kigo::Legacy
 
     attr_reader :supplier, :prices_diff_id, :reservations_diff_id
 
-    def initialize(supplier, prices_diff_id: nil, reservations_diff_id: nil)
+    def initialize(supplier, args = {})
       @supplier             = supplier
-      @prices_diff_id       = prices_diff_id
-      @reservations_diff_id = reservations_diff_id
+      @prices_diff_id       = args[:prices_diff_id]
+      @reservations_diff_id = args[:reservations_diff_id]
     end
 
     def perform
@@ -89,5 +89,5 @@ module Workers::Suppliers::Kigo::Legacy
 end
 
 Concierge::Announcer.on("availabilities.KigoLegacy") do |supplier, args|
-  Workers::Suppliers::Kigo::Legacy::Availabilities.new(supplier, args.to_h).perform
+  Workers::Suppliers::Kigo::Legacy::Availabilities.new(supplier, args).perform
 end
