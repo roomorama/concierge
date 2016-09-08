@@ -17,7 +17,7 @@
     <Space>39</Space>
     <StandardGuests>2</StandardGuests>
     <CanSleepMax>2</CanSleepMax>
-    <PropertyTypeID>1</PropertyTypeID>
+    <PropertyTypeID>4</PropertyTypeID>
     <ObjectTypeID>35</ObjectTypeID>
     <Floor>3</Floor>
     <Street>Test street address</Street>

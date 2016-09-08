@@ -69,6 +69,14 @@ RSpec.describe RentalsUnited::Commands::PropertyFetcher do
       expect(property.subtype).to eq("villa")
     end
 
+    it "sets max_guests to the property" do
+      expect(property.max_guests).to eq(2)
+    end
+
+    it "sets number_of_bedrooms to the property" do
+      expect(property.number_of_bedrooms).to eq(3)
+    end
+
     it "sets address information to the property" do
       expect(property.lat).to eq(55.0003426)
       expect(property.lng).to eq(73.2965942999999)

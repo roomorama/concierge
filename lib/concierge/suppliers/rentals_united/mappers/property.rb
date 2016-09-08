@@ -9,9 +9,9 @@ module RentalsUnited
       attr_reader :property_hash, :location, :amenities_dictionary
 
       EN_DESCRIPTION_LANG_CODE = "1"
-      CANCELLATION_POLICY = "super_strict"
+      CANCELLATION_POLICY = "strict"
       DEFAULT_PROPERTY_RATE = "9999"
-      MINIMUM_STAY = nil
+      MINIMUM_STAY = 1
 
       # Initialize +RentalsUnited::Mappers::Property+
       #
@@ -45,6 +45,8 @@ module RentalsUnited
         property.currency             = location.currency
         property.city                 = location.city
         property.neighborhood         = location.neighborhood
+        property.max_guests           = property_hash.get("CanSleepMax").to_i
+        property.number_of_bedrooms   = number_of_bedrooms
         property.nightly_rate         = DEFAULT_PROPERTY_RATE
         property.weekly_rate          = DEFAULT_PROPERTY_RATE
         property.monthly_rate         = DEFAULT_PROPERTY_RATE
@@ -75,6 +77,12 @@ module RentalsUnited
 
       def find_property_type(id)
         RentalsUnited::Dictionaries::PropertyTypes.find(id)
+      end
+
+      def number_of_bedrooms
+        RentalsUnited::Dictionaries::Bedrooms.count_by_type_id(
+          property_hash.get("PropertyTypeID")
+        )
       end
 
       def en_description(hash)
