@@ -3,7 +3,15 @@ module RentalsUnited
     class BaseFetcher
       attr_reader :credentials
 
-      VALID_RU_STATUS_CODES = ["0"]
+      # Some statuses from RentalsUnited API are not actually errors, so this
+      # constant is a list of whitelisted codes, which we consider as normal
+      # behaviour.
+      #
+      # Whitelisted RentalsUnited API statuses:
+      # 0 - Success
+      # 1 - Property is not available for a given dates
+
+      VALID_RU_STATUS_CODES = ["0", "1"]
 
       def initialize(credentials)
         @credentials = credentials

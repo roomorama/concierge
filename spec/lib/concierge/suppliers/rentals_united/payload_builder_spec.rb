@@ -218,6 +218,52 @@ RSpec.describe RentalsUnited::PayloadBuilder do
     end
   end
 
+  describe '#build_quotation_fetch_payload' do
+    let(:quotaion_params) do
+      {
+        property_id: "123",
+        check_in: "2016-09-01",
+        check_out: "2016-09-02",
+        num_guests: 3
+      }
+    end
+
+    it 'embedds username and password to request' do
+      xml = builder.build_quotation_fetch_payload(quotaion_params)
+      hash = to_hash(xml)
+
+      authentication = hash.get("Pull_GetPropertyAvbPrice_RQ.Authentication")
+      expect(authentication.get("UserName")).to eq(credentials.username)
+      expect(authentication.get("Password")).to eq(credentials.password)
+    end
+
+    it 'adds property_id to request' do
+      xml = builder.build_quotation_fetch_payload(quotaion_params)
+      hash = to_hash(xml)
+
+      property_id = hash.get("Pull_GetPropertyAvbPrice_RQ.PropertyID")
+      expect(property_id).to eq(quotaion_params[:property_id])
+    end
+
+    it 'adds check in / check out dates to request' do
+      xml = builder.build_quotation_fetch_payload(quotaion_params)
+      hash = to_hash(xml)
+
+      check_in = hash.get("Pull_GetPropertyAvbPrice_RQ.DateFrom").to_s
+      check_out = hash.get("Pull_GetPropertyAvbPrice_RQ.DateTo").to_s
+      expect(check_in).to eq(quotaion_params[:check_in])
+      expect(check_out).to eq(quotaion_params[:check_out])
+    end
+
+    it 'adds num_guests to request' do
+      xml = builder.build_quotation_fetch_payload(quotaion_params)
+      hash = to_hash(xml)
+
+      num_guests = hash.get("Pull_GetPropertyAvbPrice_RQ.NOP")
+      expect(num_guests).to eq(quotaion_params[:num_guests].to_s)
+    end
+  end
+
   private
   def to_hash(xml)
     Concierge::SafeAccessHash.new(Nori.new.parse(xml))
