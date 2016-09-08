@@ -30,9 +30,10 @@ module Avantio
         @periods            = build_periods(periods_array)
       end
 
-      def actual_periods
+      # Returns periods which has intersection with [today, today + length]
+      def actual_periods(length)
         from = Date.today
-        to = from + PERIOD_LENGTH
+        to = from + length
         periods.select do |p|
           from < p.end_date && p.start_date <= to
         end
