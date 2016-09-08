@@ -7,6 +7,7 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Changed
 - SAW: return unavailable quotation instead of Result.error when rates are not returned for a unit.
+- Increase SQS default visibility timeout to 12h.
 
 ### Fixed
 - Cache hit rendering when the saved value is an array.
