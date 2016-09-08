@@ -17,8 +17,6 @@ module Avantio
         end.min
       end
 
-      private
-
       # Returns seasons which have min_nights > 0 and have intersection with [today, today + length]
       def actual_seasons(length)
         from = Date.today
@@ -29,6 +27,8 @@ module Avantio
             s.start_date <= to
         end
       end
+
+      private
 
       def build_seasons(seasons_array)
         seasons_array.map { |s| Season.new(s[:start_date], s[:end_date], s[:min_nights], s[:min_nights_online]) }
