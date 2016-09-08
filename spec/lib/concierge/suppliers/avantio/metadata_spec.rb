@@ -109,11 +109,11 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
         '1238513302',
         'itsalojamientos',
         [
-          {
-            start_date: Date.new(2016, 6, 10),
-            end_date: Date.new(2017, 6, 10),
-            rate: 250.0
-          }
+          Avantio::Entities::Rate::Period.new(
+            Date.new(2016, 6, 10),
+            Date.new(2017, 6, 10),
+            250.0
+          )
         ]
       )
     }
