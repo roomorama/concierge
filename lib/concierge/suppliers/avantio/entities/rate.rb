@@ -5,11 +5,11 @@ module Avantio
 
       attr_reader :accommodation_code, :user_code, :login_ga, :periods
 
-      def initialize(accommodation_code, user_code, login_ga, periods_array)
+      def initialize(accommodation_code, user_code, login_ga, periods)
         @accommodation_code = accommodation_code
         @user_code          = user_code
         @login_ga           = login_ga
-        @periods            = build_periods(periods_array)
+        @periods            = periods
       end
 
       def min_price(length)
@@ -28,14 +28,8 @@ module Avantio
         from = Date.today
         to = from + length
         periods.select do |p|
-          p.price > 0 && from < p.end_date && p.start_date <= to
+          p.price > 0 && from <= p.end_date && p.start_date <= to
         end
-      end
-
-      private
-
-      def build_periods(periods_array)
-        periods_array.map { |p| Period.new(p[:start_date], p[:end_date], p[:rate]) }
       end
     end
   end
