@@ -104,7 +104,7 @@ RSpec.describe RentalsUnited::Commands::PropertyFetcher do
     end
 
     it "sets cancellation_policy to the property" do
-      expect(property.cancellation_policy).to eq("super_strict")
+      expect(property.cancellation_policy).to eq("strict")
     end
 
     it "sets default_to_available flag" do
