@@ -45,6 +45,7 @@ module Workers::Suppliers::Kigo::Legacy
     end
 
     def request_handler
+      # huge timeout because the first call takes around 3 minutes
       Kigo::LegacyRequest.new(credentials, timeout: 200)
     end
 
