@@ -88,12 +88,16 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
       '204' => Avantio::Entities::OccupationalRule.new(
         '204',
         [
-          {
-            start_date: Date.new(2016, 6, 10),
-            end_date: Date.new(2017, 6, 10),
-            min_nights_online: 1,
-            min_nights: 2
-          }
+          Avantio::Entities::OccupationalRule::Season.new(
+            Date.new(2016, 6, 10),
+            Date.new(2017, 6, 10),
+            2,
+            1,
+            (1..31).map(&:to_s),
+            ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'],
+            (1..31).map(&:to_s),
+            ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']
+          )
         ]
       )
     }
