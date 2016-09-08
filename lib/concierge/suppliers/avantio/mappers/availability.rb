@@ -33,11 +33,11 @@ module Avantio
           start_date = p.at_xpath('StartDate').text
           end_date = p.at_xpath('EndDate').text
           state = p.at_xpath('State').text
-          {
-            start_date: Date.parse(start_date),
-            end_date:   Date.parse(end_date),
-            state: state
-          }
+          Avantio::Entities::Availability::Period.new(
+            Date.parse(start_date),
+            Date.parse(end_date),
+            state
+          )
         end
       end
     end

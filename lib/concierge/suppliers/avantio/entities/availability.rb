@@ -18,16 +18,14 @@ module Avantio
 
         attr_reader :state
       end
-      # Count of days
-      PERIOD_LENGTH = 365
 
       attr_reader :accommodation_code, :user_code, :login_ga, :periods
 
-      def initialize(accommodation_code, user_code, login_ga, periods_array)
+      def initialize(accommodation_code, user_code, login_ga, periods)
         @accommodation_code = accommodation_code
         @user_code          = user_code
         @login_ga           = login_ga
-        @periods            = build_periods(periods_array)
+        @periods            = periods
       end
 
       # Returns periods which has intersection with [today, today + length]
@@ -44,12 +42,6 @@ module Avantio
         @property_id ||= Avantio::PropertyId.from_avantio_ids(
           accommodation_code, user_code, login_ga
         ).property_id
-      end
-
-      private
-
-      def build_periods(periods_array)
-        periods_array.map { |p| Period.new(p[:start_date], p[:end_date], p[:state]) }
       end
     end
   end
