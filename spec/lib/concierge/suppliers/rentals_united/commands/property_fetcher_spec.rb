@@ -107,8 +107,8 @@ RSpec.describe RentalsUnited::Commands::PropertyFetcher do
       expect(property.cancellation_policy).to eq("strict")
     end
 
-    it "sets default_to_available flag" do
-      expect(property.default_to_available).to eq(true)
+    it "sets default_to_available flag to false" do
+      expect(property.default_to_available).to eq(false)
     end
 
     it "does not set multi-unit flag" do

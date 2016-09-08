@@ -52,7 +52,7 @@ module RentalsUnited
         property.monthly_rate         = DEFAULT_PROPERTY_RATE
         property.minimum_stay         = MINIMUM_STAY
         property.cancellation_policy  = CANCELLATION_POLICY
-        property.default_to_available = true
+        property.default_to_available = false
         property.instant_booking!
 
         property_type = find_property_type(property_hash.get("ObjectTypeID"))
