@@ -5,10 +5,6 @@ module Avantio
     # This class is responsible for building a +Roomorama::Calendar+ object
     # from data getting from Avantio.
     class RoomoramaCalendar
-
-      # Count of days from today
-      PERIOD_SYNC = 365
-
       # Maps Avantio data to +Roomorama::Calendar+
       #
       # Arguments
@@ -17,10 +13,12 @@ module Avantio
       #   * +rate+ [Avantio::Entities::Rate]
       #   * +availability+ [Avantio::Entities::Availability]
       #   * +rule+ [Avantio::Entities::Rule]
-      def build(property_id, rate, availability, rule)
+      #   * +length+ [Fixnum] all operations (calc of min_stay, calc of nightly_rate)
+      #                       will be in daterange from today to today + length
+      def build(property_id, rate, availability, rule, length)
         calendar = Roomorama::Calendar.new(property_id)
 
-        entries = build_entries(rate, availability, rule)
+        entries = build_entries(rate, availability, rule, length)
         entries.each { |entry| calendar.add(entry) }
 
         calendar
@@ -32,15 +30,15 @@ module Avantio
         Date.today
       end
 
-      def calendar_end
-        calendar_start + PERIOD_SYNC
+      def calendar_end(length)
+        calendar_start + length
       end
 
-      def fill_availability(availability)
+      def fill_availability(availability, length)
         {}.tap do |result|
-          availability.actual_periods(PERIOD_SYNC).each do |period|
+          availability.actual_periods(length).each do |period|
             from = [calendar_start, period.start_date].max
-            to = [calendar_end, period.end_date].min
+            to = [calendar_end(length), period.end_date].min
             available = period.available?
             (from..to).each do |date|
               result[date] = Roomorama::Calendar::Entry.new(
@@ -52,54 +50,34 @@ module Avantio
         end
       end
 
-      def fill_rates!(result, rate)
-        rate.actual_periods.each do |period|
+      def fill_rates!(entries, rate, length)
+        rate.actual_periods(length).each do |period|
           from = [calendar_start, period.start_date].max
-          to = [calendar_end, period.end_date].min
+          to = [calendar_end(length), period.end_date].min
           (from..to).each do |date|
-            entry = result[date]
+            entry = entries[date]
             entry.nightly_rate = period.price if entry
           end
         end
       end
 
-      def fill_checkin_checkout!(result, rule)
-
-      end
-
-      def build_entries(rate, availability, rule)
-        result = fill_availability(availability)
-        fill_rates!(result, rate)
-        fill_checkin_checkout!(result, rule)
-
-        reservations_index = build_reservations_index(reservations)
-        entries = []
-        today = Date.today
-        rates.each do |rate|
-
-          (rate.from_date..rate.to_date).each do |date|
-
-            next if date <= today
-            break if date > today + PERIOD_SYNC
-
-            if rate.daily_rate == 0
-              entry = Roomorama::Calendar::Entry.new(
-                date:             date.to_s,
-                available:        false,
-                nightly_rate:     0
-              )
-            else
-              available = !date_reserved?(date, reservations_index)
-              entry = Roomorama::Calendar::Entry.new(
-                date:              date.to_s,
-                available:         available,
-                nightly_rate:      rate.daily_rate,
-                minimum_stay:      rate.min_nights_stay
-              )
-            end
-            entries << entry
+      def fill_checkin_checkout!(entries, rule, length)
+        rule.actual_seasons(length).each do |season|
+          from = [calendar_start, season.start_date].max
+          to = [calendar_end(length), season.end_date].min
+          (from..to).each do |date|
+            entry = entries[date]
+            entry.mininum_stay = season.min_nights_online || season.min_nights
+            entry.check_in_allowed = season.check_in_allowed(date)
+            entry.check_out_allowed = season.check_out_allowed(date)
           end
         end
+      end
+
+      def build_entries(rate, availability, rule, length)
+        entries = fill_availability(availability, length)
+        fill_rates!(entries, rate, length)
+        fill_min_nights_checkin_checkout!(entries, rule, length)
         entries
       end
 
