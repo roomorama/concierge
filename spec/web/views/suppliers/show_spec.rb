@@ -23,7 +23,7 @@ RSpec.describe Web::Views::Suppliers::Show do
 
   before do
     2.times { |n|
-      create_host(supplier_id: supplier.id, identifier: "host#{n}", access_token: "token#{n}")
+      create_host(supplier_id: supplier.id, fee_percentage: (n + 2).to_f, identifier: "host#{n}", access_token: "token#{n}")
     }
   end
 
@@ -39,6 +39,8 @@ RSpec.describe Web::Views::Suppliers::Show do
   it "renders a list of hosts for the supplier" do
     expect(sanitized).to include %(<td><code>host0</code></td>)
     expect(sanitized).to include %(<td><code>host1</code></td>)
+    expect(sanitized).to include %(<td>2.0%</td>)
+    expect(sanitized).to include %(<td>3.0%</td>)
 
     expect(sanitized).to include %(<td><code>token...</code></td>)
   end
