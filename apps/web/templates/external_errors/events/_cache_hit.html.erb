@@ -19,7 +19,7 @@
       #
       # Therefore, transform the hash into a proper JSON string in such cases
       # so as to allow proper recognition and formatting.
-      value = event[:value].to_h.to_json
+      value = (event[:value].is_a?(Array) ? event[:value] : event[:value].to_h).to_json
     else
       value = event[:value]
     end

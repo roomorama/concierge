@@ -1,0 +1,45 @@
+{
+  "TOTAL_PROPERTY_UNITS": 1,
+  "AVAILABILITY": [
+    {
+      "DATE": "2017-07-06",
+      "AVAILABLE_UNITS": 1,
+      "MAX_LOS": 0
+    },
+    {
+      "DATE": "2017-07-07",
+      "AVAILABLE_UNITS": 1,
+      "MAX_LOS": 0
+    },
+    {
+      "DATE": "2017-07-08",
+      "AVAILABLE_UNITS": 1,
+      "MAX_LOS": 0
+    },
+    {
+      "DATE": "2017-07-09",
+      "AVAILABLE_UNITS": 1,
+      "MAX_LOS": 77
+    },
+    {
+      "DATE": "2017-07-10",
+      "AVAILABLE_UNITS": 1,
+      "MAX_LOS": 0
+    },
+    {
+      "DATE": "2017-07-11",
+      "AVAILABLE_UNITS": 1,
+      "MAX_LOS": 0
+    },
+    {
+      "DATE": "2017-07-12",
+      "AVAILABLE_UNITS": 1,
+      "MAX_LOS": 0
+    },
+    {
+      "DATE": "2017-07-13",
+      "AVAILABLE_UNITS": 1,
+      "MAX_LOS": 0
+    }
+  ]
+}

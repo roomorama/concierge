@@ -103,7 +103,7 @@ module Workers::Suppliers
     # Could be nil if there has never been a successful sync yet
     #
     def last_synced_timestamp
-      most_recent = SyncProcessRepository.recent_successful_sync_for_host(host).first
+      most_recent = SyncProcessRepository.most_recent.successful.for_host(host).first
       most_recent&.started_at&.to_i
     end
 

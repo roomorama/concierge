@@ -19,7 +19,6 @@ module Concierge
       Result.new(Yajl::Parser.parse(json_source))
     rescue Yajl::ParseError => err
       announce_parsing_error(err)
-      message = ["Error: #{err.message}", json_source.to_s].join("\n")
       Result.error(:invalid_json_representation)
     end
 

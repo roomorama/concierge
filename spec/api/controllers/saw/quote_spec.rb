@@ -9,7 +9,7 @@ RSpec.describe API::Controllers::SAW::Quote do
 
   let(:params) do
     {
-      property_id: 1,
+      property_id: "1",
       unit_id: '10612',
       check_in: "2015-02-26",
       check_out: "2015-02-28",
@@ -43,6 +43,11 @@ RSpec.describe API::Controllers::SAW::Quote do
 
     quotation = result.value
     expect(quotation).to be_kind_of(Quotation)
+    expect(quotation.property_id).to eq(params[:property_id])
+    expect(quotation.unit_id).to eq(params[:unit_id])
+    expect(quotation.check_in).to eq(params[:check_in])
+    expect(quotation.check_out).to eq(params[:check_out])
+    expect(quotation.guests).to eq(params[:guests])
     expect(quotation.total).to eq(641.3)
     expect(quotation.currency).to eq('EUR')
     expect(quotation.available).to be true
@@ -59,6 +64,11 @@ RSpec.describe API::Controllers::SAW::Quote do
 
     quotation = result.value
     expect(quotation).to be_kind_of(Quotation)
+    expect(quotation.property_id).to eq(params[:property_id])
+    expect(quotation.unit_id).to eq(params[:unit_id])
+    expect(quotation.check_in).to eq(params[:check_in])
+    expect(quotation.check_out).to eq(params[:check_out])
+    expect(quotation.guests).to eq(params[:guests])
     expect(quotation.total).to eq(641.3)
     expect(quotation.currency).to eq('EUR')
     expect(quotation.available).to be false
@@ -143,14 +153,22 @@ RSpec.describe API::Controllers::SAW::Quote do
   end
 
   context "when there is no rates for given unit" do
-    it "returns an error" do
+    it "returns a result object with not-available quotation" do
       params[:unit_id] = "1111"
       mock_request(:propertyrates, :success_multiple_units)
 
       result = controller.quote_price(params)
-      expect(result.success?).to be false
+      expect(result.success?).to be true
       expect(result).to be_kind_of(Result)
-      expect(result.error.code).to eq(:unavailable_unit_rates_error)
+
+      quotation = result.value
+      expect(quotation).to be_kind_of(Quotation)
+      expect(quotation.property_id).to eq(params[:property_id])
+      expect(quotation.unit_id).to eq(params[:unit_id])
+      expect(quotation.check_in).to eq(params[:check_in])
+      expect(quotation.check_out).to eq(params[:check_out])
+      expect(quotation.guests).to eq(params[:guests])
+      expect(quotation.available).to be false
     end
   end
 end
