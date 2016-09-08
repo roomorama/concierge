@@ -45,7 +45,7 @@ module Workers::Suppliers::Kigo::Legacy
     end
 
     def request_handler
-      Kigo::LegacyRequest.new(credentials, timeout: 40)
+      Kigo::LegacyRequest.new(credentials, timeout: 200)
     end
 
     def credentials
