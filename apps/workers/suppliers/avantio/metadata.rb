@@ -12,6 +12,9 @@ module Workers::Suppliers::Avantio
   #  - rates: every day
   #  - occupational rules: several times a week
   class Metadata
+    # Count of days
+    PERIOD_SYNC = 365
+
     attr_reader :synchronisation, :host
 
     def initialize(host)
@@ -60,7 +63,7 @@ module Workers::Suppliers::Avantio
           next
         end
         synchronisation.start(property_id) do
-          Result.new(mapper.build(property, description, occupational_rule, rate))
+          Result.new(mapper.build(property, description, occupational_rule, rate, PERIOD_SYNC))
         end
       end
       synchronisation.finish!
