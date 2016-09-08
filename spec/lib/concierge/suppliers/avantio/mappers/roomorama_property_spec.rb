@@ -23,7 +23,7 @@ RSpec.describe Avantio::Mappers::RoomoramaProperty do
   end
 
   it 'returns mapped property' do
-    property = subject.build(accommodation_with_all_services, description, occupational_rule, rate)
+    property = subject.build(accommodation_with_all_services, description, occupational_rule, rate, 365)
 
     expect(property).to be_a(Roomorama::Property)
     expect(property.identifier).to eq('128498|1416325650|itsvillas')
