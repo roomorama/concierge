@@ -21,7 +21,7 @@ module Workers::Suppliers::RentalsUnited
 
       locations = result.value
 
-      result = fetch_currencies
+      result = fetch_location_currencies
       return unless result.success?
 
       currencies = result.value
@@ -44,6 +44,8 @@ module Workers::Suppliers::RentalsUnited
           return
         end
       end
+
+      synchronisation.finish!
     end
 
     private
@@ -70,9 +72,9 @@ module Workers::Suppliers::RentalsUnited
       end
     end
 
-    def fetch_currencies
+    def fetch_location_currencies
       announce_error("Failed to fetch locations-currencies mapping") do
-        importer.fetch_currencies
+        importer.fetch_location_currencies
       end
     end
 
