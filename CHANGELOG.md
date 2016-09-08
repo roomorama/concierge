@@ -4,7 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
-## Unreleased
+## [0.8.0] - 2016-09-08
+### Added
+- Kigo and KigoLegacy integration: metadata sync, calendar sync, quoting, booking, cancelling support.
+
 ### Changed
 - SAW: return unavailable quotation instead of Result.error when rates are not returned for a unit.
 - Increase SQS default visibility timeout to 12h.
