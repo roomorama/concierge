@@ -1,0 +1,21 @@
+{
+  "DIFF_ID": "vdbfo",
+  "RES_LIST": [
+    {
+      "RES_ID": 12935818,
+      "PROP_ID": 194962,
+      "RES_STATUS": "CONFIRMED",
+      "RES_CHECK_IN": "2016-04-07 15:00:00",
+      "RES_CHECK_OUT": "2016-04-11 10:00:00",
+      "RES_IS_FOR": true
+    },
+    {
+      "RES_ID": 13542667,
+      "PROP_ID": 194966,
+      "RES_STATUS": "CONFIRMED",
+      "RES_CHECK_IN": "2016-04-04 15:00:00",
+      "RES_CHECK_OUT": "2016-04-10 10:00:00",
+      "RES_IS_FOR": true
+    }
+  ]
+}

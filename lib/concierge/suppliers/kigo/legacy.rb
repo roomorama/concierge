@@ -9,7 +9,7 @@ module Kigo
   # For more information on how to interact with Kigo Channels API and the Kigo
   # Legacy API, check the project Wiki.
   class Legacy
-    SUPPLIER_NAME = "Kigo Legacy"
+    SUPPLIER_NAME = "KigoLegacy"
 
     attr_reader :credentials
 
@@ -33,20 +33,27 @@ module Kigo
     # Returns a +Result+ wrapping a +Quotation+ when operation succeeds
     # Returns a +Result+ wrapping a nil object when operation fails
     def quote(params)
-      Kigo::Price.new(credentials, request_handler: legacy_handler).quote(params)
+      Kigo::Price.new(credentials, request_handler: request_handler).quote(params)
     end
 
     # Returns a +Result+ wrapping a +Reservation+.
     # Returns a +Result+ with error if booking fails.
     # Uses an instance +Kigo::LegacyRequest+ to dictate parameters and endpoints.
     def book(params)
-      Kigo::Booking.new(credentials, request_handler: legacy_handler).book(params)
+      Kigo::Booking.new(credentials, request_handler: request_handler).book(params)
+    end
+
+    # Returns a +Result+ wrapping booking reference number in success case.
+    # Returns a +Result+ with error if cancellation fails.
+    # Uses an instance +Kigo::LegacyRequest+ to dictate parameters and endpoints.
+    def cancel(params)
+      Kigo::Cancel.new(credentials, request_handler: request_handler).call(params)
     end
 
     private
 
-    def legacy_handler
-      LegacyRequest.new(credentials, Kigo::Request.new(credentials))
+    def request_handler
+      LegacyRequest.new(credentials)
     end
   end
 

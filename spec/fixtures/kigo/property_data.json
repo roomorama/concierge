@@ -1,0 +1,272 @@
+{
+  "PROP_ID": 237294,
+  "PROP_PROVIDER": {
+    "PROVIDER_TYPE": "AGENCY",
+    "OWNER_ID": null,
+    "RA_ID": 15826
+  },
+  "PROP_INSTANT_BOOK": true,
+  "PROP_INFO": {
+    "PROP_NAME": "Villa immersa nel verde  700 metri primo lido ",
+    "PROP_STREETNO": "",
+    "PROP_ADDR1": "Strada Provinciale 215",
+    "PROP_ADDR2": "",
+    "PROP_ADDR3": "",
+    "PROP_APTNO": "12",
+    "PROP_POSTCODE": "73014",
+    "PROP_CITY": "Gallipoli",
+    "PROP_REGION": "Puglia",
+    "PROP_COUNTRY": "IT",
+    "PROP_LATLNG": {
+      "LATITUDE": "39.982447",
+      "LONGITUDE": "18.015175"
+    },
+    "PROP_PHONE": "",
+    "PROP_AXSCODE": "",
+    "PROP_BEDROOMS": 3,
+    "PROP_BEDS": 6,
+    "PROP_BED_TYPES": [
+      3,
+      4,
+      4,
+      5,
+      7,
+      14
+    ],
+    "PROP_BATHROOMS": 2,
+    "PROP_TOILETS": null,
+    "PROP_TYPE_ID": 6,
+    "PROP_SIZE": "37674",
+    "PROP_SIZE_UNIT": "SQFEET",
+    "PROP_MAXGUESTS": 9,
+    "PROP_MAXGUESTS_ADULTS": 9,
+    "PROP_MAXGUESTS_CHILDREN": 0,
+    "PROP_MAXGUESTS_BABIES": 0,
+    "PROP_FLOOR": 3,
+    "PROP_ELEVATOR": null,
+    "PROP_CIN_TIME": "15:00",
+    "PROP_COUT_TIME": "10:00",
+    "PROP_CLEAN_TIME": "00:00",
+    "PROP_STAYTIME_MIN": {
+      "UNIT": "NIGHT",
+      "NUMBER": 7
+    },
+    "PROP_STAYTIME_MAX": {
+      "UNIT": "YEAR",
+      "NUMBER": 5
+    },
+    "PROP_DESCRIPTION": "Bellissima soluzione in località Gallipoli Punta Pizzo, immersa nel verde del parco naturale, con spiaggia di sabbia a circa 700 metri dall'abitazione (Lido Cotriero); La proprietà è composta da 3 unità abitative, di cui una soluzione da 3 posti letto, una da 5 posti letto e una da 9 posti letto. Quest'ultima è composta da ampio spazio esterno arredato con mobili da giardino con vista mare, sala da pranzo, tre camere da letto, due bagni. Struttura consigliata a famiglie e gruppi di giovani.\n\r\n\nIndirizzo: Strada provinciale 215, Gallipoli Punta Pizzo \n\r\n\nServizi interni alla struttura\n\r\n\nClima | Tv color | Posto auto | Spazio esterno | Barbecue in muratura | Lavatrice | Amache | Zone relax | wi-fi \n\r\n\nDistanza Mare \n\r\n\nSpiaggia di sabbia: Punta Pizzo: 700 metri (Lido Cotriero) - 900 metri (Lido Pizzo) | Gallipoli Baia Verde: 4 Km | Torre San Giovanni: 10 km (Isola di Pazze)\n\r\n\nLuoghi d’interesse\n\r\n\nLocali di pre-serata | Bar | Edicola | Ristoranti | Market | Fermata bus | Lidi ",
+    "PROP_SHORTDESCRIPTION": "Short description",
+    "PROP_AREADESCRIPTION": "Area description",
+    "PROP_RENTAL_DETAILS": "",
+    "PROP_INVENTORY": "",
+    "PROP_ARRIVAL_SHEET": "",
+    "PROP_AMENITIES": [
+      42,
+      22,
+      47,
+      55,
+      58,
+      49,
+      52,
+      82,
+      83,
+      10,
+      109
+    ],
+    "PROP_ACTIVITIES": [
+      21,
+      18,
+      1
+    ],
+    "PROP_NAME_ALL": {
+      "it": "Villa immersa nel verde  700 metri primo lido",
+      "it-IT": "Villa immersa nel verde  700 metri primo lido"
+    },
+    "PROP_DESCRIPTION_ALL": {
+      "it": "Bellissima soluzione in località Gallipoli Punta Pizzo, immersa nel verde del parco naturale, con spiaggia di sabbia a circa 700 metri dall'abitazione (Lido Cotriero); La proprietà è composta da 3 unità abitative, di cui una soluzione da 3 posti letto, una da 5 posti letto e una da 9 posti letto. Quest'ultima è composta da ampio spazio esterno arredato con mobili da giardino con vista mare, sala da pranzo, tre camere da letto, due bagni. Struttura consigliata a famiglie e gruppi di giovani.\n\r\n\nIndirizzo: Strada provinciale 215, Gallipoli Punta Pizzo \n\r\n\nServizi interni alla struttura\n\r\n\nClima | Tv color | Posto auto | Spazio esterno | Barbecue in muratura | Lavatrice | Amache | Zone relax | wi-fi \n\r\n\nDistanza Mare \n\r\n\nSpiaggia di sabbia: Punta Pizzo: 700 metri (Lido Cotriero) - 900 metri (Lido Pizzo) | Gallipoli Baia Verde: 4 Km | Torre San Giovanni: 10 km (Isola di Pazze)\n\r\n\nLuoghi d’interesse\n\r\n\nLocali di pre-serata | Bar | Edicola | Ristoranti | Market | Fermata bus | Lidi "
+    },
+    "PROP_SHORTDESCRIPTION_ALL": {
+      "it": "Bellissima soluzione in località Gallipoli Punta Pizzo, immersa nel verde del parco naturale, con spiaggia di sabbia a circa 700 metri dall'abitazione (Lido Cotriero); La proprietà è composta da 3 unità abitative, di cui una soluzione da 3 posti letto, una da 5 posti letto e una da 9 posti letto. Quest'ultima è composta da ampio spazio esterno arredato con mobili da giardino con vista mare, sala da pranzo, tre camere da letto, due bagni. Struttura consigliata a famiglie e gruppi di giovani.\n\r\n\nIndirizzo: Strada provinciale 215, Gallipoli Punta Pizzo \n\r\n\nServizi interni alla struttura\n\r\n\nClima | Tv color | Posto auto | Spazio esterno | Barbecue in muratura | Lavatrice | Amache | Zone relax | wi-fi \n\r\n\nDistanza Mare \n\r\n\nSpiaggia di sabbia: Punta Pizzo: 700 metri (Lido Cotriero) - 900 metri (Lido Pizzo) | Gallipoli Baia Verde: 4 Km | Torre San Giovanni: 10 km (Isola di Pazze)\n\r\n\nLuoghi d’interesse\n\r\n\nLocali di pre-serata | Bar | Edicola | Ristoranti | Market | Fermata bus | Lidi "
+    },
+    "PROP_ARRIVAL_SHEET_ALL": [
+
+    ]
+  },
+  "PROP_RATE": {
+    "PROP_RATE_CURRENCY": "EUR",
+    "PROP_RATE_NIGHTLY_FROM": "151.98",
+    "PROP_RATE_NIGHTLY_TO": "417.18",
+    "PROP_RATE_WEEKLY_FROM": null,
+    "PROP_RATE_WEEKLY_TO": null,
+    "PROP_RATE_MONTHLY_FROM": null,
+    "PROP_RATE_MONTHLY_TO": null
+  },
+  "PROP_PHOTOS": [
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/95dec679-74ea-4a5c-babc-6b76eb4ea474.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": "Niiice"
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/c924976f-9a86-4766-833c-8fe9d0eab491.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/10143ab6-5d19-4d88-9f6e-02b197eb6143.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/f004ca55-dd19-45d9-91e9-67bcdee96f98.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/9b4b56db-ec71-4869-a684-1c0eccffaaaf.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/519b27b8-b8e6-4886-952f-68f02e27c5cc.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/939e71a1-9ee9-4c17-9870-32e30b99bbf4.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/534b7715-ecf5-443f-9da2-9b11b734b5c5.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/dc46fc03-9080-41a1-83e7-db4cea5afce3.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/72beaa26-249f-4573-a5a5-95ea35a41798.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/d910a9c3-54b1-4c66-b007-b3f04c6de835.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/07000a5c-cf8d-4813-89c5-ac1c77470803.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/50d395c6-47b1-41c0-a789-20d88c0d98ab.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/129284b1-a6ca-4709-90fa-f9d2fcbb6640.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/4b4ac01e-e09d-4665-a3c9-71e635a17acb.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/e6f9bdb5-0cbe-4f0b-a59f-d56c20e1e6a0.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/d71a38b6-b987-44e0-add5-8f58e033e195.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/53e83454-143b-468f-b775-648001d905d3.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/eddc4c13-343f-446d-8290-47e4248a4eb0.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/fff9c7ab-2b20-4d94-af24-3991e4811c65.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/a7ea0535-8d39-4d99-a764-184caf9b2c29.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/15f53244-b002-43f8-bc45-f06cdcff5349.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/dfe8f1c1-722d-47b8-bbfb-421576f60bdb.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/b95a6b93-380a-45e5-8ec5-ad4a2e1fd262.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/817d4b98-e2f0-40ab-a2f2-b700c0d1ab71.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/714fb73d-a66e-44e1-b6b1-748d9f4ba5a4.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    },
+    {
+      "PHOTO_ID": "//s3.amazonaws.com/cdnmedia.bookt.com/15826/30365104-bcb3-4714-9aba-4ff024e7c4e0.jpg",
+      "PHOTO_PANORAMIC": false,
+      "PHOTO_NAME": "",
+      "PHOTO_COMMENTS": ""
+    }
+  ],
+  "PROP_UDPA": [
+
+  ]
+}

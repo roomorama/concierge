@@ -13,7 +13,9 @@ RSpec.describe API::Middlewares::Authentication do
   }
   let(:secret) { "secret-key" }
   let(:secret_mapping) {
-    { "/supplier" => secret }
+    {
+      "/supplier"   => secret
+    }
   }
   let(:secrets) { API::Middlewares::Authentication::Secrets.new(secret_mapping) }
 
@@ -25,6 +27,17 @@ RSpec.describe API::Middlewares::Authentication do
 
   it "is valid if it is a POST with content-type and a whitelisted endpoint" do
     expect(post("/checkout", headers)).to eq success
+  end
+
+  it "is valid if it is a GET with content-signature" do
+    previous = ENV["CONCIERGE_API_SECRET"]
+    ENV["CONCIERGE_API_SECRET"] = secret
+    path = "/kigo/image/123/45"
+    get_headers = { "HTTP_CONTENT_SIGNATURE" => sign(path, secret)}
+
+    expect(get(path, get_headers)).to eq success
+
+    ENV["CONCIERGE_API_SECRET"] = previous
   end
 
   it "is forbidden without a request body" do
@@ -74,7 +87,7 @@ RSpec.describe API::Middlewares::Authentication do
   end
 
   def get(path, headers = {})
-    to_rack(app.get(path))
+    to_rack(app.get(path, headers))
   end
 
   def post(path, params = {})

@@ -17,6 +17,14 @@ how this file is formatted and how the process works.
 - Allow worker implementation specify parameters for the next run.
 - Better error message for unknown background worker IDs enqueued.
 - Ability to filter by error code on the `web` app.
+- Synchronisation with Kigo
+- Synchronisation with KigoLegacy
+- `CONCIERGE_API_SECRET` for signing `GET` requests
+- `Kigo::ImageFetcher` - to download images by Kigo's API
+- environment variable CONCIERGE_URL
+- Kigo Legacy images fetching through controller
+- host deletion flow
+- Kigo cancellation
 
 ### Changed
 - Rename class: `Workers::Suppliers::Ciirus::Calendar` -> `Workers::Suppliers::Ciirus::Availabilities`
@@ -93,6 +101,9 @@ how this file is formatted and how the process works.
 
 ### Changed
 - Do not attempt to update calendar for properties not previously synchronised.
+- `API::Middlewares::Authentication` with get request condition
+- `API::Middlewares::RoomoramaWebhook` with get request condition
+- `SyncProcess.recent_successful_sync_for_host` separated on `.successful` and `.for_host` methods
 
 ### Fixed
 - error with saving response with ASCII-8BIT encoding type
@@ -107,9 +118,11 @@ how this file is formatted and how the process works.
 
 ### Changed
 - `Workers::PropertySynchronisation` doesn't update sync_processes' counters if Roomorama call failed
+- `Kigo::Request` and `Kigo::LegacyRequest` - changed optional settings for http client
 
 ### Fixed
 - amenities serialization for `Roomorama::Unit`.
+- `Concierge::Context::NetworkResponse` - convert response body in UTF-8 encoding type
 
 ## [0.5.4] - 2016-08-01
 ### Changed

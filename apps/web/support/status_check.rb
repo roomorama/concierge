@@ -67,10 +67,7 @@ module Web::Support
     end
 
     def concierge_url
-      case Hanami.env
-      when "staging" then "https://concierge-staging.roomorama.com"
-      else                "https://concierge.roomorama.com"
-      end
+      ENV['CONCIERGE_URL']
     end
 
   end

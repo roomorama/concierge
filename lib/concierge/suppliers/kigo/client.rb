@@ -43,6 +43,13 @@ module Kigo
       Kigo::Booking.new(credentials).book(params)
     end
 
+    # Returns a +Result+ wrapping booking reference number in success case.
+    # Returns a +Result+ with error if cancellation fails.
+    # Uses an instance +Kigo::Request+ to dictate parameters and endpoints.
+    def cancel(params)
+      Kigo::Cancel.new(credentials).call(params)
+    end
+
   end
 
 end

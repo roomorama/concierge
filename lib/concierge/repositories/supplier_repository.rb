@@ -14,6 +14,6 @@ class SupplierRepository
   # Returns the Supplier object associated with the given name, or +nil+
   # if one cannot be found.
   def self.named(name)
-    query { where(name: name) }.to_a.first
+    query { where(name: name) }.first
   end
 end

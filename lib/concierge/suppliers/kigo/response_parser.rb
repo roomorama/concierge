@@ -115,6 +115,29 @@ module Kigo
       end
     end
 
+    # parses the response of a +cancelReservation+ API call.
+    # Returns a +Result+ instance wrapping a +reference_number+ param
+    # in case the response is successful.
+    def parse_cancellation(response)
+      payload = json_decode(response)
+      return payload unless payload.success?
+
+      case payload.value["API_RESULT_CODE"]
+      when 'E_OK'
+        Result.new(params[:reference_number])
+      when 'E_NOSUCH'
+        message = 'The reservation was not found, or does not belong to your Rental Agency Kigo account.'
+        mismatch(message, caller)
+        Result.error(:reservation_not_found)
+      when 'E_ALREADY'
+        mismatch('The reservation already cancelled', caller)
+        Result.error(:already_cancelled)
+      else
+        mismatch('Undefined error result', caller)
+        Result.error(:cancellation_failed)
+      end
+    end
+
     private
 
     def build_reservation(params)

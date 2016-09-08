@@ -143,7 +143,7 @@ module Workers
     # Used to initialize a clean context for a property id.
     #
     # Users of synchronisation should call this for work related
-    # to the host and property identifer, that could create ExternalError:
+    # to the host and property identifier, that could create ExternalError:
     #
     #   sync.new_context(property_id) do
     #     # .. do stuff that might announce ExternalErrors

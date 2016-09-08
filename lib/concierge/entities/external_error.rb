@@ -11,7 +11,7 @@
 # * missing response fields in supplier response payloads
 #
 # In any of these cases, the error should be persisted as an external error
-# so that it can be analysed by a human later. This is the puprose of this
+# so that it can be analysed by a human later. This is the purpose of this
 # class.
 #
 # Attributes:
@@ -25,7 +25,7 @@
 class ExternalError
   include Hanami::Entity
 
-  OPERATIONS = %w(quote booking sync cancellation)
+  OPERATIONS = %w(quote booking sync cancellation image)
 
   attributes :id, :operation, :supplier, :code, :context, :happened_at
 end
