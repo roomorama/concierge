@@ -32,12 +32,12 @@ module Avantio
         Array(periods).map do |p|
           start_date = p.at_xpath('StartDate').text
           end_date = p.at_xpath('EndDate').text
-          rate = p.at_xpath('RoomOnly/Price')&.text.to_f
-          {
-            start_date: Date.parse(start_date),
-            end_date:   Date.parse(end_date),
-            rate: rate
-          }
+          price = p.at_xpath('RoomOnly/Price')&.text.to_f
+          Avantio::Entities::Rate::Period.new(
+            Date.parse(start_date),
+            Date.parse(end_date),
+            price
+          )
         end
       end
     end
