@@ -44,7 +44,7 @@ module Workers::Suppliers::Kigo
     end
 
     def request_handler
-      Kigo::Request.new(credentials)
+      Kigo::Request.new(credentials, timeout: 40)
     end
 
     def credentials
