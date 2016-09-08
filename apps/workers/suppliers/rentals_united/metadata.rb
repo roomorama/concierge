@@ -40,7 +40,8 @@ module Workers::Suppliers::RentalsUnited
             end
           end
         else
-          announce_context_error(message)
+          message = "Failed to find currency for location with id `#{location.id}`"
+          announce_context_error(message, result)
           return
         end
       end
@@ -85,14 +86,14 @@ module Workers::Suppliers::RentalsUnited
     end
 
     def fetch_property(property_id, location)
-      announce_error("Failed to fetch property with ID #{property_id}`") do
+      announce_error("Failed to fetch property with ID `#{property_id}`") do
         importer.fetch_property(property_id, location)
       end
     end
 
     def announce_error(message)
       yield.tap do |result|
-        announce_context_error(message) unless result.success?
+        announce_context_error(message, result) unless result.success?
       end
     end
 
