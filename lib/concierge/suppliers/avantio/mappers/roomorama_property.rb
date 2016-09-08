@@ -26,8 +26,10 @@ module Avantio
       #   * +description+ [Avantio::Entities::Description]
       #   * +occupational_rule+ [Avantio::Entities::OccupationalRule]
       #   * +rate+ [Avantio::Entities::Rate]
+      #   * +length+ [Fixnum] all operations (calc of min_stay, calc of nightly_rate)
+      #                       will be in daterange from today to today + length
       # Returns +Roomorama::Property+
-      def build(accommodation, description, occupational_rule, rate)
+      def build(accommodation, description, occupational_rule, rate, length)
         result = Roomorama::Property.new(accommodation.property_id)
         result.instant_booking!
 
@@ -35,8 +37,8 @@ module Avantio
         set_amenities!(result, accommodation)
         set_description!(result, description)
         set_images!(result, description)
-        set_minimum_stay!(result, occupational_rule)
-        set_rates!(result, rate)
+        set_minimum_stay!(result, occupational_rule, length)
+        set_rates!(result, rate, length)
 
         result
       end
@@ -166,16 +168,13 @@ module Avantio
         end
       end
 
-      def set_minimum_stay!(result, occupational_rule)
-        result.minimum_stay = occupational_rule.actual_seasons.map do |season|
-          season[:min_nights_online] || season[:min_nights]
-        end.compact.min
+      def set_minimum_stay!(result, occupational_rule, length)
+        result.minimum_stay = occupational_rule.min_nights(length)
       end
 
-      def set_rates!(result, rate)
-        period = rate.actual_periods.first
-        if period
-          price = period[:rate]
+      def set_rates!(result, rate, length)
+        price = rate.min_price(length)
+        if price
           result.nightly_rate = price
           result.weekly_rate  = (price * 7).round(2)
           result.monthly_rate = (price * 30).round(2)

@@ -5,7 +5,7 @@
     <StartDate>2016-06-21</StartDate>
     <EndDate>2016-12-31</EndDate>
     <MinimumNights>5</MinimumNights>
-    <MinimumNightsOnline>1</MinimumNightsOnline>
+    <MinimumNightsOnline>2</MinimumNightsOnline>
     <CheckInDays>
       <WeekDay>MONDAY</WeekDay>
       <WeekDay>TUESDAY</WeekDay>
