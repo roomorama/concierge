@@ -17,7 +17,7 @@ module Kigo
     end
 
     def valid?
-      instant_booking? && !hotel_type?
+      instant_booking? && !hotel_type? && has_images?
     end
 
     private
@@ -29,6 +29,10 @@ module Kigo
     def hotel_type?
       property_type_id = payload.get('PROP_INFO.PROP_TYPE_ID')
       INVALID_PROPERTY_TYPE_IDS.include?(property_type_id)
+    end
+
+    def has_images?
+      Array(payload['PROP_PHOTOS']).any?
     end
   end
 end

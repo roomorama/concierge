@@ -26,6 +26,14 @@ RSpec.describe Kigo::PayloadValidation do
       expect(subject).not_to be_valid
     end
 
+    it 'is invalid without images' do
+      payload['PROP_PHOTOS'] = []
+
+      subject = described_class.new(payload)
+
+      expect(subject).not_to be_valid
+    end
+
     context 'kigo legacy' do
       it 'is invalid for non ib property' do
         subject = described_class.new(payload, ib_flag: false)
