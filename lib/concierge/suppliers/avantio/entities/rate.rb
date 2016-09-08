@@ -23,8 +23,6 @@ module Avantio
         ).property_id
       end
 
-      private
-
       # Returns periods which have price > 0 and have intersection with [today, today + length]
       def actual_periods(length)
         from = Date.today
@@ -33,6 +31,8 @@ module Avantio
           p.price > 0 && from < p.end_date && p.start_date <= to
         end
       end
+
+      private
 
       def build_periods(periods_array)
         periods_array.map { |p| Period.new(p[:start_date], p[:end_date], p[:rate]) }
