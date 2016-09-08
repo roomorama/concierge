@@ -25,7 +25,8 @@ module RentalsUnited
       def build_calendar
         calendar = Roomorama::Calendar.new(property_id)
 
-        entries.each { |entry| calendar.add(entry) }
+        valid_entries = entries.select { |entry| entry.valid? }
+        valid_entries.each { |entry| calendar.add(entry) }
 
         calendar
       end

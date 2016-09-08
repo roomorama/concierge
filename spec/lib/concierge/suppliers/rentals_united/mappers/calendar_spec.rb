@@ -48,6 +48,8 @@ module RentalsUnited
       mapper = described_class.new(property_id, rates, availabilities)
       calendar = mapper.build_calendar
 
+      expect(calendar.validate!).to eq(true)
+
       expect(calendar).to be_kind_of(Roomorama::Calendar)
       expect(calendar.identifier).to eq(property_id)
       expect(calendar.entries.size).to eq(2)
@@ -62,6 +64,22 @@ module RentalsUnited
       expect(oct_entry.available).to eq(true)
       expect(oct_entry.minimum_stay).to eq(1)
       expect(oct_entry.nightly_rate).to eq("200.00")
+    end
+
+    it "keeps only calendar entries which have prices" do
+      availabilities << RentalsUnited::Entities::Availability.new(
+        date: Date.parse("2017-01-01"),
+        available: true,
+        minimum_stay: 5,
+        changeover: 4
+      )
+      mapper = described_class.new(property_id, rates, availabilities)
+      calendar = mapper.build_calendar
+
+      entry = calendar.entries.find { |e| e.date.to_s == "2017-01-01" }
+      expect(entry).to be_nil
+
+      expect(calendar.validate!).to eq(true)
     end
   end
 end
