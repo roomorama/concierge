@@ -41,11 +41,11 @@ module Workers::Suppliers::Kigo::Legacy
     end
 
     def request_handler
-      Kigo::Request.new(credentials)
+      Kigo::LegacyRequest.new(credentials)
     end
 
     def credentials
-      Concierge::Credentials.for(Kigo::Client::SUPPLIER_NAME)
+      Concierge::Credentials.for(Kigo::Legacy::SUPPLIER_NAME)
     end
   end
 end

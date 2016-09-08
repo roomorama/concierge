@@ -50,7 +50,7 @@ module Workers::Suppliers::Kigo::Legacy
     end
 
     def credentials
-      Concierge::Credentials.for(supplier.name)
+      Concierge::Credentials.for(Kigo::Legacy::SUPPLIER_NAME)
     end
 
     def hosts

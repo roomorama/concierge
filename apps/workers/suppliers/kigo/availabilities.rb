@@ -48,7 +48,7 @@ module Workers::Suppliers::Kigo
     end
 
     def credentials
-      Concierge::Credentials.for(supplier.name)
+      Concierge::Credentials.for(Kigo::Client::SUPPLIER_NAME)
     end
 
     def hosts
