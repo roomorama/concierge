@@ -59,8 +59,10 @@ module Roomorama
     def validate!
       if identifier.to_s.empty?
         raise ValidationError.new("identifier was not given, or is empty")
-      elsif url.to_s.empty? || !valid_url?
+      elsif url.to_s.empty?
         raise ValidationError.new("URL was not given, or is empty")
+      elsif !valid_url?
+        raise ValidationError.new("URL is invalid")
       else
         true
       end
