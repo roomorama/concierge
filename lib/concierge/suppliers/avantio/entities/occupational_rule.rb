@@ -27,6 +27,10 @@ module Avantio
           include_check(date, checkout_weekdays, checkout_days)
         end
 
+        def include?(date)
+          start_date <= date && date <= end_date
+        end
+
         private
 
         def include_check(date, weekdays, days)
@@ -36,10 +40,6 @@ module Avantio
           days_check = days.include?(monthday(date)) unless days.empty?
 
           [weekdays_check, days_check].compact.inject { |x, y| x && y }
-        end
-
-        def include?(date)
-          start_date <= date && date <= end_date
         end
 
         def weekday(date)
