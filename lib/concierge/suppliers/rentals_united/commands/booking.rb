@@ -37,6 +37,8 @@ module RentalsUnited
       #   * +check_in+
       #   * +check_out+
       #   * +guests+
+      #   * +subtotal+
+      #   * +customer+
       def initialize(credentials, reservation_params)
         super(credentials)
         @reservation_params = reservation_params
