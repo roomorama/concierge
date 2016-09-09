@@ -82,7 +82,9 @@ module RentalsUnited
 
       def build_reservation(result_hash)
         reservation_code = result_hash.get("#{ROOT_TAG}.ReservationID")
-        ::Reservation.new(reference_number: reservation_code)
+
+        mapper = Mappers::Reservation.new(reservation_code, reservation_params)
+        mapper.build_reservation
       end
     end
   end
