@@ -10,6 +10,7 @@ RSpec.describe Avantio::Mappers::Availability do
 
     expect(availability).to be_a(Avantio::Entities::Availability)
     expect(availability.property_id).to eq('70931|1276860135|itsalojamientos')
+    expect(availability.occupational_rule_id).to eq('204')
     expect(availability.periods.length).to eq(2)
 
     period_one = availability.periods[0]
