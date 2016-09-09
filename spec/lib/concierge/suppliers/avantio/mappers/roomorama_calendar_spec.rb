@@ -33,6 +33,7 @@ RSpec.describe Avantio::Mappers::RoomoramaCalendar do
       '123',
       '123',
       '123',
+      '204',
       [
         Avantio::Entities::Availability::Period.new(
           DateTime.new(2014, 8, 24),

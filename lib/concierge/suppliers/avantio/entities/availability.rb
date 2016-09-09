@@ -19,13 +19,14 @@ module Avantio
         attr_reader :state
       end
 
-      attr_reader :accommodation_code, :user_code, :login_ga, :periods
+      attr_reader :accommodation_code, :user_code, :login_ga, :occupational_rule_id, :periods
 
-      def initialize(accommodation_code, user_code, login_ga, periods)
-        @accommodation_code = accommodation_code
-        @user_code          = user_code
-        @login_ga           = login_ga
-        @periods            = periods
+      def initialize(accommodation_code, user_code, login_ga, occupational_rule_id, periods)
+        @accommodation_code   = accommodation_code
+        @user_code            = user_code
+        @login_ga             = login_ga
+        @occupational_rule_id = occupational_rule_id
+        @periods              = periods
       end
 
       # Returns periods which has intersection with [today, today + length]
