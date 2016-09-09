@@ -41,7 +41,7 @@ module Avantio
     # Fetches all availabilities for given host from Avantio
     # Returns the Result wrapping the hash with +Avantio::Entities::Availability+
     def fetch_availabilities(host)
-      fetcher = Commands::RatesFetcher.new(host.identifier)
+      fetcher = Commands::AvailabilitiesFetcher.new(host.identifier)
       fetcher.call
     end
   end
