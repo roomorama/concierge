@@ -12,7 +12,7 @@ RSpec.describe Avantio::Mappers::RoomoramaCalendar do
         Avantio::Entities::Rate::Period.new(
           DateTime.new(2014, 6, 27),
           DateTime.new(2014, 8, 22),
-          157.50
+          156.50
         ),
         Avantio::Entities::Rate::Period.new(
           DateTime.new(2014, 8, 23),
@@ -20,9 +20,9 @@ RSpec.describe Avantio::Mappers::RoomoramaCalendar do
           157.50
         ),
         Avantio::Entities::Rate::Period.new(
-          DateTime.new(2016, 12, 1),
-          DateTime.new(2017, 10, 16),
-          157.50
+          DateTime.new(2014, 10, 17),
+          DateTime.new(2020, 10, 16),
+          158.50
         ),
       ]
     )
@@ -46,7 +46,7 @@ RSpec.describe Avantio::Mappers::RoomoramaCalendar do
         ),
         Avantio::Entities::Availability::Period.new(
           DateTime.new(2014, 9, 11),
-          DateTime.new(2014, 10, 16),
+          DateTime.new(2020, 10, 16),
           'AVAILABLE'
         ),
       ]
@@ -58,7 +58,7 @@ RSpec.describe Avantio::Mappers::RoomoramaCalendar do
       [
         Avantio::Entities::OccupationalRule::Season.new(
           Date.new(2014, 6, 10),
-          Date.new(2017, 6, 10),
+          Date.new(2020, 10, 16),
           2,
           1,
           (1..31).map(&:to_s),
@@ -71,9 +71,9 @@ RSpec.describe Avantio::Mappers::RoomoramaCalendar do
   end
   let(:length) { 365 }
 
-  subject { described_class.new }
+  subject { described_class.new(property_id, rate, availability, rule, length) }
 
-  let(:calendar) { subject.build(property_id, rate, availability, rule, length) }
+  let(:calendar) { subject.build }
 
   before do
     allow(Date).to receive(:today).and_return(Date.new(2014, 7, 14))
