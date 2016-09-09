@@ -16,12 +16,8 @@ module RentalsUnited
     #
     # Usage
     #
-    #   comamnd = RentalsUnited::Client.new(credentials, reservation_params)
-    #   result = command.book
-    #
-    #   if result.sucess?
-    #     # ...
-    #   end
+    #   client = RentalsUnited::Client.new(credentials)
+    #   result = client.book(reservation_params)
     #
     # Returns a +Result+ wrapping a +Reservation+ when operation succeeds
     # Returns a +Result+ with +Result::Error+ when operation fails
