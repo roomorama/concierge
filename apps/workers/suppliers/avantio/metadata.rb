@@ -41,6 +41,10 @@ module Workers::Suppliers::Avantio
       return unless rates.success?
       rates = rates.value
 
+      availabilities = fetch_availabilities(host)
+      return unless availabilities.success?
+      availabilities = availabilities.value
+
       properties.each do |property|
         unless validator(property).valid?
           synchronisation.skip_property
@@ -59,6 +63,12 @@ module Workers::Suppliers::Avantio
         end
         occupational_rule = occupational_rules[property.occupational_rule_id]
         unless occupational_rule
+          synchronisation.skip_property
+          next
+        end
+        # Availability is not used for property building, but used for calendar building.
+        # So just to be sure that property has availability.
+        unless availabilities[property_id]
           synchronisation.skip_property
           next
         end
@@ -98,6 +108,11 @@ module Workers::Suppliers::Avantio
     def fetch_rates(host)
       message = 'Failed to perform the `#fetch_rates` operation'
       failed_sync(message) { importer.fetch_rates(host) }
+    end
+
+    def fetch_availabilities(host)
+      message = 'Failed to perform the `#fetch_availabilities` operation'
+      failed_sync(message) { importer.fetch_availabilities(host) }
     end
 
     def mapper(property, description, occupational_rule, rate)
