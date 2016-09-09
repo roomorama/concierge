@@ -11,12 +11,8 @@ module API::Controllers::RentalsUnited
 
     # Make price (property rate) request
     #
-    # Usage
-    #
-    #   It returns a Quotation object in both success and fail cases:
-    #
-    #   API::Controllers::RentalsUnited::Quote.quote_price(selected_params)
-    #   => Quotation(..)
+    # Returns a +Result+ wrapping a +Quotation+ when operation succeeds
+    # Returns a +Result+ with +Result::Error+ when operation fails
     def quote_price(params)
       credentials = Concierge::Credentials.for(supplier_name)
       RentalsUnited::Client.new(credentials).quote(params)
