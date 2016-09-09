@@ -18,12 +18,14 @@ RSpec.describe Avantio::Mappers::RoomoramaProperty do
     ' plan kitchen, refrigerator, oven, freezer, washing machine and dryer are provided.'
   }
 
+  subject { described_class.new(accommodation_with_all_services, description, occupational_rule, rate, 365)}
+
   before do
     allow(Date).to receive(:today).and_return(Date.new(2016, 6, 25))
   end
 
   it 'returns mapped property' do
-    property = subject.build(accommodation_with_all_services, description, occupational_rule, rate, 365)
+    property = subject.build
 
     expect(property).to be_a(Roomorama::Property)
     expect(property.identifier).to eq('128498|1416325650|itsvillas')
