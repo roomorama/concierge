@@ -11,6 +11,9 @@ module Workers::Suppliers::Avantio
   #  - occupational rules: several times a week
   #  - availabilities: every day
   class Availabilities
+    # Count of days
+    PERIOD_SYNC = 365
+
     attr_reader :synchronisation, :host
 
     def initialize(host)
@@ -58,7 +61,7 @@ module Workers::Suppliers::Avantio
             next Result.error(:rule_not_found)
           end
 
-          roomorama_calendar = mapper.build(property_id, rate, availability, rule)
+          roomorama_calendar = mapper(property_id, rate, availability, rule).build
           Result.new(roomorama_calendar)
         end
       end
@@ -95,8 +98,8 @@ module Workers::Suppliers::Avantio
       PropertyRepository.from_host(host).only(:identifier).map(&:identifier)
     end
 
-    def mapper
-      @mapper ||= ::Avantio::Mappers::RoomoramaCalendar.new
+    def mapper(property_id, rate, availability, rule)
+      ::Avantio::Mappers::RoomoramaCalendar.new(property_id, rate, availability, rule, PERIOD_SYNC)
     end
 
     def importer
