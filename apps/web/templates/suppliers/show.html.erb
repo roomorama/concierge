@@ -73,7 +73,7 @@
   Find below the status of each synchronisation process for <%= supplier.name %>:
 
   <% if any_aggregated_worker? %>
-    <h4>Aggregated synchrnonisation</h4>
+    <h4>Aggregated synchronisation</h4>
     <%= render partial: "suppliers/workers_table", locals: { workers: aggregated_workers_for(supplier) } %>
   <% end %>
 
