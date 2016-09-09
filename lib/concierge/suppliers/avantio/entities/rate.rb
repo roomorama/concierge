@@ -1,7 +1,19 @@
 module Avantio
   module Entities
     class Rate
-      Period = Struct.new(:start_date, :end_date, :price)
+      class Period
+        attr_reader :start_date, :end_date, :price
+
+        def initialize(start_date, end_date, price)
+          @start_date = start_date
+          @end_date = end_date
+          @price = price
+        end
+
+        def include?(date)
+          start_date <= date && date <= end_date
+        end
+      end
 
       attr_reader :accommodation_code, :user_code, :login_ga, :periods
 
