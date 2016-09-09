@@ -87,7 +87,18 @@ module Avantio
         entries = fill_availability
         fill_rates!(entries)
         fill_min_stay_checkin_checkout!(entries)
-        entries.values
+        entries = entries.values
+
+        # We can't book property without rates, so mark such entries
+        # as unavailable
+        entries.each do |e|
+          unless e.nightly_rate
+            e.available = false
+            e.nightly_rate = 0
+          end
+        end
+
+        entries
       end
     end
   end
