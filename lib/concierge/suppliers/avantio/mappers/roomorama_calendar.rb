@@ -5,8 +5,8 @@ module Avantio
     # This class is responsible for building a +Roomorama::Calendar+ object
     # from data getting from Avantio.
     class RoomoramaCalendar
-      # Maps Avantio data to +Roomorama::Calendar+
-      #
+      attr_reader :property_id, :rate, :availability, :rule, :length
+
       # Arguments
       #
       #   * +propertyid+ [String]
@@ -15,9 +15,18 @@ module Avantio
       #   * +rule+ [Avantio::Entities::Rule]
       #   * +length+ [Fixnum] all operations (calc of min_stay, calc of nightly_rate)
       #                       will be in daterange from today to today + length
-      def build(property_id, rate, availability, rule, length)
+      def initialize(property_id, rate, availability, rule, length)
+        @property_id  = property_id
+        @rate         = rate
+        @availability = availability
+        @rule         = rule
+        @length       = length
+      end
+
+      # Maps Avantio data to +Roomorama::Calendar+
+      def build
         Roomorama::Calendar.new(property_id).tap do |calendar|
-          entries = build_entries(rate, availability, rule, length)
+          entries = build_entries
           entries.each { |entry| calendar.add(entry) }
         end
       end
@@ -28,15 +37,15 @@ module Avantio
         Date.today
       end
 
-      def calendar_end(length)
+      def calendar_end
         calendar_start + length
       end
 
-      def fill_availability(availability, length)
+      def fill_availability
         {}.tap do |result|
           availability.actual_periods(length).each do |period|
             from = [calendar_start, period.start_date].max
-            to = [calendar_end(length), period.end_date].min
+            to = [calendar_end, period.end_date].min
             available = period.available?
             (from..to).each do |date|
               result[date] = Roomorama::Calendar::Entry.new(
@@ -48,10 +57,10 @@ module Avantio
         end
       end
 
-      def fill_rates!(entries, rate, length)
+      def fill_rates!(entries)
         rate.actual_periods(length).each do |period|
           from = [calendar_start, period.start_date].max
-          to = [calendar_end(length), period.end_date].min
+          to = [calendar_end, period.end_date].min
           (from..to).each do |date|
             entry = entries[date]
             entry.nightly_rate = period.price if entry
@@ -59,10 +68,10 @@ module Avantio
         end
       end
 
-      def fill_min_stay_checkin_checkout!(entries, rule, length)
+      def fill_min_stay_checkin_checkout!(entries)
         rule.actual_seasons(length).each do |season|
           from = [calendar_start, season.start_date].max
-          to = [calendar_end(length), season.end_date].min
+          to = [calendar_end, season.end_date].min
           (from..to).each do |date|
             entry = entries[date]
             if entry
@@ -74,10 +83,10 @@ module Avantio
         end
       end
 
-      def build_entries(rate, availability, rule, length)
-        entries = fill_availability(availability, length)
-        fill_rates!(entries, rate, length)
-        fill_min_stay_checkin_checkout!(entries, rule, length)
+      def build_entries
+        entries = fill_availability
+        fill_rates!(entries)
+        fill_min_stay_checkin_checkout!(entries)
         entries.values
       end
     end
