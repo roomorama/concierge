@@ -10,18 +10,18 @@ RSpec.describe Avantio::Mappers::RoomoramaCalendar do
       '123',
       [
         Avantio::Entities::Rate::Period.new(
-          DateTime.new(2014, 6, 27),
-          DateTime.new(2014, 8, 22),
+          Date.new(2014, 6, 27),
+          Date.new(2014, 8, 22),
           156.50
         ),
         Avantio::Entities::Rate::Period.new(
-          DateTime.new(2014, 8, 23),
-          DateTime.new(2014, 10, 16),
+          Date.new(2014, 8, 25),
+          Date.new(2014, 10, 16),
           157.50
         ),
         Avantio::Entities::Rate::Period.new(
-          DateTime.new(2014, 10, 17),
-          DateTime.new(2020, 10, 16),
+          Date.new(2014, 10, 17),
+          Date.new(2020, 10, 16),
           158.50
         ),
       ]
@@ -36,18 +36,18 @@ RSpec.describe Avantio::Mappers::RoomoramaCalendar do
       '204',
       [
         Avantio::Entities::Availability::Period.new(
-          DateTime.new(2014, 8, 24),
-          DateTime.new(2014, 8, 27),
+          Date.new(2014, 8, 24),
+          Date.new(2014, 8, 27),
           'AVAILABLE'
         ),
         Avantio::Entities::Availability::Period.new(
-          DateTime.new(2014, 8, 27),
-          DateTime.new(2014, 8, 31),
+          Date.new(2014, 8, 27),
+          Date.new(2014, 8, 31),
           'UNAVAILABLE'
         ),
         Avantio::Entities::Availability::Period.new(
-          DateTime.new(2014, 9, 11),
-          DateTime.new(2020, 10, 16),
+          Date.new(2014, 9, 11),
+          Date.new(2020, 10, 16),
           'AVAILABLE'
         ),
       ]
@@ -102,6 +102,13 @@ RSpec.describe Avantio::Mappers::RoomoramaCalendar do
       entry = calendar.entries.detect { |e| e.date == Date.new(2014, 8, 28) }
 
       expect(entry.nightly_rate).to eq(157.5)
+      expect(entry.available).to be false
+    end
+
+    it 'returns unavailable entries for days without rate' do
+      entry = calendar.entries.detect { |e| e.date == Date.new(2014, 8, 24) }
+
+      expect(entry.nightly_rate).to eq(0)
       expect(entry.available).to be false
     end
 
