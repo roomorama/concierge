@@ -6,10 +6,11 @@ module Avantio
         accommodation_code = fetch_accommodation_code(rate_raw)
         user_code = fetch_user_code(rate_raw)
         login_ga = fetch_login_ga(rate_raw)
+        occupational_rule_id = fetch_occupational_rule_id(rate_raw)
         periods = fetch_periods(rate_raw)
 
         Avantio::Entities::Availability.new(
-          accommodation_code, user_code, login_ga, periods
+          accommodation_code, user_code, login_ga, occupational_rule_id, periods
         )
       end
 
@@ -25,6 +26,10 @@ module Avantio
 
       def fetch_login_ga(rate_raw)
         rate_raw.at_xpath('LoginGA')&.text.to_s
+      end
+
+      def fetch_occupational_rule_id(rate_raw)
+        rate_raw.at_xpath('OccupationalRuleId')&.text.to_s
       end
 
       def fetch_periods(rate_raw)
