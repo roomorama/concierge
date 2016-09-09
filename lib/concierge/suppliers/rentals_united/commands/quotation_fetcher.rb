@@ -8,14 +8,11 @@ module RentalsUnited
     #
     # Usage
     #
-    #   command = RentalsUnited::Commands::QuotationFetcher.new(credentials)
-    #   result = command.call(stay_params)
-    #
-    #   if result.success?
-    #     process_quotation(result.value)
-    #   else
-    #     handle_error(result.error)
-    #   end
+    #   command = RentalsUnited::Commands::QuotationFetcher.new(
+    #     credentials,
+    #     quotation_params
+    #   )
+    #   result = command.call
     class QuotationFetcher < BaseFetcher
       attr_reader :quotation_params
 
@@ -44,8 +41,8 @@ module RentalsUnited
 
       # Calls the RentalsUnited API method using the HTTP client.
       #
-      # The +call+ method returns a +Result+ object that, when successful,
-      # encapsulates the resulting +Quotation+ object.
+      # Returns a +Result+ wrapping a +Quotation+ when operation succeeds
+      # Returns a +Result+ with +Result::Error+ when operation fails
       def call
         payload = build_payload
         result = http.post(credentials.url, payload, headers)
