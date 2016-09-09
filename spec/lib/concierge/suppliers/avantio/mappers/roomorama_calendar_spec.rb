@@ -93,7 +93,7 @@ RSpec.describe Avantio::Mappers::RoomoramaCalendar do
 
     it 'returns calendar only from synced period' do
       before = Date.today + length
-      invalid_entries = calendar.entries.select { |e| e.date <= Date.today || before < e.date }
+      invalid_entries = calendar.entries.select { |e| e.date < Date.today || before < e.date }
 
       expect(invalid_entries).to be_empty
     end
