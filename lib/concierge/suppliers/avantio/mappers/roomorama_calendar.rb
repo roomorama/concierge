@@ -78,7 +78,7 @@ module Avantio
       #   },
       #   date2 => {
       #     availability_period: availability_period,
-      #     rate_period: rate_period,
+      #     rate_period: nil,
       #     rule_season: rule_season
       #   }
       # }
