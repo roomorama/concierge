@@ -218,6 +218,31 @@ RSpec.describe RentalsUnited::PayloadBuilder do
     end
   end
 
+  describe '#build_cancel_payload' do
+    let(:params) do
+      {
+        reference_number: "999123"
+      }
+    end
+
+    it 'embedds username and password to request' do
+      xml = builder.build_cancel_payload(params[:reference_number])
+      hash = to_hash(xml)
+
+      authentication = hash.get("Push_CancelReservation_RQ.Authentication")
+      expect(authentication.get("UserName")).to eq(credentials.username)
+      expect(authentication.get("Password")).to eq(credentials.password)
+    end
+
+    it 'adds reference_number to request' do
+      xml = builder.build_cancel_payload(params[:reference_number])
+      hash = to_hash(xml)
+
+      reservation_id = hash.get("Push_CancelReservation_RQ.ReservationID")
+      expect(reservation_id).to eq(params[:reference_number])
+    end
+  end
+
   private
   def to_hash(xml)
     Concierge::SafeAccessHash.new(Nori.new.parse(xml))
