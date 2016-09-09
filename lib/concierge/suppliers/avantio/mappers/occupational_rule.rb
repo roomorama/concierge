@@ -24,12 +24,11 @@ module Avantio
           min_nights_online = s.at_xpath('MinimumNightsOnline')&.text&.to_i
           min_nights = s.at_xpath('MinimumNights')&.text&.to_i
 
-          checkin_weekdays = s.xpath('CheckInDays/WeekDay').map(&:text)
-          checkin_days = s.xpath('CheckInDays/MonthDay').map(&:text)
+          checkin_weekdays = s.xpath('CheckInDays/WeekDay').map(&:text).select { |x| weekday?(x) }
+          checkin_days = s.xpath('CheckInDays/MonthDay').map(&:text).select { |x| integer?(x) }
 
-          checkout_weekdays = s.xpath('CheckOutDays/WeekDay').map(&:text)
-          checkout_days = s.xpath('CheckOutDays/MonthDay').map(&:text)
-
+          checkout_weekdays = s.xpath('CheckOutDays/WeekDay').map(&:text).select { |x| weekday?(x) }
+          checkout_days = s.xpath('CheckOutDays/MonthDay').map(&:text).select { |x| integer?(x) }
           Avantio::Entities::OccupationalRule::Season.new(
             Date.parse(start_date),
             Date.parse(end_date),
@@ -41,6 +40,14 @@ module Avantio
             checkout_weekdays
           )
         end
+      end
+
+      def integer?(str)
+        str.to_i.to_s == str
+      end
+
+      def weekday?(str)
+        ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'].include?(str)
       end
     end
   end
