@@ -11,6 +11,7 @@ module Workers::Suppliers::Avantio
   #  - descriptions: twice a week
   #  - rates: every day
   #  - occupational rules: several times a week
+  #  - availabilities: every day or even more often
   class Metadata
     # Count of days
     PERIOD_SYNC = 365
