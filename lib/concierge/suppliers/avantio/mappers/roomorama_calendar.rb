@@ -41,64 +41,61 @@ module Avantio
         calendar_start + length
       end
 
-      def fill_availability
-        {}.tap do |result|
-          availability.actual_periods(length).each do |period|
-            from = [calendar_start, period.start_date].max
-            to = [calendar_end, period.end_date].min
-            available = period.available?
-            (from..to).each do |date|
-              result[date] = Roomorama::Calendar::Entry.new(
-                date:         date.to_s,
-                available:    available,
-              )
-            end
-          end
-        end
-      end
-
-      def fill_rates!(entries)
-        rate.actual_periods(length).each do |period|
-          from = [calendar_start, period.start_date].max
-          to = [calendar_end, period.end_date].min
-          (from..to).each do |date|
-            entry = entries[date]
-            entry.nightly_rate = period.price if entry
-          end
-        end
-      end
-
-      def fill_min_stay_checkin_checkout!(entries)
-        rule.actual_seasons(length).each do |season|
-          from = [calendar_start, season.start_date].max
-          to = [calendar_end, season.end_date].min
-          (from..to).each do |date|
-            entry = entries[date]
-            if entry
-              entry.minimum_stay = season.min_nights_online || season.min_nights
-              entry.checkin_allowed = season.checkin_allowed(date)
-              entry.checkout_allowed = season.checkout_allowed(date)
-            end
-          end
-        end
-      end
-
       def build_entries
-        entries = fill_availability
-        fill_rates!(entries)
-        fill_min_stay_checkin_checkout!(entries)
-        entries = entries.values
-
-        # We can't book property without rates, so mark such entries
-        # as unavailable
-        entries.each do |e|
-          unless e.nightly_rate
-            e.available = false
-            e.nightly_rate = 0
+        index.map do |date, data|
+          availability_period = data[:availability_period]
+          rate_period = data[:rate_period]
+          rule_season = data[:rule_season]
+          # Avantio doesn't allow to book if at least one of these
+          # not determine for the date, so mark it as unavailable
+          if availability_period && rate_period && rule_season
+            Roomorama::Calendar::Entry.new(
+              date:             date.to_s,
+              available:        availability_period.available?,
+              nightly_rate:     rate_period.price,
+              minimum_stay:     rule_season.min_nights_online || rule.season.min_nights,
+              checkin_allowed:  rule_season.checkin_allowed(date),
+              checkout_allowed: rule_season.checkout_allowed(date)
+            )
+          else
+            Roomorama::Calendar::Entry.new(
+              date:         date.to_s,
+              available:    false,
+              nightly_rate: 0
+            )
           end
         end
+      end
 
-        entries
+      # For each date we want to put in calendar returns first found availability, rate and rule
+      # Returns Hash.
+      #
+      # {
+      #   date1 => {
+      #     availability_period: availability_period,
+      #     rate_period: rate_period,
+      #     rule_season: rule_season
+      #   },
+      #   date2 => {
+      #     availability_period: availability_period,
+      #     rate_period: rate_period,
+      #     rule_season: rule_season
+      #   }
+      # }
+      def index
+        (calendar_start..calendar_end).map do |date|
+          availability_period = availability.actual_periods(length).detect { |p| p.include?(date) }
+          rate_period = rate.actual_periods(length).detect { |p| p.include?(date) }
+          rule_season = rule.actual_seasons(length).detect { |s| s.include?(date) }
+          [
+            date,
+            {
+              availability_period: availability_period,
+              rate_period: rate_period,
+              rule_season: rule_season
+            }
+          ]
+        end.to_h
       end
     end
   end

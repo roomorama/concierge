@@ -14,6 +14,10 @@ module Avantio
           state == 'AVAILABLE'
         end
 
+        def include?(date)
+          start_date <= date && date <= end_date
+        end
+
         private
 
         attr_reader :state
