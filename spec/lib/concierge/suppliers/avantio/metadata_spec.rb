@@ -118,6 +118,33 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
       )
     }
   end
+  let(:availabilities) do
+    {
+      '60505|1238513302|itsalojamientos' => Avantio::Entities::Availability.new(
+        '60505',
+        '1238513302',
+        'itsalojamientos',
+        '204',
+        [
+          Avantio::Entities::Availability::Period.new(
+            DateTime.new(2014, 8, 24),
+            DateTime.new(2014, 8, 27),
+            'AVAILABLE'
+          ),
+          Avantio::Entities::Availability::Period.new(
+            DateTime.new(2014, 8, 27),
+            DateTime.new(2014, 8, 31),
+            'UNAVAILABLE'
+          ),
+          Avantio::Entities::Availability::Period.new(
+            DateTime.new(2014, 9, 11),
+            DateTime.new(2020, 10, 16),
+            'AVAILABLE'
+          ),
+        ]
+      )
+    }
+  end
 
   let(:today) { Date.new(2016, 7, 14) }
 
@@ -236,6 +263,33 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
     end
   end
 
+  context 'fetching availabilities' do
+    before do
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_properties) { Result.new(properties_list) }
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_descriptions) { Result.new(descriptions) }
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_occupational_rules) { Result.new(occupational_rules) }
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_rates) { Result.new(:rates) }
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_availabilities) { Result.error(:error) }
+    end
+
+    it 'announces an error if fetching availabilities fails' do
+      expect_any_instance_of(Workers::PropertySynchronisation).to receive(:failed!).once
+
+      subject.perform
+
+      error = ExternalErrorRepository.last
+
+      expect(error.operation).to eq 'sync'
+      expect(error.supplier).to eq Avantio::Client::SUPPLIER_NAME
+      expect(error.code).to eq 'error'
+    end
+
+    it 'doesnt finalize synchronisation with external error' do
+      expect(Roomorama::Client::Operations).to_not receive(:disable)
+      subject.perform
+    end
+  end
+
   context 'success' do
 
     before do
@@ -243,6 +297,7 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_descriptions) { Result.new(descriptions) }
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_occupational_rules) { Result.new(occupational_rules) }
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_rates) { Result.new(rates) }
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }
     end
 
     it 'finalizes synchronisation' do
