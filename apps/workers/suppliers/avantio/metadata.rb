@@ -63,7 +63,7 @@ module Workers::Suppliers::Avantio
           next
         end
         synchronisation.start(property_id) do
-          Result.new(mapper.build(property, description, occupational_rule, rate, PERIOD_SYNC))
+          Result.new(mapper(property, description, occupational_rule, rate).build)
         end
       end
       synchronisation.finish!
@@ -100,8 +100,8 @@ module Workers::Suppliers::Avantio
       failed_sync(message) { importer.fetch_rates(host) }
     end
 
-    def mapper
-      @mapper ||= ::Avantio::Mappers::RoomoramaProperty.new
+    def mapper(property, description, occupational_rule, rate)
+      ::Avantio::Mappers::RoomoramaProperty.new(property, description, occupational_rule, rate, PERIOD_SYNC)
     end
 
     def importer
