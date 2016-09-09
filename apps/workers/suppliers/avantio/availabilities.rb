@@ -54,7 +54,7 @@ module Workers::Suppliers::Avantio
             next Result.error(:availability_not_found)
           end
 
-          rule = occupational_rules[property_id]
+          rule = occupational_rules[availability.occupational_rule_id]
           unless rule
             message = "Occupational rule for property `#{property_id}` nof found"
             augment_context_error(message)
@@ -73,7 +73,6 @@ module Workers::Suppliers::Avantio
     def failed_sync(message)
       yield.tap do |result|
         unless result.success?
-          synchronisation.failed!
           announce_error(message, result)
         end
       end
@@ -103,11 +102,7 @@ module Workers::Suppliers::Avantio
     end
 
     def importer
-      @importer ||= ::Avantio::Importer.new(credentials)
-    end
-
-    def credentials
-      Concierge::Credentials.for(Avantio::Client::SUPPLIER_NAME)
+      @importer ||= ::Avantio::Importer.new
     end
 
     def augment_context_error(message)
