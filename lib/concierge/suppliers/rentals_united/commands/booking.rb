@@ -44,8 +44,8 @@ module RentalsUnited
 
       # Calls the RentalsUnited API method using the HTTP client.
       #
-      # The +call+ method returns a +Result+ object that, when successful,
-      # encapsulates the resulting +Reservation+ object.
+      # Returns a +Result+ wrapping a +Reservation+ when operation succeeds
+      # Returns a +Result+ with +Result::Error+ when operation fails
       def call
         payload = build_payload
         result = http.post(credentials.url, payload, headers)
