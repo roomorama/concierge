@@ -64,18 +64,18 @@ module RentalsUnited
       private
       def build_payload
         payload_builder.build_booking_payload(
-          property_id: reservation_params[:property_id],
-          check_in:    reservation_params[:check_in],
-          check_out:   reservation_params[:check_out],
-          num_guests:  reservation_params[:guests],
-          total:       reservation_params[:subtotal],
+          property_id: reservation_params.get("property_id"),
+          check_in:    reservation_params.get("check_in"),
+          check_out:   reservation_params.get("check_out"),
+          num_guests:  reservation_params.get("guests"),
+          total:       reservation_params.get("subtotal"),
           user: {
-            first_name:  reservation_params[:customer][:first_name],
-            last_name:   reservation_params[:customer][:last_name],
-            email:       reservation_params[:customer][:email],
-            phone:       reservation_params[:customer][:phone],
-            address:     reservation_params[:customer][:address],
-            postal_code: reservation_params[:customer][:postal_code]
+            first_name:  reservation_params.get("customer.first_name"),
+            last_name:   reservation_params.get("customer.last_name"),
+            email:       reservation_params.get("customer.email"),
+            phone:       reservation_params.get("customer.phone"),
+            address:     reservation_params.get("customer.address"),
+            postal_code: reservation_params.get("customer.postal_code")
           }
         )
       end
