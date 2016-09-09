@@ -16,12 +16,10 @@ module Avantio
       #   * +length+ [Fixnum] all operations (calc of min_stay, calc of nightly_rate)
       #                       will be in daterange from today to today + length
       def build(property_id, rate, availability, rule, length)
-        calendar = Roomorama::Calendar.new(property_id)
-
-        entries = build_entries(rate, availability, rule, length)
-        entries.each { |entry| calendar.add(entry) }
-
-        calendar
+        Roomorama::Calendar.new(property_id).tap do |calendar|
+          entries = build_entries(rate, availability, rule, length)
+          entries.each { |entry| calendar.add(entry) }
+        end
       end
 
       private
@@ -61,15 +59,17 @@ module Avantio
         end
       end
 
-      def fill_checkin_checkout!(entries, rule, length)
+      def fill_min_stay_checkin_checkout!(entries, rule, length)
         rule.actual_seasons(length).each do |season|
           from = [calendar_start, season.start_date].max
           to = [calendar_end(length), season.end_date].min
           (from..to).each do |date|
             entry = entries[date]
-            entry.mininum_stay = season.min_nights_online || season.min_nights
-            entry.check_in_allowed = season.check_in_allowed(date)
-            entry.check_out_allowed = season.check_out_allowed(date)
+            if entry
+              entry.minimum_stay = season.min_nights_online || season.min_nights
+              entry.checkin_allowed = season.checkin_allowed(date)
+              entry.checkout_allowed = season.checkout_allowed(date)
+            end
           end
         end
       end
@@ -77,21 +77,8 @@ module Avantio
       def build_entries(rate, availability, rule, length)
         entries = fill_availability(availability, length)
         fill_rates!(entries, rate, length)
-        fill_min_nights_checkin_checkout!(entries, rule, length)
-        entries
-      end
-
-      def date_reserved?(date, reservations_index)
-        reservation = reservations_index[date]
-        reservation && reservation.departure_date != date
-      end
-
-      def build_reservations_index(reservations)
-        {}.tap do |i|
-          reservations.each do |r|
-            (r.arrival_date..r.departure_date).each { |d| i[d] = r }
-          end
-        end
+        fill_min_stay_checkin_checkout!(entries, rule, length)
+        entries.values
       end
     end
   end
