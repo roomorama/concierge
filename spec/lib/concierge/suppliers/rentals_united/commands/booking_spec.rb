@@ -8,8 +8,8 @@ RSpec.describe RentalsUnited::Commands::Booking do
   let(:reservation_params) do
     API::Controllers::Params::Booking.new(
       property_id: '1',
-      check_in: '02/02/2016',
-      check_out: '03/02/2016',
+      check_in: '2016-02-02',
+      check_out: '2016-02-03',
       guests: 1,
       currency_code: 'EUR',
       subtotal: '123.45',
@@ -32,6 +32,10 @@ RSpec.describe RentalsUnited::Commands::Booking do
     expect(result.success?).to be true
     expect(result.value).to be_kind_of(Reservation)
     expect(result.value.reference_number).to eq("90377000")
+    expect(result.value.property_id).to eq("1")
+    expect(result.value.check_in).to eq("2016-02-02")
+    expect(result.value.check_out).to eq("2016-02-03")
+    expect(result.value.guests).to eq(1)
   end
 
   it "fails when property is not available for a given dates" do
