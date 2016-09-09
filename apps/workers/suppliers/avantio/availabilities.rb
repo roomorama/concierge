@@ -9,7 +9,7 @@ module Workers::Suppliers::Avantio
   # Update frequency for appropriate files:
   #  - rates: every day
   #  - occupational rules: several times a week
-  #  - availabilities: every day
+  #  - availabilities: every day or even more often
   class Availabilities
     # Count of days
     PERIOD_SYNC = 365
