@@ -17,7 +17,7 @@ module RentalsUnited
         @price = price
       end
 
-      # Builds available quotation
+      # Builds quotation
       #
       # Returns [Quotation]
       def build_quotation
