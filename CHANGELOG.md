@@ -29,6 +29,7 @@ how this file is formatted and how the process works.
 - Lack of rates when quoting prices for Kigo and KigoLegacy no longer treated as an error
 
 ### Fixed
+- Improper type/subtype combinations
 - Kigo property images with non-Latin characters
 
 ## [0.8.0] - 2016-09-08
