@@ -20,6 +20,12 @@ module RentalsUnited
 
         expect(property_type).to be_nil
       end
+
+      it "returns nil if property type was found but has no mapping to Roomorama" do
+        property_type = described_class.find("20")
+
+        expect(property_type).to be_nil
+      end
     end
 
     describe "#all" do

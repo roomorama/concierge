@@ -3,6 +3,9 @@
   <Property>
     <PUID BuildingID="-1">-1</PUID>
     <ID BuildingID="-1" BuildingName="">519688</ID>
+    <IsActive>true</IsActive>
+    <IsArchived>false</IsArchived>
+    <ObjectTypeID>35</ObjectTypeID>
     <Images>
       <Image ImageTypeID="1">https://dwe6atvmvow8k.cloudfront.net/ru/427698/519688/636082399089701851.jpg</Image>
     </Images>

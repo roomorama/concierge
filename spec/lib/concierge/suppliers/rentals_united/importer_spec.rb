@@ -60,4 +60,67 @@ RSpec.describe RentalsUnited::Importer do
       importer.fetch_property(property_id, location)
     end
   end
+
+  describe "#fetch_properties_by_ids" do
+    let(:property_ids) { ["222", "333"] }
+    let(:location) { double(id: '1') }
+
+    it "calls #fetch_property for every property id" do
+      property_ids.each do |id|
+        expect_any_instance_of(described_class).to(
+          receive(:fetch_property).with(id, location) do
+            Result.new("success")
+          end
+        )
+      end
+
+      result = importer.fetch_properties_by_ids(property_ids, location)
+      expect(result).to be_success
+    end
+
+    it "ignores nil results" do
+      expect_any_instance_of(described_class).to(
+        receive(:fetch_property).with("222", location) do
+          Result.new("success")
+        end
+      )
+
+      expect_any_instance_of(described_class).to(
+        receive(:fetch_property).with("333", location) do
+          Result.new(nil)
+        end
+      )
+
+      result = importer.fetch_properties_by_ids(property_ids, location)
+      expect(result).to be_success
+      expect(result.value.size).to eq(1)
+    end
+
+    it "returns error if fetching property_id fails" do
+      expect_any_instance_of(described_class).to(
+        receive(:fetch_property).with("222", location) do
+          Result.error("fail")
+        end
+      )
+
+      result = importer.fetch_properties_by_ids(property_ids, location)
+      expect(result).not_to be_success
+    end
+
+    it "returns error on fail even if previous fetchers returned success" do
+      expect_any_instance_of(described_class).to(
+        receive(:fetch_property).with("222", location) do
+          Result.new("success")
+        end
+      )
+      expect_any_instance_of(described_class).to(
+        receive(:fetch_property).with("333", location) do
+          Result.error("fail")
+        end
+      )
+
+      result = importer.fetch_properties_by_ids(property_ids, location)
+      expect(result).not_to be_success
+    end
+  end
 end

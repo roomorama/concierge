@@ -2,13 +2,13 @@
   { "id": "3",  "rentals_united_name": "Apartment",         "roomorama_name": "apartment", "roomorama_subtype_name": null },
   { "id": "4",  "rentals_united_name": "Bed and breakfast", "roomorama_name": "bnb",       "roomorama_subtype_name": null },
   { "id": "7",  "rentals_united_name": "Chalet",            "roomorama_name": "house",     "roomorama_subtype_name": null },
-  { "id": "16", "rentals_united_name": "Guest house",       "roomorama_name": null,        "roomorama_subtype_name": null },
-  { "id": "20", "rentals_united_name": "Hotel",             "roomorama_name": "hotel",     "roomorama_subtype_name": null },
+  { "id": "16", "rentals_united_name": "Guest house",       "roomorama_name": "house",     "roomorama_subtype_name": null },
+  { "id": "20", "rentals_united_name": "Hotel",             "roomorama_name": null,        "roomorama_subtype_name": null },
   { "id": "30", "rentals_united_name": "Resort",            "roomorama_name": "hotel",     "roomorama_subtype_name": "resort" },
   { "id": "35", "rentals_united_name": "Villa",             "roomorama_name": "house",     "roomorama_subtype_name": "villa" },
   { "id": "37", "rentals_united_name": "Castle",            "roomorama_name": "house",     "roomorama_subtype_name": "chateau" },
   { "id": "63", "rentals_united_name": "Aparthotel",        "roomorama_name": "apartment", "roomorama_subtype_name": null },
   { "id": "64", "rentals_united_name": "Boat",              "roomorama_name": null,        "roomorama_subtype_name": null },
   { "id": "65", "rentals_united_name": "Cottage",           "roomorama_name": "house",     "roomorama_subtype_name": "cottage" },
-  { "id": "66", "rentals_united_name": "Camping",           "roomorama_name": "house",     "roomorama_subtype_name": null }
+  { "id": "66", "rentals_united_name": "Camping",           "roomorama_name": null,        "roomorama_subtype_name": null }
 ]

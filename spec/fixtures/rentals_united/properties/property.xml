@@ -11,7 +11,7 @@
     <IMAP>true</IMAP>
     <IMU>true</IMU>
     <UserID>427698</UserID>
-    <IsActive>false</IsActive>
+    <IsActive>true</IsActive>
     <IsArchived>false</IsArchived>
     <CleaningPrice>2.6500</CleaningPrice>
     <Space>39</Space>

@@ -210,6 +210,66 @@ RSpec.describe RentalsUnited::Commands::PropertyFetcher do
     end
   end
 
+  context "when property is not active" do
+    it "returns nil" do
+      stub_data = read_fixture("rentals_united/properties/not_active.xml")
+      stub_call(:post, url) { [200, {}, stub_data] }
+
+      result = subject.fetch_property
+
+      expect(result).to be_success
+      expect(result.value).to be_nil
+    end
+  end
+
+  context "when property is archived" do
+    it "returns nil" do
+      stub_data = read_fixture("rentals_united/properties/archived.xml")
+      stub_call(:post, url) { [200, {}, stub_data] }
+
+      result = subject.fetch_property
+
+      expect(result).to be_success
+      expect(result.value).to be_nil
+    end
+  end
+
+  context "when property is hotel-typed" do
+    it "returns nil" do
+      stub_data = read_fixture("rentals_united/properties/not_supported_hotel_property.xml")
+      stub_call(:post, url) { [200, {}, stub_data] }
+
+      result = subject.fetch_property
+
+      expect(result).to be_success
+      expect(result.value).to be_nil
+    end
+  end
+
+  context "when property is boat-typed" do
+    it "returns nil" do
+      stub_data = read_fixture("rentals_united/properties/not_supported_boat_property.xml")
+      stub_call(:post, url) { [200, {}, stub_data] }
+
+      result = subject.fetch_property
+
+      expect(result).to be_success
+      expect(result.value).to be_nil
+    end
+  end
+
+  context "when property is camping-typed" do
+    it "returns nil" do
+      stub_data = read_fixture("rentals_united/properties/not_supported_camping_property.xml")
+      stub_call(:post, url) { [200, {}, stub_data] }
+
+      result = subject.fetch_property
+
+      expect(result).to be_success
+      expect(result.value).to be_nil
+    end
+  end
+
   context "when response from the api is not well-formed xml" do
     it "returns a result with an appropriate error" do
       stub_data = read_fixture("rentals_united/bad_xml.xml")

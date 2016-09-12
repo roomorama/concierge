@@ -2,6 +2,9 @@
   <Status ID="0">Success</Status>
   <Property>
     <ID BuildingID="-1" BuildingName="">519688</ID>
+    <IsActive>true</IsActive>
+    <IsArchived>false</IsArchived>
+    <ObjectTypeID>35</ObjectTypeID>
     <Descriptions>
       <Description LanguageID="10">
         <Text><![CDATA[Test description]]></Text>

@@ -6,7 +6,8 @@ module RentalsUnited
     # +RentalsUnited::Entities::Property+ object from a hash which was fetched
     # from the RentalsUnited API.
     class Property
-      attr_reader :property_hash, :location, :amenities_dictionary
+      attr_reader :property_hash, :location, :amenities_dictionary,
+                  :property_type
 
       EN_DESCRIPTION_LANG_CODE = "1"
       CANCELLATION_POLICY = "super_elite"
@@ -25,12 +26,17 @@ module RentalsUnited
         @amenities_dictionary = Dictionaries::Amenities.new(
           property_hash.get("Amenities.Amenity")
         )
+        @property_type ||= Dictionaries::PropertyTypes.find(
+          property_hash.get("ObjectTypeID")
+        )
       end
 
       # Builds a property
       #
       # Returns [RentalsUnited::Entities::Property]
       def build_property
+        return nil if not_active? || archived? || not_supported_property_type?
+
         property = Roomorama::Property.new(property_hash.get("ID"))
         property.title                = property_hash.get("Name")
         property.description          = en_description(property_hash)
@@ -55,28 +61,23 @@ module RentalsUnited
         property.default_to_available = false
         property.instant_booking!
 
-        property_type = find_property_type(property_hash.get("ObjectTypeID"))
-
-        if property_type
-          property.type = property_type.roomorama_name
-          property.subtype = property_type.roomorama_subtype_name
-        end
-
+        set_property_type_and_subtype!(property) if property_type
         set_images!(property)
 
         property
       end
 
       private
+      def set_property_type_and_subtype!(property)
+        property.type = property_type.roomorama_name
+        property.subtype = property_type.roomorama_subtype_name
+      end
+
       def set_images!(property)
         raw_images = Array(property_hash.get("Images.Image"))
 
         mapper = Mappers::ImageSet.new(raw_images)
         mapper.build_images.each { |image| property.add_image(image) }
-      end
-
-      def find_property_type(id)
-        RentalsUnited::Dictionaries::PropertyTypes.find(id)
       end
 
       def number_of_bedrooms
@@ -107,6 +108,18 @@ module RentalsUnited
 
       def country_code(location)
         Converters::CountryCode.code_by_name(location.country)
+      end
+
+      def not_active?
+        property_hash.get("IsActive") == false
+      end
+
+      def archived?
+        property_hash.get("IsArchived") == true
+      end
+
+      def not_supported_property_type?
+        property_type.nil?
       end
     end
   end
