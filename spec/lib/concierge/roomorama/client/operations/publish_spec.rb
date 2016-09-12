@@ -11,6 +11,7 @@ RSpec.describe Roomorama::Client::Operations::Publish do
     property.description  = "Bonjour!"
     property.nightly_rate = 100
     property.currency     = "EUR"
+    property.type         = "bnb"
 
     image         = Roomorama::Image.new("IMG1")
     image.url     = "https://www.example.org/image1.png"

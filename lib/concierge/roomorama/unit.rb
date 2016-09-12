@@ -85,8 +85,6 @@ module Roomorama
       elsif disabled
         # if there's an id and it's disabled, it's already a valid unit
         true
-      elsif !Roomorama::Property.valid_type?(type, subtype)
-        raise ValidationError.new("invalid type or subtype")
       else
         images.each(&:validate!)
 

@@ -23,13 +23,21 @@ RSpec.describe Roomorama::Property do
 
   describe ".valid_type?" do
     it "return true for valid combinations" do
-      expect(Roomorama::Property.valid_type?("room")).to eq true
-      expect(Roomorama::Property.valid_type?("house", "cabin")).to eq true
-      expect(Roomorama::Property.valid_type?("house")).to eq true
+      subject.type = "room"
+      expect(subject.valid_type?).to eq true
+
+      subject.type = "house"
+      expect(subject.valid_type?).to eq true
+
+      subject.type, subject.subtype = "house", "cabin"
+      expect(subject.valid_type?).to eq true
     end
     it "returns false for invalid combinations" do
-      expect(Roomorama::Property.valid_type?("room", "bnb")).to eq false
-      expect(Roomorama::Property.valid_type?("house", "house")).to eq false
+      subject.type, subject.subtype = "room", "bnb"
+      expect(subject.valid_type?).to eq false
+
+      subject.type, subject.subtype = "house", "house"
+      expect(subject.valid_type?).to eq false
     end
   end
 
@@ -42,6 +50,7 @@ RSpec.describe Roomorama::Property do
         nightly_rate:         100,
         pets_allowed:         false,
         default_to_available: false,
+        type:                 "bnb",
 
         images: [
           {
@@ -240,6 +249,8 @@ RSpec.describe Roomorama::Property do
       unit.add_image(image)
 
       subject.add_unit(unit)
+
+      subject.type = "bnb"
     end
 
     it "is invalid if the identifier is not given" do

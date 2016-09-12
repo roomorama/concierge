@@ -62,22 +62,6 @@ module Roomorama
       Result.error(:missing_required_data, data)
     end
 
-    # Check that the combination complies with accepted type and subtypes
-    def self.valid_type?(type, subtype=nil)
-      type_to_subtypes = {
-        "room"      => [],
-        "house"     => ["villa", "cottage", "cabin", "chateau", "bungalow"],
-        "apartment" => ["loft", "serviced_apartment", "condo", "luxury_apartment", "studio_bachelor"],
-        "bnb"       => [],
-        "hotel"     => ["boutique_hotel", "budget_hotel", "resort", "inn"],
-        "hostel"    => []
-      }
-
-      valid_type = type_to_subtypes.keys.include?(type)
-      valid_subtype = subtype.nil? || type_to_subtypes[type].include?(subtype)
-      return valid_type && valid_subtype
-    end
-
     ATTRIBUTES = [:type, :title, :address, :postal_code, :city, :description,
       :number_of_bedrooms, :max_guests, :minimum_stay, :nightly_rate,
       :weekly_rate, :monthly_rate, :default_to_available,
@@ -160,7 +144,7 @@ module Roomorama
         true
       elsif images.empty?
         raise ValidationError.new("no images")
-      elsif !Roomorama::Property.valid_type?(type, subtype)
+      elsif !valid_type?
         raise ValidationError.new("invalid type or subtype")
       else
         images.each(&:validate!)
@@ -176,6 +160,22 @@ module Roomorama
 
     def units
       @units ||= []
+    end
+
+    # Check that the combination complies with accepted type and subtypes
+    def valid_type?
+      type_to_subtypes = {
+        "room"      => [],
+        "house"     => ["villa", "cottage", "cabin", "chateau", "bungalow"],
+        "apartment" => ["loft", "serviced_apartment", "condo", "luxury_apartment", "studio_bachelor"],
+        "bnb"       => [],
+        "hotel"     => ["boutique_hotel", "budget_hotel", "resort", "inn"],
+        "hostel"    => []
+      }
+
+      valid_type = type_to_subtypes.keys.include?(type&.downcase)
+      valid_subtype = subtype.nil? || type_to_subtypes[type].include?(subtype&.downcase)
+      return valid_type && valid_subtype
     end
 
     # check Roomorama's API documentation for information about expected parameters

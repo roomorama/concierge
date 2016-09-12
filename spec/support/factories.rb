@@ -40,6 +40,7 @@ module Support
         identifier: "PROP1",
         data:       {
           title: "Studio Apartment in Madrid",
+          type:  "bnb",
           nightly_rate: 10,
           images: [
             { identifier: "PROP1IMAGE", url: "https://www.example.org/image.png" }
