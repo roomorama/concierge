@@ -52,13 +52,17 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
       end
 
       describe "when #fetch_locations is working" do
+        let(:location) do
+          location = RentalsUnited::Entities::Location.new("1505")
+          location.country = "France"
+          location
+        end
+
         before do
           expect_any_instance_of(RentalsUnited::Importer).to(
             receive(:fetch_locations)
           ).and_return(
-           Result.new(
-             [RentalsUnited::Entities::Location.new("1505")]
-           )
+           Result.new([location])
           )
         end
 
@@ -162,6 +166,29 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
               )
               expect(event[:backtrace]).to be_kind_of(Array)
               expect(event[:backtrace].any?).to be true
+            end
+
+            describe "when #fetch_property is working" do
+              before do
+                stub_data = read_fixture("rentals_united/properties/property.xml")
+                stub_call(:post, url) { [200, {}, stub_data] }
+              end
+
+              it "creates record in the database" do
+                allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
+
+                expect {
+                  worker.perform
+                }.to change { PropertyRepository.count }.by(1)
+              end
+
+              it 'doesnt create property with unsuccessful publishing' do
+                allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.error('fail') }
+
+                expect {
+                  worker.perform
+                }.to_not change { PropertyRepository.count }
+              end
             end
           end
         end
