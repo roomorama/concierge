@@ -8,6 +8,9 @@ how this file is formatted and how the process works.
 ### Added
 - fee percentage for hosts on Web app on suppliers#show.
 
+### Fixed
+- Kigo property images with non-Latin characters
+
 ## [0.8.0] - 2016-09-08
 ### Added
 - Kigo and KigoLegacy integration: metadata sync, calendar sync, quoting, booking, cancelling support.
