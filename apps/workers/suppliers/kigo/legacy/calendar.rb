@@ -13,6 +13,8 @@ module Workers::Suppliers::Kigo::Legacy
     end
 
     def perform
+      return if cannot_proceed?
+
       properties.each do |property|
         id = property.identifier.to_i
         synchronisation.start(id) do
@@ -33,7 +35,7 @@ module Workers::Suppliers::Kigo::Legacy
     private
 
     def properties
-      PropertyRepository.from_host(host).identified_by(identifiers)
+      @properties ||= PropertyRepository.from_host(host).identified_by(identifiers)
     end
 
     def importer
@@ -41,11 +43,17 @@ module Workers::Suppliers::Kigo::Legacy
     end
 
     def request_handler
-      Kigo::LegacyRequest.new(credentials)
+      @request_handler ||= Kigo::LegacyRequest.new(credentials)
     end
 
     def credentials
       Concierge::Credentials.for(Kigo::Legacy::SUPPLIER_NAME)
+    end
+
+    def cannot_proceed?
+      id = properties.first.identifier
+      result = Kigo::HostCheck.new(id, request_handler).check
+      !result.success? || result.value
     end
   end
 end
