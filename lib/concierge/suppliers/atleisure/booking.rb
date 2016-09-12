@@ -24,12 +24,15 @@ module AtLeisure
   #                            of the response is not compatible to this class' expectations.
   class Booking
     ENDPOINT                  = "https://placebookingv1.jsonrpc-partner.net/cgi/lars/jsonrpc-partner/jsonrpc.htm"
+    FETCH_ENDPOINT            = "https://detailsofonebookingv1.jsonrpc-partner.net/cgi/lars/jsonrpc-partner/jsonrpc.htm"
     DEFAULT_COUNTRY_CODE      = "SG"
     DEFAULT_CUSTOMER_LANGUAGE = "EN"
 
     # set default email to prevent emails to guest with confusing information
     DEFAULT_USER_EMAIL        = "atleisure@roomorama.com"
 
+    VOUCHER_TEMPLATE_PATH     = Hanami.root.join('lib', 'concierge', 'suppliers', 'atleisure',
+                                                 'templates', 'voucher.html.erb')
     S3_VOUCHER_URL            = "https://s3"
 
     attr_reader :credentials
@@ -45,34 +48,43 @@ module AtLeisure
       result = client.invoke("PlaceBookingV1", reservation_details(params))
 
       if result.success?
-        parse_book_response(params, result.value).tap do |result|
-          add_voucher_url(result) if result.success?
+        response = result.value
+        parse_book_response(params, response).tap do |result|
+          add_voucher_url(result, response) if result.success?
         end
       else
         result
       end
     end
 
+    def fetch(reference_number)
+      client = jsonrpc(FETCH_ENDPOINT)
+      client.invoke("DetailsOfOneBookingV1", {"BookingNumber" => reference_number})
+    end
+
     private
 
     # Adds voucher url to the reservation object
     # and enqueues the pdf rendering worker
-    def add_voucher_url(result)
+    def add_voucher_url(result, response)
       reservation = result.value
       reservation.attachment_url = S3_VOUCHER_URL.gsub(":reservation_number", reservation.reference_number)
-      enqueue_pdf_worker(reservation)
+      enqueue_pdf_worker(reservation, response)
       Result.new(reservation)
     end
 
     # Enqueues an element to Concierge::Queue
     # Reports to rollbar if there's any issue
-    def enqueue_pdf_worker(reservation)
+    def enqueue_pdf_worker(reservation, response)
       credentials = Concierge::Credentials.for("sqs")
       queue = Concierge::Queue.new(credentials)
       operation = Concierge::Queue::Element.new(
         operation: "pdf",
-        data: { supplier_name: AtLeisure::Client::SUPPLIER_NAME,
-                reference_number: reservation.reference_number }
+        data: {
+          supplier: AtLeisure::Client::SUPPLIER_NAME,
+          template_path: VOUCHER_TEMPLATE_PATH,
+          locals: { reference_number: reservation.reference_number }
+        }
       )
       queue.add(operation)
     end

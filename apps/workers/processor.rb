@@ -59,6 +59,8 @@ module Workers
 
       if element[:operation] == "background_worker"
         Processor::BackgroundWorker.new(element[:data]).run
+      elsif element[:operation] == "pdf"
+        Processor::Pdf.new(element[:data]).run
       else
         raise UnknownOperationError.new(element[:operation])
       end

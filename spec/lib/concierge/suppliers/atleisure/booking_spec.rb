@@ -32,6 +32,15 @@ RSpec.describe AtLeisure::Booking do
 
   subject { described_class.new(credentials) }
 
+  describe "#fetch" do
+    it "contains guest info" do
+      result = subject.fetch(174920859)
+      expect(result).to be_success
+      expect(result.value["NrGuests"]).to_not be_nil
+      byebug
+    end
+  end
+
   describe "#book" do
     let(:endpoint) { AtLeisure::Booking::ENDPOINT }
 
