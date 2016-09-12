@@ -20,5 +20,12 @@ module Avantio
       @credentials = credentials
     end
 
+    # Returns a +Result+ wrapping +Quotation+ in success case.
+    # If an error happens in any step in the process of getting a response back from
+    # Avantio, a generic error message is sent back to the caller, and the failure
+    # is logged.
+    def quote(params)
+      Avantio::Price.new(credentials).quote(params)
+    end
   end
 end
