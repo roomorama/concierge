@@ -1,0 +1,57 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <ns1:GetBookingPriceRS xmlns:ns1="ws.avantio.com/crsConnectionServices/xsd" xmlns:ns2="ws.avantio.com/crsConnectionServices">
+      <ns2:BookingPrice>
+        <ns2:RoomOnly>6800</ns2:RoomOnly>
+        <ns2:RoomOnlyFinal>6805</ns2:RoomOnlyFinal>
+        <ns2:RoomOnlyWithoutOffer>6800</ns2:RoomOnlyWithoutOffer>
+        <ns2:RoomOnlyFinalWithoutOffer>6805</ns2:RoomOnlyFinalWithoutOffer>
+        <ns2:RoomOnlyPaymentWhenBooking>2380</ns2:RoomOnlyPaymentWhenBooking>
+        <ns2:RoomOnlyFinalPaymentDetails>
+          <ns2:PaymentDetail>
+            <ns2:PaymentNumber>1</ns2:PaymentNumber>
+            <ns2:PaymentTime>WhenBooking</ns2:PaymentTime>
+            <ns2:Amount>2380</ns2:Amount>
+            <ns2:PaymentDate>2016-09-12</ns2:PaymentDate>
+            <ns2:PaymentMethods>
+              <ns2:PaymentMethod>1</ns2:PaymentMethod>
+              <ns2:PaymentMethod>43</ns2:PaymentMethod>
+            </ns2:PaymentMethods>
+          </ns2:PaymentDetail>
+          <ns2:PaymentDetail>
+            <ns2:PaymentNumber>2</ns2:PaymentNumber>
+            <ns2:PaymentTime>WhenArrival</ns2:PaymentTime>
+            <ns2:Amount>4425</ns2:Amount>
+            <ns2:PaymentDate>2016-10-03</ns2:PaymentDate>
+          </ns2:PaymentDetail>
+        </ns2:RoomOnlyFinalPaymentDetails>
+        <ns2:Currency>EUR</ns2:Currency>
+      </ns2:BookingPrice>
+      <ns2:CancellationPolicies>
+        <ns2:Description>In case of cancellation the following charges will apply:
+          - If the reservation is cancelled: the prepayment amount.</ns2:Description>
+        <ns2:CancellationPolicyList>
+          <ns2:CancellationPolicyItem>
+            <ns2:RoomOnlyAmount>2380</ns2:RoomOnlyAmount>
+            <ns2:Deadline>2016-10-02</ns2:Deadline>
+          </ns2:CancellationPolicyItem>
+        </ns2:CancellationPolicyList>
+        <ns2:NoShow>
+          <ns2:RoomOnlyAmount>0</ns2:RoomOnlyAmount>
+        </ns2:NoShow>
+        <ns2:Currency>EUR</ns2:Currency>
+      </ns2:CancellationPolicies>
+      <ns2:TermsAndConditions>http://crs.itsolutions.es/verCondicionesGenerales.php?bk=bk_demoss&amp;Idioma=EN&amp;formato=1</ns2:TermsAndConditions>
+      <ns2:Services>
+        <ns2:Service>
+          <ns2:Code>18</ns2:Code>
+          <ns2:Amount>1</ns2:Amount>
+        </ns2:Service>
+        <ns2:Service>
+          <ns2:Code>10</ns2:Code>
+          <ns2:Amount>1</ns2:Amount>
+        </ns2:Service>
+      </ns2:Services>
+    </ns1:GetBookingPriceRS>
+  </soapenv:Body>
+</soapenv:Envelope>
