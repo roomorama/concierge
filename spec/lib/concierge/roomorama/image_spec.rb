@@ -59,21 +59,30 @@ RSpec.describe Roomorama::Image do
       subject.identifier = nil
       expect {
         subject.validate!
-      }.to raise_error Roomorama::Image::ValidationError
+      }.to raise_error(
+        Roomorama::Image::ValidationError,
+        "Invalid image object: identifier was not given, or is empty"
+      )
     end
 
     it "does not allow empty URLs" do
       subject.url = nil
       expect {
         subject.validate!
-      }.to raise_error Roomorama::Image::ValidationError
+      }.to raise_error(
+        Roomorama::Image::ValidationError,
+        "Invalid image object: URL was not given, or is empty"
+      )
     end
 
     it "does not allow invalid URLs" do
       subject.url = "something://very.invalid"
       expect {
         subject.validate!
-      }.to raise_error Roomorama::Image::ValidationError
+      }.to raise_error(
+        Roomorama::Image::ValidationError,
+        "Invalid image object: URL is invalid"
+      )
     end
   end
 
