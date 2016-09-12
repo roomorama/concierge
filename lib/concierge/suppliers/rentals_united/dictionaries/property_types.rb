@@ -18,7 +18,13 @@ module RentalsUnited
         #
         # Returns [Entities::PropertyType] property type object
         def find(id)
-          all.find { |p| p.id == id }
+          property_type = all.find { |p| p.id == id }
+
+          if property_type
+            return nil if property_type.roomorama_name.nil?
+
+            property_type
+          end
         end
 
         # Find all property types

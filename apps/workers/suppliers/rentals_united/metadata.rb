@@ -34,10 +34,19 @@ module Workers::Suppliers::RentalsUnited
           return unless result.success?
 
           property_ids = result.value
-          property_ids.each do |property_id|
-            synchronisation.start(property_id) do
-              fetch_property(property_id, location)
+
+          result = fetch_properties_by_ids(property_ids, location)
+
+          if result.success?
+            properties = result.value
+
+            properties.each do |property|
+              synchronisation.start(property.identifier) { Result.new(property) }
             end
+          else
+            message = "Failed to fetch properties for ids `#{property_ids}` in location `#{location.id}`"
+            announce_context_error(message, result)
+            return
           end
         else
           message = "Failed to find currency for location with id `#{location.id}`"
@@ -85,9 +94,9 @@ module Workers::Suppliers::RentalsUnited
       end
     end
 
-    def fetch_property(property_id, location)
-      announce_error("Failed to fetch property with ID `#{property_id}`") do
-        importer.fetch_property(property_id, location)
+    def fetch_properties_by_ids(property_ids, location)
+      announce_error("Failed to fetch properties for location `#{location.id}`") do
+        importer.fetch_properties_by_ids(property_ids, location)
       end
     end
 

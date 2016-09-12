@@ -62,5 +62,17 @@ module RentalsUnited
       )
       property_fetcher.fetch_property
     end
+
+    def fetch_properties_by_ids(property_ids, location)
+      properties = property_ids.map do |property_id|
+        result = fetch_property(property_id, location)
+
+        return result unless result.success?
+
+        result.value
+      end.compact
+
+      Result.new(properties)
+    end
   end
 end

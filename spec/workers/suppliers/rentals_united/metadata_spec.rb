@@ -135,43 +135,41 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
               expect_any_instance_of(RentalsUnited::Importer).to(
                 receive(:fetch_property_ids)
               ).and_return(
-                Result.new(["1234", "2345"])
+                Result.new(["1234"])
               )
             end
 
-            it "calls synchronisation block for every property id" do
-              expected_property_ids = ["1234", "2345"]
-
-              expected_property_ids.each do |property_id|
-                expect(worker.synchronisation).to receive(:start).with(property_id)
-              end
+            it "fails when #fetch_properties_by_ids returns an error" do
+              allow_any_instance_of(RentalsUnited::Importer).to receive(:fetch_properties_by_ids) { Result.error('fail') }
 
               result = worker.perform
-              expect(result).to be_kind_of(SyncProcess)
-              expect(result.to_h[:successful]).to be true
-            end
-
-            it "fails when #fetch_property returns an error" do
-              stub_data = read_fixture("rentals_united/properties/error_status.xml")
-              stub_call(:post, url) { [200, {}, stub_data] }
-
-              result = worker.perform
-
-              expect(result).to be_kind_of(SyncProcess)
+              expect(result).to be_nil
 
               event = Concierge.context.events.last.to_h
               expect(event[:label]).to eq("Synchronisation Failure")
               expect(event[:message]).to eq(
-                "Failed to fetch property with ID `2345`"
+                "Failed to fetch properties for ids `[\"1234\"]` in location `1505`"
               )
               expect(event[:backtrace]).to be_kind_of(Array)
               expect(event[:backtrace].any?).to be true
             end
 
-            describe "when #fetch_property is working" do
+            describe "when #fetch_properties_by_ids is working" do
               before do
                 stub_data = read_fixture("rentals_united/properties/property.xml")
                 stub_call(:post, url) { [200, {}, stub_data] }
+              end
+
+              it "calls synchronisation block for every property id" do
+                expected_property_ids = ["519688"]
+
+                expected_property_ids.each do |property_id|
+                  expect(worker.synchronisation).to receive(:start).with(property_id)
+                end
+
+                result = worker.perform
+                expect(result).to be_kind_of(SyncProcess)
+                expect(result.to_h[:successful]).to be true
               end
 
               it "creates record in the database" do

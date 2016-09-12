@@ -4,7 +4,7 @@
     <PUID BuildingID="-1">-1</PUID>
     <ID BuildingID="-1" BuildingName="">519688</ID>
     <IsActive>true</IsActive>
-    <IsArchived>false</IsArchived>
+    <IsArchived>true</IsArchived>
     <ObjectTypeID>35</ObjectTypeID>
   </Property>
 </Pull_ListSpecProp_RS>

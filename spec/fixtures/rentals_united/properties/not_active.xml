@@ -3,7 +3,7 @@
   <Property>
     <PUID BuildingID="-1">-1</PUID>
     <ID BuildingID="-1" BuildingName="">519688</ID>
-    <IsActive>true</IsActive>
+    <IsActive>false</IsActive>
     <IsArchived>false</IsArchived>
     <ObjectTypeID>35</ObjectTypeID>
   </Property>
