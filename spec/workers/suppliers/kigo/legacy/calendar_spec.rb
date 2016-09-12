@@ -62,6 +62,12 @@ RSpec.describe Workers::Suppliers::Kigo::Legacy::Calendar do
       expect(stats[:unavailable_records]).to eq 0
     end
 
+    it 'stops process with deactivated host' do
+      allow_any_instance_of(Kigo::HostCheck).to receive(:check) { Result.new(true) }
+
+      expect { subject.perform }.not_to change { SyncProcessRepository.count }
+    end
+
   end
 
 end

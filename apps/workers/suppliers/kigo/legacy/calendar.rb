@@ -13,6 +13,8 @@ module Workers::Suppliers::Kigo::Legacy
     end
 
     def perform
+      return if host_deactivated?(properties.first)
+
       properties.each do |property|
         id = property.identifier.to_i
         synchronisation.start(id) do
@@ -33,7 +35,7 @@ module Workers::Suppliers::Kigo::Legacy
     private
 
     def properties
-      PropertyRepository.from_host(host).identified_by(identifiers)
+      @properties ||= PropertyRepository.from_host(host).identified_by(identifiers)
     end
 
     def importer
@@ -41,11 +43,16 @@ module Workers::Suppliers::Kigo::Legacy
     end
 
     def request_handler
-      Kigo::LegacyRequest.new(credentials)
+      @request_handler ||= Kigo::LegacyRequest.new(credentials)
     end
 
     def credentials
       Concierge::Credentials.for(Kigo::Legacy::SUPPLIER_NAME)
+    end
+
+    def host_deactivated?(property)
+      result = Kigo::HostCheck.new(property.identifier, request_handler).check
+      result.success? && result.value
     end
   end
 end

@@ -7,6 +7,7 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Added
 - fee percentage for hosts on Web app on suppliers#show.
+- `Workers::Suppliers::Kigo::Legacy::Calendar` skip process for deactivated hosts
 
 ### Fixed
 - Kigo property images with non-Latin characters
