@@ -17,153 +17,57 @@ module Avantio
       @credentials = credentials
     end
 
-    def property_rates(property_id)
+    def booking_price(property_id, guests, arrival_date, departure_date)
       message = builder.new do |xml|
         xml.root do
-          xml.APIUserName credentials.username
-          xml.APIPassword credentials.password
-          xml.PropertyID property_id
-        end
-      end
-      message.doc.root.children.to_xml
-    end
-
-    # Builds request message for properties Ciirus API method.
-    # arrive_date and depart_date are dates in format 'dd MMM yyyy'
-    def properties(management_company_id: 0, property_id: 0,
-                   full_details: true, quote: false, sleeps: 0,
-                   arrive_date: '', depart_date: '')
-      message = builder.new(encoding: 'utf-8') do |xml|
-        xml.root do
-          xml.APIUsername credentials.username
-          xml.APIPassword credentials.password
-          xml.ArriveDate arrive_date
-          xml.DepartDate depart_date
-          xml.FilterOptions do
-            xml.ManagementCompanyID management_company_id
-            xml.CommunityID 0
-            xml.PropertyID property_id
-            xml.PropertyType 0
-            xml.HasPool 2
-            xml.HasSpa 2
-            xml.PrivacyFence 2
-            xml.CommunalGym 2
-            xml.HasGamesRoom 2
-            xml.IsGasFree false
-            xml.Sleeps sleeps
-            xml.PropertyClass 0
-            xml.ConservationView 2
-            xml.Bedrooms 0
-            xml.WaterView 2
-            xml.LakeView 2
-            xml.WiFi 2
-            xml.PetsAllowed 2
-            xml.OnGolfCourse 2
-            xml.SouthFacingPool 2
-          end
-          xml.SearchOptions do
-            xml.ReturnTopX 0
-            xml.ReturnFullDetails full_details
-            xml.ReturnQuote quote
-            xml.IncludePoolHeatInQuote false
-          end
-          xml.xmlMsg
-          xml.jSonMsg
-        end
-      end
-      message.doc.root.children.to_xml
-    end
-
-    # Builds request message for make booking Ciirus API method.
-    # arrive_date and depart_date are dates in format 'dd MMM yyyy'
-    def make_booking(property_id, arrival_date, departure_date, guest)
-      message = builder.new(encoding: 'utf-8') do |xml|
-        xml.root do
-          xml.APIUsername credentials.username
-          xml.APIPassword credentials.password
-          xml.BD do
+          credentials_xml(xml)
+          xml.Criteria do
+            accommodation_xml(xml, property_id)
+            xml.Occupants do
+              xml.AdultsNumber guests
+            end
             xml.ArrivalDate arrival_date
             xml.DepartureDate departure_date
-            xml.PropertyID property_id
-            guest.to_xml(xml)
-            xml.PoolHeatRequired false
-            xml.xmlMsg
-            xml.jSonMsg
           end
         end
       end
       message.doc.root.children.to_xml
     end
 
-    def image_list(property_id)
+    def is_available(property_id, guests, arrival_date, departure_date)
       message = builder.new do |xml|
         xml.root do
-          xml.APIUserName credentials.username
-          xml.APIPassword credentials.password
-          xml.PropertyID property_id
-        end
-      end
-      message.doc.root.children.to_xml
-    end
-
-    def descriptions(property_id)
-      message = builder.new do |xml|
-        xml.root do
-          xml.APIUserName credentials.username
-          xml.APIPassword credentials.password
-          xml.PropertyID property_id
-        end
-      end
-      message.doc.root.children.to_xml
-    end
-
-    def reservations(property_id)
-      message = builder.new do |xml|
-        xml.root do
-          xml.APIUsername credentials.username
-          xml.APIPassword credentials.password
-          xml.PropertyID property_id
-          xml.xmlMsg
-          xml.jSonMsg
-        end
-      end
-      message.doc.root.children.to_xml
-    end
-
-    def property_permissions(property_id)
-      message = builder.new do |xml|
-        xml.root do
-          xml.APIUsername credentials.username
-          xml.APIPassword credentials.password
-          xml.PropertyID property_id
-        end
-      end
-      message.doc.root.children.to_xml
-    end
-
-    def extras(property_id)
-      message = builder.new do |xml|
-        xml.root do
-          xml.APIUserName credentials.username
-          xml.APIPassword credentials.password
-          xml.PropertyID property_id
-        end
-      end
-      message.doc.root.children.to_xml
-    end
-
-    def cancel(booking_id)
-      message = builder.new do |xml|
-        xml.root do
-          xml.APIUsername credentials.username
-          xml.APIPassword credentials.password
-          xml.BookingID booking_id
+          credentials_xml(xml)
+          xml.Criteria do
+            accommodation_xml(xml, property_id)
+            xml.Occupants do
+              xml.AdultsNumber guests
+            end
+            xml.DateFrom arrival_date
+            xml.DateTo departure_date
+          end
         end
       end
       message.doc.root.children.to_xml
     end
 
     private
+
+    def credentials_xml(xml)
+      xml.Credentials do
+        xml.Language 'EN'
+        xml.UserName credentials.username
+        xml.Password credentials.password
+      end
+    end
+
+    def accommodation_xml(xml, property_id)
+      xml.Accommodation do
+        xml.AccommodationCode property_id.accommodation_code
+        xml.UserCode property_id.user_code
+        xml.LoginGA property_id.login_ga
+      end
+    end
 
     def builder
       Nokogiri::XML::Builder

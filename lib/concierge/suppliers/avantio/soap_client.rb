@@ -7,12 +7,12 @@ module Avantio
   #
   #   client = SoapClient.new
   #   msg = Avantio::XMLBuilder.new(credentials).booking_price
-  #   result = client.call(msg)
+  #   result = client.call(:get_booking_price, msg)
   class SoapClient
     WSDL = 'http://ws.avantio.com/soap/vrmsConnectionServices.php?wsdl'
 
-    def call(message)
-      client.call(operation_name, message: message)
+    def call(method, message)
+      client.call(method, message: message)
     end
 
     protected
