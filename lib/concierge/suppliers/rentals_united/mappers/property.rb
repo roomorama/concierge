@@ -9,7 +9,7 @@ module RentalsUnited
       attr_reader :property_hash, :location, :amenities_dictionary
 
       EN_DESCRIPTION_LANG_CODE = "1"
-      CANCELLATION_POLICY = "strict"
+      CANCELLATION_POLICY = "super_elite"
       DEFAULT_PROPERTY_RATE = "9999"
       MINIMUM_STAY = 1
 
