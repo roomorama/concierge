@@ -21,6 +21,18 @@ RSpec.describe Roomorama::Property do
     expect(subject.description).to be_nil
   end
 
+  describe ".valid_type?" do
+    it "return true for valid combinations" do
+      expect(Roomorama::Property.valid_type?("room")).to eq true
+      expect(Roomorama::Property.valid_type?("house", "cabin")).to eq true
+      expect(Roomorama::Property.valid_type?("house")).to eq true
+    end
+    it "returns false for invalid combinations" do
+      expect(Roomorama::Property.valid_type?("room", "bnb")).to eq false
+      expect(Roomorama::Property.valid_type?("house", "house")).to eq false
+    end
+  end
+
   describe ".load" do
     let(:attributes) {
       {
