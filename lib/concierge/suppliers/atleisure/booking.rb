@@ -59,7 +59,8 @@ module AtLeisure
 
     def fetch(reference_number)
       client = jsonrpc(FETCH_ENDPOINT)
-      client.invoke("DetailsOfOneBookingV1", {"BookingNumber" => reference_number})
+      params = { "BookingNumber" => reference_number }.merge authentication_params
+      client.invoke("DetailsOfOneBookingV1", params)
     end
 
     private

@@ -33,11 +33,20 @@ RSpec.describe AtLeisure::Booking do
   subject { described_class.new(credentials) }
 
   describe "#fetch" do
+    let(:endpoint) { AtLeisure::Booking::FETCH_ENDPOINT }
+
+    before { stub_with_fixture("atleisure/details_of_one_booking_v1.json", endpoint) }
+
     it "contains guest info" do
-      result = subject.fetch(174920859)
+      result = subject.fetch(975669885)
       expect(result).to be_success
-      expect(result.value["NrGuests"]).to_not be_nil
-      byebug
+      expect(result.value["NumberOfAdults"]).to eq 1
+      expect(result.value["ArrivalTimeFrom"]).to eq "15:00"
+      expect(result.value["ArrivalTimeUntil"]).to eq "18:00"
+      expect(result.value["DepartureTimeFrom"]).to eq "09:00"
+      expect(result.value["DepartureTimeUntil"]).to eq "10:00"
+      expect(result.value["BookingDate"]).to eq "2016-09-12"
+      expect(result.value["CustomerSurname"]).to eq "Somesurname"
     end
   end
 
@@ -53,7 +62,7 @@ RSpec.describe AtLeisure::Booking do
     end
 
     it "returns an error result in case unrecognized response" do
-      stub_with_fixture("atleisure/unrecognized.json")
+      stub_with_fixture("atleisure/unrecognized.json", endpoint)
       result = subject.book(params)
 
       expect(result).to_not be_success
@@ -65,7 +74,7 @@ RSpec.describe AtLeisure::Booking do
         expect(reservation.attachment_url).to eq "https://s3"
       end
 
-      stub_with_fixture("atleisure/booking_success.json")
+      stub_with_fixture("atleisure/booking_success.json", endpoint)
       expected_code = "175607953"
       result        = subject.book(params)
 
@@ -109,17 +118,6 @@ RSpec.describe AtLeisure::Booking do
 
         subject.book(params)
       end
-
-    end
-
-    def stub_with_fixture(name)
-      atleisure_response = JSON.parse(read_fixture(name))
-      response           = {
-        id:     888888888888,
-        result: atleisure_response
-      }.to_json
-
-      stub_call(:post, endpoint) { [200, {}, response] }
     end
   end
 
@@ -130,5 +128,15 @@ RSpec.describe AtLeisure::Booking do
       end
       subject.send(:enqueue_pdf_worker, create_reservation(attachment_url: "https://asdf"))
     end
+  end
+
+  def stub_with_fixture(name, endpoint)
+    atleisure_response = JSON.parse(read_fixture(name))
+    response           = {
+      id:     888888888888,
+      result: atleisure_response
+    }.to_json
+
+    stub_call(:post, endpoint) { [200, {}, response] }
   end
 end

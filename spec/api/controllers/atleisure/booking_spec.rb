@@ -29,7 +29,6 @@ RSpec.describe API::Controllers::AtLeisure::Booking do
 
   it_behaves_like "performing booking parameters validations", controller_generator: -> { described_class.new }
 
-
   describe "#call" do
 
     before do
@@ -84,7 +83,6 @@ RSpec.describe API::Controllers::AtLeisure::Booking do
       expect(response.body["reference_number"]).to eq expected_reference_number
     end
   end
-
 
   def jsonrpc_fixture(name)
     {

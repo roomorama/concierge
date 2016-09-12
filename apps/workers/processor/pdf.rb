@@ -27,19 +27,18 @@ class Workers::Processor
 
     def AtLeisure_template_locals(data)
       result = AtLeisure::Booking.fetch(data.get("reference_number"))
-      unless result.success?
-        return result
-      end
+      return result unless result.success?
+
       booking_details = result.value
       {
         reference_number:     data.get("reference_number"),
-        reservation_guests:   booking_details["guests"],
+        reservation_guests:   booking_details["NumberOfAdults"],
         arrival_time_from:    booking_details["ArrivalTimeFrom"],
         arrival_time_until:   booking_details["ArrivalTimeUnitl"],
         departure_time_from:  booking_details["DepartureTimeFrom"],
         departuer_time_until: booking_details["DepartureTimeUnitl"],
         booking_date:         booking_details["BookingDate"],
-        guest_name: asdf,
+        guest_name:           booking_details["CustomerSurname"],
       }
     end
 
