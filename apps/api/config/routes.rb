@@ -6,6 +6,7 @@ post '/poplidays/quote',   to: 'poplidays#quote'
 post '/ciirus/quote',      to: 'ciirus#quote'
 post '/waytostay/quote',   to: 'waytostay#quote'
 post '/saw/quote',         to: 's_a_w#quote'
+post '/avantio/quote',     to: 'avantio#quote'
 
 post '/jtb/booking',         to: 'j_t_b#booking'
 post '/atleisure/booking',   to: 'at_leisure#booking'
