@@ -13,7 +13,7 @@ module Workers::Suppliers::Kigo::Legacy
     end
 
     def perform
-      return if host_deactivated?(properties.first)
+      return if cannot_proceed?
 
       properties.each do |property|
         id = property.identifier.to_i
@@ -50,9 +50,10 @@ module Workers::Suppliers::Kigo::Legacy
       Concierge::Credentials.for(Kigo::Legacy::SUPPLIER_NAME)
     end
 
-    def host_deactivated?(property)
-      result = Kigo::HostCheck.new(property.identifier, request_handler).check
-      result.success? && result.value
+    def cannot_proceed?
+      id = properties.first.identifier
+      result = Kigo::HostCheck.new(id, request_handler).check
+      !result.success? || result.value
     end
   end
 end

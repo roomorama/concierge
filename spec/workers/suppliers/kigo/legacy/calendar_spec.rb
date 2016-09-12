@@ -62,12 +62,20 @@ RSpec.describe Workers::Suppliers::Kigo::Legacy::Calendar do
       expect(stats[:unavailable_records]).to eq 0
     end
 
-    it 'stops process with deactivated host' do
-      allow_any_instance_of(Kigo::HostCheck).to receive(:check) { Result.new(true) }
+    context 'check deactivated host' do
 
-      expect { subject.perform }.not_to change { SyncProcessRepository.count }
+      it 'stops process with deactivated host' do
+        allow_any_instance_of(Kigo::HostCheck).to receive(:check) { Result.new(true) }
+
+        expect { subject.perform }.not_to change { SyncProcessRepository.count }
+      end
+
+      it 'stops process with external error' do
+        allow_any_instance_of(Kigo::HostCheck).to receive(:check) { Result.error(:connection_timeout) }
+
+        expect { subject.perform }.not_to change { SyncProcessRepository.count }
+      end
+
     end
-
   end
-
 end
