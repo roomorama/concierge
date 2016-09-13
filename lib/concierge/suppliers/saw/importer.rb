@@ -95,7 +95,7 @@ module SAW
       bulk_rates_fetcher.call(ids)
     end
 
-    # Retrieves rates for properties
+    # Retrieves rates for units of all given properties.
     #
     # It groups properties by currency because SAW API doesn't support
     # fetching property rates when multiple currencies are given.
