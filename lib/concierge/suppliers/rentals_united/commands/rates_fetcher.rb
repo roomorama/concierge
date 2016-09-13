@@ -29,6 +29,10 @@ module RentalsUnited
         @property_id = property_id
       end
 
+      # Retrieves property rates.
+      #
+      # Returns a +Result+ wrapping +Array+ of +Entities::Rate+ objects
+      # Returns a +Result+ with +Result::Error+ when operation fails
       def fetch_rates
         payload = payload_builder.build_rates_fetch_payload(
           property_id,
