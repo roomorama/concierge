@@ -7,6 +7,10 @@ module RentalsUnited
     class LocationCurrenciesFetcher < BaseFetcher
       ROOT_TAG = "Pull_ListCurrenciesWithCities_RS"
 
+      # Retrieves locations - currencies mapping.
+      #
+      # Returns a +Result+ wrapping +Hash+ with location_id => currency pairs
+      # Returns a +Result+ with +Result::Error+ when operation fails
       def fetch_location_currencies
         payload = payload_builder.build_location_currencies_fetch_payload
         result = http.post(credentials.url, payload, headers)

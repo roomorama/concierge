@@ -12,6 +12,9 @@ module RentalsUnited
       # Retrieves location ids with active properties.
       #
       # Locations without active properties are ignored.
+      #
+      # Returns a +Result+ wrapping +Array+ of +String+ location ids
+      # Returns a +Result+ with +Result::Error+ when operation fails
       def fetch_location_ids
         payload = payload_builder.build_location_ids_fetch_payload
         result = http.post(credentials.url, payload, headers)

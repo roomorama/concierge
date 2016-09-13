@@ -15,6 +15,10 @@ module RentalsUnited
         @location_ids = location_ids
       end
 
+      # Retrieves locations by location_ids
+      #
+      # Returns a +Result+ wrapping +Array+ of +Entities::Location+ objects
+      # Returns a +Result+ with +Result::Error+ when operation fails
       def fetch_locations
         payload = payload_builder.build_locations_fetch_payload
         result = http.post(credentials.url, payload, headers)
