@@ -30,6 +30,8 @@ module Avantio
       host = fetch_host(property.host_id)
       return host_not_found unless host
 
+      # We should check availability at first, because
+      # Avantio quote call returns valid price even for not available periods
       available = Avantio::Commands::IsAvailableFetcher.new(credentials).call(params)
       return available unless available.success?
 
