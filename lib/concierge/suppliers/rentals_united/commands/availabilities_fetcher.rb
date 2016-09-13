@@ -31,6 +31,10 @@ module RentalsUnited
         @property_id = property_id
       end
 
+      # Retrieves property availabilities.
+      #
+      # Returns a +Result+ wrapping +Array+ of +Entities::Availability+
+      # Returns a +Result+ with +Result::Error+ when operation fails
       def fetch_availabilities
         payload = payload_builder.build_availabilities_fetch_payload(
           property_id,
