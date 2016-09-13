@@ -62,7 +62,7 @@ RSpec.describe RentalsUnited::PayloadBuilder do
     end
   end
 
-  describe '#build_property_ids_fetch_payload' do
+  describe '#build_property_fetch_payload' do
     let(:params) do
       {
         property_id: "123"
