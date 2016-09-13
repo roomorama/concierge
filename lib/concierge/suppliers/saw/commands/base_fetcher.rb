@@ -6,7 +6,8 @@ module SAW
       #
       # Whitelisted SAW API errors:
       # 1007 - No properties are available for the given search parameters
-      VALID_RESULT_ERROR_CODES = ['1007']
+      # 3031 - Rates are not available for this property
+      VALID_RESULT_ERROR_CODES = ['1007', '3031']
 
       attr_reader :credentials
 
