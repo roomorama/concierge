@@ -17,6 +17,9 @@ module RentalsUnited
     # Retrieves location ids with active properties.
     #
     # Locations without active properties will be filtered out.
+    #
+    # Returns a +Result+ wrapping +Array+ of +String+ location ids
+    # Returns a +Result+ with +Result::Error+ when operation fails
     def fetch_location_ids
       fetcher = Commands::LocationIdsFetcher.new(credentials)
       fetcher.fetch_location_ids
@@ -28,7 +31,8 @@ module RentalsUnited
     #
     #   * +location_ids+ [Array<String>] ids array of locations to fetch
     #
-    # Returns [Array<Entities::Location>] array of location objects
+    # Returns a +Result+ wrapping +Array+ of +Entities::Location+ objects
+    # Returns a +Result+ with +Result::Error+ when operation fails
     def fetch_locations(location_ids)
       fetcher = Commands::LocationsFetcher.new(credentials, location_ids)
       fetcher.fetch_locations
@@ -36,7 +40,8 @@ module RentalsUnited
 
     # Retrieves locations - currencies mapping.
     #
-    # Returns [Hash] hash with location_id => currency key-values
+    # Returns a +Result+ wrapping +Hash+ with location_id => currency pairs
+    # Returns a +Result+ with +Result::Error+ when operation fails
     def fetch_location_currencies
       fetcher = Commands::LocationCurrenciesFetcher.new(credentials)
       fetcher.fetch_location_currencies
@@ -45,6 +50,9 @@ module RentalsUnited
     # Retrieves property ids by location id.
     #
     # IDs of properties which are no longer available will be filtered out.
+    #
+    # Returns a +Result+ wrapping +Array+ of +String+ property ids
+    # Returns a +Result+ with +Result::Error+ when operation fails
     def fetch_property_ids(location_id)
       properties_fetcher = Commands::PropertyIdsFetcher.new(
         credentials,
@@ -54,6 +62,9 @@ module RentalsUnited
     end
 
     # Retrieves property by its id.
+    #
+    # Returns a +Result+ wrapping +Roomorama::Property+ object
+    # Returns a +Result+ with +Result::Error+ when operation fails
     def fetch_property(property_id, location)
       property_fetcher = Commands::PropertyFetcher.new(
         credentials,
@@ -63,6 +74,10 @@ module RentalsUnited
       property_fetcher.fetch_property
     end
 
+    # Retrieves properties by given ids
+    #
+    # Returns a +Result+ wrapping +Array+ of +Roomorama::Property+ objects
+    # Returns a +Result+ with +Result::Error+ when operation fails
     def fetch_properties_by_ids(property_ids, location)
       properties = property_ids.map do |property_id|
         result = fetch_property(property_id, location)
