@@ -45,42 +45,6 @@ RSpec.describe SAW::Importer do
     end
   end
 
-  describe "fetch_available_properties_by_country" do
-    it "returns full set if there wasn't any property with on request flag" do
-      mock_request(:country, :one)
-      mock_request(:propertysearch, :success)
-
-      countries_result = subject.fetch_countries
-      current_country = countries_result.value.first
-
-      properties_result = subject.fetch_available_properties_by_country(
-        current_country
-      )
-      expect(properties_result.success?).to be true
-      expect(properties_result.value.size).to eq(5)
-      expect(properties_result.value).to all(
-        be_kind_of(SAW::Entities::BasicProperty)
-      )
-    end
-
-    it "filters out properties with on request flag" do
-      mock_request(:country, :one)
-      mock_request(:propertysearch, :success_with_on_request)
-
-      countries_result = subject.fetch_countries
-      current_country = countries_result.value.first
-
-      properties_result = subject.fetch_available_properties_by_country(
-        current_country
-      )
-      expect(properties_result.success?).to be true
-      expect(properties_result.value.size).to eq(4)
-      expect(properties_result.value).to all(
-        be_kind_of(SAW::Entities::BasicProperty)
-      )
-    end
-  end
-
   describe "fetch_properties_by_countries" do
     it "returns a result with an empty array when all requests are empty" do
       mock_request(:country, :multiple)
