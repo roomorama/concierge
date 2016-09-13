@@ -53,7 +53,7 @@ module Workers::Suppliers
       synchronisation.finish!
     end
 
-    def fetch_details_and_build_property(property, rates)
+    def fetch_details_and_build_property(property, unit_rates)
       result = importer.fetch_detailed_property(property.internal_id)
 
       if result.success?
@@ -62,7 +62,7 @@ module Workers::Suppliers
         roomorama_property = ::SAW::Mappers::RoomoramaProperty.build(
           property,
           detailed_property,
-          rates
+          unit_rates
         )
 
         Result.new(roomorama_property)
