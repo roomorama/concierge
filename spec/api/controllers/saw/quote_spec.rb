@@ -104,9 +104,17 @@ RSpec.describe API::Controllers::SAW::Quote do
 
       result = controller.quote_price(params)
 
-      expect(result.success?).to be false
+      expect(result.success?).to be true
       expect(result).to be_kind_of(Result)
-      expect(result.value).to be nil
+
+      quotation = result.value
+      expect(quotation).to be_kind_of(Quotation)
+      expect(quotation.property_id).to eq(params[:property_id])
+      expect(quotation.unit_id).to eq(params[:unit_id])
+      expect(quotation.check_in).to eq(params[:check_in])
+      expect(quotation.check_out).to eq(params[:check_out])
+      expect(quotation.guests).to eq(params[:guests])
+      expect(quotation.available).to be false
     end
   end
 
