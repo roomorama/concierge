@@ -50,3 +50,10 @@ KigoLegacy:
     availabilities:
       every: "1d"
       aggregated: true
+
+Poplidays:
+  workers:
+    metadata:
+      every: "1d"
+    availabilities:
+      every: "5h"
