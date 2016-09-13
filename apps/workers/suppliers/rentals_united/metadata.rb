@@ -127,7 +127,7 @@ module Workers::Suppliers::RentalsUnited
 
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
         operation:   'sync',
-        supplier:    Ciirus::Client::SUPPLIER_NAME,
+        supplier:    RentalsUnited::Client::SUPPLIER_NAME,
         code:        result.error.code,
         context:     Concierge.context.to_h,
         happened_at: Time.now
