@@ -4,7 +4,10 @@ module Avantio
     #
     # This class is responsible for wrapping the logic related to making a price
     # quotation to Avantio, parsing the response.
-    #
+    # 
+    # NOTE: Avantio GetBookingPrice method returns valid response even
+    #       if accommodation is not available for given period, so it's important
+    #       to check availability before using this fetcher.
     # Usage
     #
     #   command = Avantio::Commands::QuoteFetcher.new(credentials)
