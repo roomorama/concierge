@@ -43,8 +43,6 @@ module Workers::Suppliers
 
       properties.each do |property|
         synchronisation.start(property.internal_id) do
-          Concierge.context.disable!
-
           unit_rates = find_rates(property.internal_id, all_unit_rates)
           fetch_details_and_build_property(property, unit_rates)
         end
