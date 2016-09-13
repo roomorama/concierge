@@ -36,7 +36,7 @@ module Workers::Suppliers
       if result.success?
         all_unit_rates = result.value
       else
-        message = "Failed to perform the `#fetch_rates_for_properties` operation"
+        message = "Failed to perform the `#fetch_all_unit_rates_for_properties` operation"
         announce_error(message, result)
         return
       end
