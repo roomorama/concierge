@@ -66,6 +66,7 @@ RSpec.describe Ciirus::Commands::PropertyPermissionsFetcher do
 
         result = subject.call(property_id)
 
+        expect(result).to be_success
         permissions = result.value
         expect(permissions.deleted).to be_truthy
       end

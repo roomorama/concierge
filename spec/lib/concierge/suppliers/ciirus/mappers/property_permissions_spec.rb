@@ -30,7 +30,7 @@ RSpec.describe Ciirus::Mappers::PropertyPermissions do
         {
           get_property_permissions_response: {
             get_property_permissions_result: {
-              error_msg: 'Error (1012-CS) This property has been deleted. Please contact the inventory supplier.',
+              error_msg: 'Error (1012-CS) This property has been deleted. Please contact the inventory supplier. ',
             },
             :@xmlns=>"http://xml.ciirus.com/"
           }
