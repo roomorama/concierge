@@ -12,6 +12,7 @@ how this file is formatted and how the process works.
 ### Fixed
 - Kigo property images with non-Latin characters
 - Ciirus:: skip deleted properties during sync
+- Ciirus:: skip mc disabled properties during sync
 
 ## [0.8.0] - 2016-09-08
 ### Added
