@@ -16,6 +16,11 @@ module Kigo
   class ResponseParser
     include Concierge::JSON
 
+    # when there are no rates available for the selected dates, this message is returned
+    # by Kigo and KigoLegacy's API. This is not an error situation, and the property
+    # should be deemed unavailable.
+    NO_RATES_AVAILABLE = %r(The property pricing information is unavailable for the specified check-in/check-out dates)
+
     attr_reader :params
 
     def initialize(params)
@@ -73,6 +78,9 @@ module Kigo
         # +API_RESULT_TEXT+ and check if it mentions that the property is unavailable
         # for the requested dates.
 
+        quotation.available = false
+        Result.new(quotation)
+      elsif payload["API_RESULT_CODE"] == "E_LIMIT" && payload["API_RESULT_TEXT"] =~ NO_RATES_AVAILABLE
         quotation.available = false
         Result.new(quotation)
       else
