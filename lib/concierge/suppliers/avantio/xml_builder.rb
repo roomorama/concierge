@@ -51,6 +51,49 @@ module Avantio
       message.doc.root.children.to_xml
     end
 
+    def set_booking(property_id, guests, arrival_date, departure_date, customer, test)
+      # UNPAID: prebooking without confirmation
+      # PETICION_INFORMACION: It does not neither do a booking nor block the period requested.
+      #                       It just ask the accommodation owner for information about how the booking would be.
+      booking_type = test ? 'PETICION_INFORMACION' : 'UNPAID'
+
+      message = builder.new do |xml|
+        xml.root do
+          credentials_xml(xml)
+          xml.BookingData do
+            xml.ArrivalDate arrival_date
+            xml.DepartureDate departure_date
+            accommodation_xml(xml, property_id)
+            xml.Occupants do
+              xml.AdultsNumber guests
+            end
+            xml.ClientData do
+              xml.Name customer[:first_name]
+              xml.Surname customer[:last_name]
+              xml.DNI
+              xml.Address customer[:address]
+              xml.Locality
+              xml.PostCode
+              xml.City
+              xml.Country
+              xml.Telephone customer[:phone]
+              xml.Telephone2
+              xml.EMail customer[:email]
+              xml.Fax
+              xml.Language 'EN'
+            end
+            xml.Board 'ROOM_ONLY'
+            xml.PaymentMethod '26' # TODO: what does it mean?
+            xml.SendMailToOrganization true
+            xml.SendMailToTourist false
+            xml.BookingType booking_type
+            xml.Comments
+          end
+        end
+      end
+      message.doc.root.children.to_xml
+    end
+
     private
 
     def credentials_xml(xml)
