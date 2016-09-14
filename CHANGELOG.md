@@ -10,6 +10,9 @@ how this file is formatted and how the process works.
 - `Workers::Suppliers::Kigo::Legacy::Calendar` skip process for deactivated hosts
 - Poplidays integration: metadata sync, calendar sync, quoting, booking, cancelling support.
 
+### Changed
+- Lack of rates when quoting prices for Kigo and KigoLegacy no longer treated as an error
+
 ### Fixed
 - Kigo property images with non-Latin characters
 

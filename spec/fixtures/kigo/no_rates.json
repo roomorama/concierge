@@ -1,0 +1,9 @@
+{
+  "API_VERSION": 1,
+  "API_REVISION": 3,
+  "API_METHOD": "computePricing",
+  "API_CALL_ID": "id",
+  "API_RESULT_CODE": "E_LIMIT",
+  "API_RESULT_TEXT": "The property pricing information is unavailable for the specified check-in/check-out dates. No Rates Available",
+  "API_REPLY": null
+}
