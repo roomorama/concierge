@@ -76,5 +76,24 @@ module SAW
       expect(unit.available).to eq(true)
       expect(unit.max_guests).to eq(4)
     end
+
+    describe "when rates are not available" do
+      let(:attributes) do
+        {
+          "name"=>"Adagio Access Avignon",
+          "check_in"=>"01/09/2016",
+          "check_out"=>"02/09/2016",
+          "currency_code"=>"EUR",
+          "default_currency_code"=>"EUR",
+          "apartments"=> {}
+        }
+      end
+
+      it "returns nil object" do
+        property_rate = described_class.build(hash)
+
+        expect(property_rate).to be_nil
+      end
+    end
   end
 end

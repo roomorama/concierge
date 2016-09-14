@@ -46,7 +46,7 @@ module SAW
         Array(rates).map do |rate|
           safe_hash = Concierge::SafeAccessHash.new(rate)
           SAW::Mappers::PropertyRate.build(safe_hash)
-        end
+        end.compact
       end
 
       def build_payload(ids)
@@ -59,11 +59,11 @@ module SAW
       end
 
       def check_in
-        (today + 30 * one_day).strftime("%d/%m/%Y")
+        (today + 90 * one_day).strftime("%d/%m/%Y")
       end
 
       def check_out
-        (today + 31 * one_day).strftime("%d/%m/%Y")
+        (today + 92 * one_day).strftime("%d/%m/%Y")
       end
 
       def one_day

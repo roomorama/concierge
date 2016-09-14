@@ -46,7 +46,7 @@ module SAW
           if valid_result?(result_hash)
             property_rate = build_property_rate(result_hash)
 
-            quotation = if property_rate.has_unit?(params[:unit_id])
+            quotation = if property_rate && property_rate.has_unit?(params[:unit_id])
               SAW::Mappers::Quotation.build(params, property_rate)
             else
               SAW::Mappers::Quotation.build_unavailable(params)

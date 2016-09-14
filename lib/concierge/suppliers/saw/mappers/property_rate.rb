@@ -15,6 +15,8 @@ module SAW
         #
         # Returns [SAW::Entities::PropertyRate]
         def build(hash)
+          return nil if empty_unit_rates?(hash)
+
           Entities::PropertyRate.new(
             id: hash.get("@id"),
             units: build_units(hash),
@@ -28,10 +30,16 @@ module SAW
           hash.get("currency_code")
         end
 
+        def empty_unit_rates?(hash)
+          units_hash(hash).nil?
+        end
+
+        def units_hash(hash)
+          hash.get("apartments.accommodation_type.property_accommodation")
+        end
+
         def build_units(hash)
-          units = hash.get(
-            "apartments.accommodation_type.property_accommodation"
-          )
+          units = units_hash(hash)
 
           Array(units).map do |unit_hash|
             safe_hash = Concierge::SafeAccessHash.new(unit_hash)
