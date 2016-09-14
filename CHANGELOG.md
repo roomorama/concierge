@@ -4,6 +4,11 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## Unreleased
+### Fixed
+- Ciirus:: skip deleted properties during sync
+- Ciirus:: skip mc disabled properties during sync
+
 ## [0.9.0] - 2016-08-13
 ### Added
 - fee percentage for hosts on Web app on suppliers#show.
