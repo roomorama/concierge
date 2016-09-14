@@ -14,6 +14,7 @@ RSpec.describe Ciirus::Commands::PropertyPermissionsFetcher do
 
   let(:success_response) { read_fixture('ciirus/responses/property_permissions_response.xml') }
   let(:deleted_property_response) { read_fixture('ciirus/responses/deleted_property_permissions_response.xml') }
+  let(:mc_disabled_property_response) { read_fixture('ciirus/responses/mc_disabled_property_permissions_response.xml') }
   let(:error_response) { read_fixture('ciirus/responses/error_property_permissions_response.xml') }
   let(:wsdl) { read_fixture('ciirus/wsdl.xml') }
 
@@ -67,6 +68,16 @@ RSpec.describe Ciirus::Commands::PropertyPermissionsFetcher do
 
         permissions = result.value
         expect(permissions.deleted).to be_truthy
+      end
+
+      it 'ignores mc disabled error message and returns permissions' do
+        stub_call(method: described_class::OPERATION_NAME, response: mc_disabled_property_response)
+
+        result = subject.call(property_id)
+
+        expect(result).to be_success
+        permissions = result.value
+        expect(permissions.mc_enable_property).to be_falsey
       end
     end
 

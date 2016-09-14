@@ -18,7 +18,12 @@ module Ciirus
 
       OPERATION_NAME = :get_property_permissions
 
-      PROPERTY_DELETED_MESSAGE = 'Error (1012-CS) This property has been deleted. Please contact the inventory supplier.'
+      PROPERTY_DELETED_MESSAGE = 'Error (1012-CS) This property has been deleted. Please contact the inventory supplier. '
+      MC_PROPERTY_DISABLED_MESSAGE = 'Error (8000) The MC may have disabled the property from the feed. The MC user for '\
+        'this property has not enabled this property for your feed, but you have accepted this property'\
+        ' in the SuperSites area of the CiiRUS windows application. '
+      IGNORABLE_ERROR_MESSAGES = [PROPERTY_DELETED_MESSAGE, MC_PROPERTY_DISABLED_MESSAGE]
+
 
       def call(property_id)
         message = xml_builder.property_permissions(property_id)
@@ -52,7 +57,7 @@ module Ciirus
         error_msg = result_hash.get('get_property_permissions_response.get_property_permissions_result.error_msg')
         # Special case for property deleted message. Instead of response mismatch augment PropertyPermissions.deleted
         # field will contain true/false value for further business logic.
-        error_msg.nil? || error_msg.empty? || error_msg == PROPERTY_DELETED_MESSAGE
+        error_msg.nil? || error_msg.empty? || IGNORABLE_ERROR_MESSAGES.include?(error_msg)
       end
 
       def error_result(result_hash)

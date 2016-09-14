@@ -21,7 +21,8 @@ module Ciirus
         online_booking_allowed? &&
           !timeshare? &&
           !allocation_on_arrival? &&
-          !property_deleted?
+          !property_deleted? &&
+          mc_enabled?
       end
 
       private
@@ -40,6 +41,10 @@ module Ciirus
 
       def property_deleted?
         permissions.deleted
+      end
+
+      def mc_enabled?
+        permissions.mc_enable_property
       end
     end
   end
