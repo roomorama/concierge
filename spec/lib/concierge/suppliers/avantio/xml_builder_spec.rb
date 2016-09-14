@@ -25,4 +25,22 @@ RSpec.describe Avantio::XMLBuilder do
 
     it { expect(message).to eq valid_request}
   end
+
+  describe '#set_booking' do
+    let(:valid_request) do
+      read_fixture('avantio/set_booking_request.xml')
+    end
+    let(:customer) do
+      {
+        first_name: 'John',
+        last_name: 'Buttler',
+        email: 'avg@mail.com',
+        address: 'Long bay, 43',
+        phone: '+7 837 0953 32 34'
+      }
+    end
+    let(:message) { subject.set_booking(property_id, 1, Date.new(2016, 10, 3), Date.new(2016, 10, 20), customer, true) }
+
+    it { expect(message).to eq valid_request}
+  end
 end

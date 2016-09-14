@@ -1,0 +1,11 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <ns1:SetBookingRS xmlns:ns1="ws.avantio.com/crsConnectionServices/xsd" xmlns:ns2="ws.avantio.com/crsConnectionServices">
+      <ns2:Success>true</ns2:Success>
+      <ns2:Localizer>
+        <ns2:BookingCode>1491191</ns2:BookingCode>
+        <ns2:Localizator>1491191-1210075202</ns2:Localizator>
+      </ns2:Localizer>
+    </ns1:SetBookingRS>
+  </soapenv:Body>
+</soapenv:Envelope>
