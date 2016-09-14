@@ -9,6 +9,7 @@ module Ciirus
     #   * property is timeshare (as well as GetReservations method doesn't support such properties)
     #   * properties with AOA(Allocation On Arrival) Bookings Mode
     #   * property deleted
+    #   * mc disabled property
     #
     class PermissionsValidator
       attr_reader :permissions
