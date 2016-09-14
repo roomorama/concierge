@@ -18,6 +18,8 @@ module Ciirus
 
       OPERATION_NAME = :get_property_permissions
 
+      PROPERTY_DELETED_MESSAGE = 'Error (1012-CS) This property has been deleted. Please contact the inventory supplier.'
+
       def call(property_id)
         message = xml_builder.property_permissions(property_id)
         result = remote_call(message)
@@ -48,7 +50,9 @@ module Ciirus
 
       def valid_result?(result_hash)
         error_msg = result_hash.get('get_property_permissions_response.get_property_permissions_result.error_msg')
-        error_msg.nil? || error_msg.empty?
+        # Special case for property deleted message. Instead of response mismatch augment PropertyPermissions.deleted
+        # field will contain true/false value for further business logic.
+        error_msg.nil? || error_msg.empty? || error_msg == PROPERTY_DELETED_MESSAGE
       end
 
       def error_result(result_hash)

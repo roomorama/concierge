@@ -132,7 +132,7 @@ module Workers::Suppliers::Ciirus
     #   error: a Result#error
     #
     def ignorable(error)
-      return IGNORABLE_ERROR_MESSAGES.any? { |err_msg|
+      IGNORABLE_ERROR_MESSAGES.any? { |err_msg|
         error.data&.include? err_msg
       }
     end
