@@ -22,6 +22,17 @@ module Web::Views::Suppliers
       number_formatter.present(total)
     end
 
+    # formats the +fee+, given as a float, to a percentage notation, with a single
+    # digit precision.
+    #
+    # Example
+    #
+    #   host.fee_percentage                        # => 8.0
+    #   format_fee_percentage(host.fee_percentage) # => "8.0%"
+    def format_fee_percentage(fee)
+      sprintf("%.1f%", fee)
+    end
+
     # in order not to show the access token used by a host in its entirety,
     # this extracts the first 5 digits of a +Host+ access token, and appends
     # +...+ to indicate the content is just a substring.

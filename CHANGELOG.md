@@ -4,6 +4,18 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.9.0] - 2016-08-13
+### Added
+- fee percentage for hosts on Web app on suppliers#show.
+- `Workers::Suppliers::Kigo::Legacy::Calendar` skip process for deactivated hosts
+- Poplidays integration: metadata sync, calendar sync, quoting, booking, cancelling support.
+
+### Changed
+- Lack of rates when quoting prices for Kigo and KigoLegacy no longer treated as an error
+
+### Fixed
+- Kigo property images with non-Latin characters
+
 ## [0.8.0] - 2016-09-08
 ### Added
 - Kigo and KigoLegacy integration: metadata sync, calendar sync, quoting, booking, cancelling support.

@@ -26,42 +26,62 @@ RSpec.describe Workers::Suppliers::Kigo::Legacy::Calendar do
        }]
     }
 
-    it 'performs according to response' do
-      allow_any_instance_of(Kigo::Importer).to receive(:fetch_prices) { Result.new(prices) }
-      allow_any_instance_of(Kigo::Importer).to receive(:fetch_reservations) { Result.new(reservations) }
+    context 'deactivated host' do
 
-      expect { subject.perform }.to change {
-        SyncProcessRepository.count
-      }.by(1)
+      it 'stops process with deactivated host' do
+        allow_any_instance_of(Kigo::HostCheck).to receive(:check) { Result.new(true) }
 
-      sync_process = SyncProcessRepository.last
-      expect(sync_process.host_id).to eq host.id
-      expect(sync_process.type).to eq 'availabilities'
+        expect { subject.perform }.not_to change { SyncProcessRepository.count }
+      end
 
-      stats = sync_process.stats
+      it 'stops process with external error' do
+        allow_any_instance_of(Kigo::HostCheck).to receive(:check) { Result.error(:connection_timeout) }
 
-      expect(stats[:properties_processed]).to eq 1
-      expect(stats[:available_records]).to eq 359
-      expect(stats[:unavailable_records]).to eq days_count + 1
+        expect { subject.perform }.not_to change { SyncProcessRepository.count }
+      end
+
     end
 
-    it 'does not process property with external error' do
-      allow_any_instance_of(Kigo::Importer).to receive(:fetch_prices) { Result.error(:connection_timeout) }
+    context 'active host' do
 
-      subject.perform
+      before { allow_any_instance_of(Kigo::HostCheck).to receive(:check) { Result.new(false) } }
 
-      sync_process = SyncProcessRepository.last
+      it 'performs according to response' do
+        allow_any_instance_of(Kigo::Importer).to receive(:fetch_prices) { Result.new(prices) }
+        allow_any_instance_of(Kigo::Importer).to receive(:fetch_reservations) { Result.new(reservations) }
 
-      expect(sync_process.host_id).to eq host.id
-      expect(sync_process.type).to eq 'availabilities'
+        expect { subject.perform }.to change {
+          SyncProcessRepository.count
+        }.by(1)
 
-      stats = sync_process.stats
+        sync_process = SyncProcessRepository.last
+        expect(sync_process.host_id).to eq host.id
+        expect(sync_process.type).to eq 'availabilities'
 
-      expect(stats[:properties_processed]).to eq 1
-      expect(stats[:available_records]).to eq 0
-      expect(stats[:unavailable_records]).to eq 0
+        stats = sync_process.stats
+
+        expect(stats[:properties_processed]).to eq 1
+        expect(stats[:available_records]).to eq 359
+        expect(stats[:unavailable_records]).to eq days_count + 1
+      end
+
+      it 'does not process property with external error' do
+        allow_any_instance_of(Kigo::Importer).to receive(:fetch_prices) { Result.error(:connection_timeout) }
+
+        subject.perform
+
+        sync_process = SyncProcessRepository.last
+
+        expect(sync_process.host_id).to eq host.id
+        expect(sync_process.type).to eq 'availabilities'
+
+        stats = sync_process.stats
+
+        expect(stats[:properties_processed]).to eq 1
+        expect(stats[:available_records]).to eq 0
+        expect(stats[:unavailable_records]).to eq 0
+      end
+
     end
-
   end
-
 end

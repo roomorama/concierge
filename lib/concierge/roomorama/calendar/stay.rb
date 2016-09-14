@@ -11,7 +11,7 @@ class Roomorama::Calendar::Stay
   end
 
   def rate
-    price / length
+    (price / length).round(2)
   end
 
   def include?(date)

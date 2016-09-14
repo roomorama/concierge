@@ -1,0 +1,50 @@
+{
+  "extras": [
+    {
+      "code": "END_OF_STAY_CLEANING",
+      "label": "End-of-stay cleaning",
+      "mandatory": true,
+      "prices": [
+        {
+          "selectedCodes": null,
+          "value": 0
+        }
+      ],
+      "optionType": "INCLUDED",
+      "detailUrl": null,
+      "type": "CHECK",
+      "parameters": {}
+    },
+    {
+      "code": "FEE",
+      "label": "Processing fee",
+      "mandatory": true,
+      "prices": [
+        {
+          "selectedCodes": null,
+          "value": 25
+        }
+      ],
+      "optionType": "MANDATORY_ON_BOOKING",
+      "detailUrl": null,
+      "type": "CHECK",
+      "parameters": {}
+    },
+    {
+      "code": "CONCIERGE",
+      "label": "POP'Services concierge",
+      "mandatory": true,
+      "prices": [
+        {
+          "selectedCodes": null,
+          "value": 0
+        }
+      ],
+      "optionType": "INCLUDED",
+      "detailUrl": null,
+      "type": "CHECK",
+      "parameters": {}
+    }
+  ],
+  "lastChange": "2016-07-13 04:05"
+}

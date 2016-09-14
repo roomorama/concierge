@@ -29,6 +29,18 @@ RSpec.describe Kigo::Mappers::Resolver do
 
       expect(images.first.caption).to be_nil
     end
+
+    it 'creates a valid image if the URL contains non-Latin characters' do
+      image['PHOTO_ID'] = '//dx577khz83dc.cloudfront.net/3304/P307_13_baño2_s.jpg'
+
+      images = subject.images([image], property_id)
+      expect(images.size).to eq 1
+
+      image = images.first
+      expect {
+        image.validate!
+      }.not_to raise_error
+    end
   end
 
 end

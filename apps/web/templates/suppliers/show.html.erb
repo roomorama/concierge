@@ -13,6 +13,7 @@
         <th>#</th>
         <th>Identifier</th>
         <th>Roomorama Username</th>
+        <th>Fees Applied</th>
         <th>Access Token</th>
         <th># Properties</th>
       </tr>
@@ -24,6 +25,7 @@
           <td><%= host.id %></td>
           <td><code><%= host.identifier %></code></td>
           <td><%= host.username %></td>
+          <td><%= format_fee_percentage(host.fee_percentage) %></td>
           <td><code><%= format_access_token(host) %></code></td>
           <td><%= host_properties(host) %></td>
         </tr>
@@ -71,7 +73,7 @@
   Find below the status of each synchronisation process for <%= supplier.name %>:
 
   <% if any_aggregated_worker? %>
-    <h4>Aggregated synchrnonisation</h4>
+    <h4>Aggregated synchronisation</h4>
     <%= render partial: "suppliers/workers_table", locals: { workers: aggregated_workers_for(supplier) } %>
   <% end %>
 

@@ -75,6 +75,18 @@ module Kigo
 
         quotation.available = false
         Result.new(quotation)
+      elsif payload["API_RESULT_CODE"] == "E_LIMIT"
+        # The only possible message for an +E_LIMIT+ error, according to Kigo's
+        # documentation, is for the following message:
+        #
+        #   The property pricing information is unavailable for the specified check-in/check-out dates
+        #
+        # When there are no rates available for the selected dates, this message is returned
+        # by Kigo and KigoLegacy's API. This is not an error situation, and the property
+        # should be deemed unavailable.
+
+        quotation.available = false
+        Result.new(quotation)
       else
         non_successful_result_code
         Result.error(:quote_call_failed)

@@ -9,6 +9,12 @@ module Poplidays
   class Client
     SUPPLIER_NAME = "Poplidays"
 
+    attr_reader :credentials
+
+    def initialize(credentials)
+      @credentials = credentials
+    end
+
     # Quote prices
     #
     # If an error happens in any step in the process of getting a response back from
@@ -25,19 +31,15 @@ module Poplidays
     # Returns a +Result+ wrapping a +Quotation+ when operation succeeds
     # Returns a +Result+ wrapping a nil object when operation fails
     def quote(params)
-      Poplidays::Price.new.quote(params)
+      Poplidays::Price.new(credentials).quote(params)
     end
 
-    private
-
-    def announce_error(operation, result)
-      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-        operation:   operation,
-        supplier:    SUPPLIER_NAME,
-        code:        result.error.code,
-        context:     Concierge.context.to_h,
-        happened_at: Time.now
-      })
+    # Returns a +Result+ wrapping +Reservation+ in success case.
+    # If an error happens in any step in the process of getting a response back from
+    # Poplidays, a generic error message is sent back to the caller, and the failure
+    # is logged.
+    def book(params)
+      Poplidays::Booking.new(credentials).book(params)
     end
   end
 
