@@ -25,6 +25,19 @@ RSpec.describe Ciirus::Mappers::PropertyPermissions do
       )
     end
 
+    let(:deleted_result_hash) do
+      Concierge::SafeAccessHash.new(
+        {
+          get_property_permissions_response: {
+            get_property_permissions_result: {
+              error_msg: 'Error (1012-CS) This property has been deleted. Please contact the inventory supplier. ',
+            },
+            :@xmlns=>"http://xml.ciirus.com/"
+          }
+        }
+      )
+    end
+
     subject { described_class.new }
 
     it 'returns mapped property permissions entity' do
@@ -40,6 +53,13 @@ RSpec.describe Ciirus::Mappers::PropertyPermissions do
       expect(permissions.aoa_property).to be_falsey
       expect(permissions.time_share).to be_falsey
       expect(permissions.online_booking_allowed).to be_truthy
+      expect(permissions.deleted).to be_falsey
+    end
+
+    it 'returns deleted property permissions if appropriate error message' do
+      permissions = subject.build(deleted_result_hash)
+      expect(permissions).to be_a(Ciirus::Entities::PropertyPermissions)
+      expect(permissions.deleted).to be_truthy
     end
   end
 
