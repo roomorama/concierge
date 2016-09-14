@@ -8,6 +8,9 @@ how this file is formatted and how the process works.
 ### Added
 - Ciirus (0, 0) coordinates validation
 
+### Changed
+- `E_EMPTY` error for Kigo and KigoLegacy handled as unavailable, instead of saving an error
+
 ### Fixed
 - Ciirus:: skip deleted properties during sync
 - Ciirus:: skip mc disabled properties during sync
