@@ -84,7 +84,7 @@ module Kigo
         # When there are no rates available for the selected dates, this message is returned
         # by Kigo and KigoLegacy's API. This is not an error situation, and the property
         # should be deemed unavailable.
-        #
+
         quotation.available = false
         Result.new(quotation)
       else
