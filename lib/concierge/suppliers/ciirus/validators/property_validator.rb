@@ -6,7 +6,7 @@ module Ciirus
     # cases when property invalid:
     #
     #   * bad property type
-    #   * unknown country
+    #   * invalid coordinates
     #
     class PropertyValidator
       UNSUPPORTED_PROPERTY_TYPES = ['Office', 'Barn', 'Resort', 'Unspecified', 'Hotel']
@@ -17,13 +17,17 @@ module Ciirus
       end
 
       def valid?
-        valid_property_type?
+        valid_property_type? && valid_coordinates?
       end
 
       private
 
       def valid_property_type?
         ! UNSUPPORTED_PROPERTY_TYPES.include?(property.type)
+      end
+
+      def valid_coordinates?
+        property.xco != 0 || property.yco != 0
       end
     end
   end

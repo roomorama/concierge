@@ -70,11 +70,11 @@ module Ciirus
       end
 
       def copy_xco!(hash, attrs)
-        attrs[:xco] = hash[:xco]
+        attrs[:xco] = hash[:xco].to_f
       end
 
       def copy_yco!(hash, attrs)
-        attrs[:yco] = hash[:yco]
+        attrs[:yco] = hash[:yco].to_f
       end
 
       def copy_bathrooms!(hash, attrs)

@@ -5,6 +5,9 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+### Added
+- Ciirus (0, 0) coordinates validation
+
 ### Fixed
 - Ciirus:: skip deleted properties during sync
 - Ciirus:: skip mc disabled properties during sync
