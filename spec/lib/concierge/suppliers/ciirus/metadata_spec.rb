@@ -172,6 +172,7 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
     it 'does not announce an error if permissions are invalid' do
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_rates) { Result.new(rates) }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_permissions) { Result.new(permissions) }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_images) { Result.new(images) }
       allow_any_instance_of(Ciirus::Validators::PermissionsValidator).to receive(:valid?) { false }
       subject.perform
 
