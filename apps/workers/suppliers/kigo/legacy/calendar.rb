@@ -13,7 +13,7 @@ module Workers::Suppliers::Kigo::Legacy
     end
 
     def perform
-      return if cannot_proceed?
+      return unless can_proceed?
 
       properties.each do |property|
         id = property.identifier.to_i
@@ -50,10 +50,16 @@ module Workers::Suppliers::Kigo::Legacy
       Concierge::Credentials.for(Kigo::Legacy::SUPPLIER_NAME)
     end
 
-    def cannot_proceed?
+    def can_proceed?
+      # in case there are no properties to be updated (no +identifiers+ given, in
+      # case there are no changes since the last run of the synchronisation process,
+      # for instance), then the +properties+ array will be empty. In such cases,
+      # the process can continue, but nothing will be updated.
+      return true unless properties.first
+
       id = properties.first.identifier
-      result = Kigo::HostCheck.new(id, request_handler).check
-      !result.success? || result.value
+      result = Kigo::HostCheck.new(id, request_handler).active?
+      result.success? && result.value
     end
   end
 end

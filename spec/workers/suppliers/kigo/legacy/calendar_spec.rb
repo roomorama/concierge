@@ -26,16 +26,30 @@ RSpec.describe Workers::Suppliers::Kigo::Legacy::Calendar do
        }]
     }
 
+    it 'skips synchronisation if there are no identifiers to be synchronised' do
+      subject = described_class.new(host, [])
+
+      expect {
+        subject.perform
+      }.to change { SyncProcessRepository.count }.by(1)
+
+      sync_process = SyncProcessRepository.last
+      expect(sync_process.host_id).to eq host.id
+      expect(sync_process.stats[:properties_processed]).to eq 0
+      expect(sync_process.stats[:available_records]).to eq 0
+      expect(sync_process.stats[:unavailable_records]).to eq 0
+    end
+
     context 'deactivated host' do
 
       it 'stops process with deactivated host' do
-        allow_any_instance_of(Kigo::HostCheck).to receive(:check) { Result.new(true) }
+        allow_any_instance_of(Kigo::HostCheck).to receive(:active?) { Result.new(false) }
 
         expect { subject.perform }.not_to change { SyncProcessRepository.count }
       end
 
       it 'stops process with external error' do
-        allow_any_instance_of(Kigo::HostCheck).to receive(:check) { Result.error(:connection_timeout) }
+        allow_any_instance_of(Kigo::HostCheck).to receive(:active?) { Result.error(:connection_timeout) }
 
         expect { subject.perform }.not_to change { SyncProcessRepository.count }
       end
@@ -44,7 +58,7 @@ RSpec.describe Workers::Suppliers::Kigo::Legacy::Calendar do
 
     context 'active host' do
 
-      before { allow_any_instance_of(Kigo::HostCheck).to receive(:check) { Result.new(false) } }
+      before { allow_any_instance_of(Kigo::HostCheck).to receive(:active?) { Result.new(true) } }
 
       it 'performs according to response' do
         allow_any_instance_of(Kigo::Importer).to receive(:fetch_prices) { Result.new(prices) }

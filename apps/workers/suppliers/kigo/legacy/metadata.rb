@@ -37,7 +37,7 @@ module Workers::Suppliers::Kigo::Legacy
 
         return if properties.empty?
 
-        if host_deactivated?(properties.first)
+        unless host_active?(properties.first)
           delete_result = delete_host!
           unless delete_result.success?
             announce_error('Failed to perform `#delete_host` operation', delete_result)
@@ -79,8 +79,8 @@ module Workers::Suppliers::Kigo::Legacy
       end
     end
 
-    def host_deactivated?(property)
-      result = Kigo::HostCheck.new(property['PROP_ID'], request_handler).check
+    def host_active?(property)
+      result = Kigo::HostCheck.new(property['PROP_ID'], request_handler).active?
       if result.success?
         result.value
       else
