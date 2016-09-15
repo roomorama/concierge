@@ -51,6 +51,21 @@ module Avantio
       message.doc.root.children.to_xml
     end
 
+    def cancel(booking_code)
+      message = builder.new do |xml|
+        xml.root do
+          credentials_xml(xml)
+          xml.Localizer do
+            xml.BookingCode booking_code
+          end
+          xml.Comments
+          xml.SendMailToOrganization true
+          xml.SendMailToTourist false
+        end
+      end
+      message.doc.root.children.to_xml
+    end
+
     private
 
     def credentials_xml(xml)
