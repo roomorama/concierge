@@ -11,7 +11,6 @@ module Roomorama
   #     "house"     => ["villa", "cottage", "cabin", "chateau", "bungalow"],
   #     "apartment" => ["loft", "serviced_apartment", "condo", "luxury_apartment", "studio_bachelor"],
   #     "bnb"       => [],
-  #     "hotel"     => ["boutique_hotel", "budget_hotel", "resort", "inn"],
   #     "hostel"    => []
   # Usage
   #
