@@ -1,0 +1,7 @@
+<Credentials>
+  <Language>EN</Language>
+  <UserName>Foo</UserName>
+  <Password>123</Password>
+</Credentials><Localizer>
+  <BookingCode>34634727</BookingCode>
+</Localizer><Comments/><SendMailToOrganization>true</SendMailToOrganization><SendMailToTourist>false</SendMailToTourist>

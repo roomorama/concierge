@@ -43,4 +43,13 @@ RSpec.describe Avantio::XMLBuilder do
 
     it { expect(message).to eq valid_request}
   end
+
+  describe '#cancel' do
+    let(:valid_request) do
+      read_fixture('avantio/cancel_request.xml')
+    end
+    let(:message) { subject.cancel('34634727') }
+
+    it { expect(message).to eq valid_request}
+  end
 end
