@@ -30,8 +30,8 @@ module Poplidays
 
       # Maps Poplidays lodging type to Roomorama property type/subtype.
       PROPERTY_TYPES = Concierge::SafeAccessHash.new({
-        'APARTMENT' => {type: 'apartment', subtype: nil},
-        'HOUSE'     => {type: 'house', subtype: nil},
+        'APARTMENT' => {type: 'apartment'},
+        'HOUSE'     => {type: 'house'},
      })
 
 
