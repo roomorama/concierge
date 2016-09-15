@@ -26,7 +26,7 @@ RSpec.describe Workers::Suppliers::Kigo::Legacy::Calendar do
        }]
     }
 
-    it 'skips synchronisation if there are no identifiers to be synchronised' do
+    it 'finishes successfully if there are no identifiers to be synchronised' do
       subject = described_class.new(host, [])
 
       expect {
