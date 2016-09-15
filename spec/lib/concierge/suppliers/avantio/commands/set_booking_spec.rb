@@ -102,7 +102,7 @@ RSpec.describe Avantio::Commands::SetBooking do
         event = Concierge.context.events_tracker.events.last
         expect(event).not_to be_nil
         expect(event.message.message).to eq(
-          "The response contains unexpected data:\nErrorList: `ErrorId: 5005, ErrorMessage: Fallo al desbloquear el periodo de disponibilidad`"
+          "The response contains unexpected data:\nSuccess: `false`\nErrorList: `ErrorId: 5005, ErrorMessage: Fallo al desbloquear el periodo de disponibilidad`"
         )
       end
     end
