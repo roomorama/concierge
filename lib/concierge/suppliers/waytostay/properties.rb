@@ -14,7 +14,7 @@ module Waytostay
       identifier:                "reference",
       title:                     "general.name",
       description:               "descriptions.description",
-      type:                      "general.type",
+      type:                      "general.type",  # Currently all are "Apartment"
       lat:                       "location.coord.lat",
       lng:                       "location.coord.lng",
       number_of_bedrooms:        "general.bedrooms",
