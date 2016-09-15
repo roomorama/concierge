@@ -30,8 +30,8 @@
   </ClientData>
   <Board>ROOM_ONLY</Board>
   <PaymentMethod>26</PaymentMethod>
-  <SendMailToOrganization>true</SendMailToOrganization>
-  <SendMailToTourist>false</SendMailToTourist>
   <BookingType>PETICION_INFORMACION</BookingType>
   <Comments/>
+  <SendMailToOrganization>true</SendMailToOrganization>
+  <SendMailToTourist>false</SendMailToTourist>
 </BookingData>
