@@ -28,6 +28,7 @@ post '/kigo/legacy/cancel',   to: 'kigo/legacy#cancel'
 post '/poplidays/cancel',     to: 'poplidays#cancel'
 post '/atleisure/cancel',     to: 'at_leisure#cancel'
 post '/rentalsunited/cancel', to: 'rentals_united#cancel'
+post '/avantio/cancel',       to: 'avantio#cancel'
 
 post '/checkout', to: 'static#checkout'
 get '/kigo/image/:property_id/:image_id', to: 'kigo#image'

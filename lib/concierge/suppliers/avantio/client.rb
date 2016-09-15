@@ -35,5 +35,13 @@ module Avantio
     def book(params)
       Avantio::Booking.new(credentials).book(params)
     end
+
+    # Returns a +Result+ wrapping reservation_id in success case.
+    # If an error happens in any step in the process of getting a response back from
+    # Avantio, a generic error message is sent back to the caller, and the failure
+    # is logged.
+    def cancel(params)
+      Avantio::Commands::Cancel.new(credentials).call(params[:reference_number])
+    end
   end
 end
