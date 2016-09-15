@@ -87,6 +87,17 @@ module Kigo
 
         quotation.available = false
         Result.new(quotation)
+      elsif payload["API_RESULT_CODE"] == "E_EMPTY"
+        # Most often, the error message associated with the +E_EMPTY+ errror is
+        #
+        #   The property pricing information is unavailable or the property pricing calculation is disabled.
+        #
+        # This means that either there are no availabilities for the property,
+        # or the selected dates are already booked. In either case, the property
+        # should be considered unavailable.
+
+        quotation.available = false
+        Result.new(quotation)
       else
         non_successful_result_code
         Result.error(:quote_call_failed)

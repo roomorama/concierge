@@ -4,15 +4,20 @@ RSpec.describe Ciirus::Validators::PermissionsValidator do
 
   let(:invalid_cases) do
     [
-      double(online_booking_allowed: false, time_share: false, aoa_property: false),
-      double(online_booking_allowed: true, time_share: true, aoa_property: false),
-      double(online_booking_allowed: true, time_share: false, aoa_property: true)
+      double(online_booking_allowed: false, time_share: false, aoa_property: false, deleted: false, mc_enable_property: true),
+      double(online_booking_allowed: true, time_share: true, aoa_property: false, deleted: false, mc_enable_property: true),
+      double(online_booking_allowed: true, time_share: false, aoa_property: true, deleted: false, mc_enable_property: true),
+      double(online_booking_allowed: true, time_share: false, aoa_property: false, deleted: true, mc_enable_property: true),
+      double(online_booking_allowed: true, time_share: false, aoa_property: false, deleted: false, mc_enable_property: false)
     ]
   end
   let(:valid_permissions) do
     double(online_booking_allowed: true,
            time_share: false,
-           aoa_property: false)
+           aoa_property: false,
+           deleted: false,
+           mc_enable_property: true
+    )
   end
 
   describe '#valid?' do

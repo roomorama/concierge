@@ -49,6 +49,21 @@ RSpec.shared_examples "Kigo price quotation" do
     expect(response.body).not_to have_key("total")
   end
 
+  it "returns unavailable quotation if there are no availabilities, or it is booked" do
+    stub_call(:post, endpoint) { [200, {}, read_fixture("kigo/e_empty.json")] }
+    response = parse_response(described_class.new.call(params))
+
+    expect(response.status).to eq 200
+    expect(response.body["status"]).to eq "ok"
+    expect(response.body["available"]).to eq false
+    expect(response.body["property_id"]).to eq "567"
+    expect(response.body["check_in"]).to eq "2016-03-22"
+    expect(response.body["check_out"]).to eq "2016-03-25"
+    expect(response.body["guests"]).to eq 2
+    expect(response.body).not_to have_key("currency")
+    expect(response.body).not_to have_key("total")
+  end
+
   context "success" do
     before { stub_call(:post, endpoint) { [200, {}, read_fixture("kigo/success.json")] } }
 

@@ -109,8 +109,8 @@ RSpec.describe Ciirus::Mappers::Property do
       expect(property.sleeps).to eq(6)
       expect(property.type).to eq('Apartment')
       expect(property.country).to eq('USA')
-      expect(property.xco).to eq('28.2252710')
-      expect(property.yco).to eq('-81.5005140')
+      expect(property.xco).to eq(28.225271)
+      expect(property.yco).to eq(-81.500514)
       expect(property.bathrooms).to eq(2)
       expect(property.king_beds).to eq(0)
       expect(property.queen_beds).to eq(0)
@@ -121,6 +121,7 @@ RSpec.describe Ciirus::Mappers::Property do
       expect(property.pets_allowed).to be false
       expect(property.currency_code).to eq('USD')
       expect(property.amenities).to eq(['pool'])
+      expect(property.main_image_url).to eq('http//images.ciirus.com/properties/11015/33680/images/33656-Claus-Ebster-1008.jpg')
     end
   end
 end

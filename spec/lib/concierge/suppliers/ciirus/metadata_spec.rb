@@ -170,7 +170,6 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
     end
 
     it 'does not announce an error if permissions are invalid' do
-      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_rates) { Result.new(rates) }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_permissions) { Result.new(permissions) }
       allow_any_instance_of(Ciirus::Validators::PermissionsValidator).to receive(:valid?) { false }
       subject.perform
@@ -191,22 +190,34 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_properties) { success_result }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_rates) { Result.new(rates) }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_permissions) { Result.new(permissions) }
-      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_images) { Result.error(:soap_error) }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_images) { Result.error(:soap_error, error_message) }
     end
 
-    it 'announces an error if fetching images fails' do
-      subject.perform
+    context 'when it fails with unexpected error' do
+      let(:error_message) { 'New weird error' }
 
-      error = ExternalErrorRepository.last
+      it 'announces an error if fetching images fails' do
+        subject.perform
 
-      expect(error.operation).to eq 'sync'
-      expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
-      expect(error.code).to eq 'soap_error'
+        error = ExternalErrorRepository.last
+
+        expect(error.operation).to eq 'sync'
+        expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
+        expect(error.code).to eq 'soap_error'
+      end
+
+      it 'doesnt finalize synchronisation with external error' do
+        expect(Roomorama::Client::Operations).to_not receive(:disable)
+        subject.perform
+      end
     end
 
-    it 'doesnt finalize synchronisation with external error' do
-      expect(Roomorama::Client::Operations).to_not receive(:disable)
-      subject.perform
+    context "when it fails with expected error" do
+      let(:error_message) { described_class::IGNORABLE_IMAGES_ERROR_MESSAGE }
+      it "does not create external errors" do
+        expect(subject.synchronisation).to_not receive(:start)
+        expect { subject.perform }.to_not change { ExternalErrorRepository.count }
+      end
     end
   end
 
@@ -263,7 +274,7 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
       end
     end
 
-    [described_class::IGNORABLE_ERROR_MESSAGES].each do |msg|
+    [described_class::IGNORABLE_RATES_ERROR_MESSAGES].each do |msg|
       context "when it fails with expected error: #{msg}" do
         let(:error_message) { msg }
         it "does not create external errors" do
@@ -349,6 +360,16 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
       expect {
         subject.perform
       }.to_not change { PropertyRepository.count }
+    end
+
+    context 'when empty description' do
+      let(:description) { '' }
+      it 'does not create properties in database' do
+        allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
+        expect {
+          subject.perform
+        }.to_not change { PropertyRepository.count }
+      end
     end
 
     it 'creates valid properties in database' do

@@ -16,11 +16,16 @@ module Ciirus
         copy_aoa_property!(permissions_hash, attrs)
         copy_time_share!(permissions_hash, attrs)
         copy_online_booking_allowed!(permissions_hash, attrs)
+        fill_deleted!(permissions_hash, attrs)
 
         Entities::PropertyPermissions.new(attrs)
       end
 
       private
+
+      def fill_deleted!(hash, attrs)
+        attrs[:deleted] = (hash[:error_msg] == Ciirus::Commands::PropertyPermissionsFetcher::PROPERTY_DELETED_MESSAGE)
+      end
 
       def copy_property_id!(hash, attrs)
         attrs[:property_id] = hash[:property_id]

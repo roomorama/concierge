@@ -26,6 +26,7 @@ module Ciirus
         copy_pets_allowed!(hash, attrs)
         copy_currency_code!(hash, attrs)
         copy_amenities!(hash, attrs)
+        copy_main_image_url!(hash, attrs)
 
         Entities::Property.new(attrs)
       end
@@ -70,11 +71,11 @@ module Ciirus
       end
 
       def copy_xco!(hash, attrs)
-        attrs[:xco] = hash[:xco]
+        attrs[:xco] = hash[:xco].to_f
       end
 
       def copy_yco!(hash, attrs)
-        attrs[:yco] = hash[:yco]
+        attrs[:yco] = hash[:yco].to_f
       end
 
       def copy_bathrooms!(hash, attrs)
@@ -111,6 +112,10 @@ module Ciirus
 
       def copy_currency_code!(hash, attrs)
         attrs[:currency_code] = hash[:currency_code]
+      end
+
+      def copy_main_image_url!(hash, attrs)
+        attrs[:main_image_url] = hash[:main_image_url]
       end
 
       def copy_amenities!(hash, attrs)

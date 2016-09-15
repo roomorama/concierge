@@ -4,10 +4,12 @@ module Workers::Suppliers::Ciirus
   # Performs properties synchronisation with supplier
   class Metadata
     attr_reader :synchronisation, :host
-    IGNORABLE_ERROR_MESSAGES = [
+    IGNORABLE_RATES_ERROR_MESSAGES = [
       "(soap:Server) Server was unable to process request. ---> GetPropertyRates: Error - No Rate Assigned by user. Please contact the user and request they populate this data.",
       "(soap:Server) Server was unable to process request. ---> GetPropertyRates: Error - No Rate Rows Returned"
     ]
+
+    IGNORABLE_IMAGES_ERROR_MESSAGE = '(soap:Server) Server was unable to process request. ---> GetImageList: This property contains demo images.'
 
     def initialize(host)
       @host            = host
@@ -29,6 +31,11 @@ module Workers::Suppliers::Ciirus
             end
             next unless permissions.success?
 
+            unless permissions_validator(permissions.value).valid?
+              synchronisation.skip_property
+              next
+            end
+
             # Rates are needed for a property. Skip (and purge) properties that
             # has no rates or has error when retrieving rates.
             result = fetch_rates(property_id)
@@ -40,24 +47,25 @@ module Workers::Suppliers::Ciirus
               next
             end
 
-            if permissions_validator(permissions.value).valid?
-              synchronisation.start(property_id) do
-                result = fetch_images(property_id)
-                next result unless result.success?
-                images = result.value
+            result = fetch_images(property_id)
+            next unless result.success?
+            images = result.value
 
-                result = fetch_description(property_id)
-                next result unless result.success?
-                description = result.value
-
-                result = fetch_security_deposit(property_id)
-                security_deposit = result.success? ? result.value : nil
-
-                roomorama_property = mapper.build(property, images, rates, description, security_deposit)
-                Result.new(roomorama_property)
-              end
-            else
+            result = fetch_description(property_id)
+            next unless result.success?
+            description = result.value
+            if description.to_s.empty?
               synchronisation.skip_property
+              next
+            end
+
+            synchronisation.start(property_id) do
+
+              result = fetch_security_deposit(property_id)
+              security_deposit = result.success? ? result.value : nil
+
+              roomorama_property = mapper.build(property, images, rates, description, security_deposit)
+              Result.new(roomorama_property)
             end
           else
             synchronisation.skip_property
@@ -89,21 +97,29 @@ module Workers::Suppliers::Ciirus
     end
 
     def fetch_images(property_id)
-      report_error("Failed to fetch images for property `#{property_id}`") do
-        importer.fetch_images(property_id)
+      importer.fetch_images(property_id).tap do |result|
+        unless result.success?
+          if ignorable_images_error?(result.error)
+            synchronisation.skip_property
+          else
+            message = "Failed to fetch images for property `#{property_id}`"
+            announce_error(message, result)
+          end
+        end
       end
     end
 
     def fetch_description(property_id)
-      report_error("Failed to fetch description for property `#{property_id}`") do
-        importer.fetch_description(property_id)
+      importer.fetch_description(property_id).tap do |result|
+        message = "Failed to fetch description for property `#{property_id}`"
+        announce_error(message, result) unless result.success?
       end
     end
 
     def fetch_rates(property_id)
       importer.fetch_rates(property_id).tap do |result|
         unless result.success?
-          if ignorable(result.error)
+          if ignorable_rates_error?(result.error)
             synchronisation.skip_property
           else
             message = "Failed to fetch rates for property `#{property_id}`"
@@ -131,10 +147,14 @@ module Workers::Suppliers::Ciirus
     # Args:
     #   error: a Result#error
     #
-    def ignorable(error)
-      return IGNORABLE_ERROR_MESSAGES.any? { |err_msg|
+    def ignorable_rates_error?(error)
+      IGNORABLE_RATES_ERROR_MESSAGES.any? { |err_msg|
         error.data&.include? err_msg
       }
+    end
+
+    def ignorable_images_error?(error)
+      error.data&.include? IGNORABLE_IMAGES_ERROR_MESSAGE
     end
 
     def mapper

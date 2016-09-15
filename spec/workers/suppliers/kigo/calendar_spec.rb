@@ -19,6 +19,20 @@ RSpec.describe Workers::Suppliers::Kigo::Calendar do
     let(:prices) { JSON.parse(read_fixture('kigo/pricing_setup.json')) }
     let(:availabilities) { JSON.parse(read_fixture('kigo/availabilities.json')) }
 
+    it 'finishes successfully if there are no identifiers to be synchronised' do
+      subject = described_class.new(host, [])
+
+      expect {
+        subject.perform
+      }.to change { SyncProcessRepository.count }.by(1)
+
+      sync_process = SyncProcessRepository.last
+      expect(sync_process.host_id).to eq host.id
+      expect(sync_process.stats[:properties_processed]).to eq 0
+      expect(sync_process.stats[:available_records]).to eq 0
+      expect(sync_process.stats[:unavailable_records]).to eq 0
+    end
+
     it 'performs according to response' do
       allow_any_instance_of(Kigo::Importer).to receive(:fetch_prices) { Result.new(prices) }
       allow_any_instance_of(Kigo::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }

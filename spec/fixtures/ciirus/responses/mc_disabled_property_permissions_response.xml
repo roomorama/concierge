@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<soap:Envelope xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
+  <soap:Body>
+    <GetPropertyPermissionsResponse xmlns='http://xml.ciirus.com/'>
+      <GetPropertyPermissionsResult>
+        <PropertyID>63921</PropertyID>
+        <MCEnableProperty>false</MCEnableProperty>
+        <AgentEnableProperty>false</AgentEnableProperty>
+        <AgentUserID>26888</AgentUserID>
+        <MCUserID>33322</MCUserID>
+        <NativeProperty>false</NativeProperty>
+        <CalendarSyncProperty>true</CalendarSyncProperty>
+        <AOAProperty>false</AOAProperty>
+        <ErrorMsg>Error (8000) The MC may have disabled the property from the feed. The MC user for this property has not enabled this property for your feed, but you have accepted this property in the SuperSites area of the CiiRUS windows application. </ErrorMsg>
+        <TimeShare>false</TimeShare>
+        <OnlineBookingAllowed>false</OnlineBookingAllowed>
+      </GetPropertyPermissionsResult>
+    </GetPropertyPermissionsResponse>
+  </soap:Body>
+</soap:Envelope>
