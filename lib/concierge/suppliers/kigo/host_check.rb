@@ -14,13 +14,13 @@ module Kigo
       @request_handler = request_handler
     end
 
-    def check
+    def active?
       result = http.post(endpoint, json_encode(fake_params.value), { "Content-Type" => "application/json" })
 
       if result.success?
         payload = json_decode(result.value.body)
-        is_deactivated = payload.value["API_RESULT_TEXT"].include?("deactivated")
-        Result.new(is_deactivated)
+        is_active = !payload.value["API_RESULT_TEXT"].include?("deactivated")
+        Result.new(is_active)
       else
         result
       end

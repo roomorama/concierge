@@ -16,6 +16,7 @@ how this file is formatted and how the process works.
 - Ciirus:: skip deleted properties during sync
 - Ciirus:: skip mc disabled properties during sync
 - Ciirus:: skip properties with empty description
+- KigoLegacy calendar worker now finishes successfully when there are no identifiers to be updated
 
 ## [0.9.0] - 2016-08-13
 ### Added
