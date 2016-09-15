@@ -31,6 +31,11 @@ module Workers::Suppliers::Ciirus
             end
             next unless permissions.success?
 
+            unless permissions_validator(permissions.value).valid?
+              synchronisation.skip_property
+              next
+            end
+
             # Rates are needed for a property. Skip (and purge) properties that
             # has no rates or has error when retrieving rates.
             result = fetch_rates(property_id)
@@ -46,21 +51,17 @@ module Workers::Suppliers::Ciirus
             next unless result.success?
             images = result.value
 
-            if permissions_validator(permissions.value).valid?
-              synchronisation.start(property_id) do
+            synchronisation.start(property_id) do
 
-                result = fetch_description(property_id)
-                next result unless result.success?
-                description = result.value
+              result = fetch_description(property_id)
+              next result unless result.success?
+              description = result.value
 
-                result = fetch_security_deposit(property_id)
-                security_deposit = result.success? ? result.value : nil
+              result = fetch_security_deposit(property_id)
+              security_deposit = result.success? ? result.value : nil
 
-                roomorama_property = mapper.build(property, images, rates, description, security_deposit)
-                Result.new(roomorama_property)
-              end
-            else
-              synchronisation.skip_property
+              roomorama_property = mapper.build(property, images, rates, description, security_deposit)
+              Result.new(roomorama_property)
             end
           else
             synchronisation.skip_property
