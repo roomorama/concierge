@@ -1,0 +1,9 @@
+{
+  "API_VERSION": 1,
+  "API_REVISION": 14,
+  "API_METHOD": "computePricing",
+  "API_CALL_ID": "id",
+  "API_RESULT_CODE": "E_EMPTY",
+  "API_RESULT_TEXT": "The property pricing information is unavailable or the property pricing calculation is disabled.",
+  "API_REPLY": null
+}
