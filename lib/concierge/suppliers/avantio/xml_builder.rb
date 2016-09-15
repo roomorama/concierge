@@ -84,10 +84,10 @@ module Avantio
             end
             xml.Board 'ROOM_ONLY'
             xml.PaymentMethod '26' # TODO: what does it mean?
-            xml.SendMailToOrganization true
-            xml.SendMailToTourist false
             xml.BookingType booking_type
             xml.Comments
+            xml.SendMailToOrganization true
+            xml.SendMailToTourist false
           end
         end
       end
