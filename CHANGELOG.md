@@ -11,6 +11,7 @@ how this file is formatted and how the process works.
 
 ### Changed
 - `E_EMPTY` error for Kigo and KigoLegacy handled as unavailable, instead of saving an error
+- Upgraded Ruby from 2.3.0 to 2.3.1
 
 ### Fixed
 - Ciirus:: skip deleted properties during sync
