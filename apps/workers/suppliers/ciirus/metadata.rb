@@ -51,11 +51,15 @@ module Workers::Suppliers::Ciirus
             next unless result.success?
             images = result.value
 
-            synchronisation.start(property_id) do
+            result = fetch_description(property_id)
+            next unless result.success?
+            description = result.value
+            if description.to_s.empty?
+              synchronisation.skip_property
+              next
+            end
 
-              result = fetch_description(property_id)
-              next result unless result.success?
-              description = result.value
+            synchronisation.start(property_id) do
 
               result = fetch_security_deposit(property_id)
               security_deposit = result.success? ? result.value : nil
@@ -106,8 +110,9 @@ module Workers::Suppliers::Ciirus
     end
 
     def fetch_description(property_id)
-      report_error("Failed to fetch description for property `#{property_id}`") do
-        importer.fetch_description(property_id)
+      importer.fetch_description(property_id).tap do |result|
+        message = "Failed to fetch description for property `#{property_id}`"
+        announce_error(message, result) unless result.success?
       end
     end
 

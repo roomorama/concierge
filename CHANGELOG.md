@@ -15,6 +15,7 @@ how this file is formatted and how the process works.
 ### Fixed
 - Ciirus:: skip deleted properties during sync
 - Ciirus:: skip mc disabled properties during sync
+- Ciirus:: skip properties with empty description
 
 ## [0.9.0] - 2016-08-13
 ### Added
