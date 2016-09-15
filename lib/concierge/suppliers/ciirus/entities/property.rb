@@ -4,7 +4,7 @@ module Ciirus
       attr_reader :property_id, :property_name, :mc_property_name, :address, :zip, :city, :bedrooms,
                   :sleeps, :type, :country, :xco, :yco, :bathrooms, :king_beds,
                   :queen_beds, :full_beds, :twin_beds, :extra_bed, :sofa_bed,
-                  :amenities, :pets_allowed, :currency_code
+                  :amenities, :pets_allowed, :currency_code, :main_image_url
 
       def initialize(attrs = {})
         @property_id      = attrs[:property_id]
@@ -29,6 +29,7 @@ module Ciirus
         @pets_allowed     = attrs[:pets_allowed]
         @currency_code    = attrs[:currency_code]
         @amenities        = attrs[:amenities]
+        @main_image_url   = attrs[:main_image_url]
       end
     end
   end

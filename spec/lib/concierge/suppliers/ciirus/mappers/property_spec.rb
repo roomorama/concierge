@@ -121,6 +121,7 @@ RSpec.describe Ciirus::Mappers::Property do
       expect(property.pets_allowed).to be false
       expect(property.currency_code).to eq('USD')
       expect(property.amenities).to eq(['pool'])
+      expect(property.main_image_url).to eq('http//images.ciirus.com/properties/11015/33680/images/33656-Claus-Ebster-1008.jpg')
     end
   end
 end

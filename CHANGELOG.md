@@ -7,6 +7,7 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Added
 - Ciirus (0, 0) coordinates validation
+- skip Ciirus properties with demo images
 
 ### Changed
 - `E_EMPTY` error for Kigo and KigoLegacy handled as unavailable, instead of saving an error
