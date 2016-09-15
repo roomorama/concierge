@@ -362,6 +362,16 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
       }.to_not change { PropertyRepository.count }
     end
 
+    context 'when empty description' do
+      let(:description) { '' }
+      it 'does not create properties in database' do
+        allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
+        expect {
+          subject.perform
+        }.to_not change { PropertyRepository.count }
+      end
+    end
+
     it 'creates valid properties in database' do
       allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
       expect {
