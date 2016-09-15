@@ -1,7 +1,7 @@
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
   <soapenv:Body>
     <ns1:SetBookingRS xmlns:ns1="ws.avantio.com/crsConnectionServices/xsd" xmlns:ns2="ws.avantio.com/crsConnectionServices">
-      <ns2:Succeed>false</ns2:Succeed>
+      <ns2:Success>false</ns2:Success>
       <ns2:ErrorList>
         <ns2:Error>
           <ns2:ErrorId>5005</ns2:ErrorId>
