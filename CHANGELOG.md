@@ -4,7 +4,7 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
-## Unreleased
+## [0.9.1] - 2016-09-15
 ### Added
 - Ciirus (0, 0) coordinates validation
 - skip Ciirus properties with demo images
@@ -19,7 +19,7 @@ how this file is formatted and how the process works.
 - Ciirus:: skip properties with empty description
 - KigoLegacy calendar worker now finishes successfully when there are no identifiers to be updated
 
-## [0.9.0] - 2016-08-13
+## [0.9.0] - 2016-09-13
 ### Added
 - fee percentage for hosts on Web app on suppliers#show.
 - `Workers::Suppliers::Kigo::Legacy::Calendar` skip process for deactivated hosts
