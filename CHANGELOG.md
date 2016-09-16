@@ -8,6 +8,7 @@ how this file is formatted and how the process works.
 ### Fixed
 - Improper type/subtype combinations
 - Ciirus:: skip properties with monthly rates
+- Ciirus:: skip properties without images
 
 ## [0.9.1] - 2016-09-15
 ### Added
