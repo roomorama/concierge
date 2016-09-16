@@ -4,6 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## Unreleased
+### Fixed
+- Improper type/subtype combinations
+
 ## [0.9.1] - 2016-09-15
 ### Added
 - Ciirus (0, 0) coordinates validation
@@ -18,7 +22,6 @@ how this file is formatted and how the process works.
 - Ciirus:: skip mc disabled properties during sync
 - Ciirus:: skip properties with empty description
 - KigoLegacy calendar worker now finishes successfully when there are no identifiers to be updated
-- Improper type/subtype combinations
 
 ## [0.9.0] - 2016-09-13
 ### Added
