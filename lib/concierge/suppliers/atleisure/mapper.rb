@@ -188,13 +188,11 @@ module AtLeisure
           property.subtype = 'cottage'
         when 40 # Mansion
           property.type    = 'house'
-          property.subtype = 'townhouse'
         when 50 # Villa
           property.type    = 'house'
           property.subtype = 'villa'
         when 60 # Chalet
           property.type    = 'house'
-          property.subtype = 'ski_chalet'
         when 80 # Bungalow
           property.type    = 'house'
           property.subtype = 'bungalow'
@@ -209,10 +207,8 @@ module AtLeisure
           property.subtype = 'cabin'
         when 160 # Apartment
           property.type    = 'apartment'
-          property.subtype = 'apartment'
         when 70, 90, 95, 100, 145, 150, 170 # Farmhouse, Boat, House Boat, Holiday Home, Riad, Mobile Home, Cave house
           property.type    = 'house'
-          property.subtype = 'house'
       end
     end
 

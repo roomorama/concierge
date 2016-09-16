@@ -141,7 +141,7 @@ RSpec.describe AtLeisure::Mapper do
       expect(property.services_cleaning_rate).to eq 150
       expect(property.smoking_allowed).to eq false
       expect(property.type).to eq 'house'
-      expect(property.subtype).to eq 'house'
+      expect(property.subtype).to eq nil
       expect(property.minimum_stay).to eq 3
       expect(property.nightly_rate.to_i).to eq 57
       expect(property.weekly_rate.to_i).to eq 402

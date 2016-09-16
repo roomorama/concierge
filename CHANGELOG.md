@@ -4,6 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## Unreleased
+### Fixed
+- Improper type/subtype combinations
+
 ## [0.9.1] - 2016-09-15
 ### Added
 - Ciirus (0, 0) coordinates validation

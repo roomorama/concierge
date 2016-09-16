@@ -30,6 +30,7 @@ RSpec.describe Roomorama::Property do
         nightly_rate:         100,
         pets_allowed:         false,
         default_to_available: false,
+        type:                 "bnb",
 
         images: [
           {
@@ -228,6 +229,8 @@ RSpec.describe Roomorama::Property do
       unit.add_image(image)
 
       subject.add_unit(unit)
+
+      subject.type = "bnb"
     end
 
     it "is invalid if the identifier is not given" do

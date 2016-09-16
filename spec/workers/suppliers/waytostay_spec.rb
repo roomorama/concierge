@@ -95,8 +95,9 @@ RSpec.describe Workers::Suppliers::Waytostay do
       end
 
       data = {
-        title: "Studio Apartment in Madrid",
+        title:        "Studio Apartment in Madrid",
         nightly_rate: 10,
+        type:         "bnb",
         images: [
           { identifier: "PROP1IMAGE", url: "https://www.example.org/image.png" }
         ]

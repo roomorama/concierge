@@ -12,6 +12,7 @@ RSpec.describe Roomorama::Client do
     property.description  = "Bonjour!"
     property.nightly_rate = 100
     property.currency     = "EUR"
+    property.type         = "bnb"
 
     image         = Roomorama::Image.new("IMG1")
     image.url     = "https://www.example.org/image1.png"
@@ -73,6 +74,7 @@ RSpec.describe Roomorama::Client do
     it "sends the request with the correct parameters" do
       serialized_property = {
         identifier:      "JPN123",
+        type:            "bnb",
         title:           "Studio Apartment in Paris",
         description:     "Bonjour!",
         multi_unit:      false,
