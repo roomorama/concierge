@@ -66,6 +66,7 @@ RSpec.describe Workers::OperationRunner::Publish do
       expect(result).to be_a Result
       expect(result).not_to be_success
       expect(result.error.code).to eq :http_status_422
+      expect(result.error.data).to eq "{\"status\":\"error\",\"errors\":{\"type\":\"is invalid\"}}\n"
     end
 
     it "returns the persisted property in a Result if successful" do
