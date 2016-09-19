@@ -43,7 +43,7 @@ module RentalsUnited
         property.lat                  = property_hash.get("Coordinates.Latitude").to_f
         property.lng                  = property_hash.get("Coordinates.Longitude").to_f
         property.address              = property_hash.get("Street")
-        property.postal_code          = property_hash.get("ZipCode")
+        property.postal_code          = property_hash.get("ZipCode").to_s.strip
         property.amenities            = amenities_dictionary.convert
         property.check_in_time        = check_in_time
         property.check_out_time       = check_out_time
