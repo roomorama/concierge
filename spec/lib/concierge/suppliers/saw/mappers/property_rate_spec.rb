@@ -63,7 +63,7 @@ module SAW
     let(:hash) { Concierge::SafeAccessHash.new(attributes) }
 
     it "builds available property rate object" do
-      property_rate = described_class.build(hash)
+      property_rate = described_class.build(hash).value
       expect(property_rate).to be_kind_of(SAW::Entities::PropertyRate)
       expect(property_rate.id).to eq("2596")
       expect(property_rate.currency).to eq("EUR")
@@ -89,10 +89,11 @@ module SAW
         }
       end
 
-      it "returns nil object" do
+      it "returns Result with error object" do
         property_rate = described_class.build(hash)
 
-        expect(property_rate).to be_nil
+        expect(property_rate).to be_a Result
+        expect(property_rate.error.code).to eq :empty_unit_rates
       end
     end
   end

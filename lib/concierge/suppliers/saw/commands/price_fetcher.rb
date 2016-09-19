@@ -44,15 +44,15 @@ module SAW
           result_hash = response_parser.to_hash(result.value.body)
 
           if valid_result?(result_hash)
-            property_rate = build_property_rate(result_hash)
+            property_rate_res = build_property_rate(result_hash)
 
-            quotation = if property_rate && property_rate.has_unit?(params[:unit_id])
-              SAW::Mappers::Quotation.build(params, property_rate)
+            if property_rate_res.success?
+              Result.new SAW::Mappers::Quotation.build(params, property_rate_res.value)
+            elsif property_rate_res.error.code == :empty_unit_rates
+              Result.new SAW::Mappers::Quotation.build_unavailable(params)
             else
-              SAW::Mappers::Quotation.build_unavailable(params)
+              property_rate_res
             end
-
-            Result.new(quotation)
           else
             error_result(result_hash)
           end

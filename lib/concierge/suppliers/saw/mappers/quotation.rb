@@ -15,16 +15,20 @@ module SAW
       def self.build(params, property_rate)
         requested_unit = property_rate.find_unit(params[:unit_id])
 
-        ::Quotation.new(
-          property_id: params[:property_id],
-          unit_id:     params[:unit_id],
-          check_in:    params[:check_in].to_s,
-          check_out:   params[:check_out].to_s,
-          guests:      params[:guests],
-          currency:    property_rate.currency,
-          total:       requested_unit.price,
-          available:   requested_unit.available
-        )
+        if requested_unit
+          ::Quotation.new(
+            property_id: params[:property_id],
+            unit_id:     params[:unit_id],
+            check_in:    params[:check_in].to_s,
+            check_out:   params[:check_out].to_s,
+            guests:      params[:guests],
+            currency:    property_rate.currency,
+            total:       requested_unit.price,
+            available:   requested_unit.available
+          )
+        else
+          self.build_unavailable(params)
+        end
       end
 
       # Builds unavailable quotation.

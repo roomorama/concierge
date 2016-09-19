@@ -13,15 +13,15 @@ module SAW
         #   * +hash+ [Concierge::SafeAccessHash] property rate object
         #                                        attributes
         #
-        # Returns [SAW::Entities::PropertyRate]
+        # Returns [Result] wrapping [SAW::Entities::PropertyRate]
         def build(hash)
-          return nil if empty_unit_rates?(hash)
+          return Result.error(:empty_unit_rates) if empty_unit_rates?(hash)
 
-          Entities::PropertyRate.new(
+          Result.new(Entities::PropertyRate.new(
             id: hash.get("@id"),
             units: build_units(hash),
             currency: parse_currency(hash)
-          )
+          ))
         end
 
         private
