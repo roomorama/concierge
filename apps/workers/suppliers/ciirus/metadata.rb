@@ -36,7 +36,7 @@ module Workers::Suppliers::Ciirus
             next unless permissions.success?
 
             unless permissions_validator(permissions.value).valid?
-              synchronisation.skip_property
+              synchronisation.skip_property(property_id, 'Invalid permissions')
               next
             end
 
@@ -47,7 +47,7 @@ module Workers::Suppliers::Ciirus
 
             rates  = filter_rates(result.value)
             if rates.empty?
-              synchronisation.skip_property
+              synchronisation.skip_property(property_id, 'Empty valid rates list')
               next
             end
 
@@ -59,7 +59,7 @@ module Workers::Suppliers::Ciirus
             next unless result.success?
             description = result.value
             if description.to_s.empty?
-              synchronisation.skip_property
+              synchronisation.skip_property(property_id, 'Empty description')
               next
             end
 
@@ -72,7 +72,7 @@ module Workers::Suppliers::Ciirus
               Result.new(roomorama_property)
             end
           else
-            synchronisation.skip_property
+            synchronisation.skip_property(property_id, 'Invalid property')
           end
         end
         synchronisation.finish!
@@ -104,7 +104,7 @@ module Workers::Suppliers::Ciirus
       importer.fetch_images(property_id).tap do |result|
         unless result.success?
           if ignorable_images_error?(result.error)
-            synchronisation.skip_property
+            synchronisation.skip_property(property_id, "Ignorable images error: #{result.error.data}")
           else
             message = "Failed to fetch images for property `#{property_id}`"
             announce_error(message, result)
@@ -124,7 +124,7 @@ module Workers::Suppliers::Ciirus
       importer.fetch_rates(property_id).tap do |result|
         unless result.success?
           if ignorable_rates_error?(result.error)
-            synchronisation.skip_property
+            synchronisation.skip_property(property_id, "Ignorable rates error: #{result.error.data}")
           else
             message = "Failed to fetch rates for property `#{property_id}`"
             announce_error(message, result)

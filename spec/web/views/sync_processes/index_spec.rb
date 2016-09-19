@@ -22,7 +22,13 @@ RSpec.describe Web::Views::SyncProcesses::Index do
     create_sync_process(type: "metadata", successful: false, host_id: metadata_host.id, stats: {
       properties_created: 2,
       properties_updated: 10,
-      properties_deleted: 1
+      properties_deleted: 1,
+      properties_skipped: [
+        {
+          reason: 'Error 1',
+          ids: ['314', '345']
+        }
+      ]
     })
 
     create_sync_process(type: "availabilities", successful: true, host_id: availabilities_host.id, stats: {
@@ -39,6 +45,7 @@ RSpec.describe Web::Views::SyncProcesses::Index do
     expect(sanitized).to include %(<td>2</td>)  # properties created
     expect(sanitized).to include %(<td>10</td>) # properties updated
     expect(sanitized).to include %(<td>1</td>)  # properties deleted
+    expect(sanitized).to include %(<td>2</td>)  # properties skipped
   end
 
   it "includes information about availabilities sync processes" do

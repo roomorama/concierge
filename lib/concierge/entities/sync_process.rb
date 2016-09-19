@@ -27,4 +27,12 @@ class SyncProcess
 
   attributes :id, :host_id, :started_at, :finished_at, :successful, :type,
     :stats, :created_at, :updated_at
+
+  def skipped_properties_count
+    return if type != 'metadata'
+
+    stats[:properties_skipped].inject(0) do |res, ps|
+      res + Array(ps['ids']).length
+    end
+  end
 end
