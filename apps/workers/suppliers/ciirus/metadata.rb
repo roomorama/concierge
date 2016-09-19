@@ -6,7 +6,8 @@ module Workers::Suppliers::Ciirus
     attr_reader :synchronisation, :host
     IGNORABLE_RATES_ERROR_MESSAGES = [
       "(soap:Server) Server was unable to process request. ---> GetPropertyRates: Error - No Rate Assigned by user. Please contact the user and request they populate this data.",
-      "(soap:Server) Server was unable to process request. ---> GetPropertyRates: Error - No Rate Rows Returned"
+      "(soap:Server) Server was unable to process request. ---> GetPropertyRates: Error - No Rate Rows Returned",
+      "(soap:Server) Server was unable to process request. ---> GetPropertyRates: Monthly Rates Not Supported via API. Monthly Rates Set By User. Please contact the Unit Supplier to configure a supported rate type for your channel."
     ]
 
     IGNORABLE_IMAGES_ERROR_MESSAGE = '(soap:Server) Server was unable to process request. ---> GetImageList: This property contains demo images.'

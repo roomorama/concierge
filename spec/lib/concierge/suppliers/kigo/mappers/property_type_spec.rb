@@ -12,7 +12,7 @@ RSpec.describe Kigo::Mappers::PropertyType do
 
     it { expect(subject.map(123)).to eq nil }
     it { expect(subject.map(nil)).to eq nil }
-    it { expect(subject.map(property_type_id)).to eq %w(house lake_house) }
+    it { expect(subject.map(property_type_id)).to eq ['house', nil] }
 
   end
 

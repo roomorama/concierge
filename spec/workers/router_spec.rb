@@ -11,6 +11,7 @@ RSpec.describe Workers::Router do
       property.nightly_rate = 100
       property.weekly_rate  =  200
       property.monthly_rate = 300
+      property.type         = "bnb"
 
       image = Roomorama::Image.new("img1")
       image.identifier = "img1"

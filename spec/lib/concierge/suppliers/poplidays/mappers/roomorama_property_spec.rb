@@ -106,7 +106,7 @@ RSpec.describe Poplidays::Mappers::RoomoramaProperty do
     expect(roomorama_property).to be_a(Roomorama::Property)
     expect(roomorama_property.identifier).to eq('8927439190')
     expect(roomorama_property.type).to eq('apartment')
-    expect(roomorama_property.subtype).to eq('apartment')
+    expect(roomorama_property.subtype).to eq(nil)
     expect(roomorama_property.title).to eq('Rental Apartment RIVIERA GARDEN - Antibes, 1 bedroom, 4 persons')
     expect(roomorama_property.address).to eq('87-91 Avenue Francisque PERRAUD')
     expect(roomorama_property.postal_code).to eq('06600')

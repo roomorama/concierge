@@ -6,6 +6,12 @@ module Roomorama
   # table in Roomorama. It includes attribute accessors for all parameters accepted
   # by Roomorama's API, as well as convenience methods to set property images.
   #
+  # The current valid type/subtypes are:
+  #     "room"      => [],
+  #     "house"     => ["villa", "cottage", "cabin", "chateau", "bungalow"],
+  #     "apartment" => ["loft", "serviced_apartment", "condo", "luxury_apartment", "studio_bachelor"],
+  #     "bnb"       => [],
+  #     "hostel"    => []
   # Usage
   #
   #   property = Roomorama::Property.new("ID123")

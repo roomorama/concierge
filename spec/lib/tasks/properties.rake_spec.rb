@@ -24,7 +24,9 @@ RSpec.describe "properties rake tasks" do
   before do
     refs.each do |ref|
       create_property(identifier: ref,
-        data: {amenities: "wifi,laundry",
+        data: {
+          amenities: "wifi,laundry",
+          type: "bnb",
           images: [
             { identifier: "PROP1IMAGE", url: "https://www.example.org/image.png" }
           ]})
