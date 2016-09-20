@@ -11,7 +11,7 @@ module Workers::Suppliers
     end
 
     def perform
-      result = importer.fetch_countries
+      result = synchronisation.new_context { importer.fetch_countries }
 
       if result.success?
         countries = result.value
@@ -21,7 +21,9 @@ module Workers::Suppliers
         return
       end
 
-      result = importer.fetch_properties_by_countries(countries)
+      result = synchronisation.new_context do
+        importer.fetch_properties_by_countries(countries)
+      end
 
       if result.success?
         properties = result.value
@@ -31,7 +33,9 @@ module Workers::Suppliers
         return
       end
 
-      result = importer.fetch_all_unit_rates_for_properties(properties)
+      result = synchronisation.new_context do
+        importer.fetch_all_unit_rates_for_properties(properties)
+      end
 
       if result.success?
         all_unit_rates = result.value
@@ -99,7 +103,7 @@ module Workers::Suppliers
     end
 
     def find_rates(property_id, all_unit_rates)
-      all_unit_rates.find { |rate| rate.id == property_id.to_s }
+      all_unit_rates.find { |rate| rate.property_id == property_id.to_s }
     end
   end
 end
