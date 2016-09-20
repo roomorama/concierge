@@ -1,14 +1,14 @@
-class Workers::Queue
+class Concierge::Queue
 
-  # +Workers::Queue::Poller+
+  # +Concierge::Queue::Poller+
   #
   # Wraps the function of polling for incoming messages of a given queue. Thin wrapper
   # over +Aws::SQS::QueuePoller+
   class Poller
 
-    # +Workers::Queue::Poller::InvalidQueueProcessingResultError+
+    # +Queue::Poller::InvalidQueueProcessingResultError+
     #
-    # This is raised by +Workers::Queue::Poller+ when doing a +poll+ and the block
+    # This is raised by +Concierge::Queue::Poller+ when doing a +poll+ and the block
     # invoked to process an incoming result does not return a valid instance
     # of +Result+, as it should.
     class InvalidQueueProcessingResultError < StandardError

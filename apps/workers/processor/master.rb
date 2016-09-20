@@ -3,7 +3,7 @@ class Workers::Processor
   # +Workers::Processor::Master+
   #
   # This class is responsible to coordinate a set of worker processes that process
-  # messages from the SQS queue (+Workers::Queue+), and wait for more messages.
+  # messages from the SQS queue (+Concierge::Queue+), and wait for more messages.
   # It is able to:
   #
   # * prefork a given number of worker processes, given on initialization
@@ -181,7 +181,7 @@ class Workers::Processor
     end
 
     # the main worker loop, executed by every worker process. It polls for messages
-    # from +Workers::Queue+ indefinitely, using +Workers::Processor+ to process
+    # from +Concierge::Queue+ indefinitely, using +Workers::Processor+ to process
     # each of them.
     #
     # For each incoming message, it sets this process as +busy+ so that if any
@@ -262,7 +262,7 @@ class Workers::Processor
     def queue
       @queue ||= begin
         credentials = Concierge::Credentials.for("sqs")
-        Workers::Queue.new(credentials)
+        Concierge::Queue.new(credentials)
       end
     end
 

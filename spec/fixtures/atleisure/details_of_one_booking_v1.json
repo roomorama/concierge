@@ -1,0 +1,92 @@
+{
+  "Number":975669885,
+  "StatusCode":"R-WOB",
+  "BookingDate":"2016-09-12",
+  "HouseCode":"XX-5623-01",
+  "ArrivalDate":"2017-10-28",
+  "ArrivalTimeFrom":"15:00",
+  "ArrivalTimeUntil":"18:00",
+  "DepartureDate":"2017-11-04",
+  "DepartureTimeFrom":"09:00",
+  "DepartureTimeUntil":"10:00",
+  "Brand":"BV",
+  "WebpartnerBookingCode":"",
+  "CustomerTitle":"",
+  "CustomerSurname":"Somesurname",
+  "CustomerInitials":"Test",
+  "CustomerBirthDate":"?",
+  "CustomerStreet":"",
+  "CustomerHouseNumber":"",
+  "CustomerZipCode":"",
+  "CustomerCity":"",
+  "CustomerTelephone":"",
+  "CustomerEmail":"atleisure@roomorama.com",
+  "CustomerLanguage":"EN",
+  "NumberOfAdults":1,
+  "NumberOfChildren":0,
+  "NumberOfBabies":0,
+  "NumberOfPets":0,
+  "PaymentFirstTermDateTime":"2016-09-19T05:44:05.479+02:00",
+  "PaymentFirstTermAmount":257.0,
+  "PaymentMethods":[
+    {
+      "Method":"Mastercard",
+      "Amount":257.0,
+      "Costs":0.0,
+      "URL":"https://www.leisure-ict.net/srv/payment/request.htm?pm=cd0J0P096C0B2K1O2M1G3E3J46454G5X0J3T524F5I0D3Z4O435D092G5A3J5M6M455B3Y5Z73415E3I5E71424F434R6O4B65475U044H634F4X09414W3U626T3U"
+    }, {
+      "Method":"VISA",
+      "Amount":257.0,
+      "Costs":0.0,
+      "URL":"https://www.leisure-ict.net/srv/payment/request.htm?pm=hW0T0T006E0C2L1L2E1M3P4P413T3Z6A074356465K0E404L3V5J0K3M5537556Z3T5L425Q01425F3F56034D5L3Y4F674O5T4H6F6Z4J644G4U014757505X6H3D"
+    }, {
+      "Method":"Maestro",
+      "Amount":257.0,
+      "Costs":0.0,
+      "URL":"https://www.leisure-ict.net/srv/payment/request.htm?pm=Jn0V725W640B2G1M2C1J354O454Q4D6B0H454B2Y5A0D3V4M3T5G003L59445J70435N374I6V415A3G54003T5K425C6L4P634J5B5R49634B4V73444N4Z610A3R"
+    }, {
+      "Method":"American Express",
+      "Amount":257.0,
+      "Costs":0.0,
+      "URL":"https://www.leisure-ict.net/srv/payment/request.htm?pm=bb0N0S676A0A2K241G0I2K4P3W4W4R6E0K3X55395G0C3Z542X4F6J3M504A5X73465F414T71405E3Y4863385L3T5I6Z4S664B5T624F624F5D673342505S0G45"
+    }, {
+      "Method":"PayPal",
+      "Amount":257.0,
+      "Costs":0.0,
+      "URL":"https://www.leisure-ict.net/srv/payment/request.htm?pm=mp0L1E615M032J2F1V1O364G444N4Y696H3V5R334S053Y5F3C5L013D5841646Y2Z5D4N4N6D3T5D494N053U5C4159024N4Z496U5W3R5V4E5O6M494O4R60074C"
+    }, {
+      "Method":"Mastercard",
+      "Amount":1037.79,
+      "Costs":0.0,
+      "URL":"https://www.leisure-ict.net/srv/payment/request.htm?pm=Id6W0Z6Y6E022S252E1F3G4H414W4D6K0I325C405K0447553V5C0B3E554A5J05444K485K013S5M3Z5670445D3Y5I6L4Y643G646T4J5U4N5D703W5I3S5L0C3E674N4W04"
+    }, {
+      "Method":"VISA",
+      "Amount":1037.79,
+      "Costs":0.0,
+      "URL":"https://www.leisure-ict.net/srv/payment/request.htm?pm=jU0S106X660B2D2B1O15374M444X4O6J0I425D3Z5C0D3S5B3552023J584B5U04445K495J6X4157454G6Q3V5I415J6W4X644G6M6S4B63485J6A3M593X5O0D3P664N5W05"
+    }, {
+      "Method":"Maestro",
+      "Amount":1037.79,
+      "Costs":0.0,
+      "URL":"https://www.leisure-ict.net/srv/payment/request.htm?pm=cn0P0P6Q6B091K292D1F3F4E474F4N6K0H3Z523S5H0B2Z593U5C0A3B5B3T5T05435H3Y5C723Z4E435570435A44516V4Y634D626L4G613F5H6Z3W5H3P5R6Z3O674M5T6Y"
+    }, {
+      "Method":"American Express",
+      "Amount":1037.79,
+      "Costs":0.0,
+      "URL":"https://www.leisure-ict.net/srv/payment/request.htm?pm=xb0T0A6A636P2L242V1F3D4M484Y3H5J0J434N3C596R40544C5C083J5C4C4N68455L3J4W6U3B5F3Y5N70415I455K5P3X654H5B65485D4G5C0D3W5F3X5S0E2I564O5X6J"
+    }, {
+      "Method":"PayPal",
+      "Amount":1037.79,
+      "Costs":0.0,
+      "URL":"https://www.leisure-ict.net/srv/payment/request.htm?pm=ip0L0R6Z5U0A2B2D1Y1L3O4F494P4N6H0H3V5441500C3Q5D3F5I0J3C5D435T02435D405L6L4055474Q024C5B465B6V4V6349676U3Z62465L6K425Q3Q5T053O644M5P70"
+    }
+  ],
+  "PaymentURL":"https://customerpayment.leisure-ict.net/srv/customerpayment/payment.htm?R=0x0000000002c6b200&Huovnr=975669885",
+  "PaymentSecondTermDateTime":"2017-09-16T05:44:05.479+02:00",
+  "PaymentSecondTermAmount":780.79,
+  "AmountDetails":{"Deposit":250.0,
+  "Rent":740.86,
+  "Booking fees":30.0,
+  "Cost insurance":16.93},
+  "ContractPDF":"https://www.leisure-ict.net/pdf/huov-079f3645b0a452eedb1c2ce49ea0ad35ff553fb8.pdf"
+}

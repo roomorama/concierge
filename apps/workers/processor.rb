@@ -4,8 +4,8 @@ module Workers
 
   # +Workers::Processor+
   #
-  # This class wraps the logic of processing one message read from the +Workers::Queue+
-  # (backed by an SQS queue) class. By default (as specified by +Workers::Queue::Element+),
+  # This class wraps the logic of processing one message read from the +Concierge::Queue+
+  # (backed by an SQS queue) class. By default (as specified by +Concierge::Queue::Element+),
   # each message is a JSON-encoded string containing two fields:
   #
   # +operation+ - the identifier of the operation to be performed. Only +sync+ is supported
@@ -16,7 +16,7 @@ module Workers
   #
   # Example
   #
-  #   queue = Workers::Queue.new(credentials)
+  #   queue = Concierge::Queue.new(credentials)
   #   queue.poll do |message|
   #     Workers::Processor.new(message).process!
   #   end
@@ -59,6 +59,8 @@ module Workers
 
       if element[:operation] == "background_worker"
         Processor::BackgroundWorker.new(element[:data]).run
+      elsif element[:operation] == "pdf"
+        Processor::Pdf.new(element[:data]).run
       else
         raise UnknownOperationError.new(element[:operation])
       end

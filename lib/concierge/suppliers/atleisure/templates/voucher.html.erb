@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <div id="inquiry-signature-sheet" class="pdf-container">
+      <div id="partner-voucher">
+        <img src='logo-pdf.png' style='width:300px'>
+
+        <h3>Booking Summary</h3>
+        <div class="section">
+          <div class="fieldrow">
+            <div class="field">
+              <label>Guest:</label> <%= guest_name %>
+            </div>
+          </div>
+          <div class="fieldrow">
+            <div class="field">
+              <label>Booking</label> <%= reference_number %>
+            </div>
+          </div>
+          <div class="fieldrow">
+            <div class="field">
+              <label>Check-in:</label><%= check_in %>
+              <div><%= "(between #{arrival_time_from} and #{arrival_time_until})" %></div>
+            </div>
+          <div class="fieldrow">
+            <div class="field">
+              <label>Check-out:</label><%= @inquiry.end_date.to_s %>
+              <div><%= "(between #{departure_time_from} and #{departure_time_until})" %></div>
+            </div>
+          </div>
+          <div class="fieldrow">
+            <div class="field">
+              <label>Nr. of Guests:</label><%= reservation_guests %>
+            </div>
+          </div>
+          <div class="fieldrow">
+            <div class="field">
+              <label>Reservation Date:</label><%= booking_date %>
+            </div>
+          </div>
+          <br class="clear">
+        </div>
+
+        <h3>Property Details</h3>
+        <div class="section">
+          <div class="fieldrow">
+            <div class="field">
+              <label>Host:</label>
+              <%= @inquiry.host.display_name %>
+              <span class="details">(<%= @inquiry.host.login %>)</span>
+            </div>
+          </div>
+          <div class="fieldrow">
+            <div class="field">
+              <label>Property:</label>
+              #<%= @inquiry.room.try(:source_id) %> -
+              <span class="details"><%= @inquiry.room.try(:title, :truncate => 60) %></span>
+            </div>
+          </div>
+          <% if @inquiry.unit %>
+            <div class="fieldrow">
+              <div class="field">
+                <label>Unit Type:</label><%= @inquiry.unit.title %>
+              </div>
+            </div>
+          <% end %>
+          <br class="clear">
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

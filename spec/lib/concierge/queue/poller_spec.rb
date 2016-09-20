@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Workers::Queue::Poller do
+RSpec.describe Concierge::Queue::Poller do
   describe "#poll" do
     class TestPoller
       attr_reader :message
@@ -31,7 +31,7 @@ RSpec.describe Workers::Queue::Poller do
         subject.poll do
           42
         end
-      }.to raise_error Workers::Queue::Poller::InvalidQueueProcessingResultError
+      }.to raise_error Concierge::Queue::Poller::InvalidQueueProcessingResultError
     end
 
     it "does not delete the message if the message processing indicates failure" do

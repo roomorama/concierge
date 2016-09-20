@@ -86,14 +86,14 @@ module Concierge
 
       if json_response.has_key?("error")
         non_successful_json_rpc_response
-        return Result.error(:json_rpc_response_has_errors)
+        return Result.error(:json_rpc_response_has_errors, json_response)
       end
 
       if json_response.has_key?("result")
         Result.new(json_response["result"])
       else
         invalid_json_rpc_response
-        Result.error(:invalid_json_rpc_response)
+        Result.error(:invalid_json_rpc_response, json_response)
       end
     end
 
