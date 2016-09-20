@@ -44,15 +44,11 @@ module SAW
           result_hash = response_parser.to_hash(result.value.body)
 
           if valid_result?(result_hash)
-            property_rate_res = build_property_rate(result_hash)
+            quotation = build_quotation(params, result_hash)
 
-            if property_rate_res.success?
-              Result.new SAW::Mappers::Quotation.build(params, property_rate_res.value)
-            elsif property_rate_res.error.code == :empty_unit_rates
-              Result.new SAW::Mappers::Quotation.build_unavailable(params)
-            else
-              property_rate_res
-            end
+            return Result.error(:empty_unit_rates) unless quotation
+
+            Result.new(quotation)
           else
             error_result(result_hash)
           end
@@ -62,13 +58,6 @@ module SAW
       end
 
       private
-      def build_property_rate(hash)
-        rates_hash = hash.get("response.property")
-        safe_hash  = Concierge::SafeAccessHash.new(rates_hash)
-
-        SAW::Mappers::PropertyRate.build(safe_hash)
-      end
-
       def build_payload(params)
         payload_builder.build_compute_pricing(
           property_id: params[:property_id],
@@ -77,6 +66,13 @@ module SAW
           check_out:   params[:check_out],
           num_guests:  params[:guests]
         )
+      end
+
+      def build_quotation(params, result_hash)
+        rates_hash = result_hash.get("response.property")
+        safe_hash  = Concierge::SafeAccessHash.new(rates_hash)
+
+        SAW::Mappers::Quotation.build(params, safe_hash)
       end
     end
   end

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module SAW
-  RSpec.describe Mappers::PropertyRate do
+  RSpec.describe Mappers::UnitsPricing do
     let(:attributes) do
       {
         "name"=>"Adagio Access Avignon",
@@ -61,15 +61,21 @@ module SAW
     end
 
     let(:hash) { Concierge::SafeAccessHash.new(attributes) }
+    let(:rates_array) { Array(hash) }
+    let(:stay_length) { 1 }
 
     it "builds available property rate object" do
-      property_rate = described_class.build(hash).value
-      expect(property_rate).to be_kind_of(SAW::Entities::PropertyRate)
-      expect(property_rate.id).to eq("2596")
-      expect(property_rate.currency).to eq("EUR")
-      expect(property_rate.units.size).to eq(1)
+      units_pricings = described_class.build(rates_array, stay_length)
+      expect(units_pricings).to be_kind_of(Array)
+      expect(units_pricings.size).to eq(1)
+      expect(units_pricings).to all(be_kind_of(SAW::Entities::UnitsPricing))
 
-      unit = property_rate.units.first
+      units_pricing = units_pricings.first
+      expect(units_pricing.property_id).to eq("2596")
+      expect(units_pricing.currency).to eq("EUR")
+      expect(units_pricing.units.size).to eq(1)
+
+      unit = units_pricing.units.first
 
       expect(unit.id).to eq("9863")
       expect(unit.price).to eq(104.00)
@@ -89,11 +95,33 @@ module SAW
         }
       end
 
-      it "returns Result with error object" do
-        property_rate = described_class.build(hash)
+      it "returns an empty array" do
+        units_pricing = described_class.build(rates_array, stay_length)
 
-        expect(property_rate).to be_a Result
-        expect(property_rate.error.code).to eq :empty_unit_rates
+        expect(units_pricing).to eq([])
+      end
+    end
+
+    describe "when rates are fetched for a few days" do
+      let(:stay_length) { 3 }
+
+      it "divide total price to stay_length value" do
+        units_pricings = described_class.build(rates_array, stay_length)
+        expect(units_pricings).to be_kind_of(Array)
+        expect(units_pricings.size).to eq(1)
+        expect(units_pricings).to all(be_kind_of(SAW::Entities::UnitsPricing))
+
+        units_pricing = units_pricings.first
+        expect(units_pricing.property_id).to eq("2596")
+        expect(units_pricing.currency).to eq("EUR")
+        expect(units_pricing.units.size).to eq(1)
+
+        unit = units_pricing.units.first
+
+        expect(unit.id).to eq("9863")
+        expect(unit.price).to eq(34.67)
+        expect(unit.available).to eq(true)
+        expect(unit.max_guests).to eq(4)
       end
     end
   end

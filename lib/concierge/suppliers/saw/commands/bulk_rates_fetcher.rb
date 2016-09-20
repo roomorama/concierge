@@ -10,6 +10,12 @@ module SAW
     #   command = SAW::Commands::BulkRatesFetcher.new(credentials)
     #   result = command.call(property_id)
     class BulkRatesFetcher < BaseFetcher
+      # How many days in future skip to fetch rates.
+      STAY_OFFSET = 90
+
+      # SAW returns rates for more properties if chosen STAY_LENGTH is 2 days
+      STAY_LENGTH = 2
+
       # Calls the SAW API method using the HTTP client.
       #
       # Arguments
@@ -39,14 +45,11 @@ module SAW
 
       private
       def build_rates(rates_hash)
-        rates = rates_hash.get("response.property")
+        rates_array = Array(rates_hash.get("response.property"))
 
-        return [] unless rates
+        return rates_array unless rates_array.any?
 
-        Array(rates).map do |rate|
-          safe_hash = Concierge::SafeAccessHash.new(rate)
-          SAW::Mappers::PropertyRate.build(safe_hash)
-        end.compact
+        SAW::Mappers::UnitsPricing.build(rates_array, STAY_LENGTH)
       end
 
       def build_payload(ids)
@@ -59,11 +62,11 @@ module SAW
       end
 
       def check_in
-        (today + 90 * one_day).strftime("%d/%m/%Y")
+        (today + STAY_OFFSET * one_day).strftime("%d/%m/%Y")
       end
 
       def check_out
-        (today + 92 * one_day).strftime("%d/%m/%Y")
+        (today + (STAY_OFFSET+STAY_LENGTH) * one_day).strftime("%d/%m/%Y")
       end
 
       def one_day
