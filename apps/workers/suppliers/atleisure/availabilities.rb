@@ -94,8 +94,8 @@ module Workers
   end
 end
 
-# listen supplier worker
+# listen to supplier worker
 Concierge::Announcer.on('availabilities.AtLeisure') do |host, args|
-  Workers::Suppliers::Atleisure::Availabilities.new(host).perform
+  Workers::Suppliers::AtLeisure::Availabilities.new(host).perform
   Result.new({})
 end
