@@ -1,10 +1,10 @@
 module Workers
   module Suppliers
     module AtLeisure
-      # +Workers::Suppliers::AtLeisure::Calendar+
+      # +Workers::Suppliers::AtLeisure::Availabilities+
       #
       # Performs properties availabilities synchronisation with supplier
-      class Calendar
+      class Availabilities
         BATCH_SIZE = 50
 
         attr_reader :synchronisation, :host
@@ -96,6 +96,6 @@ end
 
 # listen supplier worker
 Concierge::Announcer.on('availabilities.AtLeisure') do |host, args|
-  Workers::Suppliers::Atleisure::Calendar.new(host).perform
+  Workers::Suppliers::Atleisure::Availabilities.new(host).perform
   Result.new({})
 end

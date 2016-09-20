@@ -5,6 +5,9 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+### Added
+- Atleisure:: calendar sync worker
+
 ### Fixed
 - Ciirus:: skip properties without images
 

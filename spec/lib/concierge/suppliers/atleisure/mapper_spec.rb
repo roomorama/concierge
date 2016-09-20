@@ -146,10 +146,10 @@ RSpec.describe AtLeisure::Mapper do
       expect(property.smoking_allowed).to eq false
       expect(property.type).to eq 'house'
       expect(property.subtype).to eq nil
-      expect(property.minimum_stay).to eq 3
-      expect(property.nightly_rate.to_i).to eq 57
-      expect(property.weekly_rate.to_i).to eq 402
-      expect(property.monthly_rate.to_i).to eq 1722
+      expect(property.minimum_stay).to eq 2
+      expect(property.nightly_rate.to_i).to eq 67
+      expect(property.weekly_rate.to_i).to eq 469
+      expect(property.monthly_rate.to_i).to eq 2010
 
       expect(property.owner_email).to eq 'belvillapt@belvilla.com'
       expect(property.owner_phone_number).to eq '(+32) 03 808 09 54'
