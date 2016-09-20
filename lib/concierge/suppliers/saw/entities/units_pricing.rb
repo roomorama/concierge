@@ -19,27 +19,6 @@ module SAW
         @units = units
         @currency = currency
       end
-
-      # Find unit rate by +unit_id+
-      #
-      # Arguments
-      #   * +unit_id+
-      #
-      # Returns [SAW::Entities::UnitRate]
-      def find_unit_rate(unit_id)
-        units.detect { |u| u.id == unit_id }
-      end
-
-      # Determines whether unit with given +uni_id+ is present in units pricing
-      # object or not.
-      #
-      # Arguments
-      #   * +unit_id+
-      #
-      # Returns [Boolean] flag indicating the presence of rates for unit
-      def has_rates_for_unit?(unit_id)
-        !!find_unit(unit_id)
-      end
     end
   end
 end
