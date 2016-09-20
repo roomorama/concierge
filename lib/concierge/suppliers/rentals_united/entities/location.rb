@@ -9,6 +9,14 @@ module RentalsUnited
       def initialize(id)
         @id = id
       end
+
+      def load(attrs)
+        self.neighborhood = attrs[:neighborhood]
+        self.city = attrs[:city]
+        self.region = attrs[:region]
+        self.country = attrs[:country]
+        self
+      end
     end
   end
 end
