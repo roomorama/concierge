@@ -46,8 +46,6 @@ module SAW
           if valid_result?(result_hash)
             quotation = build_quotation(params, result_hash)
 
-            return Result.error(:empty_unit_rates) unless quotation
-
             Result.new(quotation)
           else
             error_result(result_hash)
