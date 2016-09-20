@@ -7,6 +7,8 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Added
 - Atleisure:: calendar sync worker
+- reason for all properties skipped during sync
+- page for sync process stats
 
 ### Fixed
 - Ciirus:: skip properties without images

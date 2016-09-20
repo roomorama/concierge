@@ -16,14 +16,13 @@ module Workers::Suppliers::Poplidays
       if result.success?
         properties = result.value
         properties.each do |property|
+          property_id = property['id']
           if validator(property).valid?
-            property_id = property['id']
-
             details = synchronisation.new_context { fetch_property_details(property_id) }
             next unless details.success?
 
             unless details_validator(details.value).valid?
-              synchronisation.skip_property
+              synchronisation.skip_property(property_id, 'Invalid property details')
               next
             end
 
@@ -33,7 +32,7 @@ module Workers::Suppliers::Poplidays
             availabilities = filter_availabilities(result.value)
 
             if availabilities.empty?
-              synchronisation.skip_property
+              synchronisation.skip_property(property_id, 'Empty valid availabilities list')
               next
             end
 
@@ -44,7 +43,7 @@ module Workers::Suppliers::Poplidays
               mapper.build(property, details.value, availabilities, extras)
             end
           else
-            synchronisation.skip_property
+            synchronisation.skip_property(property_id, 'Invalid property')
           end
         end
         synchronisation.finish!

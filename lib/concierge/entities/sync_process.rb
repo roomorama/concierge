@@ -27,4 +27,10 @@ class SyncProcess
 
   attributes :id, :host_id, :started_at, :finished_at, :successful, :type,
     :stats, :created_at, :updated_at
+
+  # Method actual only for metadata sync process.
+  # Always returns 0 for others types.
+  def skipped_properties_count
+    stats[:properties_skipped].map { |h| Array(h['ids']).size }.reduce(0, :+)
+  end
 end
