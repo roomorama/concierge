@@ -44,11 +44,8 @@ module RentalsUnited
       end
 
       def rate_by_date(date)
-        rates.each do |rate|
-          return rate.price if rate.has_price_for_date?(date)
-        end
-
-        return nil
+        rate_for_date = rates.find { |rate| rate.has_price_for_date?(date) }
+        rate_for_date&.price
       end
     end
   end
