@@ -9,10 +9,10 @@ module RentalsUnited
       # Rentals United mapping of location ids and location types.
       # Worldwide and Continent type locations are not mapped.
       LOCATION_TYPES = {
-        2 => "Country",
-        3 => "Region",
-        4 => "City",
-        5 => "District"
+        2 => :country,
+        3 => :region,
+        4 => :city,
+        5 => :neighborhood
       }
 
       # Initialize +RentalsUnited::Mappers::Location+ mapper
@@ -38,7 +38,9 @@ module RentalsUnited
 
         current_level = find_location_data(location_id)
         current_level_type = current_level[:type]
-        update_location(location, current_level)
+
+        location_hash = {}
+        update_location_hash(location_hash, current_level)
 
         while(LOCATION_TYPES.keys.include?(current_level_type)) do
           parent_location_id = current_level[:parent_id]
@@ -46,29 +48,23 @@ module RentalsUnited
           current_level = find_location_data(parent_location_id)
           current_level_type = current_level[:type]
 
-          update_location(location, current_level)
+          update_location_hash(location_hash, current_level)
         end
 
-        location
+        location.load(location_hash)
       end
 
+      private
       def find_location_data(id)
         raw_locations_database.find do |location|
           location[:id] == id
         end
       end
 
-      def update_location(location, current_level)
-        case current_level[:type]
-        when 5
-          location.neighborhood = current_level[:name]
-        when 4
-          location.city = current_level[:name]
-        when 3
-          location.region = current_level[:name]
-        when 2
-          location.country = current_level[:name]
-        end
+      def update_location_hash(location_hash, current_level)
+        key = LOCATION_TYPES[current_level[:type]]
+        value = current_level[:name]
+        location_hash[key] = value
       end
     end
   end
