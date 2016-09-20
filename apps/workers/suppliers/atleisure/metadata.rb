@@ -39,8 +39,9 @@ module Workers::Suppliers::AtLeisure
       if result.success?
         properties_data = result.value
         properties_data.map do |property|
+          property_id = property['HouseCode']
           if validator(property).valid?
-            synchronisation.start(property['HouseCode']) {
+            synchronisation.start(property_id) {
               # AtLeisure's API calls return with large result payloads while
               # synchronising properties, therefore, event tracking is disabled
               # while the property is parsed.
@@ -49,7 +50,7 @@ module Workers::Suppliers::AtLeisure
               mapper.prepare(property)
             }
           else
-            synchronisation.skip_property
+            synchronisation.skip_property(property_id, 'Invalid property')
           end
         end
       else
