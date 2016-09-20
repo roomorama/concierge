@@ -4,11 +4,14 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## Unreleased
+### Fixed
+- Ciirus:: skip properties without images
+
 ## [0.9.2] - 2016-09-19
 ### Fixed
 - Improper type/subtype combinations
 - Ciirus:: skip properties with monthly rates
-- Ciirus:: skip properties without images
 
 ## [0.9.1] - 2016-09-15
 ### Added
