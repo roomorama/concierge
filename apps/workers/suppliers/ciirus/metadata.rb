@@ -10,7 +10,10 @@ module Workers::Suppliers::Ciirus
       "(soap:Server) Server was unable to process request. ---> GetPropertyRates: Monthly Rates Not Supported via API. Monthly Rates Set By User. Please contact the Unit Supplier to configure a supported rate type for your channel."
     ]
 
-    IGNORABLE_IMAGES_ERROR_MESSAGE = '(soap:Server) Server was unable to process request. ---> GetImageList: This property contains demo images.'
+    IGNORABLE_IMAGES_ERROR_MESSAGES = [
+      '(soap:Server) Server was unable to process request. ---> GetImageList: This property contains demo images.',
+      '(soap:Server) Server was unable to process request. ---> GetImageList: Error - No Images exist for this property at this time. Please contact the user and request they populate this data.'
+    ]
 
     def initialize(host)
       @host            = host
@@ -155,7 +158,9 @@ module Workers::Suppliers::Ciirus
     end
 
     def ignorable_images_error?(error)
-      error.data&.include? IGNORABLE_IMAGES_ERROR_MESSAGE
+      IGNORABLE_IMAGES_ERROR_MESSAGES.any? { |err_msg|
+        error.data&.include? err_msg
+      }
     end
 
     def mapper
