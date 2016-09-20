@@ -4,11 +4,11 @@ require_relative '../../../../apps/web/views/sync_processes/stats'
 RSpec.describe Web::Views::SyncProcesses::Stats do
   include Support::Factories
 
-  let(:metadata)       { SyncProcessRepository.all.first }
-  let(:exposures)      { Hash[sync_process: metadata] }
-  let(:template)       { Hanami::View::Template.new('apps/web/templates/sync_processes/stats.html.erb') }
-  let(:view)           { described_class.new(template, exposures) }
-  let(:rendered)       { view.render }
+  let(:metadata)  { SyncProcessRepository.all.first }
+  let(:exposures) { Hash[sync_process: metadata] }
+  let(:template)  { Hanami::View::Template.new('apps/web/templates/sync_processes/stats.html.erb') }
+  let(:view)      { described_class.new(template, exposures) }
+  let(:rendered)  { view.render }
 
 
   let(:sanitized) { rendered.gsub("\n", "").gsub(/\s\s+/, " ") }
