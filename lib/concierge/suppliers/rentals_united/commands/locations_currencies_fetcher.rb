@@ -13,7 +13,7 @@ module RentalsUnited
       # Returns a +Result+ with +Result::Error+ when operation fails
       def fetch_location_currencies
         payload = payload_builder.build_location_currencies_fetch_payload
-        result = http.post(credentials.url, payload, headers)
+        result = api_call(payload)
 
         return result unless result.success?
 

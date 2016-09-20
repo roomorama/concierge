@@ -17,12 +17,10 @@ module RentalsUnited
         @response_parser ||= RentalsUnited::ResponseParser.new
       end
 
-      def http
-        @http_client ||= Concierge::HTTPClient.new(credentials.url)
-      end
-
-      def headers
-        { "Content-Type" => "application/xml" }
+      # All API calls performed to the same base URL which determined in
+      # the instance of http client.
+      def api_call(payload)
+        http.post("", payload, headers)
       end
 
       def get_status(hash, root_tag_name)
@@ -78,6 +76,15 @@ module RentalsUnited
       def unrecognised_response_event(backtrace)
         message = "Error response could not be recognised (no `Status` tag in the response)"
         mismatch(message, backtrace)
+      end
+
+      private
+      def http
+        @http_client ||= Concierge::HTTPClient.new(credentials.url)
+      end
+
+      def headers
+        { "Content-Type" => "application/xml" }
       end
     end
   end

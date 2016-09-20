@@ -38,7 +38,7 @@ module RentalsUnited
       # Returns a +Result+ with +Result::Error+ when operation fails
       def fetch_property
         payload = payload_builder.build_property_fetch_payload(property_id)
-        result = http.post(credentials.url, payload, headers)
+        result = api_call(payload)
 
         return result unless result.success?
 
