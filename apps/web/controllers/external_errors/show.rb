@@ -10,16 +10,7 @@ module Web::Controllers::ExternalErrors
     def call(params)
       @error = ExternalErrorRepository.find(params[:id])
 
-      unless @error
-        render_404_template
-      end
-    end
-
-    private
-
-    def render_404_template
-      template = Web::Controllers::TemplateRenderer.new("404.html.erb").render
-      status 404, template
+      halt 404 unless @error
     end
   end
 end
