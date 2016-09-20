@@ -42,7 +42,7 @@ module AtLeisure
     end
 
     def instant_bookable?
-      payload['AvailabilityPeriodV1'].any? { |availability| availability['OnRequest'] == 'No' }
+      payload['AvailabilityPeriodV1'].any? { |availability| availability_validator(availability).valid? }
     end
 
     def acceptable_type?
@@ -62,6 +62,10 @@ module AtLeisure
 
     def find_en(item)
       item['TypeDescriptions'].find { |desc| desc['Language'] == 'EN' }['Description']
+    end
+
+    def availability_validator(availability)
+      ::AtLeisure::AvailabilityValidator.new(availability)
     end
 
     def code_for(item)

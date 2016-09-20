@@ -1,9 +1,8 @@
-module Workers::Suppliers
-  # +Workers::Suppliers::AtLeisure+
+module Workers::Suppliers::AtLeisure
+  # +Workers::Suppliers::AtLeisure::Metadata+
   #
-  # Performs synchronisation with supplier
-  class AtLeisure
-    SUPPLIER_NAME = 'AtLeisure'
+  # Performs properties synchronisation with supplier
+  class Metadata
     BATCH_SIZE = 50
 
     attr_reader :synchronisation, :host
@@ -14,7 +13,7 @@ module Workers::Suppliers
     end
 
     def perform
-      result = importer.fetch_properties
+      result = synchronisation.new_context { importer.fetch_properties }
       if result.success?
         grouped_actual_properties(result.value).each do |properties|
           fetch_data_and_process(properties)
@@ -36,7 +35,7 @@ module Workers::Suppliers
 
     def fetch_data_and_process(properties)
       ids = identifiers(properties)
-      result = importer.fetch_data(ids)
+      result = synchronisation.new_context { importer.fetch_data(ids) }
       if result.success?
         properties_data = result.value
         properties_data.map do |property|
@@ -49,6 +48,8 @@ module Workers::Suppliers
 
               mapper.prepare(property)
             }
+          else
+            synchronisation.skip_property
           end
         end
       else
@@ -71,7 +72,7 @@ module Workers::Suppliers
     end
 
     def credentials
-      Concierge::Credentials.for(SUPPLIER_NAME)
+      Concierge::Credentials.for(AtLeisure::Client::SUPPLIER_NAME)
     end
 
     def mapper
@@ -89,7 +90,7 @@ module Workers::Suppliers
 
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
         operation:   'sync',
-        supplier:    SUPPLIER_NAME,
+        supplier:    AtLeisure::Client::SUPPLIER_NAME,
         code:        result.error.code,
         context:     Concierge.context.to_h,
         happened_at: Time.now
@@ -100,6 +101,6 @@ end
 
 # listen supplier worker
 Concierge::Announcer.on("metadata.AtLeisure") do |host, args|
-  Workers::Suppliers::AtLeisure.new(host).perform
+  Workers::Suppliers::AtLeisure::Metadata.new(host).perform
   Result.new({})
 end

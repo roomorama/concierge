@@ -4,6 +4,10 @@ RSpec.describe AtLeisure::Mapper do
   include Support::Fixtures
 
   let(:layout_items) { JSON.parse(read_fixture('atleisure/layout_items.json')) }
+  let(:today) { Date.new(2016, 6, 18) }
+  before do
+    allow(Date).to receive(:today).and_return(Date.new(2016, 6, 18))
+  end
 
   subject { described_class.new(layout_items: layout_items) }
 
@@ -83,8 +87,8 @@ RSpec.describe AtLeisure::Mapper do
           'DepartureTimeFrom'  => '09:00',
           'DepartureTimeUntil' => '10:00',
           'OnRequest'          => 'No',
-          'Price'              => 800,
-          'PriceExclDiscount'  => 800
+          'Price'              => 700,
+          'PriceExclDiscount'  => 700
         }
       }
 
@@ -92,7 +96,7 @@ RSpec.describe AtLeisure::Mapper do
         property_data['AvailabilityPeriodV1'] = [on_request_period, valid_period]
         property = subject.prepare(property_data).value
 
-        expect(property.minimum_stay).to eq 8
+        expect(property.minimum_stay).to eq 7
         expect(property.nightly_rate).to eq 100
         expect(property.weekly_rate).to eq 700
         expect(property.monthly_rate).to eq 3000
@@ -142,10 +146,10 @@ RSpec.describe AtLeisure::Mapper do
       expect(property.smoking_allowed).to eq false
       expect(property.type).to eq 'house'
       expect(property.subtype).to eq nil
-      expect(property.minimum_stay).to eq 3
-      expect(property.nightly_rate.to_i).to eq 57
-      expect(property.weekly_rate.to_i).to eq 402
-      expect(property.monthly_rate.to_i).to eq 1722
+      expect(property.minimum_stay).to eq 2
+      expect(property.nightly_rate.to_i).to eq 67
+      expect(property.weekly_rate.to_i).to eq 469
+      expect(property.monthly_rate.to_i).to eq 2010
 
       expect(property.owner_email).to eq 'belvillapt@belvilla.com'
       expect(property.owner_phone_number).to eq '(+32) 03 808 09 54'

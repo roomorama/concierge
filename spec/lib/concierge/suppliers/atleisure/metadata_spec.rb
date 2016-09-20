@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Workers::Suppliers::AtLeisure do
+RSpec.describe Workers::Suppliers::AtLeisure::Metadata do
   include Support::Fixtures
   include Support::Factories
 
@@ -8,6 +8,10 @@ RSpec.describe Workers::Suppliers::AtLeisure do
   let(:host) { create_host(supplier_id: supplier.id) }
   let(:properties_list) { JSON.parse(read_fixture('atleisure/properties_list.json')) }
   let(:success_result) { Result.new(properties_list) }
+
+  before do
+    allow(Date).to receive(:today).and_return(Date.new(2016, 6, 18))
+  end
 
   subject { described_class.new(host) }
 

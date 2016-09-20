@@ -229,13 +229,14 @@ module AtLeisure
     end
 
     def set_price_and_availabilities
-      periods        = meta_data['AvailabilityPeriodV1'].map { |period| AvailabilityPeriod.new(period) }
-      actual_periods = periods.select(&:valid?)
+      actual_stays = meta_data['AvailabilityPeriodV1'].select { |availability|
+        validator(availability).valid?
+      }.map { |period| to_stay(period) }
 
-      min_price  = actual_periods.map(&:daily_price).min
-      dates_size = actual_periods.map { |period| period.dates.size }
+      min_price  = actual_stays.map(&:rate).min
+      min_stay = actual_stays.map(&:length).min
 
-      property.minimum_stay = dates_size.min
+      property.minimum_stay = min_stay
       property.nightly_rate = min_price
       property.weekly_rate  = min_price * 7
       property.monthly_rate = min_price * 30
@@ -254,6 +255,19 @@ module AtLeisure
       cost['TypeDescriptions'].find { |d| d['Language'] == 'EN' }['Description']
     end
 
+    private
+
+    def to_stay(period)
+      Roomorama::Calendar::Stay.new({
+        checkin:    period['ArrivalDate'],
+        checkout:   period['DepartureDate'],
+        price:      period['Price'].to_f,
+      })
+    end
+
+    def validator(availability)
+      ::AtLeisure::AvailabilityValidator.new(availability)
+    end
   end
 end
 
