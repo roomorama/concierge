@@ -19,10 +19,7 @@ RSpec.describe SAW::Commands::BulkRatesFetcher do
     rates = result.value
     expect(rates).to be_kind_of(Array)
     expect(rates.size).to eq(2)
-    expect(rates).to all(be_kind_of(Result))
-    rates.each do |r|
-      expect(r).to be_success
-    end
+    expect(rates).to all(be_kind_of(SAW::Entities::UnitsPricing))
   end
 
   it "returns rates for single property id" do
@@ -34,10 +31,7 @@ RSpec.describe SAW::Commands::BulkRatesFetcher do
     rates = result.value
     expect(rates).to be_kind_of(Array)
     expect(rates.size).to eq(1)
-    expect(rates).to all(be_kind_of(Result))
-    rates.each do |r|
-      expect(r).to be_success
-    end
+    expect(rates).to all(be_kind_of(SAW::Entities::UnitsPricing))
   end
 
   it "returns a result with an empty array if all rates are unavailable" do

@@ -367,8 +367,8 @@ module SAW
 
     context "when custom property rates are given" do
       let(:unit_rates) do
-        SAW::Entities::PropertyRate.new(
-          id: '123',
+        SAW::Entities::UnitsPricing.new(
+          property_id: '123',
           currency: 'USD',
           units: [
             SAW::Entities::UnitRate.new(id: '8368', price: 200.04, available: true, max_guests: 7),

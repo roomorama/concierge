@@ -1,6 +1,6 @@
 module SAW
   module Entities
-    # +SAW::Entities::PropertyRate+
+    # +SAW::Entities::UnitRate+
     #
     # This entity represents an object with available rates for units in
     # property.

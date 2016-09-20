@@ -87,7 +87,7 @@ module SAW
 
     # Retrieves rates for units by given property ids
     #
-    # Returns a +Result+ wrapping an array of +SAW::Entities::PropertyRate+
+    # Returns a +Result+ wrapping an array of +SAW::Entities::UnitsPricing+
     # objects when operation succeeds
     # Returns a +Result+ with +Result::Error+ when operation fails
     def fetch_unit_rates_by_property_ids(ids)
@@ -102,7 +102,7 @@ module SAW
     #
     # Limits to send maximum 20 property ids (API limitation)
     #
-    # Returns a +Result+ wrapping an array of +SAW::Entities::PropertyRate+
+    # Returns a +Result+ wrapping an array of +SAW::Entities::UnitsPricing+
     # objects when operation succeeds
     # Returns a +Result+ with +Result::Error+ when operation fails
     def fetch_all_unit_rates_for_properties(properties)
