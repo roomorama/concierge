@@ -6,6 +6,9 @@ module RentalsUnited
     class Calendar
       attr_reader :property_id, :rates, :availabilities
 
+      CHECK_IN_ALLOWED_CHANGEOVER_TYPE_IDS  = [1, 4]
+      CHECK_OUT_ALLOWED_CHANGEOVER_TYPE_IDS = [2, 4]
+
       # Initialize +RentalsUnited::Mappers::Calendar+
       #
       # Arguments
@@ -35,10 +38,12 @@ module RentalsUnited
       def entries
         availabilities.map do |availability|
           Roomorama::Calendar::Entry.new(
-            date:         availability.date.to_s,
-            available:    availability.available,
-            nightly_rate: rate_by_date(availability.date),
-            minimum_stay: availability.minimum_stay
+            date:             availability.date.to_s,
+            available:        availability.available,
+            nightly_rate:     rate_by_date(availability.date),
+            minimum_stay:     availability.minimum_stay,
+            checkin_allowed:  checkin_allowed?(availability.changeover),
+            checkout_allowed: checkout_allowed?(availability.changeover)
           )
         end
       end
@@ -46,6 +51,14 @@ module RentalsUnited
       def rate_by_date(date)
         rate_for_date = rates.find { |rate| rate.has_price_for_date?(date) }
         rate_for_date&.price
+      end
+
+      def checkin_allowed?(changeover)
+        CHECK_IN_ALLOWED_CHANGEOVER_TYPE_IDS.include?(changeover)
+      end
+
+      def checkout_allowed?(changeover)
+        CHECK_OUT_ALLOWED_CHANGEOVER_TYPE_IDS.include?(changeover)
       end
     end
   end
