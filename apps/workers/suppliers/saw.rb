@@ -46,7 +46,9 @@ module Workers::Suppliers
       end
 
       properties.each do |property|
-        result = importer.fetch_detailed_property(property.internal_id)
+        result = synchronisation.new_context do
+          importer.fetch_detailed_property(property.internal_id)
+        end
         if result.success?
           detailed_property = result.value
 
