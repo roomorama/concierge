@@ -22,7 +22,10 @@ module Ciirus
       MC_PROPERTY_DISABLED_MESSAGE = 'Error (8000) The MC may have disabled the property from the feed. The MC user for '\
         'this property has not enabled this property for your feed, but you have accepted this property'\
         ' in the SuperSites area of the CiiRUS windows application. '
-      IGNORABLE_ERROR_MESSAGES = [PROPERTY_DELETED_MESSAGE, MC_PROPERTY_DISABLED_MESSAGE]
+      MC_DISABLED_CLONE_PROPERTY_MESSAGE = 'Error (15000) The MC may have disabled the clone property from the feed. The MC '\
+        'user for this property has not enabled this property for your feed, but you have accepted this property in '\
+        'the SuperSites area of the CiiRUS windows application. '
+      IGNORABLE_ERROR_MESSAGES = [PROPERTY_DELETED_MESSAGE, MC_PROPERTY_DISABLED_MESSAGE, MC_DISABLED_CLONE_PROPERTY_MESSAGE]
 
 
       def call(property_id)
