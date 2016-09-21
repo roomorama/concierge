@@ -28,8 +28,7 @@ module RentalsUnited
       def build_calendar
         calendar = Roomorama::Calendar.new(property_id)
 
-        valid_entries = entries.select { |entry| entry.valid? }
-        valid_entries.each { |entry| calendar.add(entry) }
+        entries.each { |entry| calendar.add(entry) }
 
         calendar
       end
@@ -37,20 +36,32 @@ module RentalsUnited
       private
       def entries
         availabilities.map do |availability|
+          nightly_rate = rate_by_date(availability.date)
+
+          if nightly_rate.zero?
+            available = false
+            checkin_allowed = false
+            checkout_allowed = false
+          else
+            available = availability.available
+            checkin_allowed  = checkin_allowed?(availability.changeover)
+            checkout_allowed = checkout_allowed?(availability.changeover)
+          end
+
           Roomorama::Calendar::Entry.new(
             date:             availability.date.to_s,
-            available:        availability.available,
-            nightly_rate:     rate_by_date(availability.date),
+            available:        available,
+            nightly_rate:     nightly_rate,
             minimum_stay:     availability.minimum_stay,
-            checkin_allowed:  checkin_allowed?(availability.changeover),
-            checkout_allowed: checkout_allowed?(availability.changeover)
+            checkin_allowed:  checkin_allowed,
+            checkout_allowed: checkout_allowed
           )
         end
       end
 
       def rate_by_date(date)
         season = seasons.find { |s| s.has_price_for_date?(date) }
-        season&.price
+        season&.price.to_f
       end
 
       def checkin_allowed?(changeover)

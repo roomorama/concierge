@@ -20,7 +20,7 @@ module RentalsUnited
       expect(season.date_from.to_s).to eq("2016-09-07")
       expect(season.date_to).to be_kind_of(Date)
       expect(season.date_to.to_s).to eq("2016-09-30")
-      expect(season.price).to eq("200.0000")
+      expect(season.price).to eq(200.0)
     end
   end
 end
