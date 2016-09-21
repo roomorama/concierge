@@ -59,14 +59,14 @@ module RentalsUnited
       render(:availabilities_fetch, template_locals)
     end
 
-    def build_rates_fetch_payload(property_id, date_from, date_to)
+    def build_seasons_fetch_payload(property_id, date_from, date_to)
       template_locals = {
         credentials: credentials,
         property_id: property_id,
         date_from: date_from,
         date_to: date_to
       }
-      render(:rates_fetch, template_locals)
+      render(:seasons_fetch, template_locals)
     end
 
     private

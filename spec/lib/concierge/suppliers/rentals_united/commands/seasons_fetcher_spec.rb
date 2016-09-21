@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe RentalsUnited::Commands::RatesFetcher do
+RSpec.describe RentalsUnited::Commands::SeasonsFetcher do
   include Support::HTTPStubbing
   include Support::Fixtures
 
@@ -10,10 +10,10 @@ RSpec.describe RentalsUnited::Commands::RatesFetcher do
   let(:url) { credentials.url }
 
   it "returns an error if property does not exist" do
-    stub_data = read_fixture("rentals_united/rates/not_found.xml")
+    stub_data = read_fixture("rentals_united/seasons/not_found.xml")
     stub_call(:post, url) { [200, {}, stub_data] }
 
-    result = subject.fetch_rates
+    result = subject.fetch_seasons
     expect(result).not_to be_success
     expect(result.error.code).to eq("56")
 
@@ -25,28 +25,28 @@ RSpec.describe RentalsUnited::Commands::RatesFetcher do
     expect(event[:backtrace].any?).to be true
   end
 
-  it "returns an empty array if property have no rates seasons" do
-    stub_data = read_fixture("rentals_united/rates/no_seasons.xml")
+  it "returns an empty array if property have no seasons seasons" do
+    stub_data = read_fixture("rentals_united/seasons/no_seasons.xml")
     stub_call(:post, url) { [200, {}, stub_data] }
 
-    result = subject.fetch_rates
+    result = subject.fetch_seasons
     expect(result).to be_success
     expect(result.value).to eq([])
   end
 
-  context "when response contains rates data" do
-    let(:file_name) { "rentals_united/rates/success.xml" }
+  context "when response contains seasons data" do
+    let(:file_name) { "rentals_united/seasons/success.xml" }
 
     before do
       stub_data = read_fixture(file_name)
       stub_call(:post, url) { [200, {}, stub_data] }
     end
 
-    it "returns rates" do
-      result = subject.fetch_rates
+    it "returns seasons" do
+      result = subject.fetch_seasons
       expect(result).to be_success
       expect(result.value.size).to eq(2)
-      expect(result.value).to all(be_kind_of(RentalsUnited::Entities::Rate))
+      expect(result.value).to all(be_kind_of(RentalsUnited::Entities::Season))
     end
   end
 
@@ -55,7 +55,7 @@ RSpec.describe RentalsUnited::Commands::RatesFetcher do
       stub_data = read_fixture("rentals_united/bad_xml.xml")
       stub_call(:post, url) { [200, {}, stub_data] }
 
-      result = subject.fetch_rates
+      result = subject.fetch_seasons
 
       expect(result).not_to be_success
       expect(result.error.code).to eq(:unrecognised_response)
@@ -73,7 +73,7 @@ RSpec.describe RentalsUnited::Commands::RatesFetcher do
     it "returns a result with an appropriate error" do
       stub_call(:post, url) { raise Faraday::TimeoutError }
 
-      result = subject.fetch_rates
+      result = subject.fetch_seasons
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :connection_timeout

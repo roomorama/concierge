@@ -157,7 +157,7 @@ RSpec.describe RentalsUnited::PayloadBuilder do
     end
   end
 
-  describe '#build_rates_fetch_payload' do
+  describe '#build_seasons_fetch_payload' do
     let(:params) do
       {
         property_id: "123",
@@ -169,7 +169,7 @@ RSpec.describe RentalsUnited::PayloadBuilder do
     let(:root_tag) { "Pull_ListPropertyPrices_RQ" }
 
     it 'embedds username and password to request' do
-      xml = builder.build_rates_fetch_payload(
+      xml = builder.build_seasons_fetch_payload(
         params[:property_id],
         params[:date_from],
         params[:date_to]
@@ -182,7 +182,7 @@ RSpec.describe RentalsUnited::PayloadBuilder do
     end
 
     it 'adds property_id to request' do
-      xml = builder.build_rates_fetch_payload(
+      xml = builder.build_seasons_fetch_payload(
         params[:property_id],
         params[:date_from],
         params[:date_to]
@@ -194,7 +194,7 @@ RSpec.describe RentalsUnited::PayloadBuilder do
     end
 
     it 'adds date range to request' do
-      xml = builder.build_rates_fetch_payload(
+      xml = builder.build_seasons_fetch_payload(
         params[:property_id],
         params[:date_from],
         params[:date_to]

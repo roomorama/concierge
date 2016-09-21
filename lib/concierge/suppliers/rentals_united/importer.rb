@@ -110,10 +110,12 @@ module RentalsUnited
       fetcher.fetch_availabilities
     end
 
-    # Retrieves rates for property by its id.
-    def fetch_rates(property_id)
-      fetcher = Commands::RatesFetcher.new(credentials, property_id)
-      fetcher.fetch_rates
+    # Retrieves season rates for property by its id.
+    #
+    # Returns [Array<Entities::Season>] array with season rate objects
+    def fetch_seasons(property_id)
+      fetcher = Commands::SeasonsFetcher.new(credentials, property_id)
+      fetcher.fetch_seasons
     end
   end
 end

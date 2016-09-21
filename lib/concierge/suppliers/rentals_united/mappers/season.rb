@@ -1,19 +1,19 @@
 module RentalsUnited
   module Mappers
-    # +RentalsUnited::Mappers::Rate+
+    # +RentalsUnited::Mappers::Season+
     #
-    # This class is responsible for building a rate object.
-    class Rate
+    # This class is responsible for building a season object.
+    class Season
       attr_reader :hash
 
-      # Initialize +RentalsUnited::Mappers::Rate+.
+      # Initialize +RentalsUnited::Mappers::Season+.
       #
       # Arguments
-      #   * +hash+ rate object hash
+      #   * +hash+ season object hash
       #
       # Usage
       #
-      #   RentalsUnited::Mappers::Rate.new({
+      #   RentalsUnited::Mappers::Season.new({
       #     "Price"=>"200.0000",
       #     "Extra"=>"10.0000",
       #     "@DateFrom"=>"2016-09-07",
@@ -23,8 +23,8 @@ module RentalsUnited
         @hash = hash
       end
 
-      def build_rate
-        Entities::Rate.new(
+      def build_season
+        Entities::Season.new(
           date_from: Date.parse(hash["@DateFrom"]),
           date_to:   Date.parse(hash["@DateTo"]),
           price:     hash["Price"]
