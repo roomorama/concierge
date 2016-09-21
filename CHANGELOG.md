@@ -12,6 +12,10 @@ how this file is formatted and how the process works.
 
 ### Fixed
 - Ciirus:: skip properties without images
+- SAW: return unavailable quotation instead of Result.error while quote price
+- SAW: pass stay length = 2 days instead 1 so that API returns prices for a bit more properties
+- SAW: add synchronisation.new_context for metadata worker
+- SAW: renamed PropertyRate entity to UnitsPricing
 
 ## [0.9.2] - 2016-09-19
 ### Fixed
