@@ -22,6 +22,7 @@ post '/saw/cancel',         to: 's_a_w#cancel'
 post '/kigo/cancel',        to: 'kigo#cancel'
 post '/kigo/legacy/cancel', to: 'kigo/legacy#cancel'
 post '/poplidays/cancel',   to: 'poplidays#cancel'
+post '/atleisure/cancel',   to: 'atleisure#cancel'
 
 post '/checkout', to: 'static#checkout'
 get '/kigo/image/:property_id/:image_id', to: 'kigo#image'
