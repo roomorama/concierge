@@ -21,6 +21,7 @@
         <th>Properties Deleted</th>
         <th>Properties Updated</th>
         <th>Properties Skipped</th>
+        <th>Stats</th>
       </tr>
     </thead>
 
@@ -36,7 +37,8 @@
           <td><%= format_number sync.stats[:properties_created] %></td>
           <td><%= format_number sync.stats[:properties_updated] %></td>
           <td><%= format_number sync.stats[:properties_deleted] %></td>
-          <td><%= format_number sync.stats[:properties_skipped] %></td>
+          <td><%= format_number sync.skipped_properties_count %></td>
+          <td><%= link_to(image("stats16.png"), routes.stats_path(sync.id))%></td>
         <% end %>
       </tr>
     </tbody>

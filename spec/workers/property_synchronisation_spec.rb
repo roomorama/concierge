@@ -303,8 +303,10 @@ RSpec.describe Workers::PropertySynchronisation do
         Result.new(roomorama_property)
       }
 
-      # create
-      subject.skip_property
+      # skip
+      subject.skip_property('prop5', 'Empty images')
+      subject.skip_property('prop6', 'Empty title')
+      subject.skip_property('prop7', 'Empty images')
 
       # prop3 is not included - should be deleted
       #
@@ -321,7 +323,12 @@ RSpec.describe Workers::PropertySynchronisation do
       expect(sync.stats[:properties_created]).to eq 1
       expect(sync.stats[:properties_updated]).to eq 1
       expect(sync.stats[:properties_deleted]).to eq 1
-      expect(sync.stats[:properties_skipped]).to eq 1
+      expect(sync.skipped_properties_count).to eq 3
+      expect(sync.stats[:properties_skipped].length).to eq 2
+      expect(sync.stats[:properties_skipped][0]['reason']).to eq 'Empty images'
+      expect(sync.stats[:properties_skipped][0]['ids']).to eq ['prop5', 'prop7']
+      expect(sync.stats[:properties_skipped][1]['reason']).to eq 'Empty title'
+      expect(sync.stats[:properties_skipped][1]['ids']).to eq ['prop6']
     end
 
 
@@ -347,6 +354,8 @@ RSpec.describe Workers::PropertySynchronisation do
       expect(sync.stats[:properties_created]).to eq 0
       expect(sync.stats[:properties_updated]).to eq 0
       expect(sync.stats[:properties_deleted]).to eq 0
+      expect(sync.stats[:properties_skipped]).to eq []
+      expect(sync.skipped_properties_count).to eq 0
     end
 
   end

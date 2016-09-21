@@ -10,7 +10,10 @@ module Workers::Suppliers::Ciirus
       "(soap:Server) Server was unable to process request. ---> GetPropertyRates: Monthly Rates Not Supported via API. Monthly Rates Set By User. Please contact the Unit Supplier to configure a supported rate type for your channel."
     ]
 
-    IGNORABLE_IMAGES_ERROR_MESSAGE = '(soap:Server) Server was unable to process request. ---> GetImageList: This property contains demo images.'
+    IGNORABLE_IMAGES_ERROR_MESSAGES = [
+      '(soap:Server) Server was unable to process request. ---> GetImageList: This property contains demo images.',
+      '(soap:Server) Server was unable to process request. ---> GetImageList: Error - No Images exist for this property at this time. Please contact the user and request they populate this data.'
+    ]
 
     def initialize(host)
       @host            = host
@@ -33,7 +36,7 @@ module Workers::Suppliers::Ciirus
             next unless permissions.success?
 
             unless permissions_validator(permissions.value).valid?
-              synchronisation.skip_property
+              synchronisation.skip_property(property_id, 'Invalid permissions')
               next
             end
 
@@ -44,7 +47,7 @@ module Workers::Suppliers::Ciirus
 
             rates  = filter_rates(result.value)
             if rates.empty?
-              synchronisation.skip_property
+              synchronisation.skip_property(property_id, 'Empty valid rates list')
               next
             end
 
@@ -56,7 +59,7 @@ module Workers::Suppliers::Ciirus
             next unless result.success?
             description = result.value
             if description.to_s.empty?
-              synchronisation.skip_property
+              synchronisation.skip_property(property_id, 'Empty description')
               next
             end
 
@@ -69,7 +72,7 @@ module Workers::Suppliers::Ciirus
               Result.new(roomorama_property)
             end
           else
-            synchronisation.skip_property
+            synchronisation.skip_property(property_id, 'Invalid property')
           end
         end
         synchronisation.finish!
@@ -101,7 +104,7 @@ module Workers::Suppliers::Ciirus
       importer.fetch_images(property_id).tap do |result|
         unless result.success?
           if ignorable_images_error?(result.error)
-            synchronisation.skip_property
+            synchronisation.skip_property(property_id, "Ignorable images error: #{result.error.data}")
           else
             message = "Failed to fetch images for property `#{property_id}`"
             announce_error(message, result)
@@ -121,7 +124,7 @@ module Workers::Suppliers::Ciirus
       importer.fetch_rates(property_id).tap do |result|
         unless result.success?
           if ignorable_rates_error?(result.error)
-            synchronisation.skip_property
+            synchronisation.skip_property(property_id, "Ignorable rates error: #{result.error.data}")
           else
             message = "Failed to fetch rates for property `#{property_id}`"
             announce_error(message, result)
@@ -155,7 +158,9 @@ module Workers::Suppliers::Ciirus
     end
 
     def ignorable_images_error?(error)
-      error.data&.include? IGNORABLE_IMAGES_ERROR_MESSAGE
+      IGNORABLE_IMAGES_ERROR_MESSAGES.any? { |err_msg|
+        error.data&.include? err_msg
+      }
     end
 
     def mapper

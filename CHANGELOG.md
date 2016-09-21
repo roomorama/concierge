@@ -4,6 +4,15 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.10.0] - 2016-09-20
+### Added
+- Atleisure:: calendar sync worker
+- reason for all properties skipped during sync
+- page for sync process stats
+
+### Fixed
+- Ciirus:: skip properties without images
+
 ## [0.9.2] - 2016-09-19
 ### Fixed
 - Improper type/subtype combinations

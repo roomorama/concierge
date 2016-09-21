@@ -212,11 +212,13 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
       end
     end
 
-    context "when it fails with expected error" do
-      let(:error_message) { described_class::IGNORABLE_IMAGES_ERROR_MESSAGE }
-      it "does not create external errors" do
-        expect(subject.synchronisation).to_not receive(:start)
-        expect { subject.perform }.to_not change { ExternalErrorRepository.count }
+    [described_class::IGNORABLE_IMAGES_ERROR_MESSAGES].each do |msg|
+      context "when it fails with expected error: #{msg}" do
+        let(:error_message) { msg }
+        it "does not create external errors" do
+          expect(subject.synchronisation).to_not receive(:start)
+          expect { subject.perform }.to_not change { ExternalErrorRepository.count }
+        end
       end
     end
   end

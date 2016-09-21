@@ -35,18 +35,19 @@ module Workers
     # Calendar availabilities is tackled by +Workers::CalendarSynchronisation+
     WORKER_TYPE = "metadata"
 
-    PropertyCounters = Struct.new(:created, :updated, :deleted, :skipped)
+    PropertyCounters = Struct.new(:created, :updated, :deleted)
 
-    attr_reader :host, :router, :sync_record, :counters, :processed, :purge
+    attr_reader :host, :router, :sync_record, :counters, :processed, :purge, :properties_skipped
 
     # host - an instance of +Host+.
     def initialize(host)
-      @host        = host
-      @router      = Workers::Router.new(host)
-      @sync_record = init_sync_record(host)
-      @counters    = PropertyCounters.new(0, 0, 0, 0)
-      @processed   = []
-      @purge       = true
+      @host               = host
+      @router             = Workers::Router.new(host)
+      @sync_record        = init_sync_record(host)
+      @counters           = PropertyCounters.new(0, 0, 0)
+      @processed          = []
+      @purge              = true
+      @properties_skipped = Hash.new { |hsh, key| hsh[key] = [] }
     end
 
     # Indicates that the property with the given +identifier+ is being synchronised.
@@ -136,8 +137,8 @@ module Workers
     #   synchronisation.skip_property
     # end
     #
-    def skip_property
-      counters.skipped += 1
+    def skip_property(property_id, reason)
+      properties_skipped[reason] << property_id
     end
 
     # Used to initialize a clean context for a property id.
@@ -210,10 +211,19 @@ module Workers
       sync_record.stats[:properties_created] = counters.created
       sync_record.stats[:properties_updated] = counters.updated
       sync_record.stats[:properties_deleted] = counters.deleted
-      sync_record.stats[:properties_skipped] = counters.skipped
+      sync_record.stats[:properties_skipped] = prepare_properties_skipped
       sync_record.finished_at = Time.now
 
       database.create(sync_record)
+    end
+
+    def prepare_properties_skipped
+      properties_skipped.map do |msg, ids|
+        {
+          'reason' => msg,
+          'ids' => ids
+        }
+      end
     end
 
     def run_operation(operation, *args)
