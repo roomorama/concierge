@@ -24,6 +24,11 @@ module API::Support
 
     SUPPORTED_TICKETS = %w(cancellation)
 
+    # Zendesk's API is very slow when sending tickets. Especially on the sandbox
+    # environment. As the cancellation webhook is sent on the background, without
+    # blocking the user interface, we can afford a higher timeout.
+    CONNECTION_TIMEOUT = 20
+
     attr_reader :http, :endpoint
 
     # initializes internal state. The +ZendeskNotify+ service URL must be properly
@@ -32,7 +37,7 @@ module API::Support
       uri  = URI.parse(zendesk_notify_url)
       host = [uri.scheme, "://", uri.host].join
 
-      @http     = Concierge::HTTPClient.new(host)
+      @http     = Concierge::HTTPClient.new(host, timeout: CONNECTION_TIMEOUT)
       @endpoint = uri.request_uri
     end
 
