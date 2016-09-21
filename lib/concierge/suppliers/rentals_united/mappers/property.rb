@@ -52,6 +52,7 @@ module RentalsUnited
         property.neighborhood         = location.neighborhood
         property.max_guests           = property_hash.get("CanSleepMax").to_i
         property.number_of_bedrooms   = number_of_bedrooms
+        property.floor                = floor
         property.amenities            = amenities_dictionary.convert
         property.pets_allowed         = amenities_dictionary.pets_allowed?
         property.smoking_allowed      = amenities_dictionary.smoking_allowed?
@@ -86,6 +87,18 @@ module RentalsUnited
         RentalsUnited::Dictionaries::Bedrooms.count_by_type_id(
           property_hash.get("PropertyTypeID")
         )
+      end
+
+      # RU sends -1000 for Basement
+      #              0 for Ground
+      #         0..100 for usual floor number
+      #
+      # Replace -1000 with just -1 because we don't want our users to
+      # be burnt away -1000 floors under the earth.
+      def floor
+        ru_floor_value = property_hash.get("Floor").to_i
+        return -1 if ru_floor_value == -1000
+        return ru_floor_value
       end
 
       def en_description(hash)
