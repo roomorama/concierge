@@ -1,4 +1,5 @@
 require_relative "../cancel"
+require_relative "../zendesk_notify_cancellation"
 
 module API::Controllers::AtLeisure
 
