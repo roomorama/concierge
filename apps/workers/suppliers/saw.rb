@@ -50,7 +50,7 @@ module Workers::Suppliers
         if result.success?
           detailed_property = result.value
 
-          next if skip(detailed_property)
+          next if skip?(detailed_property)
 
           synchronisation.start(property.internal_id) do
             unit_rates = find_rates(property.internal_id, all_unit_rates)
@@ -77,7 +77,7 @@ module Workers::Suppliers
     #
     # Returns true to caller if skipped
     #
-    def skip(detailed_property)
+    def skip?(detailed_property)
       if detailed_property.postal_code == "."
         synchronisation.skip_property(detailed_property.internal_id, "Invalid postal_code: .")
         return true
