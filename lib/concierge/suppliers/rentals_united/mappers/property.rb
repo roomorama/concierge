@@ -13,6 +13,7 @@ module RentalsUnited
       CANCELLATION_POLICY = "super_elite"
       DEFAULT_PROPERTY_RATE = "9999"
       MINIMUM_STAY = 1
+      SURFACE_UNIT = "metric"
 
       # Initialize +RentalsUnited::Mappers::Property+
       #
@@ -51,6 +52,8 @@ module RentalsUnited
         property.city                 = location.city
         property.neighborhood         = location.neighborhood
         property.max_guests           = property_hash.get("CanSleepMax").to_i
+        property.surface              = property_hash.get("Space").to_i
+        property.surface_unit         = SURFACE_UNIT
         property.number_of_bedrooms   = number_of_bedrooms
         property.floor                = floor
         property.amenities            = amenities_dictionary.convert
