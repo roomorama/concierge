@@ -27,6 +27,14 @@ RSpec.describe RentalsUnited::PayloadBuilder do
       location_id = hash.get("Pull_ListProp_RQ.LocationID")
       expect(location_id).to eq(params[:location_id])
     end
+
+    it 'adds include_nla flag to request' do
+      xml = builder.build_property_ids_fetch_payload(params[:property_id])
+      hash = to_hash(xml)
+
+      include_nla = hash.get("Pull_ListProp_RQ.IncludeNLA")
+      expect(include_nla).to eq(false)
+    end
   end
 
   describe '#build_location_ids_fetch_payload' do
