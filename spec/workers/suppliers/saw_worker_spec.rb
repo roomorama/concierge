@@ -51,6 +51,7 @@ RSpec.describe Workers::Suppliers::SAW do
       mock_request(:country, :one)
       mock_request(:propertysearch, :success)
       mock_request(:propertyrates, :success)
+      mock_request(:propertydetail, :success)
 
       expected_property_ids = [1787, 1757, 2721, 2893, 1766]
 
