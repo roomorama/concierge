@@ -67,13 +67,23 @@ RSpec.describe API::Support::ZendeskNotify do
     end
 
     it "returns a successful result in case the ticket is properly sent" do
-      stub_call(:post, zendesk_notify_url) {
-        body = {
+      request_body = {
+        ticketId: "cancellation",
+        attributes: {
+          supplier:    "Supplier Y",
+          supplier_id: "123",
+          bridge_id:   "321"
+        }
+      }
+      headers = { "Content-Type" => "application/json" }
+
+      stub_call(:post, zendesk_notify_url, strict: true, headers: headers, body: request_body) {
+        response_body = {
           status:  "ok",
           message: "Ticket sent successfully"
         }
 
-        [200, {}, body.to_json]
+        [200, {}, response_body.to_json]
       }
 
       result = subject.notify(ticket_id, attributes)
