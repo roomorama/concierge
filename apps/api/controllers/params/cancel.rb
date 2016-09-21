@@ -13,6 +13,7 @@ module API::Controllers::Params
   class Cancel < API::Action::Params
 
     param :reference_number, presence: true, type: String
+    param :inquiry_id,       presence: true, type: String
 
     # Constructs a map of errors for the request.
     #

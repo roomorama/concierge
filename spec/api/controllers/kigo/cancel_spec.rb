@@ -2,19 +2,19 @@ require 'spec_helper'
 require_relative "../shared/cancel"
 
 RSpec.describe API::Controllers::Kigo::Cancel do
-  let(:params) { { reference_number: "A123" } }
+  let(:params) { { reference_number: "A123", inquiry_id: "123" } }
 
   it_behaves_like "cancel action" do
     let(:success_cases) {
       [
-        { params: {reference_number: "A023"}, cancelled_reference_number: "XYZ" },
-        { params: {reference_number: "A024"}, cancelled_reference_number: "ASD" },
+        { params: {reference_number: "A023", inquiry_id: "123"}, cancelled_reference_number: "XYZ" },
+        { params: {reference_number: "A024", inquiry_id: "125"}, cancelled_reference_number: "ASD" },
       ]
     }
     let(:error_cases) {
       [
-        { params: {reference_number: "A123"}, error: {"cancellation" => "Could not cancel with remote supplier"} },
-        { params: {reference_number: "A124"}, error: {"cancellation" => "Already cancelled"} },
+        { params: {reference_number: "A123", inquiry_id: "123"}, error: {"cancellation" => "Could not cancel with remote supplier"} },
+        { params: {reference_number: "A124", inquiry_id: "124"}, error: {"cancellation" => "Already cancelled"} },
       ]
     }
 
