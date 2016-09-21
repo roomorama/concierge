@@ -8,7 +8,7 @@
     <Location LocationID="22" LocationTypeID="2" ParentLocationID="2">Greece</Location>
     <Location LocationID="23" LocationTypeID="2" ParentLocationID="2">Hungary</Location>
     <Location LocationID="10350" LocationTypeID="3" ParentLocationID="20">Languedoc-Roussillon</Location>
-    <Location LocationID="10351" LocationTypeID="3" ParentLocationID="20">Ile-de-France</Location>
+    <Location LocationID="10351" LocationTypeID="3" ParentLocationID="0000">Ile-de-France</Location>
     <Location LocationID="10352" LocationTypeID="3" ParentLocationID="20">Haute-Normandie</Location>
     <Location LocationID="1503" LocationTypeID="4" ParentLocationID="10351">Pantin</Location>
     <Location LocationID="1505" LocationTypeID="4" ParentLocationID="10351">Paris</Location>
