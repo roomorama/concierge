@@ -33,6 +33,36 @@ RSpec.shared_examples "cancel action" do
   end
 end
 
+RSpec.shared_examples "Zendesk cancellation notification" do |supplier:|
+  include Support::HTTPStubbing
+
+  let(:params) { { reference_number: "123", inquiry_id: "392" } }
+  let(:zendesk_notify_url) { "https://www.zendesk-notify-example.org" }
+
+  before do
+    ENV["ZENDESK_NOTIFY_URL"] = zendesk_notify_url
+  end
+
+  after do
+    ENV.delete("ZENDESK_NOTIFY_URL")
+  end
+
+  it "sends a ticket to Zendesk upon cancellation" do
+    stub_call(:post, zendesk_notify_url) { [200, {}, { "status" => "ok" }.to_json] }
+
+    expect_any_instance_of(API::Support::ZendeskNotify).to receive(:notify).
+      with("cancellation", { supplier: supplier, supplier_id: "123", bridge_id: "392" }).
+      once.and_call_original
+
+    response = call(described_class.new, params)
+
+    expect(response.body).to eq({
+      "status" => "ok",
+      "cancelled_reference_number" => "123"
+    })
+  end
+end
+
 private
 
 def call(controller, params)
