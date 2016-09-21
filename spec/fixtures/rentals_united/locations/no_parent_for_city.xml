@@ -11,7 +11,7 @@
     <Location LocationID="10351" LocationTypeID="3" ParentLocationID="20">Ile-de-France</Location>
     <Location LocationID="10352" LocationTypeID="3" ParentLocationID="20">Haute-Normandie</Location>
     <Location LocationID="1503" LocationTypeID="4" ParentLocationID="10351">Pantin</Location>
-    <Location LocationID="1505" LocationTypeID="4" ParentLocationID="10351">Paris</Location>
+    <Location LocationID="1505" LocationTypeID="4" ParentLocationID="0000">Paris</Location>
     <Location LocationID="1521" LocationTypeID="4" ParentLocationID="10351">Plaisir</Location>
     <Location LocationID="9999" LocationTypeID="5" ParentLocationID="1505">Neighborhood</Location>
   </Locations>

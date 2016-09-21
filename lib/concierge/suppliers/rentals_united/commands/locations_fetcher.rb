@@ -29,7 +29,14 @@ module RentalsUnited
 
         if valid_status?(result_hash, ROOT_TAG)
           raw_locations = build_raw_locations(result_hash)
-          locations = location_ids.map { |id| build_location(id, raw_locations) }
+
+          locations = location_ids.map do |id|
+            location = build_location(id, raw_locations)
+
+            return Result.error(:unknown_location) unless location
+
+            location
+          end
 
           Result.new(locations)
         else

@@ -37,6 +37,8 @@ module RentalsUnited
         location = Entities::Location.new(location_id)
 
         current_level = find_location_data(location_id)
+        return nil unless current_level
+
         current_level_type = current_level[:type]
 
         location_hash = {}
@@ -46,6 +48,8 @@ module RentalsUnited
           parent_location_id = current_level[:parent_id]
 
           current_level = find_location_data(parent_location_id)
+          return nil unless current_level
+
           current_level_type = current_level[:type]
 
           update_location_hash(location_hash, current_level)

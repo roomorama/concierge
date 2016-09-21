@@ -3,7 +3,7 @@
   <Locations>
     <Location LocationID="1" LocationTypeID="6" ParentLocationID="-1">Worldwide</Location>
     <Location LocationID="2" LocationTypeID="1" ParentLocationID="1">Europe</Location>
-    <Location LocationID="20" LocationTypeID="2" ParentLocationID="2">France</Location>
+    <Location LocationID="20" LocationTypeID="2" ParentLocationID="0000">France</Location>
     <Location LocationID="21" LocationTypeID="2" ParentLocationID="2">Germany</Location>
     <Location LocationID="22" LocationTypeID="2" ParentLocationID="2">Greece</Location>
     <Location LocationID="23" LocationTypeID="2" ParentLocationID="2">Hungary</Location>
