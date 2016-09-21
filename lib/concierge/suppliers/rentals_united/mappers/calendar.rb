@@ -6,6 +6,7 @@ module RentalsUnited
     class Calendar
       attr_reader :property_id, :seasons, :availabilities
 
+      SUPPORTED_CHANGEOVER_TYPE_IDS = [1, 2, 3, 4]
       CHECK_IN_ALLOWED_CHANGEOVER_TYPE_IDS  = [1, 4]
       CHECK_OUT_ALLOWED_CHANGEOVER_TYPE_IDS = [2, 4]
 
@@ -24,18 +25,27 @@ module RentalsUnited
 
       # Builds calendar.
       #
-      # Returns [Roomorama::Calendar] property calendar object
+      # Returns a +Result+ wrapping +Roomorama::Calendar+
+      # Returns a +Result+ with +Result::Error+ when operation fails
       def build_calendar
         calendar = Roomorama::Calendar.new(property_id)
 
+        entries_result = build_entries
+        return entries_result unless entries_result.success?
+
+        entries = entries_result.value
         entries.each { |entry| calendar.add(entry) }
 
-        calendar
+        Result.new(calendar)
       end
 
       private
-      def entries
-        availabilities.map do |availability|
+      def build_entries
+        entries = availabilities.map do |availability|
+          unless supported_changeover?(availability.changeover)
+            return Result.error(:not_supported_changeover)
+          end
+
           nightly_rate = rate_by_date(availability.date)
 
           if nightly_rate.zero?
@@ -57,11 +67,16 @@ module RentalsUnited
             checkout_allowed: checkout_allowed
           )
         end
+        Result.new(entries)
       end
 
       def rate_by_date(date)
         season = seasons.find { |s| s.has_price_for_date?(date) }
         season&.price.to_f
+      end
+
+      def supported_changeover?(changeover)
+        SUPPORTED_CHANGEOVER_TYPE_IDS.include?(changeover)
       end
 
       def checkin_allowed?(changeover)
