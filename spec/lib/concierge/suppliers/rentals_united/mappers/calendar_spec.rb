@@ -59,11 +59,15 @@ module RentalsUnited
       expect(sep_entry.available).to eq(false)
       expect(sep_entry.minimum_stay).to eq(2)
       expect(sep_entry.nightly_rate).to eq("150.00")
+      expect(sep_entry.checkin_allowed).to eq(true)
+      expect(sep_entry.checkout_allowed).to eq(true)
 
       oct_entry = calendar.entries.find { |e| e.date.to_s == "2016-10-14" }
       expect(oct_entry.available).to eq(true)
       expect(oct_entry.minimum_stay).to eq(1)
       expect(oct_entry.nightly_rate).to eq("200.00")
+      expect(sep_entry.checkin_allowed).to eq(true)
+      expect(sep_entry.checkout_allowed).to eq(true)
     end
 
     it "keeps only calendar entries which have prices" do
@@ -80,6 +84,80 @@ module RentalsUnited
       expect(entry).to be_nil
 
       expect(calendar.validate!).to eq(true)
+    end
+
+    context "while availabilities changeover mapping" do
+      let(:date) { Date.parse("2016-09-01") }
+      let(:availabilities) do
+        [
+          RentalsUnited::Entities::Availability.new(
+            date: date,
+            available: false,
+            minimum_stay: 2,
+            changeover: changeover
+          )
+        ]
+      end
+
+      context "when changeover type id is 1" do
+        let(:changeover) { 1 }
+
+        it "sets checkin to be allowed and checkout to be denied" do
+          mapper = described_class.new(property_id, rates, availabilities)
+          calendar = mapper.build_calendar
+
+          expect(calendar.validate!).to eq(true)
+
+          entry = calendar.entries.find { |e| e.date.to_s == date.to_s }
+          expect(entry.checkin_allowed).to eq(true)
+          expect(entry.checkout_allowed).to eq(false)
+        end
+      end
+
+      context "when changeover type id is 2" do
+        let(:changeover) { 2 }
+
+        it "sets checkin to be denied and checkout to be allowed" do
+          mapper = described_class.new(property_id, rates, availabilities)
+          calendar = mapper.build_calendar
+
+          expect(calendar.validate!).to eq(true)
+
+          entry = calendar.entries.find { |e| e.date.to_s == date.to_s }
+          expect(entry.checkin_allowed).to eq(false)
+          expect(entry.checkout_allowed).to eq(true)
+        end
+      end
+
+      context "when changeover type id is 3" do
+        let(:changeover) { 3 }
+
+        it "sets both checkin and checkout to be denied" do
+          mapper = described_class.new(property_id, rates, availabilities)
+          calendar = mapper.build_calendar
+
+          expect(calendar.validate!).to eq(true)
+
+          entry = calendar.entries.find { |e| e.date.to_s == date.to_s }
+          expect(entry.checkin_allowed).to eq(false)
+          expect(entry.checkout_allowed).to eq(false)
+        end
+      end
+
+      context "when changeover type id is 4" do
+        let(:changeover) { 4 }
+
+        it "sets both checkin and checkout to be allowed" do
+          mapper = described_class.new(property_id, rates, availabilities)
+          calendar = mapper.build_calendar
+
+          expect(calendar.validate!).to eq(true)
+
+          entry = calendar.entries.find { |e| e.date.to_s == date.to_s }
+          expect(entry.checkin_allowed).to eq(true)
+          expect(entry.checkout_allowed).to eq(true)
+        end
+      end
     end
   end
 end
