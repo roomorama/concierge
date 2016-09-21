@@ -13,6 +13,7 @@ module SAW
       #
       #   * +basic_property+ [SAW::Entities::BasicProperty]
       #   * +detailed_property+ [SAW::Entities::DetailedProperty]
+      #   * +rates+ [SAW::Entities::UnitsPricing]
       #
       # +detailed_property+ includes two attributes-hashes:
       #

@@ -121,6 +121,7 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
       roomorama_webhook["action"] = "cancelled"
       roomorama_webhook["event"] = "cancelled"
       roomorama_webhook["inquiry"]["reference_number"] = "test_code"
+      roomorama_webhook["inquiry"]["id"] = "3929"
     end
 
     it "returns 200 if upstream was success" do

@@ -208,7 +208,7 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
         rates
       )
 
-      expect(property.units).not_to eq([])
+      expect(property.units.size).to eq(6)
       expect(property.units).to all(be_kind_of(Roomorama::Unit))
     end
   end

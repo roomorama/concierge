@@ -4,6 +4,18 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.11.0] - 2016-09-21
+### Added
+- `ZendeskNotify` client with ticket creation on cancellation of bookings from Poplidays and AtLeisure
+
+### Fixed
+- Ciirus:: ignore permissions error about MC disabled clone properties
+- SAW: return unavailable quotation instead of Result.error while quote price
+- SAW: pass stay length = 2 days instead 1 so that API returns prices for a bit more properties
+- SAW: add synchronisation.new_context for metadata worker
+- SAW: renamed PropertyRate entity to UnitsPricing
+- SAW: Skip invalid postal code "." #286
+
 ## [0.10.0] - 2016-09-20
 ### Added
 - Atleisure:: calendar sync worker

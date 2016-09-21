@@ -56,24 +56,6 @@ module SAW
       properties_fetcher.call(country)
     end
 
-    # Retrieves the list of available properties in a given country
-    # Available means those which doesn't have `on_request` attribute
-    #
-    # Returns a +Result+ wrapping +Array+ of +SAW::Entities::BasicProperty+
-    # when operation succeeds
-    # Returns a +Result+ with +Result::Error+ when operation fails
-    def fetch_available_properties_by_country(country)
-      result = fetch_properties_by_country(country)
-
-      if result.success?
-        all_properties = result.value
-        available_properties = all_properties.reject { |p| p.on_request? }
-        Result.new(available_properties)
-      else
-        result
-      end
-    end
-
     # Retrieves the list of properties in given countries
     # In case if request to one of the countries fails, method stops its
     # execution and returns a result with a failure.
@@ -84,25 +66,6 @@ module SAW
     def fetch_properties_by_countries(countries)
       properties = countries.map do |country|
         result = fetch_properties_by_country(country)
-
-        return result unless result.success?
-
-        result.value
-      end.flatten
-
-      Result.new(properties)
-    end
-
-    # Retrieves the list of available properties in given countries
-    # In case if request to one of the countries fails, method stops its
-    # execution and returns a result with a failure.
-    #
-    # Returns a +Result+ wrapping +Array+ of +SAW::Entities::BasicProperty+
-    # when operation succeeds
-    # Returns a +Result+ with +Result::Error+ when operation fails
-    def fetch_available_properties_by_countries(countries)
-      properties = countries.map do |country|
-        result = fetch_available_properties_by_country(country)
 
         return result unless result.success?
 
@@ -124,7 +87,7 @@ module SAW
 
     # Retrieves rates for units by given property ids
     #
-    # Returns a +Result+ wrapping an array of +SAW::Entities::PropertyRate+
+    # Returns a +Result+ wrapping an array of +SAW::Entities::UnitsPricing+
     # objects when operation succeeds
     # Returns a +Result+ with +Result::Error+ when operation fails
     def fetch_unit_rates_by_property_ids(ids)
@@ -132,14 +95,14 @@ module SAW
       bulk_rates_fetcher.call(ids)
     end
 
-    # Retrieves rates for properties
+    # Retrieves rates for units of all given properties.
     #
     # It groups properties by currency because SAW API doesn't support
     # fetching property rates when multiple currencies are given.
     #
     # Limits to send maximum 20 property ids (API limitation)
     #
-    # Returns a +Result+ wrapping an array of +SAW::Entities::PropertyRate+
+    # Returns a +Result+ wrapping an array of +SAW::Entities::UnitsPricing+
     # objects when operation succeeds
     # Returns a +Result+ with +Result::Error+ when operation fails
     def fetch_all_unit_rates_for_properties(properties)
