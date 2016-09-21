@@ -74,7 +74,7 @@ RSpec.describe API::Support::ZendeskNotify do
           supplier_id: "123",
           bridge_id:   "321"
         }
-      }
+      }.to_json
       headers = { "Content-Type" => "application/json" }
 
       stub_call(:post, zendesk_notify_url, strict: true, headers: headers, body: request_body) {

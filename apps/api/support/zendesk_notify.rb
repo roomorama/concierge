@@ -44,7 +44,7 @@ module API::Support
         attributes: attributes
       }
 
-      result = http.post(endpoint, params, { "Content-Type" => "application/json" })
+      result = http.post(endpoint, json_encode(params), { "Content-Type" => "application/json" })
       return result unless result.success?
 
       parse_response(result.value.body)
