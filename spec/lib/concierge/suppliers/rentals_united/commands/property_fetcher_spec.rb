@@ -149,6 +149,47 @@ RSpec.describe RentalsUnited::Commands::PropertyFetcher do
           expect(property.amenities).to eq([])
         end
       end
+
+      it "sets smoking_allowed to false" do
+        amenities_dict = RentalsUnited::Dictionaries::Amenities
+
+        expect_any_instance_of(amenities_dict)
+          .to(receive(:smoking_allowed?))
+          .and_return(false)
+
+
+        expect(property.smoking_allowed).to eq(false)
+      end
+
+      it "sets smoking_allowed to true" do
+        amenities_dict = RentalsUnited::Dictionaries::Amenities
+
+        expect_any_instance_of(amenities_dict)
+          .to(receive(:smoking_allowed?))
+          .and_return(true)
+
+        expect(property.smoking_allowed).to eq(true)
+      end
+
+      it "sets pets_allowed to false" do
+        amenities_dict = RentalsUnited::Dictionaries::Amenities
+
+        expect_any_instance_of(amenities_dict)
+          .to(receive(:pets_allowed?))
+          .and_return(false)
+
+        expect(property.pets_allowed).to eq(false)
+      end
+
+      it "sets pets_allowed to true" do
+        amenities_dict = RentalsUnited::Dictionaries::Amenities
+
+        expect_any_instance_of(amenities_dict)
+          .to(receive(:pets_allowed?))
+          .and_return(true)
+
+        expect(property.pets_allowed).to eq(true)
+      end
     end
 
     context "when mapping single image to property" do
