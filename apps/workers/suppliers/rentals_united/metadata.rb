@@ -11,17 +11,17 @@ module Workers::Suppliers::RentalsUnited
     end
 
     def perform
-      result = fetch_location_ids
+      result = synchronisation.new_context { fetch_location_ids }
       return unless result.success?
 
       location_ids = result.value
 
-      result = fetch_locations(location_ids)
+      result = synchronisation.new_context { fetch_locations(location_ids) }
       return unless result.success?
 
       locations = result.value
 
-      result = fetch_location_currencies
+      result = synchronisation.new_context { fetch_location_currencies }
       return unless result.success?
 
       currencies = result.value
@@ -30,12 +30,12 @@ module Workers::Suppliers::RentalsUnited
         location.currency = currencies[location.id]
 
         if location.currency
-          result = fetch_property_ids(location.id)
+          result = synchronisation.new_context { fetch_property_ids(location.id) }
           return unless result.success?
 
           property_ids = result.value
 
-          result = fetch_properties_by_ids(property_ids, location)
+          result = synchronisation.new_context { fetch_properties_by_ids(property_ids, location) }
 
           if result.success?
             properties = result.value
