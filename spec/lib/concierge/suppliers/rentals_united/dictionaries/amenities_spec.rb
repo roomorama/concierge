@@ -52,5 +52,49 @@ module RentalsUnited
         expect(amenities).to eq(["balcony"])
       end
     end
+
+    describe "#smoking_allowed?" do
+      let(:service_ids) { ["89", "96"] }
+
+      it "returns false when no smoking_allowed facilities are included" do
+        smoking_allowed_ids = []
+        ids = (service_ids + smoking_allowed_ids).flatten
+
+        dictionary = described_class.new(ids)
+        expect(dictionary).not_to be_smoking_allowed
+      end
+
+      it "returns true when one of smoking_allowed facilities is included" do
+        smoking_allowed_ids = ["799", "802"]
+        smoking_allowed_ids.each do |id|
+          ids = (service_ids + [id]).flatten
+
+          dictionary = described_class.new(ids)
+          expect(dictionary).to be_smoking_allowed
+        end
+      end
+    end
+
+    describe "#pets_allowed?" do
+      let(:service_ids) { ["89", "96"] }
+
+      it "returns false when no pets_allowed facilities are included" do
+        pets_allowed_ids = []
+        ids = (service_ids + pets_allowed_ids).flatten
+
+        dictionary = described_class.new(ids)
+        expect(dictionary).not_to be_pets_allowed
+      end
+
+      it "returns true when one of pets_allowed facilities is included" do
+        pets_allowed_ids = ["595"]
+        pets_allowed_ids.each do |id|
+          ids = (service_ids + [id]).flatten
+
+          dictionary = described_class.new(ids)
+          expect(dictionary).to be_pets_allowed
+        end
+      end
+    end
   end
 end

@@ -7,6 +7,9 @@ module RentalsUnited
     class Amenities
       attr_reader :facility_service_ids
 
+      SMOKING_ALLOWED_IDS = ["799", "802"]
+      PETS_ALLOWED_IDS = ["595"]
+
       # Initialize amenities converter
       #
       # Arguments
@@ -26,6 +29,14 @@ module RentalsUnited
         end
 
         roomorama_amenities.compact.uniq
+      end
+
+      def smoking_allowed?
+        facility_service_ids.any? { |id| SMOKING_ALLOWED_IDS.include?(id) }
+      end
+
+      def pets_allowed?
+        facility_service_ids.any? { |id| PETS_ALLOWED_IDS.include?(id) }
       end
 
       class << self
