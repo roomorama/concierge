@@ -54,7 +54,12 @@ RSpec.shared_examples "Zendesk cancellation notification" do |supplier:|
       with("cancellation", { supplier: supplier, supplier_id: "123", bridge_id: "392" }).
       once.and_call_original
 
-    subject.call(params)
+    response = call(described_class.new, params)
+
+    expect(response.body).to eq({
+      "status" => "ok",
+      "cancelled_reference_number" => "123"
+    })
   end
 end
 

@@ -14,11 +14,17 @@ module API::Controllers
   module ZendeskNotifyCancellation
 
     def cancel_reservation(params)
-      API::Support::ZendeskNotify.new.notify("cancellation", {
+      zendesk_notify = API::Support::ZendeskNotify.new.notify("cancellation", {
         supplier:    supplier_name,
         supplier_id: params[:reference_number],
         bridge_id:   params[:inquiry_id]
       })
+
+      if zendesk_notify.success?
+        Result.new(params[:reference_number])
+      else
+        zendesk_notify
+      end
     end
 
   end
