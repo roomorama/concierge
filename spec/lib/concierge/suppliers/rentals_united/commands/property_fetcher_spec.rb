@@ -77,6 +77,14 @@ RSpec.describe RentalsUnited::Commands::PropertyFetcher do
       expect(property.number_of_bedrooms).to eq(3)
     end
 
+    it "sets surface to the property" do
+      expect(property.surface).to eq(39)
+    end
+
+    it "sets surface_unit to the property" do
+      expect(property.surface_unit).to eq("metric")
+    end
+
     it "sets address information to the property" do
       expect(property.lat).to eq(55.0003426)
       expect(property.lng).to eq(73.2965942999999)
