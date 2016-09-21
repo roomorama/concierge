@@ -46,39 +46,49 @@ module Workers::Suppliers
       end
 
       properties.each do |property|
-        synchronisation.start(property.internal_id) do
-          unit_rates = find_rates(property.internal_id, all_unit_rates)
-          fetch_details_and_build_property(property, unit_rates)
+        result = synchronisation.new_context do
+          importer.fetch_detailed_property(property.internal_id)
+        end
+        if result.success?
+          detailed_property = result.value
+
+          next if skip?(detailed_property)
+
+          synchronisation.start(property.internal_id) do
+            unit_rates = find_rates(property.internal_id, all_unit_rates)
+            Result.new ::SAW::Mappers::RoomoramaProperty.build(
+              property,
+              detailed_property,
+              unit_rates
+            )
+          end
+        else
+          synchronisation.failed!
+          # potentially a more meaningful result can be passed from HTTPClient, into result.error.data
+          announce_error("Failed to perform the `#fetch_detailed_property` operation", result)
         end
       end
 
       synchronisation.finish!
     end
 
-    def fetch_details_and_build_property(property, unit_rates)
-      result = importer.fetch_detailed_property(property.internal_id)
-
-      if result.success?
-        detailed_property = result.value
-
-        roomorama_property = ::SAW::Mappers::RoomoramaProperty.build(
-          property,
-          detailed_property,
-          unit_rates
-        )
-
-        Result.new(roomorama_property)
-      else
-        message = "Failed to perform the `#fetch_detailed_property` operation"
-        announce_error(message, result)
-        result
-      end
-    end
-
     private
 
+    # Check if we can skip(and not publish) property, because of the following cases
+    #   - Postal code is "."
+    #
+    # Returns true to caller if skipped
+    #
+    def skip?(detailed_property)
+      if detailed_property.postal_code == "."
+        synchronisation.skip_property(detailed_property.internal_id, "Invalid postal_code: .")
+        return true
+      end
+      return false
+    end
+
     def importer
-      @properties ||= ::SAW::Importer.new(credentials)
+      @importer ||= ::SAW::Importer.new(credentials)
     end
 
     def credentials
