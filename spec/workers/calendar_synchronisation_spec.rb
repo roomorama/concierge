@@ -25,6 +25,8 @@ RSpec.describe Workers::CalendarSynchronisation do
     end
   }
 
+  let(:empty_calendar) { Roomorama::Calendar.new("prop1") }
+
   subject { described_class.new(host) }
 
   describe "#start" do
@@ -37,6 +39,13 @@ RSpec.describe Workers::CalendarSynchronisation do
 
       expect(operation).to be_a Roomorama::Client::Operations::UpdateCalendar
       expect(operation.calendar).to eq calendar
+    end
+
+    it "does not run any operation for empty calendar" do
+      expect(subject).to_not receive(:run_operation)
+
+      create_property(identifier: "prop1", host_id: host.id)
+      subject.start("prop1") { Result.new(empty_calendar) }
     end
 
     context "error handling" do
