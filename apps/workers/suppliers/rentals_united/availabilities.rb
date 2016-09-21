@@ -28,7 +28,7 @@ module Workers::Suppliers::RentalsUnited
             seasons,
             availabilities
           )
-          Result.new(mapper.build_calendar)
+          mapper.build_calendar
         end
       end
       synchronisation.finish!

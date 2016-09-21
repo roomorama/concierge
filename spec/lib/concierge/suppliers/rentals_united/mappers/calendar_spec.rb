@@ -37,8 +37,11 @@ module RentalsUnited
 
     it "builds empty property calendar" do
       mapper = described_class.new(property_id, [], [])
-      calendar = mapper.build_calendar
+      result = mapper.build_calendar
+      expect(result).to be_kind_of(Result)
+      expect(result).to be_success
 
+      calendar = result.value
       expect(calendar).to be_kind_of(Roomorama::Calendar)
       expect(calendar.identifier).to eq(property_id)
       expect(calendar.entries).to eq([])
@@ -46,8 +49,11 @@ module RentalsUnited
 
     it "builds calendar with entries" do
       mapper = described_class.new(property_id, seasons, availabilities)
-      calendar = mapper.build_calendar
+      result = mapper.build_calendar
+      expect(result).to be_kind_of(Result)
+      expect(result).to be_success
 
+      calendar = result.value
       expect(calendar.validate!).to eq(true)
 
       expect(calendar).to be_kind_of(Roomorama::Calendar)
@@ -78,7 +84,11 @@ module RentalsUnited
         changeover: 4
       )
       mapper = described_class.new(property_id, seasons, availabilities)
-      calendar = mapper.build_calendar
+      result = mapper.build_calendar
+      expect(result).to be_kind_of(Result)
+      expect(result).to be_success
+
+      calendar = result.value
 
       entry = calendar.entries.find { |e| e.date.to_s == "2017-01-01" }
       expect(entry.available).to eq(false)
@@ -108,8 +118,11 @@ module RentalsUnited
 
         it "sets checkin to be allowed and checkout to be denied" do
           mapper = described_class.new(property_id, seasons, availabilities)
-          calendar = mapper.build_calendar
+          result = mapper.build_calendar
+          expect(result).to be_kind_of(Result)
+          expect(result).to be_success
 
+          calendar = result.value
           expect(calendar.validate!).to eq(true)
 
           entry = calendar.entries.find { |e| e.date.to_s == date.to_s }
@@ -123,8 +136,11 @@ module RentalsUnited
 
         it "sets checkin to be denied and checkout to be allowed" do
           mapper = described_class.new(property_id, seasons, availabilities)
-          calendar = mapper.build_calendar
+          result = mapper.build_calendar
+          expect(result).to be_kind_of(Result)
+          expect(result).to be_success
 
+          calendar = result.value
           expect(calendar.validate!).to eq(true)
 
           entry = calendar.entries.find { |e| e.date.to_s == date.to_s }
@@ -138,8 +154,11 @@ module RentalsUnited
 
         it "sets both checkin and checkout to be denied" do
           mapper = described_class.new(property_id, seasons, availabilities)
-          calendar = mapper.build_calendar
+          result = mapper.build_calendar
+          expect(result).to be_kind_of(Result)
+          expect(result).to be_success
 
+          calendar = result.value
           expect(calendar.validate!).to eq(true)
 
           entry = calendar.entries.find { |e| e.date.to_s == date.to_s }
@@ -153,13 +172,27 @@ module RentalsUnited
 
         it "sets both checkin and checkout to be allowed" do
           mapper = described_class.new(property_id, seasons, availabilities)
-          calendar = mapper.build_calendar
+          result = mapper.build_calendar
+          expect(result).to be_kind_of(Result)
+          expect(result).to be_success
 
+          calendar = result.value
           expect(calendar.validate!).to eq(true)
 
           entry = calendar.entries.find { |e| e.date.to_s == date.to_s }
           expect(entry.checkin_allowed).to eq(true)
           expect(entry.checkout_allowed).to eq(true)
+        end
+      end
+
+      context "when changeover type id is unknown" do
+        let(:changeover) { 5 }
+
+        it "returns not supported changeover error" do
+          mapper = described_class.new(property_id, seasons, availabilities)
+          result = mapper.build_calendar
+          expect(result).not_to be_success
+          expect(result.error.code).to eq(:not_supported_changeover)
         end
       end
     end
