@@ -27,7 +27,7 @@ module RentalsUnited
         Entities::Season.new(
           date_from: Date.parse(hash["@DateFrom"]),
           date_to:   Date.parse(hash["@DateTo"]),
-          price:     hash["Price"]
+          price:     hash["Price"].to_f
         )
       end
     end

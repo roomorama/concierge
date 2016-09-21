@@ -8,12 +8,12 @@ module RentalsUnited
         RentalsUnited::Entities::Season.new(
           date_from: Date.parse("2016-09-01"),
           date_to:   Date.parse("2016-09-15"),
-          price:     "150.00"
+          price:     150.0
         ),
         RentalsUnited::Entities::Season.new(
           date_from: Date.parse("2016-10-01"),
           date_to:   Date.parse("2016-10-15"),
-          price:     "200.00"
+          price:     200.0
         )
       ]
     end
@@ -58,19 +58,19 @@ module RentalsUnited
       sep_entry = calendar.entries.find { |e| e.date.to_s == "2016-09-01" }
       expect(sep_entry.available).to eq(false)
       expect(sep_entry.minimum_stay).to eq(2)
-      expect(sep_entry.nightly_rate).to eq("150.00")
+      expect(sep_entry.nightly_rate).to eq(150.0)
       expect(sep_entry.checkin_allowed).to eq(true)
       expect(sep_entry.checkout_allowed).to eq(true)
 
       oct_entry = calendar.entries.find { |e| e.date.to_s == "2016-10-14" }
       expect(oct_entry.available).to eq(true)
       expect(oct_entry.minimum_stay).to eq(1)
-      expect(oct_entry.nightly_rate).to eq("200.00")
+      expect(oct_entry.nightly_rate).to eq(200.0)
       expect(sep_entry.checkin_allowed).to eq(true)
       expect(sep_entry.checkout_allowed).to eq(true)
     end
 
-    it "keeps only calendar entries which have prices" do
+    it "keeps even not valid calendar entries setting nightly_rate to 0" do
       availabilities << RentalsUnited::Entities::Availability.new(
         date: Date.parse("2017-01-01"),
         available: true,
@@ -81,7 +81,11 @@ module RentalsUnited
       calendar = mapper.build_calendar
 
       entry = calendar.entries.find { |e| e.date.to_s == "2017-01-01" }
-      expect(entry).to be_nil
+      expect(entry.available).to eq(false)
+      expect(entry.minimum_stay).to eq(5)
+      expect(entry.nightly_rate).to eq(0.0)
+      expect(entry.checkin_allowed).to eq(false)
+      expect(entry.checkout_allowed).to eq(false)
 
       expect(calendar.validate!).to eq(true)
     end
