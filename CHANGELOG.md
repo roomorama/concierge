@@ -5,6 +5,9 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+### Added
+- `ZendeskNotify` client with ticket creation on cancellation of bookings from Poplidays and AtLeisure
+
 ### Fixed
 - Ciirus:: ignore permissions error about MC disabled clone properties
 
