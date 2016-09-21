@@ -343,4 +343,28 @@ RSpec.describe RentalsUnited::Commands::PropertyFetcher do
       expect(event[:message]).to eq("timeout")
     end
   end
+
+  context "when mapping floors" do
+    it "sets floor to the property if it's usual floor value" do
+      stub_data = read_fixture("rentals_united/properties/property.xml")
+      stub_call(:post, url) { [200, {}, stub_data] }
+
+      result = subject.fetch_property
+      expect(result).to be_success
+
+      property = result.value
+      expect(property.floor).to eq(3)
+    end
+
+    it "sets floor -1 to the property if it's Basement encoded by -1000" do
+      stub_data = read_fixture("rentals_united/properties/basement_floor.xml")
+      stub_call(:post, url) { [200, {}, stub_data] }
+
+      result = subject.fetch_property
+      expect(result).to be_success
+
+      property = result.value
+      expect(property.floor).to eq(-1)
+    end
+  end
 end
