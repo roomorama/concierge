@@ -3,14 +3,14 @@ require 'spec_helper'
 module RentalsUnited
   RSpec.describe Mappers::Calendar do
     let(:property_id) { "1234" }
-    let(:rates) do
+    let(:seasons) do
       [
-        RentalsUnited::Entities::Rate.new(
+        RentalsUnited::Entities::Season.new(
           date_from: Date.parse("2016-09-01"),
           date_to:   Date.parse("2016-09-15"),
           price:     "150.00"
         ),
-        RentalsUnited::Entities::Rate.new(
+        RentalsUnited::Entities::Season.new(
           date_from: Date.parse("2016-10-01"),
           date_to:   Date.parse("2016-10-15"),
           price:     "200.00"
@@ -45,7 +45,7 @@ module RentalsUnited
     end
 
     it "builds calendar with entries" do
-      mapper = described_class.new(property_id, rates, availabilities)
+      mapper = described_class.new(property_id, seasons, availabilities)
       calendar = mapper.build_calendar
 
       expect(calendar.validate!).to eq(true)
@@ -77,7 +77,7 @@ module RentalsUnited
         minimum_stay: 5,
         changeover: 4
       )
-      mapper = described_class.new(property_id, rates, availabilities)
+      mapper = described_class.new(property_id, seasons, availabilities)
       calendar = mapper.build_calendar
 
       entry = calendar.entries.find { |e| e.date.to_s == "2017-01-01" }
@@ -103,7 +103,7 @@ module RentalsUnited
         let(:changeover) { 1 }
 
         it "sets checkin to be allowed and checkout to be denied" do
-          mapper = described_class.new(property_id, rates, availabilities)
+          mapper = described_class.new(property_id, seasons, availabilities)
           calendar = mapper.build_calendar
 
           expect(calendar.validate!).to eq(true)
@@ -118,7 +118,7 @@ module RentalsUnited
         let(:changeover) { 2 }
 
         it "sets checkin to be denied and checkout to be allowed" do
-          mapper = described_class.new(property_id, rates, availabilities)
+          mapper = described_class.new(property_id, seasons, availabilities)
           calendar = mapper.build_calendar
 
           expect(calendar.validate!).to eq(true)
@@ -133,7 +133,7 @@ module RentalsUnited
         let(:changeover) { 3 }
 
         it "sets both checkin and checkout to be denied" do
-          mapper = described_class.new(property_id, rates, availabilities)
+          mapper = described_class.new(property_id, seasons, availabilities)
           calendar = mapper.build_calendar
 
           expect(calendar.validate!).to eq(true)
@@ -148,7 +148,7 @@ module RentalsUnited
         let(:changeover) { 4 }
 
         it "sets both checkin and checkout to be allowed" do
-          mapper = described_class.new(property_id, rates, availabilities)
+          mapper = described_class.new(property_id, seasons, availabilities)
           calendar = mapper.build_calendar
 
           expect(calendar.validate!).to eq(true)

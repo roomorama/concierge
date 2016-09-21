@@ -15,9 +15,9 @@ module Workers::Suppliers::RentalsUnited
 
       identifiers.each do |property_id|
         synchronisation.start(property_id) do
-          result = fetch_rates(property_id)
+          result = fetch_seasons(property_id)
           next result unless result.success?
-          rates = result.value
+          seasons = result.value
 
           result = fetch_availabilities(property_id)
           next result unless result.success?
@@ -25,7 +25,7 @@ module Workers::Suppliers::RentalsUnited
 
           mapper = ::RentalsUnited::Mappers::Calendar.new(
             property_id,
-            rates,
+            seasons,
             availabilities
           )
           Result.new(mapper.build_calendar)
@@ -42,9 +42,9 @@ module Workers::Suppliers::RentalsUnited
       end
     end
 
-    def fetch_rates(property_id)
-      report_error("Failed to fetch rates for property `#{property_id}`") do
-        importer.fetch_rates(property_id)
+    def fetch_seasons(property_id)
+      report_error("Failed to fetch seasons for property `#{property_id}`") do
+        importer.fetch_seasons(property_id)
       end
     end
 

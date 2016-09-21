@@ -1,16 +1,16 @@
 module RentalsUnited
   module Commands
-    # +RentalsUnited::Commands::RatesFetcher+
+    # +RentalsUnited::Commands::SeasonsFetcher+
     #
     # This class is responsible for wrapping the logic related to fetching
-    # property rates from RentalsUnited
-    class RatesFetcher < BaseFetcher
+    # property rate seasons from RentalsUnited
+    class SeasonsFetcher < BaseFetcher
       attr_reader :property_id
 
       ROOT_TAG = "Pull_ListPropertyPrices_RS"
       YEARS_COUNT_TO_FETCH = 1
 
-      # Initialize +RatesFetcher+ command.
+      # Initialize +SeasonsFetcher+ command.
       #
       # Arguments
       #
@@ -19,7 +19,7 @@ module RentalsUnited
       #
       # Usage:
       #
-      #   RentalsUnited::Commands::RatesFetcher.new(
+      #   RentalsUnited::Commands::SeasonsFetcher.new(
       #     credentials,
       #     property_id
       #   )
@@ -29,12 +29,12 @@ module RentalsUnited
         @property_id = property_id
       end
 
-      # Retrieves property rates.
+      # Retrieves property rate seasons.
       #
-      # Returns a +Result+ wrapping +Array+ of +Entities::Rate+ objects
+      # Returns a +Result+ wrapping +Array+ of +Entities::Season+ objects
       # Returns a +Result+ with +Result::Error+ when operation fails
-      def fetch_rates
-        payload = payload_builder.build_rates_fetch_payload(
+      def fetch_seasons
+        payload = payload_builder.build_seasons_fetch_payload(
           property_id,
           date_from,
           date_to
@@ -46,7 +46,7 @@ module RentalsUnited
         result_hash = response_parser.to_hash(result.value.body)
 
         if valid_status?(result_hash, ROOT_TAG)
-          Result.new(build_rates(result_hash))
+          Result.new(build_seasons(result_hash))
         else
           error_result(result_hash, ROOT_TAG)
         end
@@ -65,11 +65,11 @@ module RentalsUnited
         date.strftime("%Y-%m-%d")
       end
 
-      def build_rates(hash)
+      def build_seasons(hash)
         seasons = Array(hash.get("#{ROOT_TAG}.Prices.Season"))
         seasons.map do |season|
-          mapper = Mappers::Rate.new(season)
-          mapper.build_rate
+          mapper = Mappers::Season.new(season)
+          mapper.build_season
         end
       end
     end

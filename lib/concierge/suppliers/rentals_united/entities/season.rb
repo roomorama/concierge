@@ -1,9 +1,9 @@
 module RentalsUnited
   module Entities
-    # +RentalsUnited::Entities::Rate+
+    # +RentalsUnited::Entities::Season+
     #
-    # This entity represents an rate object.
-    class Rate
+    # This entity represents a rates season object.
+    class Season
       attr_accessor :date_from, :date_to, :price
 
       def initialize(date_from:, date_to:, price:)

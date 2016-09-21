@@ -4,7 +4,7 @@ module RentalsUnited
     #
     # This class is responsible for building a calendar for property.
     class Calendar
-      attr_reader :property_id, :rates, :availabilities
+      attr_reader :property_id, :seasons, :availabilities
 
       CHECK_IN_ALLOWED_CHANGEOVER_TYPE_IDS  = [1, 4]
       CHECK_OUT_ALLOWED_CHANGEOVER_TYPE_IDS = [2, 4]
@@ -14,11 +14,11 @@ module RentalsUnited
       # Arguments
       #
       #   * +propertyid+ [String] id of property
-      #   * +rates+ [Array<Entities::Rate>] rates
+      #   * +seasons+ [Array<Entities::Season>] seasons
       #   * +availabilities+ [Array<Entities::Availability>] availabilities
-      def initialize(property_id, rates, availabilities)
+      def initialize(property_id, seasons, availabilities)
         @property_id    = property_id
-        @rates          = rates
+        @seasons        = seasons
         @availabilities = availabilities
       end
 
@@ -49,8 +49,8 @@ module RentalsUnited
       end
 
       def rate_by_date(date)
-        rate_for_date = rates.find { |rate| rate.has_price_for_date?(date) }
-        rate_for_date&.price
+        season = seasons.find { |s| s.has_price_for_date?(date) }
+        season&.price
       end
 
       def checkin_allowed?(changeover)
