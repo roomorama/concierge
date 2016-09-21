@@ -85,7 +85,6 @@ module SAW
           #{build_username_and_password}
           <countryid>#{country}</countryid>
           <number_of_guests>-1</number_of_guests>
-          <flag_free_sale>Y</flag_free_sale>
           #{property_id ? build_property_container(property_id) : nil }
         </request>
       }

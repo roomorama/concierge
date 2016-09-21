@@ -11,7 +11,7 @@ module Workers::Suppliers
     end
 
     def perform
-      result = importer.fetch_countries
+      result = synchronisation.new_context { importer.fetch_countries }
 
       if result.success?
         countries = result.value
@@ -21,7 +21,9 @@ module Workers::Suppliers
         return
       end
 
-      result = importer.fetch_available_properties_by_countries(countries)
+      result = synchronisation.new_context do
+        importer.fetch_properties_by_countries(countries)
+      end
 
       if result.success?
         properties = result.value
@@ -31,20 +33,20 @@ module Workers::Suppliers
         return
       end
 
-      result = importer.fetch_all_unit_rates_for_properties(properties)
+      result = synchronisation.new_context do
+        importer.fetch_all_unit_rates_for_properties(properties)
+      end
 
       if result.success?
         all_unit_rates = result.value
       else
-        message = "Failed to perform the `#fetch_rates_for_properties` operation"
+        message = "Failed to perform the `#fetch_all_unit_rates_for_properties` operation"
         announce_error(message, result)
         return
       end
 
       properties.each do |property|
         synchronisation.start(property.internal_id) do
-          Concierge.context.disable!
-
           unit_rates = find_rates(property.internal_id, all_unit_rates)
           fetch_details_and_build_property(property, unit_rates)
         end
@@ -53,7 +55,7 @@ module Workers::Suppliers
       synchronisation.finish!
     end
 
-    def fetch_details_and_build_property(property, rates)
+    def fetch_details_and_build_property(property, unit_rates)
       result = importer.fetch_detailed_property(property.internal_id)
 
       if result.success?
@@ -62,7 +64,7 @@ module Workers::Suppliers
         roomorama_property = ::SAW::Mappers::RoomoramaProperty.build(
           property,
           detailed_property,
-          rates
+          unit_rates
         )
 
         Result.new(roomorama_property)
@@ -101,7 +103,7 @@ module Workers::Suppliers
     end
 
     def find_rates(property_id, all_unit_rates)
-      all_unit_rates.find { |rate| rate.id == property_id.to_s }
+      all_unit_rates.find { |rate| rate.property_id == property_id.to_s }
     end
   end
 end
