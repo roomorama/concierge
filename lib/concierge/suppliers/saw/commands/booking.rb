@@ -56,7 +56,7 @@ module SAW
             
             Result.new(reservation)
           else
-            error_result(result_hash)
+            error_result(result_hash, result.value.body)
           end
         else
           result

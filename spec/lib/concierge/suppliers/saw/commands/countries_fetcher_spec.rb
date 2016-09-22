@@ -73,7 +73,7 @@ RSpec.describe SAW::Commands::CountriesFetcher do
 
       expect(result.success?).to be false
       expect(result.error.code).to eq(:unrecognised_response)
-      expect(result.error.data).to be_nil
+      expect(result.error.data).to eq("Internal Server Error\n")
       expect(last_context_event[:message]).to eq(
         "Error response could not be recognised (no `code` or `description` fields)."
       )

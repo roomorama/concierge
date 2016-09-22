@@ -41,7 +41,7 @@ module SAW
           countries = build_countries(countries_hash)
           Result.new(countries)
         else
-          error_result(countries_hash)
+          error_result(countries_hash, raw_countries.value)
         end
       end
 

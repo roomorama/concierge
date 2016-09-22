@@ -13,7 +13,7 @@ module SAW
 
             Result.new(reference_number)
           else
-            error_result(result_hash)
+            error_result(result_hash, result.value.body)
           end
         else
           result
