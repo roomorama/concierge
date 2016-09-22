@@ -117,6 +117,8 @@ module Workers
       # will not be recognised.)
       return unless synchronised?(calendar.identifier)
 
+      return if calendar.empty?
+
       calendar.validate!
       update_counters(calendar)
       operation = Roomorama::Client::Operations.update_calendar(calendar)
