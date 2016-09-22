@@ -5,14 +5,15 @@ module Concierge::Flows
   # This use case class wraps the creation of an +ExternalError+ record, performing
   # attribute validations prior to triggering the database call.
   #
-  # All parameters must be present, and the operation given must be declared under
-  # +ExternalError::OPERATIONS+.
+  # All parameters except +description+ must be present, and the operation
+  # given must be declared under +ExternalError::OPERATIONS+.
   class ExternalErrorCreation
     include Hanami::Validations
 
     attribute :operation,   presence: true, inclusion: ExternalError::OPERATIONS
     attribute :supplier,    presence: true
     attribute :code,        presence: true
+    attribute :description
     attribute :context,     presence: true
     attribute :happened_at, presence: true
 
