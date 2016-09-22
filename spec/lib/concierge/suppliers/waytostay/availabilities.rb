@@ -57,6 +57,7 @@ RSpec.shared_examples "Waytostay availabilities client" do
       it "returns unrecognised_response Result if response is not recognised" do
         expect(subject).to_not be_success
         expect(subject.error.code).to eq :unrecognised_response
+        expect(subject.error.data).to eq("Missing keys: [\"_embedded.property_calendar\"]")
       end
     end
   end
