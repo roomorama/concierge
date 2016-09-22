@@ -4,6 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## Unreleased
+### Added
+- Add `rake hosts:create` to, well, create hosts
+
 ## [0.11.0] - 2016-09-21
 ### Added
 - `ZendeskNotify` client with ticket creation on cancellation of bookings from Poplidays and AtLeisure
