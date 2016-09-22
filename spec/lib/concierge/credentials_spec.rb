@@ -20,6 +20,8 @@ RSpec.describe Concierge::Credentials do
       expect(credentials.username).to eq "roomorama"
       expect(credentials.password).to eq "p4ssw0rd"
       expect(credentials.token).to be_nil
+      expect(credentials.bool_mode).to eq false
+      expect(credentials.quoted_mode).to eq "No"
     end
 
     it "uses environment variables if defined" do
