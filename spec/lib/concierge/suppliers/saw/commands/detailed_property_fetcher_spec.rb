@@ -27,6 +27,7 @@ RSpec.describe SAW::Commands::DetailedPropertyFetcher do
     expect(result.success?).to be false
 
     expect(result.error.code).to eq("0000")
+    expect(result.error.data).to eq("Strange Error")
     expect(last_context_event[:message]).to eq(
       "Response indicating the error `0000`, and description `Strange Error`"
     )
@@ -42,6 +43,7 @@ RSpec.describe SAW::Commands::DetailedPropertyFetcher do
 
       expect(result.success?).to be false
       expect(result.error.code).to eq(:unrecognised_response)
+      expect(result.error.data).to be_nil
       expect(last_context_event[:message]).to eq(
         "Error response could not be recognised (no `code` or `description` fields)."
       )
@@ -59,6 +61,7 @@ RSpec.describe SAW::Commands::DetailedPropertyFetcher do
       expect(result).not_to be_success
       expect(last_context_event[:message]).to eq("timeout")
       expect(result.error.code).to eq :connection_timeout
+      expect(result.error.data).to be_nil
     end
   end
 end

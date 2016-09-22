@@ -52,7 +52,7 @@ module SAW
 
         if code && description
           augment_with_error(code, description, caller)
-          Result.error(code)
+          Result.error(code, description)
         else
           unrecognised_response_event(caller)
           Result.error(:unrecognised_response)
