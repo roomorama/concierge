@@ -27,9 +27,12 @@ module Concierge::Flows
     end
 
     private
-
     def attributes
-      to_h
+      to_h.merge(description: truncated_description)
+    end
+
+    def truncated_description
+      description.to_s[0...2000]
     end
 
     def database
