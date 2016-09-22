@@ -8,6 +8,9 @@ how this file is formatted and how the process works.
 ### Added
 - `ZendeskNotify` client with ticket creation on cancellation of bookings from Poplidays and AtLeisure
 
+### Changed
+- `Workers::CalendarSynchronisation` doesn't run operation for empty calendar
+
 ### Fixed
 - Ciirus:: ignore permissions error about MC disabled clone properties
 - SAW: return unavailable quotation instead of Result.error while quote price
