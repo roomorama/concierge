@@ -11,6 +11,10 @@ module Web::Views::ExternalErrors
   class Index
     include Web::View
 
+    # Make +Hanami::Helpers::EscapeHelper#escape_html+ public
+    # and available from templates
+    public :h
+
     # Receives an instance of +ExternalError+ and formats the
     # +happened_at+ column for display.
     def format_time(error)
