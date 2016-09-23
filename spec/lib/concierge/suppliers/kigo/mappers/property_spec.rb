@@ -34,6 +34,20 @@ RSpec.describe Kigo::Mappers::Property do
           expect(property.minimum_stay).to eq 30
         end
       end
+      context 'number is zero' do
+        let(:minimum_stay) {
+          {
+            'UNIT' => 'MONTH',
+            'NUMBER' => 0
+          }
+        }
+        it 'sets default stay_length' do
+          property_data['PROP_INFO']['PROP_STAYTIME_MIN'] = minimum_stay
+          property = subject.prepare(property_data, pricing).value
+
+          expect(property.minimum_stay).to eq 1
+        end
+      end
     end
 
     context 'description' do
