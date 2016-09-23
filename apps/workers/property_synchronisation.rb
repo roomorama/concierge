@@ -199,7 +199,7 @@ module Workers
       push(property)
     rescue Roomorama::Error => err
       missing_data(err.message, property.to_h)
-      Result.error(:missing_data).tap do |error|
+      Result.error(:missing_data, err.message).tap do |error|
         announce_failure(error)
       end
     end
