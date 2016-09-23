@@ -28,6 +28,12 @@ module Web::Views::ExternalErrors
       link_to name, routes.error_path(error.id)
     end
 
+    # receives an instance of +ExternalError+ and creates truncated version
+    # of its description
+    def error_description(error)
+      h(error.description[0...200])
+    end
+
     # next page link
     #
     # params - the request params, a Hash with String keys

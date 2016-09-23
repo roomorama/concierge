@@ -28,7 +28,7 @@
           <td><%= error.operation %></td>
           <td><%= error.supplier %></td>
           <td><%= error.code %></td>
-          <td><%= h(error.description) %></td>
+          <td><%= error_description(error) %></td>
           <td><%= format_time(error) %></td>
         </tr>
       <% end %>
