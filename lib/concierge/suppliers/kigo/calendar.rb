@@ -3,9 +3,14 @@ module Kigo
   #
   # represents days count according to +UNIT+ type
   # possible unit types NIGHT, MONTH, YEAR
+  #
+  # example:
+  #
+  #   TimeInterval.new({"UNIT"=>"NIGHT", "NUMBER"=>3})
   TimeInterval = Struct.new(:interval) do
     def days
-      return 1 if interval['NUMBER'].zero?
+      return nil if interval['NUMBER'].zero?
+
       multiplier = { 'MONTH' => 30, 'YEAR' => 365 }.fetch(interval['UNIT'], 1)
       interval['NUMBER'].to_i * multiplier
     end

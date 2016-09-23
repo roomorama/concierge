@@ -93,8 +93,10 @@ module Kigo::Mappers
       end
     end
 
+    # Parse the minimum stay from the given interval,
+    # or use 1 to statisfy Roomorama's property validation
     def stay_length(interval)
-      Kigo::TimeInterval.new(interval).days
+      Kigo::TimeInterval.new(interval).days || 1
     end
 
     def set_description

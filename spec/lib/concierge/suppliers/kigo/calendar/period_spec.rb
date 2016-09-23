@@ -81,6 +81,31 @@ RSpec.describe Kigo::Calendar::Period do
       expect(entry.checkin_allowed).to eq true
       expect(entry.checkout_allowed).to eq true
     end
-  end
 
+    context 'unavailable minimum stay' do
+      let(:period) do
+        {
+          'CHECK_IN'        => start_date.to_s,
+          'CHECK_OUT'       => end_date.to_s,
+          'NAME'            => '',
+          'STAY_MIN'        => { 'UNIT' => 'NIGHT', 'NUMBER' => 0 },
+          'WEEKLY'          => false,
+          'NIGHTLY_AMOUNTS' => [
+            {
+              'GUESTS_FROM' => 1,
+              'WEEK_NIGHTS' => [1, 2, 3, 4, 5, 6, 7],
+              'STAY_FROM'   => { 'UNIT' => 'NIGHT', 'NUMBER' => 7 },
+              'AMOUNT'      => '36.26'
+            }
+          ]
+        }
+      end
+
+      it 'returns entry with min stay set to nil if NUMBER value is zero' do
+        entry = subject.entries.first
+
+        expect(entry.minimum_stay).to be_nil
+      end
+    end
+  end
 end
