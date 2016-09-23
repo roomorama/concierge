@@ -6,6 +6,7 @@ RSpec.describe Concierge::Flows::ExternalErrorCreation do
       operation:   "quote",
       supplier:    "SupplierA",
       code:        "http_error",
+      description: "detailed description",
       context:     { type: "network_failure" },
       happened_at: Time.now
     }
@@ -24,6 +25,14 @@ RSpec.describe Concierge::Flows::ExternalErrorCreation do
       end
     end
 
+    it "is allows description to be not given" do
+      parameters.delete(:description)
+
+      expect {
+        subject.perform
+      }.to change { ExternalErrorRepository.count }
+    end
+
     it "is a no-op if the operation is not allowed" do
       parameters[:operation] = "invalid_operation"
 
@@ -35,6 +44,15 @@ RSpec.describe Concierge::Flows::ExternalErrorCreation do
     it "saves an external error to the database in case all parameters are valid" do
       expect {
         subject.perform
+      }.to change { ExternalErrorRepository.count }.by(1)
+    end
+
+    it "sets truncated description if its length is more than allowed" do
+      parameters[:description] = "x" * 5000
+
+      expect {
+        external_error = subject.perform
+        expect(external_error.description).to eq("x" * 2000)
       }.to change { ExternalErrorRepository.count }.by(1)
     end
 
