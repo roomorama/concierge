@@ -22,28 +22,28 @@ RSpec.describe Concierge::Flows::ExternalErrorCreation do
           subject.perform
         }.not_to change { ExternalErrorRepository.count }
       end
+    end
 
-      it "is a no-op if the operation is not allowed" do
-        parameters[:operation] = "invalid_operation"
+    it "is a no-op if the operation is not allowed" do
+      parameters[:operation] = "invalid_operation"
 
-        expect {
-          subject.perform
-        }.not_to change { ExternalErrorRepository.count }
-      end
+      expect {
+        subject.perform
+      }.not_to change { ExternalErrorRepository.count }
+    end
 
-      it "saves an external error to the database in case all parameters are valid" do
-        expect {
-          subject.perform
-        }.to change { ExternalErrorRepository.count }.by(1)
-      end
+    it "saves an external error to the database in case all parameters are valid" do
+      expect {
+        subject.perform
+      }.to change { ExternalErrorRepository.count }.by(1)
+    end
 
-      it "does not fail with a hard error in case of a database failure" do
-        allow(ExternalErrorRepository).to receive(:create) { raise Hanami::Model::UniqueConstraintViolationError }
+    it "does not fail with a hard error in case of a database failure" do
+      allow(ExternalErrorRepository).to receive(:create) { raise Hanami::Model::UniqueConstraintViolationError }
 
-        expect {
-          subject.perform
-        }.not_to raise_error
-      end
+      expect {
+        subject.perform
+      }.not_to raise_error
     end
   end
 end
