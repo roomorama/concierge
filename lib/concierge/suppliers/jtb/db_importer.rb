@@ -22,6 +22,19 @@ module JTB
       20  # size6
     ]
 
+    # Availabilities (RoomStock_All_YYYMMDD.csv)
+    ROOM_STOCK_COLUMNS = [
+      0, # language
+      1, # hotel_code
+      2, # option_plan_id
+      3, # service_date
+      4, # number_of_units
+      5, # closing_date
+      6, # sale_status
+      7  # reservation_closing_date
+    ]
+
+
 
     attr_reader :tmp_path
 
@@ -30,7 +43,8 @@ module JTB
     end
 
     def import
-      import_room_types
+      # import_room_types
+      import_room_stocks
     end
 
     def cleanup
@@ -53,12 +67,30 @@ module JTB
       end
     end
 
+    def import_room_stocks
+      file_path = room_stocks_file_path
+      if file_path
+        File.open(file_path) do |file|
+          JTB::Repositories::RoomStockRepository.copy_csv_into do
+            line = file.gets
+            fetch_required_columns(line, ROOM_STOCK_COLUMNS) if line
+          end
+        end
+      end
+    end
+
     def fetch_required_columns(line, indexes)
+      # Remove last \n from string
+      line = line[0..-2]
       line.split(CSV_DELIMETER).values_at(*indexes).join(CSV_DELIMETER) + "\n"
     end
 
     def room_types_file_path
       local_file_path('RoomType_ALL')
+    end
+
+    def room_stocks_file_path
+      local_file_path('RoomStock_ALL')
     end
 
     def local_file_path(prefix)

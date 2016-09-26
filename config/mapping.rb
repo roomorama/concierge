@@ -129,3 +129,16 @@ collection :jtb_room_types do
   attribute :size6,          String
 end
 
+collection :jtb_room_stocks do
+  entity     JTB::Entities::RoomStock
+  repository JTB::Repositories::RoomStockRepository
+
+  attribute :language,                 String
+  attribute :hotel_code,               String
+  attribute :option_plan_id,           String
+  attribute :service_date,             String
+  attribute :number_of_units,          Integer
+  attribute :closing_date,             String
+  attribute :sale_status,              String
+  attribute :reservation_closing_date, String
+end
