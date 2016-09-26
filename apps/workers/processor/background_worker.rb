@@ -119,26 +119,23 @@ class Workers::Processor
     # parameter given on initialization), and invokes the +<worker_type>.<supplier_name>+
     # event on +Concierge::Announcer+.
     def run
-      worker_lookup = fetch_worker(data[:background_worker_id])
-      return worker_lookup if not_found?(worker_lookup)
+      worker = fetch_worker(data[:background_worker_id])
 
-      worker = worker_lookup.value
-      return Result.new(true) if worker.running?
+      return unless worker
+      return if     worker.running?
 
       runner    = runner_for(worker)
       supplier  = runner.supplier
       broadcast = [worker.type, ".", supplier.name].join
 
       running(broadcast, worker) do
-        timing_out(worker.type, data) do
-          # gotcha: +Concierge::Announcer#trigger+ returns an array of the results of each
-          # listener for the given event. Here, we take the first of them assuming
-          # it will be the supplier implementation. That works since there has been no
-          # need for a supplier implementation to provide more than one listener for the
-          # same event. That is a good practice that allows arguments to be passed
-          # from one run to the next.
-          Concierge::Announcer.trigger(broadcast, *runner.args).first
-        end
+        # gotcha: +Concierge::Announcer#trigger+ returns an array of the results of each
+        # listener for the given event. Here, we take the first of them assuming
+        # it will be the supplier implementation. That works since there has been no
+        # need for a supplier implementation to provide more than one listener for the
+        # same event. That is a good practice that allows arguments to be passed
+        # from one run to the next.
+        Concierge::Announcer.trigger(broadcast, *runner.args).first
       end
     end
 
@@ -150,18 +147,6 @@ class Workers::Processor
       else
         HostRunner.new(worker)
       end
-    end
-
-    # timing out the operation to be processed by the queue makes sure that
-    # jobs take too long are not taken by a different worker, possibly duplicating
-    # work and causing conflicts.
-    def timing_out(operation, params)
-      Timeout.timeout(processing_timeout) { yield }
-    rescue Timeout::Error
-      error = TimeoutError.new(operation, params)
-      Rollbar.error(error)
-
-      Result.error(:timeout)
     end
 
     # coordinates the +BackgroundWorker+ instance status and timestamps by changing
@@ -222,29 +207,15 @@ class Workers::Processor
     end
 
     # tries to fetch the worker with the given +id+ from the database. If there
-    # is none, notfies the occurrence to Rollbar, and returns a +Result+ wrapping
-    # +Workers::Processor::BackgroundWorker::WORKER_NOT_FOUND+.
+    # is none, notfies the occurrence to Rollbar.
     def fetch_worker(id)
-      worker = BackgroundWorkerRepository.find(id)
-
-      if worker
-        Result.new(worker)
-      else
-        error = UnknownWorkerError.new(id)
-        Rollbar.warning(error)
-
-        Result.new(WORKER_NOT_FOUND)
+      BackgroundWorkerRepository.find(id).tap do |worker|
+        unless worker
+          error = UnknownWorkerError.new(id)
+          Rollbar.warning(error)
+        end
       end
     end
 
-    def not_found?(result)
-      result.value == WORKER_NOT_FOUND
-    end
-
-    # NOTE this time out should be shorter than the +VisibilityTimeout+ configured
-    # on the SQS queue to be used by Concierge.
-    def processing_timeout
-      @two_hour ||= 60 * 60 * 12
-    end
   end
 end

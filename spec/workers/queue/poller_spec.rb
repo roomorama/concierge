@@ -26,19 +26,11 @@ RSpec.describe Workers::Queue::Poller do
       allow(subject).to receive(:poller) { poller }
     end
 
-    it "ensures that the result from the message processing block is a valid Result instance" do
-      expect {
-        subject.poll do
-          42
-        end
-      }.to raise_error Workers::Queue::Poller::InvalidQueueProcessingResultError
-    end
-
-    it "does not delete the message if the message processing indicates failure" do
-      expect(poller).not_to receive(:delete_message).with(message)
+    it "deletes the message immediately after the worker receives it" do
+      expect(poller).to receive(:delete_message).with(message)
 
       subject.poll do
-        Result.error(:something_went_wrong)
+        42
       end
     end
 
@@ -46,7 +38,7 @@ RSpec.describe Workers::Queue::Poller do
       expect(poller).to receive(:delete_message).with(message)
 
       subject.poll do
-        Result.new(42)
+        42
       end
     end
   end
