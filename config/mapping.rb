@@ -103,3 +103,29 @@ collection :background_workers do
   attribute :created_at,    Time
   attribute :updated_at,    Time
 end
+
+# JTB mapping
+
+collection :jtb_room_types do
+  entity     JTB::Entities::RoomType
+  repository JTB::Repositories::RoomTypeRepository
+
+  attribute :language,       String
+  attribute :city_code,      String
+  attribute :hotel_code,     String
+  attribute :room_code,      String
+  attribute :room_grade,     String
+  attribute :room_type_code, String
+  attribute :room_name,      String
+  attribute :min_guests,     Integer
+  attribute :max_guests,     Integer
+  attribute :extra_bed,      String
+  attribute :extra_bed_type, String
+  attribute :size1,          String
+  attribute :size2,          String
+  attribute :size3,          String
+  attribute :size4,          String
+  attribute :size5,          String
+  attribute :size6,          String
+end
+
