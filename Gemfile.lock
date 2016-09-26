@@ -77,6 +77,9 @@ GEM
     multi_json (1.12.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
+    net-sftp (2.1.2)
+      net-ssh (>= 2.6.5)
+    net-ssh (3.2.0)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
     nokogumbo (1.4.7)
@@ -152,6 +155,7 @@ DEPENDENCIES
   hanami (= 0.7.2)
   hanami-model (~> 0.5)
   iso_country_codes (~> 0.7.4)
+  net-sftp (~> 2.1, >= 2.1.2)
   oauth2
   patron (~> 0.5)
   pg
