@@ -73,9 +73,7 @@ RSpec.describe Workers::Processor::BackgroundWorker do
           invoked += 1
           Result.new({})
         }) do
-          result = subject.run
-          expect(result).to be_a Result
-          expect(result).to be_success
+          subject.run
           expect(invoked).to eq 0
         end
       end
@@ -99,18 +97,6 @@ RSpec.describe Workers::Processor::BackgroundWorker do
           reloaded_worker = BackgroundWorkerRepository.find(worker.id)
           expect(reloaded_worker.next_run_at - Time.now).to be_within(1).of(worker.interval)
           expect(reloaded_worker.status).to eq "idle"
-        end
-      end
-
-      it "times out and fails if the operation takes too long" do
-        # simulates a timeout of 0.5s and a synchronisation process that takes
-        # one second, thus timing out.
-        allow(subject).to receive(:processing_timeout) { 0.5 }
-        listening_to("metadata.SupplierTest", block: ->(*) { sleep 1 }) do
-          result = subject.run
-          expect(result).to be_a Result
-          expect(result).not_to be_success
-          expect(result.error.code).to eq :timeout
         end
       end
     end
@@ -152,11 +138,7 @@ RSpec.describe Workers::Processor::BackgroundWorker do
       error = nil
       expect(Rollbar).to receive(:warning) { |err| error = err }
 
-      result = subject.run
-      expect(result).to be_a Result
-      expect(result).to be_success
-      expect(result.value).to eq :invalid_worker_id
-
+      subject.run
       expect(error).to be_a Workers::Processor::BackgroundWorker::UnknownWorkerError
     end
 

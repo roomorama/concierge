@@ -4,6 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.11.4] - 2016-09-26
+### Removed
+- Requirement for workers to finish in 12h no longer exists
+
 ## [0.11.3] - 2016-09-23
 ### Fixed
 - Kigo: set `minimum_stay` to `nil` instead of 1 for calendar entry when coming NUMBER is zero
