@@ -74,6 +74,15 @@ module JTB
       8  # comments
     ]
 
+    # Codes lookup (GenericMaster_All_YYYYMMDD.csv)
+    MASTER_FILE_COLUMNS = [
+      0, # language
+      1, # category
+      3, # id
+      4, # related_id
+      5, # name
+    ]
+
     attr_reader :tmp_path
 
     def initialize(tmp_path)
@@ -84,7 +93,8 @@ module JTB
       # import_room_types
       # import_room_stocks
       # import_hotels
-      import_pictures
+      # import_pictures
+      import_lookups
     end
 
     def cleanup
@@ -92,6 +102,7 @@ module JTB
       JTB::Repositories::RoomStockRepository.clear
       JTB::Repositories::HotelRepository.clear
       JTB::Repositories::PictureRepository.clear
+      JTB::Repositories::LookupRepository.clear
     end
 
     private
@@ -146,6 +157,18 @@ module JTB
       end
     end
 
+    def import_lookups
+      file_path = generic_master_file_path
+      if file_path
+        File.open(file_path) do |file|
+          JTB::Repositories::LookupRepository.copy_csv_into do
+            line = file.gets
+            fetch_required_columns(line, MASTER_FILE_COLUMNS) if line
+          end
+        end
+      end
+    end
+
     def fetch_required_columns(line, indexes)
       # Remove last \n from string
       line = line[0..-2]
@@ -166,6 +189,10 @@ module JTB
 
     def pictures_file_path
       local_file_path('PictureMaster_ALL')
+    end
+
+    def generic_master_file_path
+      local_file_path('GenericMaster_ALL')
     end
 
     def local_file_path(prefix)
