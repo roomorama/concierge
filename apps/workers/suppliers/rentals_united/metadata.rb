@@ -60,18 +60,18 @@ module Workers::Suppliers::RentalsUnited
               else
                 message = "Failed to find owner for property id `#{property.id}`"
                 announce_context_error(message, result)
-                return
+                next
               end
             end
           else
             message = "Failed to fetch properties for ids `#{property_ids}` in location `#{location.id}`"
             announce_context_error(message, result)
-            return
+            next
           end
         else
           message = "Failed to find currency for location with id `#{location.id}`"
           announce_context_error(message, result)
-          return
+          next
         end
       end
 
