@@ -186,3 +186,14 @@ collection :jtb_pictures do
   attribute :url,        String
   attribute :comments,   String
 end
+
+collection :jtb_lookups do
+  entity     JTB::Entities::Lookup
+  repository JTB::Repositories::LookupRepository
+
+  attribute :language,   String
+  attribute :category,   String
+  attribute :id,         String
+  attribute :related_id, String
+  attribute :name,       String
+end
