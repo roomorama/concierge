@@ -142,3 +142,33 @@ collection :jtb_room_stocks do
   attribute :sale_status,              String
   attribute :reservation_closing_date, String
 end
+
+collection :jtb_hotels do
+  entity     JTB::Entities::Hotel
+  repository JTB::Repositories::HotelRepository
+
+  attribute :language,             String
+  attribute :city_code,            String
+  attribute :hotel_code,           String
+  attribute :jtb_hotel_code,       String
+  attribute :hotel_name,           String
+  attribute :location_code,        String
+  attribute :hotel_description,    String
+  attribute :latitude,             String
+  attribute :longitude,            String
+  attribute :hotel_type,           String
+  attribute :address,              String
+  attribute :non_smoking_room,     String
+  attribute :parking,              String
+  attribute :internet,             String
+  attribute :wifi,                 String
+  attribute :indoor_pool_free,     String
+  attribute :indoor_pool_charged,  String
+  attribute :outdoor_pool_free,    String
+  attribute :outdoor_pool_charged, String
+  attribute :indoor_gym_free,      String
+  attribute :indoor_gym_charged,   String
+  attribute :outdoor_gym_free,     String
+  attribute :outdoor_gym_charged,  String
+  attribute :wheelchair_access,    String
+end
