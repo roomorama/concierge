@@ -26,6 +26,11 @@ module Workers::Suppliers::RentalsUnited
 
       currencies = result.value
 
+      result = synchronisation.new_context { fetch_owners }
+      return unless result.success?
+
+      owners = result.value
+
       locations.each do |location|
         location.currency = currencies[location.id]
 
@@ -35,13 +40,28 @@ module Workers::Suppliers::RentalsUnited
 
           property_ids = result.value
 
-          result = synchronisation.new_context { fetch_properties_by_ids(property_ids, location) }
+          result = synchronisation.new_context { fetch_properties_by_ids(property_ids) }
 
           if result.success?
             properties = result.value
 
             properties.each do |property|
-              synchronisation.start(property.identifier) { Result.new(property) }
+              owner = find_owner(owners, property.owner_id)
+
+              if owner
+                synchronisation.start(property.id) do
+                  mapper = ::RentalsUnited::Mappers::RoomoramaProperty.new(
+                    property,
+                    location,
+                    owner
+                  )
+                  mapper.build_roomorama_property
+                end
+              else
+                message = "Failed to find owner for property id `#{property.id}`"
+                announce_context_error(message, result)
+                return
+              end
             end
           else
             message = "Failed to fetch properties for ids `#{property_ids}` in location `#{location.id}`"
@@ -70,6 +90,10 @@ module Workers::Suppliers::RentalsUnited
       )
     end
 
+    def find_owner(owners, owner_id)
+      owners.find { |o| o.id == owner_id }
+    end
+
     def fetch_location_ids
       announce_error("Failed to fetch location ids") do
         importer.fetch_location_ids
@@ -88,15 +112,21 @@ module Workers::Suppliers::RentalsUnited
       end
     end
 
+    def fetch_owners
+      announce_error("Failed to fetch owners") do
+        importer.fetch_owners
+      end
+    end
+
     def fetch_property_ids(location_id)
       announce_error("Failed to fetch properties for location `#{location_id}`") do
         importer.fetch_property_ids(location_id)
       end
     end
 
-    def fetch_properties_by_ids(property_ids, location)
-      announce_error("Failed to fetch properties for location `#{location.id}`") do
-        importer.fetch_properties_by_ids(property_ids, location)
+    def fetch_properties_by_ids(property_ids)
+      announce_error("Failed to fetch properties by ids `#{property_ids}`") do
+        importer.fetch_properties_by_ids(property_ids)
       end
     end
 

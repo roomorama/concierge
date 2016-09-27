@@ -44,6 +44,11 @@ module RentalsUnited
       render(:property_fetch, template_locals)
     end
 
+    def build_owners_fetch_payload
+      template_locals = { credentials: credentials }
+      render(:owners_fetch, template_locals)
+    end
+
     private
     def render(template_name, local_vars)
       path = Hanami.root.join(TEMPLATES_PATH, "#{template_name}.xml.erb")

@@ -48,6 +48,17 @@ RSpec.describe RentalsUnited::PayloadBuilder do
     end
   end
 
+  describe '#build_owners_fetch_payload' do
+    it 'embedds username and password to request' do
+      xml = builder.build_owners_fetch_payload
+      hash = to_hash(xml)
+
+      authentication = hash.get("Pull_ListAllOwners_RQ.Authentication")
+      expect(authentication.get("UserName")).to eq(credentials.username)
+      expect(authentication.get("Password")).to eq(credentials.password)
+    end
+  end
+
   describe '#build_locations_fetch_payload' do
     it 'embedds username and password to request' do
       xml = builder.build_locations_fetch_payload
