@@ -34,7 +34,33 @@ module JTB
       7  # reservation_closing_date
     ]
 
-
+    # Rooms (HotelInfo_All_YYYYMMDD.csv)
+    HOTEL_INFO_COLUMNS = [
+      0,   # language
+      1,   # city_code
+      2,   # hotel_code
+      3,   # jtb_hotel_code
+      6,   # hotel_name
+      9,   # location_code
+      10,  # hotel_description
+      19,  # latitude
+      20,  # longitude
+      22,  # hotel_type
+      24,  # address
+      37,  # non_smoking_room
+      71,  # parking
+      108, # internet
+      112, # wifi
+      123, # indoor_pool_free
+      130, # indoor_pool_charged
+      137, # outdoor_pool_free
+      144, # outdoor_pool_charged
+      128, # indoor_gym_free
+      135, # indoor_gym_charged
+      142, # outdoor_gym_free
+      149, # outdoor_gym_charged
+      165  # wheelchair_access
+    ]
 
     attr_reader :tmp_path
 
@@ -44,7 +70,8 @@ module JTB
 
     def import
       # import_room_types
-      import_room_stocks
+      # import_room_stocks
+      import_hotels
     end
 
     def cleanup
@@ -79,6 +106,18 @@ module JTB
       end
     end
 
+    def import_hotels
+      file_path = hotels_file_path
+      if file_path
+        File.open(file_path) do |file|
+          JTB::Repositories::HotelRepository.copy_csv_into do
+            line = file.gets
+            fetch_required_columns(line, HOTEL_INFO_COLUMNS) if line
+          end
+        end
+      end
+    end
+
     def fetch_required_columns(line, indexes)
       # Remove last \n from string
       line = line[0..-2]
@@ -91,6 +130,10 @@ module JTB
 
     def room_stocks_file_path
       local_file_path('RoomStock_ALL')
+    end
+
+    def hotels_file_path
+      local_file_path('HotelInfo_ALL')
     end
 
     def local_file_path(prefix)
