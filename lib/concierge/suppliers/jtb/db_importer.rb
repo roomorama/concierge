@@ -62,6 +62,18 @@ module JTB
       165  # wheelchair_access
     ]
 
+    # Images (PictureMaster_ALL_YYYYMMDD.csv)
+    PICTURE_FILE_COLUMNS = [
+      0, # language
+      1, # city_code
+      2, # hotel_code
+      3, # sequence
+      4, # category
+      5, # room_code
+      7, # url
+      8  # comments
+    ]
+
     attr_reader :tmp_path
 
     def initialize(tmp_path)
@@ -71,7 +83,8 @@ module JTB
     def import
       # import_room_types
       # import_room_stocks
-      import_hotels
+      # import_hotels
+      import_pictures
     end
 
     def cleanup
@@ -118,6 +131,18 @@ module JTB
       end
     end
 
+    def import_pictures
+      file_path = pictures_file_path
+      if file_path
+        File.open(file_path) do |file|
+          JTB::Repositories::PictureRepository.copy_csv_into do
+            line = file.gets
+            fetch_required_columns(line, PICTURE_FILE_COLUMNS) if line
+          end
+        end
+      end
+    end
+
     def fetch_required_columns(line, indexes)
       # Remove last \n from string
       line = line[0..-2]
@@ -134,6 +159,10 @@ module JTB
 
     def hotels_file_path
       local_file_path('HotelInfo_ALL')
+    end
+
+    def pictures_file_path
+      local_file_path('PictureMaster_ALL')
     end
 
     def local_file_path(prefix)
