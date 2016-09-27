@@ -43,7 +43,7 @@
       <EarlyDepartureFees/>
     </CheckInOut>
     <Deposit DepositTypeID="4">99.6000</Deposit>
-    <SecurityDeposit DepositTypeID="4">5.50</SecurityDeposit>
+    <SecurityDeposit DepositTypeID="5">5.50</SecurityDeposit>
     <AdditionalFees/>
     <Distances/>
     <Amenities>

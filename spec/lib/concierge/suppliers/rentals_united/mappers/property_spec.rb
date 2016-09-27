@@ -73,6 +73,14 @@ RSpec.describe RentalsUnited::Mappers::Property do
       expect(property.owner_id).to eq("427698")
     end
 
+    it "sets security_deposit_type to the property" do
+      expect(property.security_deposit_type).to eq("5")
+    end
+
+    it "sets security_deposit_amount to the property" do
+      expect(property.security_deposit_amount).to eq(5.50)
+    end
+
     context "when property is not active" do
       let(:file_name) { "rentals_united/properties/not_active.xml" }
 

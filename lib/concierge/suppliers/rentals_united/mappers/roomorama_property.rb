@@ -12,6 +12,15 @@ module RentalsUnited
       MINIMUM_STAY = 1
       SURFACE_UNIT = "metric"
 
+      # List of supported by Roomorama security deposit types
+      NO_DEPOSIT_ID = "1"
+      FLAT_AMOUNT_PER_STAY_ID = "5"
+      SUPPORTED_SECURITY_DEPOSIT_TYPES = [
+        NO_DEPOSIT_ID,
+        FLAT_AMOUNT_PER_STAY_ID
+      ]
+      SECURITY_DEPOSIT_PAYMENT_TYPE = 'unknown'
+
       # Initialize +RentalsUnited::Mappers::Property+
       #
       # Arguments:
@@ -30,9 +39,10 @@ module RentalsUnited
       # Returns a +Result+ wrapping +Roomorama::Property+ object
       # Returns a +Result+ with +Result::Error+ when operation fails
       def build_roomorama_property
-        return archived_error      if ru_property.archived?
-        return not_active_error    unless ru_property.active?
-        return property_type_error unless supported_property_type?
+        return archived_error         if ru_property.archived?
+        return not_active_error       unless ru_property.active?
+        return property_type_error    unless supported_property_type?
+        return security_deposit_error unless supported_security_deposit?
 
         property = Roomorama::Property.new(ru_property.id)
         property.title                = ru_property.title
@@ -69,6 +79,7 @@ module RentalsUnited
         property.instant_booking!
 
         set_images!(property)
+        set_security_deposit!(property)
 
         Result.new(property)
       end
@@ -76,6 +87,14 @@ module RentalsUnited
       private
       def set_images!(property)
         ru_property.images.each { |image| property.add_image(image) }
+      end
+
+      def set_security_deposit!(property)
+        if ru_property.security_deposit_type == FLAT_AMOUNT_PER_STAY_ID
+          property.security_deposit_amount = ru_property.security_deposit_amount
+          property.security_deposit_currency_code = property.currency
+          property.security_deposit_type = SECURITY_DEPOSIT_PAYMENT_TYPE
+        end
       end
 
       def full_name(owner)
@@ -96,6 +115,12 @@ module RentalsUnited
         !!property_type
       end
 
+      def supported_security_deposit?
+        SUPPORTED_SECURITY_DEPOSIT_TYPES.include?(
+          ru_property.security_deposit_type
+        )
+      end
+
       def property_type
         @property_type ||= Dictionaries::PropertyTypes.find(
           ru_property.property_type_id
@@ -112,6 +137,10 @@ module RentalsUnited
 
       def not_active_error
         Result.error(:attempt_to_build_not_active_property)
+      end
+
+      def security_deposit_error
+        Result.error(:security_deposit_not_supported)
       end
 
       def amenities_dictionary

@@ -6,6 +6,8 @@
     <IsActive>true</IsActive>
     <IsArchived>false</IsArchived>
     <ObjectTypeID>35</ObjectTypeID>
+    <Deposit DepositTypeID="4">99.6000</Deposit>
+    <SecurityDeposit DepositTypeID="5">5.50</SecurityDeposit>
     <Images>
       <Image ImageTypeID="1">https://dwe6atvmvow8k.cloudfront.net/ru/427698/519688/636082399089701851.jpg</Image>
     </Images>
