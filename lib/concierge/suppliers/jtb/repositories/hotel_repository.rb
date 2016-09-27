@@ -17,6 +17,12 @@ module JTB
           options: "DELIMITER '\t', QUOTE E'\b'"
         ) { yield }
       end
+
+      def self.english_ryokans
+        query do
+          where(language: 'EN').and(hotel_type: 'R')
+        end
+      end
     end
   end
 end

@@ -89,6 +89,9 @@ module JTB
 
     def cleanup
       JTB::Repositories::RoomTypeRepository.clear
+      JTB::Repositories::RoomStockRepository.clear
+      JTB::Repositories::HotelRepository.clear
+      JTB::Repositories::PictureRepository.clear
     end
 
     private
