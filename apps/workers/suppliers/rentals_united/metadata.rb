@@ -82,7 +82,24 @@ module Workers::Suppliers::RentalsUnited
           result = build_roomorama_property(property, location, owner, seasons)
           next if skip?(result, property)
 
-          property_sync.start(property.id) do
+          if result.success?
+            property_sync.start(property.id) { result }
+
+            calendar_sync.start(property.id) do
+              result = fetch_availabilities(property.id)
+              next result unless result.success?
+              availabilities = result.value
+
+              mapper = ::RentalsUnited::Mappers::Calendar.new(
+                property.id,
+                seasons,
+                availabilities
+              )
+              mapper.build_calendar
+            end
+
+            calendar_sync.finish!
+          else
             result
           end
         else
@@ -159,6 +176,12 @@ module Workers::Suppliers::RentalsUnited
     def fetch_seasons(property_id)
       report_error("Failed to fetch seasons for property `#{property_id}`") do
         importer.fetch_seasons(property_id)
+      end
+    end
+
+    def fetch_availabilities(property_id)
+      report_error("Failed to fetch availabilities for property `#{property_id}`") do
+        importer.fetch_availabilities(property_id)
       end
     end
 
