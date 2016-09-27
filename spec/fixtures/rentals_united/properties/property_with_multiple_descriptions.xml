@@ -5,6 +5,8 @@
     <IsActive>true</IsActive>
     <IsArchived>false</IsArchived>
     <ObjectTypeID>35</ObjectTypeID>
+    <Deposit DepositTypeID="4">99.6000</Deposit>
+    <SecurityDeposit DepositTypeID="5">5.50</SecurityDeposit>
     <Descriptions>
       <Description LanguageID="10">
         <Text><![CDATA[Test description]]></Text>

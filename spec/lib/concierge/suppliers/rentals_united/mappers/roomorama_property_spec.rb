@@ -5,25 +5,27 @@ RSpec.describe RentalsUnited::Mappers::RoomoramaProperty do
 
   let(:ru_property_hash) do
     {
-      id:               "519688",
-      title:            "Test Property",
-      lat:              55.0003426,
-      lng:              73.2965942999999,
-      address:          "Test street address",
-      postal_code:      "644119",
-      max_guests:       2,
-      bedroom_type_id:  "4",
-      property_type_id: "35",
-      active:           true,
-      archived:         false,
-      surface:          39,
-      owner_id:         "378000",
-      check_in_time:    "13:00-17:00",
-      check_out_time:   "11:00",
-      floor:            5,
-      description:      "Test Description",
-      images:           [],
-      amenities:        []
+      id:                      "519688",
+      title:                   "Test Property",
+      lat:                     55.0003426,
+      lng:                     73.2965942999999,
+      address:                 "Test street address",
+      postal_code:             "644119",
+      max_guests:              2,
+      bedroom_type_id:         "4",
+      property_type_id:        "35",
+      active:                  true,
+      archived:                false,
+      surface:                 39,
+      owner_id:                "378000",
+      security_deposit_type:   "5",
+      security_deposit_amount: 5.50,
+      check_in_time:           "13:00-17:00",
+      check_out_time:          "11:00",
+      floor:                   5,
+      description:             "Test Description",
+      images:                  [],
+      amenities:               []
     }
   end
 
@@ -145,6 +147,45 @@ RSpec.describe RentalsUnited::Mappers::RoomoramaProperty do
 
   it "sets owner phone number" do
     expect(property.owner_phone_number).to eq("3128329138")
+  end
+
+  it "sets security_deposit_amount" do
+    expect(property.security_deposit_amount).to eq(5.5)
+  end
+
+  it "sets security_deposit_currency_code" do
+    expect(property.security_deposit_currency_code).to eq("EUR")
+  end
+
+  it "sets security_deposit_currency_code" do
+    expect(property.security_deposit_type).to eq("unknown")
+  end
+
+  context "when property has no security_deposit" do
+    it "sets security_deposit_amount to nil" do
+      ru_property_hash[:security_deposit_type] = "1"
+      expect(property.security_deposit_amount).to be_nil
+    end
+
+    it "sets security_deposit_currency_code to nil" do
+      ru_property_hash[:security_deposit_type] = "1"
+      expect(property.security_deposit_currency_code).to be_nil
+    end
+
+    it "sets security_deposit_type to nil" do
+      ru_property_hash[:security_deposit_type] = "1"
+      expect(property.security_deposit_type).to be_nil
+    end
+  end
+
+  context "when property has not supported security_deposit" do
+    ["2", "3", "4"].each do |type_id|
+      it "returns security_deposit_error" do
+        ru_property_hash[:security_deposit_type] = type_id
+        expect(result).not_to be_success
+        expect(result.error.code).to eq(:security_deposit_not_supported)
+      end
+    end
   end
 
   context "when property is archived" do

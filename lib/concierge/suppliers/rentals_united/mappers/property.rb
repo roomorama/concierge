@@ -24,25 +24,27 @@ module RentalsUnited
       # Returns [RentalsUnited::Entities::Property]
       def build_property
         property = Entities::Property.new(
-          id:               property_hash.get("ID"),
-          title:            property_hash.get("Name"),
-          lat:              property_hash.get("Coordinates.Latitude").to_f,
-          lng:              property_hash.get("Coordinates.Longitude").to_f,
-          address:          property_hash.get("Street"),
-          postal_code:      property_hash.get("ZipCode").to_s.strip,
-          max_guests:       property_hash.get("CanSleepMax").to_i,
-          bedroom_type_id:  property_hash.get("PropertyTypeID"),
-          property_type_id: property_hash.get("ObjectTypeID"),
-          active:           property_hash.get("IsActive"),
-          archived:         property_hash.get("IsArchived"),
-          surface:          property_hash.get("Space").to_i,
-          owner_id:         property_hash.get("OwnerID"),
-          check_in_time:    check_in_time,
-          check_out_time:   check_out_time,
-          floor:            floor,
-          description:      en_description(property_hash),
-          images:           build_images,
-          amenities:        build_amenities
+          id:                      property_hash.get("ID"),
+          title:                   property_hash.get("Name"),
+          lat:                     property_hash.get("Coordinates.Latitude").to_f,
+          lng:                     property_hash.get("Coordinates.Longitude").to_f,
+          address:                 property_hash.get("Street"),
+          postal_code:             property_hash.get("ZipCode").to_s.strip,
+          max_guests:              property_hash.get("CanSleepMax").to_i,
+          bedroom_type_id:         property_hash.get("PropertyTypeID"),
+          property_type_id:        property_hash.get("ObjectTypeID"),
+          active:                  property_hash.get("IsActive"),
+          archived:                property_hash.get("IsArchived"),
+          surface:                 property_hash.get("Space").to_i,
+          owner_id:                property_hash.get("OwnerID"),
+          security_deposit_amount: property_hash.get("SecurityDeposit").to_f,
+          security_deposit_type:   security_deposit_type,
+          check_in_time:           check_in_time,
+          check_out_time:          check_out_time,
+          floor:                   floor,
+          description:             en_description(property_hash),
+          images:                  build_images,
+          amenities:               build_amenities
         )
 
         property
@@ -79,6 +81,14 @@ module RentalsUnited
         end
 
         en_description["Text"] if en_description
+      end
+
+      def security_deposit_type
+        security_deposit = property_hash.get("SecurityDeposit")
+
+        if security_deposit
+          security_deposit.attributes["DepositTypeID"]
+        end
       end
 
       def check_in_time
