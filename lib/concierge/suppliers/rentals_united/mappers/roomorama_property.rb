@@ -102,9 +102,9 @@ module RentalsUnited
       end
 
       def set_rates!(property)
-        property.nightly_rate = avg_price_per_day
-        property.weekly_rate  = avg_price_per_day * 7
-        property.monthly_rate = avg_price_per_day * 30
+        property.nightly_rate = avg_price_per_day.round(2)
+        property.weekly_rate  = (avg_price_per_day * 7).round(2)
+        property.monthly_rate = (avg_price_per_day * 30).round(2)
       end
 
       def avg_price_per_day

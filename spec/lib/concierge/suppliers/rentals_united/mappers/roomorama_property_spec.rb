@@ -182,6 +182,29 @@ RSpec.describe RentalsUnited::Mappers::RoomoramaProperty do
     expect(property.monthly_rate).to eq(7500.0)
   end
 
+  context "when given avg price is not integer" do
+    let(:seasons) do
+      [
+        RentalsUnited::Entities::Season.new(
+          date_from: Date.parse("2016-09-01"),
+          date_to:   Date.parse("2016-09-04"),
+          price:     199.99
+        ),
+        RentalsUnited::Entities::Season.new(
+          date_from: Date.parse("2016-10-01"),
+          date_to:   Date.parse("2016-10-13"),
+          price:     1000.00
+        ),
+      ]
+    end
+
+    it "sets rounded property rates" do
+      expect(property.nightly_rate).to eq(811.76)
+      expect(property.weekly_rate).to eq(5682.34)
+      expect(property.monthly_rate).to eq(24352.87)
+    end
+  end
+
   context "when property has no security_deposit" do
     it "sets security_deposit_amount to nil" do
       ru_property_hash[:security_deposit_type] = "1"
