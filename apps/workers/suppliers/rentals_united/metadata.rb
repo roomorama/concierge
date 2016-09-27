@@ -5,6 +5,14 @@ module Workers::Suppliers::RentalsUnited
   class Metadata
     attr_reader :synchronisation, :host
 
+    # Prevent from publishing results containing error codes below:
+    IGNORABLE_ERROR_CODES = [
+      :attempt_to_build_archived_property,
+      :attempt_to_build_not_active_property,
+      :security_deposit_not_supported,
+      :property_type_not_supported
+    ]
+
     def initialize(host)
       @host = host
       @synchronisation = Workers::PropertySynchronisation.new(host)
@@ -49,14 +57,10 @@ module Workers::Suppliers::RentalsUnited
               owner = find_owner(owners, property.owner_id)
 
               if owner
-                synchronisation.start(property.id) do
-                  mapper = ::RentalsUnited::Mappers::RoomoramaProperty.new(
-                    property,
-                    location,
-                    owner
-                  )
-                  mapper.build_roomorama_property
-                end
+                result = build_roomorama_property(property, location, owner)
+                next if skip?(result, property)
+
+                synchronisation.start(property.id) { result }
               else
                 message = "Failed to find owner for property id `#{property.id}`"
                 announce_context_error(message, result)
@@ -94,6 +98,15 @@ module Workers::Suppliers::RentalsUnited
       owners.find { |o| o.id == owner_id }
     end
 
+    def build_roomorama_property(property, location, owner)
+      mapper = ::RentalsUnited::Mappers::RoomoramaProperty.new(
+        property,
+        location,
+        owner
+      )
+      mapper.build_roomorama_property
+    end
+
     def fetch_location_ids
       announce_error("Failed to fetch location ids") do
         importer.fetch_location_ids
@@ -128,6 +141,14 @@ module Workers::Suppliers::RentalsUnited
       announce_error("Failed to fetch properties by ids `#{property_ids}`") do
         importer.fetch_properties_by_ids(property_ids)
       end
+    end
+
+    def skip?(result, property)
+      if !result.success? && IGNORABLE_ERROR_CODES.include?(result.error.code)
+        synchronisation.skip_property(property.id, result.error.code)
+        return true
+      end
+      return false
     end
 
     def announce_error(message)
