@@ -10,7 +10,11 @@ module JTB
         HotelRepository.adapter.instance_variable_get("@connection").copy_into(
           :jtb_hotels,
           format: :csv,
-          options: "DELIMITER '\t'"
+          # Actually this is hack. We use quote symbol which (hopefully) never
+          # meet in file. JTB does not use quote at all while COPY command requires it for CSV
+          # we can not use default '"' symbol because it is often part of description
+          # field.
+          options: "DELIMITER '\t', QUOTE E'\b'"
         ) { yield }
       end
     end
