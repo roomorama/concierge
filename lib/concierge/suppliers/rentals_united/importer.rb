@@ -63,24 +63,23 @@ module RentalsUnited
 
     # Retrieves property by its id.
     #
-    # Returns a +Result+ wrapping +Roomorama::Property+ object
+    # Returns a +Result+ wrapping +Entities::Property+ object
     # Returns a +Result+ with +Result::Error+ when operation fails
-    def fetch_property(property_id, location)
+    def fetch_property(property_id)
       property_fetcher = Commands::PropertyFetcher.new(
         credentials,
-        property_id,
-        location
+        property_id
       )
       property_fetcher.fetch_property
     end
 
     # Retrieves properties by given ids
     #
-    # Returns a +Result+ wrapping +Array+ of +Roomorama::Property+ objects
+    # Returns a +Result+ wrapping +Array+ of +Entities::Property+ objects
     # Returns a +Result+ with +Result::Error+ when operation fails
-    def fetch_properties_by_ids(property_ids, location)
+    def fetch_properties_by_ids(property_ids)
       properties = property_ids.map do |property_id|
-        result = fetch_property(property_id, location)
+        result = fetch_property(property_id)
 
         return result unless result.success?
 
@@ -88,6 +87,15 @@ module RentalsUnited
       end.compact
 
       Result.new(properties)
+    end
+
+    # Retrieves owners
+    #
+    # Returns a +Result+ wrapping +Array+ of +Entities::Owner+ objects
+    # Returns a +Result+ with +Result::Error+ when operation fails
+    def fetch_owners
+      fetcher = Commands::OwnersFetcher.new(credentials)
+      fetcher.fetch_owners
     end
   end
 end

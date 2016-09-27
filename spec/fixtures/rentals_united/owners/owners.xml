@@ -1,0 +1,19 @@
+<Pull_ListAllOwners_RS>
+  <Status ID="0">Success</Status>
+  <Owners>
+    <Owner OwnerID="419680">
+      <FirstName>Foo</FirstName>
+      <SurName>Bar</SurName>
+      <CompanyName>RU Test</CompanyName>
+      <Email>foobar@gmail.com</Email>
+      <Phone>519461272</Phone>
+    </Owner>
+    <Owner OwnerID="427698">
+      <FirstName>John</FirstName>
+      <SurName>Doe</SurName>
+      <CompanyName/>
+      <Email>john.doe@gmail.com</Email>
+      <Phone>6092932393</Phone>
+    </Owner>
+  </Owners>
+</Pull_ListAllOwners_RS>
