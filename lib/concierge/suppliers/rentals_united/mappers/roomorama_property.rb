@@ -4,7 +4,7 @@ module RentalsUnited
     #
     # This class is responsible for building a +Roomorama::Property+ object
     class RoomoramaProperty
-      attr_reader :ru_property, :location, :owner
+      attr_reader :ru_property, :location, :owner, :seasons
 
       EN_DESCRIPTION_LANG_CODE = "1"
       CANCELLATION_POLICY = "super_elite"
@@ -28,10 +28,12 @@ module RentalsUnited
       #   * +ru_property+ [Entities::Property] RU property object
       #   * +location+    [Entities::Location] location object
       #   * +owner+       [Entities::OwnerID] owner object
-      def initialize(ru_property, location, owner)
+      #   * +seasons+     [Array<Entities::Season] seasons
+      def initialize(ru_property, location, owner, seasons)
         @ru_property = ru_property
         @location = location
         @owner = owner
+        @seasons = seasons
       end
 
       # Builds a property
@@ -43,6 +45,7 @@ module RentalsUnited
         return not_active_error       unless ru_property.active?
         return property_type_error    unless supported_property_type?
         return security_deposit_error unless supported_security_deposit?
+        return no_seasons_error       unless has_seasons?
 
         property = Roomorama::Property.new(ru_property.id)
         property.title                = ru_property.title
@@ -80,6 +83,7 @@ module RentalsUnited
 
         set_images!(property)
         set_security_deposit!(property)
+        set_rates!(property)
 
         Result.new(property)
       end
@@ -95,6 +99,25 @@ module RentalsUnited
           property.security_deposit_currency_code = property.currency
           property.security_deposit_type = SECURITY_DEPOSIT_PAYMENT_TYPE
         end
+      end
+
+      def set_rates!(property)
+        property.nightly_rate = avg_price_per_day
+        property.weekly_rate  = avg_price_per_day * 7
+        property.monthly_rate = avg_price_per_day * 30
+      end
+
+      def avg_price_per_day
+        @avg_price ||= calculate_avg_price_per_day
+      end
+
+      def calculate_avg_price_per_day
+        full_price = seasons.inject(0) do |sum, season|
+          sum += season.number_of_days * season.price
+        end
+
+        total_days = seasons.map(&:number_of_days).inject(:+)
+        (full_price / total_days).to_f
       end
 
       def full_name(owner)
@@ -121,6 +144,10 @@ module RentalsUnited
         )
       end
 
+      def has_seasons?
+        seasons.any?
+      end
+
       def property_type
         @property_type ||= Dictionaries::PropertyTypes.find(
           ru_property.property_type_id
@@ -141,6 +168,10 @@ module RentalsUnited
 
       def security_deposit_error
         Result.error(:security_deposit_not_supported)
+      end
+
+      def no_seasons_error
+        Result.error(:empty_seasons)
       end
 
       def amenities_dictionary

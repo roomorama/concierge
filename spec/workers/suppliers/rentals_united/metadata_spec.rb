@@ -211,47 +211,77 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
                       expect(event[:backtrace].any?).to be true
                     end
                   end
-
-                  it "calls synchronisation block for every property id" do
-                    expected_property_ids = ["519688"]
-
-                    expected_property_ids.each do |property_id|
-                      expect(worker.property_sync).to receive(:start).with(property_id)
-                    end
-
+                    
+                  it "fails when #fetch_seasons returns an error and continues worker process" do
                     result = worker.perform
                     expect(result).to be_kind_of(SyncProcess)
-                    expect(result.to_h[:successful]).to be true
+
+                    event = Concierge.context.events.last.to_h
+                    expect(event[:label]).to eq("Synchronisation Failure")
+                    expect(event[:message]).to eq(
+                      "Failed to fetch seasons for property `519688`"
+                    )
+                    expect(event[:backtrace]).to be_kind_of(Array)
+                    expect(event[:backtrace].any?).to be true
                   end
 
-                  it "creates record in the database" do
-                    allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
+                  describe "when #fetch_seasons is working" do
+                    let(:season) do
+                      RentalsUnited::Entities::Season.new(
+                        date_from: Date.parse("2016-09-01"),
+                        date_to:   Date.parse("2016-09-30"),
+                        price:     200.00
+                      )
+                    end
+                    before do
+                      expect_any_instance_of(RentalsUnited::Importer).to(
+                        receive(:fetch_seasons)
+                      ).and_return(
+                        Result.new([season])
+                      )
+                    end
 
-                    expect {
-                      worker.perform
-                    }.to change { PropertyRepository.count }.by(1)
-                  end
+                    it "calls synchronisation block for every property id" do
+                      expected_property_ids = ["519688"]
 
-                  described_class::IGNORABLE_ERROR_CODES.each do |code|
-                    it "skips property from publishing when there was #{code} error" do
-                      allow_any_instance_of(RentalsUnited::Mappers::RoomoramaProperty)
-                        .to receive(:build_roomorama_property) { Result.error(code) }
+                      expected_property_ids.each do |property_id|
+                        expect(worker.property_sync).to receive(:start).with(property_id)
+                      end
+
+                      result = worker.perform
+                      expect(result).to be_kind_of(SyncProcess)
+                      expect(result.to_h[:successful]).to be true
+                    end
+
+                    it "creates record in the database" do
+                      allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
 
                       expect {
-                        sync_process = worker.perform
-                        expect(sync_process.stats.get("properties_skipped")).to eq(
-                          [{ "reason" => code, "ids" => ["519688"] }]
-                        )
-                      }.to change { PropertyRepository.count }.by(0)
+                        worker.perform
+                      }.to change { PropertyRepository.count }.by(1)
                     end
-                  end
 
-                  it 'doesnt create property with unsuccessful publishing' do
-                    allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.error('fail') }
+                    described_class::IGNORABLE_ERROR_CODES.each do |code|
+                      it "skips property from publishing when there was #{code} error" do
+                        allow_any_instance_of(RentalsUnited::Mappers::RoomoramaProperty)
+                          .to receive(:build_roomorama_property) { Result.error(code) }
 
-                    expect {
-                      worker.perform
-                    }.to_not change { PropertyRepository.count }
+                        expect {
+                          sync_process = worker.perform
+                          expect(sync_process.stats.get("properties_skipped")).to eq(
+                            [{ "reason" => code, "ids" => ["519688"] }]
+                          )
+                        }.to change { PropertyRepository.count }.by(0)
+                      end
+                    end
+
+                    it 'doesnt create property with unsuccessful publishing' do
+                      allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.error('fail') }
+
+                      expect {
+                        worker.perform
+                      }.to_not change { PropertyRepository.count }
+                    end
                   end
                 end
               end

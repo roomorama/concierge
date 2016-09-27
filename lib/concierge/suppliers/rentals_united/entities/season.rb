@@ -13,7 +13,16 @@ module RentalsUnited
       end
 
       def has_price_for_date?(date)
-        (date_from..date_to).include?(date)
+        date_range.include?(date)
+      end
+
+      def number_of_days
+        date_range.count
+      end
+
+      private
+      def date_range
+        date_from..date_to
       end
     end
   end

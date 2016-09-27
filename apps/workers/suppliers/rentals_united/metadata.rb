@@ -14,6 +14,7 @@ module Workers::Suppliers::RentalsUnited
 
     # Prevent from publishing results containing error codes below:
     IGNORABLE_ERROR_CODES = [
+      :empty_seasons,
       :attempt_to_build_archived_property,
       :attempt_to_build_not_active_property,
       :security_deposit_not_supported,
@@ -66,7 +67,6 @@ module Workers::Suppliers::RentalsUnited
           next
         end
       end
-
       property_sync.finish!
     end
 
@@ -75,7 +75,11 @@ module Workers::Suppliers::RentalsUnited
         owner = find_owner(owners, property.owner_id)
 
         if owner
-          result = build_roomorama_property(property, location, owner)
+          result = fetch_seasons(property.id)
+          next result unless result.success?
+          seasons = result.value
+
+          result = build_roomorama_property(property, location, owner, seasons)
           next if skip?(result, property)
 
           property_sync.start(property.id) do
@@ -105,11 +109,12 @@ module Workers::Suppliers::RentalsUnited
       owners.find { |o| o.id == owner_id }
     end
 
-    def build_roomorama_property(property, location, owner)
+    def build_roomorama_property(property, location, owner, seasons)
       mapper = ::RentalsUnited::Mappers::RoomoramaProperty.new(
         property,
         location,
-        owner
+        owner,
+        seasons
       )
       mapper.build_roomorama_property
     end
@@ -148,6 +153,12 @@ module Workers::Suppliers::RentalsUnited
       message = "Failed to fetch properties for ids `#{property_ids}` in location `#{location.id}`"
       announce_error(message) do
         importer.fetch_properties_by_ids(property_ids)
+      end
+    end
+
+    def fetch_seasons(property_id)
+      report_error("Failed to fetch seasons for property `#{property_id}`") do
+        importer.fetch_seasons(property_id)
       end
     end
 

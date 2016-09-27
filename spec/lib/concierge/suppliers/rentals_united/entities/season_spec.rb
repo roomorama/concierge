@@ -6,7 +6,7 @@ module RentalsUnited
       {
         date_from: Date.parse("2016-09-01"),
         date_to:   Date.parse("2016-09-15"),
-        price:     "200.00"
+        price:     200.00
       }
     end
 
@@ -36,6 +36,12 @@ module RentalsUnited
       it "returns false when given date is greater than date_to" do
         date = Date.parse("2016-09-16")
         expect(season.has_price_for_date?(date)).to eq(false)
+      end
+    end
+
+    describe "number_of_days" do
+      it "returns number of days in specified date range" do
+        expect(season.number_of_days).to eq(15)
       end
     end
   end

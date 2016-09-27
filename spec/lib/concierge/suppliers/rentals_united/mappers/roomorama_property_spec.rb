@@ -51,7 +51,22 @@ RSpec.describe RentalsUnited::Mappers::RoomoramaProperty do
     )
   end
 
-  let(:subject) { described_class.new(ru_property, location, owner) }
+  let(:seasons) do
+    [
+      RentalsUnited::Entities::Season.new(
+        date_from: Date.parse("2016-09-01"),
+        date_to:   Date.parse("2016-09-30"),
+        price:     200.00
+      ),
+      RentalsUnited::Entities::Season.new(
+        date_from: Date.parse("2016-10-01"),
+        date_to:   Date.parse("2016-10-02"),
+        price:     1000.00
+      ),
+    ]
+  end
+
+  let(:subject) { described_class.new(ru_property, location, owner, seasons) }
   let(:result) { subject.build_roomorama_property }
   let(:property) { result.value }
 
@@ -159,6 +174,12 @@ RSpec.describe RentalsUnited::Mappers::RoomoramaProperty do
 
   it "sets security_deposit_currency_code" do
     expect(property.security_deposit_type).to eq("unknown")
+  end
+
+  it "sets property rates" do
+    expect(property.nightly_rate).to eq(250.0)
+    expect(property.weekly_rate).to eq(1750.0)
+    expect(property.monthly_rate).to eq(7500.0)
   end
 
   context "when property has no security_deposit" do

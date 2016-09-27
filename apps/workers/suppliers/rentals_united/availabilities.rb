@@ -15,10 +15,6 @@ module Workers::Suppliers::RentalsUnited
 
       identifiers.each do |property_id|
         synchronisation.start(property_id) do
-          result = fetch_seasons(property_id)
-          next result unless result.success?
-          seasons = result.value
-
           result = fetch_availabilities(property_id)
           next result unless result.success?
           availabilities = result.value
@@ -39,12 +35,6 @@ module Workers::Suppliers::RentalsUnited
     def report_error(message)
       yield.tap do |result|
         augment_context_error(message) unless result.success?
-      end
-    end
-
-    def fetch_seasons(property_id)
-      report_error("Failed to fetch seasons for property `#{property_id}`") do
-        importer.fetch_seasons(property_id)
       end
     end
 
