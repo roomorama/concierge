@@ -172,3 +172,17 @@ collection :jtb_hotels do
   attribute :outdoor_gym_charged,  String
   attribute :wheelchair_access,    String
 end
+
+collection :jtb_pictures do
+  entity     JTB::Entities::Picture
+  repository JTB::Repositories::PictureRepository
+
+  attribute :language,   String
+  attribute :city_code,  String
+  attribute :hotel_code, String
+  attribute :sequence,   Integer
+  attribute :category,   String
+  attribute :room_code,  String
+  attribute :url,        String
+  attribute :comments,   String
+end
