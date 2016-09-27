@@ -26,6 +26,9 @@ module RentalsUnited
       end
 
       # Builds a property
+      #
+      # Returns a +Result+ wrapping +Roomorama::Property+ object
+      # Returns a +Result+ with +Result::Error+ when operation fails
       def build_roomorama_property
         return archived_error      if ru_property.archived?
         return not_active_error    unless ru_property.active?
