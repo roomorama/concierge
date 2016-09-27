@@ -125,9 +125,9 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
               )
             end
 
-            it "fails when there is no currency for location" do
+            it "fails when there is no currency for location and continues worker process" do
               result = worker.perform
-              expect(result).to be_nil
+              expect(result).to be_kind_of(SyncProcess)
 
               event = Concierge.context.events.last.to_h
               expect(event[:label]).to eq("Synchronisation Failure")
@@ -166,11 +166,11 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
                   )
                 end
 
-                it "fails when #fetch_properties_by_ids returns an error" do
+                it "fails when #fetch_properties_by_ids returns an error and continues worker process" do
                   allow_any_instance_of(RentalsUnited::Importer).to receive(:fetch_properties_by_ids) { Result.error('fail') }
 
                   result = worker.perform
-                  expect(result).to be_nil
+                  expect(result).to be_kind_of(SyncProcess)
 
                   event = Concierge.context.events.last.to_h
                   expect(event[:label]).to eq("Synchronisation Failure")
@@ -198,9 +198,9 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
                       )
                     end
 
-                    it "fails with owner error" do
+                    it "fails with owner error and continues worker process" do
                       result = worker.perform
-                      expect(result).to be_nil
+                      expect(result).to be_kind_of(SyncProcess)
 
                       event = Concierge.context.events.last.to_h
                       expect(event[:label]).to eq("Synchronisation Failure")
