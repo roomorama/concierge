@@ -129,4 +129,15 @@ RSpec.describe RentalsUnited::Importer do
       importer.fetch_availabilities(property_id)
     end
   end
+
+  describe "#fetch_seasons" do
+    let(:property_id) { "588788" }
+
+    it "calls fetcher class to load availabilities" do
+      fetcher_class = RentalsUnited::Commands::SeasonsFetcher
+
+      expect_any_instance_of(fetcher_class).to(receive(:fetch_seasons))
+      importer.fetch_seasons(property_id)
+    end
+  end
 end
