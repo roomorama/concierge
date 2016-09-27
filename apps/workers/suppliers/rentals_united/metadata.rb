@@ -1,9 +1,16 @@
 module Workers::Suppliers::RentalsUnited
   # +Workers::Suppliers::RentalsUnited+
   #
-  # Performs synchronisation with supplier
+  # Performs property & calendar synchronisation with supplier.
+  #
+  # Decision to merge two workers in one was made because of the prices
+  # issue when we needed to fetch prices with the same API calls in both
+  # metadata and calendar sync workers.
+  #
+  # See more in corresponding PR discussion:
+  #   https://github.com/roomorama/concierge/pull/309#pullrequestreview-682041
   class Metadata
-    attr_reader :synchronisation, :host
+    attr_reader :property_sync, :calendar_sync, :host
 
     # Prevent from publishing results containing error codes below:
     IGNORABLE_ERROR_CODES = [
@@ -15,11 +22,12 @@ module Workers::Suppliers::RentalsUnited
 
     def initialize(host)
       @host = host
-      @synchronisation = Workers::PropertySynchronisation.new(host)
+      @property_sync = Workers::PropertySynchronisation.new(host)
+      @calendar_sync = Workers::CalendarSynchronisation.new(host)
     end
 
     def perform
-      result = synchronisation.new_context { fetch_location_ids }
+      result = property_sync.new_context { fetch_location_ids }
       return unless result.success?
 
       location_ids = result.value
@@ -43,43 +51,42 @@ module Workers::Suppliers::RentalsUnited
         location.currency = currencies[location.id]
 
         if location.currency
-          result = synchronisation.new_context { fetch_property_ids(location.id) }
-          return unless result.success?
+          result = property_sync.new_context { fetch_property_ids(location.id) }
+          next unless result.success?
 
           property_ids = result.value
 
-          result = fetch_properties_by_ids(property_ids)
+          result = fetch_properties_by_ids(property_ids, location)
+          next unless result.success?
 
-          if result.success?
-            properties = result.value
-
-            properties.each do |property|
-              owner = find_owner(owners, property.owner_id)
-
-              if owner
-                result = build_roomorama_property(property, location, owner)
-                next if skip?(result, property)
-
-                synchronisation.start(property.id) { result }
-              else
-                message = "Failed to find owner for property id `#{property.id}`"
-                announce_context_error(message, result)
-                next
-              end
-            end
-          else
-            message = "Failed to fetch properties for ids `#{property_ids}` in location `#{location.id}`"
-            announce_context_error(message, result)
-            next
-          end
+          sync_properties(result.value, location, owners)
         else
           message = "Failed to find currency for location with id `#{location.id}`"
-          announce_context_error(message, result)
+          announce_context_error(message, Result.error(:currency_not_found))
           next
         end
       end
 
-      synchronisation.finish!
+      property_sync.finish!
+    end
+
+    def sync_properties(properties, location, owners)
+      properties.each do |property|
+        owner = find_owner(owners, property.owner_id)
+
+        if owner
+          result = build_roomorama_property(property, location, owner)
+          next if skip?(result, property)
+
+          property_sync.start(property.id) do
+            result
+          end
+        else
+          message = "Failed to find owner for property id `#{property.id}`"
+          announce_context_error(message, Result.error(:owner_not_found))
+          next
+        end
+      end
     end
 
     private
@@ -132,20 +139,21 @@ module Workers::Suppliers::RentalsUnited
     end
 
     def fetch_property_ids(location_id)
-      announce_error("Failed to fetch properties for location `#{location_id}`") do
+      announce_error("Failed to fetch property ids for location `#{location_id}`") do
         importer.fetch_property_ids(location_id)
       end
     end
 
-    def fetch_properties_by_ids(property_ids)
-      announce_error("Failed to fetch properties by ids `#{property_ids}`") do
+    def fetch_properties_by_ids(property_ids, location)
+      message = "Failed to fetch properties for ids `#{property_ids}` in location `#{location.id}`"
+      announce_error(message) do
         importer.fetch_properties_by_ids(property_ids)
       end
     end
 
     def skip?(result, property)
       if !result.success? && IGNORABLE_ERROR_CODES.include?(result.error.code)
-        synchronisation.skip_property(property.id, result.error.code)
+        property_sync.skip_property(property.id, result.error.code)
         return true
       end
       return false

@@ -146,12 +146,12 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
                 stub_call(:post, url) { [200, {}, stub_data] }
 
                 result = worker.perform
-                expect(result).to be_nil
+                expect(result).to be_kind_of(SyncProcess)
 
                 event = Concierge.context.events.last.to_h
                 expect(event[:label]).to eq("Synchronisation Failure")
                 expect(event[:message]).to eq(
-                  "Failed to fetch properties for location `1505`"
+                  "Failed to fetch property ids for location `1505`"
                 )
                 expect(event[:backtrace]).to be_kind_of(Array)
                 expect(event[:backtrace].any?).to be true
@@ -216,7 +216,7 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
                     expected_property_ids = ["519688"]
 
                     expected_property_ids.each do |property_id|
-                      expect(worker.synchronisation).to receive(:start).with(property_id)
+                      expect(worker.property_sync).to receive(:start).with(property_id)
                     end
 
                     result = worker.perform
