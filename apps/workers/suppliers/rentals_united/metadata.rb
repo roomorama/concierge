@@ -16,17 +16,17 @@ module Workers::Suppliers::RentalsUnited
 
       location_ids = result.value
 
-      result = synchronisation.new_context { fetch_locations(location_ids) }
+      result = fetch_locations(location_ids)
       return unless result.success?
 
       locations = result.value
 
-      result = synchronisation.new_context { fetch_location_currencies }
+      result = fetch_location_currencies
       return unless result.success?
 
       currencies = result.value
 
-      result = synchronisation.new_context { fetch_owners }
+      result = fetch_owners
       return unless result.success?
 
       owners = result.value
@@ -40,7 +40,7 @@ module Workers::Suppliers::RentalsUnited
 
           property_ids = result.value
 
-          result = synchronisation.new_context { fetch_properties_by_ids(property_ids) }
+          result = fetch_properties_by_ids(property_ids)
 
           if result.success?
             properties = result.value
