@@ -80,7 +80,7 @@ module RentalsUnited
 
       private
       def http
-        @http_client ||= Concierge::HTTPClient.new(credentials.url)
+        @http_client ||= Concierge::HTTPClient.new(credentials.url, timeout: 600)
       end
 
       def headers
