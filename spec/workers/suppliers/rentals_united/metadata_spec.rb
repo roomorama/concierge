@@ -232,6 +232,20 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
                     }.to change { PropertyRepository.count }.by(1)
                   end
 
+                  described_class::IGNORABLE_ERROR_CODES.each do |code|
+                    it "skips property from publishing when there was #{code} error" do
+                      allow_any_instance_of(RentalsUnited::Mappers::RoomoramaProperty)
+                        .to receive(:build_roomorama_property) { Result.error(code) }
+
+                      expect {
+                        sync_process = worker.perform
+                        expect(sync_process.stats.get("properties_skipped")).to eq(
+                          [{ "reason" => code, "ids" => ["519688"] }]
+                        )
+                      }.to change { PropertyRepository.count }.by(0)
+                    end
+                  end
+
                   it 'doesnt create property with unsuccessful publishing' do
                     allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.error('fail') }
 
