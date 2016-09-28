@@ -4,6 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## Unreleased
+### Changed
+- Workers marked as `queued` to avoid duplicated messages on SQS.
+
 ## [0.11.4] - 2016-09-26
 ### Removed
 - Requirement for workers to finish in 12h no longer exists

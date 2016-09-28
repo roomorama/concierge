@@ -89,6 +89,7 @@ module Workers
       )
 
       queue.add(element)
+      update_status(worker)
     end
 
     def log_event(worker)
@@ -96,6 +97,14 @@ module Workers
       entity_logger = entity_logger_for(worker)
 
       logger.info(entity_logger.to_s)
+    end
+
+    # Marks the worker as +queued+ so that, if the worker is not processed by
+    # the time the scheduler runs again, the same worker will not be enqueued,
+    # causing unneeded processing.
+    def update_status(worker)
+      worker.status = "queued"
+      BackgroundWorkerRepository.update(worker)
     end
 
     def queue

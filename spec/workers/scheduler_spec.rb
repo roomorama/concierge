@@ -62,5 +62,19 @@ RSpec.describe Workers::Scheduler do
         "action=availabilities supplier.name=Supplier2"
       ]
     end
+
+    it "does not enqueue workers that are already enqueued" do
+      host = create_host(username: "thehost", identifier: "thehost")
+      worker = create_background_worker(type: "metadata", host_id: host.id, next_run_at: nil)
+
+      expect_any_instance_of(Workers::Queue).to receive(:add).once
+      subject.trigger_pending!
+
+      worker = BackgroundWorkerRepository.find(worker.id)
+      expect(worker.status).to eq "queued"
+
+      expect(subject).not_to receive(:enqueue)
+      subject.trigger_pending!
+    end
   end
 end
