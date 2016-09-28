@@ -87,7 +87,9 @@ RSpec.describe Workers::PropertySynchronisation do
         }
 
         expect {
-          subject.start("prop1") { Result.new(roomorama_property) }
+          res = subject.start("prop1") { Result.new(roomorama_property) }
+          expect(res).to be_a Result
+          expect(res).to_not be_success
         }.to change { ExternalErrorRepository.count }.by(1)
 
         error = ExternalErrorRepository.last
@@ -105,7 +107,10 @@ RSpec.describe Workers::PropertySynchronisation do
         }
 
         expect {
-          subject.start("prop1") { Result.new(roomorama_property) }
+          res = subject.start("prop1") { Result.new(roomorama_property) }
+          expect(res).to be_a Result
+          expect(res).to be_success
+          expect(res.value).to be_a Property
         }.not_to change { ExternalErrorRepository.count }
       end
     end
