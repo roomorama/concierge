@@ -134,14 +134,15 @@ module Web::Views::Suppliers
     end
 
     # Creates an HTML button/label for the status of a worker. +status+ is expected
-    # to be a +String+ equal to either +running+ or +idle+, the two possible values
-    # for the +status+ label on +BackgroundWorker+
+    # to be a +String+ equal to one of +BackgroundWorker::STATUSES+.
     def status_label(status)
-      if status == "running"
-        html.button "running", class: "success-button pure-button"
-      else
-        html.button "idle", class: "warning-button pure-button"
-      end
+      css_class = {
+        idle:    "secondary-button",
+        queued:  "warning-button",
+        running: "success-button"
+      }.fetch(status.to_sym, "warning-button")
+
+      html.button status, class: [css_class, " pure-button"].join
     end
 
     # Receives an instance of +BackgroundWorker+ and formats the
