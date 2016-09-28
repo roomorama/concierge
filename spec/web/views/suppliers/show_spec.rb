@@ -74,7 +74,7 @@ RSpec.describe Web::Views::Suppliers::Show do
     expect(sanitized).to include %(<td>metadata</td>)
     expect(sanitized).to include %(<td>availabilities</td>)
 
-    expect(sanitized).to include %(<button class="warning-button pure-button">idle</button>)
+    expect(sanitized).to include %(<button class="secondary-button pure-button">idle</button>)
     expect(sanitized).to include %(<button class="success-button pure-button">running</button>)
 
     expect(sanitized).to include %(<td>Soon (in at most 10 minutes)</td>)
