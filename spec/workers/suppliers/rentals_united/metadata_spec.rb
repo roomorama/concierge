@@ -187,31 +187,6 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
                     stub_call(:post, url) { [200, {}, stub_data] }
                   end
 
-                  describe "when there is no owner for property" do
-                    let(:owner) do
-                      double(
-                        id: '550000',
-                        file_name: 'John',
-                        last_name: 'Doe',
-                        empty: 'john.doe@gmail.com',
-                        phone: '3128329138'
-                      )
-                    end
-
-                    it "fails with owner error and continues worker process" do
-                      result = worker.perform
-                      expect(result).to be_kind_of(SyncProcess)
-
-                      event = Concierge.context.events.last.to_h
-                      expect(event[:label]).to eq("Synchronisation Failure")
-                      expect(event[:message]).to eq(
-                        "Failed to find owner for property id `519688`"
-                      )
-                      expect(event[:backtrace]).to be_kind_of(Array)
-                      expect(event[:backtrace].any?).to be true
-                    end
-                  end
-                    
                   it "fails when #fetch_seasons returns an error and continues worker process" do
                     result = worker.perform
                     expect(result).to be_kind_of(SyncProcess)
@@ -239,6 +214,31 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
                       ).and_return(
                         Result.new([season])
                       )
+                    end
+
+                    describe "when there is no owner for property" do
+                      let(:owner) do
+                        double(
+                          id: '550000',
+                          file_name: 'John',
+                          last_name: 'Doe',
+                          empty: 'john.doe@gmail.com',
+                          phone: '3128329138'
+                        )
+                      end
+
+                      it "fails with owner error and continues worker process" do
+                        result = worker.perform
+                        expect(result).to be_kind_of(SyncProcess)
+
+                        event = Concierge.context.events.last.to_h
+                        expect(event[:label]).to eq("Synchronisation Failure")
+                        expect(event[:message]).to eq(
+                          "Failed to find owner for property id `519688`"
+                        )
+                        expect(event[:backtrace]).to be_kind_of(Array)
+                        expect(event[:backtrace].any?).to be true
+                      end
                     end
 
                     it "calls synchronisation block for every property id" do

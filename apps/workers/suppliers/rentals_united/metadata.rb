@@ -12,7 +12,10 @@ module Workers::Suppliers::RentalsUnited
   class Metadata
     attr_reader :property_sync, :calendar_sync, :host
 
-    # Prevent from publishing results containing error codes below:
+    # Prevent from publishing property results containing error codes below.
+    #
+    # If property sync is skiped because of one of these errors, calendar
+    # update won't be started too.
     IGNORABLE_ERROR_CODES = [
       :empty_seasons,
       :attempt_to_build_archived_property,
@@ -60,7 +63,9 @@ module Workers::Suppliers::RentalsUnited
           result = fetch_properties_by_ids(property_ids, location)
           next unless result.success?
 
-          sync_properties(result.value, location, owners)
+          location_properties = result.value
+
+          sync_metadata_and_calendar(location_properties, location, owners)
         else
           message = "Failed to find currency for location with id `#{location.id}`"
           announce_context_error(message, Result.error(:currency_not_found))
@@ -70,35 +75,31 @@ module Workers::Suppliers::RentalsUnited
       property_sync.finish!
     end
 
-    def sync_properties(properties, location, owners)
+    private
+    # Performs metadata and calendar synchronisation for given properties.
+    #
+    # For each property it checks whether property was ever synced and if
+    # that's true it also starts calendar synchronisation.
+    #
+    # Even if current metadata sync is failed, it's possible that property was
+    # synced before, that's why we still perform update for calendar.
+    #
+    # If result has errors which skips publishing properties, calendar update
+    # won't be started.
+    def sync_metadata_and_calendar(properties, location, owners)
       properties.each do |property|
+        result = fetch_seasons(property.id)
+        next result unless result.success?
+        seasons = result.value
+
         owner = find_owner(owners, property.owner_id)
 
         if owner
-          result = fetch_seasons(property.id)
-          next result unless result.success?
-          seasons = result.value
-
           result = build_roomorama_property(property, location, owner, seasons)
           next if skip?(result, property)
 
           if result.success?
             property_sync.start(property.id) { result }
-
-            calendar_sync.start(property.id) do
-              result = fetch_availabilities(property.id)
-              next result unless result.success?
-              availabilities = result.value
-
-              mapper = ::RentalsUnited::Mappers::Calendar.new(
-                property.id,
-                seasons,
-                availabilities
-              )
-              mapper.build_calendar
-            end
-
-            calendar_sync.finish!
           else
             result
           end
@@ -107,10 +108,49 @@ module Workers::Suppliers::RentalsUnited
           announce_context_error(message, Result.error(:owner_not_found))
           next
         end
+
+        if synced_property?(property.id)
+          sync_calendar(property.id, seasons)
+        end
       end
     end
 
-    private
+    # Performs calendar (availabilities + seasons) synchronisation for
+    # given property_id.
+    def sync_calendar(property_id, seasons)
+      calendar_sync.start(property_id) do
+        result = fetch_availabilities(property_id)
+        next result unless result.success?
+        availabilities = result.value
+
+        mapper = ::RentalsUnited::Mappers::Calendar.new(
+          property_id,
+          seasons,
+          availabilities
+        )
+        mapper.build_calendar
+      end
+
+      calendar_sync.finish!
+    end
+
+    # Checks whether property exists in database or not.
+    # Even if property was not synced in current synchronisation process, it's
+    # possible that it was synced before.
+    #
+    # Performs query every time without caching identifiers.
+    #
+    # We can't cache identifiers because calendar sync should be started right
+    # after each property sync and not when sync of all properties finished.
+    #
+    # (Otherwise we'll lose some data fetched inside the first sync process and
+    # then we'll need to cache all data in memory so then we can reuse it)
+    #
+    # We can switch to the different strategy if memory usage will not be high
+    # and we'll need to save database queries.
+    def synced_property?(property_id)
+      PropertyRepository.from_host(host).identified_by(property_id).count > 0
+    end
 
     def importer
       @properties ||= ::RentalsUnited::Importer.new(credentials)
