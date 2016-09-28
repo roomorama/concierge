@@ -37,9 +37,11 @@ class BackgroundWorker
   #
   # +idle+    - the background worker is not being run, and the +next_run_at+ column
   #             stores a timestamp in the future.
+  # +queued+  - the worker has been put to SQS to be picked up by one of the workers.
+  #             Therefore, it does not need to be processed the next time the scheduler runs.
   # +running+ - the background worker is currently running and therefore should not
   #             be rescheduled.
-  STATUSES = %w(idle running)
+  STATUSES = %w(idle queued running)
 
   attributes :id, :host_id, :supplier_id, :next_run_at, :next_run_args, :interval,
     :type, :status, :created_at, :updated_at

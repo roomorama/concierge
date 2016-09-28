@@ -24,12 +24,17 @@ body {
 
 .success-button {
   color: #eee;
-  background: #2ebbab;
+  background: #1cb841;
 }
 
 .warning-button {
   color: #eee;
-  background: #ca3c3c;
+  background: #df7514;
+}
+
+.secondary-button {
+  color: #eee;
+  background: #42b8dd;
 }
 
 .concierge-success-row td {
