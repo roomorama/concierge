@@ -21,13 +21,13 @@ module JTB
       #   * +security_deposit+ [Ciirus::Entities::Extra] security deposit info
       #                                                  can be nil
       # Returns +Roomorama::Property+
-      def build(hotel, pictures)
+      def build(hotel, pictures, rooms)
         result = Roomorama::Property.new(hotel.jtb_hotel_code)
         result.instant_booking!
         result.multi_unit!
         set_base_info!(result, hotel)
         set_images!(result, pictures)
-        set_units!(result)
+        set_units!(result, rooms)
 
 
         set_rates_and_minimum_stay!(result, rates)
@@ -79,20 +79,74 @@ module JTB
       end
 
       def set_images!(result, pictures)
-        pictures.each do |picture|
-          url = [IMAGE_URL_PREFIX, '/', picture.url].join
-          identifier = Digest::MD5.hexdigest(url)
-          image = Roomorama::Image.new(identifier)
-          image.url = url
-          image.caption = picture.comments
-          image.position = picture.sequence
-
+        build_images(pictures).each do |image|
           result.add_image(image)
         end
       end
 
-      def set_units!(result)
+      def build_images(pictures)
+        pictures.map do |picture|
+          url = [IMAGE_URL_PREFIX, '/', picture.url].join
+          identifier = Digest::MD5.hexdigest(url)
+          Roomorama::Image.new(identifier).tap do |result|
+            image.url = url
+            image.caption = picture.comments
+            image.position = picture.sequence
+          end
+        end
+      end
 
+      def set_units!(result, rooms)
+        rooms.each do |room|
+          u_id = JTB::UnitId.from_jtb_codes(room.room_type_code, room.room_code)
+          unit = Roomorama::Unit.new(u_id.unit_id)
+          unit.title = room.room_name
+          unit.max_guests = room.max_guests
+          unit.number_of_units = 1
+
+          # Unknown how to handle next room types:
+          #  JWS: Japanese and Western Style
+          #  DSR: Stateroom
+          #  MSN: Maisonette
+          unit.number_of_single_beds = fetch_single_beds(room)
+          unit.number_of_double_beds = fetch_double_beds(room)
+          unit.number_of_sofa_beds = fetch_sofa_beds(room)
+
+          pictures = JTB::Repositories::PictureRepository.room_english_images(room.room_code)
+          build_images(pictures).each do |image|
+            unit.add_image(image)
+          end
+
+          result.add_unit(unit)
+        end
+      end
+
+      def fetch_single_beds(room)
+        single_beds = case room.room_type_code
+                      when 'JPN', 'SGL' then 1
+                      when 'TWN' then 2
+                      when 'TPL' then 3
+                      when 'QUD' then 4
+                      end
+
+        single_beds += 1 if has_extra_standart_bed?
+        single_beds
+      end
+
+      def fetch_double_beds(room)
+        1 if ['DBL', 'SDB', 'SIT'].include?(room.room_type_code)
+      end
+
+      def fetch_sofa_beds(room)
+
+      end
+
+      def has_extra_standart_bed?(room)
+        room.extra_bed == '1' && room.extra_bed_type == '1'
+      end
+
+      def has_extra_sofa_bed?(room)
+        room.extra_bed == '1' && room.extra_bed_type == '3'
       end
 
       def set_rates_and_minimum_stay!(result, rates)

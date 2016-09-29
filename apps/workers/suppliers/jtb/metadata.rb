@@ -25,8 +25,9 @@ module Workers::Suppliers::JTB
         # sync_here
         hotels.each do |hotel|
           pictures = JTB::PictureRepository.hotel_english_images(hotel.city_code, hotel.hotel_code)
+          rooms = JTB::RoomTypeRepository.hotel_english_rooms(hotel.city_code, hotel.hotel_code)
           synchronisation.start do
-            mapper.build(hotel, pictures)
+            mapper.build(hotel, pictures, rooms)
           end
         end
       ensure

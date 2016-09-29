@@ -28,6 +28,15 @@ module JTB
             .and('room_code is null')
         end
       end
+
+      def self.room_english_images(room_code)
+        query do
+          # 999 is the tour category code, we don't want tour pictures
+          where("category != '999'")
+            .and(language: 'EN')
+            .and(room_code: room_code)
+        end
+      end
     end
   end
 end
