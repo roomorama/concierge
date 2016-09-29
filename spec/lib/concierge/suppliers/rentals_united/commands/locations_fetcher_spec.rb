@@ -4,7 +4,8 @@ RSpec.describe RentalsUnited::Commands::LocationsFetcher do
   include Support::HTTPStubbing
   include Support::Fixtures
 
-  let(:credentials) { Concierge::Credentials.for("rentals_united") }
+  let(:supplier_name) { RentalsUnited::Client::SUPPLIER_NAME }
+  let(:credentials) { Concierge::Credentials.for(supplier_name) }
   let(:url) { credentials.url }
 
   context "when location does not exist" do

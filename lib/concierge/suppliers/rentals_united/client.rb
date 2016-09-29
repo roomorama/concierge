@@ -1,7 +1,7 @@
 module RentalsUnited
   # +RentalsUnited::Client+
   class Client
-    SUPPLIER_NAME = "rentals_united"
+    SUPPLIER_NAME = "RentalsUnited"
 
     attr_reader :credentials
 

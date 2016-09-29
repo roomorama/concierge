@@ -4,7 +4,8 @@ RSpec.describe RentalsUnited::Commands::OwnerFetcher do
   include Support::HTTPStubbing
   include Support::Fixtures
 
-  let(:credentials) { Concierge::Credentials.for("rentals_united") }
+  let(:supplier_name) { RentalsUnited::Client::SUPPLIER_NAME }
+  let(:credentials) { Concierge::Credentials.for(supplier_name) }
   let(:owner_id) { '123' }
   let(:subject) { described_class.new(credentials, owner_id) }
   let(:url) { credentials.url }

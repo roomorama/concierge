@@ -6,7 +6,8 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
   include Support::Fixtures
 
   let(:host) { create_host }
-  let(:credentials) { Concierge::Credentials.for("rentals_united") }
+  let(:supplier_name) { RentalsUnited::Client::SUPPLIER_NAME }
+  let(:credentials) { Concierge::Credentials.for(supplier_name) }
   let(:url) { credentials.url }
 
   describe "#perform operation" do

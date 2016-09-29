@@ -4,7 +4,8 @@ RSpec.describe RentalsUnited::Commands::LocationCurrenciesFetcher do
   include Support::HTTPStubbing
   include Support::Fixtures
 
-  let(:credentials) { Concierge::Credentials.for("rentals_united") }
+  let(:supplier_name) { RentalsUnited::Client::SUPPLIER_NAME }
+  let(:credentials) { Concierge::Credentials.for(supplier_name) }
   let(:subject) { described_class.new(credentials) }
   let(:url) { credentials.url }
 
