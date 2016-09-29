@@ -117,6 +117,8 @@ module JTB
             unit.add_image(image)
           end
 
+          unit.amenities = fetch_unit_amenities(room)
+
           result.add_unit(unit)
         end
       end
@@ -129,8 +131,8 @@ module JTB
                       when 'QUD' then 4
                       end
 
-        single_beds += 1 if has_extra_standart_bed?
-        single_beds
+        extra_single_bed = 1 if has_extra_standart_bed?
+        [single_beds, extra_single_bed].compact.inject(:+)
       end
 
       def fetch_double_beds(room)
@@ -149,6 +151,54 @@ module JTB
         room.extra_bed == '1' && room.extra_bed_type == '3'
       end
 
+      def fetch_unit_amenities(room)
+        result = []
+        amenities = room.amenities.chars
+        amenities.each_with_index do |available, index|
+          amenity = JTB::Repositories::LookupRepository.room_amenity(amenity_id(index + 1))
+          next unless amenity
+          mapping = lookup_amenities(amenity.name)
+          result << mapping if available == '1' && mapping
+        end
+
+        result
+      end
+
+      # Convert integer to amenity index.
+      # Amenity index is string with length 3 with leading zeros.
+      #
+      #   amenity_id(2) => "002"
+      def amenity_id(index)
+        '%03d' % index
+      end
+
+      def lookup_amenities(name)
+        case name
+        when 'Air conditioning', 'Air conditioning for free', 'Air conditioning to charge'
+          :airconditioning
+        when 'Balcony (porch)'
+          :balcony
+        when 'Bath towel', 'Hand towel',  'Towel'
+          :bed_linen_and_towels
+        when 'Breakfast at in-house theater', 'Breakfast at irori fire place', 'Breakfast at restaurant',
+          'Breakfast buffet', 'Breakfast in banquet hall', 'Breakfast in the private dining room', 'In-room breakfast'
+          :breakfast
+        when 'DVD player', 'Pay TV', 'Pay TV (check-out payment)', 'Pay TV (prepaid card)', 'TV', 'TV for free', 'TV to charge', 'VCR'
+          :tv
+        when 'Forest', 'Garden', 'Lake', 'Mountain', 'Open-air bath', 'Open-air bath w/ heated water',
+          'Open-air bath w/ hot spring water', 'River', 'Rural district', 'Sea', 'Valley', 'Waterfall'
+          :outdoor_space
+        when 'Internet'
+          :internet
+        when 'Wheelchair (doorway over 80cm)'
+          :wheelchairaccess
+        end
+      end
+      
+      
+      
+      
+      
       def set_rates_and_minimum_stay!(result, rates)
         min_price = rates.map(&:daily_rate).min
 
