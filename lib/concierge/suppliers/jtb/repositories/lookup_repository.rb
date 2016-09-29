@@ -22,6 +22,12 @@ module JTB
           where(category: '1').and(id: id).limit(1)
         end.first
       end
+
+      def self.room_amenity(i)
+        query do
+          where(category: '19').and(id: id).limit(1)
+        end.first
+      end
     end
   end
 end
