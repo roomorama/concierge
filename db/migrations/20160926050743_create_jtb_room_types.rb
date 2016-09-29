@@ -19,6 +19,7 @@ Hanami::Model.migration do
       column :size4,          String, size: 10
       column :size5,          String, size: 10
       column :size6,          String, size: 10
+      column :amenities,      String, size: 100
     end
   end
 end

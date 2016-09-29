@@ -101,12 +101,12 @@ module JTB
     end
 
     def import
-      # import_room_types
+      import_room_types
       # import_room_stocks
       # import_hotels
       # import_pictures
       # import_lookups
-      import_rate_plans
+      # import_rate_plans
     end
 
     def cleanup
@@ -128,7 +128,7 @@ module JTB
         File.open(file_path) do |file|
           JTB::Repositories::RoomTypeRepository.copy_csv_into do
             line = file.gets
-            fetch_required_columns(line, ROOM_TYPE_COLUMNS) if line
+            fetch_room_types_required_columns(line, ROOM_TYPE_COLUMNS) if line
           end
         end
       end
@@ -197,7 +197,20 @@ module JTB
     def fetch_required_columns(line, indexes)
       # Remove last \n from string
       line = line[0..-2]
-      line.split(CSV_DELIMETER).values_at(*indexes).join(CSV_DELIMETER) + "\n"
+      line.split(CSV_DELIMETER, -1).values_at(*indexes).join(CSV_DELIMETER) + "\n"
+    end
+
+    def fetch_room_types_required_columns(line, indexes)
+      # Remove last \n from string
+      line = line[0..-2]
+      values = line.split(CSV_DELIMETER, -1)
+      required_columns = values.values_at(*indexes)
+      # File contains 100 amenities columns with values '1', '0' and ''
+      # let's join all amenities values in one
+      compressed_amenities = values[23..122].map { |a| a.to_s.empty? ? ' ' : a.to_s }.join
+      required_columns << compressed_amenities
+
+      required_columns.join(CSV_DELIMETER) + "\n"
     end
 
     def room_types_file_path

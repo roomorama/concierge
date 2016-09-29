@@ -138,7 +138,7 @@ module JTB
       end
 
       def fetch_sofa_beds(room)
-
+        1 if has_extra_sofa_bed?(room)
       end
 
       def has_extra_standart_bed?(room)
