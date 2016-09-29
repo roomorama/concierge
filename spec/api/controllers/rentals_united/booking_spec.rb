@@ -21,7 +21,8 @@ RSpec.describe API::Controllers::RentalsUnited::Booking do
     }
   end
 
-  let(:credentials) { Concierge::Credentials.for("rentals_united") }
+  let(:supplier_name) { RentalsUnited::Client::SUPPLIER_NAME }
+  let(:credentials) { Concierge::Credentials.for(supplier_name) }
   let(:safe_params) { Concierge::SafeAccessHash.new(params) }
   let(:controller) { described_class.new }
 

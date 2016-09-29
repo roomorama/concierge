@@ -1,7 +1,8 @@
 require "spec_helper"
 
 RSpec.describe RentalsUnited::Client do
-  let(:credentials) { Concierge::Credentials.for("rentals_united") }
+  let(:supplier_name) { RentalsUnited::Client::SUPPLIER_NAME }
+  let(:credentials) { Concierge::Credentials.for(supplier_name) }
   let(:client) { described_class.new(credentials) }
 
   describe "#book" do
