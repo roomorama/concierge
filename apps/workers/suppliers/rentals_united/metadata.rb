@@ -31,7 +31,7 @@ module Workers::Suppliers::RentalsUnited
     end
 
     def perform
-      result = fetch_owner(host.identifier)
+      result = property_sync.new_context { fetch_owner(host.identifier) }
       return unless result.success?
       owner = result.value
 
@@ -64,7 +64,7 @@ module Workers::Suppliers::RentalsUnited
           next
         end
 
-        result = fetch_property(property_id)
+        result = property_sync.new_context { fetch_property(property_id) }
         next unless result.success?
         property = result.value
 
