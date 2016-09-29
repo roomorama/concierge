@@ -197,3 +197,16 @@ collection :jtb_lookups do
   attribute :related_id, String
   attribute :name,       String
 end
+
+collection :jtb_rate_plans do
+  entity     JTB::Entities::RatePlan
+  repository JTB::Repositories::RatePlanRepository
+
+  attribute :language,       String
+  attribute :city_code,      String
+  attribute :hotel_code,     String
+  attribute :rate_plan_id,   String
+  attribute :room_code,      String
+  attribute :meal_plan_code, String
+  attribute :occupancy,      String
+end
