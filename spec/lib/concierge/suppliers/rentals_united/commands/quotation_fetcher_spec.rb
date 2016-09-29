@@ -14,7 +14,14 @@ RSpec.describe RentalsUnited::Commands::QuotationFetcher do
       guests: 3
     )
   end
-  let(:subject) { described_class.new(credentials, quotation_params) }
+  let(:currency_code) { "EUR" }
+  let(:subject) do
+    described_class.new(
+      credentials,
+      quotation_params,
+      currency_code
+    )
+  end
   let(:url) { credentials.url }
 
   it "performs successful request returning Quotation object" do
@@ -33,7 +40,7 @@ RSpec.describe RentalsUnited::Commands::QuotationFetcher do
     expect(quotation.check_out).to eq(quotation_params[:check_out])
     expect(quotation.guests).to eq(quotation_params[:guests])
     expect(quotation.total).to eq(284.5)
-    expect(quotation.currency).to eq('')
+    expect(quotation.currency).to eq("EUR")
     expect(quotation.available).to be true
   end
 

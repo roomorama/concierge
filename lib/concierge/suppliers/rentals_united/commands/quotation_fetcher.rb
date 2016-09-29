@@ -14,7 +14,7 @@ module RentalsUnited
     #   )
     #   result = command.call
     class QuotationFetcher < BaseFetcher
-      attr_reader :quotation_params
+      attr_reader :quotation_params, :currency_code
 
       ROOT_TAG = "Pull_GetPropertyAvbPrice_RS"
 
@@ -24,6 +24,7 @@ module RentalsUnited
       #
       #   * +credentials+
       #   * +quotation_params+ [Concierge::SafeAccessHash] stay parameters
+      #   * +currency_code+ [String] currency code
       #
       # Stay parameters are defined by the set of attributes from
       # +API::Controllers::Params::MultiUnitQuote+ params object.
@@ -34,9 +35,10 @@ module RentalsUnited
       #   * +check_in+
       #   * +check_out+
       #   * +guests+
-      def initialize(credentials, quotation_params)
+      def initialize(credentials, quotation_params, currency_code)
         super(credentials)
         @quotation_params = quotation_params
+        @currency_code = currency_code
       end
 
       # Calls the RentalsUnited API method using the HTTP client.
@@ -71,7 +73,7 @@ module RentalsUnited
       def build_quotation(result_hash)
         price = result_hash.get("#{ROOT_TAG}.PropertyPrices.PropertyPrice")
 
-        mapper = Mappers::Quotation.new(quotation_params, price)
+        mapper = Mappers::Quotation.new(quotation_params, price, currency_code)
         mapper.build_quotation
       end
     end

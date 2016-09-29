@@ -5,6 +5,14 @@ require_relative "../shared/external_error_reporting"
 RSpec.describe API::Controllers::RentalsUnited::Quote do
   include Support::HTTPStubbing
   include Support::Fixtures
+  include Support::Factories
+
+  before do
+    create_property(
+      identifier: '321',
+      data: { :currency => "USD" }
+    )
+  end
 
   let(:params) do
     {
@@ -56,7 +64,7 @@ RSpec.describe API::Controllers::RentalsUnited::Quote do
         expect(response.body['check_in']).to eq("2016-03-22")
         expect(response.body['check_out']).to eq("2016-03-25")
         expect(response.body['guests']).to eq(2)
-        expect(response.body['currency']).to eq("")
+        expect(response.body['currency']).to eq("USD")
         expect(response.body['total']).to eq(284.5)
         expect(response.body['net_rate']).to eq(284.5)
         expect(response.body['host_fee']).to eq(0.0)
