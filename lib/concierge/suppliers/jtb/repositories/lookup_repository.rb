@@ -16,6 +16,12 @@ module JTB
           options: "DELIMITER '\t', QUOTE E'\b'"
         ) { yield }
       end
+
+      def self.location_name(id)
+        query do
+          where(category: '1').and(id: id).limit(1)
+        end.first
+      end
     end
   end
 end
