@@ -39,20 +39,45 @@ module RentalsUnited
     # Returns a +Result+ wrapping a +Quotation+ when operation succeeds
     # Returns a +Result+ with +Result::Error+ when operation fails
     def quote(quotation_params)
-      property = find_property(quotation_params[:property_id])
-      return Result.error(:property_not_found) unless property
+      host = find_host
+      return host_not_found unless host
 
-      command = RentalsUnited::Commands::QuotationFetcher.new(
+      property = find_property(quotation_params[:property_id])
+      return property_not_found unless property
+
+      command = RentalsUnited::Commands::PriceFetcher.new(
         credentials,
-        quotation_params,
-        property.data.get("currency")
+        quotation_params
       )
-      command.call
+      result = command.call
+      return result unless result.success?
+      price = result.value
+
+      mapper = RentalsUnited::Mappers::Quotation.new(
+        price,
+        property.data.get("currency"),
+        host.fee_percentage,
+        quotation_params
+      )
+      Result.new(mapper.build_quotation)
     end
 
     private
+    def find_host
+      supplier = SupplierRepository.named(SUPPLIER_NAME)
+      HostRepository.from_supplier(supplier).first
+    end
+
     def find_property(property_id)
       PropertyRepository.identified_by(property_id).first
+    end
+
+    def host_not_found
+      Result.error(:host_not_found)
+    end
+
+    def property_not_found
+      Result.error(:property_not_found)
     end
   end
 end

@@ -218,8 +218,8 @@ RSpec.describe RentalsUnited::PayloadBuilder do
     end
   end
 
-  describe '#build_quotation_fetch_payload' do
-    let(:quotaion_params) do
+  describe '#build_price_fetch_payload' do
+    let(:stay_params) do
       {
         property_id: "123",
         check_in: "2016-09-01",
@@ -229,7 +229,7 @@ RSpec.describe RentalsUnited::PayloadBuilder do
     end
 
     it 'embedds username and password to request' do
-      xml = builder.build_quotation_fetch_payload(quotaion_params)
+      xml = builder.build_price_fetch_payload(stay_params)
       hash = to_hash(xml)
 
       authentication = hash.get("Pull_GetPropertyAvbPrice_RQ.Authentication")
@@ -238,29 +238,29 @@ RSpec.describe RentalsUnited::PayloadBuilder do
     end
 
     it 'adds property_id to request' do
-      xml = builder.build_quotation_fetch_payload(quotaion_params)
+      xml = builder.build_price_fetch_payload(stay_params)
       hash = to_hash(xml)
 
       property_id = hash.get("Pull_GetPropertyAvbPrice_RQ.PropertyID")
-      expect(property_id).to eq(quotaion_params[:property_id])
+      expect(property_id).to eq(stay_params[:property_id])
     end
 
     it 'adds check in / check out dates to request' do
-      xml = builder.build_quotation_fetch_payload(quotaion_params)
+      xml = builder.build_price_fetch_payload(stay_params)
       hash = to_hash(xml)
 
       check_in = hash.get("Pull_GetPropertyAvbPrice_RQ.DateFrom").to_s
       check_out = hash.get("Pull_GetPropertyAvbPrice_RQ.DateTo").to_s
-      expect(check_in).to eq(quotaion_params[:check_in])
-      expect(check_out).to eq(quotaion_params[:check_out])
+      expect(check_in).to eq(stay_params[:check_in])
+      expect(check_out).to eq(stay_params[:check_out])
     end
 
     it 'adds num_guests to request' do
-      xml = builder.build_quotation_fetch_payload(quotaion_params)
+      xml = builder.build_price_fetch_payload(stay_params)
       hash = to_hash(xml)
 
       num_guests = hash.get("Pull_GetPropertyAvbPrice_RQ.NOP")
-      expect(num_guests).to eq(quotaion_params[:num_guests].to_s)
+      expect(num_guests).to eq(stay_params[:num_guests].to_s)
     end
   end
 

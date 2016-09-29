@@ -4,19 +4,21 @@ module RentalsUnited
     #
     # This class is responsible for building a +Quotation+ object
     class Quotation
-      attr_reader :quotation_params, :price, :currency_code
+      attr_reader :price, :currency, :host_fee_percentage, :quotation_params
 
       # Initialize Quotation mapper
       #
       # Arguments:
       #
+      #   * +price+ [Entities::Price] price
+      #   * +currency+ [String] currency code
+      #   * +host_fee_percentage+ [Integer]
       #   * +quotation_params+ [Concierge::SafeAccessHash] quotation parameters
-      #   * +price+ [String] quotation price
-      #   * +currency_code+ [String] currency code
-      def initialize(quotation_params, price, currency_code)
-        @quotation_params = quotation_params
-        @currency_code = currency_code
+      def initialize(price, currency, host_fee_percentage, quotation_params)
         @price = price
+        @currency = currency
+        @host_fee_percentage = host_fee_percentage
+        @quotation_params = quotation_params
       end
 
       # Builds quotation
@@ -24,13 +26,14 @@ module RentalsUnited
       # Returns [Quotation]
       def build_quotation
         ::Quotation.new(
-          property_id: quotation_params[:property_id],
-          check_in:    quotation_params[:check_in].to_s,
-          check_out:   quotation_params[:check_out].to_s,
-          guests:      quotation_params[:guests],
-          currency:    currency_code,
-          total:       price ? price : 0,
-          available:   price ? true : false
+          property_id:         quotation_params[:property_id],
+          check_in:            quotation_params[:check_in].to_s,
+          check_out:           quotation_params[:check_out].to_s,
+          guests:              quotation_params[:guests],
+          total:               price.total,
+          available:           price.available?,
+          currency:            currency,
+          host_fee_percentage: host_fee_percentage
         )
       end
     end

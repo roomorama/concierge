@@ -67,7 +67,7 @@ module RentalsUnited
       render(:seasons_fetch, template_locals)
     end
 
-    def build_quotation_fetch_payload(property_id:, check_in:, check_out:, num_guests:)
+    def build_price_fetch_payload(property_id:, check_in:, check_out:, num_guests:)
       template_locals = {
         credentials: credentials,
         property_id: property_id,
@@ -75,7 +75,7 @@ module RentalsUnited
         check_out:   check_out,
         num_guests:  num_guests
       }
-      render(:quotation_fetch, template_locals)
+      render(:price_fetch, template_locals)
     end
 
     private
