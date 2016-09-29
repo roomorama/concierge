@@ -1,47 +1,45 @@
 require "spec_helper"
 
-RSpec.describe RentalsUnited::Commands::OwnersFetcher do
+RSpec.describe RentalsUnited::Commands::OwnerFetcher do
   include Support::HTTPStubbing
   include Support::Fixtures
 
   let(:credentials) { Concierge::Credentials.for("rentals_united") }
-  let(:subject) { described_class.new(credentials) }
+  let(:owner_id) { '123' }
+  let(:subject) { described_class.new(credentials, owner_id) }
   let(:url) { credentials.url }
 
-  it "fetches owners" do
-    stub_data = read_fixture("rentals_united/owners/owners.xml")
+  it "fetches owner" do
+    stub_data = read_fixture("rentals_united/owner/owner.xml")
     stub_call(:post, url) { [200, {}, stub_data] }
 
-    result = subject.fetch_owners
+    result = subject.fetch_owner
     expect(result).to be_success
 
-    owners = result.value
-    expect(owners).to all(be_kind_of(RentalsUnited::Entities::Owner))
-    expect(owners.size).to eq(2)
-
-    expected_owner_ids = %w(427698 419680)
-    expected_owner_ids.each do |owner_id|
-      expect(owners.map(&:id).include?(owner_id)).to be true
-    end
+    owner = result.value
+    expect(owner).to be_kind_of(RentalsUnited::Entities::Owner)
+    expect(owner.id).to eq("419680")
+    expect(owner.first_name).to eq("Foo")
+    expect(owner.last_name).to eq("Bar")
+    expect(owner.email).to eq("foobar@gmail.com")
+    expect(owner.phone).to eq("519461272")
   end
 
-  it "returns [] when there is no owners" do
-    stub_data = read_fixture("rentals_united/owners/empty.xml")
+  it "returns error when there is no requested owner" do
+    stub_data = read_fixture("rentals_united/owner/not_found.xml")
     stub_call(:post, url) { [200, {}, stub_data] }
 
-    result = subject.fetch_owners
-    expect(result).to be_success
-
-    owners = result.value
-    expect(owners).to eq([])
+    result = subject.fetch_owner
+    expect(result).not_to be_success
+    expect(result.error.code).to eq(:unrecognised_response)
   end
 
   context "when response from the api has error status" do
     it "returns a result with an appropriate error" do
-      stub_data = read_fixture("rentals_united/owners/error_status.xml")
+      stub_data = read_fixture("rentals_united/owner/error_status.xml")
       stub_call(:post, url) { [200, {}, stub_data] }
 
-      result = subject.fetch_owners
+      result = subject.fetch_owner
 
       expect(result).not_to be_success
       expect(result.error.code).to eq("9999")
@@ -60,7 +58,7 @@ RSpec.describe RentalsUnited::Commands::OwnersFetcher do
       stub_data = read_fixture("rentals_united/bad_xml.xml")
       stub_call(:post, url) { [200, {}, stub_data] }
 
-      result = subject.fetch_owners
+      result = subject.fetch_owner
 
       expect(result).not_to be_success
       expect(result.error.code).to eq(:unrecognised_response)
@@ -78,7 +76,7 @@ RSpec.describe RentalsUnited::Commands::OwnersFetcher do
     it "returns a result with an appropriate error" do
       stub_call(:post, url) { raise Faraday::TimeoutError }
 
-      result = subject.fetch_owners
+      result = subject.fetch_owner
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :connection_timeout

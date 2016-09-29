@@ -1,0 +1,10 @@
+<Pull_GetOwnerDetails_RS>
+  <Status ID="0">Success</Status>
+  <Owner OwnerID="419680">
+    <FirstName>Foo</FirstName>
+    <SurName>Bar</SurName>
+    <CompanyName>RU Test</CompanyName>
+    <Email>foobar@gmail.com</Email>
+    <Phone>519461272</Phone>
+  </Owner>
+</Pull_GetOwnerDetails_RS>

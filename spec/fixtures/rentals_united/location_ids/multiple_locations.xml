@@ -1,8 +1,0 @@
-<Pull_ListCitiesProps_RS>
-  <Status ID="0">Success</Status>
-  <CitiesProps>
-    <CityProps LocationID="1505">1</CityProps>
-    <CityProps LocationID="2503">1</CityProps>
-    <CityProps LocationID="1144">2</CityProps>
-  </CitiesProps>
-</Pull_ListCitiesProps_RS>

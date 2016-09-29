@@ -7,12 +7,15 @@ RSpec.describe RentalsUnited::Importer do
   let(:credentials) { Concierge::Credentials.for("rentals_united") }
   let(:importer) { described_class.new(credentials) }
 
-  describe "#fetch_location_ids" do
-    it "calls fetcher class to load location ids" do
-      fetcher_class = RentalsUnited::Commands::LocationIdsFetcher
+  describe "#fetch_properties_collection_for_owner" do
+    let(:owner_id) { "588788" }
 
-      expect_any_instance_of(fetcher_class).to(receive(:fetch_location_ids))
-      importer.fetch_location_ids
+    it "calls fetcher class to load properties collection" do
+      fetcher_class = RentalsUnited::Commands::PropertiesCollectionFetcher
+
+      expect_any_instance_of(fetcher_class).
+        to(receive(:fetch_properties_collection_for_owner))
+      importer.fetch_properties_collection_for_owner(owner_id)
     end
   end
 
@@ -38,17 +41,6 @@ RSpec.describe RentalsUnited::Importer do
     end
   end
 
-  describe "#fetch_property_ids" do
-    let(:location_id) { "1234" }
-
-    it "calls fetcher class to load property ids" do
-      fetcher_class = RentalsUnited::Commands::PropertyIdsFetcher
-
-      expect_any_instance_of(fetcher_class).to(receive(:fetch_property_ids))
-      importer.fetch_property_ids(location_id)
-    end
-  end
-
   describe "#fetch_property" do
     let(:property_id) { "588788" }
 
@@ -60,62 +52,14 @@ RSpec.describe RentalsUnited::Importer do
     end
   end
 
-  describe "#fetch_properties_by_ids" do
-    let(:property_ids) { ["222", "333"] }
+  describe "#fetch_owner" do
+    let(:owner_id) { "123" }
 
-    it "calls #fetch_property for every property id" do
-      property_ids.each do |id|
-        expect_any_instance_of(described_class).to(
-          receive(:fetch_property).with(id) { Result.new("success") }
-        )
-      end
-
-      result = importer.fetch_properties_by_ids(property_ids)
-      expect(result).to be_success
-    end
-
-    it "ignores nil results" do
-      expect_any_instance_of(described_class).to(
-        receive(:fetch_property).with("222") { Result.new("success") }
-      )
-
-      expect_any_instance_of(described_class).to(
-        receive(:fetch_property).with("333") { Result.new(nil) }
-      )
-
-      result = importer.fetch_properties_by_ids(property_ids)
-      expect(result).to be_success
-      expect(result.value.size).to eq(1)
-    end
-
-    it "returns error if fetching property_id fails" do
-      expect_any_instance_of(described_class).to(
-        receive(:fetch_property).with("222") { Result.error("fail") }
-      )
-
-      result = importer.fetch_properties_by_ids(property_ids)
-      expect(result).not_to be_success
-    end
-
-    it "returns error on fail even if previous fetchers returned success" do
-      expect_any_instance_of(described_class).to(
-        receive(:fetch_property).with("222") { Result.new("success") }
-      )
-      expect_any_instance_of(described_class).to(
-        receive(:fetch_property).with("333") { Result.error("fail") }
-      )
-
-      result = importer.fetch_properties_by_ids(property_ids)
-      expect(result).not_to be_success
-    end
-  end
-
-  describe "#fetch_owners" do
     it "calls fetcher class to load owners" do
-      fetcher_class = RentalsUnited::Commands::OwnersFetcher
+      fetcher_class = RentalsUnited::Commands::OwnerFetcher
 
-      expect_any_instance_of(fetcher_class).to(receive(:fetch_owners))
-      importer.fetch_owners
+      expect_any_instance_of(fetcher_class).to(receive(:fetch_owner))
+      importer.fetch_owner(owner_id)
     end
   end
 

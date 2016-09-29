@@ -31,90 +31,61 @@ module Workers::Suppliers::RentalsUnited
     end
 
     def perform
-      result = property_sync.new_context { fetch_location_ids }
+      result = fetch_owner(host.identifier)
       return unless result.success?
+      owner = result.value
 
-      location_ids = result.value
-
-      result = fetch_locations(location_ids)
+      result = fetch_properties_collection_for_owner(owner.id)
       return unless result.success?
+      properties_collection = result.value
 
+      result = fetch_locations(properties_collection.location_ids)
+      return unless result.success?
       locations = result.value
 
       result = fetch_location_currencies
       return unless result.success?
-
       currencies = result.value
 
-      result = fetch_owners
-      return unless result.success?
+      properties_collection.each_entry do |property_id, location_id|
+        location = locations.find { |l| l.id == location_id }
 
-      owners = result.value
+        unless location
+          message = "Failed to find location with id `#{location_id}`"
+          announce_context_error(message, Result.error(:location_not_found))
+          next
+        end
 
-      locations.each do |location|
         location.currency = currencies[location.id]
 
-        if location.currency
-          result = property_sync.new_context { fetch_property_ids(location.id) }
-          next unless result.success?
-
-          property_ids = result.value
-
-          result = fetch_properties_by_ids(property_ids, location)
-          next unless result.success?
-
-          location_properties = result.value
-
-          sync_metadata_and_calendar(location_properties, location, owners)
-        else
-          message = "Failed to find currency for location with id `#{location.id}`"
+        unless location.currency
+          message = "Failed to find currency for location with id `#{location_id}`"
           announce_context_error(message, Result.error(:currency_not_found))
           next
         end
+
+        result = fetch_property(property_id)
+        next unless result.success?
+        property = result.value
+
+        result = fetch_seasons(property_id)
+        next unless result.success?
+        seasons = result.value
+
+        result = build_roomorama_property(property, location, owner, seasons)
+        next if skip?(result, property)
+
+        property_sync.start(property_id) { result } if result.success?
+
+        if synced_property?(property_id)
+          sync_calendar(property_id, seasons)
+        end
       end
+
       property_sync.finish!
     end
 
     private
-    # Performs metadata and calendar synchronisation for given properties.
-    #
-    # For each property it checks whether property was ever synced and if
-    # that's true it also starts calendar synchronisation.
-    #
-    # Even if current metadata sync is failed, it's possible that property was
-    # synced before, that's why we still perform update for calendar.
-    #
-    # If result has errors which skips publishing properties, calendar update
-    # won't be started.
-    def sync_metadata_and_calendar(properties, location, owners)
-      properties.each do |property|
-        result = fetch_seasons(property.id)
-        next result unless result.success?
-        seasons = result.value
-
-        owner = find_owner(owners, property.owner_id)
-
-        if owner
-          result = build_roomorama_property(property, location, owner, seasons)
-          next if skip?(result, property)
-
-          if result.success?
-            property_sync.start(property.id) { result }
-          else
-            result
-          end
-        else
-          message = "Failed to find owner for property id `#{property.id}`"
-          announce_context_error(message, Result.error(:owner_not_found))
-          next
-        end
-
-        if synced_property?(property.id)
-          sync_calendar(property.id, seasons)
-        end
-      end
-    end
-
     # Performs calendar (availabilities + seasons) synchronisation for
     # given property_id.
     def sync_calendar(property_id, seasons)
@@ -162,10 +133,6 @@ module Workers::Suppliers::RentalsUnited
       )
     end
 
-    def find_owner(owners, owner_id)
-      owners.find { |o| o.id == owner_id }
-    end
-
     def build_roomorama_property(property, location, owner, seasons)
       mapper = ::RentalsUnited::Mappers::RoomoramaProperty.new(
         property,
@@ -176,14 +143,20 @@ module Workers::Suppliers::RentalsUnited
       mapper.build_roomorama_property
     end
 
-    def fetch_location_ids
-      announce_error("Failed to fetch location ids") do
-        importer.fetch_location_ids
+    def fetch_owner(owner_id)
+      announce_error("Failed to fetch owner with owner_id `#{owner_id}`") do
+        importer.fetch_owner(owner_id)
+      end
+    end
+
+    def fetch_properties_collection_for_owner(owner_id)
+      announce_error("Failed to fetch property ids collection for owner `#{owner_id}`") do
+        importer.fetch_properties_collection_for_owner(owner_id)
       end
     end
 
     def fetch_locations(location_ids)
-      announce_error("Failed to fetch locations") do
+      announce_error("Failed to fetch locations with ids `#{location_ids}`") do
         importer.fetch_locations(location_ids)
       end
     end
@@ -194,22 +167,10 @@ module Workers::Suppliers::RentalsUnited
       end
     end
 
-    def fetch_owners
-      announce_error("Failed to fetch owners") do
-        importer.fetch_owners
-      end
-    end
-
-    def fetch_property_ids(location_id)
-      announce_error("Failed to fetch property ids for location `#{location_id}`") do
-        importer.fetch_property_ids(location_id)
-      end
-    end
-
-    def fetch_properties_by_ids(property_ids, location)
-      message = "Failed to fetch properties for ids `#{property_ids}` in location `#{location.id}`"
+    def fetch_property(property_id)
+      message = "Failed to fetch property with property_id `#{property_id}`"
       announce_error(message) do
-        importer.fetch_properties_by_ids(property_ids)
+        importer.fetch_property(property_id)
       end
     end
 

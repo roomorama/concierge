@@ -1,4 +1,4 @@
-<Pull_ListProp_RS>
+<Pull_ListOwnerProp_RS>
   <Status ID="0">Success</Status>
   <Properties>
     <Property>
@@ -24,4 +24,4 @@
       <UserID>0</UserID>
     </Property>
   </Properties>
-</Pull_ListProp_RS>
+</Pull_ListOwnerProp_RS>

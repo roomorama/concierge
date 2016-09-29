@@ -14,15 +14,18 @@ module RentalsUnited
       @credentials = credentials
     end
 
-    # Retrieves location ids with active properties.
+    # Retrieves properties collection for a given owner by +owner_id+
     #
-    # Locations without active properties will be filtered out.
+    # Properties which are no longer available will be filtered out.
     #
-    # Returns a +Result+ wrapping +Array+ of +String+ location ids
+    # Returns a +Result+ wrapping +Entities::PropertiesCollection+ object
     # Returns a +Result+ with +Result::Error+ when operation fails
-    def fetch_location_ids
-      fetcher = Commands::LocationIdsFetcher.new(credentials)
-      fetcher.fetch_location_ids
+    def fetch_properties_collection_for_owner(owner_id)
+      fetcher = Commands::PropertiesCollectionFetcher.new(
+        credentials,
+        owner_id
+      )
+      fetcher.fetch_properties_collection_for_owner
     end
 
     # Retrieves locations by given location_ids.
@@ -47,20 +50,6 @@ module RentalsUnited
       fetcher.fetch_location_currencies
     end
 
-    # Retrieves property ids by location id.
-    #
-    # IDs of properties which are no longer available will be filtered out.
-    #
-    # Returns a +Result+ wrapping +Array+ of +String+ property ids
-    # Returns a +Result+ with +Result::Error+ when operation fails
-    def fetch_property_ids(location_id)
-      properties_fetcher = Commands::PropertyIdsFetcher.new(
-        credentials,
-        location_id
-      )
-      properties_fetcher.fetch_property_ids
-    end
-
     # Retrieves property by its id.
     #
     # Returns a +Result+ wrapping +Entities::Property+ object
@@ -73,29 +62,13 @@ module RentalsUnited
       property_fetcher.fetch_property
     end
 
-    # Retrieves properties by given ids
+    # Retrieves owner by id
     #
-    # Returns a +Result+ wrapping +Array+ of +Entities::Property+ objects
+    # Returns a +Result+ wrapping +Entities::Owner+ object
     # Returns a +Result+ with +Result::Error+ when operation fails
-    def fetch_properties_by_ids(property_ids)
-      properties = property_ids.map do |property_id|
-        result = fetch_property(property_id)
-
-        return result unless result.success?
-
-        result.value
-      end.compact
-
-      Result.new(properties)
-    end
-
-    # Retrieves owners
-    #
-    # Returns a +Result+ wrapping +Array+ of +Entities::Owner+ objects
-    # Returns a +Result+ with +Result::Error+ when operation fails
-    def fetch_owners
-      fetcher = Commands::OwnersFetcher.new(credentials)
-      fetcher.fetch_owners
+    def fetch_owner(owner_id)
+      fetcher = Commands::OwnerFetcher.new(credentials, owner_id)
+      fetcher.fetch_owner
     end
 
     # Retrieves availabilities for property by its id.

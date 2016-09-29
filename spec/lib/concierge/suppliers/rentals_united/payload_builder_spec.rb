@@ -4,58 +4,67 @@ RSpec.describe RentalsUnited::PayloadBuilder do
   let(:credentials) { Concierge::Credentials.for("rentals_united") }
   let(:builder) { described_class.new(credentials) }
 
-  describe '#build_property_ids_fetch_payload' do
+  describe '#build_properties_collection_fetch_payload' do
     let(:params) do
       {
-        location_id: "123"
+        owner_id: "123"
       }
     end
 
     it 'embedds username and password to request' do
-      xml = builder.build_property_ids_fetch_payload(params[:location_id])
+      xml = builder.build_properties_collection_fetch_payload(
+        params[:owner_id]
+      )
       hash = to_hash(xml)
 
-      authentication = hash.get("Pull_ListProp_RQ.Authentication")
+      authentication = hash.get("Pull_ListOwnerProp_RQ.Authentication")
       expect(authentication.get("UserName")).to eq(credentials.username)
       expect(authentication.get("Password")).to eq(credentials.password)
     end
 
-    it 'adds location_id to request' do
-      xml = builder.build_property_ids_fetch_payload(params[:location_id])
+    it 'adds owner_id request' do
+      xml = builder.build_properties_collection_fetch_payload(
+        params[:owner_id]
+      )
       hash = to_hash(xml)
 
-      location_id = hash.get("Pull_ListProp_RQ.LocationID")
-      expect(location_id).to eq(params[:location_id])
+      owner_id = hash.get("Pull_ListOwnerProp_RQ.OwnerID")
+      expect(owner_id).to eq(params[:owner_id])
     end
 
     it 'adds include_nla flag to request' do
-      xml = builder.build_property_ids_fetch_payload(params[:property_id])
+      xml = builder.build_properties_collection_fetch_payload(
+        params[:owner_id]
+      )
       hash = to_hash(xml)
 
-      include_nla = hash.get("Pull_ListProp_RQ.IncludeNLA")
+      include_nla = hash.get("Pull_ListOwnerProp_RQ.IncludeNLA")
       expect(include_nla).to eq(false)
     end
   end
 
-  describe '#build_location_ids_fetch_payload' do
+  describe '#build_owner_fetch_payload' do
+    let(:params) do
+      {
+        owner_id: "123"
+      }
+    end
+
     it 'embedds username and password to request' do
-      xml = builder.build_location_ids_fetch_payload
+      xml = builder.build_owner_fetch_payload(params[:owner_id])
       hash = to_hash(xml)
 
-      authentication = hash.get("Pull_ListCitiesProps_RQ.Authentication")
+      authentication = hash.get("Pull_GetOwnerDetails_RQ.Authentication")
       expect(authentication.get("UserName")).to eq(credentials.username)
       expect(authentication.get("Password")).to eq(credentials.password)
     end
-  end
 
-  describe '#build_owners_fetch_payload' do
-    it 'embedds username and password to request' do
-      xml = builder.build_owners_fetch_payload
+    it 'adds owner_id request' do
+      xml = builder.build_owner_fetch_payload(params[:owner_id])
       hash = to_hash(xml)
 
-      authentication = hash.get("Pull_ListAllOwners_RQ.Authentication")
-      expect(authentication.get("UserName")).to eq(credentials.username)
-      expect(authentication.get("Password")).to eq(credentials.password)
+      owner_id = hash.get("Pull_GetOwnerDetails_RQ.OwnerID")
+      expect(owner_id).to eq(params[:owner_id])
     end
   end
 

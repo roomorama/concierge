@@ -13,17 +13,12 @@ module RentalsUnited
       @credentials = credentials
     end
 
-    def build_property_ids_fetch_payload(location_id)
+    def build_properties_collection_fetch_payload(owner_id)
       template_locals = {
         credentials: credentials,
-        location_id: location_id
+        owner_id: owner_id
       }
-      render(:property_ids_fetch, template_locals)
-    end
-
-    def build_location_ids_fetch_payload
-      template_locals = { credentials: credentials }
-      render(:location_ids_fetch, template_locals)
+      render(:properties_collection_fetch, template_locals)
     end
 
     def build_locations_fetch_payload
@@ -44,9 +39,12 @@ module RentalsUnited
       render(:property_fetch, template_locals)
     end
 
-    def build_owners_fetch_payload
-      template_locals = { credentials: credentials }
-      render(:owners_fetch, template_locals)
+    def build_owner_fetch_payload(owner_id)
+      template_locals = {
+        credentials: credentials,
+        owner_id: owner_id
+      }
+      render(:owner_fetch, template_locals)
     end
 
     def build_availabilities_fetch_payload(property_id, date_from, date_to)
