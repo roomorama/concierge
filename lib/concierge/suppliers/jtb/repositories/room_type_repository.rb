@@ -13,6 +13,14 @@ module JTB
           options: "DELIMITER '\t'"
         ) { yield }
       end
+
+      def self.hotel_english_rooms(city_code, hotel_code)
+        query do
+          where(language: 'EN')
+            .and(city_code: city_code)
+            .and(hotel_code: hotel_code)
+        end
+      end
     end
   end
 end
