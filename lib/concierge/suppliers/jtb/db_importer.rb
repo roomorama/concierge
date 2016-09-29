@@ -83,6 +83,17 @@ module JTB
       5, # name
     ]
 
+    # Rate plans (RoomPlan_All_YYYYMMDD.csv)
+    RATE_PLAN_COLUMNS = [
+      0, # language
+      1, # city_code
+      2, # hotel_code
+      3, # rate_plan_id
+      4, # room_code
+      5, # meal_plan_code
+      6  # occupancy
+    ]
+
     attr_reader :tmp_path
 
     def initialize(tmp_path)
@@ -94,7 +105,8 @@ module JTB
       # import_room_stocks
       # import_hotels
       # import_pictures
-      import_lookups
+      # import_lookups
+      import_rate_plans
     end
 
     def cleanup
@@ -103,6 +115,7 @@ module JTB
       JTB::Repositories::HotelRepository.clear
       JTB::Repositories::PictureRepository.clear
       JTB::Repositories::LookupRepository.clear
+      JTB::Repositories::RatePlanRepository.clear
     end
 
     private
@@ -169,6 +182,18 @@ module JTB
       end
     end
 
+    def import_rate_plans
+      file_path = rate_plan_file_path
+      if file_path
+        File.open(file_path) do |file|
+          JTB::Repositories::RatePlanRepository.copy_csv_into do
+            line = file.gets
+            fetch_required_columns(line, RATE_PLAN_COLUMNS) if line
+          end
+        end
+      end
+    end
+
     def fetch_required_columns(line, indexes)
       # Remove last \n from string
       line = line[0..-2]
@@ -193,6 +218,10 @@ module JTB
 
     def generic_master_file_path
       local_file_path('GenericMaster_ALL')
+    end
+
+    def rate_plan_file_path
+      local_file_path('RoomPlan_ALL')
     end
 
     def local_file_path(prefix)

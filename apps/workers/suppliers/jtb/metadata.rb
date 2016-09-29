@@ -13,79 +13,84 @@ module Workers::Suppliers::JTB
     end
 
     def perform
-      synchronisation.new_context do
-        files_fetcher.fetch_files
-      end
+      begin
+        synchronisation.new_context do
+          files_fetcher.fetch_files
+        end
 
-      db_importer.import
+        db_importer.import
 
-      hotels = JTB::HotelRepository.english_ryokans
+        hotels = JTB::HotelRepository.english_ryokans
 
-      # sync_here
-      hotels.each do |hotel|
-
-      end
-
-      db_importer.cleanup
-      files_fetcher.cleanup
-
-
-      if result.success?
-        properties = result.value
-        properties.each do |property|
-          property_id = property.property_id
-          if validator(property).valid?
-            permissions = synchronisation.new_context(property_id) do
-              fetch_permissions(property_id)
-            end
-            next unless permissions.success?
-
-            unless permissions_validator(permissions.value).valid?
-              synchronisation.skip_property(property_id, 'Invalid permissions')
-              next
-            end
-
-            # Rates are needed for a property. Skip (and purge) properties that
-            # has no rates or has error when retrieving rates.
-            result = fetch_rates(property_id)
-            next unless result.success?
-
-            rates  = filter_rates(result.value)
-            if rates.empty?
-              synchronisation.skip_property(property_id, 'Empty valid rates list')
-              next
-            end
-
-            result = fetch_images(property_id)
-            next unless result.success?
-            images = result.value
-
-            result = fetch_description(property_id)
-            next unless result.success?
-            description = result.value
-            if description.to_s.empty?
-              synchronisation.skip_property(property_id, 'Empty description')
-              next
-            end
-
-            synchronisation.start(property_id) do
-
-              result = fetch_security_deposit(property_id)
-              security_deposit = result.success? ? result.value : nil
-
-              roomorama_property = mapper.build(property, images, rates, description, security_deposit)
-              Result.new(roomorama_property)
-            end
-          else
-            synchronisation.skip_property(property_id, 'Invalid property')
+        # sync_here
+        hotels.each do |hotel|
+          pictures = JTB::PictureRepository.hotel_english_images(hotel.city_code, hotel.hotel_code)
+          synchronisation.start do
+            mapper.build(hotel, pictures)
           end
         end
-        synchronisation.finish!
-      else
-        synchronisation.failed!
-        message = 'Failed to perform the `#fetch_properties` operation'
-        announce_error(message, result)
+      ensure
+        db_importer.cleanup
+        files_fetcher.cleanup
       end
+
+
+      # if result.success?
+      #   properties = result.value
+      #   properties.each do |property|
+      #     property_id = property.property_id
+      #     if validator(property).valid?
+      #       permissions = synchronisation.new_context(property_id) do
+      #         fetch_permissions(property_id)
+      #       end
+      #       next unless permissions.success?
+      #
+      #       unless permissions_validator(permissions.value).valid?
+      #         synchronisation.skip_property(property_id, 'Invalid permissions')
+      #         next
+      #       end
+      #
+      #       # Rates are needed for a property. Skip (and purge) properties that
+      #       # has no rates or has error when retrieving rates.
+      #       result = fetch_rates(property_id)
+      #       next unless result.success?
+      #
+      #       rates  = filter_rates(result.value)
+      #       if rates.empty?
+      #         synchronisation.skip_property(property_id, 'Empty valid rates list')
+      #         next
+      #       end
+      #
+      #       result = fetch_images(property_id)
+      #       next unless result.success?
+      #       images = result.value
+      #
+      #       result = fetch_description(property_id)
+      #       next unless result.success?
+      #       description = result.value
+      #       if description.to_s.empty?
+      #         synchronisation.skip_property(property_id, 'Empty description')
+      #         next
+      #       end
+      #
+      #       synchronisation.start(property_id) do
+      #
+      #         result = fetch_security_deposit(property_id)
+      #         security_deposit = result.success? ? result.value : nil
+      #
+      #         roomorama_property = mapper.build(property, images, rates, description, security_deposit)
+      #         Result.new(roomorama_property)
+      #       end
+      #     else
+      #       synchronisation.skip_property(property_id, 'Invalid property')
+      #     end
+      #   end
+      #   synchronisation.finish!
+      # else
+      #   synchronisation.failed!
+      #   message = 'Failed to perform the `#fetch_properties` operation'
+      #   announce_error(message, result)
+      # end
     end
 
     private
@@ -153,23 +158,8 @@ module Workers::Suppliers::JTB
       end
     end
 
-    # Args:
-    #   error: a Result#error
-    #
-    def ignorable_rates_error?(error)
-      IGNORABLE_RATES_ERROR_MESSAGES.any? { |err_msg|
-        error.data&.include? err_msg
-      }
-    end
-
-    def ignorable_images_error?(error)
-      IGNORABLE_IMAGES_ERROR_MESSAGES.any? { |err_msg|
-        error.data&.include? err_msg
-      }
-    end
-
     def mapper
-      @mapper ||= ::Ciirus::Mappers::RoomoramaProperty.new
+      @mapper ||= ::JTB::Mappers::RoomoramaProperty.new
     end
 
     def importer

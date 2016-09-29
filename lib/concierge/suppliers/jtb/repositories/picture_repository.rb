@@ -17,6 +17,17 @@ module JTB
           options: "DELIMITER '\t', QUOTE E'\b'"
         ) { yield }
       end
+
+      def self.hotel_english_images(city_code, hotel_code)
+        query do
+          # 999 is the tour category code, we don't want tour pictures
+          where("category != '999'")
+            .and(language: 'EN')
+            .and(city_code: city_code)
+            .and(hotel_code: hotel_code)
+            .and('room_code is null')
+        end
+      end
     end
   end
 end
