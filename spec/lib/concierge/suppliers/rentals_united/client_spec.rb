@@ -3,14 +3,15 @@ require "spec_helper"
 RSpec.describe RentalsUnited::Client do
   include Support::Factories
 
-  let(:credentials) { Concierge::Credentials.for("rentals_united") }
+  let(:supplier_name) { RentalsUnited::Client::SUPPLIER_NAME }
+  let(:credentials) { Concierge::Credentials.for(supplier_name) }
   let(:client) { described_class.new(credentials) }
 
   describe "#quote" do
     before do
-      supplier = create_supplier(name: "rentals_united")
+      supplier = create_supplier(name: supplier_name)
       host = create_host(identifier: "ru-host", supplier_id: supplier.id)
-      create_property(identifier: '1234', data: { :currency => "USD" })
+      create_property(identifier: '1234', host_id: host.id, data: { :currency => "USD" })
     end
 
     let(:quotation_params) do

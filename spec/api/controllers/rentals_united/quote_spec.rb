@@ -7,8 +7,11 @@ RSpec.describe API::Controllers::RentalsUnited::Quote do
   include Support::Fixtures
   include Support::Factories
 
+  let(:supplier_name) { RentalsUnited::Client::SUPPLIER_NAME }
+  let(:credentials) { Concierge::Credentials.for(supplier_name) }
+
   before do
-    supplier = create_supplier(name: "rentals_united")
+    supplier = create_supplier(name: supplier_name)
     host = create_host(identifier: "ru-host", supplier_id: supplier.id)
     create_property(
       identifier: "321",
@@ -31,9 +34,6 @@ RSpec.describe API::Controllers::RentalsUnited::Quote do
   end
 
   it_behaves_like "external error reporting" do
-    let(:supplier_name) { "rentals_united" }
-    let(:credentials) { Concierge::Credentials.for(supplier_name) }
-
     def provoke_failure!
       stub_call(:post, credentials.url) do
         raise Faraday::TimeoutError
@@ -43,8 +43,6 @@ RSpec.describe API::Controllers::RentalsUnited::Quote do
   end
 
   describe "#call" do
-    let(:credentials) { Concierge::Credentials.for('rentals_united') }
-
     context "when params are valid" do
       let(:params) do
         {

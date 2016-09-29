@@ -4,7 +4,8 @@ RSpec.describe RentalsUnited::Commands::PriceFetcher do
   include Support::HTTPStubbing
   include Support::Fixtures
 
-  let(:credentials) { Concierge::Credentials.for("rentals_united") }
+  let(:supplier_name) { RentalsUnited::Client::SUPPLIER_NAME }
+  let(:credentials) { Concierge::Credentials.for(supplier_name) }
   let(:property_id) { "1234" }
   let(:stay_params) do
     API::Controllers::Params::Quote.new(
