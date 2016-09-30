@@ -4,7 +4,8 @@ RSpec.describe RentalsUnited::Commands::Cancel do
   include Support::HTTPStubbing
   include Support::Fixtures
 
-  let(:credentials) { Concierge::Credentials.for("rentals_united") }
+  let(:supplier_name) { RentalsUnited::Client::SUPPLIER_NAME }
+  let(:credentials) { Concierge::Credentials.for(supplier_name) }
   let(:reference_number) { "888999777" }
   let(:subject) { described_class.new(credentials, reference_number) }
   let(:url) { credentials.url }
