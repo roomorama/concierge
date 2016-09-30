@@ -210,3 +210,14 @@ collection :jtb_rate_plans do
   attribute :meal_plan_code, String
   attribute :occupancy,      String
 end
+
+collection :jtb_room_prices do
+  entity     JTB::Entities::RoomPrice
+  repository JTB::Repositories::RoomPriceRepository
+
+  attribute :city_code,    String
+  attribute :hotel_code,   String
+  attribute :rate_plan_id, String
+  attribute :date,         String
+  attribute :room_rate,    String
+end
