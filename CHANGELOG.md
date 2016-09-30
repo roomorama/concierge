@@ -7,6 +7,7 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Fixed
 - Proper order of table columns for sync_process/index page
+- Poplidays: metadata sync is safe for `nil` availabilities
 
 ## [0.11.5] - 2016-09-28
 ### Changed

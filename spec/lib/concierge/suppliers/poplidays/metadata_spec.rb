@@ -9,6 +9,7 @@ RSpec.describe Workers::Suppliers::Poplidays::Metadata do
   let(:properties_list) { parse_json(read_fixture('poplidays/lodgings.json')) }
   let(:property_details) { to_safe_hash(parse_json(read_fixture('poplidays/property_details.json'))) }
   let(:availabilities) { parse_json(read_fixture('poplidays/availabilities_calendar.json')) }
+  let(:empty_availabilities) { parse_json(read_fixture('poplidays/availabilities_calendar_no_availabilities.json')) }
   let(:extras) { parse_json(read_fixture('poplidays/extras.json')) }
 
   before do
@@ -153,6 +154,14 @@ RSpec.describe Workers::Suppliers::Poplidays::Metadata do
 
     it 'skip invalid properties' do
       allow_any_instance_of(Poplidays::Validators::PropertyValidator).to receive(:valid?) { false }
+      allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
+      expect {
+        subject.perform
+      }.to_not change { PropertyRepository.count }
+    end
+
+    it 'skip properties with empty availabilities' do
+      allow_any_instance_of(Poplidays::Importer).to receive(:fetch_availabilities) { Result.new(empty_availabilities) }
       allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
       expect {
         subject.perform
