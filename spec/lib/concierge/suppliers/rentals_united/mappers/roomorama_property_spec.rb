@@ -173,7 +173,7 @@ RSpec.describe RentalsUnited::Mappers::RoomoramaProperty do
   end
 
   it "sets security_deposit_currency_code" do
-    expect(property.security_deposit_type).to eq("unknown")
+    expect(property.security_deposit_type).to eq("cash")
   end
 
   it "sets property rates" do

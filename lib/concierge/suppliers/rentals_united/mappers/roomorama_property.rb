@@ -19,7 +19,7 @@ module RentalsUnited
         NO_DEPOSIT_ID,
         FLAT_AMOUNT_PER_STAY_ID
       ]
-      SECURITY_DEPOSIT_PAYMENT_TYPE = 'unknown'
+      SECURITY_DEPOSIT_PAYMENT_TYPE = 'cash'
 
       # Initialize +RentalsUnited::Mappers::Property+
       #
