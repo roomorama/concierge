@@ -94,6 +94,15 @@ module JTB
       6  # occupancy
     ]
 
+    # Prices (RoomPrice_All_YYYYMMDD.csv)
+    ROOM_PRICE_COLUMNS = [
+      0, # city_code
+      1, # hotel_code
+      2, # rate_plan_id
+      3, # date
+      4  # room_rate
+    ]
+
     attr_reader :tmp_path
 
     def initialize(tmp_path)
@@ -101,12 +110,13 @@ module JTB
     end
 
     def import
-      import_room_types
+      # import_room_types
       # import_room_stocks
       # import_hotels
       # import_pictures
       # import_lookups
       # import_rate_plans
+      import_prices
     end
 
     def cleanup
@@ -116,6 +126,7 @@ module JTB
       JTB::Repositories::PictureRepository.clear
       JTB::Repositories::LookupRepository.clear
       JTB::Repositories::RatePlanRepository.clear
+      JTB::Repositories::RoomPriceRepository.clear
     end
 
     private
@@ -194,6 +205,18 @@ module JTB
       end
     end
 
+    def import_prices
+      file_path = price_file_path
+      if file_path
+        File.open(file_path) do |file|
+          JTB::Repositories::RoomPriceRepository.copy_csv_into do
+            line = file.gets
+            fetch_required_columns(line, ROOM_PRICE_COLUMNS) if line
+          end
+        end
+      end
+    end
+
     def fetch_required_columns(line, indexes)
       # Remove last \n from string
       line = line[0..-2]
@@ -235,6 +258,10 @@ module JTB
 
     def rate_plan_file_path
       local_file_path('RoomPlan_ALL')
+    end
+
+    def price_file_path
+      local_file_path('RoomPrice_ALL')
     end
 
     def local_file_path(prefix)
