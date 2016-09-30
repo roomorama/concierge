@@ -28,6 +28,9 @@ how this file is formatted and how the process works.
 ### Added
 - SAW: parse owner information for Roomorama::Property
 
+### Added
+- Ability to call `skip_property` from `start`'s block
+
 ## [0.12.0] - 2016-10-05
 ### Added
 - Rentals Untied sync, quote, book and cancel
@@ -40,9 +43,6 @@ how this file is formatted and how the process works.
 ### Fixed
 - Proper order of table columns for sync_process/index page
 - Poplidays: metadata sync is safe for `nil` availabilities
-
-### Changed
-- PropertySynchronisation#start and CalendarSynchronisation#start returns result instead of boolean
 
 ## [0.11.5] - 2016-09-28
 ### Changed

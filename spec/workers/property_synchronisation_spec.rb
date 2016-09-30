@@ -342,6 +342,81 @@ RSpec.describe Workers::PropertySynchronisation do
     end
 
 
+    it "does not allow to create or update for skipped property" do
+      stub_call(:delete, "https://api.roomorama.com/v1.0/host/disable") { [200, {}, [""]] }
+
+      create_property(host_id: host.id, identifier: "prop1", data: roomorama_property.to_h)
+
+      subject.skip_property('prop1', 'Empty images')
+
+      # update
+      subject.start("prop1") {
+        roomorama_property.title = "Changed Title"
+        Result.new(roomorama_property)
+      }
+
+      subject.skip_property('prop4', 'Empty images')
+
+      # create
+      subject.start("prop4") {
+        roomorama_property.identifier = "prop4"
+        Result.new(roomorama_property)
+      }
+
+      expect {
+        subject.finish!
+      }.to change { SyncProcessRepository.count }.by(1)
+
+      sync = SyncProcessRepository.last
+      expect(sync).to            be_a SyncProcess
+      expect(sync.host_id).to    eq   host.id
+      expect(sync.successful).to eq   true
+      expect(sync.started_at).not_to  be_nil
+      expect(sync.finished_at).not_to be_nil
+      expect(sync.stats[:properties_created]).to eq 0
+      expect(sync.stats[:properties_updated]).to eq 0
+      expect(sync.stats[:properties_deleted]).to eq 1
+      expect(sync.skipped_properties_count).to eq 2
+      expect(sync.stats[:properties_skipped].length).to eq 1
+      expect(sync.stats[:properties_skipped][0]['reason']).to eq 'Empty images'
+      expect(sync.stats[:properties_skipped][0]['ids']).to eq ['prop1', 'prop4']
+    end
+
+
+    it "skip_property can be called from start block" do
+      stub_call(:delete, "https://api.roomorama.com/v1.0/host/disable") { [200, {}, [""]] }
+
+      create_property(host_id: host.id, identifier: "prop1", data: roomorama_property.to_h)
+
+      # update
+      subject.start("prop1") {
+        subject.skip_property('prop1', 'Empty images')
+      }
+
+      # create
+      subject.start("prop4") {
+        subject.skip_property('prop4', 'Empty images')
+      }
+
+      expect {
+        subject.finish!
+      }.to change { SyncProcessRepository.count }.by(1)
+
+      sync = SyncProcessRepository.last
+      expect(sync).to            be_a SyncProcess
+      expect(sync.host_id).to    eq   host.id
+      expect(sync.successful).to eq   true
+      expect(sync.started_at).not_to  be_nil
+      expect(sync.finished_at).not_to be_nil
+      expect(sync.stats[:properties_created]).to eq 0
+      expect(sync.stats[:properties_updated]).to eq 0
+      expect(sync.stats[:properties_deleted]).to eq 1
+      expect(sync.skipped_properties_count).to eq 2
+      expect(sync.stats[:properties_skipped].length).to eq 1
+      expect(sync.stats[:properties_skipped][0]['reason']).to eq 'Empty images'
+      expect(sync.stats[:properties_skipped][0]['ids']).to eq ['prop1', 'prop4']
+    end
+
     it "does not update deleted counter if operation fails" do
       stub_call(:delete, "https://api.roomorama.com/v1.0/host/disable") {
         [422, {}, read_fixture("roomorama/invalid_type.json")]
