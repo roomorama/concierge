@@ -135,7 +135,7 @@ collection :jtb_room_stocks do
 
   attribute :city_code,                String
   attribute :hotel_code,               String
-  attribute :option_plan_id,           String
+  attribute :rate_plan_id,             String
   attribute :service_date,             String
   attribute :number_of_units,          Integer
   attribute :closing_date,             String
