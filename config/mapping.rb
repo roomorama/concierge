@@ -218,6 +218,6 @@ collection :jtb_room_prices do
   attribute :city_code,    String
   attribute :hotel_code,   String
   attribute :rate_plan_id, String
-  attribute :date,         String
-  attribute :room_rate,    String
+  attribute :date,         Date
+  attribute :room_rate,    Float
 end

@@ -5,8 +5,8 @@ Hanami::Model.migration do
       column :city_code,    String, null: false, size: 3
       column :hotel_code,   String, null: false, size: 3
       column :rate_plan_id, String, null: false, size: 16
-      column :date,         String, null: false, size: 8
-      column :room_rate,    String, null: false, size: 16
+      column :date,         Date, null: false
+      column :room_rate,    Float, null: false
     end
   end
 end
