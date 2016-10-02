@@ -117,11 +117,12 @@ module JTB
             unit.add_image(image)
           end
 
-          unit.amenities = fetch_unit_amenities(room)
+          parse_room_amenities!(unit, room)
 
           result.add_unit(unit)
         end
       end
+
 
       def fetch_single_beds(room)
         single_beds = case room.room_type_code
@@ -151,6 +152,26 @@ module JTB
         room.extra_bed == '1' && room.extra_bed_type == '3'
       end
 
+      def parse_room_amenities!(unit, room)
+        amenities = []
+        room_amenities = room.amenities.chars
+        room_amenities.each_with_index do |available, index|
+          room_amenity = JTB::Repositories::LookupRepository.room_amenity(amenity_id(index + 1))
+          next unless room_amenity
+          mapping = lookup_amenities(room_amenity.name)
+          amenities << mapping if available == '1' && mapping
+
+          if non_smoking_room_amenity?(room_amenity.name)
+            unit.smoking_allowed = case available
+                                   when '1' then false
+                                   when '0' then true
+                                   end
+          end
+        end
+
+        unit.amenities = amenities
+      end
+
       def fetch_unit_amenities(room)
         result = []
         amenities = room.amenities.chars
@@ -158,7 +179,7 @@ module JTB
           amenity = JTB::Repositories::LookupRepository.room_amenity(amenity_id(index + 1))
           next unless amenity
           mapping = lookup_amenities(amenity.name)
-          result << mapping if available == '1' && mapping
+          result << mapping if (available == '1' && mapping)
         end
 
         result
@@ -170,6 +191,10 @@ module JTB
       #   amenity_id(2) => "002"
       def amenity_id(index)
         '%03d' % index
+      end
+
+      def non_smoking_room_amenity?(amenity_name)
+        amenity_name == 'Non-smoking'
       end
 
       def lookup_amenities(name)
