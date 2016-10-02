@@ -115,8 +115,8 @@ module JTB
       # import_hotels
       # import_pictures
       # import_lookups
-      # import_rate_plans
-      import_prices
+      import_rate_plans
+      # import_prices
     end
 
     def cleanup
@@ -198,7 +198,9 @@ module JTB
       if file_path
         File.open(file_path) do |file|
           JTB::Repositories::RatePlanRepository.copy_csv_into do
-            line = file.gets
+            # We need only price info from this file
+            # so language is not important. Will take only english.
+            line = read_english_line(file, 0)
             fetch_required_columns(line, RATE_PLAN_COLUMNS) if line
           end
         end
@@ -234,6 +236,20 @@ module JTB
       required_columns << compressed_amenities
 
       required_columns.join(CSV_DELIMETER) + "\n"
+    end
+
+    # Returns next english line from file or nil
+    # Used for filtering out not english lines
+    def read_english_line(file, language_column_index)
+      line = file.gets
+      while line && !english?(line, language_column_index)
+        line = file.gets
+      end
+      line
+    end
+
+    def english?(line, language_column_index)
+      line.split(CSV_DELIMETER, -1)[language_column_index] == 'EN'
     end
 
     def room_types_file_path
