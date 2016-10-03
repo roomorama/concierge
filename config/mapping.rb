@@ -202,7 +202,6 @@ collection :jtb_rate_plans do
   entity     JTB::Entities::RatePlan
   repository JTB::Repositories::RatePlanRepository
 
-  attribute :language,       String
   attribute :city_code,      String
   attribute :hotel_code,     String
   attribute :rate_plan_id,   String
