@@ -119,8 +119,26 @@ module JTB
 
           parse_room_amenities!(unit, room)
 
+          unit.minimum_stay = 1
+
+          set_unit_rate!(unit, room)
+          unit.nightly_rate = fetch_room_min_price(room)
+
           result.add_unit(unit)
         end
+      end
+
+      # Each room has several rate plans.
+      # Each rate plan has available dates.
+      # Returns minimum price for room available dates.
+      def fetch_room_min_price(room)
+        rate_plans = JTB::Repositories::RatePlanRepository(room)
+        from = Date.today
+        to = from + Workers::Suppliers::JTB::Metadata::PERIOD_SYNC
+        stocks = JTB::Repositories::RoomStockRepository.actual_availabilities(rate_plans, from, to)
+        stocks.map do |stock|
+          JTB::Repositories::RoomPriceRepository.room_min_price(room, rate_plans, stock.service_date)
+        end.compact.min
       end
 
 
