@@ -28,11 +28,6 @@ module JTB
         set_base_info!(result, hotel)
         set_images!(result, pictures)
         set_units!(result, rooms)
-
-
-        set_rates_and_minimum_stay!(result, rates)
-        set_security_deposit_info!(result, property, security_deposit)
-
         result
       end
 
@@ -120,8 +115,6 @@ module JTB
           parse_room_amenities!(unit, room)
 
           unit.minimum_stay = 1
-
-          set_unit_rate!(unit, room)
           unit.nightly_rate = fetch_room_min_price(room)
 
           result.add_unit(unit)
@@ -236,38 +229,6 @@ module JTB
         when 'Wheelchair (doorway over 80cm)'
           :wheelchairaccess
         end
-      end
-      
-      
-      
-      
-      
-      def set_rates_and_minimum_stay!(result, rates)
-        min_price = rates.map(&:daily_rate).min
-
-        result.minimum_stay = rates.map(&:min_nights_stay).min
-        result.nightly_rate = min_price
-        result.weekly_rate  = (min_price * 7).round(2)
-        result.monthly_rate = (min_price * 30).round(2)
-      end
-
-      def set_security_deposit_info!(result, property, security_deposit)
-        amount = extract_security_deposit_amount(security_deposit)
-        if amount
-          result.security_deposit_currency_code = property.currency_code
-          result.security_deposit_amount = amount
-          result.security_deposit_type = SECURITY_DEPOSIT_TYPE
-        end
-      end
-
-      def extract_security_deposit_amount(security_deposit)
-        if security_deposit && security_deposit.mandatory && security_deposit.flat_fee && security_deposit.flat_fee_amount != 0
-          security_deposit.flat_fee_amount
-        end
-      end
-
-      def country_converter
-        @country_converter ||= Ciirus::CountryCodeConverter.new
       end
     end
   end
