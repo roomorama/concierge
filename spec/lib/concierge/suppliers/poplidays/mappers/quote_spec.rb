@@ -2,9 +2,11 @@ require 'spec_helper'
 
 RSpec.describe Poplidays::Mappers::Quote do
   include Support::Fixtures
+  include Support::Factories
 
+  let(:host) { create_host(fee_percentage: 5.0) }
+  let!(:property) { create_property(identifier: '33680', host_id: host.id) }
   let(:mandatory_services) { 25.0 }
-  let(:host_fee_percentage) { 5.0 }
   let(:params) do
     API::Controllers::Params::Quote.new(property_id: '33680',
                                         check_in: '2017-08-01',
@@ -13,7 +15,7 @@ RSpec.describe Poplidays::Mappers::Quote do
   end
 
   subject { described_class.new }
-  let(:result) { subject.build(params, mandatory_services, quote, host_fee_percentage) }
+  let(:result) { subject.build(params, mandatory_services, quote) }
 
   context 'for success response' do
     let(:quote) do

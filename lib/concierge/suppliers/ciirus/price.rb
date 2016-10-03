@@ -17,8 +17,7 @@ module Ciirus
   #
   # The +quote+ method returns a +Result+ object that, when successful, encapsulates the
   # resulting +Quotation+ object.
-  # Actually the main logic of building the +Quotation+ object is in +QuoteFetcher+ class,
-  # while +Price+ responsible for filling +host_fee_percentage+ field.
+  # Actually the main logic of building the +Quotation+ object is in +QuoteFetcher+ class
   class Price
     attr_reader :credentials
 
@@ -29,26 +28,12 @@ module Ciirus
     def quote(params)
       property = fetch_property(params[:property_id])
       return property_not_found unless property
-      host = fetch_host(property.host_id)
-      return host_not_found unless host
 
-      quotation = Ciirus::Commands::QuoteFetcher.new(credentials).call(params)
-      return quotation unless quotation.success?
-
-      quotation.value.host_fee_percentage = host.fee_percentage
-      quotation
+      Ciirus::Commands::QuoteFetcher.new(credentials).call(params)
     end
 
     def property_not_found
       Result.error(:property_not_found)
-    end
-
-    def host_not_found
-      Result.error(:host_not_found)
-    end
-
-    def fetch_host(id)
-      HostRepository.find(id)
     end
 
     def fetch_property(id)

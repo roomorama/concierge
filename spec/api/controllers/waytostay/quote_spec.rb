@@ -5,9 +5,12 @@ require_relative "../shared/external_error_reporting"
 
 RSpec.describe API::Controllers::Waytostay::Quote do
   include Support::HTTPStubbing
+  include Support::Factories
 
+  let(:host) { create_host(fee_percentage: 7) }
+  let(:property) { create_property(identifier: "567", host_id: host.id) }
   let(:params) {
-    { property_id: "567", check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
+    { property_id: property.identifier, check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
   }
 
   it_behaves_like "performing parameter validations", controller_generator: -> { described_class.new } do
