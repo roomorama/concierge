@@ -123,14 +123,6 @@ RSpec.describe AtLeisure::Price do
       expect(quotation.host_fee_percentage).to eq(7)
     end
 
-    xit 'fails if host is not found' do
-      allow(subject).to receive(:fetch_host) { nil }
-      result = subject.quote(params)
-
-      expect(result).not_to be_success
-      expect(result.error.code).to eq :host_not_found
-    end
-
     def stub_with_fixture(name)
       atleisure_response = JSON.parse(read_fixture(name))
       response = {

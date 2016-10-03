@@ -51,13 +51,6 @@ RSpec.describe Poplidays::Price do
       expect(result.error.code).to eq :connection_timeout
     end
 
-    xit 'fails if host is not found' do
-      result = subject.quote(params)
-
-      expect(result).not_to be_success
-      expect(result.error.code).to eq :host_not_found
-    end
-
     it 'returns the underlying network error if any happened in the call for the quote endpoint' do
       stub_with_fixture(property_details_endpoint, 'poplidays/property_details.json')
       stub_call(:post, quote_endpoint) { raise Faraday::TimeoutError }

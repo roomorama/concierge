@@ -77,27 +77,6 @@ RSpec.describe Kigo::ResponseParser do
       expect(quotation.available).to eq false
     end
 
-    it "fails if property not found" do
-      request_params[:property_id] = 'unknown id'
-
-      subject = described_class.new(request_params)
-
-      response = read_fixture("kigo/success.json")
-      result   = subject.compute_pricing(response)
-
-      expect(result).not_to be_success
-      expect(result.error.code).to eq :property_not_found
-    end
-
-    xit "fails if host not found" do
-      allow(subject).to receive(:host) { nil }
-      response = read_fixture("kigo/success.json")
-      result   = subject.compute_pricing(response)
-
-      expect(result).not_to be_success
-      expect(result.error.code).to eq :host_not_found
-    end
-
     it "returns a quotation with the returned information on success" do
       response = read_fixture("kigo/success.json")
       result   = subject.compute_pricing(response)
