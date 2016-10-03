@@ -58,10 +58,8 @@ module Kigo
         end
 
         return property_not_found unless property
-        return host_not_found unless host
 
         quotation.available           = true
-        quotation.host_fee_percentage = host.fee_percentage
         quotation.currency            = currency
         quotation.total               = total.to_f
 
@@ -177,14 +175,6 @@ module Kigo
 
     def property_not_found
       Result.error(:property_not_found)
-    end
-
-    def host_not_found
-      Result.error(:host_not_found)
-    end
-
-    def host
-      @host ||= HostRepository.find(property.host_id)
     end
 
     def property

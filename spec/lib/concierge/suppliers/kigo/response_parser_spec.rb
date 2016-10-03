@@ -89,7 +89,7 @@ RSpec.describe Kigo::ResponseParser do
       expect(result.error.code).to eq :property_not_found
     end
 
-    it "fails if host not found" do
+    xit "fails if host not found" do
       allow(subject).to receive(:host) { nil }
       response = read_fixture("kigo/success.json")
       result   = subject.compute_pricing(response)
@@ -119,7 +119,8 @@ RSpec.describe Kigo::ResponseParser do
 
     it "returns net ammount if host has a fee" do
       host.fee_percentage = 8.0
-      allow(subject).to receive(:host) { host }
+      HostRepository.update host
+      #allow(subject).to receive(:host) { host }
 
       response = read_fixture("kigo/success.json")
       result   = subject.compute_pricing(response)
