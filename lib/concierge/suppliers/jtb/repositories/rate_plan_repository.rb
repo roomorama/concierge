@@ -13,6 +13,14 @@ module JTB
           options: "DELIMITER '\t'"
         ) { yield }
       end
+
+      def self.room_rate_plans(room)
+        query do
+          where(room_code: room.room_code)
+            .and(city_code: room.city_code)
+            .and(hotel_code: room.hotel_code)
+        end
+      end
     end
   end
 end

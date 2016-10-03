@@ -13,6 +13,15 @@ module JTB
           options: "DELIMITER '\t'"
         ) { yield }
       end
+
+      def self.room_min_price(room, rate_plans, date)
+        query do
+          where(rate_plan_id: rate_plans.map(&:rate_plan_id))
+            .and(city_code: room.city_code)
+            .and(hotel_code: room.hotel_code)
+            .and(date: date)
+        end.min(:room_rate)
+      end
     end
   end
 end
