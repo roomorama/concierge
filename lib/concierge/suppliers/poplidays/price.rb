@@ -44,16 +44,13 @@ module Poplidays
     # for when calculating the subtotal. For that purpose, an API call to
     # the property details endpoint is made and that value is extracted.
     def quote(params)
-      host = fetch_host
-      return host_not_found unless host
-
       mandatory_services = retrieve_mandatory_services(params[:property_id])
       return mandatory_services unless mandatory_services.success?
 
       quote = retrieve_quote(params)
       return quote if unknown_errors?(quote)
 
-      mapper.build(params, mandatory_services.value, quote, host.fee_percentage)
+      mapper.build(params, mandatory_services.value, quote)
     end
 
     private
@@ -64,16 +61,6 @@ module Poplidays
     #   400 - bad arrival/departure date
     def unknown_errors?(quote)
       !quote.success? && ![:http_status_400, :http_status_409].include?(quote.error.code)
-    end
-
-    # Get the first Poplidays host, because there should only be one host
-    def fetch_host
-      supplier = SupplierRepository.named(Poplidays::Client::SUPPLIER_NAME)
-      HostRepository.from_supplier(supplier).first
-    end
-
-    def host_not_found
-      Result.error(:host_not_found)
     end
 
     def retrieve_quote(params)
