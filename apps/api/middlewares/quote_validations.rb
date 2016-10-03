@@ -26,11 +26,11 @@ module API::Middlewares
     def call(env)
       @env = env
 
-      return app.call(env) unless quote_request?
-
-      return app.call(env) if property_exists?
-
-      [404, {}, ["Property not found on Concierge"]]
+      if quote_request? && !property_exists?
+        [404, {}, ["Property not found on Concierge"]]
+      else
+        app.call(env)
+      end
     end
 
     private
@@ -42,8 +42,17 @@ module API::Middlewares
     def property_exists?
       body = read_request_body(env)
       json_payload = json_decode(body)
-      property = PropertyRepository.identified_by(json_payload.value["property_id"])
+      property = PropertyRepository.identified_by(json_payload.value["property_id"]).
+                                    from_supplier(supplier)
       property.count > 0
+    end
+
+    def supplier
+      SupplierRepository.named supplier_path_params
+    end
+    # Returns "supplier_x" from "/supplier_x/quote"
+    def supplier_path_params
+      return env['PATH_INFO'][/\/(.*)\/quote/, 1]
     end
 
     def read_request_body(env)

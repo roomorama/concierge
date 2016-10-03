@@ -3,6 +3,7 @@ require "spec_helper"
 RSpec.describe API::Middlewares::QuoteValidations do
   include Support::Factories
 
+  let!(:supplier) { create_supplier(name: "supplier_x") }
   let(:quote_request) {
     {
       property_id: "023",
@@ -27,16 +28,16 @@ RSpec.describe API::Middlewares::QuoteValidations do
 
   describe "Not a quote request" do
     it "does not touch the request" do
-      expect(post("/supplierx/cancel", headers)).to eq [200, { "Content-Length" => response.size.to_s }, response]
+      expect(post("/supplier_x/cancel", headers)).to eq [200, { "Content-Length" => response.size.to_s }, response]
     end
   end
 
   describe "Property and host exists" do
-    let!(:host) { create_host(fee_percentage: 7) }
+    let!(:host) { create_host(fee_percentage: 7, supplier_id: supplier.id) }
     let!(:property) { create_property(identifier:"023", host_id: host.id) }
 
     it "forwards to upstream" do
-      expect(post("/supplierx/quote", headers)).to eq [200, { "Content-Length" => response.size.to_s }, response]
+      expect(post("/supplier_x/quote", headers)).to eq [200, { "Content-Length" => response.size.to_s }, response]
     end
   end
 
@@ -46,12 +47,14 @@ RSpec.describe API::Middlewares::QuoteValidations do
     }
 
     before do
-      PropertyRepository.clear
-      HostRepository.clear
+      create_supplier(name: "supplier_y")
+      host_y = create_host(fee_percentage: 7)
+      # same identifier, but different supplier
+      create_property(identifier: "023", host_id: host_y.id)
     end
 
     it "returns 404" do
-      expect(post("/supplierx/quote", headers)).to eq property_not_found
+      expect(post("/supplier_x/quote", headers)).to eq property_not_found
     end
   end
 
