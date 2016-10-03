@@ -4,7 +4,7 @@ module RentalsUnited
     #
     # This class is responsible for building a +Quotation+ object
     class Quotation
-      attr_reader :price, :currency, :host_fee_percentage, :quotation_params
+      attr_reader :price, :currency, :quotation_params
 
       # Initialize Quotation mapper
       #
@@ -12,12 +12,10 @@ module RentalsUnited
       #
       #   * +price+ [Entities::Price] price
       #   * +currency+ [String] currency code
-      #   * +host_fee_percentage+ [Integer]
       #   * +quotation_params+ [Concierge::SafeAccessHash] quotation parameters
-      def initialize(price, currency, host_fee_percentage, quotation_params)
+      def initialize(price, currency, quotation_params)
         @price = price
         @currency = currency
-        @host_fee_percentage = host_fee_percentage
         @quotation_params = quotation_params
       end
 
@@ -32,8 +30,7 @@ module RentalsUnited
           guests:              quotation_params[:guests],
           total:               price.total,
           available:           price.available?,
-          currency:            currency,
-          host_fee_percentage: host_fee_percentage
+          currency:            currency
         )
       end
     end

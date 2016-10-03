@@ -56,7 +56,6 @@ module RentalsUnited
       mapper = RentalsUnited::Mappers::Quotation.new(
         price,
         property.data.get("currency"),
-        host.fee_percentage,
         quotation_params
       )
       Result.new(mapper.build_quotation)
