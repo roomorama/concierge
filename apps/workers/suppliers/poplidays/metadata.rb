@@ -57,7 +57,7 @@ module Workers::Suppliers::Poplidays
     private
 
     def filter_availabilities(availabilities)
-      availabilities['availabilities'].select do |availability|
+      Array(availabilities['availabilities']).select do |availability|
         availability_validator(availability).valid?
       end
     end

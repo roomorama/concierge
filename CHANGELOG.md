@@ -4,6 +4,14 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.11.6] - 2016-10-03
+### Fixed
+- Proper order of table columns for sync_process/index page
+- Poplidays: metadata sync is safe for `nil` availabilities
+
+### Changed
+- PropertySynchronisation#start and CalendarSynchronisation#start returns result instead of boolean
+
 ## [0.11.5] - 2016-09-28
 ### Changed
 - Workers marked as `queued` to avoid duplicated messages on SQS.
