@@ -13,6 +13,15 @@ module JTB
           options: "DELIMITER '\t'"
         ) { yield }
       end
+
+      def self.actual_availabilities(rate_plans, from, to)
+        query do
+          where(rate_plan_id: rate_plans.map(&:rate_plan_id))
+          .and("service_date between '#{from}' and '#{to}'")
+          .and('number_of_units > 0')
+          .and("sale_status != '0'")
+        end
+      end
     end
   end
 end

@@ -3,6 +3,8 @@ module Workers::Suppliers::JTB
   #
   # Performs properties synchronisation with supplier
   class Metadata
+    PERIOD_SYNC = 365
+
     attr_reader :synchronisation, :host, :files_fetcher, :db_importer
 
     def initialize(host)
