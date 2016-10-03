@@ -38,9 +38,6 @@ module AtLeisure
     # Calls the CheckAvailabilityV1 method from the AtLeisure JSON-RPC interface.
     # Returns a +Result+ object.
     def quote(params)
-      host = fetch_host
-      return host_not_found unless host
-
       stay_details = {
         "HouseCode"     => params[:property_id],
         "ArrivalDate"   => params[:check_in].to_s,
@@ -52,7 +49,7 @@ module AtLeisure
       result = client.invoke("CheckAvailabilityV1", stay_details)
 
       if result.success?
-        parse_quote_response(params, result.value, host.fee_percentage)
+        parse_quote_response(params, result.value)
       else
         result
       end
@@ -60,19 +57,8 @@ module AtLeisure
 
     private
 
-    # Get the first host under AtLeisure, because there
-    # should only be one host
-    def fetch_host
-      supplier = SupplierRepository.named(AtLeisure::Client::SUPPLIER_NAME)
-      HostRepository.from_supplier(supplier).first
-    end
-
-    def host_not_found
-      Result.error(:host_not_found)
-    end
-
-    def parse_quote_response(params, response, host_fee_percentage)
-      quotation = build_quotation(params, host_fee_percentage)
+    def parse_quote_response(params, response)
+      quotation = build_quotation(params)
 
       if response["OnRequest"] == "Yes"
         no_instant_confirmation
@@ -100,14 +86,13 @@ module AtLeisure
       end
     end
 
-    def build_quotation(params, host_fee_percentage)
+    def build_quotation(params)
       Quotation.new(
         property_id:         params[:property_id],
         check_in:            params[:check_in].to_s,
         check_out:           params[:check_out].to_s,
         guests:              params[:guests],
         currency:            CURRENCY,
-        host_fee_percentage: host_fee_percentage,
       )
     end
 

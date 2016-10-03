@@ -9,7 +9,7 @@ RSpec.describe API::Controllers::Kigo::Legacy::Quote do
   include Support::Factories
 
   let!(:host) { create_host(fee_percentage: 7.0) }
-  let!(:property) { create_property(identifier: "567") }
+  let!(:property) { create_property(identifier: "567", host_id: host.id) }
 
   let(:params) {
     { property_id: property.identifier, check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }

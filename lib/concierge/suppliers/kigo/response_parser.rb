@@ -28,7 +28,6 @@ module Kigo
     # in case the response is successful. Possible errors that could
     # happen in this step are:
     #
-    # +property_not_found+:          the param's +property_id+ doesn't persist in our database.
     # +invalid_json_representation+: the response sent back is not a valid JSON.
     # +quote_call_failed+:           the response status is not +E_OK+.
     # +unrecognised_response+:       the response was successful, but the format cannot
@@ -57,11 +56,8 @@ module Kigo
           end
         end
 
-        return property_not_found unless property
-        return host_not_found unless host
 
         quotation.available           = true
-        quotation.host_fee_percentage = host.fee_percentage
         quotation.currency            = currency
         quotation.total               = total.to_f
 
@@ -173,22 +169,6 @@ module Kigo
 
     def unrecognised_response
       Result.error(:unrecognised_response)
-    end
-
-    def property_not_found
-      Result.error(:property_not_found)
-    end
-
-    def host_not_found
-      Result.error(:host_not_found)
-    end
-
-    def host
-      @host ||= HostRepository.find(property.host_id)
-    end
-
-    def property
-      @property ||= PropertyRepository.identified_by(params[:property_id]).first
     end
 
     def non_successful_result_code

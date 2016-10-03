@@ -87,20 +87,9 @@ module Waytostay
         check_out:           response.get("booking_details.departure_date"),
         guests:              response.get("booking_details.number_of_adults"),
         total:               response.get("pricing.pricing_summary.gross_total"),
-        host_fee_percentage: host.fee_percentage,
         currency:            response.get("pricing.currency"),
         available:           true
       }
-    end
-
-    # Get the first host under Waytostay, because there
-    # should only be one host
-    #
-    def host
-      @host ||= begin
-        supplier = SupplierRepository.named(Waytostay::Client::SUPPLIER_NAME)
-        HostRepository.from_supplier(supplier).first
-      end
     end
 
   end

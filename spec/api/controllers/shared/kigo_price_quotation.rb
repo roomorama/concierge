@@ -68,7 +68,6 @@ RSpec.shared_examples "Kigo price quotation" do
     before { stub_call(:post, endpoint) { [200, {}, read_fixture("kigo/success.json")] } }
 
     it "returns available quotations with price when the call is successful" do
-      allow_any_instance_of(Kigo::ResponseParser).to receive(:host) { Host.new(fee_percentage: 0) }
       response = parse_response(described_class.new.call(params))
 
       expect(response.status).to eq 200
@@ -83,7 +82,6 @@ RSpec.shared_examples "Kigo price quotation" do
     end
 
     it "returns available quotations with gross rate" do
-      allow_any_instance_of(Kigo::ResponseParser).to receive(:host) { Host.new(fee_percentage: 7.0) }
       response = parse_response(described_class.new.call(params))
 
       expect(response.status).to eq 200

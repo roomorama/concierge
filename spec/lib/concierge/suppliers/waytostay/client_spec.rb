@@ -146,7 +146,7 @@ RSpec.describe Waytostay::Client do
   end
 
   describe "#quote" do
-
+    let(:host) { create_host(fee_percentage: 7.0) }
     let(:quote_url) { base_url + Waytostay::Quote::ENDPOINT }
 
     let(:quote_post_body) {{
@@ -181,6 +181,12 @@ RSpec.describe Waytostay::Client do
         stub_call(:post, quote_url, body: timeout_waytostay_params.to_json, strict: true) {
           raise Faraday::TimeoutError
         }
+
+
+      %w(success unavailable less_than_min malformed_response,
+         earlier_than_cutoff timeout).each do |id|
+        create_property(identifier: id, host_id: host.id)
+      end
     end
 
     it_behaves_like "supplier quote method" do
