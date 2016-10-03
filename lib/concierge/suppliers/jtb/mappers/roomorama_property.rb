@@ -31,6 +31,19 @@ module JTB
         result
       end
 
+
+      # Each room has several rate plans.
+      # Each rate plan has available dates.
+      # Returns minimum price for room available dates.
+      def fetch_room_min_price(room)
+        rate_plans = JTB::Repositories::RatePlanRepository.room_rate_plans(room)
+        from = Date.today
+        to = from + Workers::Suppliers::JTB::Metadata::PERIOD_SYNC
+        stocks = JTB::Repositories::RoomStockRepository.actual_availabilities(rate_plans, from, to)
+        stocks.map do |stock|
+          JTB::Repositories::RoomPriceRepository.room_min_price(room, rate_plans, stock.service_date)
+        end.compact.min
+      end
       private
 
       def set_base_info!(result, hotel)
@@ -121,18 +134,7 @@ module JTB
         end
       end
 
-      # Each room has several rate plans.
-      # Each rate plan has available dates.
-      # Returns minimum price for room available dates.
-      def fetch_room_min_price(room)
-        rate_plans = JTB::Repositories::RatePlanRepository(room)
-        from = Date.today
-        to = from + Workers::Suppliers::JTB::Metadata::PERIOD_SYNC
-        stocks = JTB::Repositories::RoomStockRepository.actual_availabilities(rate_plans, from, to)
-        stocks.map do |stock|
-          JTB::Repositories::RoomPriceRepository.room_min_price(room, rate_plans, stock.service_date)
-        end.compact.min
-      end
+
 
 
       def fetch_single_beds(room)
