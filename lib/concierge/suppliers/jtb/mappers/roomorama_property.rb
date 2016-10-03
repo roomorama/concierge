@@ -31,6 +31,7 @@ module JTB
         result
       end
 
+      private
 
       # Each room has several rate plans.
       # Each rate plan has available dates.
@@ -44,7 +45,6 @@ module JTB
           JTB::Repositories::RoomPriceRepository.room_min_price(room, rate_plans, stock.service_date)
         end.compact.min
       end
-      private
 
       def set_base_info!(result, hotel)
         result.title = hotel.hotel_name
