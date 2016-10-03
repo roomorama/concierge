@@ -12,6 +12,7 @@ how this file is formatted and how the process works.
 ## [0.11.5] - 2016-09-28
 ### Changed
 - Workers marked as `queued` to avoid duplicated messages on SQS.
+- PropertySynchronisation#start and CalendarSynchronisation#start returns result instead of boolean
 
 ## [0.11.4] - 2016-09-26
 ### Removed

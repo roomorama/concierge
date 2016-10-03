@@ -38,7 +38,8 @@ RSpec.describe Workers::PropertySynchronisation do
         double(success?: true)
       end
 
-      subject.start("prop1") { Result.new(roomorama_property) }
+      res = subject.start("prop1") { Result.new(roomorama_property) }
+      expect(res).to be_success
       expect(operation).to be_a Roomorama::Client::Operations::Publish
       expect(operation.property).to eq roomorama_property
     end
@@ -46,7 +47,8 @@ RSpec.describe Workers::PropertySynchronisation do
     context "error handling" do
       it "announces an error if the property returned does not pass validations" do
         roomorama_property.images.first.identifier = nil
-        subject.start("prop1") { Result.new(roomorama_property) }
+        res = subject.start("prop1") { Result.new(roomorama_property) }
+        expect(res).to_not be_success
 
         error = ExternalErrorRepository.last
         expect(error.operation).to eq  "sync"
@@ -65,7 +67,8 @@ RSpec.describe Workers::PropertySynchronisation do
       end
 
       it "announces an error if the property failed to be processed" do
-        subject.start("prop1") { Result.error(:http_status_404) }
+        res = subject.start("prop1") { Result.error(:http_status_404) }
+        expect(res).to_not be_success
 
         error = ExternalErrorRepository.last
         expect(error.operation).to eq "sync"
@@ -87,7 +90,9 @@ RSpec.describe Workers::PropertySynchronisation do
         }
 
         expect {
-          subject.start("prop1") { Result.new(roomorama_property) }
+          res = subject.start("prop1") { Result.new(roomorama_property) }
+          expect(res).to be_a Result
+          expect(res).to_not be_success
         }.to change { ExternalErrorRepository.count }.by(1)
 
         error = ExternalErrorRepository.last
@@ -105,7 +110,10 @@ RSpec.describe Workers::PropertySynchronisation do
         }
 
         expect {
-          subject.start("prop1") { Result.new(roomorama_property) }
+          res = subject.start("prop1") { Result.new(roomorama_property) }
+          expect(res).to be_a Result
+          expect(res).to be_success
+          expect(res.value).to be_a Property
         }.not_to change { ExternalErrorRepository.count }
       end
     end
@@ -121,14 +129,16 @@ RSpec.describe Workers::PropertySynchronisation do
       create_property(host_id: host.id, identifier: "prop2", data: roomorama_property.to_h.merge!(identifier: "prop2"))
 
       # create
-      subject.start("prop1") { Result.new(roomorama_property) }
+      res = subject.start("prop1") { Result.new(roomorama_property) }
+      expect(res).to_not be_success
 
       # update
-      subject.start("prop2") {
+      res = subject.start("prop2") {
         roomorama_property.identifier = "prop2"
         roomorama_property.title = "Changed Title"
         Result.new(roomorama_property)
       }
+      expect(res).to_not be_success
 
       expect {
         subject.finish!

@@ -53,6 +53,8 @@ module Workers
     # the +Result+ instance should wrap a +Roomorama::Calendar+ instance. If the returned
     # result is not successful, an external error is persisted to the database and the method
     # terminates with no API calls being performed to Roomorama.
+    #
+    # Returns the result from Workers::OperationRunner#perform if all is well
     def start(identifier)
       new_context(identifier) do
         result = yield(self)
@@ -63,7 +65,7 @@ module Workers
           process(calendar)
         else
           announce_failure(result)
-          false
+          result
         end
       end
     end
@@ -110,6 +112,7 @@ module Workers
 
     private
 
+    # Returns the result from Workers::OperationRunner#perform, or a Result.error(:missing_data)
     def process(calendar)
       # if the property trying to have its calendar synchronised was not
       # synchronised by Concierge, then do not attempt to update its calendar,
@@ -126,8 +129,9 @@ module Workers
       run_operation(operation)
     rescue Roomorama::Error => err
       missing_data(err.message, calendar.to_h)
-      announce_failure(Result.error(:missing_data))
-      false
+      Result.error(:missing_data).tap do |error|
+        announce_failure(error)
+      end
     end
 
     def update_counters(calendar)
@@ -143,8 +147,9 @@ module Workers
       # any errors during the request can be logged.
       Concierge.context.enable!
 
-      result = Workers::OperationRunner.new(host).perform(operation, operation.calendar)
-      announce_failure(result) unless result.success?
+      Workers::OperationRunner.new(host).perform(operation, operation.calendar).tap do |result|
+        announce_failure(result) unless result.success?
+      end
     end
 
     def synchronised?(property_identifier)

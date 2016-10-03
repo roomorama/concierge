@@ -72,6 +72,8 @@ module Workers
     #   the property. In this case, the external error is also persisted. The caller
     #   is encouraged to have augmented +Concierge.context+ with meaningful information
     #   to aid debugging.
+    #
+    # Returns the result from Workers::OperationRunner#perform if all is well
     def start(identifier)
       new_context(identifier) do
         result = yield(self)
@@ -82,7 +84,7 @@ module Workers
         else
           failed!
           announce_failure(result)
-          false
+          result
         end
       end
     end
@@ -173,25 +175,32 @@ module Workers
     #
     # It uses +Workers::Router+ to determine which operation should be
     # performed on the property, if any, and runs it.
+    #
+    # It returns the result from Workers::OperationRunner#perform
+    # or a Result.error(:no_operation) if router couldnt' find a suitable
+    # operation to dispatch
     def push(property)
       processed << property.identifier
 
-      router.dispatch(property).tap do |operation|
-        if operation
-          result = run_operation(operation, property)
+      operation = router.dispatch(property)
+
+      if operation
+        run_operation(operation, property).tap do |result|
           update_counters(operation) if result.success?
         end
+      else
+        Result.error(:no_operation)
       end
     end
 
     def process(property)
       property.validate!
       push(property)
-      true
     rescue Roomorama::Error => err
       missing_data(err.message, property.to_h)
-      announce_failure(Result.error(:missing_data))
-      false
+      Result.error(:missing_data).tap do |error|
+        announce_failure(error)
+      end
     end
 
     def purge_properties
