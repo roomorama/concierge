@@ -85,7 +85,6 @@ module JTB
 
     # Rate plans (RoomPlan_All_YYYYMMDD.csv)
     RATE_PLAN_COLUMNS = [
-      0, # language
       1, # city_code
       2, # hotel_code
       3, # rate_plan_id
@@ -93,6 +92,7 @@ module JTB
       5, # meal_plan_code
       6  # occupancy
     ]
+    RATE_PLAN_LANGUAGE_COLUMN_INDEX = 0
 
     # Prices (RoomPrice_All_YYYYMMDD.csv)
     ROOM_PRICE_COLUMNS = [
@@ -200,7 +200,7 @@ module JTB
           JTB::Repositories::RatePlanRepository.copy_csv_into do
             # We need only price info from this file
             # so language is not important. Will take only english.
-            line = read_english_line(file, 0)
+            line = read_english_line(file, RATE_PLAN_LANGUAGE_COLUMN_INDEX)
             fetch_required_columns(line, RATE_PLAN_COLUMNS) if line
           end
         end
