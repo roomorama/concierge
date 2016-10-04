@@ -78,6 +78,24 @@ module RentalsUnited
       render(:price_fetch, template_locals)
     end
 
+    def build_booking_payload(property_id:, check_in:, check_out:, num_guests:, total:, user:)
+      template_locals = {
+        credentials: credentials,
+        property_id: property_id,
+        num_guests:  num_guests,
+        check_in:    check_in,
+        check_out:   check_out,
+        total:       total,
+        first_name:  user.fetch(:first_name),
+        last_name:   user.fetch(:last_name),
+        email:       user.fetch(:email),
+        phone:       user.fetch(:phone),
+        address:     user.fetch(:address),
+        postal_code: user.fetch(:postal_code)
+      }
+      render(:booking, template_locals)
+    end
+
     private
     def render(template_name, local_vars)
       path = Hanami.root.join(TEMPLATES_PATH, "#{template_name}.xml.erb")

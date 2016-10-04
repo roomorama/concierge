@@ -52,4 +52,15 @@ RSpec.describe RentalsUnited::Client do
       expect(quotation).to be_kind_of(Quotation)
     end
   end
+
+  describe "#book" do
+    let(:params) { {} }
+
+    it "calls quotation fetcher class" do
+      fetcher_class = RentalsUnited::Commands::Booking
+
+      expect_any_instance_of(fetcher_class).to(receive(:call))
+      client.book(params)
+    end
+  end
 end

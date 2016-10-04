@@ -61,6 +61,26 @@ module RentalsUnited
       Result.new(mapper.build_quotation)
     end
 
+    # RentalsUnited properties booking.
+    #
+    # If an error happens in any step in the process of getting a response back
+    # from RentalsUnited, a result object with error is returned
+    #
+    # Usage
+    #
+    #   client = RentalsUnited::Client.new(credentials)
+    #   result = client.book(reservation_params)
+    #
+    # Returns a +Result+ wrapping a +Reservation+ when operation succeeds
+    # Returns a +Result+ with +Result::Error+ when operation fails
+    def book(reservation_params)
+      command = RentalsUnited::Commands::Booking.new(
+        credentials,
+        reservation_params
+      )
+      command.call
+    end
+
     private
     def find_host
       supplier = SupplierRepository.named(SUPPLIER_NAME)
