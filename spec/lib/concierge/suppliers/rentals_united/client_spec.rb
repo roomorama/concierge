@@ -63,4 +63,15 @@ RSpec.describe RentalsUnited::Client do
       client.book(params)
     end
   end
+
+  describe "#cancel" do
+    let(:params) { { reference_number: '555444' } }
+
+    it "calls cancel command class" do
+      fetcher_class = RentalsUnited::Commands::Cancel
+
+      expect_any_instance_of(fetcher_class).to(receive(:call))
+      client.cancel(params)
+    end
+  end
 end

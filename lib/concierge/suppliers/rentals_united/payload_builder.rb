@@ -96,6 +96,14 @@ module RentalsUnited
       render(:booking, template_locals)
     end
 
+    def build_cancel_payload(reference_number)
+      template_locals = {
+        credentials: credentials,
+        reference_number: reference_number
+      }
+      render(:cancel, template_locals)
+    end
+
     private
     def render(template_name, local_vars)
       path = Hanami.root.join(TEMPLATES_PATH, "#{template_name}.xml.erb")

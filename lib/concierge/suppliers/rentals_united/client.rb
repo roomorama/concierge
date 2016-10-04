@@ -10,9 +10,10 @@ module RentalsUnited
     end
 
     # Quote RentalsUnited properties prices
+    #
     # If an error happens in any step in the process of getting a response back
     # from RentalsUnited, a result object with error is returned
-
+    #
     # Arguments
     #
     #   * +quotation_params+ [Concierge::SafeAccessHash] stay parameters
@@ -77,6 +78,25 @@ module RentalsUnited
       command = RentalsUnited::Commands::Booking.new(
         credentials,
         reservation_params
+      )
+      command.call
+    end
+
+    # Cancels a reservation by given reference_number
+    #
+    # If an error happens in any step in the process of getting a response back
+    # from RentalsUnited, a result object with error is returned
+    #
+    #   client = RentalsUnited::Client.new(credentials)
+    #   result = client.cancel(params)
+    #
+    # Returns a +Result+ wrapping a +String+ with reference_number number when
+    # operation succeeds
+    # Returns a +Result+ with +Result::Error+ when operation fails
+    def cancel(params)
+      command = RentalsUnited::Commands::Cancel.new(
+        credentials,
+        params[:reference_number]
       )
       command.call
     end
