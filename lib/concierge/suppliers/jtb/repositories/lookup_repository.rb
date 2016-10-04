@@ -23,7 +23,7 @@ module JTB
         end.first
       end
 
-      def self.room_amenity(i)
+      def self.room_amenity(id)
         query do
           where(category: '19').and(id: id).limit(1)
         end.first

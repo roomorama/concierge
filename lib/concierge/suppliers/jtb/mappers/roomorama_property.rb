@@ -63,7 +63,7 @@ module JTB
       end
 
       def fetch_postal_code(address)
-        address.scan(/\d{3}-\d{4}/).first
+        address&.scan(/\d{3}-\d{4}/)&.first
       end
 
       def parse_latitude(str)
@@ -145,7 +145,7 @@ module JTB
                       when 'QUD' then 4
                       end
 
-        extra_single_bed = 1 if has_extra_standart_bed?
+        extra_single_bed = 1 if has_extra_standart_bed?(room)
         [single_beds, extra_single_bed].compact.inject(:+)
       end
 
