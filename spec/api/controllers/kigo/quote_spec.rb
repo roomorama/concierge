@@ -8,7 +8,8 @@ RSpec.describe API::Controllers::Kigo::Quote do
   include Support::Fixtures
   include Support::Factories
 
-  let!(:host) { create_host(fee_percentage: 7.0) }
+  let!(:supplier) { create_supplier(name: Kigo::Client::SUPPLIER_NAME) }
+  let!(:host) { create_host(fee_percentage: 7.0, supplier_id: supplier.id) }
   let!(:property) { create_property(identifier: "567", host_id: host.id) }
 
   let(:params) {

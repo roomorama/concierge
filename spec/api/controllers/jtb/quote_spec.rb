@@ -5,12 +5,17 @@ require_relative "../shared/external_error_reporting"
 RSpec.describe API::Controllers::JTB::Quote do
   include Support::HTTPStubbing
   include Support::Fixtures
+  include Support::Factories
+
+  let!(:supplier) { create_supplier(name: JTB::Client::SUPPLIER_NAME) }
+  let(:host) { create_host(supplier_id: supplier.id) }
+  let(:property) { create_property(identifier: "J123", host_id: host.id) }
 
   it_behaves_like "performing multi unit parameter validations", controller_generator: -> { described_class.new }
 
   it_behaves_like "external error reporting" do
     let(:params) {
-      { property_id: "321", unit_id: "123", check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
+      { property_id: property.identifier, unit_id: "123", check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
     }
     let(:supplier_name) { "JTB" }
     let(:error_code) { "savon_erorr" }
@@ -23,7 +28,7 @@ RSpec.describe API::Controllers::JTB::Quote do
 
   describe "#call" do
     let(:params) {
-      { property_id: "J123", unit_id: "123J", check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
+      { property_id: property.identifier, unit_id: "123J", check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
     }
 
     it "indicates the unit is unavailable in case there are no rate plans" do
@@ -44,7 +49,7 @@ RSpec.describe API::Controllers::JTB::Quote do
 
     context "when stay length is > 15 days" do
       let(:params) {
-        { property_id: "J123", unit_id: "123J", check_in: "2016-02-22", check_out: "2016-03-25", guests: 2 }
+        { property_id: property.identifier, unit_id: "123J", check_in: "2016-02-22", check_out: "2016-03-25", guests: 2 }
       }
       it "respond with the stay_too_long error" do
         response = parse_response(subject.call(params))

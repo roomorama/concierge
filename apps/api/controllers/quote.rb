@@ -46,6 +46,10 @@ module API::Controllers
 
     def call(params)
       if params.valid?
+        unless property_exists?(params[:property_id])
+          return status 404, invalid_request("Property not found")
+        end
+
         quotation_result = quote_price(params)
 
         if quotation_result.success?
@@ -76,6 +80,12 @@ module API::Controllers
         context:     Concierge.context.to_h,
         happened_at: Time.now
       })
+    end
+
+    def property_exists?(id)
+      supplier = SupplierRepository.named supplier_name
+      ! PropertyRepository.identified_by(id).
+          from_supplier(supplier).first.nil?
     end
 
     # Get the quote result from client implementations.
