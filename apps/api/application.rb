@@ -3,7 +3,6 @@ require_relative "middlewares/health_check"
 require_relative "middlewares/request_logging"
 require_relative "middlewares/authentication"
 require_relative "middlewares/roomorama_webhook"
-require_relative "middlewares/quote_validations"
 require_relative "middlewares/request_context"
 require_relative "views/accept_json"
 
@@ -33,7 +32,6 @@ module API
       middleware.use API::Middlewares::HealthCheck
       middleware.use API::Middlewares::Authentication
       middleware.use API::Middlewares::RoomoramaWebhook
-      middleware.use API::Middlewares::QuoteValidations
       middleware.use API::Middlewares::RequestContext
 
       view.prepare do

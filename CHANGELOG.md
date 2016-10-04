@@ -4,6 +4,11 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## Unreleased
+### Changed
+- Abstract host fee calculation from suppliers to entity level
+- Return 404 for attempts to quote a property not in records
+
 ## [0.11.6] - 2016-10-03
 ### Fixed
 - Proper order of table columns for sync_process/index page

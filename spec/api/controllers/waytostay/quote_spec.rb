@@ -7,7 +7,8 @@ RSpec.describe API::Controllers::Waytostay::Quote do
   include Support::HTTPStubbing
   include Support::Factories
 
-  let(:host) { create_host(fee_percentage: 7) }
+  let(:supplier) { create_supplier(name: Waytostay::Client::SUPPLIER_NAME) }
+  let(:host) { create_host(supplier_id: supplier.id, fee_percentage: 7) }
   let(:property) { create_property(identifier: "567", host_id: host.id) }
   let(:params) {
     { property_id: property.identifier, check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
@@ -19,7 +20,7 @@ RSpec.describe API::Controllers::Waytostay::Quote do
 
   it_behaves_like "external error reporting" do
     let(:params) {
-      { property_id: "321", unit_id: "123", check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
+      { property_id: property.identifier, unit_id: "123", check_in: "2016-03-22", check_out: "2016-03-25", guests: 2 }
     }
     let(:supplier_name) { "WayToStay" }
     let(:error_code) { "savon_erorr" }
