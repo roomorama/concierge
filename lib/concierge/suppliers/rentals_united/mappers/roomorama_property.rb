@@ -84,6 +84,7 @@ module RentalsUnited
         set_images!(property)
         set_security_deposit!(property)
         set_rates!(property)
+        set_cleaning!(property)
 
         Result.new(property)
       end
@@ -105,6 +106,14 @@ module RentalsUnited
         property.nightly_rate = avg_price_per_day.round(2)
         property.weekly_rate  = (avg_price_per_day * 7).round(2)
         property.monthly_rate = (avg_price_per_day * 30).round(2)
+      end
+
+      # Cleaning is always included to total price while quote/booking
+      # There is no need for user to pay cleaning additionally
+      def set_cleaning!(property)
+        property.services_cleaning = false
+        property.services_cleaning_required = nil
+        property.services_cleaning_rate = nil
       end
 
       def avg_price_per_day

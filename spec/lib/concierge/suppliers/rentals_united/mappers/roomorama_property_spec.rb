@@ -164,6 +164,12 @@ RSpec.describe RentalsUnited::Mappers::RoomoramaProperty do
     expect(property.owner_phone_number).to eq("3128329138")
   end
 
+  it "sets cleaning fields" do
+    expect(property.services_cleaning).to be false
+    expect(property.services_cleaning_required).to be nil
+    expect(property.services_cleaning_rate).to be nil
+  end
+
   it "sets security_deposit_amount" do
     expect(property.security_deposit_amount).to eq(5.5)
   end
