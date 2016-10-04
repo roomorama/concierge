@@ -21,6 +21,9 @@ module RentalsUnited
 
       ROOT_TAG = "Push_PutConfirmedReservationMulti_RS"
 
+      # Specifically this command consider these status codes like "error"
+      INVALID_PRICE_FETCH_STATUS_CODES = ["1"]
+
       # Initialize +Booking+ command.
       #
       # Arguments
@@ -57,7 +60,14 @@ module RentalsUnited
         result_hash = response_parser.to_hash(result.value.body)
 
         if valid_status?(result_hash, ROOT_TAG)
-          Result.new(build_reservation(result_hash))
+          status = get_status(result_hash, ROOT_TAG)
+          code = get_status_code(status)
+
+          if INVALID_PRICE_FETCH_STATUS_CODES.include?(code)
+            error_result(result_hash, ROOT_TAG)
+          else
+            Result.new(build_reservation(result_hash))
+          end
         else
           error_result(result_hash, ROOT_TAG)
         end

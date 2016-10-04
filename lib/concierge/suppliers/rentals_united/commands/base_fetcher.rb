@@ -10,6 +10,10 @@ module RentalsUnited
       # Whitelisted RentalsUnited API statuses:
       # 0 - Success
       # 1 - Property is not available for a given dates
+      #
+      # Some status codes are ambiguous: they considered as valid for one
+      # endpoint/command and not valid for other. Specific cases like this are
+      # handled in particular command classes.
 
       VALID_RU_STATUS_CODES = ["0", "1"]
 
