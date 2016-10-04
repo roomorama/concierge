@@ -7,6 +7,11 @@ module Workers::Suppliers::JTB
 
     attr_reader :synchronisation, :host, :files_fetcher, :db_importer
 
+    SKIPABLE_ERROR_CODES = [
+      :empty_images,
+      :unknown_nightly_rate
+    ]
+
     def initialize(host)
       @host            = host
       @synchronisation = Workers::PropertySynchronisation.new(host)
@@ -16,25 +21,34 @@ module Workers::Suppliers::JTB
 
     def perform
       begin
-        synchronisation.new_context do
-          files_fetcher.fetch_files
-        end
+        # synchronisation.new_context do
+        #   files_fetcher.fetch_files
+        # end
+        #
+        # db_importer.import
+        hotels = JTB::Repositories::HotelRepository.english_ryokans
 
-        db_importer.import
-
-        hotels = JTB::HotelRepository.english_ryokans
-
-        # sync_here
+        c = 1
         hotels.each do |hotel|
-          pictures = JTB::PictureRepository.hotel_english_images(hotel.city_code, hotel.hotel_code)
-          rooms = JTB::RoomTypeRepository.hotel_english_rooms(hotel.city_code, hotel.hotel_code)
-          synchronisation.start do
-            mapper.build(hotel, pictures, rooms)
+          pictures = JTB::Repositories::PictureRepository.hotel_english_images(hotel.city_code, hotel.hotel_code)
+          rooms = JTB::Repositories::RoomTypeRepository.hotel_english_rooms(hotel.city_code, hotel.hotel_code)
+          result = mapper.build(hotel, pictures, rooms)
+
+          if !result.success? && SKIPABLE_ERROR_CODES.include?(result.error.code)
+            synchronisation.skip_property(hotel.jtb_hotel_code, result.error.code)
+            next
           end
+
+          synchronisation.start(hotel.jtb_hotel_code) do
+            result
+          end
+          c += 1
+          break if c > 10
         end
+        synchronisation.finish!
       ensure
-        db_importer.cleanup
-        files_fetcher.cleanup
+        # db_importer.cleanup
+        # files_fetcher.cleanup
       end
 
 
