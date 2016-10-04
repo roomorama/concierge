@@ -71,3 +71,8 @@ Avantio:
     availabilities:
       every: "3h"
       aggregated: true
+
+JTB:
+  workers:
+    metadata:
+      every: "1d"
