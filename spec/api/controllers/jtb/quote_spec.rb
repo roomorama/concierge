@@ -7,7 +7,7 @@ RSpec.describe API::Controllers::JTB::Quote do
   include Support::Fixtures
   include Support::Factories
 
-  let!(:supplier) { create_supplier(name: JTB::Client::SUPPLIER_NAME) }
+  let(:supplier) { create_supplier(name: JTB::Client::SUPPLIER_NAME) }
   let(:host) { create_host(supplier_id: supplier.id) }
   let(:property) { create_property(identifier: "J123", host_id: host.id) }
 

@@ -7,7 +7,7 @@ RSpec.describe API::Controllers::Waytostay::Quote do
   include Support::HTTPStubbing
   include Support::Factories
 
-  let!(:supplier) { create_supplier(name: Waytostay::Client::SUPPLIER_NAME) }
+  let(:supplier) { create_supplier(name: Waytostay::Client::SUPPLIER_NAME) }
   let(:host) { create_host(supplier_id: supplier.id, fee_percentage: 7) }
   let(:property) { create_property(identifier: "567", host_id: host.id) }
   let(:params) {
