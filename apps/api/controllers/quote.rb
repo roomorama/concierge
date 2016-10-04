@@ -87,7 +87,7 @@ module API::Controllers
     end
 
     def supplier
-      SupplierRepository.named supplier_name
+      @supplier ||= SupplierRepository.named supplier_name
     end
 
     # Get the quote result from client implementations.
