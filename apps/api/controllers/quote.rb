@@ -46,9 +46,8 @@ module API::Controllers
 
     def call(params)
       if params.valid?
-        unless property_exists?(params[:property_id])
-          return status 404, invalid_request("Property not found")
-        end
+        return status 500, error_response("No supplier record in database.") unless supplier
+        return status 404, error_response("Property not found") unless property_exists?(params[:property_id])
 
         quotation_result = quote_price(params)
 
@@ -58,16 +57,16 @@ module API::Controllers
         else
           announce_error(quotation_result)
           error_message = quotation_result.error.data || { quote: GENERIC_ERROR }
-          status 503, invalid_request(error_message)
+          status 503, error_response(error_message)
         end
       else
-        status 422, invalid_request(params.error_messages)
+        status 422, error_response(params.error_messages)
       end
     end
 
     private
 
-    def invalid_request(errors)
+    def error_response(errors)
       response = { status: "error" }.merge!(errors: errors)
       json_encode(response)
     end
@@ -83,9 +82,12 @@ module API::Controllers
     end
 
     def property_exists?(id)
-      supplier = SupplierRepository.named supplier_name
       ! PropertyRepository.identified_by(id).
           from_supplier(supplier).first.nil?
+    end
+
+    def supplier
+      SupplierRepository.named supplier_name
     end
 
     # Get the quote result from client implementations.
@@ -105,8 +107,9 @@ module API::Controllers
       raise NotImplementedError
     end
 
-    # This is used when reporting errors from the supplier.
-    # Should return a string
+    # Should return a string.
+    # This is used when reporting error and
+    # searching for property
     def supplier_name
       raise NotImplementedError
     end
