@@ -64,18 +64,19 @@ module Workers::Suppliers::RentalsUnited
           next
         end
 
-        result = property_sync.new_context { fetch_property(property_id) }
-        next unless result.success?
-        property = result.value
+        property_result = property_sync.new_context { fetch_property(property_id) }
+        next unless property_result.success?
+        property = property_result.value
 
-        result = fetch_seasons(property_id)
-        next unless result.success?
-        seasons = result.value
+        seasons_result = fetch_seasons(property_id)
+        next unless seasons_result.success?
+        seasons = seasons_result.value
 
         result = build_roomorama_property(property, location, owner, seasons)
-        next if skip?(result, property)
 
-        property_sync.start(property_id) { result } if result.success?
+        unless skip?(result, property)
+          property_sync.start(property_id) { result } if result.success?
+        end
 
         if synced_property?(property_id)
           sync_calendar(property_id, seasons)
@@ -144,39 +145,51 @@ module Workers::Suppliers::RentalsUnited
     end
 
     def fetch_owner(owner_id)
-      announce_error("Failed to fetch owner with owner_id `#{owner_id}`") do
-        importer.fetch_owner(owner_id)
+      sync_failed do
+        announce_error("Failed to fetch owner with owner_id `#{owner_id}`") do
+          importer.fetch_owner(owner_id)
+        end
       end
     end
 
     def fetch_properties_collection_for_owner(owner_id)
-      announce_error("Failed to fetch property ids collection for owner `#{owner_id}`") do
-        importer.fetch_properties_collection_for_owner(owner_id)
+      sync_failed do
+        announce_error("Failed to fetch property ids collection for owner `#{owner_id}`") do
+          importer.fetch_properties_collection_for_owner(owner_id)
+        end
       end
     end
 
     def fetch_locations(location_ids)
-      announce_error("Failed to fetch locations with ids `#{location_ids}`") do
-        importer.fetch_locations(location_ids)
+      sync_failed do
+        announce_error("Failed to fetch locations with ids `#{location_ids}`") do
+          importer.fetch_locations(location_ids)
+        end
       end
     end
 
     def fetch_location_currencies
-      announce_error("Failed to fetch locations-currencies mapping") do
-        importer.fetch_location_currencies
+      sync_failed do
+        announce_error("Failed to fetch locations-currencies mapping") do
+          importer.fetch_location_currencies
+        end
       end
     end
 
     def fetch_property(property_id)
-      message = "Failed to fetch property with property_id `#{property_id}`"
-      announce_error(message) do
-        importer.fetch_property(property_id)
+      sync_failed do
+        message = "Failed to fetch property with property_id `#{property_id}`"
+        announce_error(message) do
+          importer.fetch_property(property_id)
+        end
       end
     end
 
     def fetch_seasons(property_id)
-      report_error("Failed to fetch seasons for property `#{property_id}`") do
-        importer.fetch_seasons(property_id)
+      sync_failed do
+        report_error("Failed to fetch seasons for property `#{property_id}`") do
+          importer.fetch_seasons(property_id)
+        end
       end
     end
 
@@ -197,6 +210,12 @@ module Workers::Suppliers::RentalsUnited
     def announce_error(message)
       yield.tap do |result|
         announce_context_error(message, result) unless result.success?
+      end
+    end
+
+    def sync_failed
+      yield.tap do |result|
+        property_sync.failed! unless result.success?
       end
     end
 

@@ -20,6 +20,7 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
 
       result = worker.perform
       expect(result).to be_nil
+      expect(worker.property_sync.sync_record.successful).to be false
 
       expect_sync_error("Failed to fetch owner with owner_id `host`")
     end
@@ -30,6 +31,7 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
 
       result = worker.perform
       expect(result).to be_nil
+      expect(worker.property_sync.sync_record.successful).to be false
 
       expect_sync_error("Failed to fetch property ids collection for owner `host`")
     end
@@ -41,6 +43,7 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
 
       result = worker.perform
       expect(result).to be_nil
+      expect(worker.property_sync.sync_record.successful).to be false
 
       expect_sync_error("Failed to fetch locations with ids `[\"1505\"]`")
     end
@@ -53,6 +56,7 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
 
       result = worker.perform
       expect(result).to be_nil
+      expect(worker.property_sync.sync_record.successful).to be false
 
       expect_sync_error("Failed to fetch locations-currencies mapping")
     end
@@ -65,9 +69,10 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
 
       result = worker.perform
       expect(result).to be_kind_of(SyncProcess)
+      expect(worker.property_sync.sync_record.successful).to be true
     end
 
-    it "fails when there is no location for property" do
+    it "fails when there is no location for property and continues worker process" do
       successful_owner_fetch!
       successful_properties_collection_fetch!
       successful_but_wrong_locations_fetch!
@@ -75,6 +80,7 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
 
       result = worker.perform
       expect(result).to be_kind_of(SyncProcess)
+      expect(worker.property_sync.sync_record.successful).to be true
 
       expect_sync_error("Failed to find location with id `1505`")
     end
@@ -87,6 +93,7 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
 
       result = worker.perform
       expect(result).to be_kind_of(SyncProcess)
+      expect(worker.property_sync.sync_record.successful).to be true
 
       expect_sync_error("Failed to find currency for location with id `1505`")
     end
@@ -100,6 +107,7 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
 
       result = worker.perform
       expect(result).to be_kind_of(SyncProcess)
+      expect(worker.property_sync.sync_record.successful).to be false
 
       expect_sync_error("Failed to fetch property with property_id `519688`")
     end
@@ -114,6 +122,7 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
 
       result = worker.perform
       expect(result).to be_kind_of(SyncProcess)
+      expect(worker.property_sync.sync_record.successful).to be false
 
       expect_sync_error("Failed to fetch seasons for property `519688`")
     end
@@ -141,6 +150,7 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
             )
           }.to change { PropertyRepository.count }.by(0)
         end
+        expect(worker.property_sync.sync_record.successful).to be true
       end
     end
 
@@ -160,6 +170,7 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
       result = worker.perform
       expect(result).to be_kind_of(SyncProcess)
       expect(result.to_h[:successful]).to be true
+      expect(worker.property_sync.sync_record.successful).to be true
     end
 
     it "creates record in the database" do
@@ -174,6 +185,7 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
       expect {
         worker.perform
       }.to change { PropertyRepository.count }.by(1)
+      expect(worker.property_sync.sync_record.successful).to be true
     end
 
     it "doesnt create property with unsuccessful publishing" do
@@ -188,6 +200,7 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
       expect {
         worker.perform
       }.to_not change { PropertyRepository.count }
+      expect(worker.property_sync.sync_record.successful).to be true
     end
 
     it "starts calendar sync when property" do
@@ -208,6 +221,7 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
       result = worker.perform
       expect(result).to be_kind_of(SyncProcess)
       expect(result.to_h[:successful]).to be true
+      expect(worker.calendar_sync.sync_record.successful).to be true
     end
 
     it "fails when #fetch_availabilities returns an error" do
