@@ -6,9 +6,6 @@ module JTB
     # from data getting from JTB.
     class RoomoramaProperty
       CANCELLATION_POLICY = 'super_elite'
-      # Until we hear from ciirus on how to determine this field, it will be.. unknown
-      SECURITY_DEPOSIT_TYPE = 'unknown'
-
       IMAGE_URL_PREFIX = 'https://www.jtbgenesis.com/image'
 
       # Maps JTB data to +Roomorama::Property+
@@ -22,16 +19,36 @@ module JTB
       #                                                  can be nil
       # Returns +Roomorama::Property+
       def build(hotel, pictures, rooms)
-        result = Roomorama::Property.new(hotel.jtb_hotel_code)
-        result.instant_booking!
-        result.multi_unit!
-        set_base_info!(result, hotel)
-        set_images!(result, pictures)
-        set_units!(result, rooms)
-        result
+        property = Roomorama::Property.new(hotel.jtb_hotel_code)
+        property.instant_booking!
+        property.multi_unit!
+
+        set_base_info!(property, hotel)
+        set_images!(property, pictures)
+        set_units!(property, rooms)
+        set_rates!(property)
+
+        error_code = validate(property)
+        return Result.error(error_code) if error_code
+
+        Result.new(property)
       end
 
       private
+
+      def set_rates!(property)
+        min_nightly_rate = Array(property.units).map(&:nightly_rate).compact.min
+        if min_nightly_rate
+          property.nightly_rate = min_nightly_rate.to_f
+          property.weekly_rate = 7 * property.nightly_rate
+          property.monthly_rate = 30 * property.nightly_rate
+        end
+      end
+
+      def validate(property)
+        return :empty_images if property.empty_images?
+        return :unknown_nightly_rate unless property.nightly_rate
+      end
 
       # Each room has several rate plans.
       # Each rate plan has available dates.
@@ -58,6 +75,7 @@ module JTB
         city = JTB::Repositories::LookupRepository.location_name(hotel.location_code)&.name
         result.city = city
         result.default_to_available = false
+        result.minimum_stay = 1
         result.currency = JTB::Price::CURRENCY
         result.cancellation_policy = CANCELLATION_POLICY
       end
@@ -97,9 +115,9 @@ module JTB
           url = [IMAGE_URL_PREFIX, '/', picture.url].join
           identifier = Digest::MD5.hexdigest(url)
           Roomorama::Image.new(identifier).tap do |result|
-            image.url = url
-            image.caption = picture.comments
-            image.position = picture.sequence
+            result.url = url
+            result.caption = picture.comments
+            result.position = picture.sequence
           end
         end
       end
@@ -134,9 +152,6 @@ module JTB
         end
       end
 
-
-
-
       def fetch_single_beds(room)
         single_beds = case room.room_type_code
                       when 'JPN', 'SGL' then 1
@@ -166,7 +181,7 @@ module JTB
       end
 
       def parse_room_amenities!(unit, room)
-        amenities = []
+        amenities = Set.new
         room_amenities = room.amenities.chars
         room_amenities.each_with_index do |available, index|
           room_amenity = JTB::Repositories::LookupRepository.room_amenity(amenity_id(index + 1))
@@ -182,20 +197,7 @@ module JTB
           end
         end
 
-        unit.amenities = amenities
-      end
-
-      def fetch_unit_amenities(room)
-        result = []
-        amenities = room.amenities.chars
-        amenities.each_with_index do |available, index|
-          amenity = JTB::Repositories::LookupRepository.room_amenity(amenity_id(index + 1))
-          next unless amenity
-          mapping = lookup_amenities(amenity.name)
-          result << mapping if (available == '1' && mapping)
-        end
-
-        result
+        unit.amenities = amenities.to_a
       end
 
       # Convert integer to amenity index.
