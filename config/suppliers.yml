@@ -62,3 +62,8 @@ RentalsUnited:
   workers:
     metadata:
       every: "1d"
+
+JTB:
+  workers:
+    metadata:
+      every: "1d"

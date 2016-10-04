@@ -127,6 +127,7 @@ collection :jtb_room_types do
   attribute :size4,          String
   attribute :size5,          String
   attribute :size6,          String
+  attribute :amenities,      String
 end
 
 collection :jtb_room_stocks do
