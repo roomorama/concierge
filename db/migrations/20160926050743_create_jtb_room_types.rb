@@ -21,5 +21,7 @@ Hanami::Model.migration do
       column :size6,          String, size: 10
       column :amenities,      String, size: 100
     end
+
+    index :room_code
   end
 end

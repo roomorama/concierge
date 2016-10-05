@@ -20,7 +20,7 @@ module JTB
     attr_reader :credentials, :rate_plan
 
     def initialize(credentials)
-      @credentials = credentials
+      @credentials = credentials.api
     end
 
     # quotes the price with JTB by leveraging the +response_parser+.
@@ -77,12 +77,13 @@ module JTB
     end
 
     def options
-      endpoint = [credentials.url, ENDPOINT].join('/')
+      endpoint = [credentials['url'], ENDPOINT].join('/')
       {
         wsdl:                 endpoint + '?wsdl',
         env_namespace:        :soapenv,
         namespace_identifier: 'jtb',
-        endpoint:             endpoint
+        endpoint:             endpoint,
+        log: true
       }
     end
 

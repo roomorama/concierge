@@ -37,16 +37,10 @@ module JTB
         property.instant_booking!
         property.multi_unit!
 
-        puts hotel.jtb_hotel_code
         set_base_info!(property, hotel)
-        puts 'base info'
         set_images!(property, pictures)
-        puts 'images'
         set_units!(property, rooms)
-        3142014
-        puts 'units'
         set_rates!(property)
-        puts 'rates'
 
         error_code = validate(property)
         return Result.error(error_code) if error_code
