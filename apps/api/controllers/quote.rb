@@ -56,7 +56,7 @@ module API::Controllers
           self.body = API::Views::Quote.render(exposures)
         else
           announce_error(quotation_result)
-          error_message = quotation_result.error.data || { quote: GENERIC_ERROR }
+          error_message = { quote: quotation_result.error.data || GENERIC_ERROR }
           status 503, error_response(error_message)
         end
       else

@@ -13,8 +13,8 @@ RSpec.describe API::Controllers::Ciirus::Cancel do
 
     let(:error_cases) do
       [
-        { params: {reference_number: '658794', inquiry_id: '392'}, error: {'cancellation' => 'Could not cancel with remote supplier'} },
-        { params: {reference_number: '245784', inquiry_id: '399'}, error: {'cancellation' => 'Already cancelled'} }
+        { params: {reference_number: '658794', inquiry_id: '392'}, error: 'Could not cancel with remote supplier' },
+        { params: {reference_number: '245784', inquiry_id: '399'}, error: 'Already cancelled' }
       ]
     end
   end

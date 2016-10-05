@@ -53,7 +53,7 @@ module API::Controllers
           self.body = API::Views::Booking.render(exposures)
         else
           announce_error(reservation_result)
-          error_message = reservation_result.error.data || { booking: GENERIC_ERROR }
+          error_message = { booking: reservation_result.error.data || GENERIC_ERROR }
           status 503, invalid_request(error_message)
         end
       else
