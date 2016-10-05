@@ -13,9 +13,6 @@ module Workers::Suppliers::RentalsUnited
     attr_reader :property_sync, :calendar_sync, :host
 
     # Prevent from publishing property results containing error codes below.
-    #
-    # If property sync is skiped because of one of these errors, calendar
-    # update won't be started too.
     IGNORABLE_ERROR_CODES = [
       :empty_seasons,
       :attempt_to_build_archived_property,
