@@ -22,6 +22,13 @@ module JTB
           .and("sale_status != '0'")
         end
       end
+
+      def self.availabilities(rate_plans, from, to)
+        query do
+          where(rate_plan_id: rate_plans.map(&:rate_plan_id))
+            .and("service_date between '#{from}' and '#{to}'")
+        end
+      end
     end
   end
 end

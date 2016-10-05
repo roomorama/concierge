@@ -98,8 +98,8 @@ module JTB
     def build_credentials(xml)
       xml['jtb'].POS {
         xml['jtb'].Source {
-          xml['jtb'].RequestorID(ID: credentials.id, UserName: credentials.user, MessagePassword: credentials.password) {
-            xml['jtb'].CompanyName(Code: credentials.company)
+          xml['jtb'].RequestorID(ID: credentials['id'], UserName: credentials['user'], MessagePassword: credentials['password']) {
+            xml['jtb'].CompanyName(Code: credentials['company'])
             xml['jtb'].BasicInfo(Version: VERSION, Language: LANGUAGE)
           }
         }
