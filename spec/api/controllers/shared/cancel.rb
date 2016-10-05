@@ -12,7 +12,7 @@ RSpec.shared_examples "cancel action" do
           response = call(described_class.new, kase[:params].dup)
           expect(response.status).to eq 503
           expect(response.body["status"]).to eq "error"
-          expect(response.body["errors"]).to eq kase[:error]
+          expect(response.body["errors"]["cancellation"]).to eq kase[:error]
         }.to change { ExternalErrorRepository.count }.by 1
       end
     end
