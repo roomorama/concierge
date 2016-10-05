@@ -19,13 +19,28 @@ module JTB
 
       def self.location_name(id)
         query do
-          where(category: '1').and(id: id).limit(1)
+          where(category: '1')
+            .and(id: id)
+            .and(language: 'EN')
+          .limit(1)
         end.first
       end
 
       def self.room_amenity(id)
         query do
-          where(category: '19').and(id: id).limit(1)
+          where(category: '19')
+            .and(id: id)
+            .and(language: 'EN')
+          .limit(1)
+        end.first
+      end
+
+      def self.room_grade(id)
+        query do
+          where(category: '4')
+            .and(id: id)
+            .and(language: 'EN')
+            .limit(1)
         end.first
       end
     end
