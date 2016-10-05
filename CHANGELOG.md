@@ -5,6 +5,9 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+### Added
+- Rentals Untied sync, quote, book and cancel
+
 ### Changed
 - Abstract host fee calculation from suppliers to entity level
 - Return 404 for attempts to quote a property not in records
