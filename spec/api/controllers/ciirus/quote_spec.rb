@@ -73,7 +73,7 @@ RSpec.describe API::Controllers::Ciirus::Quote do
     end
 
     context 'when xml contains error message' do
-      it 'returns a result with error' do
+      xit 'returns a result with error' do
         stub_call(method: Ciirus::Commands::QuoteFetcher::OPERATION_NAME,
                   response: error_response)
 

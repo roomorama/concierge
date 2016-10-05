@@ -63,7 +63,7 @@ module Ciirus
         error_msg = result_hash.get('get_properties_response.get_properties_result.property_details.error_msg')
         message = "The response contains not empty ErrorMsg: `#{error_msg}`"
         mismatch(message, caller)
-        Result.error(:not_empty_error_msg)
+        Result.error(:not_empty_error_msg, message)
       end
 
       def mapper
