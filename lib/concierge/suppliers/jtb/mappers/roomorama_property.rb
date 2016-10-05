@@ -8,6 +8,20 @@ module JTB
       CANCELLATION_POLICY = 'super_elite'
       IMAGE_URL_PREFIX = 'https://www.jtbgenesis.com/image'
 
+      ROOM_TYPE_CODES = {
+        'SGL' => 'Single',
+        'SDB' => 'Semi-double',
+        'TWN' => 'Twin',
+        'DBL' => 'Double',
+        'TPL' => 'Triple',
+        'QUD' => 'Quad',
+        'SIT' => 'Suite',
+        'JPN' => 'Japanese-style',
+        'JWS' => 'Japanese and Western Style',
+        'DSR' => 'Stateroom',
+        'MSN' => 'Maisonette'
+      }
+
       # Maps JTB data to +Roomorama::Property+
       # Arguments
       #
@@ -23,10 +37,16 @@ module JTB
         property.instant_booking!
         property.multi_unit!
 
+        puts hotel.jtb_hotel_code
         set_base_info!(property, hotel)
+        puts 'base info'
         set_images!(property, pictures)
+        puts 'images'
         set_units!(property, rooms)
+        3142014
+        puts 'units'
         set_rates!(property)
+        puts 'rates'
 
         error_code = validate(property)
         return Result.error(error_code) if error_code
@@ -127,8 +147,10 @@ module JTB
           u_id = JTB::UnitId.from_jtb_codes(room.room_type_code, room.room_code)
           unit = Roomorama::Unit.new(u_id.unit_id)
           unit.title = room.room_name
+          unit.description = build_description(room)
           unit.max_guests = room.max_guests
           unit.number_of_units = 1
+          unit.number_of_bedrooms = 1
 
           # Unknown how to handle next room types:
           #  JWS: Japanese and Western Style
@@ -137,6 +159,8 @@ module JTB
           unit.number_of_single_beds = fetch_single_beds(room)
           unit.number_of_double_beds = fetch_double_beds(room)
           unit.number_of_sofa_beds = fetch_sofa_beds(room)
+
+          set_unit_surface!(unit, room)
 
           pictures = JTB::Repositories::PictureRepository.room_english_images(room.room_code)
           build_images(pictures).each do |image|
@@ -147,9 +171,51 @@ module JTB
 
           unit.minimum_stay = 1
           unit.nightly_rate = fetch_room_min_price(room)
+          if unit.nightly_rate
+            unit.weekly_rate = 7 * unit.nightly_rate
+            unit.monthly_rate = 30 * unit.nightly_rate
+          end
 
           result.add_unit(unit)
         end
+      end
+
+      def set_unit_surface!(unit, room)
+        if room.size1
+          # Room Size (Western Type)
+          unit.surface = room.size1.to_f
+          unit.surface_unit = 'metric'
+        elsif room.size6
+          # Room Size of Western Stype Room
+          unit.surface = room.size6.to_f
+          unit.surface_unit = 'metric'
+        elsif room.size2
+          # Room Size of Main Room
+          # Room Size of Room Entrance
+          # Room Size of Anteroom
+          unit.surface = room.size2.to_f + room.size3.to_f + room.size4.to_f
+          unit.surface_unit = 'tatami mat'
+        elsif room.size5
+          # Room Size of Japanese Stype Room
+          unit.surface = room.size5.to_f
+          unit.surface_unit = 'tatami mat'
+        end
+      end
+
+      def build_description(room)
+        # Didn't see rooms with nil room_grade and room_type_code at the same time.
+        descriptions = []
+        if room.room_grade
+          name = JTB::Repositories::LookupRepository.room_grade(room.room_grade).name
+          descriptions << "Room Grade: #{name}."
+        end
+
+        if room.room_type_code
+          name = ROOM_TYPE_CODES[room.room_type_code]
+          descriptions << "Room Type: #{name}."
+        end
+
+        descriptions.join(' ')
       end
 
       def fetch_single_beds(room)

@@ -110,13 +110,13 @@ module JTB
     end
 
     def import
-      # import_room_types
-      # import_room_stocks
-      # import_hotels
-      # import_pictures
-      # import_lookups
+      import_room_types
+      import_room_stocks
+      import_hotels
+      import_pictures
+      import_lookups
       import_rate_plans
-      # import_prices
+      import_prices
     end
 
     def cleanup
