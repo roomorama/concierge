@@ -57,3 +57,8 @@ Poplidays:
       every: "1d"
     availabilities:
       every: "5h"
+
+RentalsUnited:
+  workers:
+    metadata:
+      every: "1d"

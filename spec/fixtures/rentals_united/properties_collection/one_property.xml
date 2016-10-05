@@ -1,0 +1,16 @@
+<Pull_ListOwnerProp_RS>
+  <Status ID="0">Success</Status>
+  <Properties>
+    <Property>
+      <ID BuildingID="-1">519688</ID>
+      <Name>Test property</Name>
+      <OwnerID>427698</OwnerID>
+      <DetailedLocationID TypeID="4">24958</DetailedLocationID>
+      <LastMod NLA="false">2016-08-31 11:39:48</LastMod>
+      <DateCreated>2016-08-31</DateCreated>
+      <IMAP>true</IMAP>
+      <IMU>true</IMU>
+      <UserID>0</UserID>
+    </Property>
+  </Properties>
+</Pull_ListOwnerProp_RS>
