@@ -24,11 +24,10 @@ module Workers::Suppliers::JTB
         # synchronisation.new_context do
         #   files_fetcher.fetch_files
         # end
-        #
+
         # db_importer.import
         hotels = JTB::Repositories::HotelRepository.english_ryokans
 
-        c = 1
         hotels.each do |hotel|
           pictures = JTB::Repositories::PictureRepository.hotel_english_images(hotel.city_code, hotel.hotel_code)
           rooms = JTB::Repositories::RoomTypeRepository.hotel_english_rooms(hotel.city_code, hotel.hotel_code)
@@ -42,8 +41,6 @@ module Workers::Suppliers::JTB
           synchronisation.start(hotel.jtb_hotel_code) do
             result
           end
-          c += 1
-          break if c > 10
         end
         synchronisation.finish!
       ensure
