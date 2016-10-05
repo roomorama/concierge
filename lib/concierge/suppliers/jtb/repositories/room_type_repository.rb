@@ -21,6 +21,13 @@ module JTB
             .and(hotel_code: hotel_code)
         end
       end
+
+      def self.by_code(room_code)
+        query do
+          where(language: 'EN')
+            .and(room_code: room_code)
+        end.first
+      end
     end
   end
 end
