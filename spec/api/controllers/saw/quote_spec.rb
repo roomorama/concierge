@@ -5,11 +5,16 @@ require_relative "../shared/external_error_reporting"
 RSpec.describe API::Controllers::SAW::Quote do
   include Support::HTTPStubbing
   include Support::Fixtures
+  include Support::Factories
   include Support::SAW::MockRequest
+
+  let(:supplier) { create_supplier(name: SAW::Client::SUPPLIER_NAME) }
+  let(:host) { create_host(fee_percentage: 7.0, supplier_id: supplier.id) }
+  let(:property) { create_property(identifier: "567", host_id: host.id) }
 
   let(:params) do
     {
-      property_id: "1",
+      property_id: property.identifier,
       unit_id: '10612',
       check_in: "2015-02-26",
       check_out: "2015-02-28",

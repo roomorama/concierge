@@ -1,0 +1,18 @@
+<Pull_ListLocations_RS>
+  <Status ID="0">Success</Status>
+  <Locations>
+    <Location LocationID="1" LocationTypeID="6" ParentLocationID="-1">Worldwide</Location>
+    <Location LocationID="2" LocationTypeID="1" ParentLocationID="1">Europe</Location>
+    <Location LocationID="20" LocationTypeID="2" ParentLocationID="2">France</Location>
+    <Location LocationID="21" LocationTypeID="2" ParentLocationID="2">Germany</Location>
+    <Location LocationID="22" LocationTypeID="2" ParentLocationID="2">Greece</Location>
+    <Location LocationID="23" LocationTypeID="2" ParentLocationID="2">Hungary</Location>
+    <Location LocationID="10350" LocationTypeID="3" ParentLocationID="20">Languedoc-Roussillon</Location>
+    <Location LocationID="10351" LocationTypeID="3" ParentLocationID="20">Ile-de-France</Location>
+    <Location LocationID="10352" LocationTypeID="3" ParentLocationID="20">Haute-Normandie</Location>
+    <Location LocationID="1503" LocationTypeID="4" ParentLocationID="10351">Pantin</Location>
+    <Location LocationID="1505" LocationTypeID="4" ParentLocationID="0000">Paris</Location>
+    <Location LocationID="1521" LocationTypeID="4" ParentLocationID="10351">Plaisir</Location>
+    <Location LocationID="9999" LocationTypeID="5" ParentLocationID="1505">Neighborhood</Location>
+  </Locations>
+</Pull_ListLocations_RS>
