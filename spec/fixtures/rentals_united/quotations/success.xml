@@ -1,0 +1,6 @@
+<Pull_GetPropertyAvbPrice_RS>
+  <Status ID="0">Success</Status>
+  <PropertyPrices PropertyID="562441">
+    <PropertyPrice AdditionalFees="0.00" Cleaning="44.50" Deposit="120.00" ExtraPersonPrice="40.00" NOP="6" SecurityDeposit="4.00">284.50</PropertyPrice>
+  </PropertyPrices>
+</Pull_GetPropertyAvbPrice_RS>

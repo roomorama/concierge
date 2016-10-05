@@ -67,6 +67,17 @@ module RentalsUnited
       render(:seasons_fetch, template_locals)
     end
 
+    def build_price_fetch_payload(property_id:, check_in:, check_out:, num_guests:)
+      template_locals = {
+        credentials: credentials,
+        property_id: property_id,
+        check_in:    check_in,
+        check_out:   check_out,
+        num_guests:  num_guests
+      }
+      render(:price_fetch, template_locals)
+    end
+
     private
     def render(template_name, local_vars)
       path = Hanami.root.join(TEMPLATES_PATH, "#{template_name}.xml.erb")
