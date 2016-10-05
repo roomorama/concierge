@@ -45,7 +45,7 @@ module Workers
           message = "Error during fetching availabilities for property `#{property_id}`: `#{error_message}`"
           augment_context_error(message)
 
-          Result.error(:availability_error)
+          Result.error(:availability_error, message)
         end
 
         def valid_availability?(availability)
@@ -85,6 +85,7 @@ module Workers
             operation:   'sync',
             supplier:    ::AtLeisure::Client::SUPPLIER_NAME,
             code:        result.error.code,
+            description: result.error.data,
             context:     Concierge.context.to_h,
             happened_at: Time.now
           })
