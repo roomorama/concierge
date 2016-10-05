@@ -1,0 +1,125 @@
+<Pull_ListPropertyAvailabilityCalendar_RS>
+  <Status ID="0">Success</Status>
+  <PropertyCalendar PropertyID="1234">
+    <CalDay Date="2016-09-07">
+      <IsBlocked>true</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-08">
+      <IsBlocked>false</IsBlocked>
+      <MinStay>2</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-09">
+      <IsBlocked>false</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-10">
+      <IsBlocked>true</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-11">
+      <IsBlocked>false</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-12">
+      <IsBlocked>false</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-13">
+      <IsBlocked>false</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-14">
+      <IsBlocked>true</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-15">
+      <IsBlocked>true</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-16">
+      <IsBlocked>false</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-17">
+      <IsBlocked>false</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-18">
+      <IsBlocked>true</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-19">
+      <IsBlocked>false</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-20">
+      <IsBlocked>false</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-21">
+      <IsBlocked>false</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-22">
+      <IsBlocked>false</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-23">
+      <IsBlocked>true</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-24">
+      <IsBlocked>true</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-25">
+      <IsBlocked>true</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-26">
+      <IsBlocked>true</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-27">
+      <IsBlocked>true</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-28">
+      <IsBlocked>true</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-29">
+      <IsBlocked>false</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+    <CalDay Date="2016-09-30">
+      <IsBlocked>true</IsBlocked>
+      <MinStay>1</MinStay>
+      <Changeover>4</Changeover>
+    </CalDay>
+  </PropertyCalendar>
+</Pull_ListPropertyAvailabilityCalendar_RS>

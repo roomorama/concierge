@@ -1,0 +1,30 @@
+<Push_PutConfirmedReservationMulti_RQ>
+  <Authentication>
+    <UserName><%= credentials.username %></UserName>
+    <Password><%= credentials.password %></Password>
+  </Authentication>
+  <Reservation>
+    <StayInfos>
+      <StayInfo>
+        <PropertyID><%= property_id %></PropertyID>
+        <DateFrom><%= check_in %></DateFrom>
+        <DateTo><%= check_out %></DateTo>
+        <NumberOfGuests><%= num_guests %></NumberOfGuests>
+        <Costs>
+          <RUPrice><%= total %></RUPrice>
+          <ClientPrice><%= total %></ClientPrice>
+          <AlreadyPaid><%= total %></AlreadyPaid>
+        </Costs>
+      </StayInfo>
+    </StayInfos>
+    <CustomerInfo>
+      <Name><%= first_name %></Name>
+      <SurName><%= last_name %></SurName>
+      <Email><%= email %></Email>
+      <Phone><%= phone %></Phone>
+      <Address><%= address %></Address>
+      <ZipCode><%= postal_code %></ZipCode>
+    </CustomerInfo>
+    <Comments></Comments>
+  </Reservation>
+</Push_PutConfirmedReservationMulti_RQ>
