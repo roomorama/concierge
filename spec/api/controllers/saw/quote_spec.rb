@@ -37,6 +37,26 @@ RSpec.describe API::Controllers::SAW::Quote do
 
   let(:controller) { described_class.new }
 
+  shared_examples_for "a case for unavailable quotation" do
+    it "is a success" do
+      result = controller.quote_price(params)
+      expect(result.success?).to be true
+      expect(result).to be_kind_of(Result)
+    end
+
+    it "holds a quotation" do
+      result = controller.quote_price(params)
+      quotation = result.value
+      expect(quotation).to be_kind_of(Quotation)
+      expect(quotation.property_id).to eq(params[:property_id])
+      expect(quotation.unit_id).to eq(params[:unit_id])
+      expect(quotation.check_in).to eq(params[:check_in])
+      expect(quotation.check_out).to eq(params[:check_out])
+      expect(quotation.guests).to eq(params[:guests])
+      expect(quotation.available).to be false
+    end
+  end
+
   it "performs successful request returning Quotation object" do
     mock_request(:propertyrates, :success)
 
@@ -184,4 +204,12 @@ RSpec.describe API::Controllers::SAW::Quote do
       expect(quotation.available).to be false
     end
   end
+
+  context "when there is rates, but it's not available" do
+    before { mock_request(:propertyrates, :no_allocation) }
+    it_should_behave_like "a case for unavailable quotation" do
+    end
+  end
+
+
 end

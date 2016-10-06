@@ -74,9 +74,10 @@ module SAW
         end
 
         def parse_availability(hash)
-          flag = hash.get("flag_bookable_property_accommodation")
-
-          flag == "Y"
+          bookable = hash.get("flag_bookable_property_accommodation")
+          no_allocation = hash.get("status.flag_no_allocation")
+          fair_warning = hash.get("status.flag_fair_warning")
+          bookable == "Y" && no_allocation == "N" && fair_warning == "N"
         end
       end
     end
