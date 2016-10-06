@@ -62,7 +62,10 @@ module AtLeisure
 
       if response["OnRequest"] == "Yes"
         no_instant_confirmation
-        return Result.error(:unsupported_on_request_reservation)
+        return Result.error(
+          :unsupported_on_request_reservation,
+          'Instant booking is not supported for the given period'
+        )
       end
 
       if response["Available"] == "Yes"

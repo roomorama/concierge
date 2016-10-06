@@ -67,6 +67,7 @@ RSpec.describe AtLeisure::Price do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unsupported_on_request_reservation
+      expect(result.error.data).to eq 'Instant booking is not supported for the given period'
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
