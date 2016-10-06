@@ -73,10 +73,25 @@ module SAW
           BigDecimal.new(price)
         end
 
+        # Parses flags for availability.
+        # From SAW documentation (http://staging.servicedapartmentsworldwide.net/xml/propertyrateshtm.aspx):
+        #
+        # <flag_bookable_property_accommodation> 'Y' or 'N'
+        #   (Y = Bookable Property Accommodation, N = Not Bookable Property Accommodation)
+        #
+        # <flag_no_allocation> 'Y' or 'N'
+        #   (Y = Property Accommodation not available now, N = Property Accommodation is available)
+        #   [No allocation property can booked as request but it will be confirmed later by property]
+        #
+        # <flag_fair_warning> 'Y' or 'N'
+        #   (Y = Fair warning, N = Not Fair warning)
+        #   [Fair warning property accommodation can't booked]
+        #
         def parse_availability(hash)
-          flag = hash.get("flag_bookable_property_accommodation")
-
-          flag == "Y"
+          bookable = hash.get("flag_bookable_property_accommodation")
+          no_allocation = hash.get("status.flag_no_allocation")
+          fair_warning = hash.get("status.flag_fair_warning")
+          bookable == "Y" && no_allocation == "N" && fair_warning == "N"
         end
       end
     end
