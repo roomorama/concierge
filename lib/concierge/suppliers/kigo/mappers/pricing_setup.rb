@@ -39,7 +39,9 @@ module Kigo::Mappers
     end
 
     def minimum_stay
-      rules = periodical_rate['MIN_STAY']['MIN_STAY_RULES']
+      rules = periodical_rate.get('MIN_STAY.MIN_STAY_RULES')
+      return 0 if rules.nil?
+
       rules.collect do |rule|
         before_to = rule['DATE_TO'].nil? || DateTime.parse(rule['DATE_TO']) < DateTime.now
         after_from = rule['DATE_FROM'].nil? || DateTime.parse(rule['DATE_FROM']) > DateTime.now
