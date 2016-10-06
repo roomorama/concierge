@@ -12,7 +12,7 @@ module RentalsUnited
 
       CACHE_PREFIX   = "rentalsunited"
       CACHE_KEY_PREFIX = "property"
-      CACHE_DURATION = 24 * 60 * 60 # 24 hours
+      CACHE_DURATION = 7 * 24 * 60 * 60 # one week
 
       # Initialize +PropertyFetcher+ command.
       #
