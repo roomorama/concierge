@@ -8,6 +8,9 @@ how this file is formatted and how the process works.
 ## Fixed
 - Kigo minimum stay is parsed from MIN_STAY_RULES
 
+### Changed
+- Atleisure: improved error code and message for quoting "on request only" period
+
 ## [0.12.0] - 2016-10-05
 ### Added
 - Rentals Untied sync, quote, book and cancel
