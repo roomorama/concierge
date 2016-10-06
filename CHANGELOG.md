@@ -12,6 +12,9 @@ how this file is formatted and how the process works.
 ### Changed
 - Atleisure: improved error code and message for quoting "on request only" period
 
+### Added
+- SAW: parse owner information for Roomorama::Property
+
 ## [0.12.0] - 2016-10-05
 ### Added
 - Rentals Untied sync, quote, book and cancel
