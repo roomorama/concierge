@@ -7,6 +7,7 @@ how this file is formatted and how the process works.
 ## Unreleased
 ## Fixed
 - Kigo minimum stay is parsed from MIN_STAY_RULES
+- SAW parse `no_allocation` and `fair_warning` flags
 
 ### Changed
 - Atleisure: improved error code and message for quoting "on request only" period
