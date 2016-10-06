@@ -44,6 +44,8 @@ module Kigo::Mappers
       set_cleaning_service
 
       Result.new(property)
+    rescue NoPriceError
+      Result.error(:no_prices_provided, "Empty or invalid price")
     end
 
     private
