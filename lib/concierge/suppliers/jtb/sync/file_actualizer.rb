@@ -12,10 +12,10 @@ module JTB
         @file_prefix = file_prefix
       end
 
-      def actualize(last_synced)
+      def actualize(last_synced, force_all = false)
         prepare_tmp_dir
 
-        result = required_files(last_synced)
+        result = required_files(last_synced, force_all)
 
         return result unless result.success?
 
@@ -49,10 +49,10 @@ module JTB
 
       # Returns list of file paths required to be downloaded from the sftp server
       # to make DB actual.
-      def required_files(last_synced)
+      def required_files(last_synced, force_all)
         files = []
 
-        if last_synced && file_exists?(last_synced)
+        if !force_all && last_synced && file_exists?(last_synced)
           time = created_time(last_synced)
         else
           last_all_filepath = fetch_last_all_filepath

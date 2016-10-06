@@ -90,7 +90,7 @@ RSpec.describe JTB::Sync::FileActualizer do
 
     context 'when last sync was not so long ago' do
       let(:last_synced) { 'RoomStock_Diff_20160921051813.zip' }
-      it 'returns the last ALL file and diffs after him' do
+      it 'downloads diffs after him' do
         allow(sftp_mock).to receive_message_chain(:dir, :glob).with('./', '**/RoomStock_Diff_*').and_return(
           [
             double(name: 'RoomStock_Diff_20160922051813.zip'),
@@ -107,6 +107,37 @@ RSpec.describe JTB::Sync::FileActualizer do
         expect(subject).to receive(:fetch_file).with('old/RoomStock_Diff_20160921051914.zip').ordered.and_return true
 
         result = subject.actualize(last_synced)
+        expect(result.success?).to be true
+      end
+    end
+
+    context 'when force_all is true' do
+      let(:last_synced) { 'RoomStock_ALL_20160919.zip' }
+
+      it 'downloads files from last ALL file' do
+        allow(sftp_mock).to receive_message_chain(:dir, :glob).with('./', '**/RoomStock_ALL_*').and_return(
+          [
+            double(name: 'RoomStock_ALL_20160922.zip'),
+            double(name: 'old/RoomStock_ALL_20160921.zip'),
+            double(name: 'old/RoomStock_ALL_20160920.zip'),
+            double(name: 'old/RoomStock_ALL_20160919.zip'),
+          ]
+        )
+        allow(sftp_mock).to receive_message_chain(:dir, :glob).with('./', '**/RoomStock_Diff_*').and_return(
+          [
+            double(name: 'RoomStock_Diff_20160922051813.zip'),
+            double(name: 'old/RoomStock_Diff_20160921051813.zip'),
+            double(name: 'old/RoomStock_Diff_20160920051813.zip'),
+          ]
+        )
+        allow(sftp_mock).to receive_message_chain(:dir, :glob).with('./', "**/#{last_synced}").and_return(
+          [double(name: 'old/RoomStock_ALL_20160919.zip')]
+        )
+
+        expect(subject).to receive(:fetch_file).with('RoomStock_ALL_20160922.zip').ordered.and_return true
+        expect(subject).to receive(:fetch_file).with('RoomStock_Diff_20160922051813.zip').ordered.and_return true
+
+        result = subject.actualize(last_synced, true)
         expect(result.success?).to be true
       end
     end
