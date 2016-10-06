@@ -10,7 +10,7 @@ module SAW
         :internal_id, :type, :title, :description, :lat, :lon, :city,
         :neighborhood, :address, :country, :amenities, :multi_unit, :images,
         :postal_code, :not_supported_amenities, :bed_configurations,
-        :property_accommodations
+        :property_accommodations, :owner_email, :owner_phone_number
       ]
 
       class << self
@@ -29,6 +29,7 @@ module SAW
           copy_title!(attrs, new_hash)
           copy_description!(attrs, new_hash)
           copy_address_information!(attrs, new_hash)
+          copy_owner_information!(attrs, new_hash)
           copy_images!(attrs, new_hash, image_url_rewrite)
           copy_supported_amenities!(attrs, new_hash)
           copy_not_supported_amenities!(attrs, new_hash)
@@ -58,6 +59,11 @@ module SAW
 
         def copy_description!(attrs, hash)
           hash[:description] = attrs.get("property_description")
+        end
+
+        def copy_owner_information!(attrs, hash)
+          hash[:owner_email] = attrs.get("email")
+          hash[:owner_phone_number] = attrs.get("phone")
         end
 
         def copy_address_information!(attrs, hash)

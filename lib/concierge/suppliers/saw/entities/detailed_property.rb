@@ -27,13 +27,15 @@ module SAW
     # +bed_configurations+      - supported bed types configurations
     # +property_accommodations+ - supported property accommodations
     # +not_supported_amenities+ - list of not supported amenitites
+    # +owner_email+             - email of the property owner
+    # +owner_phone_number+      - phone number of the property owner
     # +multi_unit+              - boolean flag indicating that property is
     #                             multi unit
     class DetailedProperty
       attr_reader :internal_id, :type, :title, :description, :lat, :lon, :city,
                   :neighborhood, :postal_code, :address, :country, :amenities,
                   :bed_configurations, :property_accommodations,
-                  :not_supported_amenities
+                  :not_supported_amenities, :owner_email, :owner_phone_number
 
       def initialize(attrs = {})
         @internal_id             = attrs[:internal_id]
@@ -47,6 +49,8 @@ module SAW
         @postal_code             = attrs[:postal_code]
         @address                 = attrs[:address]
         @country                 = attrs[:country]
+        @owner_email             = attrs[:owner_email]
+        @owner_phone_number      = attrs[:owner_phone_number]
         @amenities               = attrs[:amenities]
         @images                  = attrs[:images]
         @bed_configurations      = attrs[:bed_configurations]
