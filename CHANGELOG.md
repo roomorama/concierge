@@ -4,6 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## Unreleased
+### Fixed
+- Kigo minimum stay MIN_STAY hash could be nil
+
 ## [0.12.1] - 2016-10-06
 ## Fixed
 - Kigo minimum stay is parsed from MIN_STAY_RULES
