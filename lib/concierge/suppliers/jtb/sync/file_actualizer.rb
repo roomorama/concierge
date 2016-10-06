@@ -13,25 +13,61 @@ module JTB
       end
 
       def actualize(last_synced)
-        if File.exists? options['tmp_path']
-          cleanup
-        else
-          FileUtils.mkdir(options['tmp_path'])
-        end
+        prepare_tmp_dir
 
-        required_files(last_synced).each do |file_path|
+        result = required_files(last_synced)
+
+        return result unless result.success?
+
+        result.value.each do |file_path|
           fetch_file(file_path)
         end
+
         close
-      rescue Object
+        Result.new(true)
+      rescue Object => e
         begin
           shutdown
         rescue ::Exception
           # swallow exceptions that occur while trying to shutdown
         end
+        Result.error(
+          :actualize_file_error,
+          "Error during actualizing files with prefix #{file_prefix}"
+        )
       end
 
       private
+
+      def prepare_tmp_dir
+        if File.exists?(options['tmp_path'])
+          cleanup
+        else
+          FileUtils.mkdir(options['tmp_path'])
+        end
+      end
+
+      # Returns list of file paths required to be downloaded from the sftp server
+      # to make DB actual.
+      def required_files(last_synced)
+        files = []
+
+        if last_synced && file_exists?(last_synced)
+          time = created_time(last_synced)
+        else
+          last_all_filepath = fetch_last_all_filepath
+
+          return Result.error(
+            :all_file_not_found,
+            "'ALL' file not found for prefix #{file_prefix}"
+          ) unless last_all_filepath
+
+          time = created_time(last_all_filepath)
+          files << last_all_filepath
+        end
+
+        Result.new(files + fetch_diffs_after(time))
+      end
 
       def cleanup
         path = Dir.glob(File.join(options['tmp_path'], "#{file_prefix}*"))
@@ -53,20 +89,6 @@ module JTB
       # Soft finishing
       def close
         @sftp&.session&.close
-      end
-
-      def required_files(last_synced)
-        result = []
-
-        if last_synced && file_exists?(last_synced)
-          time = created_time(last_synced)
-        else
-          last_all_filepath = fetch_last_all_filepath
-          time = created_time(last_all_filepath)
-          result << last_all_filepath
-        end
-
-        result + fetch_diffs_after(time)
       end
 
       def file_exists?(filename)
@@ -95,7 +117,7 @@ module JTB
         filenames = sftp.dir.glob('./', "**/#{file_prefix}_Diff_*").map(&:name)
         filenames.select { |filename| created_time(filename) > time }
       rescue Net::SFTP::StatusException
-        nil
+        []
       end
 
       def fetch_file(file_path)
