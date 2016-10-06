@@ -62,7 +62,7 @@ module AtLeisure
 
       if response["OnRequest"] == "Yes"
         no_instant_confirmation
-        return Result.error(:unsupported_on_request_property)
+        return Result.error(:unsupported_on_request_reservation)
       end
 
       if response["Available"] == "Yes"
@@ -106,7 +106,7 @@ module AtLeisure
 
     def no_instant_confirmation
       message = "Roomorama can only work with properties with instant confirmation from AtLeisure." +
-        " However, the `OnRequest` field was set to `true`."
+        " However, the `OnRequest` field for given period was set to `true`."
 
       mismatch(message, caller)
     end
