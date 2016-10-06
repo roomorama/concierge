@@ -72,12 +72,14 @@ module Kigo::Mappers
       property.check_in_time         = info['PROP_CIN_TIME']
       property.check_out_time        = info['PROP_COUT_TIME']
       property.check_in_instructions = info['PROP_ARRIVAL_SHEET']
-      property.minimum_stay          = stay_length(info['PROP_STAYTIME_MIN'])
+
+      # min_stay is set here, but maybe overided with a stricter minimum from pricingSetup
+      property.minimum_stay = stay_length(info['PROP_STAYTIME_MIN'])
 
       # Kigo properties are available by default, but most of them has a periodical rate
       # which covers almost all days. The days which not in periodical rates
       # have unavailable availabilities for these days
-      property.default_to_available  = true
+      property.default_to_available = true
 
       property.country_code     = info['PROP_COUNTRY']
       property.city             = info['PROP_CITY']
@@ -196,6 +198,11 @@ module Kigo::Mappers
       property.nightly_rate = pricing_mapper.nightly_rate
       property.weekly_rate  = pricing_mapper.weekly_rate
       property.monthly_rate = pricing_mapper.monthly_rate
+      property.minimum_stay = [
+        property.minimum_stay.to_i,
+        pricing_mapper.minimum_stay
+      ].max
+
     end
 
     def code_for(item)

@@ -20,6 +20,7 @@ RSpec.describe Kigo::Mappers::Property do
     let(:expected_nightly_rate) { 151.98 }
 
     context 'stay length' do
+
       context 'unit is month' do
         let(:minimum_stay) {
           {
@@ -34,6 +35,7 @@ RSpec.describe Kigo::Mappers::Property do
           expect(property.minimum_stay).to eq 30
         end
       end
+
       context 'number is zero' do
         let(:minimum_stay) {
           {
@@ -46,6 +48,51 @@ RSpec.describe Kigo::Mappers::Property do
           property = subject.prepare(property_data, pricing).value
 
           expect(property.minimum_stay).to eq 1
+        end
+      end
+
+      context 'pricing_setup has a stricter rule' do
+        it 'uses the stricter rule' do
+          pricing['MIN_STAY'] = {
+            "DEFAULT_VALUE" => 0,
+            "MIN_STAY_RULES": [
+              {
+                "LABEL" => "Monthly Short term",
+                "MIN_STAY_VALUE" => 32,
+                "DATE_FROM" => nil,
+                "DATE_TO" => nil
+              }
+            ]
+          }
+          property_data['PROP_INFO']['PROP_STAYTIME_MIN'] = {
+            'UNIT' => 'MONTH',
+            'NUMBER' => 1
+          }
+
+          property = subject.prepare(property_data, pricing).value
+          expect(property.minimum_stay).to eq 32
+        end
+      end
+
+      context 'pricing_setup has a more lenient rule' do
+        it 'uses the stricter rule' do
+          pricing['MIN_STAY'] = {
+            "DEFAULT_VALUE": 0, "MIN_STAY_RULES": [
+              {
+                "LABEL": "Monthly Short term",
+                "MIN_STAY_VALUE": 25,
+                "DATE_FROM": nil,
+                "DATE_TO": nil
+              }
+            ]
+          }
+          property_data['PROP_INFO']['PROP_STAYTIME_MIN'] = {
+            'UNIT' => 'MONTH',
+            'NUMBER' => 1
+          }
+
+          property = subject.prepare(property_data, pricing).value
+          expect(property.minimum_stay).to eq 30
         end
       end
     end

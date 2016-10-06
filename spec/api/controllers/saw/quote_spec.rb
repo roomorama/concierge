@@ -37,6 +37,26 @@ RSpec.describe API::Controllers::SAW::Quote do
 
   let(:controller) { described_class.new }
 
+  shared_examples_for "a case for unavailable quotation" do
+    it "is a success" do
+      result = controller.quote_price(params)
+      expect(result.success?).to be true
+      expect(result).to be_kind_of(Result)
+    end
+
+    it "holds a quotation" do
+      result = controller.quote_price(params)
+      quotation = result.value
+      expect(quotation).to be_kind_of(Quotation)
+      expect(quotation.property_id).to eq(params[:property_id])
+      expect(quotation.unit_id).to eq(params[:unit_id])
+      expect(quotation.check_in).to eq(params[:check_in])
+      expect(quotation.check_out).to eq(params[:check_out])
+      expect(quotation.guests).to eq(params[:guests])
+      expect(quotation.available).to be false
+    end
+  end
+
   it "performs successful request returning Quotation object" do
     mock_request(:propertyrates, :success)
 
@@ -58,25 +78,9 @@ RSpec.describe API::Controllers::SAW::Quote do
     expect(quotation.available).to be true
   end
 
-  it "returns result object with not-available quotation" do
-    mock_request(:propertyrates, :not_available_unit)
-
-    result = controller.quote_price(params)
-
-    expect(result.success?).to be true
-    expect(result).to be_kind_of(Result)
-    expect(result.value).not_to be nil
-
-    quotation = result.value
-    expect(quotation).to be_kind_of(Quotation)
-    expect(quotation.property_id).to eq(params[:property_id])
-    expect(quotation.unit_id).to eq(params[:unit_id])
-    expect(quotation.check_in).to eq(params[:check_in])
-    expect(quotation.check_out).to eq(params[:check_out])
-    expect(quotation.guests).to eq(params[:guests])
-    expect(quotation.total).to eq(641.3)
-    expect(quotation.currency).to eq('EUR')
-    expect(quotation.available).to be false
+  context "when unit is not bookable" do
+    before { mock_request(:propertyrates, :not_bookable_unit) }
+    it_should_behave_like "a case for unavailable quotation"
   end
 
   context "when property is on request only" do
@@ -104,23 +108,8 @@ RSpec.describe API::Controllers::SAW::Quote do
   end
 
   context "when property has no available rates" do
-    it "returns a quotation with an appropriate error" do
-      mock_request(:propertyrates, :rates_not_available)
-
-      result = controller.quote_price(params)
-
-      expect(result.success?).to be true
-      expect(result).to be_kind_of(Result)
-
-      quotation = result.value
-      expect(quotation).to be_kind_of(Quotation)
-      expect(quotation.property_id).to eq(params[:property_id])
-      expect(quotation.unit_id).to eq(params[:unit_id])
-      expect(quotation.check_in).to eq(params[:check_in])
-      expect(quotation.check_out).to eq(params[:check_out])
-      expect(quotation.guests).to eq(params[:guests])
-      expect(quotation.available).to be false
-    end
+    before { mock_request(:propertyrates, :rates_not_available) }
+    it_should_behave_like "a case for unavailable quotation"
   end
 
   context "when response from the SAW api is not well-formed xml" do
@@ -166,22 +155,16 @@ RSpec.describe API::Controllers::SAW::Quote do
   end
 
   context "when there is no rates for given unit" do
-    it "returns a result object with not-available quotation" do
+    before do
       params[:unit_id] = "1111"
       mock_request(:propertyrates, :success_multiple_units)
-
-      result = controller.quote_price(params)
-      expect(result.success?).to be true
-      expect(result).to be_kind_of(Result)
-
-      quotation = result.value
-      expect(quotation).to be_kind_of(Quotation)
-      expect(quotation.property_id).to eq(params[:property_id])
-      expect(quotation.unit_id).to eq(params[:unit_id])
-      expect(quotation.check_in).to eq(params[:check_in])
-      expect(quotation.check_out).to eq(params[:check_out])
-      expect(quotation.guests).to eq(params[:guests])
-      expect(quotation.available).to be false
     end
+
+    it_should_behave_like "a case for unavailable quotation"
+  end
+
+  context "when there is rates, but it's not available" do
+    before { mock_request(:propertyrates, :no_allocation) }
+    it_should_behave_like "a case for unavailable quotation"
   end
 end

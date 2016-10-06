@@ -236,7 +236,6 @@
     "MIN_STAY": {
       "DEFAULT_VALUE": 0,
       "MIN_STAY_RULES": [
-
       ]
     }
   }

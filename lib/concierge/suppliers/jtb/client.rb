@@ -65,9 +65,8 @@ module JTB
     private
 
     def stay_too_long_error
-      Result.error(:stay_too_long, {
-        quote: "Maximum length of stay must be less than #{MAXIMUM_STAY_LENGTH} nights."
-      })
+      message = "Maximum length of stay must be less than #{MAXIMUM_STAY_LENGTH} nights."
+      Result.error(:stay_too_long, message)
     end
 
   end
