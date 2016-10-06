@@ -63,7 +63,10 @@ module JTB
           ) unless last_all_filepath
 
           time = created_time(last_all_filepath)
-          files << last_all_filepath
+
+          if !last_synced || time > created_time(last_synced)
+            files << last_all_filepath
+          end
         end
 
         Result.new(files + fetch_diffs_after(time))

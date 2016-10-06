@@ -140,6 +140,31 @@ RSpec.describe JTB::Sync::FileActualizer do
         result = subject.actualize(last_synced, true)
         expect(result.success?).to be true
       end
+
+      it 'does not download last ALL file if it was already synced' do
+        allow(sftp_mock).to receive_message_chain(:dir, :glob).with('./', '**/RoomStock_ALL_*').and_return(
+          [
+            double(name: 'RoomStock_ALL_20160919.zip'),
+            double(name: 'old/RoomStock_ALL_20160918.zip'),
+            double(name: 'old/RoomStock_ALL_20160917.zip')
+          ]
+        )
+        allow(sftp_mock).to receive_message_chain(:dir, :glob).with('./', '**/RoomStock_Diff_*').and_return(
+          [
+            double(name: 'RoomStock_Diff_20160919051813.zip'),
+            double(name: 'old/RoomStock_Diff_20160918051813.zip'),
+            double(name: 'old/RoomStock_Diff_20160917051813.zip'),
+          ]
+        )
+        allow(sftp_mock).to receive_message_chain(:dir, :glob).with('./', "**/#{last_synced}").and_return(
+          [double(name: 'old/RoomStock_ALL_20160919.zip')]
+        )
+
+        expect(subject).to receive(:fetch_file).once.with('RoomStock_Diff_20160919051813.zip').ordered.and_return true
+
+        result = subject.actualize(last_synced, true)
+        expect(result.success?).to be true
+      end
     end
   end
 end
