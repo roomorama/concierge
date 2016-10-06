@@ -11,6 +11,7 @@ how this file is formatted and how the process works.
 
 ### Changed
 - Atleisure: improved error code and message for quoting "on request only" period
+- Move setting error message prefixes to controller-level
 
 ### Added
 - SAW: parse owner information for Roomorama::Property
@@ -22,7 +23,6 @@ how this file is formatted and how the process works.
 ### Changed
 - Abstract host fee calculation from suppliers to entity level
 - Return 404 for attempts to quote a property not in records
-- Move setting error message prefixes to controller-level
 
 ## [0.11.6] - 2016-10-03
 ### Fixed
