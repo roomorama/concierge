@@ -41,6 +41,8 @@ module SAW
         property.neighborhood = detailed_property.neighborhood
         property.postal_code = detailed_property.postal_code
         property.address = detailed_property.address
+        property.owner_email = detailed_property.owner_email
+        property.owner_phone_number = detailed_property.owner_phone_number
         property.amenities = []
 
         property.minimum_stay = 1

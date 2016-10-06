@@ -41,6 +41,8 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
       country: 'Thailand',
       amenities: ['wifi', 'breakfast'],
       images: property_images,
+      owner_email: 'foo@bar.com',
+      owner_phone_number: '123123123',
       not_supported_amenities: []
     }
   end
@@ -120,6 +122,8 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
       neighborhood
       postal_code
       address
+      owner_email
+      owner_phone_number
     )
 
     attributes.each do |attr|

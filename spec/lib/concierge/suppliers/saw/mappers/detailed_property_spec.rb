@@ -333,5 +333,12 @@ module SAW
         hash["property_accommodations"]
       )
     end
+
+    it "adds owner information" do
+      property = described_class.build(hash)
+
+      expect(property.owner_email).to eq("reservations@mansleyapartments.com")
+      expect(property.owner_phone_number).to eq("111111111")
+    end
   end
 end
