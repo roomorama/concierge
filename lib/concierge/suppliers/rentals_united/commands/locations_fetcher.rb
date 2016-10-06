@@ -10,6 +10,10 @@ module RentalsUnited
 
       ROOT_TAG = "Pull_ListLocations_RS"
 
+      CACHE_PREFIX   = "rentalsunited"
+      CACHE_KEY      = "locations"
+      CACHE_DURATION = 7 * 24 * 60 * 60 # one week
+
       def initialize(credentials, location_ids)
         super(credentials)
         @location_ids = location_ids
@@ -20,31 +24,42 @@ module RentalsUnited
       # Returns a +Result+ wrapping +Array+ of +Entities::Location+ objects
       # Returns a +Result+ with +Result::Error+ when operation fails
       def fetch_locations
-        payload = payload_builder.build_locations_fetch_payload
-        result = api_call(payload)
+        locations_result = fetch_locations_static_data
+        return locations_result unless locations_result.success?
+        locations_hash = response_parser.to_hash(locations_result.value)
 
-        return result unless result.success?
+        raw_locations = build_raw_locations(locations_hash)
 
-        result_hash = response_parser.to_hash(result.value.body)
+        requested_locations = location_ids.map do |id|
+          location = build_location(id, raw_locations)
 
-        if valid_status?(result_hash, ROOT_TAG)
-          raw_locations = build_raw_locations(result_hash)
+          return Result.error(:unknown_location) unless location
 
-          locations = location_ids.map do |id|
-            location = build_location(id, raw_locations)
-
-            return Result.error(:unknown_location) unless location
-
-            location
-          end
-
-          Result.new(locations)
-        else
-          error_result(result_hash, ROOT_TAG)
+          location
         end
+
+        Result.new(requested_locations)
       end
 
       private
+      # Caches successful locations API response
+      def fetch_locations_static_data
+        with_cache(CACHE_KEY, freshness: CACHE_DURATION) do
+          payload = payload_builder.build_locations_fetch_payload
+          result = api_call(payload)
+
+          return result unless result.success?
+
+          result_hash = response_parser.to_hash(result.value.body)
+
+          if valid_status?(result_hash, ROOT_TAG)
+            Result.new(result.value.body)
+          else
+            error_result(result_hash, ROOT_TAG)
+          end
+        end
+      end
+
       def build_raw_locations(hash)
         locations = hash.get("Pull_ListLocations_RS.Locations.Location")
 
@@ -61,6 +76,14 @@ module RentalsUnited
       def build_location(location_id, raw_locations)
         mapper = Mappers::Location.new(location_id, raw_locations)
         mapper.build_location
+      end
+
+      def with_cache(key, freshness:)
+        cache.fetch(key, freshness: freshness) { yield }
+      end
+
+      def cache
+        @_cache ||= Concierge::Cache.new(namespace: CACHE_PREFIX)
       end
     end
   end
