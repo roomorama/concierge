@@ -74,7 +74,7 @@ module JTB
         FileUtils.rm_rf(path)
       end
 
-      # Should be closed with shutdown method
+      # Should be closed with close or shutdown method
       def sftp
         @sftp ||= Net::SFTP.start(
           options['host'], options['user_id'], password: options['password'], port: options['port']
