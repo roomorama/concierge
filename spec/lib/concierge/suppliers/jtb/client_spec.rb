@@ -47,7 +47,9 @@ RSpec.describe JTB::Client do
         quote = subject.quote(params)
         expect(quote).to be_a Result
         expect(quote).not_to be_success
-        expect(quote.error.data).to eq({ quote: "Maximum length of stay must be less than 15 nights." })
+        expect(quote.error.data).to eq(
+          "Maximum length of stay must be less than 15 nights."
+        )
       end
     end
   end

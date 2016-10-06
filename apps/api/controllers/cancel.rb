@@ -55,7 +55,7 @@ module API::Controllers
         self.body = API::Views::Cancel.render(exposures)
       else
         announce_error(cancellation_result)
-        error_message = cancellation_result.error.data || { cancellation: GENERIC_ERROR }
+        error_message = { cancellation: cancellation_result.error.data || GENERIC_ERROR }
         status 503, unsuccessful_response(error_message)
       end
     end
