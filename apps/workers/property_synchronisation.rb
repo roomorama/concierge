@@ -156,6 +156,7 @@ module Workers
     # for work done outside of #start.
     def new_context(identifier=nil)
       Concierge.context = Concierge::Context.new(type: "batch")
+      Rollbar.scope!(property_identifier: identifier)
 
       sync_process = Concierge::Context::SyncProcess.new(
         worker:     WORKER_TYPE,
