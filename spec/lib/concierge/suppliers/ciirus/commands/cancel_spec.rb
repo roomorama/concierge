@@ -50,6 +50,9 @@ RSpec.describe Ciirus::Commands::Cancel do
 
         expect(result.success?).to be false
         expect(result.error.code).to eq(:soap_error)
+        expect(result.error.data).to eq(
+          "(soap:Server) Server was unable to process request. ---> You do not have access to this booking"
+        )
       end
     end
   end
