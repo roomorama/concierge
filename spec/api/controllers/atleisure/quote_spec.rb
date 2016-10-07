@@ -34,15 +34,22 @@ RSpec.describe API::Controllers::AtLeisure::Quote do
       allow_any_instance_of(Concierge::JSONRPC).to receive(:request_id) { 888888888888 }
     end
 
-    ["atleisure/no_availability.json", "atleisure/no_price.json"].each do |fixture|
-      xit "returns a proper error message if return looks like fixture #{fixture}" do
-        stub_call(:post, endpoint) { [200, {}, jsonrpc_fixture(fixture)] }
-        response = parse_response(described_class.new.call(params))
+    it "returns a proper error message for no price response" do
+      stub_call(:post, endpoint) { [200, {}, jsonrpc_fixture("atleisure/no_price.json")] }
+      response = parse_response(described_class.new.call(params))
 
-        expect(response.status).to eq 503
-        expect(response.body["status"]).to eq "error"
-        expect(response.body["errors"]["quote"]).to eq "Could not quote price with remote supplier"
-      end
+      expect(response.status).to eq 503
+      expect(response.body["status"]).to eq "error"
+      expect(response.body["errors"]["quote"]).to eq "No price information could be retrieved. Searched fields `CorrectPrice` and `Price` and neither is given."
+    end
+
+    it "returns a proper error message for no availability response" do
+      stub_call(:post, endpoint) { [200, {}, jsonrpc_fixture("atleisure/no_availability.json")] }
+      response = parse_response(described_class.new.call(params))
+
+      expect(response.status).to eq 503
+      expect(response.body["status"]).to eq "error"
+      expect(response.body["errors"]["quote"]).to eq "Could not determine if the property was available. The `Available` field was not given or has an invalid value."
     end
 
     it "returns a proper error message for request only periods" do
