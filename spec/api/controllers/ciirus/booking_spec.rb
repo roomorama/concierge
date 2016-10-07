@@ -64,7 +64,7 @@ RSpec.describe API::Controllers::Ciirus::Booking do
     end
 
     context 'when xml contains error message' do
-      xit 'returns a result with error' do
+      it 'returns a result with error' do
         stub_call(method: Ciirus::Commands::Booking::OPERATION_NAME,
                   response: error_response)
 
