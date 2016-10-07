@@ -95,7 +95,7 @@ GEM
       rack
     raindrops (0.15.0)
     rake (10.5.0)
-    rollbar (2.12.0)
+    rollbar (2.13.3)
       multi_json
     rspec (3.4.0)
       rspec-core (~> 3.4.0)
@@ -157,7 +157,7 @@ DEPENDENCIES
   pg
   rack-handlers (~> 0.7)
   rake
-  rollbar (~> 2.8)
+  rollbar (~> 2.13.3)
   rspec (~> 3.4.0)
   sanitize (~> 4.0.1)
   savon

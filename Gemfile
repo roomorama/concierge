@@ -16,7 +16,7 @@ gem 'oauth2'
 
 gem 'yajl-ruby', '~> 1.2', require: 'yajl'
 gem 'savon'
-gem 'rollbar', '~> 2.8'
+gem 'rollbar', '~> 2.13.3'
 gem 'aws-sdk', '~> 2.3'
 gem 'whenever', '~> 0.9', require: false
 gem 'sanitize', '~> 4.0.1'
