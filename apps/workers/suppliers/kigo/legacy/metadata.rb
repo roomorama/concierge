@@ -156,6 +156,8 @@ end
 
 # listen supplier worker
 Concierge::Announcer.on("metadata.#{Kigo::Legacy::SUPPLIER_NAME}") do |host|
-  Workers::Suppliers::Kigo::Legacy::Metadata.new(host).perform
+  Rollbar.scoped(host: host_id) do
+    Workers::Suppliers::Kigo::Legacy::Metadata.new(host).perform
+  end
   Result.new({})
 end
