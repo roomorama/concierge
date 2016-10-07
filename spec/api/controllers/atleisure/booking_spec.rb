@@ -47,14 +47,14 @@ RSpec.describe API::Controllers::AtLeisure::Booking do
       expect(response.body["errors"]["booking"]).to eq "Could not create booking with remote supplier"
     end
 
-    xit "returns an error message with unrecognized response" do
+    it "returns an error message with unrecognized response" do
       unrecognized_response = jsonrpc_fixture("atleisure/unrecognized.json")
 
       stub_call(:post, endpoint) { [200, {}, unrecognized_response] }
 
       expect(response.status).to eq 503
       expect(response.body["status"]).to eq "error"
-      expect(response.body["errors"]["booking"]).to eq "Could not create booking with remote supplier"
+      expect(response.body["errors"]["booking"]).to eq "No booking information could be retrieved. Expected field `BookingNumber`"
     end
 
     it "creates external error record in database" do
