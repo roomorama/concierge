@@ -4,6 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.12.2] - 2016-10-07
+### Added
+- Host id and property id in kigo legacy sync process to Rollbar scope
+
 ## [0.12.1] - 2016-10-06
 ## Fixed
 - Kigo minimum stay is parsed from MIN_STAY_RULES
