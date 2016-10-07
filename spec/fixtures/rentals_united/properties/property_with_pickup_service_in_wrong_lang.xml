@@ -32,7 +32,7 @@
       <Phone>+79618492980</Phone>
       <DaysBeforeArrival>1</DaysBeforeArrival>
       <PickupService>
-        <Text LanguageID="1"><![CDATA[DetailsOfPickUpService]]></Text>
+        <Text LanguageID="2"><![CDATA[DetailsOfPickUpService]]></Text>
       </PickupService>
       <HowToArrive>
         <Text LanguageID="1"><![CDATA[HowToArriveDescription]]></Text>

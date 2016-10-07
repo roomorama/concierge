@@ -22,6 +22,7 @@ RSpec.describe RentalsUnited::Mappers::RoomoramaProperty do
       security_deposit_amount: 5.50,
       check_in_time:           "13:00-17:00",
       check_out_time:          "11:00",
+      check_in_instructions:   "Some instructions",
       floor:                   5,
       description:             "Test Description",
       images:                  [],
@@ -130,6 +131,10 @@ RSpec.describe RentalsUnited::Mappers::RoomoramaProperty do
 
   it "sets check_out_time to the property" do
     expect(property.check_out_time).to eq("11:00")
+  end
+
+  it "sets check_in_instructions to the property" do
+    expect(property.check_in_instructions).to eq("Some instructions")
   end
 
   it "sets currency to the property" do

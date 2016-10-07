@@ -34,9 +34,7 @@
       <PickupService>
         <Text LanguageID="1"><![CDATA[DetailsOfPickUpService]]></Text>
       </PickupService>
-      <HowToArrive>
-        <Text LanguageID="1"><![CDATA[HowToArriveDescription]]></Text>
-      </HowToArrive>
+      <HowToArrive></HowToArrive>
     </ArrivalInstructions>
     <CheckInOut>
       <CheckInFrom>13:00</CheckInFrom>
