@@ -221,3 +221,11 @@ collection :jtb_room_prices do
   attribute :date,         Date
   attribute :room_rate,    Float
 end
+
+collection :jtb_state do
+  entity     JTB::Entities::State
+  repository JTB::Repositories::StateRepository
+
+  attribute :prefix,    String
+  attribute :file_name, String
+end
