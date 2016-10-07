@@ -73,7 +73,7 @@ RSpec.describe API::Controllers::Ciirus::Quote do
     end
 
     context 'when xml contains error message' do
-      xit 'returns a result with error' do
+      it 'returns a result with error' do
         stub_call(method: Ciirus::Commands::QuoteFetcher::OPERATION_NAME,
                   response: error_response)
 
@@ -81,7 +81,7 @@ RSpec.describe API::Controllers::Ciirus::Quote do
 
         expect(response.status).to eq 503
         expect(response.body['status']).to eq 'error'
-        expect(response.body['errors']['quote']).to eq 'Could not quote price with remote supplier'
+        expect(response.body['errors']['quote']).to eq 'Some Error Here'
       end
     end
   end
