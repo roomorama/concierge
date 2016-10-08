@@ -24,9 +24,17 @@ module JTB
         end
       end
 
+      def self.by_primary_key(language, city_code, hotel_code)
+        query do
+          where(language: language)
+            .and(city_code: city_code)
+            .and(hotel_code: hotel_code)
+        end.first
+      end
+
       def self.upsert(attributes)
         HotelRepository.adapter.instance_variable_get("@connection")[
-          'insert into jtb_hotel
+          'insert into jtb_hotels
            (
              language,
              city_code,
@@ -76,7 +84,7 @@ module JTB
              :indoor_gym_charged,
              :outdoor_gym_free,
              :outdoor_gym_charged,
-             :wheelchair_access,
+             :wheelchair_access
            )
            on conflict (
              language,
@@ -106,18 +114,18 @@ module JTB
               wheelchair_access = :wheelchair_access
           ',
           attributes
-        ]
+        ].first
       end
 
       def self.delete(attributes)
         HotelRepository.adapter.instance_variable_get("@connection")[
-          'delete from jtb_hotel
+          'delete from jtb_hotels
            where language = :language
              and city_code = :city_code
              and hotel_code = :hotel_code
           ',
           attributes
-        ]
+        ].first
       end
     end
   end
