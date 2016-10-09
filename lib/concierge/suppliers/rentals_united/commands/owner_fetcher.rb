@@ -52,7 +52,8 @@ module RentalsUnited
           mapper = RentalsUnited::Mappers::Owner.new(owner_hash)
           mapper.build_owner
         else
-          Result.error(:owner_not_found)
+          desc = "Unknown owner with id `#{owner_id}`"
+          Result.error(:owner_not_found, desc)
         end
       end
     end

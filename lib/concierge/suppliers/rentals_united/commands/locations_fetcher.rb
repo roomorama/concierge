@@ -33,7 +33,7 @@ module RentalsUnited
         requested_locations = location_ids.map do |id|
           location = build_location(id, raw_locations)
 
-          return Result.error(:unknown_location) unless location
+          return unknown_location_error(id) unless location
 
           location
         end
@@ -84,6 +84,11 @@ module RentalsUnited
 
       def cache
         @_cache ||= Concierge::Cache.new(namespace: CACHE_PREFIX)
+      end
+
+      def unknown_location_error(location_id)
+        message = "Unknown location with id `#{location_id}`"
+        Result.error(:unknown_location, message)
       end
     end
   end
