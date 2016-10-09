@@ -27,7 +27,7 @@ module Poplidays
           available:           available?(quote),
         )
         if quotation.available
-          return Result.error(:unexpected_quote) unless quote.value['value']
+          return unexpected_quote_error unless quote.value['value']
 
           quotation.currency = CURRENCY
           quotation.total = calc_total(mandatory_services, quote)
@@ -43,6 +43,11 @@ module Poplidays
 
       def calc_total(mandaroty_services, quote)
         (quote.value['value'].to_f + mandaroty_services.to_f).round(2)
+      end
+
+      def unexpected_quote_error
+        desc = "Unexpected quote: empty response result['value'] from API"
+        Result.error(:unexpected_quote, desc)
       end
     end
   end
