@@ -19,6 +19,7 @@ RSpec.describe RentalsUnited::Commands::LocationsFetcher do
       result = subject.fetch_locations
       expect(result).not_to be_success
       expect(result.error.code).to eq(:unknown_location)
+      expect(result.error.data).to eq("Unknown location with id `9998`")
     end
   end
 
@@ -51,6 +52,7 @@ RSpec.describe RentalsUnited::Commands::LocationsFetcher do
         result = subject.fetch_locations
         expect(result).not_to be_success
         expect(result.error.code).to eq(:unknown_location)
+        expect(result.error.data).to eq("Unknown location with id `9999`")
       end
     end
   end
@@ -83,6 +85,7 @@ RSpec.describe RentalsUnited::Commands::LocationsFetcher do
         result = subject.fetch_locations
         expect(result).not_to be_success
         expect(result.error.code).to eq(:unknown_location)
+        expect(result.error.data).to eq("Unknown location with id `1505`")
       end
     end
   end
@@ -115,6 +118,7 @@ RSpec.describe RentalsUnited::Commands::LocationsFetcher do
         result = subject.fetch_locations
         expect(result).not_to be_success
         expect(result.error.code).to eq(:unknown_location)
+        expect(result.error.data).to eq("Unknown location with id `10351`")
       end
     end
   end
@@ -147,6 +151,7 @@ RSpec.describe RentalsUnited::Commands::LocationsFetcher do
         result = subject.fetch_locations
         expect(result).not_to be_success
         expect(result.error.code).to eq(:unknown_location)
+        expect(result.error.data).to eq("Unknown location with id `20`")
       end
     end
   end
@@ -176,6 +181,7 @@ RSpec.describe RentalsUnited::Commands::LocationsFetcher do
   context "when response from the api is not well-formed xml" do
     let(:location_ids) { ["1505"] }
     let(:subject) { described_class.new(credentials, location_ids) }
+    let(:expected_error_message) { "Error response could not be recognised (no `Status` tag in the response)" }
 
     it "returns a result with an appropriate error" do
       stub_data = read_fixture("rentals_united/bad_xml.xml")
@@ -185,11 +191,10 @@ RSpec.describe RentalsUnited::Commands::LocationsFetcher do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq(:unrecognised_response)
+      expect(result.error.data).to eq(expected_error_message)
 
       event = Concierge.context.events.last.to_h
-      expect(event[:message]).to eq(
-        "Error response could not be recognised (no `Status` tag in the response)"
-      )
+      expect(event[:message]).to eq(expected_error_message)
       expect(event[:backtrace]).to be_kind_of(Array)
       expect(event[:backtrace].any?).to be true
     end

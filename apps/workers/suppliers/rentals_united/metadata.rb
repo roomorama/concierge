@@ -49,7 +49,7 @@ module Workers::Suppliers::RentalsUnited
 
         unless location
           message = "Failed to find location with id `#{location_id}`"
-          announce_context_error(message, Result.error(:location_not_found))
+          announce_context_error(message, Result.error(:location_not_found, message))
           next
         end
 
@@ -57,7 +57,7 @@ module Workers::Suppliers::RentalsUnited
 
         unless location.currency
           message = "Failed to find currency for location with id `#{location_id}`"
-          announce_context_error(message, Result.error(:currency_not_found))
+          announce_context_error(message, Result.error(:currency_not_found, message))
           next
         end
 
@@ -239,6 +239,7 @@ module Workers::Suppliers::RentalsUnited
         operation:   'sync',
         supplier:    RentalsUnited::Client::SUPPLIER_NAME,
         code:        result.error.code,
+        description: result.error.data,
         context:     Concierge.context.to_h,
         happened_at: Time.now
       })
