@@ -35,6 +35,10 @@ module Kigo::Mappers
       set_beds_count
       set_amenities
       set_property_type
+
+      if pricing.get("MIN_STAY.MIN_STAY_RULES").nil?
+        return Result.error(:nil_min_stay_rules, pricing)
+      end
       set_price
       set_images
 
