@@ -139,7 +139,9 @@ RSpec.describe Waytostay::Client do
 
       it "should only send 1 post, book, when there're errors" do
         expect_any_instance_of(Concierge::OAuth2Client).to receive(:post).once.and_call_original
-        supplier_client.book(error_params_list.first)
+        result = supplier_client.book(error_params_list.first)
+        expect(result.error.code).to eq :unrecognised_response
+        expect(result.error.data).to eq "Missing keys: [\"booking_reference\"]"
       end
 
     end
