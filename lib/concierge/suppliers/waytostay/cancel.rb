@@ -23,7 +23,7 @@ module Waytostay
         Result.new(response.get("booking_reference"))
       else
         augment_missing_fields(missing_keys)
-        Result.error(:response_mismatch)
+        Result.error(:response_mismatch, "Missing keys: #{missing_keys}")
       end
 
     end

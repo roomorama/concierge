@@ -38,7 +38,7 @@ module Waytostay
         update_media_per_page(roomorama_property, next_page_path(response))
       else
         augment_missing_fields(missing_keys)
-        Result.error(:unrecognised_response)
+        Result.error(:unrecognised_response, "Missing keys: #{missing_keys}")
       end
     end
 
