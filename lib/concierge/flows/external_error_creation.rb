@@ -22,11 +22,9 @@ module Concierge::Flows
     def perform
       if valid?
         error = ExternalError.new(attributes)
-        record = database.create(error)
-
-        report_error(record) if record
-
-        record
+        database.create(error).tap do |record|
+          report_error(record) if record
+        end
       end
     end
 
