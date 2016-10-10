@@ -142,7 +142,7 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
   end
 
   it 'announces an error if fetching properties fails' do
-    allow_any_instance_of(Ciirus::Importer).to receive(:fetch_properties) { Result.error(:soap_error) }
+    allow_any_instance_of(Ciirus::Importer).to receive(:fetch_properties) { Result.error(:soap_error, 'test') }
 
     subject.perform
 
@@ -151,12 +151,13 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
     expect(error.operation).to eq 'sync'
     expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
     expect(error.code).to eq 'soap_error'
+    expect(error.description).to eq 'test'
   end
 
   context 'fetching permissions' do
     before do
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_properties) { success_result }
-      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_permissions) { Result.error(:soap_error) }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_permissions) { Result.error(:soap_error, 'test') }
     end
 
     it 'announces an error if fetching permissions fails' do
@@ -167,6 +168,7 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
       expect(error.operation).to eq 'sync'
       expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
       expect(error.code).to eq 'soap_error'
+      expect(error.description).to eq 'test'
     end
 
     it 'does not announce an error if permissions are invalid' do
@@ -204,6 +206,7 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
         expect(error.operation).to eq 'sync'
         expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
         expect(error.code).to eq 'soap_error'
+        expect(error.description).to eq error_message
       end
 
       it 'doesnt finalize synchronisation with external error' do
@@ -228,7 +231,7 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_properties) { success_result }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_permissions) { Result.new(permissions) }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_images) { Result.new(images) }
-      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_description) { Result.error(:soap_error) }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_description) { Result.error(:soap_error, 'test') }
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_rates) { Result.new(rates) }
     end
 
@@ -240,6 +243,7 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
       expect(error.operation).to eq 'sync'
       expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
       expect(error.code).to eq 'soap_error'
+      expect(error.description).to eq 'test'
     end
 
     it 'doesnt finalize synchronisation with external error' do
@@ -268,6 +272,7 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
         expect(error.operation).to eq 'sync'
         expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
         expect(error.code).to eq 'soap_error'
+        expect(error.description).to eq error_message
       end
 
       it 'doesnt finalize synchronisation with external error' do

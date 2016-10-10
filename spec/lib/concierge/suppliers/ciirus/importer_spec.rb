@@ -22,6 +22,7 @@ RSpec.describe Ciirus::Importer do
       expect(result).to be_a(Result)
       expect(result).to_not be_success
       expect(result.error.code).to eq :savon_error
+      expect(result.error.data).to be_nil
     end
   end
 

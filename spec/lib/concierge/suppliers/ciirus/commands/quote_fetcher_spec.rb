@@ -32,6 +32,7 @@ RSpec.describe Ciirus::Commands::QuoteFetcher do
 
         expect(result).not_to be_success
         expect(result.error.code).to eq :savon_error
+        expect(result.error.data).to be_nil
       end
     end
 
@@ -83,6 +84,7 @@ RSpec.describe Ciirus::Commands::QuoteFetcher do
 
         expect(result.success?).to be false
         expect(result.error.code).to eq(:not_empty_error_msg)
+        expect(result.error.data).to eq("Some Error Here")
       end
     end
   end
