@@ -54,7 +54,7 @@ RSpec.describe Workers::Suppliers::Ciirus::Availabilities do
 
   context 'fetching rates' do
     before do
-      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_rates) { Result.error(:soap_error) }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_rates) { Result.error(:soap_error, 'test') }
     end
 
     it 'announces an error if fetching rates fails' do
@@ -65,6 +65,7 @@ RSpec.describe Workers::Suppliers::Ciirus::Availabilities do
       expect(error.operation).to eq 'sync'
       expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
       expect(error.code).to eq 'soap_error'
+      expect(error.description).to eq 'test'
     end
 
     it 'doesnt finalize synchronisation with external error' do
@@ -76,7 +77,7 @@ RSpec.describe Workers::Suppliers::Ciirus::Availabilities do
   context 'fetching reservations' do
     before do
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_rates) { Result.new(rates) }
-      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_reservations) { Result.error(:soap_error) }
+      allow_any_instance_of(Ciirus::Importer).to receive(:fetch_reservations) { Result.error(:soap_error, 'test') }
     end
 
     it 'announces an error if fetching reservations fails' do
@@ -87,6 +88,7 @@ RSpec.describe Workers::Suppliers::Ciirus::Availabilities do
       expect(error.operation).to eq 'sync'
       expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
       expect(error.code).to eq 'soap_error'
+      expect(error.description).to eq 'test'
     end
 
     it 'doesnt finalize synchronisation with external error' do
