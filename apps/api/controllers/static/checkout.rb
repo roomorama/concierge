@@ -1,3 +1,5 @@
+require_relative "../internal_error"
+
 module API::Controllers::Static
 
   # API::Controllers::Static::Checkout
