@@ -129,22 +129,20 @@ RSpec.describe JTB::Sync::DB::HotelsActualizer do
     end
 
     context 'when there is some problem during some file actualization' do
+      let(:tmp_path) { Hanami.root.join('spec', 'fixtures', 'jtb', 'sync', 'hotels', 'transaction') }
 
-FOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-
-      let(:tmp_path) { Hanami.root.join('spec', 'fixtures', 'jtb', 'sync', 'hotels', 'delete') }
-
-      it 'delete the hotel' do
-        create_hotel(hotel_attributes)
-
+      it 'imports only files before invalid' do
         result = subject.actualize
-        expect(result.success?).to be true
+        expect(result.success?).to be false
 
         hotels = JTB::Repositories::HotelRepository.all
-        expect(hotels.length).to eq(0)
+        expect(hotels.length).to eq(1)
+
+        hotel = JTB::Repositories::HotelRepository.by_primary_key('EN', 'CHU', 'W05')
+        expect(hotel).not_to be_nil
 
         state = JTB::Repositories::StateRepository.by_prefix('HotelInfo')
-        expect(state.file_name).to eq('HotelInfo_Diff_20161003135626.zip')
+        expect(state.file_name).to eq('HotelInfo_Diff_20161003135625.zip')
       end
     end
 
