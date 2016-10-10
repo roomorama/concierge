@@ -11,6 +11,9 @@ how this file is formatted and how the process works.
 ### Added
 - Kigo min_stay validity check, returning an error Result if the promised MIN_STAY_RULES is not found
 
+### Chagned
+- Unavailable quotations are of status code 200
+
 ## [0.12.3] - 2016-10-07
 ### Fixed
 - KigoLegacy metadata worker typo
