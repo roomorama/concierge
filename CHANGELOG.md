@@ -10,9 +10,11 @@ how this file is formatted and how the process works.
 
 ### Added
 - Kigo min_stay validity check, returning an error Result if the promised MIN_STAY_RULES is not found
+- Rentals United: add arrival instructions to Roomorama::Property
 
 ### Chagned
 - Unavailable quotations are of status code 200
+- Rentals United: support caching for needed fetcher classes
 
 ## [0.12.3] - 2016-10-07
 ### Fixed
