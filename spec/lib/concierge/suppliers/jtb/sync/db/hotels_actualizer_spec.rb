@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 RSpec.describe JTB::Sync::DB::HotelsActualizer do
-  let(:tmp_path) { Hanami.root.join('spec', 'fixtures', 'jtb', 'sync', 'hotels') }
   let(:hotel_attributes) do
     {
       language: "EN",
@@ -34,8 +33,6 @@ RSpec.describe JTB::Sync::DB::HotelsActualizer do
   subject { described_class.new(tmp_path)}
 
   describe '#actualize' do
-    # transactionalable
-
     context 'when diff file is empty' do
       let(:tmp_path) { Hanami.root.join('spec', 'fixtures', 'jtb', 'sync', 'hotels', 'empty_diff') }
 

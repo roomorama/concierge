@@ -17,46 +17,6 @@ module JTB
         #                            Diff type (New, Updated, Deleted)
         #   entity - entity class
         SUPPORTED_FILES = {
-          'GenericMaster' => {
-            'columns_mapping' => {
-              0 => :language,
-              1 => :category,
-              3 => :id,
-              4 => :related_id,
-              5 => :name
-            },
-            'repository' => JTB::Repositories::LookupRepository,
-          },
-          'HotelInfo' => {
-            'columns_mapping' => {
-              0   => :language,
-              1   => :city_code,
-              2   => :hotel_code,
-              3   => :jtb_hotel_code,
-              6   => :hotel_name,
-              9   => :location_code,
-              10  => :hotel_description,
-              19  => :latitude,
-              20  => :longitude,
-              22  => :hotel_type,
-              24  => :address,
-              37  => :non_smoking_room,
-              71  => :parking,
-              108 => :internet,
-              112 => :wifi,
-              123 => :indoor_pool_free,
-              130 => :indoor_pool_charged,
-              137 => :outdoor_pool_free,
-              144 => :outdoor_pool_charged,
-              128 => :indoor_gym_free,
-              135 => :indoor_gym_charged,
-              142 => :outdoor_gym_free,
-              149 => :outdoor_gym_charged,
-              165 => :wheelchair_access
-            },
-            'repository' => JTB::Repositories::HotelRepository,
-            'update_category_index' => 280,
-          },
           'PictureMaster' => {
             'columns_mapping' => [
               0 => :language,
