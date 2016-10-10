@@ -97,6 +97,17 @@ RSpec.describe JTB::Sync::DB::HotelsActualizer do
     context 'when directory contains ALL file' do
       let(:tmp_path) { Hanami.root.join('spec', 'fixtures', 'jtb', 'sync', 'hotels', 'with_all') }
 
+      it 'imports the hotels from the file' do
+        result = subject.actualize
+        expect(result.success?).to be true
+
+        hotels = JTB::Repositories::HotelRepository.all
+        expect(hotels.length).to eq(5)
+
+        state = JTB::Repositories::StateRepository.by_prefix('HotelInfo')
+        expect(state.file_name).to eq('HotelInfo_ALL_20161003.zip')
+      end
+
       it 'clear table before actualisation' do
         create_hotel(hotel_attributes.merge({ language: 'QQ', city_code: 'QQQ', hotel_code: 'QQQ' }))
 
