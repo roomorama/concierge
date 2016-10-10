@@ -6,7 +6,7 @@ module JTB
       # Class responsible for actualizing DB JTB tables
       class BaseActualizer
 
-        CSV_DELIMETER = "\t"
+        CSV_DELIMITER = "\t"
 
         attr_reader :tmp_path
 
