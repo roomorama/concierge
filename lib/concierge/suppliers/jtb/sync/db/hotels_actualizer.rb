@@ -77,14 +77,14 @@ module JTB
         private
 
         def extract_update_category(line)
-          line.split(CSV_DELIMETER, -1)[UPDATE_CATEGORY_INDEX].to_i
+          line.split(CSV_DELIMITER, -1)[UPDATE_CATEGORY_INDEX].to_i
         end
 
         def build_attributes(line, columns_mapping)
           # Remove last \n from string
           line = line[0..-2]
 
-          splitted = line.split(CSV_DELIMETER, -1)
+          splitted = line.split(CSV_DELIMITER, -1)
 
           columns_mapping.map do |k, v|
             [v, splitted[k]]
@@ -94,7 +94,7 @@ module JTB
         def fetch_required_columns(line, indexes)
           # Remove last \n from string
           line = line[0..-2]
-          line.split(CSV_DELIMETER, -1).values_at(*indexes).join(CSV_DELIMETER) + "\n"
+          line.split(CSV_DELIMITER, -1).values_at(*indexes).join(CSV_DELIMITER) + "\n"
         end
       end
     end
