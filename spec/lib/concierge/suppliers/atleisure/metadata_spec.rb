@@ -16,7 +16,7 @@ RSpec.describe Workers::Suppliers::AtLeisure::Metadata do
   subject { described_class.new(host) }
 
   it 'announces an error if fetching properties fails' do
-    allow_any_instance_of(AtLeisure::Importer).to receive(:fetch_properties) { Result.error(:json_rpc_response_has_errors) }
+    allow_any_instance_of(AtLeisure::Importer).to receive(:fetch_properties) { Result.error(:json_rpc_response_has_errors, 'test') }
 
     subject.perform
 
@@ -25,12 +25,13 @@ RSpec.describe Workers::Suppliers::AtLeisure::Metadata do
     expect(error.operation).to eq 'sync'
     expect(error.supplier).to eq 'AtLeisure'
     expect(error.code).to eq 'json_rpc_response_has_errors'
+    expect(error.description).to eq 'test'
   end
 
   context 'fetching data' do
     before do
       allow_any_instance_of(AtLeisure::Importer).to receive(:fetch_properties) { success_result }
-      allow_any_instance_of(AtLeisure::Importer).to receive(:fetch_data) { Result.error(:invalid_json_rpc_response) }
+      allow_any_instance_of(AtLeisure::Importer).to receive(:fetch_data) { Result.error(:invalid_json_rpc_response, 'test') }
     end
 
     it 'announces an error if fetching data fails' do
@@ -41,6 +42,7 @@ RSpec.describe Workers::Suppliers::AtLeisure::Metadata do
       expect(error.operation).to eq 'sync'
       expect(error.supplier).to eq 'AtLeisure'
       expect(error.code).to eq 'invalid_json_rpc_response'
+      expect(error.description).to eq 'test'
     end
 
     it 'doesnt finalize synchronisation with external error' do
