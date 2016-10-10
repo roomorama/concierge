@@ -81,7 +81,7 @@ module Workers
     def start(identifier)
       new_context(identifier) do
         result = yield(self)
-        return Result.new(true) if skipped_properties.skipped?(identifier)
+        return result if skipped_properties.skipped?(identifier)
         finish_property_sync(result)
       end
     end
@@ -126,6 +126,14 @@ module Workers
     # Allows client to count skipped (not instant bookable, etc) properties during sync process,
     # skipped counter will be saved at the end of sync process.
     # start method ignores skipped properties.
+    # The method returns +Result(true)+ to allow developer to
+    # interrupt start's block with return like this:
+    #
+    # sync.start(property_id) do
+    #   details = importer.fetch_details(property_id)
+    #   return skip_property(property_id, 'On request only') if on_request_only?(details)
+    #   ...
+    # end
     #
     # Usage:
     #
@@ -139,6 +147,7 @@ module Workers
     #
     def skip_property(property_id, reason)
       skipped_properties.add(property_id, reason)
+      Result.new(true)
     end
 
     # Used to initialize a clean context for a property id.

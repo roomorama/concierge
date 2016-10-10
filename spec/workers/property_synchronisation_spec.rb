@@ -389,14 +389,18 @@ RSpec.describe Workers::PropertySynchronisation do
       create_property(host_id: host.id, identifier: "prop1", data: roomorama_property.to_h)
 
       # update
-      subject.start("prop1") {
+      result = subject.start("prop1") {
         subject.skip_property('prop1', 'Empty images')
       }
+      expect(result).to be_a Result
+      expect(result.success?).to be true
 
       # create
-      subject.start("prop4") {
+      result = subject.start("prop4") {
         subject.skip_property('prop4', 'Empty images')
       }
+      expect(result).to be_a Result
+      expect(result.success?).to be true
 
       expect {
         subject.finish!
