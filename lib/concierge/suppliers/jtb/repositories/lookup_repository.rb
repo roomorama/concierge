@@ -7,7 +7,7 @@ module JTB
       include Hanami::Repository
 
       def self.copy_csv_into
-        PictureRepository.adapter.instance_variable_get("@connection").copy_into(
+        LookupRepository.adapter.instance_variable_get("@connection").copy_into(
           :jtb_lookups,
           format: :csv,
           # Actually this is hack. We use quote symbol which (hopefully) never
@@ -41,6 +41,14 @@ module JTB
             .and(id: id)
             .and(language: 'EN')
             .limit(1)
+        end.first
+      end
+
+      def self.by_primary_key(language, category, id)
+        query do
+          where(language: language)
+            .and(category: category)
+            .and(id: id)
         end.first
       end
     end

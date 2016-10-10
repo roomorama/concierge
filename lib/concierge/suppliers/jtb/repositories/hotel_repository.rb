@@ -1,6 +1,6 @@
 module JTB
   module Repositories
-    # +RoomTypeRepository+
+    # +HotelRepository+
     #
     # Persistence operations and queries of the +jtb_hotels+ table.
     class HotelRepository
