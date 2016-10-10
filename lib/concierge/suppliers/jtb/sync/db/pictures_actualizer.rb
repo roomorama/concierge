@@ -1,42 +1,26 @@
 module JTB
   module Sync
     module DB
-      # +JTB::Sync::HotelsActualizer+
+      # +JTB::Sync::PicturesActualizer+
       #
-      # Class responsible for actualizing DB jtb_hotels table
-      class HotelsActualizer < BaseActualizer
+      # Class responsible for actualizing DB jtb_pictures table
+      class PicturesActualizer < BaseActualizer
 
-        FILE_PREFIX = 'HotelInfo'
+        FILE_PREFIX = 'PictureMaster'
 
         # mapping between CSV columns and DB table columns,
         MAPPING = {
-          0   => :language,
-          1   => :city_code,
-          2   => :hotel_code,
-          3   => :jtb_hotel_code,
-          6   => :hotel_name,
-          9   => :location_code,
-          10  => :hotel_description,
-          19  => :latitude,
-          20  => :longitude,
-          22  => :hotel_type,
-          24  => :address,
-          37  => :non_smoking_room,
-          71  => :parking,
-          108 => :internet,
-          112 => :wifi,
-          123 => :indoor_pool_free,
-          130 => :indoor_pool_charged,
-          137 => :outdoor_pool_free,
-          144 => :outdoor_pool_charged,
-          128 => :indoor_gym_free,
-          135 => :indoor_gym_charged,
-          142 => :outdoor_gym_free,
-          149 => :outdoor_gym_charged,
-          165 => :wheelchair_access
+          0 => :language,
+          1 => :city_code,
+          2 => :hotel_code,
+          3 => :sequence,
+          4 => :category,
+          5 => :room_code,
+          7 => :url,
+          8 => :comments
         }
 
-        UPDATE_CATEGORY_INDEX = 280
+        UPDATE_CATEGORY_INDEX = 10
 
         protected
 
@@ -73,7 +57,7 @@ module JTB
         end
 
         def repository
-          JTB::Repositories::HotelRepository
+          JTB::Repositories::PictureRepository
         end
 
         private

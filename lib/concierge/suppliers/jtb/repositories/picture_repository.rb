@@ -37,6 +37,64 @@ module JTB
             .and(room_code: room_code)
         end
       end
+
+      def self.by_primary_key(language, city_code, hotel_code, sequence)
+        query do
+          where(language: language)
+            .and(city_code: city_code)
+            .and(hotel_code: hotel_code)
+            .and(sequence: sequence)
+        end.first
+      end
+
+      def self.upsert(attributes)
+        PictureRepository.adapter.instance_variable_get("@connection")[
+          'insert into jtb_pictures
+           (
+             language,
+             city_code,
+             hotel_code,
+             sequence,
+             category,
+             room_code,
+             url,
+             comments
+           ) values (
+             :language,
+             :city_code,
+             :hotel_code,
+             :sequence,
+             :category,
+             :room_code,
+             :url,
+             :comments
+           )
+           on conflict (
+             language,
+             city_code,
+             hotel_code,
+             sequence
+           ) do update set
+              category = :category,
+              room_code = :room_code,
+              url = :url,
+              comments = :comments
+          ',
+          attributes
+        ].first
+      end
+
+      def self.delete(attributes)
+        PictureRepository.adapter.instance_variable_get("@connection")[
+          'delete from jtb_pictures
+           where language = :language
+             and city_code = :city_code
+             and hotel_code = :hotel_code
+             and sequence = :sequence
+          ',
+          attributes
+        ].first
+      end
     end
   end
 end
