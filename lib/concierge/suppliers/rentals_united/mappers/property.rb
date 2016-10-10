@@ -41,6 +41,7 @@ module RentalsUnited
           security_deposit_type:   security_deposit_type,
           check_in_time:           check_in_time,
           check_out_time:          check_out_time,
+          check_in_instructions:   check_in_instructions,
           floor:                   floor,
           description:             en_description(property_hash),
           images:                  build_images,
@@ -100,6 +101,39 @@ module RentalsUnited
 
       def check_out_time
         property_hash.get("CheckInOut.CheckOutUntil")
+      end
+
+      def check_in_instructions
+        info = property_hash.get("ArrivalInstructions")
+        return nil unless info
+
+        instructions = {}
+        simple_keys = %w(Landlord Email Phone DaysBeforeArrival)
+        localized_keys = %w(PickupService HowToArrive)
+
+        simple_keys.each do |key|
+          value = info.get(key)
+          instructions[key] = value if value
+        end
+
+        localized_keys.each do |key|
+          value = en_lang_field("ArrivalInstructions.#{key}")
+          instructions[key] = value if value
+        end
+
+        instructions.map { |key, value| "#{key}: #{value}" }.join("\n")
+      end
+
+      def en_lang_field(key)
+        multi_lang_values = property_hash.get(key)
+        en_value = Array(multi_lang_values).find do |field|
+          text = field["Text"]
+          next unless text
+
+          text.attributes["LanguageID"] == EN_DESCRIPTION_LANG_CODE
+        end
+
+        en_value["Text"] if en_value
       end
     end
   end

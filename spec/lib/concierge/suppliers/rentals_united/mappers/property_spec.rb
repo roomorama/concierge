@@ -81,6 +81,70 @@ RSpec.describe RentalsUnited::Mappers::Property do
       expect(property.security_deposit_amount).to eq(5.50)
     end
 
+    it "sets check in instuctions to the property" do
+      expect(property.check_in_instructions).to eq(
+        "Landlord: Ruslan Sharipov\nEmail: sharipov.reg@gmail.com\nPhone: +79618492980\nDaysBeforeArrival: 1\nPickupService: DetailsOfPickUpService\nHowToArrive: HowToArriveDescription"
+      )
+    end
+
+    context "when property does not have some parts of check_in_instructions" do
+      let(:file_name) { "rentals_united/properties/property_with_partial_check_in_instructions.xml" }
+
+      it "sets check in instuctions to contain only existing fields" do
+        expect(property.check_in_instructions).to eq(
+          "Landlord: Ruslan Sharipov\nDaysBeforeArrival: 1"
+        )
+      end
+    end
+
+    context "when property does not have check_in_instructions" do
+      let(:file_name) { "rentals_united/properties/property_without_check_in_instructions.xml" }
+
+      it "sets check in instuctions to be empty" do
+        expect(property.check_in_instructions).to eq("")
+      end
+    end
+
+    context "when property does not have pickup service instructions" do
+      let(:file_name) { "rentals_united/properties/property_without_pickup_service.xml" }
+
+      it "sets check in instuctions if some parts are missing" do
+        expect(property.check_in_instructions).to eq(
+          "Landlord: Ruslan Sharipov\nEmail: sharipov.reg@gmail.com\nPhone: +79618492980\nDaysBeforeArrival: 1\nHowToArrive: HowToArriveDescription"
+        )
+      end
+    end
+
+    context "when property have pickup service instructions in non-en lang" do
+      let(:file_name) { "rentals_united/properties/property_with_pickup_service_in_wrong_lang.xml" }
+
+      it "sets check in instuctions if some parts are missing" do
+        expect(property.check_in_instructions).to eq(
+          "Landlord: Ruslan Sharipov\nEmail: sharipov.reg@gmail.com\nPhone: +79618492980\nDaysBeforeArrival: 1\nHowToArrive: HowToArriveDescription"
+        )
+      end
+    end
+
+    context "when property does not have how to arrive instructions" do
+      let(:file_name) { "rentals_united/properties/property_without_how_to_arrive.xml" }
+
+      it "sets check in instuctions if some parts are missing" do
+        expect(property.check_in_instructions).to eq(
+          "Landlord: Ruslan Sharipov\nEmail: sharipov.reg@gmail.com\nPhone: +79618492980\nDaysBeforeArrival: 1\nPickupService: DetailsOfPickUpService"
+        )
+      end
+    end
+
+    context "when property have how to arrive instructions in non-en lang" do
+      let(:file_name) { "rentals_united/properties/property_with_how_to_arrive_in_wrong_lang.xml" }
+
+      it "sets check in instuctions if some parts are missing" do
+        expect(property.check_in_instructions).to eq(
+          "Landlord: Ruslan Sharipov\nEmail: sharipov.reg@gmail.com\nPhone: +79618492980\nDaysBeforeArrival: 1\nPickupService: DetailsOfPickUpService"
+        )
+      end
+    end
+
     context "when property is not active" do
       let(:file_name) { "rentals_united/properties/not_active.xml" }
 

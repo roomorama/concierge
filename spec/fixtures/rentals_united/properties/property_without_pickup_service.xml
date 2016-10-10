@@ -31,9 +31,7 @@
       <Email>sharipov.reg@gmail.com</Email>
       <Phone>+79618492980</Phone>
       <DaysBeforeArrival>1</DaysBeforeArrival>
-      <PickupService>
-        <Text LanguageID="1"><![CDATA[DetailsOfPickUpService]]></Text>
-      </PickupService>
+      <PickupService></PickupService>
       <HowToArrive>
         <Text LanguageID="1"><![CDATA[HowToArriveDescription]]></Text>
       </HowToArrive>
