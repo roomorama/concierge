@@ -172,7 +172,7 @@ module JTB
 
         private
 
-        CSV_DELIMETER = "\t"
+        CSV_DELIMITER = "\t"
 
         def save_state(file_path)
           file_name = File.basename(file_path).sub('csv', 'zip')
@@ -212,7 +212,7 @@ module JTB
         end
 
         def extract_update_category(line)
-          line.split(CSV_DELIMETER, -1)[update_category_index].to_i
+          line.split(CSV_DELIMITER, -1)[update_category_index].to_i
         end
 
         # Usual import algorithm.
@@ -287,7 +287,7 @@ module JTB
           # Remove last \n from string
           line = line[0..-2]
 
-          splitted = line.split(CSV_DELIMETER, -1)
+          splitted = line.split(CSV_DELIMITER, -1)
 
           columns_mapping.map do |k, v|
             [v, splitted[k]]
@@ -297,20 +297,20 @@ module JTB
         def fetch_required_columns(line, indexes)
           # Remove last \n from string
           line = line[0..-2]
-          line.split(CSV_DELIMETER, -1).values_at(*indexes).join(CSV_DELIMETER) + "\n"
+          line.split(CSV_DELIMITER, -1).values_at(*indexes).join(CSV_DELIMITER) + "\n"
         end
 
         def fetch_room_types_required_columns(line, indexes)
           # Remove last \n from string
           line = line[0..-2]
-          values = line.split(CSV_DELIMETER, -1)
+          values = line.split(CSV_DELIMITER, -1)
           required_columns = values.values_at(*indexes)
           # File contains 100 amenities columns with values '1', '0' and ''
           # let's join all amenities values in one
           compressed_amenities = values[23..122].map { |a| a.to_s.empty? ? ' ' : a.to_s }.join
           required_columns << compressed_amenities
 
-          required_columns.join(CSV_DELIMETER) + "\n"
+          required_columns.join(CSV_DELIMITER) + "\n"
         end
 
         # Returns next english line from file or nil
@@ -324,7 +324,7 @@ module JTB
         end
 
         def english?(line, language_column_index)
-          line.split(CSV_DELIMETER, -1)[language_column_index] == 'EN'
+          line.split(CSV_DELIMITER, -1)[language_column_index] == 'EN'
         end
       end
     end
