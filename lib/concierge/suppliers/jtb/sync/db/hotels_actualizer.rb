@@ -52,7 +52,9 @@ module JTB
 
         def import_diff_file(file_path)
           File.open(file_path) do |file|
-            repository.transaction do
+            # Use savepoint here to be sure of new transaction.
+            # Because by default Sequel will reuse an existing transaction
+            repository.transaction(rollback: :reraise, savepoint: true) do
               file.each_line do |line|
                 attributes = build_attributes(line, MAPPING)
                 update_category = extract_update_category(line)
@@ -84,7 +86,7 @@ module JTB
           # Remove last \n from string
           line = line[0..-2]
 
-          splitted = line.split(CSV_DELIMITER, -1)
+          splitted = line.split(CSV_DELIMITER, -1).map { |e| e.empty? ? nil : e }
 
           columns_mapping.map do |k, v|
             [v, splitted[k]]
