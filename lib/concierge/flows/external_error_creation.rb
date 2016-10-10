@@ -22,7 +22,11 @@ module Concierge::Flows
     def perform
       if valid?
         error = ExternalError.new(attributes)
-        database.create(error)
+        record = database.create(error)
+
+        report_error(record) if record
+
+        record
       end
     end
 
@@ -37,6 +41,17 @@ module Concierge::Flows
 
     def database
       @database ||= Concierge::OptionalDatabaseAccess.new(ExternalErrorRepository)
+    end
+
+    def report_error(error)
+      Rollbar.error(
+        error.description,
+        external_error_id: error.id,
+        code:              error.code,
+        operation:         error.operation,
+        supplier:          error.supplier,
+        happened_at:       error.happened_at
+      )
     end
   end
 
