@@ -17,20 +17,6 @@ module JTB
         #                            Diff type (New, Updated, Deleted)
         #   entity - entity class
         SUPPORTED_FILES = {
-          'PictureMaster' => {
-            'columns_mapping' => [
-              0 => :language,
-              1 => :city_code,
-              2 => :hotel_code,
-              3 => :sequence,
-              4 => :category,
-              5 => :room_code,
-              7 => :url,
-              8 => :comments
-            ],
-            'repository' => JTB::Repositories::PictureRepository,
-            'update_category_index' => 10,
-          },
           'RoomPlan' => {
             'columns_mapping' => [
               1 => :city_code,
