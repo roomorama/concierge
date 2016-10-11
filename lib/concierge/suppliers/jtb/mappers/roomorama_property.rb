@@ -25,21 +25,16 @@ module JTB
       # Maps JTB data to +Roomorama::Property+
       # Arguments
       #
-      #   * +property+ [Ciirus::Entities::Property]
-      #   * +images+ [Array] array of images URLs
-      #   * +rates+ [Array] array of Ciirus::Entities::PropertyRate
-      #   * +description+ [String]
-      #   * +security_deposit+ [Ciirus::Entities::Extra] security deposit info
-      #                                                  can be nil
+      #   * +hotel+ [JTB::Entities::Hotel]
       # Returns +Roomorama::Property+
-      def build(hotel, pictures, rooms)
+      def build(hotel)
         property = Roomorama::Property.new(hotel.jtb_hotel_code)
         property.instant_booking!
         property.multi_unit!
 
         set_base_info!(property, hotel)
-        set_images!(property, pictures)
-        set_units!(property, rooms)
+        set_images!(property, hotel)
+        set_units!(property, hotel)
         set_rates!(property)
 
         error_code = validate(property)
@@ -118,7 +113,9 @@ module JTB
         end
       end
 
-      def set_images!(result, pictures)
+      def set_images!(result, hotel)
+        pictures = JTB::Repositories::PictureRepository.hotel_english_images(hotel.city_code, hotel.hotel_code)
+
         build_images(pictures).each do |image|
           result.add_image(image)
         end
@@ -136,7 +133,9 @@ module JTB
         end
       end
 
-      def set_units!(result, rooms)
+      def set_units!(result, hotel)
+        rooms = JTB::Repositories::RoomTypeRepository.hotel_english_rooms(hotel.city_code, hotel.hotel_code)
+
         rooms.each do |room|
           u_id = JTB::UnitId.from_jtb_codes(room.room_type_code, room.room_code)
           unit = Roomorama::Unit.new(u_id.unit_id)

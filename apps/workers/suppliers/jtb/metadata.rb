@@ -20,173 +20,37 @@ module Workers::Suppliers::JTB
     end
 
     def perform
-      begin
-        # synchronisation.new_context do
-        #   files_fetcher.fetch_files
-        # end
-
-        # db_importer.import
-        hotels = JTB::Repositories::HotelRepository.english_ryokans
-
-        hotels.each do |hotel|
-          pictures = JTB::Repositories::PictureRepository.hotel_english_images(hotel.city_code, hotel.hotel_code)
-          rooms = JTB::Repositories::RoomTypeRepository.hotel_english_rooms(hotel.city_code, hotel.hotel_code)
-          result = mapper.build(hotel, pictures, rooms)
-
-          if !result.success? && SKIPABLE_ERROR_CODES.include?(result.error.code)
-            synchronisation.skip_property(hotel.jtb_hotel_code, result.error.code)
-            next
-          end
-
-          synchronisation.start(hotel.jtb_hotel_code) do
-            result
-          end
-        end
-        synchronisation.finish!
-      ensure
-        # db_importer.cleanup
-        # files_fetcher.cleanup
+      result = synchronisation.new_context do
+        actualizer.actualize
       end
 
+      return unless result.success?
 
-      # if result.success?
-      #   properties = result.value
-      #   properties.each do |property|
-      #     property_id = property.property_id
-      #     if validator(property).valid?
-      #       permissions = synchronisation.new_context(property_id) do
-      #         fetch_permissions(property_id)
-      #       end
-      #       next unless permissions.success?
-      #
-      #       unless permissions_validator(permissions.value).valid?
-      #         synchronisation.skip_property(property_id, 'Invalid permissions')
-      #         next
-      #       end
-      #
-      #       # Rates are needed for a property. Skip (and purge) properties that
-      #       # has no rates or has error when retrieving rates.
-      #       result = fetch_rates(property_id)
-      #       next unless result.success?
-      #
-      #       rates  = filter_rates(result.value)
-      #       if rates.empty?
-      #         synchronisation.skip_property(property_id, 'Empty valid rates list')
-      #         next
-      #       end
-      #
-      #       result = fetch_images(property_id)
-      #       next unless result.success?
-      #       images = result.value
-      #
-      #       result = fetch_description(property_id)
-      #       next unless result.success?
-      #       description = result.value
-      #       if description.to_s.empty?
-      #         synchronisation.skip_property(property_id, 'Empty description')
-      #         next
-      #       end
-      #
-      #       synchronisation.start(property_id) do
-      #
-      #         result = fetch_security_deposit(property_id)
-      #         security_deposit = result.success? ? result.value : nil
-      #
-      #         roomorama_property = mapper.build(property, images, rates, description, security_deposit)
-      #         Result.new(roomorama_property)
-      #       end
-      #     else
-      #       synchronisation.skip_property(property_id, 'Invalid property')
-      #     end
-      #   end
-      #   synchronisation.finish!
-      # else
-      #   synchronisation.failed!
-      #   message = 'Failed to perform the `#fetch_properties` operation'
-      #   announce_error(message, result)
-      # end
+      hotels = JTB::Repositories::HotelRepository.english_ryokans
+
+      hotels.each do |hotel|
+        result = mapper.build(hotel)
+
+        if !result.success? && SKIPABLE_ERROR_CODES.include?(result.error.code)
+          synchronisation.skip_property(hotel.jtb_hotel_code, result.error.code)
+          next
+        end
+
+        synchronisation.start(hotel.jtb_hotel_code) do
+          result
+        end
+      end
+      synchronisation.finish!
     end
 
     private
 
-    def rate_validator(rate, today)
-      Ciirus::Validators::RateValidator.new(rate, today)
-    end
-
-    def filter_rates(rates)
-      today = Date.today
-      rates.select { |r| rate_validator(r, today).valid? }
-    end
-
-    def report_error(message)
-      yield.tap do |result|
-        augment_context_error(message) unless result.success?
-      end
-    end
-
-    def fetch_images(property_id)
-      importer.fetch_images(property_id).tap do |result|
-        unless result.success?
-          if ignorable_images_error?(result.error)
-            synchronisation.skip_property(property_id, "Ignorable images error: #{result.error.data}")
-          else
-            message = "Failed to fetch images for property `#{property_id}`"
-            announce_error(message, result)
-          end
-        end
-      end
-    end
-
-    def fetch_description(property_id)
-      importer.fetch_description(property_id).tap do |result|
-        message = "Failed to fetch description for property `#{property_id}`"
-        announce_error(message, result) unless result.success?
-      end
-    end
-
-    def fetch_rates(property_id)
-      importer.fetch_rates(property_id).tap do |result|
-        unless result.success?
-          if ignorable_rates_error?(result.error)
-            synchronisation.skip_property(property_id, "Ignorable rates error: #{result.error.data}")
-          else
-            message = "Failed to fetch rates for property `#{property_id}`"
-            announce_error(message, result)
-          end
-        end
-      end
-    end
-
-    def fetch_permissions(property_id)
-      importer.fetch_permissions(property_id).tap do |result|
-        message = "Failed to fetch permissions for property `#{property_id}`"
-        announce_error(message, result) unless result.success?
-      end
-    end
-
-    def fetch_security_deposit(property_id)
-      message = "Failed to fetch security deposit info for property `#{property_id}`. " \
-            "But continue to sync the property as well as security deposit is optional information."
-      report_error(message) do
-        importer.fetch_security_deposit(property_id)
-      end
+    def actualizer
+      @actualizer ||= ::JTB::Sync::Actualizer.new(credentials)
     end
 
     def mapper
       @mapper ||= ::JTB::Mappers::RoomoramaProperty.new
-    end
-
-    def importer
-      @importer ||= ::Ciirus::Importer.new(credentials)
-    end
-
-    def validator(property)
-      Ciirus::Validators::PropertyValidator.new(property)
-    end
-
-
-    def permissions_validator(permissions)
-      Ciirus::Validators::PermissionsValidator.new(permissions)
     end
 
     def credentials
