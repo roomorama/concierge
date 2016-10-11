@@ -10,6 +10,42 @@ module Concierge::Flows
   class ExternalErrorCreation
     include Hanami::Validations
 
+    # Notifies exception tracker
+    class ErrorReporter
+      attr_reader :ext_error
+
+      def initialize(ext_error)
+        @ext_error = ext_error
+      end
+
+      def report
+        Rollbar.error(error_message, custom_attributes)
+      end
+
+      private
+      def error_message
+        "#{error_message_prefix}: #{error_message_body}"
+      end
+
+      def custom_attributes
+        {
+          external_error_id: ext_error.id,
+          code:              ext_error.code,
+          operation:         ext_error.operation,
+          supplier:          ext_error.supplier,
+          happened_at:       ext_error.happened_at
+        }
+      end
+
+      def error_message_prefix
+        [ext_error.supplier, ext_error.operation, ext_error.code].join(" ")
+      end
+
+      def error_message_body
+        ext_error.description[0..100]
+      end
+    end
+
     attribute :operation,   presence: true, inclusion: ExternalError::OPERATIONS
     attribute :supplier,    presence: true
     attribute :code,        presence: true
@@ -23,7 +59,7 @@ module Concierge::Flows
       if valid?
         error = ExternalError.new(attributes)
         database.create(error).tap do |record|
-          report_error(record) if record
+          ErrorReporter.new(record).report if record
         end
       end
     end
@@ -39,17 +75,6 @@ module Concierge::Flows
 
     def database
       @database ||= Concierge::OptionalDatabaseAccess.new(ExternalErrorRepository)
-    end
-
-    def report_error(error)
-      Rollbar.error(
-        error.description,
-        external_error_id: error.id,
-        code:              error.code,
-        operation:         error.operation,
-        supplier:          error.supplier,
-        happened_at:       error.happened_at
-      )
     end
   end
 
