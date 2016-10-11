@@ -27,16 +27,12 @@
       <Longitude>73.2965942999999</Longitude>
     </Coordinates>
     <ArrivalInstructions>
-      <Landlord>Ruslan Sharipov</Landlord>
-      <Email>sharipov.reg@gmail.com</Email>
-      <Phone>+79618492980</Phone>
-      <DaysBeforeArrival>1</DaysBeforeArrival>
-      <PickupService>
-        <Text LanguageID="1"><![CDATA[DetailsOfPickUpService]]></Text>
-      </PickupService>
-      <HowToArrive>
-        <Text LanguageID="1"><![CDATA[HowToArriveDescription]]></Text>
-      </HowToArrive>
+      <Landlord></Landlord>
+      <Email></Email>
+      <Phone></Phone>
+      <DaysBeforeArrival></DaysBeforeArrival>
+      <PickupService></PickupService>
+      <HowToArrive></HowToArrive>
     </ArrivalInstructions>
     <CheckInOut>
       <CheckInFrom>13:00</CheckInFrom>

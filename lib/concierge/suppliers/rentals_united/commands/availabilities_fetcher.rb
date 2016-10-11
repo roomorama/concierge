@@ -12,6 +12,10 @@ module RentalsUnited
       ROOT_TAG = "Pull_ListPropertyAvailabilityCalendar_RS"
       YEARS_COUNT_TO_FETCH = 1
 
+      CACHE_PREFIX   = "rentalsunited"
+      CACHE_KEY_PREFIX = "availabilities"
+      CACHE_DURATION = 24 * 60 * 60 # 24 hours
+
       # Initialize +AvailabilitiesFetcher+ command.
       #
       # Arguments
@@ -36,25 +40,47 @@ module RentalsUnited
       # Returns a +Result+ wrapping +Array+ of +Entities::Availability+
       # Returns a +Result+ with +Result::Error+ when operation fails
       def fetch_availabilities
-        payload = payload_builder.build_availabilities_fetch_payload(
-          property_id,
-          date_from,
-          date_to
-        )
-        result = http.post(credentials.url, payload, headers)
-
+        result = fetch_availabilities_static_data
         return result unless result.success?
 
-        result_hash = response_parser.to_hash(result.value.body)
-
-        if valid_status?(result_hash, ROOT_TAG)
-          Result.new(build_availabilities(result_hash))
-        else
-          error_result(result_hash, ROOT_TAG)
-        end
+        result_hash = response_parser.to_hash(result.value)
+        Result.new(build_availabilities(result_hash))
       end
 
       private
+      def cache_key
+        "#{CACHE_KEY_PREFIX}-#{property_id}"
+      end
+
+      def with_cache(key, freshness:)
+        cache.fetch(key, freshness: freshness) { yield }
+      end
+
+      def cache
+        @_cache ||= Concierge::Cache.new(namespace: CACHE_PREFIX)
+      end
+
+      def fetch_availabilities_static_data
+        with_cache(cache_key, freshness: CACHE_DURATION) do
+          payload = payload_builder.build_availabilities_fetch_payload(
+            property_id,
+            date_from,
+            date_to
+          )
+          result = http.post(credentials.url, payload, headers)
+
+          return result unless result.success?
+
+          result_hash = response_parser.to_hash(result.value.body)
+
+          if valid_status?(result_hash, ROOT_TAG)
+            Result.new(result.value.body)
+          else
+            error_result(result_hash, ROOT_TAG)
+          end
+        end
+      end
+
       def date_from
         Time.now.strftime("%Y-%m-%d")
       end
