@@ -15,8 +15,6 @@ module Workers::Suppliers::JTB
     def initialize(host)
       @host            = host
       @synchronisation = Workers::PropertySynchronisation.new(host)
-      @files_fetcher = JTB::FilesFetcher.new(credentials)
-      @db_importer = JTB::DBImporter.new(tmp_path)
     end
 
     def perform
