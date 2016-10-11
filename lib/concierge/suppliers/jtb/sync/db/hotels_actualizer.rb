@@ -38,6 +38,10 @@ module JTB
 
         UPDATE_CATEGORY_INDEX = 280
 
+        def file_prefix
+          FILE_PREFIX
+        end
+
         protected
 
         def import_file(file_path)
@@ -66,10 +70,6 @@ module JTB
               end
             end
           end
-        end
-
-        def file_prefix
-          FILE_PREFIX
         end
 
         def repository
