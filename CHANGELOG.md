@@ -4,7 +4,7 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
-## Unreleased
+## [0.12.4] - 2016-10-11
 ### Fixed
 - uninitialized constant `API::Controllers::InternalError` for ubuntu 16.04
 
