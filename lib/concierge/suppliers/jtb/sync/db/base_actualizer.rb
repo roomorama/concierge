@@ -24,7 +24,22 @@ module JTB
       #  * error_result - to add error details
       #  * import_diff_file - if there are diff files for the table
       #
-      # Usage examples can be found in descendant's docs.
+      # It is highly desirable that all descendant implement each file import in
+      # transaction, to avoid situation when only part of file imported.
+      #
+      # Usage:
+      #
+      # class HotelsActualizer < BaseActualizer
+      #   ...
+      # end
+      #
+      # hotels_actualizer = HotelsActualizer.new(tmp_path)
+      # result = hotels_actualizer.actualize
+      #
+      # if result.success?
+      #   JTB::Repositories::HotelRepository.all # all hotels from files
+      # end
+      #
       class BaseActualizer
 
         CSV_DELIMITER = "\t"

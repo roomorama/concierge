@@ -2,42 +2,31 @@ module JTB
   module Sync
     # +JTB::Actualizer+
     # Class responsible for actualizing all data required to run JTB sync workers.
+    #
+    # It fetches required CSV files from JTB server and imports them to DB.
+    # Interrupt the process and return unsuccess result if error occurs during some table actualization.
     class Actualizer
 
       attr_reader :credentials
 
       def initialize(credentials)
         @credentials = credentials
+        @db_actualizers = [
+          DB::HotelsActualizer.new(tmp_path),
+          DB::LookupsActualizer.new(tmp_path),
+          DB::PicturesActualizer.new(tmp_path),
+          DB::RatePlansActualizer.new(tmp_path),
+          DB::RoomPricesActualizer.new(tmp_path),
+          DB::RoomStocksActualizer.new(tmp_path),
+          DB::RoomTypesActualizer.new(tmp_path)
+        ]
       end
 
       def actualize
-        hotels_actualizer = DB::HotelsActualizer.new(tmp_path)
-        result = actualize_table(hotels_actualizer)
-        return result unless result.success?
-
-        lookups_actualizer = DB::LookupsActualizer.new(tmp_path)
-        result = actualize_table(lookups_actualizer)
-        return result unless result.success?
-
-        pictures_actualizer = DB::PicturesActualizer.new(tmp_path)
-        result = actualize_table(pictures_actualizer)
-        return result unless result.success?
-
-        rate_plans_actualizer = DB::RatePlansActualizer.new(tmp_path)
-        result = actualize_table(rate_plans_actualizer)
-        return result unless result.success?
-
-        room_prices_actualizer = DB::RoomPricesActualizer.new(tmp_path)
-        result = actualize_table(room_prices_actualizer)
-        return result unless result.success?
-
-        room_stocks_actualizer = DB::RoomStocksActualizer.new(tmp_path)
-        result = actualize_table(room_stocks_actualizer)
-        return result unless result.success?
-
-        room_types_actualizer = DB::RoomTypesActualizer.new(tmp_path)
-        result = actualize_table(room_types_actualizer)
-        return result unless result.success?
+        @db_actualizers.each do |db_actualizer|
+          result = actualize_table(db_actualizer)
+          return result unless result.success?
+        end
 
         Result.new(true)
       end
