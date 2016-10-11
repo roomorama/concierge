@@ -57,7 +57,7 @@ module Ciirus
         error_msg = result_hash.get('get_extras_response.get_extras_result.error_msg')
         message = "The response contains not empty ErrorMsg: `#{error_msg}`"
         mismatch(message, caller)
-        Result.error(:not_empty_error_msg, error_msg)
+        Result.error(:not_empty_error_msg)
       end
     end
   end

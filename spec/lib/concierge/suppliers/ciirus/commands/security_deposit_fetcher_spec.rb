@@ -98,10 +98,8 @@ RSpec.describe Ciirus::Commands::SecurityDepositFetcher do
         result = subject.call(property_id)
 
         expect(result.success?).to be false
-        expect(result.error.code).to eq :not_empty_error_msg
-        expect(result.error.data).to eq("GetExtras: You do not have access rights to this Property (2).")
+        expect(result.error.code).to eq(:not_empty_error_msg)
       end
     end
   end
 end
-
