@@ -18,7 +18,7 @@ module JTB
         #   entity - entity class
         SUPPORTED_FILES = {
           'RoomStock' => {
-            'columns_mapping' => [
+            'columns_mapping' => {
               0 => :language,
               1 => :hotel_code,
               2 => :option_plan_id,
@@ -27,7 +27,7 @@ module JTB
               5 => :closing_date,
               6 => :sale_status,
               7 => :reservation_closing_date,
-            ],
+            },
             'repository' => JTB::Repositories::RoomStockRepository,
             'update_category_index' => 8,
           },
