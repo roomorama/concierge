@@ -2,7 +2,15 @@ require 'spec_helper'
 
 RSpec.describe JTB::XMLBuilder do
 
-  let(:credentials) { double(id: 'some id', user: 'Roberto', password: '123', company: 'Apple', url: 'https://trial-www.jtbgenesis.com/genesis2-demo/services') }
+  let(:credentials) do
+    {
+      'id' => 'some id',
+      'user' => 'Roberto',
+      'password' => '123',
+      'company' => 'Apple',
+      'url' => 'https://trial-www.jtbgenesis.com/genesis2-demo/services'
+    }
+  end
   subject { described_class.new(credentials) }
 
   describe '#quote_price' do
@@ -14,10 +22,10 @@ RSpec.describe JTB::XMLBuilder do
     it { expect(message.first).to be_a Nokogiri::XML::Element }
 
     context 'credentials' do
-      it { expect(attribute_for(message, 'RequestorID', 'ID')).to eq credentials.id }
-      it { expect(attribute_for(message, 'RequestorID', 'UserName')).to eq credentials.user }
-      it { expect(attribute_for(message, 'RequestorID', 'MessagePassword')).to eq credentials.password }
-      it { expect(attribute_for(message, 'CompanyName', 'Code')).to eq credentials.company }
+      it { expect(attribute_for(message, 'RequestorID', 'ID')).to eq credentials['id'] }
+      it { expect(attribute_for(message, 'RequestorID', 'UserName')).to eq credentials['user'] }
+      it { expect(attribute_for(message, 'RequestorID', 'MessagePassword')).to eq credentials['password'] }
+      it { expect(attribute_for(message, 'CompanyName', 'Code')).to eq credentials['company'] }
     end
 
     context 'parameters' do

@@ -45,7 +45,7 @@ module JTB
     end
 
     def builder
-      XMLBuilder.new(credentials)
+      XMLBuilder.new(credentials.api)
     end
 
     def remote_call(message)
@@ -61,7 +61,7 @@ module JTB
     end
 
     def options
-      endpoint = [credentials.url, ENDPOINT].join('/')
+      endpoint = [credentials.api['url'], ENDPOINT].join('/')
       {
         wsdl:                 endpoint + '?wsdl',
         env_namespace:        :soapenv,
