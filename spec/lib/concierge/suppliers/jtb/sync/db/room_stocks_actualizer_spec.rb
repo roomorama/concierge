@@ -138,6 +138,24 @@ RSpec.describe JTB::Sync::DB::RoomStocksActualizer do
       end
     end
 
+    context 'when directory contains ALL and Diff files' do
+      let(:tmp_path) { Hanami.root.join('spec', 'fixtures', 'jtb', 'sync', 'room_stocks', 'all_and_diff') }
+
+      it 'imports all data' do
+        result = subject.actualize
+        expect(result.success?).to be true
+
+        room_stocks = JTB::Repositories::RoomStockRepository.all
+        expect(room_stocks.length).to eq(10)
+
+        room_stock = JTB::Repositories::RoomStockRepository.by_primary_key('CHU', 'W01', 'CHUHW0101TRP1DBL', '20160601')
+        expect(room_stock.number_of_units).to eq(1)
+
+        state = JTB::Repositories::StateRepository.by_prefix('RoomStock')
+        expect(state.file_name).to eq('RoomStock_Diff_20161010013225.zip')
+      end
+    end
+
     def create_room_stock(attributes)
       JTB::Repositories::RoomStockRepository.create(
         JTB::Entities::RoomStock.new(attributes)

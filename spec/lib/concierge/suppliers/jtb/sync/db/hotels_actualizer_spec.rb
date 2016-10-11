@@ -154,6 +154,24 @@ RSpec.describe JTB::Sync::DB::HotelsActualizer do
       end
     end
 
+    context 'when directory contains ALL and Diff files' do
+      let(:tmp_path) { Hanami.root.join('spec', 'fixtures', 'jtb', 'sync', 'hotels', 'all_and_diff') }
+
+      it 'imports all data' do
+        result = subject.actualize
+        expect(result.success?).to be true
+
+        hotels = JTB::Repositories::HotelRepository.all
+        expect(hotels.length).to eq(5)
+
+        hotel = JTB::Repositories::HotelRepository.by_primary_key('EN', 'CHU', 'W01')
+        expect(hotel.hotel_name).to eq('Hotel Nikko HimejiXXX')
+
+        state = JTB::Repositories::StateRepository.by_prefix('HotelInfo')
+        expect(state.file_name).to eq('HotelInfo_Diff_20161003135627.zip')
+      end
+    end
+
     def create_hotel(attributes)
       JTB::Repositories::HotelRepository.create(
         JTB::Entities::Hotel.new(attributes)
