@@ -17,17 +17,6 @@ module JTB
         #                            Diff type (New, Updated, Deleted)
         #   entity - entity class
         SUPPORTED_FILES = {
-          'RoomPrice' => {
-            'columns_mapping' => [
-              0 => :city_code,
-              1 => :hotel_code,
-              2 => :rate_plan_id,
-              3 => :date,
-              4 => :room_rate
-            ],
-            'repository' => JTB::Repositories::RoomPriceRepository,
-            'update_category_index' => 21,
-          },
           'RoomStock' => {
             'columns_mapping' => [
               0 => :language,
