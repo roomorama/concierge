@@ -36,7 +36,6 @@ module Kigo::Mappers
 
       pricing_mapper = PricingSetup.new(payload['PROP_RATE'], pricing)
       return Result.error(:no_prices_provided) unless pricing_mapper.valid?
-      return Result.error(:invalid_min_stay, pricing) unless pricing_mapper.min_stay_valid?
 
       set_price(pricing_mapper)
       set_images
