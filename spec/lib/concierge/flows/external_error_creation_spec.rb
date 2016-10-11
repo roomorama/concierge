@@ -65,7 +65,7 @@ RSpec.describe Concierge::Flows::ExternalErrorCreation do
     end
 
     it "pushes error to Rollbar" do
-      expect(Rollbar).to receive(:error)
+      expect(Rollbar).to receive(:warning)
 
       expect {
         subject.perform
