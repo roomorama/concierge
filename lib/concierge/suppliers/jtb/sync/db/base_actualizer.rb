@@ -30,7 +30,7 @@ module JTB
           end
           Result.new(true)
         rescue => e
-          Result.error(:error_during_jtb_db_actualisation)
+          error_result
         end
 
         def file_prefix
@@ -38,6 +38,10 @@ module JTB
         end
 
         protected
+
+        def error_result
+          Result.error(:error_during_jtb_db_actualization)
+        end
 
         def import_file(file_path)
           raise NotImplementedError
