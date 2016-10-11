@@ -11,23 +11,29 @@ module Workers::Suppliers::JTB
     end
 
     def perform
-      properties = synced_properties
-
-      properties.each do |property|
-
-        synchronisation.start(property.identifier) do
-
-          calendar = Roomorama::Calendar.new(property.identifier)
-          units = Array(property.data['units'])
-          units.each do |unit|
-            calendar_result = mapper.build(unit['identifier'])
-            return calendar_result unless calendar_result.success?
-            calendar.add_unit(calendar_result.value)
-          end
-          Result.new(calendar)
-        end
+      result = synchronisation.new_context do
+        actualizer.actualize
       end
-      synchronisation.finish!
+
+      if result.success?
+        properties = synced_properties
+
+        properties.each do |property|
+
+          synchronisation.start(property.identifier) do
+
+            calendar = Roomorama::Calendar.new(property.identifier)
+            units = Array(property.data['units'])
+            units.each do |unit|
+              calendar_result = mapper.build(unit['identifier'])
+              return calendar_result unless calendar_result.success?
+              calendar.add_unit(calendar_result.value)
+            end
+            Result.new(calendar)
+          end
+        end
+        synchronisation.finish!
+      end
     end
 
     private
