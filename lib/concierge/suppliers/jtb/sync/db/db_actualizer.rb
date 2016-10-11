@@ -17,22 +17,8 @@ module JTB
         #                            Diff type (New, Updated, Deleted)
         #   entity - entity class
         SUPPORTED_FILES = {
-          'RoomStock' => {
-            'columns_mapping' => {
-              0 => :language,
-              1 => :hotel_code,
-              2 => :option_plan_id,
-              3 => :service_date,
-              4 => :number_of_units,
-              5 => :closing_date,
-              6 => :sale_status,
-              7 => :reservation_closing_date,
-            },
-            'repository' => JTB::Repositories::RoomStockRepository,
-            'update_category_index' => 8,
-          },
           'RoomType' => {
-            'columns_mapping' => [
+            'columns_mapping' => {
               0  => :language,
               1  => :city_code,
               2  => :hotel_code,
@@ -50,7 +36,7 @@ module JTB
               18 => :size4,
               19 => :size5,
               20 => :size6,
-            ],
+            },
             'repository' => JTB::Repositories::RoomTypeRepository,
             'update_category_index' => 123,
           }
