@@ -4,7 +4,7 @@ RSpec.describe JTB::Sync::DB::RoomStocksActualizer do
   let(:room_stock_attributes) do
     {
       city_code: "CHU",
-      hotel_code: "W01",
+        hotel_code: "W01",
       rate_plan_id: "CHUHW0101TRP1DBL",
       service_date: "20160601",
       number_of_units: "0",
@@ -55,7 +55,7 @@ RSpec.describe JTB::Sync::DB::RoomStocksActualizer do
     context 'when diff file contains update update_category' do
       let(:tmp_path) { Hanami.root.join('spec', 'fixtures', 'jtb', 'sync', 'room_stocks', 'update') }
 
-      it 'updates hotel' do
+      it 'updates room stock' do
         create_room_stock(room_stock_attributes)
         create_room_stock(room_stock_attributes.merge({hotel_code: 'W02' }))
 
@@ -106,7 +106,7 @@ RSpec.describe JTB::Sync::DB::RoomStocksActualizer do
     context 'when diff file contains delete update_category' do
       let(:tmp_path) { Hanami.root.join('spec', 'fixtures', 'jtb', 'sync', 'room_stocks', 'delete') }
 
-      it 'delete the hotel' do
+      it 'delete the room stock' do
         create_room_stock(room_stock_attributes)
 
         result = subject.actualize
