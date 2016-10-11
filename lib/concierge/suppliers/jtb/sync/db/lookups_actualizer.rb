@@ -21,6 +21,10 @@ module JTB
           5 => :name
         }
 
+        def file_prefix
+          FILE_PREFIX
+        end
+
         protected
 
         def import_file(file_path)
@@ -31,10 +35,6 @@ module JTB
               fetch_required_columns(line, indexes) if line
             end
           end
-        end
-
-        def file_prefix
-          FILE_PREFIX
         end
 
         def repository
