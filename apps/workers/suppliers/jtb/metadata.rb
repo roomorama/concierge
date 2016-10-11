@@ -24,23 +24,28 @@ module Workers::Suppliers::JTB
         actualizer.actualize
       end
 
-      return unless result.success?
+      if result.success?
 
-      hotels = JTB::Repositories::HotelRepository.english_ryokans
+        hotels = JTB::Repositories::HotelRepository.english_ryokans
 
-      hotels.each do |hotel|
-        result = mapper.build(hotel)
+        hotels.each do |hotel|
+          result = mapper.build(hotel)
 
-        if !result.success? && SKIPABLE_ERROR_CODES.include?(result.error.code)
-          synchronisation.skip_property(hotel.jtb_hotel_code, result.error.code)
-          next
+          if !result.success? && SKIPABLE_ERROR_CODES.include?(result.error.code)
+            synchronisation.skip_property(hotel.jtb_hotel_code, result.error.code)
+            next
+          end
+
+          synchronisation.start(hotel.jtb_hotel_code) do
+            result
+          end
         end
-
-        synchronisation.start(hotel.jtb_hotel_code) do
-          result
-        end
+        synchronisation.finish!
+      else
+        synchronisation.failed!
+        message = 'Failed to perform full actualization of DB'
+        announce_error(message, result)
       end
-      synchronisation.finish!
     end
 
     private
