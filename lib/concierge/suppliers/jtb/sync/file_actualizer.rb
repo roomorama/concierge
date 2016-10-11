@@ -25,7 +25,7 @@ module JTB
 
         close
         Result.new(true)
-      rescue Object => e
+      rescue => e
         begin
           shutdown
         rescue ::Exception
@@ -33,8 +33,16 @@ module JTB
         end
         Result.error(
           :actualize_file_error,
-          "Error during actualizing files with prefix #{file_prefix}"
+          "Error during actualizing files with prefix `#{file_prefix}`"
         )
+      end
+
+      def cleanup
+        path = Dir.glob(File.join(options['tmp_path'], "#{file_prefix}*"))
+        FileUtils.rm_rf(path)
+        Result.new(true)
+      rescue => e
+        Result.error(:jtb_file_cleanup_error, "Error during cleaning up files with prefix `#{file_prefix}`")
       end
 
       private
@@ -70,11 +78,6 @@ module JTB
         end
 
         Result.new(files + fetch_diffs_after(time))
-      end
-
-      def cleanup
-        path = Dir.glob(File.join(options['tmp_path'], "#{file_prefix}*"))
-        FileUtils.rm_rf(path)
       end
 
       # Should be closed with close or shutdown method

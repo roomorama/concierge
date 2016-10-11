@@ -29,8 +29,12 @@ module JTB
             save_state(file_path)
           end
           Result.new(true)
-        rescue Object => e
+        rescue => e
           Result.error(:error_during_jtb_db_actualisation)
+        end
+
+        def file_prefix
+          raise NotImplementedError
         end
 
         protected
@@ -40,10 +44,6 @@ module JTB
         end
 
         def import_diff_file(file_path)
-          raise NotImplementedError
-        end
-
-        def file_prefix
           raise NotImplementedError
         end
 
