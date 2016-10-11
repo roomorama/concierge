@@ -136,6 +136,24 @@ RSpec.describe JTB::Sync::DB::RatePlansActualizer do
       end
     end
 
+    context 'when directory contains ALL and Diff files' do
+      let(:tmp_path) { Hanami.root.join('spec', 'fixtures', 'jtb', 'sync', 'rate_plans', 'all_and_diff') }
+
+      it 'imports all data' do
+        result = subject.actualize
+        expect(result.success?).to be true
+
+        rate_plans = JTB::Repositories::RatePlanRepository.all
+        expect(rate_plans.length).to eq(6)
+
+        rate_plan = JTB::Repositories::RatePlanRepository.by_primary_key('CHU', 'W01', 'CHUHW0101STD1DBL')
+        expect(rate_plan.occupancy).to eq('2')
+
+        state = JTB::Repositories::StateRepository.by_prefix('RoomPlan')
+        expect(state.file_name).to eq('RoomPlan_Diff_20161010013225.zip')
+      end
+    end
+
     def create_rate_plan(attributes)
       JTB::Repositories::RatePlanRepository.create(
         JTB::Entities::RatePlan.new(attributes)

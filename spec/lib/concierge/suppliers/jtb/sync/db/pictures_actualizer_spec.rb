@@ -138,6 +138,24 @@ RSpec.describe JTB::Sync::DB::PicturesActualizer do
       end
     end
 
+    context 'when directory contains ALL and Diff files' do
+      let(:tmp_path) { Hanami.root.join('spec', 'fixtures', 'jtb', 'sync', 'pictures', 'all_and_diff') }
+
+      it 'imports all data' do
+        result = subject.actualize
+        expect(result.success?).to be true
+
+        pictures = JTB::Repositories::PictureRepository.all
+        expect(pictures.length).to eq(7)
+
+        picture = JTB::Repositories::PictureRepository.by_primary_key('EN', 'CHU', 'W01', 1)
+        expect(picture.url).to eq('GMTGEWEB01/CHUW01/X64400131000000063.jpg')
+
+        state = JTB::Repositories::StateRepository.by_prefix('PictureMaster')
+        expect(state.file_name).to eq('PictureMaster_Diff_20161010100830.zip')
+      end
+    end
+
     def create_picture(attributes)
       JTB::Repositories::PictureRepository.create(
         JTB::Entities::Picture.new(attributes)
