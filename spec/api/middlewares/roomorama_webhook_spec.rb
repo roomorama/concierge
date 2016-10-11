@@ -165,9 +165,9 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
 
     it "returns the upstream (Concierge) response if there was an error quoting the booking" do
       concierge_response[:status] = "error"
-      response = concierge_response.to_json
+      concierge_response[:errors] = {"quote" => "Maximum length of stay must be less than 15 nights."}
 
-      expect(post("/", headers)).to eq [200, { "Content-Length" => response.size.to_s }, response]
+      expect(post("/", headers)).to eq webhook_response_payload(total: 150, currency: "EUR", errors: concierge_response[:errors])
     end
   end
 

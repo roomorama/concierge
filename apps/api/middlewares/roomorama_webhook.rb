@@ -173,8 +173,6 @@ module API
         # On success, it changes the price fields of the initial webhook payload
         # to include those quoted by Concierge.
         def quote(status, headers, response)
-          available = (response["status"] == "ok" && response["available"] == true)
-
           payload["inquiry"].merge!({
             "base_rental"            => response["total"],
             "currency_code"          => response["currency"],
@@ -188,11 +186,13 @@ module API
             "total"                  => response["total"]
           })
 
-          payload["inquiry"].merge!({
-            "errors" => {
-              "base" => "room unavailable"
-            }
-          }) unless available
+          unless response["status"] != "ok" || response["available"]
+            payload["inquiry"]["errors"] = { "base" => "room unavailable" }
+          end
+
+          if response["status"] == "error" && response["errors"]
+            payload["inquiry"]["errors"] = response["errors"]
+          end
 
           [status, headers, [json_encode(payload)]]
         end
