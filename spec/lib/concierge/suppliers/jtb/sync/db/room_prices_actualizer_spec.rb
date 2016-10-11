@@ -135,6 +135,24 @@ RSpec.describe JTB::Sync::DB::RoomPricesActualizer do
       end
     end
 
+    context 'when directory contains ALL and Diff files' do
+      let(:tmp_path) { Hanami.root.join('spec', 'fixtures', 'jtb', 'sync', 'room_prices', 'all_and_diff') }
+
+      it 'imports all data' do
+        result = subject.actualize
+        expect(result.success?).to be true
+
+        room_prices = JTB::Repositories::RoomPriceRepository.all
+        expect(room_prices.length).to eq(10)
+
+        room_price = JTB::Repositories::RoomPriceRepository.by_primary_key('CHU', 'W01', 'CHUHW0101TRP1DBL', '20160601')
+        expect(room_price.room_rate).to eq(21200.0)
+
+        state = JTB::Repositories::StateRepository.by_prefix('RoomPrice')
+        expect(state.file_name).to eq('RoomPrice_Diff_20161010101502.zip')
+      end
+    end
+
     def create_room_price(attributes)
       JTB::Repositories::RoomPriceRepository.create(
         JTB::Entities::RoomPrice.new(attributes)

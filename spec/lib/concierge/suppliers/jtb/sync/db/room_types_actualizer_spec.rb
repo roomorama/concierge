@@ -151,6 +151,24 @@ RSpec.describe JTB::Sync::DB::RoomTypesActualizer do
       end
     end
 
+    context 'when directory contains ALL and Diff files' do
+      let(:tmp_path) { Hanami.root.join('spec', 'fixtures', 'jtb', 'sync', 'room_types', 'all_and_diff') }
+
+      it 'imports all data' do
+        result = subject.actualize
+        expect(result.success?).to be true
+
+        room_types = JTB::Repositories::RoomTypeRepository.all
+        expect(room_types.length).to eq(13)
+
+        room_type = JTB::Repositories::RoomTypeRepository.by_primary_key('EN', 'CHU', 'W01', 'CHUHW01RM0000001')
+        expect(room_type.amenities).to eq(room_type_attributes[:amenities][0..-2] + '1')
+
+        state = JTB::Repositories::StateRepository.by_prefix('RoomType')
+        expect(state.file_name).to eq('RoomType_Diff_20161010013225.zip')
+      end
+    end
+
     def create_room_type(attributes)
       JTB::Repositories::RoomTypeRepository.create(
         JTB::Entities::RoomType.new(attributes)
