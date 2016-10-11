@@ -29,15 +29,14 @@ module Workers::Suppliers::JTB
         hotels = JTB::Repositories::HotelRepository.english_ryokans
 
         hotels.each do |hotel|
-          result = mapper.build(hotel)
-
-          if !result.success? && SKIPABLE_ERROR_CODES.include?(result.error.code)
-            synchronisation.skip_property(hotel.jtb_hotel_code, result.error.code)
-            next
-          end
-
           synchronisation.start(hotel.jtb_hotel_code) do
-            result
+            result = mapper.build(hotel)
+
+            if !result.success? && SKIPABLE_ERROR_CODES.include?(result.error.code)
+              synchronisation.skip_property(hotel.jtb_hotel_code, result.error.code)
+            else
+              result
+            end
           end
         end
         synchronisation.finish!
