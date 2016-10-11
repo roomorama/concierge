@@ -174,7 +174,6 @@ module API
         # to include those quoted by Concierge.
         def quote(status, headers, response)
           available = (response["status"] == "ok" && response["available"] == true)
-          return [200, headers, [json_encode(response)]] unless available
 
           payload["inquiry"].merge!({
             "base_rental"            => response["total"],
@@ -188,6 +187,12 @@ module API
             "subtotal"               => response["total"],
             "total"                  => response["total"]
           })
+
+          payload["inquiry"].merge!({
+            "errors" => {
+              "base" => "room unavailable"
+            }
+          }) unless available
 
           [status, headers, [json_encode(payload)]]
         end

@@ -155,14 +155,12 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
     }
 
     it "returns a modified webhook with the correct information on success" do
-      expect(post("/", headers)).to eq success_payload(total: 150, currency: "EUR")
+      expect(post("/", headers)).to eq webhook_response_payload(total: 150, currency: "EUR")
     end
 
     it "returns the upstream (Concierge) response if the property is unavailable" do
       concierge_response[:available] = false
-      response = concierge_response.to_json
-
-      expect(post("/", headers)).to eq [200, { "Content-Length" => response.size.to_s }, response]
+      expect(post("/", headers)).to eq webhook_response_payload(total: 150, currency: "EUR", errors: {"base"=> "room unavailable"})
     end
 
     it "returns the upstream (Concierge) response if there was an error quoting the booking" do
@@ -236,50 +234,54 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
     [422, { "Content-Length" => "15" }, "Invalid webhook"]
   end
 
-  def success_payload(total:, currency:)
+  def webhook_response_payload(total:, currency:, errors: nil)
     response = {
       "action"  => "quote_instant",
       "event"   => "quote_instant",
-      "inquiry" => {
-        "id"                     => "12345",
-        "flow"                   => "instant_booking",
-        "base_rental"            => total,
-        "check_in"               => "2016-04-05",
-        "check_out"              => "2016-04-08",
-        "currency_code"          => currency,
-        "currency_symbol"        => "US$",
-        "num_guests"             => 1,
-        "extra_guests_surcharge" => 0,
-        "processing_fee"         => 0,
-        "roomorama_fee"          => 462,
-        "state"                  => "guest_to_pay",
-        "tax"                    => 0,
-        "subtotal"               => total,
-        "total"                  => total,
-        "updated_at"             => "2014-10-14T03:51:58Z",
-        "created_at"             => "2014-10-14T03:51:58Z",
-        "url"                    => "https://www.roomorama.com/host/inquiries/12345",
-        "room" => {
-          "id"          => 123789,
-          "property_id" => "710387083",
-          "unit_id"     => "JP32",
-          "url"         => "https://www.roomorama.com/rooms/241364"
-        },
-        "user" => {
-          "id"  => 123456,
-          "url" => "https://www.roomorama.com/users/123456"
-        },
-        "host" => {
-          "id"  => 12345,
-          "url" => "https://www.roomorama.com/users/12345"
-        },
-        "net_rate"               => total,
-        "host_fee"               => 0,
-        "host_fee_percentage"    => 0
-      }
+      "inquiry" => inquiry_json(total:total, currency:currency, errors:errors),
     }.to_json
 
     [200, { "Content-Length" => response.size.to_s }, response]
+  end
+
+  def inquiry_json(total:, currency:, errors:nil)
+    {
+      "id"                     => "12345",
+      "flow"                   => "instant_booking",
+      "base_rental"            => total,
+      "check_in"               => "2016-04-05",
+      "check_out"              => "2016-04-08",
+      "currency_code"          => currency,
+      "currency_symbol"        => "US$",
+      "num_guests"             => 1,
+      "extra_guests_surcharge" => 0,
+      "processing_fee"         => 0,
+      "roomorama_fee"          => 462,
+      "state"                  => "guest_to_pay",
+      "tax"                    => 0,
+      "subtotal"               => total,
+      "total"                  => total,
+      "updated_at"             => "2014-10-14T03:51:58Z",
+      "created_at"             => "2014-10-14T03:51:58Z",
+      "url"                    => "https://www.roomorama.com/host/inquiries/12345",
+      "room" => {
+        "id"          => 123789,
+        "property_id" => "710387083",
+        "unit_id"     => "JP32",
+        "url"         => "https://www.roomorama.com/rooms/241364"
+      },
+      "user" => {
+        "id"  => 123456,
+        "url" => "https://www.roomorama.com/users/123456"
+      },
+      "host" => {
+        "id"  => 12345,
+        "url" => "https://www.roomorama.com/users/12345"
+      },
+      "net_rate"               => total,
+      "host_fee"               => 0,
+      "host_fee_percentage"    => 0
+    }.tap { |inq| inq["errors"] = errors if errors }
   end
 
   def get(path, headers = {})
