@@ -19,7 +19,7 @@ module Concierge::Flows
       end
 
       def report
-        Rollbar.error(error_message, custom_attributes)
+        Rollbar.warning(error_message, custom_attributes)
       end
 
       private
