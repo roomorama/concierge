@@ -186,7 +186,7 @@ module API
             "total"                  => response["total"]
           })
 
-          unless response["status"] != "ok" || response["available"]
+          if response["status"] == "ok" && !response["available"]
             payload["inquiry"]["errors"] = { "base" => "room unavailable" }
           end
 
