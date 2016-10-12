@@ -35,6 +35,36 @@ module JTB
         end.first
       end
 
+      # Standart Hanami's create  and update can not work with entities which have
+      # id column as not primary key.
+      def self.upsert(attributes)
+        LookupRepository.adapter.instance_variable_get("@connection")[
+          'insert into jtb_lookups
+         (
+           language,
+           category,
+           id,
+           related_id,
+           name
+         ) values (
+           :language,
+           :category,
+           :id,
+           :related_id,
+           :name
+         )
+         on conflict (
+           language,
+           category,
+           id
+         ) do update set
+            related_id = :related_id,
+            name = :name
+        ',
+          attributes
+        ].first
+      end
+
       def self.room_grade(id)
         query do
           where(category: '4')
