@@ -11,6 +11,10 @@ module Web::Views::ExternalErrors
   class Index
     include Web::View
 
+    # Make +Hanami::Helpers::EscapeHelper#escape_html+ public
+    # and available from templates
+    public :h
+
     # Receives an instance of +ExternalError+ and formats the
     # +happened_at+ column for display.
     def format_time(error)
@@ -22,6 +26,12 @@ module Web::Views::ExternalErrors
     def error_link(error)
       name = ["#", error.id].join
       link_to name, routes.error_path(error.id)
+    end
+
+    # receives an instance of +ExternalError+ and creates truncated version
+    # of its description
+    def error_description(error)
+      h(error.description.to_s[0...200])
     end
 
     # next page link

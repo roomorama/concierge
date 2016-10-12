@@ -59,6 +59,7 @@ RSpec.describe Workers::CalendarSynchronisation do
         expect(error.operation).to eq  "sync"
         expect(error.supplier).to eq "Supplier A"
         expect(error.code).to eq "missing_data"
+        expect(error.description).to eq "Calendar validation error: One of the entries miss required parameters."
 
         context = error.context
         expect(context[:version]).to eq  Concierge::VERSION
@@ -73,12 +74,13 @@ RSpec.describe Workers::CalendarSynchronisation do
       end
 
       it "announces an error if the calendar to be processed with the supplier" do
-        subject.start("prop1") { Result.error(:http_status_404) }
+        subject.start("prop1") { Result.error(:http_status_404, "description") }
 
         error = ExternalErrorRepository.last
         expect(error.operation).to eq "sync"
         expect(error.supplier).to eq "Supplier A"
         expect(error.code).to eq "http_status_404"
+        expect(error.description).to eq "description"
 
         context = error.context
         expect(context[:version]).to eq Concierge::VERSION
@@ -105,6 +107,9 @@ RSpec.describe Workers::CalendarSynchronisation do
         expect(error.operation).to eq "sync"
         expect(error.supplier).to eq "Supplier A"
         expect(error.code).to eq "http_status_422"
+        expect(error.description).to eq(
+          "{\"status\":\"error\",\"errors\":{\"start_date\":\"not a valid date\"}}\n"
+        )
         expect(error.context[:type]).to eq "batch"
         types = error.context[:events].map { |h| h["type"] }
         expect(types).to eq ["sync_process", "network_request", "network_response"]

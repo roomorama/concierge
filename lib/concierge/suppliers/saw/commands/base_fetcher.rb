@@ -46,16 +46,16 @@ module SAW
         end
       end
 
-      def error_result(hash)
-        code = hash.get("response.errors.error.code")
-        description = hash.get("response.errors.error.description")
+      def error_result(parsed_hash, original_response)
+        code = parsed_hash.get("response.errors.error.code")
+        description = parsed_hash.get("response.errors.error.description")
 
         if code && description
           augment_with_error(code, description, caller)
-          Result.error(code)
+          Result.error(code, description)
         else
           unrecognised_response_event(caller)
-          Result.error(:unrecognised_response)
+          Result.error(:unrecognised_response, original_response)
         end
       end
 

@@ -134,7 +134,7 @@ module Concierge
       if SUCCESSFUL_STATUSES.include?(response.status)
         Result.new(response)
       else
-        Result.error(:"http_status_#{response.status}")
+        Result.error(:"http_status_#{response.status}", response.body)
       end
 
     rescue Faraday::TimeoutError => err
@@ -142,7 +142,7 @@ module Concierge
       Result.error(:connection_timeout)
     rescue Faraday::ConnectionFailed => err
       announce_error(err)
-      Result.error(:connection_failed)
+      Result.error(:connection_failed, response)
     rescue Faraday::SSLError => err
       announce_error(err)
       Result.error(:ssl_error)
