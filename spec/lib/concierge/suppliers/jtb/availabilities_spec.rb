@@ -25,6 +25,17 @@ RSpec.describe Workers::Suppliers::JTB::Availabilities do
       }
     )
   end
+  let(:unit_calendar) do
+    Roomorama::Calendar.new('unit1').tap do |calendar|
+      calendar.add(
+        Roomorama::Calendar::Entry.new(
+          date: Date.today,
+          available: true,
+          nightly_rate: 100
+        )
+      )
+    end
+  end
 
   subject { described_class.new(host) }
 
@@ -52,11 +63,10 @@ RSpec.describe Workers::Suppliers::JTB::Availabilities do
       it 'creates valid properties in database' do
         allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
         allow_any_instance_of(JTB::Mappers::UnitCalendar).to receive(:build) do
-          Result.new(Roomorama::Calendar.new('unit1'))
+          Result.new(unit_calendar)
         end
-        expect {
-          subject.perform
-        }.to change { PropertyRepository.count }.by(1)
+        expect(subject.synchronisation).to receive(:run_operation)
+        subject.perform
       end
     end
   end
