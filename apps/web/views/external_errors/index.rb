@@ -31,7 +31,7 @@ module Web::Views::ExternalErrors
     # receives an instance of +ExternalError+ and creates truncated version
     # of its description
     def error_description(error)
-      h(error.description[0...200])
+      h(error.description.to_s[0...200])
     end
 
     # next page link

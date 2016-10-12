@@ -24,7 +24,9 @@ module Concierge::Flows
 
       private
       def error_message
-        "#{error_message_prefix}: #{error_message_body}"
+        message = error_message_prefix
+        message += ": #{error_message_body}" unless error_message_body.empty?
+        message
       end
 
       def custom_attributes
@@ -42,7 +44,7 @@ module Concierge::Flows
       end
 
       def error_message_body
-        ext_error.description[0..100]
+        ext_error.description.to_s[0..100]
       end
     end
 

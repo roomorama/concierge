@@ -65,11 +65,27 @@ RSpec.describe Concierge::Flows::ExternalErrorCreation do
     end
 
     it "pushes error to Rollbar" do
-      expect(Rollbar).to receive(:warning)
+      expect(Rollbar).to receive(:warning).with(
+        "SupplierA quote http_error: detailed description", any_args
+      )
 
       expect {
         subject.perform
       }.not_to raise_error
+    end
+
+    context "when error description is nil" do
+      it "pushes error to Rollbar" do
+        parameters.delete(:description)
+
+        expect(Rollbar).to receive(:warning).with(
+          "SupplierA quote http_error", any_args
+        )
+
+        expect {
+          subject.perform
+        }.not_to raise_error
+      end
     end
   end
 end
