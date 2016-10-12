@@ -21,8 +21,12 @@ RSpec.describe JTB::Mappers::RoomoramaProperty do
     create_rate_plan
     create_room_stock
     create_room_stock({ service_date: '2016-10-11' })
+    create_room_stock({ service_date: '2016-10-12', number_of_units: 0 })
+    create_room_stock({ service_date: '2016-10-13', sale_status: '0' })
     create_room_price
     create_room_price({ date: '2016-10-11', room_rate: 9010.0 })
+    create_room_price({ date: '2016-10-12', room_rate: 8010.0 })
+    create_room_price({ date: '2016-10-13', room_rate: 7010.0 })
 
     result = subject.build(hotel)
 
