@@ -46,13 +46,42 @@ RSpec.describe Roomorama::Calendar do
   end
 
   describe "#empty?" do
-    it "is empty if no calendar entries are added" do
-      expect(subject).to be_empty
+    context "non multiunit property's calendar" do
+      it "is empty if no calendar entries are added" do
+        expect(subject).to be_empty
+      end
+
+      it "is not empty if at least one calendar entry is added" do
+        subject.add(entry)
+        expect(subject).not_to be_empty
+      end
     end
 
-    it "is not empty if at least one calendar entry is added" do
-      subject.add(entry)
-      expect(subject).not_to be_empty
+    context "multiunit property's calendar" do
+      it "is empty if all units' calendars are not empty" do
+        unit_calendar = described_class.new('unit1')
+        subject.add_unit(unit_calendar)
+
+        expect(subject).to be_empty
+      end
+
+      it "is not empty if at least one unit's calendar is not empty" do
+        unit_calendar1 = described_class.new('unit1').tap do |calendar|
+          calendar.add(
+            Roomorama::Calendar::Entry.new(
+              date: Date.today,
+              available: true,
+              nightly_rate: 100
+            )
+          )
+        end
+        subject.add_unit(unit_calendar1)
+
+        unit_calendar2 = described_class.new('unit2')
+        subject.add_unit(unit_calendar2)
+
+        expect(subject).not_to be_empty
+      end
     end
   end
 
