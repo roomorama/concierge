@@ -12,11 +12,17 @@ module JTB
       #   * +unit_id+ [String] roomorama unit id of JTB room
       # Returns +Roomorama::Calendar+
       def build(unit_id)
-        Roomorama::Calendar.new(unit_id).tap do |calendar|
-          build_entries(unit_id).each do |entry|
+        entries = build_entries(unit_id)
+
+        return entries unless entries.success?
+
+        calendar = Roomorama::Calendar.new(unit_id).tap do |calendar|
+          entries.value.each do |entry|
             calendar.add(entry)
           end
         end
+
+        Result.new(calendar)
       end
 
       private
@@ -25,13 +31,16 @@ module JTB
         u_id = JTB::UnitId.from_roomorama_unit_id(unit_id)
         room = JTB::Repositories::RoomTypeRepository.by_code(u_id.room_code)
 
+        # Room not found. Next metadata sync will remove the unit.
+        return Result.error(:unknown_room, "Can not sync calendar for unknown unit #{unit_id}") unless room
+
         rate_plans = JTB::Repositories::RatePlanRepository.room_rate_plans(room)
 
         from = Date.today
         to = from + Workers::Suppliers::JTB::Metadata::PERIOD_SYNC
         stocks = JTB::Repositories::RoomStockRepository.availabilities(rate_plans, from, to)
 
-        stocks.map do |stock|
+        entries = stocks.map do |stock|
           if stock.number_of_units <= 0 || stock.sale_status == '0'
             available = false
             nightly_rate = 0
@@ -51,6 +60,7 @@ module JTB
             nightly_rate: nightly_rate
           )
         end
+        Result.new(entries)
       end
     end
   end

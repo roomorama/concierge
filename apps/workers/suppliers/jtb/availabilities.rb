@@ -38,6 +38,9 @@ module Workers::Suppliers::JTB
 
     private
 
+    def actualizer
+      @actualizer ||= ::JTB::Sync::Actualizer.new(credentials)
+    end
 
     def mapper
       @mapper ||= ::JTB::Mappers::UnitCalendar.new
