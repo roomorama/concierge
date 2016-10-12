@@ -8,7 +8,7 @@ RSpec.describe JTB::Sync::FileActualizer do
   before do
     allow_any_instance_of(described_class).to receive(:sftp) { sftp_mock }
     allow(File).to receive(:exists?) { true }
-    allow_any_instance_of(described_class).to receive(:cleanup) { true }
+    allow_any_instance_of(described_class).to receive(:cleanup) { Result.new(true) }
   end
 
   subject { described_class.new(credentials, file_prefix)}

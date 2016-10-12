@@ -1,7 +1,7 @@
 module JTB
   module Sync
     # +JTB::Actualizer+
-    # Class responsible for actualizing all data required to run JTB sync workers.
+    # Class responsible for actualizing JTB DB tables required to run JTB sync workers.
     #
     # It fetches required CSV files from JTB server and imports them to DB.
     # Interrupt the process and return unsuccess result if error occurs during some table actualization.
@@ -40,9 +40,10 @@ module JTB
         return result unless result.success?
 
         result = db_actualizer.actualize
-        return result unless result.success?
-
+        # file_actualizer.cleanup returns Result, but it's not so important if it is not success
         file_actualizer.cleanup
+
+        result
       end
 
       def tmp_path
