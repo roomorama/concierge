@@ -159,10 +159,14 @@ module AtLeisure
       property.services_cleaning = cleaning['Payment'] != 'None'
 
       if property.services_cleaning
-        property.services_cleaning_required = cleaning['Payment'] == 'Mandatory'
-        property.services_cleaning_rate     = cleaning['Amount']
-
-        property.amenities << 'free_cleaning' if cleaning['Payment'] == 'Inclusive'
+        if cleaning['Payment'] == 'Inclusive'
+          property.amenities << 'free_cleaning'
+          property.services_cleaning_required = false
+          property.services_cleaning_rate     = 0
+        else
+          property.services_cleaning_required = cleaning['Payment'] == 'Mandatory'
+          property.services_cleaning_rate     = cleaning['Amount']
+        end
       end
     end
 

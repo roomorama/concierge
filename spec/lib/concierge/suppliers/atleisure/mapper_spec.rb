@@ -164,5 +164,47 @@ RSpec.describe AtLeisure::Mapper do
 
       expect(property.validate!).to be true
     end
+
+    it 'sets services_cleaning_required to false when payment is not mandatory' do
+      cost = property_data['CostsOnSiteV1'][1]["Items"].first
+      cost["Payment"] = "ABC"
+
+      result = subject.prepare(property_data)
+      expect(result).to be_success
+      property = result.value
+
+      expect(property.services_cleaning).to eq true
+      expect(property.services_cleaning_required).to eq false
+      expect(property.services_cleaning_rate).to eq 150.0
+      expect(property.amenities.include?('free_cleaning')).to be false
+    end
+
+    it 'sets services_cleaning to false when there is none payment' do
+      cost = property_data['CostsOnSiteV1'][1]["Items"].first
+      cost["Payment"] = "None"
+
+      result = subject.prepare(property_data)
+      expect(result).to be_success
+      property = result.value
+
+      expect(property.services_cleaning).to eq false
+      expect(property.services_cleaning_required).to eq nil
+      expect(property.services_cleaning_rate).to eq nil
+      expect(property.amenities.include?('free_cleaning')).to be false
+    end
+
+    it 'sets services_cleaning fields when cleaning is free' do
+      cost = property_data['CostsOnSiteV1'][1]["Items"].first
+      cost["Payment"] = "Inclusive"
+
+      result = subject.prepare(property_data)
+      expect(result).to be_success
+      property = result.value
+
+      expect(property.services_cleaning).to eq true
+      expect(property.services_cleaning_required).to eq false
+      expect(property.services_cleaning_rate).to eq 0
+      expect(property.amenities.include?('free_cleaning')).to be true
+    end
   end
 end
