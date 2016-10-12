@@ -5,7 +5,7 @@ module Workers::Suppliers::JTB
   class Metadata
     PERIOD_SYNC = 365
 
-    attr_reader :synchronisation, :host, :files_fetcher, :db_importer
+    attr_reader :synchronisation, :host
 
     SKIPABLE_ERROR_CODES = [
       :empty_images,
