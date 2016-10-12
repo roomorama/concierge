@@ -31,7 +31,7 @@ module SAW
             properties = build_properties(result_hash, country)
             Result.new(properties)
           else
-            error_result(result_hash)
+            error_result(result_hash, result.value.body)
           end
         else
           result

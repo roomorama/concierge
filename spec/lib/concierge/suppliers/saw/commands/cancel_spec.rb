@@ -26,6 +26,7 @@ RSpec.describe SAW::Commands::Cancel do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq(:unrecognised_response)
+      expect(result.error.data).to eq("Internal Server Error\n")
       expect(last_context_event[:message]).to eq(
         "Error response could not be recognised (no `code` or `description` fields)."
       )
@@ -42,6 +43,9 @@ RSpec.describe SAW::Commands::Cancel do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq("9008")
+      expect(result.error.data).to eq(
+        "Booking cancellation is not allowed for this booking."
+      )
       expect(last_context_event[:message]).to eq(
         "Response indicating the error `9008`, and description `Booking cancellation is not allowed for this booking.`"
       )
@@ -58,6 +62,9 @@ RSpec.describe SAW::Commands::Cancel do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq("9007")
+      expect(result.error.data).to eq(
+        "The valid booking_ref_number tag is not supplied"
+      )
       expect(last_context_event[:message]).to eq(
         "Response indicating the error `9007`, and description `The valid booking_ref_number tag is not supplied`"
       )
@@ -75,6 +82,7 @@ RSpec.describe SAW::Commands::Cancel do
       expect(result).not_to be_success
       expect(last_context_event[:message]).to eq("timeout")
       expect(result.error.code).to eq :connection_timeout
+      expect(result.error.data).to be_nil
     end
   end
 end

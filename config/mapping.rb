@@ -6,6 +6,7 @@ collection :external_errors do
   attribute :operation,   String
   attribute :supplier,    String
   attribute :code,        String
+  attribute :description, String
   attribute :context,     Concierge::PGJSON
   attribute :happened_at, Time
 end

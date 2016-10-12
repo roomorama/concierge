@@ -54,6 +54,7 @@ RSpec.describe Workers::PropertySynchronisation do
         expect(error.operation).to eq  "sync"
         expect(error.supplier).to eq "Supplier A"
         expect(error.code).to eq "missing_data"
+        expect(error.description).to eq "Invalid image object: identifier was not given, or is empty"
 
         context = error.context
         expect(context[:version]).to eq  Concierge::VERSION
@@ -67,13 +68,16 @@ RSpec.describe Workers::PropertySynchronisation do
       end
 
       it "announces an error if the property failed to be processed" do
-        res = subject.start("prop1") { Result.error(:http_status_404) }
+        res = subject.start("prop1") do
+          Result.error(:http_status_404, "description")
+        end
         expect(res).to_not be_success
 
         error = ExternalErrorRepository.last
         expect(error.operation).to eq "sync"
         expect(error.supplier).to eq "Supplier A"
         expect(error.code).to eq "http_status_404"
+        expect(error.description).to eq "description"
 
         context = error.context
         expect(context[:version]).to eq Concierge::VERSION
@@ -99,6 +103,7 @@ RSpec.describe Workers::PropertySynchronisation do
         expect(error.operation).to eq "sync"
         expect(error.supplier).to eq "Supplier A"
         expect(error.code).to eq "http_status_422"
+        expect(error.description).to eq "{\"status\":\"error\",\"errors\":{\"type\":\"is invalid\"}}\n"
         expect(error.context[:type]).to eq "batch"
         types = error.context[:events].map { |h| h["type"] }
         expect(types).to eq ["sync_process", "network_request", "network_response"]

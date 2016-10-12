@@ -24,6 +24,7 @@ RSpec.describe Web::Views::ExternalErrors::Index do
       expect(rendered).to include %(<td>Supplier#{id}</td>)
       expect(rendered).to include %(<td>error_#{id}</td>)
     end
+    expect(rendered).to include %(<td>description_1</td>)
   end
 
   it "renders a link to the show page of an error" do
@@ -57,6 +58,7 @@ RSpec.describe Web::Views::ExternalErrors::Index do
       operation:   id.odd? ? "quote" : "booking",
       supplier:    "Supplier#{id}",
       code:        "error_#{id}",
+      description: id.odd? ? "description_#{id}" : nil,
       happened_at: Time.now - id * 24 * 60 * 60 # +id+ days ago
     )
   end

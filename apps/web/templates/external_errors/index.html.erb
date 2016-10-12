@@ -16,6 +16,7 @@
         <th>Operation</th>
         <th>Supplier</th>
         <th>Error Code</th>
+        <th>Error Description</th>
         <th>Timestamp</th>
       </tr>
     </thead>
@@ -27,6 +28,7 @@
           <td><%= error.operation %></td>
           <td><%= error.supplier %></td>
           <td><%= error.code %></td>
+          <td><%= error_description(error) %></td>
           <td><%= format_time(error) %></td>
         </tr>
       <% end %>

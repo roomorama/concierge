@@ -217,7 +217,7 @@ module Workers
       push(property)
     rescue Roomorama::Error => err
       missing_data(err.message, property.to_h)
-      Result.error(:missing_data).tap do |error|
+      Result.error(:missing_data, err.message).tap do |error|
         announce_failure(error)
       end
     end
@@ -269,6 +269,7 @@ module Workers
         operation:   "sync",
         supplier:    SupplierRepository.find(host.supplier_id).name,
         code:        result.error.code,
+        description: result.error.data,
         context:     Concierge.context.to_h,
         happened_at: Time.now,
       })

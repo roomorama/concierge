@@ -4,6 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.12.6] - 2016-10-12
+### Added
+- Rollbar warning for external warnings
+
 ## [0.12.5] - 2016-10-11
 ### Fixed
 - Fix crash when kigo pricing does not return MIN_STAY rules #430

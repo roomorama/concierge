@@ -20,6 +20,7 @@
 # +operation+   - the operation being run.
 # +supplier+    - the supplier with which the issue occurred.
 # +code+        - an error code.
+# +description+ - descriptive error message of the error.
 # +context+     - a data structure containing runtime information of the failure moment.
 # +happened_at+ - a timestamp indicating when the error happened.
 class ExternalError
@@ -27,5 +28,5 @@ class ExternalError
 
   OPERATIONS = %w(quote booking sync cancellation image)
 
-  attributes :id, :operation, :supplier, :code, :context, :happened_at
+  attributes :id, :operation, :supplier, :code, :description, :context, :happened_at
 end
