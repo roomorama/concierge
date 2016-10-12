@@ -3,6 +3,10 @@ module JTB
     # +JTB::FilesFetcher+
     # Class responsible for downloading files required for JTB sync processes.
     #
+    # There are two kinds of files:
+    #   * ALL - file contains all the data from JTB
+    #   * Diff - file contains only diff information
+    #
     # Before start it removes files with appropriate prefix from tmp_path directory.
     # Then it builds list of files to be downloaded by next rules:
     # - if this is first sync (last_synced is nil) it downloads last ALL file and all Diff files after him

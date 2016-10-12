@@ -14,6 +14,19 @@ RSpec.describe JTB::Sync::DB::LookupsActualizer do
   subject { described_class.new(tmp_path)}
 
   describe '#actualize' do
+    context 'when exception during actualize' do
+      let(:tmp_path) { Hanami.root.join('spec', 'fixtures', 'jtb', 'sync', 'lookups', 'with_all') }
+
+      it 'returns error with description' do
+        allow_any_instance_of(described_class).to receive(:import_file) do
+          raise Exception.new
+        end
+
+        result = subject.actualize
+        expect(result.success?).to be false
+        expect(result.error.data).to eq('Error during import file with prefix `GenericMaster` to DB')
+      end
+    end
 
     context 'when diff file presented' do
       let(:tmp_path) { Hanami.root.join('spec', 'fixtures', 'jtb', 'sync', 'lookups', 'with_diff') }
