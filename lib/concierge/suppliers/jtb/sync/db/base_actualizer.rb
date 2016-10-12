@@ -65,7 +65,7 @@ module JTB
             save_state(file_path)
           end
           Result.new(true)
-        rescue => e
+        rescue Object => e
           error_result
         end
 
@@ -77,7 +77,10 @@ module JTB
         protected
 
         def error_result
-          Result.error(:error_during_jtb_db_actualization)
+          Result.error(
+            :jtb_db_actualization_error,
+            "Error during import file with prefix `#{file_prefix}` to DB"
+          )
         end
 
         # Performs import of ALL files.
