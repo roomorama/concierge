@@ -3,6 +3,11 @@ module JTB
     # +JTB::FilesFetcher+
     # Class responsible for downloading files required for JTB sync processes.
     #
+    # Before start it removes files with appropriate prefix from tmp_path directory.
+    # Then it builds list of files to be downloaded by next rules:
+    # - if this is first sync (last_synced is nil) it downloads last ALL file and all Diff files after him
+    # - if last synced file exists on SFTP server it downloads Diff files after last
+    # - if last synced file not exists on SFTP server it behaves like first sync
     class FileActualizer
 
       attr_reader :credentials, :file_prefix
