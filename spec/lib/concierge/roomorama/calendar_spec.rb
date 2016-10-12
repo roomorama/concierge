@@ -58,7 +58,7 @@ RSpec.describe Roomorama::Calendar do
     end
 
     context "multiunit property's calendar" do
-      it "is empty if all units' calendars are not empty" do
+      it "is empty if all units' calendars are empty" do
         unit_calendar = described_class.new('unit1')
         subject.add_unit(unit_calendar)
 
