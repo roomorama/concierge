@@ -37,7 +37,7 @@ module Workers
 
     PropertyCounters = Struct.new(:created, :updated, :deleted)
 
-    attr_reader :host, :router, :sync_record, :counters, :processed, :purge, :properties_skipped
+    attr_reader :host, :router, :sync_record, :counters, :processed, :purge, :skipped_properties
 
     # host - an instance of +Host+.
     def initialize(host)
@@ -47,7 +47,7 @@ module Workers
       @counters           = PropertyCounters.new(0, 0, 0)
       @processed          = []
       @purge              = true
-      @properties_skipped = Hash.new { |hsh, key| hsh[key] = [] }
+      @skipped_properties = SkippedProperties.new
     end
 
     # Indicates that the property with the given +identifier+ is being synchronised.
@@ -73,19 +73,16 @@ module Workers
     #   is encouraged to have augmented +Concierge.context+ with meaningful information
     #   to aid debugging.
     #
-    # Returns the result from Workers::OperationRunner#perform if all is well
+    # * the property is skipped (by the block or not). In this case, start does nothing
+    #   with the property
+    #
+    # Returns the result from Workers::OperationRunner#perform if all is well and
+    # property is not skipped
     def start(identifier)
       new_context(identifier) do
         result = yield(self)
-
-        if result.success?
-          property = result.value
-          process(property)
-        else
-          failed!
-          announce_failure(result)
-          result
-        end
+        return result if skipped_properties.skipped?(identifier)
+        finish_property_sync(result)
       end
     end
 
@@ -127,7 +124,16 @@ module Workers
     end
 
     # Allows client to count skipped (not instant bookable, etc) properties during sync process,
-    # skipped counter will be saved at the end of sync process
+    # skipped counter will be saved at the end of sync process.
+    # start method ignores skipped properties.
+    # The method returns +Result(true)+ to allow developer to
+    # interrupt start's block with return like this:
+    #
+    # sync.start(property_id) do
+    #   details = importer.fetch_details(property_id)
+    #   return skip_property(property_id, 'On request only') if on_request_only?(details)
+    #   ...
+    # end
     #
     # Usage:
     #
@@ -140,7 +146,8 @@ module Workers
     # end
     #
     def skip_property(property_id, reason)
-      properties_skipped[reason] << property_id
+      skipped_properties.add(property_id, reason)
+      Result.new(true)
     end
 
     # Used to initialize a clean context for a property id.
@@ -169,6 +176,17 @@ module Workers
     end
 
     private
+
+    def finish_property_sync(result)
+      if result.success?
+        property = result.value
+        process(property)
+      else
+        failed!
+        announce_failure(result)
+        result
+      end
+    end
 
     # when a new property is pushed for synchronisation, this class register
     # the identifier of that property so that, when +finish!+ is called,
@@ -221,19 +239,10 @@ module Workers
       sync_record.stats[:properties_created] = counters.created
       sync_record.stats[:properties_updated] = counters.updated
       sync_record.stats[:properties_deleted] = counters.deleted
-      sync_record.stats[:properties_skipped] = prepare_properties_skipped
+      sync_record.stats[:properties_skipped] = skipped_properties.to_a
       sync_record.finished_at = Time.now
 
       database.create(sync_record)
-    end
-
-    def prepare_properties_skipped
-      properties_skipped.map do |msg, ids|
-        {
-          'reason' => msg,
-          'ids' => ids
-        }
-      end
     end
 
     def run_operation(operation, *args)

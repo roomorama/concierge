@@ -13,8 +13,6 @@ module Kigo::Mappers
   #                  additional prices if base prices hasn't provided
   #
   class Property
-    # raises an error when base rates and +pricing+ not provided
-    class NoPriceError < StandardError; end
 
     CANCELLATION_POLICY = 'super_elite'
 
@@ -26,8 +24,8 @@ module Kigo::Mappers
     end
 
     # manages data and returns the result with +Roomorama::Property+
-    def prepare(property_data, pricing)
-      build_property(property_data, pricing)
+    def prepare(property_data, pricing_data)
+      build_property(property_data, pricing_data)
       property.instant_booking!
 
       set_base_info
@@ -35,15 +33,17 @@ module Kigo::Mappers
       set_beds_count
       set_amenities
       set_property_type
-      set_price
+
+      pricing_mapper = PricingSetup.new(payload['PROP_RATE'], pricing)
+      return Result.error(:no_prices_provided) unless pricing_mapper.valid?
+
+      set_price(pricing_mapper)
       set_images
 
       set_deposit
       set_cleaning_service
 
       Result.new(property)
-    rescue NoPriceError
-      Result.error(:no_prices_provided)
     end
 
     private
@@ -189,11 +189,7 @@ module Kigo::Mappers
       images.each { |image| property.add_image(image) }
     end
 
-    def set_price
-      pricing_mapper = PricingSetup.new(payload['PROP_RATE'], pricing)
-
-      raise NoPriceError unless pricing_mapper.valid?
-
+    def set_price(pricing_mapper)
       property.currency     = pricing_mapper.currency
       property.nightly_rate = pricing_mapper.nightly_rate
       property.weekly_rate  = pricing_mapper.weekly_rate

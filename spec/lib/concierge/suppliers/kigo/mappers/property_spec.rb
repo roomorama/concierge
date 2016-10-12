@@ -51,6 +51,14 @@ RSpec.describe Kigo::Mappers::Property do
         end
       end
 
+      context 'pricing_setup does not have MIN_STAY' do
+        it 'returns an error Result' do
+          pricing['MIN_STAY'] = nil
+          property = subject.prepare(property_data, pricing).value
+          expect(property.minimum_stay).to eq 7  # according to property data
+        end
+      end
+
       context 'pricing_setup has a stricter rule' do
         it 'uses the stricter rule' do
           pricing['MIN_STAY'] = {

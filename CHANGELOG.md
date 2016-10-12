@@ -4,6 +4,33 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.12.5] - 2016-10-11
+### Fixed
+- Fix crash when kigo pricing does not return MIN_STAY rules #430
+
+## [0.12.4] - 2016-10-11
+### Fixed
+- uninitialized constant `API::Controllers::InternalError` for ubuntu 16.04
+
+### Added
+- Kigo min_stay validity check, returning an error Result if the promised MIN_STAY_RULES is not found
+- Rentals United: add arrival instructions to Roomorama::Property
+
+### Chagned
+- Unavailable quotations are of status code 200
+- Rentals United: support caching for needed fetcher classes
+
+## [0.12.3] - 2016-10-07
+### Fixed
+- KigoLegacy metadata worker typo
+
+### Added
+- Ability to call `skip_property` from `start`'s block
+
+## [0.12.2] - 2016-10-07
+### Added
+- Host id and property id in kigo legacy sync process to Rollbar scope
+
 ## [0.12.1] - 2016-10-06
 ## Fixed
 - Kigo minimum stay is parsed from MIN_STAY_RULES
@@ -28,9 +55,6 @@ how this file is formatted and how the process works.
 ### Fixed
 - Proper order of table columns for sync_process/index page
 - Poplidays: metadata sync is safe for `nil` availabilities
-
-### Changed
-- PropertySynchronisation#start and CalendarSynchronisation#start returns result instead of boolean
 
 ## [0.11.5] - 2016-09-28
 ### Changed
