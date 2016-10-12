@@ -16,9 +16,9 @@ module JTB
           DB::LookupsActualizer.new(tmp_path),
           DB::PicturesActualizer.new(tmp_path),
           DB::RatePlansActualizer.new(tmp_path),
+          DB::RoomTypesActualizer.new(tmp_path),
           DB::RoomPricesActualizer.new(tmp_path),
-          DB::RoomStocksActualizer.new(tmp_path),
-          DB::RoomTypesActualizer.new(tmp_path)
+          DB::RoomStocksActualizer.new(tmp_path)
         ]
       end
 
@@ -36,7 +36,7 @@ module JTB
       def actualize_table(db_actualizer)
         last_synced = fetch_last_synced(db_actualizer.file_prefix)
         file_actualizer = FileActualizer.new(credentials, db_actualizer.file_prefix)
-        result = file_actualizer.actualize(last_synced)
+        result = file_actualizer.actualize(last_synced&.file_name)
         return result unless result.success?
 
         result = db_actualizer.actualize
