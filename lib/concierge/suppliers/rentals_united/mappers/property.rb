@@ -45,7 +45,8 @@ module RentalsUnited
           floor:                   floor,
           description:             en_description(property_hash),
           images:                  build_images,
-          amenities:               build_amenities
+          amenities:               build_amenities,
+          number_of_bathrooms:     number_of_bathrooms
         )
 
         property
@@ -73,6 +74,20 @@ module RentalsUnited
         ru_floor_value = property_hash.get("Floor").to_i
         return -1 if ru_floor_value == -1000
         return ru_floor_value
+      end
+
+      def number_of_bathrooms
+        rooms = Array(property_hash.get("CompositionRoomsAmenities.CompositionRoomAmenities"))
+
+        rooms.inject(0) do |count, room_hash|
+          safe_hash = Concierge::SafeAccessHash.new(room_hash)
+
+          if safe_hash.get("@CompositionRoomID") == "81"
+            count = count + 1
+          else
+            count
+          end
+        end
       end
 
       def en_description(hash)

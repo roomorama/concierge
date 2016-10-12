@@ -271,4 +271,18 @@ RSpec.describe RentalsUnited::Mappers::Property do
       end
     end
   end
+
+  context "when mapping bathrooms" do
+    it "sets number_of_bathrooms field" do
+      expect(property.number_of_bathrooms).to eq(4)
+    end
+
+    context "when there is no bathrooms" do
+      let(:file_name) { "rentals_united/properties/property_without_bathrooms.xml" }
+
+      it "sets number_of_bathrooms to 0" do
+        expect(property.number_of_bathrooms).to eq(0)
+      end
+    end
+  end
 end
