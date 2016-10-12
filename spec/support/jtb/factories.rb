@@ -19,7 +19,7 @@ module Support
           latitude: "N34.49.31.31205",
           longitude: "E134.41.24.7647",
           hotel_type: "H",
-          address: "100 Minamiekimae-cho, Himeji-shi, Hyogo Prefecture",
+          address: "100 Minamiekimae-cho, Himeji-shi, Hyogo Prefecture, 510-0075",
           non_smoking_room: "1",
           parking: "1",
           internet: "1",

@@ -37,8 +37,8 @@ RSpec.describe JTB::Mappers::RoomoramaProperty do
     expect(property.multi_unit).to be true
     expect(property.title).to eq('Hotel Nikko Himeji')
     expect(property.type).to eq('apartment')
-    expect(property.address).to eq('100 Minamiekimae-cho, Himeji-shi, Hyogo Prefecture')
-    expect(property.postal_code).to be_nil
+    expect(property.address).to eq('100 Minamiekimae-cho, Himeji-shi, Hyogo Prefecture, 510-0075')
+    expect(property.postal_code).to eq('510-0075')
     expect(property.city).to eq('Kinki (Other areas) / Mie (Ise / Shima)')
     expect(property.description).to eq("This large city hotel is located in front of JR Himeji Station's south exit and features a large capacity banquet hall.")
     expect(property.default_to_available).to be false
