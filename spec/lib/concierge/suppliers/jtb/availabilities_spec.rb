@@ -44,11 +44,13 @@ RSpec.describe Workers::Suppliers::JTB::Availabilities do
     context 'success' do
       before do
         allow_any_instance_of(JTB::Sync::Actualizer).to receive(:actualize) { Result.new(true) }
+        allow_any_instance_of(JTB::Mappers::UnitCalendar).to receive(:build) do
+          Result.new(unit_calendar)
+        end
       end
 
       it 'finalizes synchronisation' do
         allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
-
         expect(subject.synchronisation).to receive(:finish!)
         subject.perform
       end
@@ -62,9 +64,6 @@ RSpec.describe Workers::Suppliers::JTB::Availabilities do
 
       it 'creates valid properties in database' do
         allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
-        allow_any_instance_of(JTB::Mappers::UnitCalendar).to receive(:build) do
-          Result.new(unit_calendar)
-        end
         expect(subject.synchronisation).to receive(:run_operation)
         subject.perform
       end
