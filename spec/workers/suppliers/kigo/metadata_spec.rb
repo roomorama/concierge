@@ -57,8 +57,6 @@ RSpec.describe Workers::Suppliers::Kigo::Metadata do
     before { allow_any_instance_of(Kigo::Importer).to receive(:fetch_properties) { Result.new([]) } }
 
     it 'finalizes synchronisation' do
-      allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
-
       expect(subject.synchronisation).to receive(:finish!)
       subject.perform
     end

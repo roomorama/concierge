@@ -35,13 +35,8 @@ module Workers::Suppliers::Kigo::Legacy
       if result.success?
         properties = host_properties(result.value)
 
-        return if properties.empty?
-
-        unless host_active?(properties.first)
-          delete_result = delete_host!
-          unless delete_result.success?
-            announce_error('Failed to perform `#delete_host` operation', delete_result)
-          end
+        if properties.empty? || !host_active?(properties.collect { |p| p['PROP_ID'] })
+          synchronisation.finish!
           return
         end
 
@@ -79,18 +74,14 @@ module Workers::Suppliers::Kigo::Legacy
       end
     end
 
-    def host_active?(property)
-      result = Kigo::HostCheck.new(property['PROP_ID'], request_handler).active?
+    def host_active?(property_ids)
+      result = Kigo::HostCheck.new(property_ids, request_handler).active?
       if result.success?
         result.value
       else
         announce_error('Host checking failed', result)
         false
       end
-    end
-
-    def delete_host!
-      Concierge::Flows::HostDeletion.new(host).call
     end
 
     def wrapped_payload(payload)
