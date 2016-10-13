@@ -8,6 +8,7 @@ how this file is formatted and how the process works.
 ### Fixed
 - Ensure synchronisation.finish! for Kigo host with empty properties
 - Kigo legacy hosts should not be deleted from Concierge
+- SAW: cleaning fee patch
 
 ## [0.12.6] - 2016-10-12
 ### Added
