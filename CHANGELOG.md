@@ -4,6 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## Unreleased
+### Fixed
+- Ensure synchronisation.finish! for Kigo host with empty properties
+
 ## [0.12.6] - 2016-10-12
 ### Added
 - Rollbar warning for external warnings
