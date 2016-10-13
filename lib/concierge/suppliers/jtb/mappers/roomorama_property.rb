@@ -7,6 +7,7 @@ module JTB
     class RoomoramaProperty
       CANCELLATION_POLICY = 'super_elite'
       IMAGE_URL_PREFIX = 'https://www.jtbgenesis.com/image'
+      PROPERTY_TYPE = 'apartment'
 
       ROOM_TYPE_CODES = {
         'SGL' => 'Single',
@@ -75,7 +76,7 @@ module JTB
       def set_base_info!(result, hotel)
         result.title = hotel.hotel_name
         result.description = hotel.hotel_description
-        result.type = 'apartment'
+        result.type = PROPERTY_TYPE
         result.lat = parse_latitude(hotel.latitude)
         result.lng = parse_longitude(hotel.longitude)
         result.address = hotel.address
