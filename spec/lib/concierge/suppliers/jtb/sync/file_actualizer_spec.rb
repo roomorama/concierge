@@ -165,6 +165,33 @@ RSpec.describe JTB::Sync::FileActualizer do
         result = subject.actualize(last_synced, true)
         expect(result.success?).to be true
       end
+
+      it 'cleans up the directory if fails during file downloading' do
+        allow(subject).to receive(:required_files) do
+          Result.new(['file1', 'file2'])
+        end
+        allow(subject).to receive(:fetch_file) do
+          raise StandardError
+        end
+
+        expect(subject).to receive(:cleanup).twice
+
+        subject.actualize(last_synced)
+      end
+
+      it 'calls sftp shutdown even if cleanup fails' do
+        allow(subject).to receive(:required_files) do
+          Result.new(['file1', 'file2'])
+        end
+        allow(subject).to receive(:fetch_file) do
+          raise StandardError
+        end
+        allow(subject).to receive(:cleanup) { raise StandardError }
+
+        expect(subject).to receive(:shutdown)
+
+        subject.actualize(last_synced)
+      end
     end
   end
 end

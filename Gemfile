@@ -25,6 +25,10 @@ gem 'rubyzip', '~> 1.2.0'
 gem 'nokogiri', '~> 1.6.7'
 gem 'net-sftp', '~> 2.1', '>= 2.1.2'
 
+group :development do
+  gem 'ruby-prof', '~> 0.16.2'
+end
+
 group :test do
   gem 'rspec', '~> 3.4.0'
   gem 'database_cleaner', '~> 1.5'

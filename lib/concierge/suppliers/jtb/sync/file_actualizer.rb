@@ -36,6 +36,11 @@ module JTB
         Result.new(true)
       rescue => e
         begin
+          cleanup
+        rescue ::Exception
+          # swallow exceptions that occur while trying to shutdown
+        end
+        begin
           shutdown
         rescue ::Exception
           # swallow exceptions that occur while trying to shutdown

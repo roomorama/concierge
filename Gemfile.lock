@@ -113,6 +113,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
+    ruby-prof (0.16.2)
     rubyzip (1.2.0)
     sanitize (4.0.1)
       crass (~> 1.0.2)
@@ -124,7 +125,7 @@ GEM
       gyoku (~> 1.2)
       httpi (~> 2.3)
       nokogiri (>= 1.4.0)
-      nori (~> 2.4)
+      nori (~> 2.4) 
       wasabi (~> 3.4)
     sequel (4.31.0)
     shotgun (0.9.1)
@@ -165,6 +166,7 @@ DEPENDENCIES
   rake
   rollbar (~> 2.13.3)
   rspec (~> 3.4.0)
+  ruby-prof (~> 0.16.2)
   rubyzip (~> 1.2.0)
   sanitize (~> 4.0.1)
   savon
@@ -176,4 +178,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.13.1
+   1.13.2
