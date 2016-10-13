@@ -38,7 +38,7 @@ module JTB
         begin
           cleanup
         rescue ::Exception
-          # swallow exceptions that occur while trying to shutdown
+          # swallow exceptions that occur while trying to cleanup
         end
         begin
           shutdown

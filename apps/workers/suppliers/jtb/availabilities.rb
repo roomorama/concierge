@@ -61,28 +61,6 @@ module Workers::Suppliers::JTB
     def synced_properties
       PropertyRepository.from_host(host)
     end
-
-    def augment_context_error(message)
-      message = {
-        label: 'Synchronisation Failure',
-        message: message,
-        backtrace: caller
-      }
-      context = Concierge::Context::Message.new(message)
-      Concierge.context.augment(context)
-    end
-
-    def announce_error(message, result)
-      augment_context_error(message)
-
-      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
-        operation:   'sync',
-        supplier:    JTB::Client::SUPPLIER_NAME,
-        code:        result.error.code,
-        context:     Concierge.context.to_h,
-        happened_at: Time.now
-      })
-    end
   end
 end
 
