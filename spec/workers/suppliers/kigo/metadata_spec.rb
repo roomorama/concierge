@@ -53,6 +53,17 @@ RSpec.describe Workers::Suppliers::Kigo::Metadata do
     expect(subject.synchronisation).not_to receive(:finish!)
   end
 
+  context 'no properties' do
+    before { allow_any_instance_of(Kigo::Importer).to receive(:fetch_properties) { Result.new([]) } }
+
+    it 'finalizes synchronisation' do
+      allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
+
+      expect(subject.synchronisation).to receive(:finish!)
+      subject.perform
+    end
+  end
+
   context 'success' do
     let(:property_data) { JSON.parse(read_fixture('kigo/property_data.json')) }
     let(:periodical_rates) { JSON.parse(read_fixture('kigo/pricing_setup.json')) }
