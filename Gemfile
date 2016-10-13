@@ -23,6 +23,10 @@ gem 'sanitize', '~> 4.0.1'
 gem 'iso_country_codes', '~> 0.7.4'
 gem 'net-sftp', '~> 2.1', '>= 2.1.2'
 
+group :development do
+  gem 'ruby-prof', '~> 0.16.2'
+end
+
 group :test do
   gem 'rspec', '~> 3.4.0'
   gem 'database_cleaner', '~> 1.5'
