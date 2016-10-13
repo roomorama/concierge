@@ -87,6 +87,12 @@ RSpec.describe RentalsUnited::Mappers::Property do
       )
     end
 
+    it "sets bed counts" do
+      expect(property.number_of_single_beds).to eq(0)
+      expect(property.number_of_double_beds).to eq(0)
+      expect(property.number_of_sofa_beds).to eq(0)
+    end
+
     context "when property does not have some parts of check_in_instructions" do
       let(:file_name) { "rentals_united/properties/property_with_partial_check_in_instructions.xml" }
 
@@ -283,6 +289,48 @@ RSpec.describe RentalsUnited::Mappers::Property do
       it "sets number_of_bathrooms to 0" do
         expect(property.number_of_bathrooms).to eq(0)
       end
+    end
+  end
+
+  context "when mapping single beds" do
+    let(:file_name) { "rentals_united/properties/beds/single_beds.xml" }
+
+    it "sets number_of_single_beds" do
+      expect(property.number_of_single_beds).to eq(3)
+    end
+  end
+
+  context "when mapping single beds with extra beds" do
+    let(:file_name) { "rentals_united/properties/beds/single_beds_with_extra_beds.xml" }
+
+    it "sets number_of_single_beds" do
+      expect(property.number_of_single_beds).to eq(9)
+    end
+  end
+
+  context "when mapping double beds" do
+    let(:file_name) { "rentals_united/properties/beds/double_beds.xml" }
+
+    it "sets number_of_double_beds" do
+      expect(property.number_of_double_beds).to eq(7)
+    end
+  end
+
+  context "when mapping sofa beds" do
+    let(:file_name) { "rentals_united/properties/beds/sofa_beds.xml" }
+
+    it "sets number_of_sofa_beds" do
+      expect(property.number_of_sofa_beds).to eq(5)
+    end
+  end
+
+  context "when all types of beds" do
+    let(:file_name) { "rentals_united/properties/beds/all_types.xml" }
+
+    it "sets correct numbers of beds" do
+      expect(property.number_of_single_beds).to eq(7)
+      expect(property.number_of_double_beds).to eq(26)
+      expect(property.number_of_sofa_beds).to eq(5)
     end
   end
 end

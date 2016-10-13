@@ -61,6 +61,9 @@ module RentalsUnited
         property.surface               = ru_property.surface
         property.floor                 = ru_property.floor
         property.number_of_bathrooms   = ru_property.number_of_bathrooms
+        property.number_of_single_beds = ru_property.number_of_single_beds
+        property.number_of_double_beds = ru_property.number_of_double_beds
+        property.number_of_sofa_beds   = ru_property.number_of_sofa_beds
         property.country_code          = country_code(location)
         property.currency              = location.currency
         property.city                  = location.city

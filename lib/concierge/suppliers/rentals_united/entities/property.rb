@@ -9,7 +9,8 @@ module RentalsUnited
                     :surface, :bedroom_type_id, :property_type_id, :floor,
                     :images, :amenities, :owner_id, :security_deposit_type,
                     :security_deposit_amount, :check_in_instructions,
-                    :number_of_bathrooms
+                    :number_of_bathrooms, :number_of_single_beds,
+                    :number_of_double_beds, :number_of_sofa_beds
 
       attr_writer :active, :archived
 
@@ -18,7 +19,9 @@ module RentalsUnited
                      max_guests:, surface:, bedroom_type_id:, property_type_id:,
                      floor:, images:, amenities:, active:, archived:, owner_id:,
                      security_deposit_type:, security_deposit_amount:,
-                     check_in_instructions:, number_of_bathrooms:)
+                     check_in_instructions:, number_of_bathrooms:,
+                     number_of_single_beds:, number_of_double_beds:,
+                     number_of_sofa_beds:)
         @id                      = id
         @title                   = title
         @description             = description
@@ -42,6 +45,9 @@ module RentalsUnited
         @images                  = images
         @amenities               = amenities
         @number_of_bathrooms     = number_of_bathrooms
+        @number_of_single_beds   = number_of_single_beds
+        @number_of_double_beds   = number_of_double_beds
+        @number_of_sofa_beds     = number_of_sofa_beds
       end
 
       def active?

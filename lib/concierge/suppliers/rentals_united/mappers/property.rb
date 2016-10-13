@@ -9,6 +9,23 @@ module RentalsUnited
       attr_reader :property_hash
 
       EN_DESCRIPTION_LANG_CODE = "1"
+      BATHROOM_TYPE_ID = "81"
+
+      SINGLE_BED_CODES = [
+        "323", # single bed
+        "209", # Extra Bed
+      ]
+      DOUBLE_BED_CODES = [
+        "61",  # double bed
+        "200", # double sofa bed
+        "203", # double sofa
+        "324", # king size bed
+        "485", # Queen size bed
+      ]
+      SOFA_BED_CODES = [
+        "237", # sofabed
+        "182", # sofa
+      ]
 
       # Initialize +RentalsUnited::Mappers::Property+
       #
@@ -46,7 +63,10 @@ module RentalsUnited
           description:             en_description(property_hash),
           images:                  build_images,
           amenities:               build_amenities,
-          number_of_bathrooms:     number_of_bathrooms
+          number_of_bathrooms:     number_of_bathrooms,
+          number_of_single_beds:   beds_count(SINGLE_BED_CODES),
+          number_of_double_beds:   beds_count(DOUBLE_BED_CODES),
+          number_of_sofa_beds:     beds_count(SOFA_BED_CODES),
         )
 
         property
@@ -76,18 +96,40 @@ module RentalsUnited
         return ru_floor_value
       end
 
+      def rooms
+        @rooms ||= begin
+          path = "CompositionRoomsAmenities.CompositionRoomAmenities"
+
+          Array(property_hash.get(path)).map do |room_hash|
+            Concierge::SafeAccessHash.new(room_hash)
+          end
+        end
+      end
+
       def number_of_bathrooms
-        rooms = Array(property_hash.get("CompositionRoomsAmenities.CompositionRoomAmenities"))
-
         rooms.inject(0) do |count, room_hash|
-          safe_hash = Concierge::SafeAccessHash.new(room_hash)
-
-          if safe_hash.get("@CompositionRoomID") == "81"
+          if room_hash.get("@CompositionRoomID") == BATHROOM_TYPE_ID
             count = count + 1
           else
             count
           end
         end
+      end
+
+      def beds_count(bed_codes)
+        count = 0
+
+        rooms.each do |room_hash|
+          room_amenities = Array(room_hash.get("Amenities.Amenity"))
+
+          room_amenities.each do |amenity|
+            if bed_codes.include?(amenity)
+              count = count + amenity.attributes["Count"].to_i
+            end
+          end
+        end
+
+        count
       end
 
       def en_description(hash)
