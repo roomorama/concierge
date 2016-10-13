@@ -41,7 +41,7 @@ module JTB
         stocks = JTB::Repositories::RoomStockRepository.availabilities(rate_plans, from, to)
 
         entries = stocks.map do |stock|
-          if stock.number_of_units <= 0 || stock.sale_status == '0'
+          if stock.number_of_units <= 0 || stock.sale_status != '0'
             available = false
             nightly_rate = 0
           else

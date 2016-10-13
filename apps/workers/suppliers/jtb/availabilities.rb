@@ -24,12 +24,8 @@ module Workers::Suppliers::JTB
 
             calendar = Roomorama::Calendar.new(property.identifier)
             units = Array(property.data['units'])
-            units.each do |unit|
-              calendar_result = mapper.build(unit['identifier'])
-              return calendar_result unless calendar_result.success?
-              calendar.add_unit(calendar_result.value)
-            end
-            Result.new(calendar)
+
+            fill_property_calendar(calendar, units)
           end
         end
         synchronisation.finish!
@@ -37,6 +33,18 @@ module Workers::Suppliers::JTB
     end
 
     private
+
+    def fill_property_calendar(calendar, units)
+      units.each do |unit|
+        calendar_result = mapper.build(unit['identifier'])
+        # if at least one unit's calendar failed fail all the property's calendar
+        return calendar_result unless calendar_result.success?
+
+        calendar.add_unit(calendar_result.value)
+      end
+
+      Result.new(calendar)
+    end
 
     def actualizer
       @actualizer ||= ::JTB::Sync::Actualizer.new(credentials)

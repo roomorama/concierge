@@ -32,7 +32,8 @@ RSpec.describe JTB::Sync::DB::LookupsActualizer do
       let(:tmp_path) { Hanami.root.join('spec', 'fixtures', 'jtb', 'sync', 'lookups', 'with_diff') }
 
       it 'returns unsuccess result' do
-        expect { subject.actualize }.to raise_exception(NotImplementedError)
+        result = subject.actualize
+        expect(result.success?).to be false
       end
     end
 

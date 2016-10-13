@@ -23,11 +23,11 @@ RSpec.describe JTB::Mappers::RoomoramaProperty do
     create_room_stock({ rate_plan_id: 'CHUHW0101TRP2PSG' })
     create_room_stock({ rate_plan_id: 'CHUHW0101TRP2PSG', service_date: '2016-10-11' })
     create_room_stock({ rate_plan_id: 'CHUHW0101TRP2PSG', service_date: '2016-10-12', number_of_units: 0 })
-    create_room_stock({ rate_plan_id: 'CHUHW0101TRP2PSG', service_date: '2016-10-13', sale_status: '0' })
+    create_room_stock({ rate_plan_id: 'CHUHW0101TRP2PSG', service_date: '2016-10-13', sale_status: '1' })
     create_room_stock
     create_room_stock({ service_date: '2016-10-11' })
     create_room_stock({ service_date: '2016-10-12', number_of_units: 0 })
-    create_room_stock({ service_date: '2016-10-13', sale_status: '0' })
+    create_room_stock({ service_date: '2016-10-13', sale_status: '1' })
     create_room_price
     create_room_price({ date: '2016-10-11', room_rate: 9010.0 })
     create_room_price({ date: '2016-10-12', room_rate: 8010.0 })
