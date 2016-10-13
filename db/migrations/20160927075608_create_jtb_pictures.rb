@@ -10,6 +10,8 @@ Hanami::Model.migration do
       column :room_code,  String, size: 16
       column :url,        String, null: false, size: 80
       column :comments,   String, text: true
+
+      index :room_code
     end
   end
 end
