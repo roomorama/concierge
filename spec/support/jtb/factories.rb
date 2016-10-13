@@ -102,7 +102,7 @@ module Support
           service_date: "2016-10-10",
           number_of_units: 1,
           closing_date: "20161008",
-          sale_status: "1",
+          sale_status: "0",
           reservation_closing_date: "20161008"
         }.merge(overrides)
 

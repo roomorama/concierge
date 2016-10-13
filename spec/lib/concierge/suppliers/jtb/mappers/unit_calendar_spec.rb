@@ -29,11 +29,11 @@ RSpec.describe JTB::Mappers::UnitCalendar do
         create_room_stock({ rate_plan_id: 'CHUHW0101TRP2PSG' })
         create_room_stock({ rate_plan_id: 'CHUHW0101TRP2PSG', service_date: '2016-10-11' })
         create_room_stock({ rate_plan_id: 'CHUHW0101TRP2PSG', service_date: '2016-10-12', number_of_units: 0 })
-        create_room_stock({ rate_plan_id: 'CHUHW0101TRP2PSG', service_date: '2016-10-13', sale_status: '0' })
+        create_room_stock({ rate_plan_id: 'CHUHW0101TRP2PSG', service_date: '2016-10-13', sale_status: '1' })
         create_room_stock
         create_room_stock({ service_date: '2016-10-11' })
         create_room_stock({ service_date: '2016-10-12', number_of_units: 0 })
-        create_room_stock({ service_date: '2016-10-13', sale_status: '0' })
+        create_room_stock({ service_date: '2016-10-13', sale_status: '1' })
         create_room_price({ date: '2016-10-11', room_rate: 9010.0 })
         create_room_price({ date: '2016-10-12', room_rate: 8010.0 })
         create_room_price({ date: '2016-10-13', room_rate: 7010.0 })
@@ -72,7 +72,7 @@ RSpec.describe JTB::Mappers::UnitCalendar do
         expect(entry.available).to be false
       end
 
-      it 'returns unavailable entries for dates where sale status != 1' do
+      it 'returns unavailable entries for dates where sale status != 0' do
         entry = result.value.entries.detect { |e| e.date == Date.new(2016, 10, 13) }
 
         expect(entry.available).to be false
