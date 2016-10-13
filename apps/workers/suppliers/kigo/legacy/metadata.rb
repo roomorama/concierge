@@ -35,7 +35,7 @@ module Workers::Suppliers::Kigo::Legacy
       if result.success?
         properties = host_properties(result.value)
 
-        if properties.empty? || !host_active?(properties.first)
+        if properties.empty? || !host_active?(properties.collect { |p| p['PROP_ID'] })
           synchronisation.finish!
           return
         end
@@ -74,8 +74,8 @@ module Workers::Suppliers::Kigo::Legacy
       end
     end
 
-    def host_active?(property)
-      result = Kigo::HostCheck.new(property['PROP_ID'], request_handler).active?
+    def host_active?(property_ids)
+      result = Kigo::HostCheck.new(property_ids, request_handler).active?
       if result.success?
         result.value
       else
