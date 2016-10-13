@@ -35,8 +35,6 @@ module Workers::Suppliers::Kigo
       if result.success?
         properties = host_properties(result.value)
 
-        return if properties.empty?
-
         properties.each do |property|
           id          = property['PROP_ID']
           data_result = synchronisation.new_context(id) { importer.fetch_data(id) }
