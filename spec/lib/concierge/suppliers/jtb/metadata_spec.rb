@@ -10,7 +10,9 @@ RSpec.describe Workers::Suppliers::JTB::Metadata do
 
   describe '#perform' do
     it 'announces an error if db actualization fails' do
-      allow_any_instance_of(JTB::Sync::Actualizer).to receive(:actualize) { Result.error(:error) }
+      allow_any_instance_of(JTB::Sync::Actualizer).to receive(:actualize) do
+        Result.error(:error, 'Description')
+      end
 
       subject.perform
 
@@ -19,6 +21,7 @@ RSpec.describe Workers::Suppliers::JTB::Metadata do
       expect(error.operation).to eq 'sync'
       expect(error.supplier).to eq JTB::Client::SUPPLIER_NAME
       expect(error.code).to eq 'error'
+      expect(error.description).to eq 'Description'
     end
 
     described_class::SKIPABLE_ERROR_CODES.each do |error_code|
