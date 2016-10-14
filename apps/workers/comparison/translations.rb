@@ -4,11 +4,13 @@ module Workers::Comparison
   #
   # This class performs a comparison between two hash of translations.
   #
-  # Usage
+  # Usage:
   #   original = old_roomorama_property.translations
   #   new = new_roomorama_property.translations
+  #
   #   diff = Roomorama::Diff.new(old_roomorama_property.identifier)
-  #   comparison = Workers::Comparison::Translations.(original, new).apply_to(diff)
+  #
+  #   Workers::Comparison::Translations.(original, new).apply_to(diff)
   #
   class Translations
 
