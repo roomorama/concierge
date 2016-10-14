@@ -76,6 +76,8 @@
       <CompositionRoomAmenities CompositionRoomID="81">
           <Amenities>
               <Amenity Count="1">61</Amenity>
+              <Amenity Count="1">200</Amenity>
+              <Amenity Count="1">203</Amenity>
           </Amenities>
       </CompositionRoomAmenities>
       <CompositionRoomAmenities CompositionRoomID="81">

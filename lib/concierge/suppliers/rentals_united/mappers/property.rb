@@ -17,14 +17,14 @@ module RentalsUnited
       ]
       DOUBLE_BED_CODES = [
         "61",  # double bed
-        "200", # double sofa bed
-        "203", # double sofa
         "324", # king size bed
         "485", # Queen size bed
       ]
       SOFA_BED_CODES = [
         "237", # sofabed
         "182", # sofa
+        "200", # double sofa bed
+        "203", # double sofa
       ]
 
       # Initialize +RentalsUnited::Mappers::Property+

@@ -312,7 +312,7 @@ RSpec.describe RentalsUnited::Mappers::Property do
     let(:file_name) { "rentals_united/properties/beds/double_beds.xml" }
 
     it "sets number_of_double_beds" do
-      expect(property.number_of_double_beds).to eq(7)
+      expect(property.number_of_double_beds).to eq(5)
     end
   end
 
@@ -320,7 +320,7 @@ RSpec.describe RentalsUnited::Mappers::Property do
     let(:file_name) { "rentals_united/properties/beds/sofa_beds.xml" }
 
     it "sets number_of_sofa_beds" do
-      expect(property.number_of_sofa_beds).to eq(5)
+      expect(property.number_of_sofa_beds).to eq(7)
     end
   end
 
@@ -329,8 +329,8 @@ RSpec.describe RentalsUnited::Mappers::Property do
 
     it "sets correct numbers of beds" do
       expect(property.number_of_single_beds).to eq(7)
-      expect(property.number_of_double_beds).to eq(26)
-      expect(property.number_of_sofa_beds).to eq(5)
+      expect(property.number_of_double_beds).to eq(18)
+      expect(property.number_of_sofa_beds).to eq(13)
     end
   end
 end
