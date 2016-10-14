@@ -87,10 +87,10 @@ RSpec.describe RentalsUnited::Mappers::Property do
       )
     end
 
-    it "sets bed counts" do
-      expect(property.number_of_single_beds).to eq(0)
-      expect(property.number_of_double_beds).to eq(0)
-      expect(property.number_of_sofa_beds).to eq(0)
+    it "sets bed counts when there is no beds configurations" do
+      expect(property.number_of_single_beds).to be_nil
+      expect(property.number_of_double_beds).to be_nil
+      expect(property.number_of_sofa_beds).to be_nil
     end
 
     context "when property does not have some parts of check_in_instructions" do

@@ -140,7 +140,10 @@ module RentalsUnited
           end
         end
 
-        count
+        # Host can forget to set up bed amenities for rooms (optional on RU)
+        #
+        # Instead of returning 0 return just nil, meaning count is unknown
+        count == 0 ? nil : count
       end
 
       def en_description(hash)
