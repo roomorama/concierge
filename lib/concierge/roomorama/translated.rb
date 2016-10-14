@@ -10,6 +10,14 @@ module Roomorama::Translated
 
     attr_accessor *TRANSLATED_FIELDS
 
+    def initialize
+      @erased = []
+    end
+
+    def erase(key)
+      @erased << key
+    end
+
     def []=(attr, value)
       if TRANSLATED_FIELDS.include?(attr)
         setter = [attr, "="].join
@@ -25,7 +33,7 @@ module Roomorama::Translated
         check_in_instructions: check_in_instructions,
         description_append:    description_append,
       }.tap do |hash|
-        hash.delete_if { |k, v| v.nil? }
+        hash.delete_if { |k, v| v.nil? && !@erased.include?(k) }
       end
     end
   end

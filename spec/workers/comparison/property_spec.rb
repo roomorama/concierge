@@ -9,6 +9,9 @@ RSpec.describe Workers::Comparison::Property do
       property.amenities   = "parking,wifi"
       property.owner_email = "owner@example.org"
 
+      property.es.title       = "Spanish title"
+      property.es.description = "Spanish description"
+
       image = Roomorama::Image.new("img1")
       image.url     = "https://www.example.org/img1"
       image.caption = "Swimming Pool"
@@ -35,6 +38,11 @@ RSpec.describe Workers::Comparison::Property do
       property.description = "With open garden space and a private swimming pool"
       # one more amenity
       property.amenities = "parking,wifi,internet"
+
+      property.es.title       = "Spanish title"
+      property.es.description = "New Spanish description"
+      property.zh.title       = "New Chinese title"
+      property.zh.description = "New Chinese description"
 
       # no max_guests information
 
@@ -81,6 +89,17 @@ RSpec.describe Workers::Comparison::Property do
       expect(diff.owner_email).to eq "newowner@example.org"
       expect(diff.amenities).to eq "parking,wifi,internet"
       expect(diff.erased).to eq %w(max_guests)
+
+      expected_translations_diff = {
+        es: {
+          description: "New Spanish description"
+        },
+        zh: {
+          title:       "New Chinese title",
+          description: "New Chinese description"
+        }
+      }
+      expect(diff.translations).to eq expected_translations_diff
 
       images = diff.image_changes.created
       expect(images.size).to eq 1
