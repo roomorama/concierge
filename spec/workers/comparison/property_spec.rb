@@ -11,6 +11,7 @@ RSpec.describe Workers::Comparison::Property do
 
       property.es.title       = "Spanish title"
       property.es.description = "Spanish description"
+      property.es.check_in_instructions = "Spanish instructions"
 
       image = Roomorama::Image.new("img1")
       image.url     = "https://www.example.org/img1"
@@ -41,6 +42,8 @@ RSpec.describe Workers::Comparison::Property do
 
       property.es.title       = "Spanish title"
       property.es.description = "New Spanish description"
+      # No spanish check in instructions
+
       property.zh.title       = "New Chinese title"
       property.zh.description = "New Chinese description"
 
@@ -92,7 +95,8 @@ RSpec.describe Workers::Comparison::Property do
 
       expected_translations_diff = {
         es: {
-          description: "New Spanish description"
+          description:           "New Spanish description",
+          check_in_instructions: nil
         },
         zh: {
           title:       "New Chinese title",
