@@ -14,13 +14,29 @@ module JTB
         ) { yield }
       end
 
-      def self.room_min_price(room, rate_plans, date)
-        query do
-          where(rate_plan_id: rate_plans.map(&:rate_plan_id))
-            .and(city_code: room.city_code)
-            .and(hotel_code: room.hotel_code)
-            .and(date: date)
-        end.min(:room_rate)
+      def self.room_min_price(rate_plans, from, to)
+        return if rate_plans.count == 0
+
+        in_prepared_statement = Array.new(rate_plans.count, '?').join(',')
+        attributes = rate_plans.map(&:rate_plan_id)
+        attributes << from
+        attributes << to
+
+        RoomPriceRepository.adapter.instance_variable_get("@connection")[
+          "SELECT min(room_rate)
+          FROM jtb_room_stocks s
+          inner join jtb_room_prices p
+            on p.date = s.service_date
+              and p.city_code = s.city_code
+              and p.hotel_code = s.hotel_code
+              and p.rate_plan_id = s.rate_plan_id
+          WHERE ((s.rate_plan_id IN (#{in_prepared_statement}))
+            AND service_date between ? and ?
+            AND number_of_units > 0
+            AND sale_status = '0');
+          ",
+          *attributes
+        ].first[:min]
       end
 
       def self.by_primary_key(city_code, hotel_code, rate_plan_id, date)
