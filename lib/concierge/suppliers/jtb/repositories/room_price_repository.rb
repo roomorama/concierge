@@ -14,6 +14,15 @@ module JTB
         ) { yield }
       end
 
+      def self.room_min_price_for_date(room, rate_plans, date)
+        query do
+          where(rate_plan_id: rate_plans.map(&:rate_plan_id))
+            .and(city_code: room.city_code)
+            .and(hotel_code: room.hotel_code)
+            .and(date: date)
+        end.min(:room_rate)
+      end
+
       def self.room_min_price(rate_plans, from, to)
         return if rate_plans.count == 0
 

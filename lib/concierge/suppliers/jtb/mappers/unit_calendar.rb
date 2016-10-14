@@ -45,7 +45,7 @@ module JTB
             available = false
             nightly_rate = 0
           else
-            min_price = JTB::Repositories::RoomPriceRepository.room_min_price(room, rate_plans, stock.service_date)
+            min_price = JTB::Repositories::RoomPriceRepository.room_min_price_for_date(room, rate_plans, stock.service_date)
             if min_price
               available = true
               nightly_rate = min_price
