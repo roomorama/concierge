@@ -196,15 +196,11 @@ module RentalsUnited
       end
 
       def en_lang_field(key)
-        multi_lang_values = property_hash.get(key)
-        en_value = Array(multi_lang_values).find do |field|
-          text = field["Text"]
-          next unless text
+        multi_lang_values = property_hash.get("#{key}.Text")
 
-          text.attributes["LanguageID"] == EN_DESCRIPTION_LANG_CODE
+        Array(multi_lang_values).find do |field|
+          field.attributes["LanguageID"] == EN_DESCRIPTION_LANG_CODE
         end
-
-        en_value["Text"] if en_value
       end
     end
   end
