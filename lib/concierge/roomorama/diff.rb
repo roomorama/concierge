@@ -1,6 +1,7 @@
 require_relative "mappers"
 require_relative "property"
 require_relative "unit"
+require_relative "translated"
 
 module Roomorama
 
@@ -17,6 +18,7 @@ module Roomorama
 
     attr_accessor *Roomorama::Property::ATTRIBUTES
 
+    include Roomorama::Translated
     include Roomorama::Mappers
 
     ChangeSet = Struct.new(:created, :updated, :deleted)
@@ -106,6 +108,7 @@ module Roomorama
         subtype:                        subtype,
         title:                          title,
         description:                    description,
+        translations:                   translations,
         address:                        address,
         apartment_number:               apartment_number,
         postal_code:                    postal_code,

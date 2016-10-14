@@ -35,6 +35,15 @@ RSpec.describe Roomorama::Diff do
     end
   end
 
+  describe "adding locales" do
+    it "allows adding translations to the diff" do
+      subject[:title]    = "New Title"
+      subject.es[:title] = "Nuevo título"
+      expect(subject.title).to eq "New Title"
+      expect(subject.es.title).to eq "Nuevo título"
+    end
+  end
+
   describe "#erase" do
     it "causes the attribute to be serialized even if blank" do
       subject.title = "New Title"
@@ -197,8 +206,10 @@ RSpec.describe Roomorama::Diff do
   describe "#to_h" do
     before do
       # makes some changes to the property
-      subject.title        = "Studio Apartment in Paris"
-      subject.description  = "Bonjour!"
+      subject.title          = "Studio Apartment in Paris"
+      subject.es.title       = "Baguette"
+      subject.description    = "Bonjour!"
+      subject.es.description = "Pate and Baguette"
       subject.nightly_rate = 100
 
       image         = Roomorama::Image.new("IMG1")
@@ -249,6 +260,13 @@ RSpec.describe Roomorama::Diff do
         description:     "Bonjour!",
         nightly_rate:    100,
         multi_unit:      true,
+
+        translations: {
+          es: {
+            title:       "Baguette",
+            description: "Pate and Baguette"
+          }
+        },
 
         images: {
           create: [
