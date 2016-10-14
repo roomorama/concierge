@@ -308,6 +308,14 @@ RSpec.describe RentalsUnited::Mappers::Property do
     end
   end
 
+  context "when mapping single beds with twin and bunk beds" do
+    let(:file_name) { "rentals_united/properties/beds/single_beds_with_twin_and_bunk_beds.xml" }
+
+    it "sets number_of_single_beds" do
+      expect(property.number_of_single_beds).to eq(9)
+    end
+  end
+
   context "when mapping double beds" do
     let(:file_name) { "rentals_united/properties/beds/double_beds.xml" }
 
@@ -328,7 +336,7 @@ RSpec.describe RentalsUnited::Mappers::Property do
     let(:file_name) { "rentals_united/properties/beds/all_types.xml" }
 
     it "sets correct numbers of beds" do
-      expect(property.number_of_single_beds).to eq(7)
+      expect(property.number_of_single_beds).to eq(15)
       expect(property.number_of_double_beds).to eq(18)
       expect(property.number_of_sofa_beds).to eq(13)
     end

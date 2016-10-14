@@ -11,21 +11,31 @@ module RentalsUnited
       EN_DESCRIPTION_LANG_CODE = "1"
       BATHROOM_TYPE_ID = "81"
 
-      SINGLE_BED_CODES = [
-        "323", # single bed
-        "209", # Extra Bed
-      ]
-      DOUBLE_BED_CODES = [
-        "61",  # double bed
-        "324", # king size bed
-        "485", # Queen size bed
-      ]
-      SOFA_BED_CODES = [
-        "237", # sofabed
-        "182", # sofa
-        "200", # double sofa bed
-        "203", # double sofa
-      ]
+      # Bed configuration mapping (key -> value)
+      #
+      # key:   RU amenity code
+      # value: Multiplier, which shows how many beds we should count for
+      #        every occurence of the given amenity code
+      #
+      # For the most beds value is 1, but due to the nature of some kind of
+      # beds (Twin, Bunk), this value can be different from 1.
+      SINGLE_BED_CODES = {
+        "323" => 1, # single bed
+        "209" => 1, # Extra Bed
+        "440" => 2, # Pair of twin beds
+        "444" => 2, # Bunk bed
+      }
+      DOUBLE_BED_CODES = {
+        "61"  => 1,  # double bed
+        "324" => 1, # king size bed
+        "485" => 1, # Queen size bed
+      }
+      SOFA_BED_CODES = {
+        "237" => 1, # sofabed
+        "182" => 1, # sofa
+        "200" => 1, # double sofa bed
+        "203" => 1, # double sofa
+      }
 
       # Initialize +RentalsUnited::Mappers::Property+
       #
@@ -123,8 +133,9 @@ module RentalsUnited
           room_amenities = Array(room_hash.get("Amenities.Amenity"))
 
           room_amenities.each do |amenity|
-            if bed_codes.include?(amenity)
-              count = count + amenity.attributes["Count"].to_i
+            if bed_codes.has_key?(amenity)
+              multiplier = bed_codes[amenity]
+              count = count + multiplier * amenity.attributes["Count"].to_i
             end
           end
         end
