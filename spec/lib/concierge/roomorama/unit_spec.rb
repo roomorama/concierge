@@ -1,4 +1,5 @@
 require "spec_helper"
+require_relative "translated"
 
 RSpec.describe Roomorama::Unit do
   let(:identifier) { "JPN123UN" }
@@ -85,6 +86,8 @@ RSpec.describe Roomorama::Unit do
     end
   end
 
+  it_behaves_like "translated object"
+
   describe "#add_image" do
     let(:image) { Roomorama::Image.new("ID123") }
 
@@ -146,12 +149,14 @@ RSpec.describe Roomorama::Unit do
 
   describe "#to_h" do
     before do
-      subject.title        = "Nice Unit"
-      subject.description  = "Largest Unit Available"
-      subject.nightly_rate = 100
-      subject.weekly_rate  = 200
-      subject.monthly_rate = 300
-      subject.amenities    = ["free_cleaning", "parking", "pool", "wifi"]
+      subject.title          = "Nice Unit"
+      subject.es.title       = "Baguette"
+      subject.description    =  "Largest Unit Available"
+      subject.es.description = "Pate and Baguette"
+      subject.nightly_rate   = 100
+      subject.weekly_rate    = 200
+      subject.monthly_rate   = 300
+      subject.amenities      = ["free_cleaning", "parking", "pool", "wifi"]
 
       image = Roomorama::Image.new("image1")
       image.url = "https://www.example.org/image1.png"
@@ -171,6 +176,13 @@ RSpec.describe Roomorama::Unit do
         nightly_rate: 100,
         weekly_rate:  200,
         monthly_rate: 300,
+
+        translations: {
+          es: {
+            title:       "Baguette",
+            description: "Pate and Baguette"
+          }
+        },
 
         images: [
           {

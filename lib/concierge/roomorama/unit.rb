@@ -1,3 +1,4 @@
+require_relative "translated"
 module Roomorama
 
   # +Roomorama::Unit+
@@ -16,6 +17,7 @@ module Roomorama
   #   unit.add_image(image)
   class Unit
     include Roomorama::Mappers
+    include Roomorama::Translated
 
     # +Roomorama::Unit::ValidationError+
     #
@@ -105,6 +107,7 @@ module Roomorama
         identifier:            identifier,
         title:                 title,
         description:           description,
+        translations:          translations,
         nightly_rate:          nightly_rate,
         weekly_rate:           weekly_rate,
         monthly_rate:          monthly_rate,
