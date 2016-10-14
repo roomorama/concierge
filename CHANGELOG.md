@@ -12,6 +12,7 @@ how this file is formatted and how the process works.
 - Ensure synchronisation.finish! for Kigo host with empty properties
 - Kigo legacy hosts should not be deleted from Concierge
 - SAW: cleaning fee patch
+- RU: fix exception which was raised while parsing multi-lang check-in instructions
 
 ### Changed
 - Waytostay: return unavailable quotation instead error when max number of days before arrival reached
