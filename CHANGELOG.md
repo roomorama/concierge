@@ -10,8 +10,9 @@ how this file is formatted and how the process works.
 - Kigo legacy hosts should not be deleted from Concierge
 - SAW: cleaning fee patch
 
-### Chagned
+### Changed
 - Waytostay: return unavailable quotation instead error when max number of days before arrival reached
+- order of events on error show page
 
 ## [0.12.6] - 2016-10-12
 ### Added
