@@ -47,30 +47,30 @@ module Workers::Suppliers::Avantio
       availabilities = availabilities.value
 
       properties.each do |property|
+        property_id = property.property_id
         unless validator(property).valid?
-          synchronisation.skip_property
+          synchronisation.skip_property(property_id, 'Invalid property')
           next
         end
-        property_id = property.property_id
         rate = rates[property_id]
         unless rate
-          synchronisation.skip_property
+          synchronisation.skip_property(property_id, 'Rate not found')
           next
         end
         description = descriptions[property_id]
         unless description && description_validator(description).valid?
-          synchronisation.skip_property
+          synchronisation.skip_property(property_id, 'Description not found or invalid')
           next
         end
         occupational_rule = occupational_rules[property.occupational_rule_id]
         unless occupational_rule
-          synchronisation.skip_property
+          synchronisation.skip_property(property_id, 'Occupational rule not found')
           next
         end
         # Availability is not used for property building, but used for calendar building.
         # So just to be sure that property has availability.
         unless availabilities[property_id]
-          synchronisation.skip_property
+          synchronisation.skip_property(property_id, 'Availabilities not found')
           next
         end
         synchronisation.start(property_id) do
@@ -150,6 +150,7 @@ module Workers::Suppliers::Avantio
         operation:   'sync',
         supplier:    Avantio::Client::SUPPLIER_NAME,
         code:        result.error.code,
+        description: result.error.data,
         context:     Concierge.context.to_h,
         happened_at: Time.now
       })
