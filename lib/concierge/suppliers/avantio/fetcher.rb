@@ -35,7 +35,9 @@ module Avantio
 
     # Returns +Result+ wrapping +Nokogiri::XML::Document+
     def fetch(code)
-      return Result.error(:unknown_code) unless SUPPORTED_DATA.include?(code)
+      unless SUPPORTED_DATA.include?(code)
+        return Result.error(:unknown_code, "Avantio supports only next files: #{SUPPORTED_DATA}")
+      end
       zip = client.get(url(code))
       return zip unless zip.success?
 
