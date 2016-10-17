@@ -47,7 +47,7 @@ module JTB
       end
 
       def tmp_path
-        credentials.sftp['tmp_path']
+        @tmp_path ||= credentials.sftp['tmp_path']
       end
 
       def fetch_last_synced(file_prefix)
