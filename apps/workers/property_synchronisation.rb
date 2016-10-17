@@ -81,7 +81,7 @@ module Workers
     def start(identifier)
       new_context(identifier) do
         result = yield(self)
-        return result if skipped_properties.skipped?(identifier)
+        return result if skipped_properties.skipped?(identifier) || processed.include?(identifier)
         finish_property_sync(result)
       end
     end
@@ -148,6 +148,26 @@ module Workers
     def skip_property(property_id, reason)
       skipped_properties.add(property_id, reason)
       Result.new(true)
+    end
+
+    # Allows client to mark a property as having processed to avoid being sync.
+    # This is a convenient method to invoke when we know the property should
+    # not be merged, but we cannot/do not want to build the Roomorama::Property
+    # for #start blocko
+    #
+    # Usage:
+    #
+    #   sync.start(id) do
+    #     result = fetch_data
+    #     if result.error.code = "rate_limit" && should_try_again_next_sync
+    #       sync.mark_as_processed(id)
+    #     else
+    #       # continue building a Roomorama::Property
+    #     end
+    #   end
+    #
+    def mark_as_processed!(property_id)
+      processed << property_id
     end
 
     # Used to initialize a clean context for a property id.
