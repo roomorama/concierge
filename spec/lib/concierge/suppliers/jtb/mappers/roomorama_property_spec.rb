@@ -94,6 +94,46 @@ RSpec.describe JTB::Mappers::RoomoramaProperty do
     expect(image.position).to eq(2)
   end
 
+  context 'when coordinates have unexpected format' do
+    let(:hotel) { create_hotel({ latitude: 'bar', longitude: 'foo' }) }
+
+    it 'returns property with nil coordinates' do
+      create_lookup
+      create_picture
+      room = create_room_type
+      create_picture({ sequence: 2, room_code: room.room_code })
+      create_lookup({ category: '4', id: room.room_grade, name: 'Standard'})
+      create_room_amenities_lookups
+      create_rate_plan
+      create_rate_plan({ rate_plan_id: 'CHUHW0101TRP2PSG'})
+      create_room_stock({ rate_plan_id: 'CHUHW0101TRP2PSG' })
+      create_room_stock({ rate_plan_id: 'CHUHW0101TRP2PSG', service_date: '2016-10-11' })
+      create_room_stock({ rate_plan_id: 'CHUHW0101TRP2PSG', service_date: '2016-10-12', number_of_units: 0 })
+      create_room_stock({ rate_plan_id: 'CHUHW0101TRP2PSG', service_date: '2016-10-13', sale_status: '1' })
+      create_room_stock
+      create_room_stock({ service_date: '2016-10-11' })
+      create_room_stock({ service_date: '2016-10-12', number_of_units: 0 })
+      create_room_stock({ service_date: '2016-10-13', sale_status: '1' })
+      create_room_price
+      create_room_price({ date: '2016-10-11', room_rate: 9010.0 })
+      create_room_price({ date: '2016-10-12', room_rate: 8010.0 })
+      create_room_price({ date: '2016-10-13', room_rate: 7010.0 })
+      create_room_price({ rate_plan_id: 'CHUHW0101TRP2PSG' })
+      create_room_price({ rate_plan_id: 'CHUHW0101TRP2PSG', date: '2016-10-11', room_rate: 9011.0 })
+      create_room_price({ rate_plan_id: 'CHUHW0101TRP2PSG', date: '2016-10-12', room_rate: 8011.0 })
+      create_room_price({ rate_plan_id: 'CHUHW0101TRP2PSG', date: '2016-10-13', room_rate: 7011.0 })
+
+      result = subject.build(hotel)
+
+      expect(result).to be_a(Result)
+      expect(result.success?).to be true
+
+      property = result.value
+      expect(property.lat).to be_nil
+      expect(property.lng).to be_nil
+    end
+  end
+
   it 'returns error when property does not have images' do
     create_lookup
 
