@@ -87,6 +87,12 @@ RSpec.describe RentalsUnited::Mappers::Property do
       )
     end
 
+    it "sets bed counts when there is no beds configurations" do
+      expect(property.number_of_single_beds).to be_nil
+      expect(property.number_of_double_beds).to be_nil
+      expect(property.number_of_sofa_beds).to be_nil
+    end
+
     context "when property does not have some parts of check_in_instructions" do
       let(:file_name) { "rentals_united/properties/property_with_partial_check_in_instructions.xml" }
 
@@ -269,6 +275,70 @@ RSpec.describe RentalsUnited::Mappers::Property do
       it "sets floor -1 to the property" do
         expect(property.floor).to eq(-1)
       end
+    end
+  end
+
+  context "when mapping bathrooms" do
+    it "sets number_of_bathrooms field" do
+      expect(property.number_of_bathrooms).to eq(4)
+    end
+
+    context "when there is no bathrooms" do
+      let(:file_name) { "rentals_united/properties/property_without_bathrooms.xml" }
+
+      it "sets number_of_bathrooms to 0" do
+        expect(property.number_of_bathrooms).to eq(0)
+      end
+    end
+  end
+
+  context "when mapping single beds" do
+    let(:file_name) { "rentals_united/properties/beds/single_beds.xml" }
+
+    it "sets number_of_single_beds" do
+      expect(property.number_of_single_beds).to eq(3)
+    end
+  end
+
+  context "when mapping single beds with extra beds" do
+    let(:file_name) { "rentals_united/properties/beds/single_beds_with_extra_beds.xml" }
+
+    it "sets number_of_single_beds" do
+      expect(property.number_of_single_beds).to eq(9)
+    end
+  end
+
+  context "when mapping single beds with twin and bunk beds" do
+    let(:file_name) { "rentals_united/properties/beds/single_beds_with_twin_and_bunk_beds.xml" }
+
+    it "sets number_of_single_beds" do
+      expect(property.number_of_single_beds).to eq(9)
+    end
+  end
+
+  context "when mapping double beds" do
+    let(:file_name) { "rentals_united/properties/beds/double_beds.xml" }
+
+    it "sets number_of_double_beds" do
+      expect(property.number_of_double_beds).to eq(5)
+    end
+  end
+
+  context "when mapping sofa beds" do
+    let(:file_name) { "rentals_united/properties/beds/sofa_beds.xml" }
+
+    it "sets number_of_sofa_beds" do
+      expect(property.number_of_sofa_beds).to eq(7)
+    end
+  end
+
+  context "when all types of beds" do
+    let(:file_name) { "rentals_united/properties/beds/all_types.xml" }
+
+    it "sets correct numbers of beds" do
+      expect(property.number_of_single_beds).to eq(15)
+      expect(property.number_of_double_beds).to eq(18)
+      expect(property.number_of_sofa_beds).to eq(13)
     end
   end
 end

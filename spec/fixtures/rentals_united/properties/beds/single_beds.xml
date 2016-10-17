@@ -79,6 +79,17 @@
       <CompositionRoomAmenities CompositionRoomID="81">
         <Amenities />
       </CompositionRoomAmenities>
+      <CompositionRoomAmenities CompositionRoomID="249">
+          <Amenities>
+              <Amenity Count="1">323</Amenity>
+              <Amenity Count="10">999</Amenity>
+          </Amenities>
+      </CompositionRoomAmenities>
+      <CompositionRoomAmenities CompositionRoomID="372">
+          <Amenities>
+              <Amenity Count="2">323</Amenity>
+          </Amenities>
+      </CompositionRoomAmenities>
     </CompositionRoomsAmenities>
     <Images>
       <Image ImageTypeID="3">https://dwe6atvmvow8k.cloudfront.net/ru/427698/519688/636082398988145159.jpg</Image>
