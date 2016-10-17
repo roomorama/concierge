@@ -78,6 +78,7 @@ RSpec.describe Workers::Suppliers::Kigo::Legacy::Metadata do
       [409, {}, "The rate limiting policy was triggered, please throttle."]
     }
 
+    expect(subject.synchronisation).to receive(:mark_as_processed!).once
     subject.perform
     error = ExternalErrorRepository.last
 
