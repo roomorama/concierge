@@ -101,7 +101,8 @@ RSpec.describe JTB::Mappers::RoomoramaProperty do
 
     expect(result).to be_a(Result)
     expect(result.success?).to be false
-    expect(result.error.code).to be :empty_images
+    expect(result.error.code).to eq :empty_images
+    expect(result.error.data).to eq 'Property images list is empty'
   end
 
   it 'returns error when property does not nightly rate' do
@@ -112,7 +113,8 @@ RSpec.describe JTB::Mappers::RoomoramaProperty do
 
     expect(result).to be_a(Result)
     expect(result.success?).to be false
-    expect(result.error.code).to be :unknown_nightly_rate
+    expect(result.error.code).to eq :unknown_nightly_rate
+    expect(result.error.data).to eq 'No one of property units has prices information'
   end
 
 end
