@@ -41,7 +41,7 @@ module Workers::Suppliers::Kigo
 
           unless data_result.success?
             if data_result.error.code == :http_status_429
-              synchronisation.mark_as_processed!(id)
+              synchronisation.mark_as_processed(id)
             end
             announce_error('Failed to perform the `#fetch_data` operation', data_result)
             next

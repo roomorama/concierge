@@ -52,7 +52,7 @@ RSpec.describe Workers::Suppliers::Kigo::Metadata do
     stub_call(:post, "https://www.kigoapis.com/channels/v1/readProperty2?subscription-key=123-key") {
       [429, {}, read_fixture('kigo/rate_limit.json')]
     }
-    expect(subject.synchronisation).to receive(:mark_as_processed!).once
+    expect(subject.synchronisation).to receive(:mark_as_processed).once
     subject.perform
     error = ExternalErrorRepository.last
 

@@ -461,7 +461,7 @@ RSpec.describe Workers::PropertySynchronisation do
     end
 
     it "should not purge properties marked as processed" do
-      subject.mark_as_processed! "prop1"
+      subject.mark_as_processed "prop1"
       expect(subject).not_to receive(:run_operation)
       subject.finish!
     end

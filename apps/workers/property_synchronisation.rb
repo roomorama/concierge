@@ -175,7 +175,7 @@ module Workers
     #     end
     #   end
     #
-    def mark_as_processed!(property_id)
+    def mark_as_processed(property_id)
       processed << property_id
     end
 
