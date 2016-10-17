@@ -124,7 +124,12 @@ module Workers
     end
 
     # Allows client to count skipped (not instant bookable, etc) properties during sync process,
-    # skipped counter will be saved at the end of sync process.
+    # skipped counter will be saved at the end of sync process. Properties won't be sent to Roomorama,
+    # and at the end of the sync, exisiting properties may be purged.
+    #
+    # Compare this with #mark_as_processed, where property also will not be sent to Roomorama,
+    # but will not be purged.
+    #
     # start method ignores skipped properties.
     # The method returns +Result(true)+ to allow developer to
     # interrupt start's block with return like this:
@@ -150,10 +155,14 @@ module Workers
       Result.new(true)
     end
 
-    # Allows client to mark a property as having processed to avoid being sync.
+    # Allows client to mark a property as having been processed to avoid being purged.
+    # Property will not be sent to Roomorama (for update or disable)
     # This is a convenient method to invoke when we know the property should
-    # not be merged, but we cannot/do not want to build the Roomorama::Property
-    # for #start blocko
+    # not be purged, but we cannot/do not want to build the Roomorama::Property
+    # for the #start block.
+    #
+    # Compare this with #skip_property, where property is also not sent to Roomorama, but
+    # can be purged.
     #
     # Usage:
     #
