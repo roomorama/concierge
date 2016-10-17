@@ -81,7 +81,7 @@ module Workers
     def start(identifier)
       new_context(identifier) do
         result = yield(self)
-        return result if skipped_properties.skipped?(identifier)
+        return result if skipped_properties.skipped?(identifier) || processed.include?(identifier)
         finish_property_sync(result)
       end
     end
@@ -124,7 +124,12 @@ module Workers
     end
 
     # Allows client to count skipped (not instant bookable, etc) properties during sync process,
-    # skipped counter will be saved at the end of sync process.
+    # skipped counter will be saved at the end of sync process. Properties won't be sent to Roomorama,
+    # and at the end of the sync, existing properties may be purged.
+    #
+    # Compare this with #mark_as_processed, where property also will not be sent to Roomorama,
+    # but will not be purged.
+    #
     # start method ignores skipped properties.
     # The method returns +Result(true)+ to allow developer to
     # interrupt start's block with return like this:
@@ -148,6 +153,30 @@ module Workers
     def skip_property(property_id, reason)
       skipped_properties.add(property_id, reason)
       Result.new(true)
+    end
+
+    # Allows client to mark a property as having been processed to avoid being purged.
+    # Property will not be sent to Roomorama (for update or disable)
+    # This is a convenient method to invoke when we know the property should
+    # not be purged, but we cannot/do not want to build the Roomorama::Property
+    # for the #start block.
+    #
+    # Compare this with #skip_property, where property is also not sent to Roomorama, but
+    # can be purged.
+    #
+    # Usage:
+    #
+    #   sync.start(id) do
+    #     result = fetch_data
+    #     if result.error.code = "rate_limit" && should_try_again_next_sync
+    #       sync.mark_as_processed(id)
+    #     else
+    #       # continue building a Roomorama::Property
+    #     end
+    #   end
+    #
+    def mark_as_processed(property_id)
+      processed << property_id
     end
 
     # Used to initialize a clean context for a property id.

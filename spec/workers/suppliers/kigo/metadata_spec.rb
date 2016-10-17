@@ -3,6 +3,7 @@ require 'spec_helper'
 RSpec.describe Workers::Suppliers::Kigo::Metadata do
   include Support::Fixtures
   include Support::Factories
+  include Support::HTTPStubbing
 
   let(:supplier) { create_supplier(name: 'Kigo') }
   let(:host) { create_host(supplier_id: supplier.id, identifier: '14908') }
@@ -43,6 +44,20 @@ RSpec.describe Workers::Suppliers::Kigo::Metadata do
 
     expect(error.operation).to eq 'sync'
     expect(error.code).to eq 'connection_timeout'
+    expect(error.supplier).to eq 'Kigo'
+  end
+
+  it 'skips property if rate limit is hit' do
+    allow_any_instance_of(Kigo::Importer).to receive(:fetch_properties) { Result.new(properties_list) }
+    stub_call(:post, "https://www.kigoapis.com/channels/v1/readProperty2?subscription-key=123-key") {
+      [429, {}, read_fixture('kigo/rate_limit.json')]
+    }
+    expect(subject.synchronisation).to receive(:mark_as_processed).once
+    subject.perform
+    error = ExternalErrorRepository.last
+
+    expect(error.operation).to eq 'sync'
+    expect(error.code).to eq 'http_status_429'
     expect(error.supplier).to eq 'Kigo'
   end
 
