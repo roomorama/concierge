@@ -69,5 +69,21 @@ RSpec.describe Concierge::Credentials do
 
       ENV["_TEST_PARTNER_TOKEN"] = nil
     end
+
+    it "can validate success nested levels" do
+      expect {
+        Concierge::Credentials.validate_credentials!({
+           "supplier" => ["username", "level2.username", "level2.level3.password"]
+         })
+      }.not_to raise_error
+    end
+
+    it "can validate nested levels" do
+      expect {
+        Concierge::Credentials.validate_credentials!({
+           "supplier" => ["username", "level2.username", "level2.level3.username"]
+         })
+      }.to raise_error(Concierge::Credentials::MissingCredentialError)
+    end
   end
 end
