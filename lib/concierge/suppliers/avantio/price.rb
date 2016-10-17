@@ -25,11 +25,6 @@ module Avantio
     end
 
     def quote(params)
-      property = fetch_property(params[:property_id])
-      return property_not_found unless property
-      host = fetch_host(property.host_id)
-      return host_not_found unless host
-
       # We should check availability at first, because
       # Avantio quote call returns valid price even for not available periods
       available = Avantio::Commands::IsAvailableFetcher.new(credentials).call(params)
@@ -51,24 +46,7 @@ module Avantio
         quotation.currency = quote.value.currency
       end
 
-      quotation.host_fee_percentage = host.fee_percentage
       Result.new(quotation)
-    end
-
-    def property_not_found
-      Result.error(:property_not_found)
-    end
-
-    def host_not_found
-      Result.error(:host_not_found)
-    end
-
-    def fetch_host(id)
-      HostRepository.find(id)
-    end
-
-    def fetch_property(id)
-      PropertyRepository.identified_by(id).first
     end
   end
 end

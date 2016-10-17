@@ -8,10 +8,11 @@ RSpec.describe API::Controllers::Avantio::Quote do
   include Support::SOAPStubbing
   include Support::Factories
 
-  let!(:host) { create_host(fee_percentage: 7) }
+  let!(:supplier) { create_supplier(name: Avantio::Client::SUPPLIER_NAME) }
+  let!(:host) { create_host(fee_percentage: 7, supplier_id: supplier.id) }
   let!(:property) { create_property(identifier: '38180', host_id: host.id) }
   let(:params) {
-    { property_id: '38180', check_in: '2016-05-01', check_out: '2016-05-12', guests: 3 }
+    { property_id: property.identifier, check_in: '2016-05-01', check_out: '2016-05-12', guests: 3 }
   }
 
   let(:get_booking_price_response) { read_fixture('avantio/get_booking_price_response.xml') }
