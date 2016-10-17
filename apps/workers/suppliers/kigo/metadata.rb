@@ -40,6 +40,9 @@ module Workers::Suppliers::Kigo
           data_result = synchronisation.new_context(id) { importer.fetch_data(id) }
 
           unless data_result.success?
+            if data_result.error.code == :http_status_429
+              synchronisation.skip_property(id, "Rate limit")
+            end
             announce_error('Failed to perform the `#fetch_data` operation', data_result)
             next
           end
