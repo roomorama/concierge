@@ -12,6 +12,7 @@ how this file is formatted and how the process works.
 ### Fixed
 - Rentals United: fix exception which was raised while parsing multi-lang check-in instructions
 - Kigo and Kigo Legacy metadata sync should not purge properties when rate limitted
+- Poplidays: metadata sync is safe for `nil` availabilities response
 
 ## [0.12.7] - 2016-10-17
 ### Fixed

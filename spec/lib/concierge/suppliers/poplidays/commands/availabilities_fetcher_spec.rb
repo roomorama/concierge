@@ -32,7 +32,25 @@ RSpec.describe Poplidays::Commands::AvailabilitiesFetcher do
       result = subject.call(lodging_id)
 
       expect(result.success?).to be(true)
-      expect(result.value).to be_a(Hash)
+      expect(result.value).to be_a(Concierge::SafeAccessHash)
+    end
+
+    it 'returns a hash if json is empty' do
+      stub_call(:get, lodgings_endpoint) { [200, {}, ''] }
+      result = subject.call(lodging_id)
+
+      expect(result.success?).to be(true)
+      expect(result.value).to be_a(Concierge::SafeAccessHash)
+      expect(result.value['availabilities']).to be_nil
+    end
+
+    it 'returns a hash if json is null' do
+      stub_call(:get, lodgings_endpoint) { [200, {}, 'null'] }
+      result = subject.call(lodging_id)
+
+      expect(result.success?).to be(true)
+      expect(result.value).to be_a(Concierge::SafeAccessHash)
+      expect(result.value['availabilities']).to be_nil
     end
   end
 

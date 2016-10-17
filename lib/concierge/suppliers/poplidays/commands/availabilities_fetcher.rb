@@ -26,7 +26,11 @@ module Poplidays
         raw_availabilities = remote_call(url_params: {id: lodging_id})
 
         if raw_availabilities.success?
-          json_decode(raw_availabilities.value)
+          result = json_decode(raw_availabilities.value)
+
+          return result unless result.success?
+
+          Result.new(Concierge::SafeAccessHash.new(result.value))
         else
           raw_availabilities
         end
