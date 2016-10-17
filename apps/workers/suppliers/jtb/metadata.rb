@@ -59,10 +59,6 @@ module Workers::Suppliers::JTB
       Concierge::Credentials.for(JTB::Client::SUPPLIER_NAME)
     end
 
-    def tmp_path
-      credentials.sftp['tmp_path']
-    end
-
     def augment_context_error(message)
       message = {
         label: 'Synchronisation Failure',
