@@ -125,7 +125,7 @@ module Workers
 
     # Allows client to count skipped (not instant bookable, etc) properties during sync process,
     # skipped counter will be saved at the end of sync process. Properties won't be sent to Roomorama,
-    # and at the end of the sync, exisiting properties may be purged.
+    # and at the end of the sync, existing properties may be purged.
     #
     # Compare this with #mark_as_processed, where property also will not be sent to Roomorama,
     # but will not be purged.
