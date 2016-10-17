@@ -119,7 +119,7 @@ module Roomorama
     end
 
     def empty_images?
-      Array(@images).empty?
+      images.empty?
     end
 
     def drop_images!
