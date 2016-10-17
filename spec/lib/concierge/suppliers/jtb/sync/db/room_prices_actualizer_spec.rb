@@ -24,6 +24,7 @@ RSpec.describe JTB::Sync::DB::RoomPricesActualizer do
 
         result = subject.actualize
         expect(result.success?).to be false
+        expect(result.error.code).to eq(:jtb_db_actualization_error)
         expect(result.error.data).to eq('Error during import file with prefix `RoomPrice` to DB')
       end
     end

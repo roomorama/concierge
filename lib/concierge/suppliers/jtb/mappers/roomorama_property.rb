@@ -38,8 +38,8 @@ module JTB
         set_units!(property, hotel)
         set_rates!(property)
 
-        error_code = validate(property)
-        return Result.error(error_code) if error_code
+        error = validate(property)
+        return error if error
 
         Result.new(property)
       end
@@ -56,8 +56,12 @@ module JTB
       end
 
       def validate(property)
-        return :empty_images if property.empty_images?
-        return :unknown_nightly_rate unless property.nightly_rate
+        if property.empty_images?
+          return Result.error(:empty_images, 'Property images list is empty')
+        end
+        unless property.nightly_rate
+          return Result.error(:unknown_nightly_rate, 'No one of property units has prices information')
+        end
       end
 
       # Each room has several rate plans.
