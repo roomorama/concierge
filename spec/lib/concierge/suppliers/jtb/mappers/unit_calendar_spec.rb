@@ -19,6 +19,7 @@ RSpec.describe JTB::Mappers::UnitCalendar do
       expect(result).to be_a(Result)
       expect(result.success?).to be false
       expect(result.error.code).to eq(:unknown_room)
+      expect(result.error.data).to eq('Can not sync calendar for unknown unit unknownunit')
     end
 
     context 'valid calendar' do

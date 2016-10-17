@@ -46,7 +46,8 @@ RSpec.describe JTB::Sync::FileActualizer do
         result = subject.actualize(last_synced)
 
         expect(result.success?).to be false
-        expect(result.error.code).to be :all_file_not_found
+        expect(result.error.code).to eq(:all_file_not_found)
+        expect(result.error.data).to eq("'ALL' file not found for prefix RoomStock")
       end
     end
 
@@ -84,7 +85,8 @@ RSpec.describe JTB::Sync::FileActualizer do
         result = subject.actualize(last_synced)
 
         expect(result.success?).to be false
-        expect(result.error.code).to be :all_file_not_found
+        expect(result.error.code).to eq(:all_file_not_found)
+        expect(result.error.data).to eq("'ALL' file not found for prefix RoomStock")
       end
     end
 
