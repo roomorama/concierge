@@ -8,7 +8,8 @@ module Waytostay
     UNAVAILBLE_ERROR_MESSAGES = [
       "Apartment is not available for the selected dates",
       "The minimum number of nights to book this apartment is",
-      "Cut off days restriction"
+      "Cut off days restriction",
+      "Max days for arrival restriction"
     ].freeze
     REQUIRED_RESPONSE_KEYS = [
       "booking_details.property_reference",

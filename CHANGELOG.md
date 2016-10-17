@@ -4,6 +4,16 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.12.7] - 2016-10-17
+### Fixed
+- Ensure synchronisation.finish! for Kigo host with empty properties
+- Kigo legacy hosts should not be deleted from Concierge
+- SAW: cleaning fee patch
+
+### Changed
+- Waytostay: return unavailable quotation instead error when max number of days before arrival reached
+- order of events on error show page
+
 ## [0.12.6] - 2016-10-12
 ### Added
 - Rollbar warning for external warnings
