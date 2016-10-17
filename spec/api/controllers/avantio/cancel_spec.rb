@@ -6,15 +6,15 @@ RSpec.describe API::Controllers::Avantio::Cancel do
   it_behaves_like 'cancel action' do
     let(:success_cases) do
       [
-        { params: {reference_number: '5486789'}, cancelled_reference_number: '5486789' },
-        { params: {reference_number: '2154254'}, cancelled_reference_number: '2154254' },
+        { params: {reference_number: '5486789', inquiry_id: '125'}, cancelled_reference_number: '5486789' },
+        { params: {reference_number: '2154254', inquiry_id: '128'}, cancelled_reference_number: '2154254' },
       ]
     end
 
     let(:error_cases) do
       [
-        { params: {reference_number: '658794'}, error: {'cancellation' => 'Could not cancel with remote supplier'} },
-        { params: {reference_number: '245784'}, error: {'cancellation' => 'Already cancelled'} }
+        { params: {reference_number: '658794', inquiry_id: '126'}, error: 'Could not cancel with remote supplier' },
+        { params: {reference_number: '245784', inquiry_id: '127'}, error: 'Already cancelled' }
       ]
     end
   end
