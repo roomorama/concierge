@@ -41,17 +41,13 @@ module JTB
         stocks = JTB::Repositories::RoomStockRepository.availabilities(rate_plans, from, to)
 
         entries = stocks.map do |stock|
-          if stock.number_of_units <= 0 || stock.sale_status != '0'
-            available = false
-            nightly_rate = 0
-          else
+          available = false
+          nightly_rate = 0
+          if available_stock?(stock)
             min_price = JTB::Repositories::RoomPriceRepository.room_min_price_for_date(room, rate_plans, stock.service_date)
             if min_price
               available = true
               nightly_rate = min_price
-            else
-              available = false
-              nightly_rate = 0
             end
           end
           Roomorama::Calendar::Entry.new(
@@ -61,6 +57,11 @@ module JTB
           )
         end
         Result.new(entries)
+      end
+
+      def available_stock?(stock)
+        # Sale status: 0 - On sale, 1 - Not on sale (Requests are not accepted)
+        stock.number_of_units > 0 && stock.sale_status == '0'
       end
     end
   end
