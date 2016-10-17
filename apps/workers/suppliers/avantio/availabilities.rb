@@ -122,6 +122,7 @@ module Workers::Suppliers::Avantio
         operation:   'sync',
         supplier:    Avantio::Client::SUPPLIER_NAME,
         code:        result.error.code,
+        description: result.error.data,
         context:     Concierge.context.to_h,
         happened_at: Time.now
       })
