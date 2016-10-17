@@ -16,8 +16,15 @@ module Concierge
   # Usage
   #
   #   Concierge::Credentials.for("Supplier")
-  #   # => Struct(username="roomorama" password"p4ssw0rd")
+  #   # => Struct(username="roomorama" password="p4ssw0rd")
   class Credentials
+    # YML may contain nested levels. The SEPARATOR can be used to
+    # validate nested levels:
+    #
+    # Concierge::Credentials.validate_credentials!({
+    #   "supplier" => ["username", "level2.username", "level2.level3.password"]
+    # })
+    SEPARATOR = '.'
 
     # +Concierge::Credentials::MissingSupplierError+
     #
@@ -78,8 +85,15 @@ module Concierge
           end
 
           required_credentials.each do |credential|
-            if supplier_credentials[credential].nil? || supplier_credentials[credential].to_s.empty?
-              raise MissingCredentialError.new(supplier, credential)
+            key, *keys = credential.to_s.split(SEPARATOR)
+
+            result = supplier_credentials[key]
+
+            raise MissingCredentialError.new(supplier, credential) if (result.nil? || result.to_s.empty?)
+
+            Array(keys).each do |k|
+              result = result.is_a?(Hash) ? result[k] : nil
+              raise MissingCredentialError.new(supplier, credential) if (result.nil? || result.to_s.empty?)
             end
           end
         end
