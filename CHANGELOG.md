@@ -4,7 +4,7 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
-## Unreleased
+## [0.12.7] - 2016-10-17
 ### Fixed
 - Ensure synchronisation.finish! for Kigo host with empty properties
 - Kigo legacy hosts should not be deleted from Concierge
