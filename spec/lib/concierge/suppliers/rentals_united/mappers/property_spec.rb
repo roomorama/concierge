@@ -151,6 +151,16 @@ RSpec.describe RentalsUnited::Mappers::Property do
       end
     end
 
+    context "when property have pickup service and arrive instuctions in multiple languages" do
+      let(:file_name) { "rentals_united/properties/property_with_multi_lang_arrival_instructions.xml" }
+
+      it "sets check in instuctions" do
+        expect(property.check_in_instructions).to eq(
+          "Landlord: Ruslan Sharipov\nEmail: sharipov.reg@gmail.com\nPhone: +79618492980\nDaysBeforeArrival: 1\nPickupService: DetailsOfPickUpService\nHowToArrive: HowToArriveDescription"
+        )
+      end
+    end
+
     context "when property is not active" do
       let(:file_name) { "rentals_united/properties/not_active.xml" }
 
