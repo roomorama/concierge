@@ -74,10 +74,26 @@
         <Amenities />
       </CompositionRoomAmenities>
       <CompositionRoomAmenities CompositionRoomID="81">
-        <Amenities />
+          <Amenities>
+              <Amenity Count="1">61</Amenity>
+          </Amenities>
       </CompositionRoomAmenities>
       <CompositionRoomAmenities CompositionRoomID="81">
         <Amenities />
+      </CompositionRoomAmenities>
+      <CompositionRoomAmenities CompositionRoomID="249">
+          <Amenities>
+              <Amenity Count="2">209</Amenity>
+              <Amenity Count="1">200</Amenity>
+              <Amenity Count="1">203</Amenity>
+              <Amenity Count="1">324</Amenity>
+          </Amenities>
+      </CompositionRoomAmenities>
+      <CompositionRoomAmenities CompositionRoomID="372">
+          <Amenities>
+              <Amenity Count="2">323</Amenity>
+              <Amenity Count="3">485</Amenity>
+          </Amenities>
       </CompositionRoomAmenities>
     </CompositionRoomsAmenities>
     <Images>

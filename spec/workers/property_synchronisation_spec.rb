@@ -190,6 +190,7 @@ RSpec.describe Workers::PropertySynchronisation do
 
       subject.skip_purge!
       subject.start("prop1") { Result.new(roomorama_property) }
+      subject.finish!
 
       # properties +prop2+ and +prop3+ should be deleted if purging took place
       prop2 = PropertyRepository.from_host(host).identified_by("prop2").first
@@ -452,5 +453,17 @@ RSpec.describe Workers::PropertySynchronisation do
       expect(sync.skipped_properties_count).to eq 0
     end
 
+  end
+
+  describe "#mark_as_processed" do
+    before do
+      create_property(host_id: host.id, identifier: "prop1", data: roomorama_property.to_h)
+    end
+
+    it "should not purge properties marked as processed" do
+      subject.mark_as_processed "prop1"
+      expect(subject).not_to receive(:run_operation)
+      subject.finish!
+    end
   end
 end

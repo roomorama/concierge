@@ -46,6 +46,9 @@ module Workers::Suppliers::Kigo::Legacy
 
           unless data_result.success?
             announce_error('Failed to perform the `#fetch_data` operation', data_result)
+            if data_result.error.code == :http_status_409
+              synchronisation.mark_as_processed(id)
+            end
             next
           end
 

@@ -32,10 +32,16 @@
       <Phone>+79618492980</Phone>
       <DaysBeforeArrival>1</DaysBeforeArrival>
       <PickupService>
+        <Text LanguageID="0"><![CDATA[value for lang 0]]></Text>
         <Text LanguageID="1"><![CDATA[DetailsOfPickUpService]]></Text>
+        <Text LanguageID="2"><![CDATA[value for lang 2]]></Text>
+        <Text LanguageID="3"><![CDATA[value for lang 3]]></Text>
       </PickupService>
       <HowToArrive>
+        <Text LanguageID="0"><![CDATA[value for lang 0]]></Text>
         <Text LanguageID="1"><![CDATA[HowToArriveDescription]]></Text>
+        <Text LanguageID="2"><![CDATA[value for lang 2]]></Text>
+        <Text LanguageID="3"><![CDATA[value for lang 3]]></Text>
       </HowToArrive>
     </ArrivalInstructions>
     <CheckInOut>

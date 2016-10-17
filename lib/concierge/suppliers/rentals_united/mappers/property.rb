@@ -9,6 +9,33 @@ module RentalsUnited
       attr_reader :property_hash
 
       EN_DESCRIPTION_LANG_CODE = "1"
+      BATHROOM_TYPE_ID = "81"
+
+      # Bed configuration mapping (key -> value)
+      #
+      # key:   RU amenity code
+      # value: Multiplier, which shows how many beds we should count for
+      #        every occurence of the given amenity code
+      #
+      # For the most beds value is 1, but due to the nature of some kind of
+      # beds (Twin, Bunk), this value can be different from 1.
+      SINGLE_BED_CODES = {
+        "323" => 1, # single bed
+        "209" => 1, # Extra Bed
+        "440" => 2, # Pair of twin beds
+        "444" => 2, # Bunk bed
+      }
+      DOUBLE_BED_CODES = {
+        "61"  => 1,  # double bed
+        "324" => 1, # king size bed
+        "485" => 1, # Queen size bed
+      }
+      SOFA_BED_CODES = {
+        "237" => 1, # sofabed
+        "182" => 1, # sofa
+        "200" => 1, # double sofa bed
+        "203" => 1, # double sofa
+      }
 
       # Initialize +RentalsUnited::Mappers::Property+
       #
@@ -45,7 +72,11 @@ module RentalsUnited
           floor:                   floor,
           description:             en_description(property_hash),
           images:                  build_images,
-          amenities:               build_amenities
+          amenities:               build_amenities,
+          number_of_bathrooms:     number_of_bathrooms,
+          number_of_single_beds:   beds_count(SINGLE_BED_CODES),
+          number_of_double_beds:   beds_count(DOUBLE_BED_CODES),
+          number_of_sofa_beds:     beds_count(SOFA_BED_CODES),
         )
 
         property
@@ -73,6 +104,46 @@ module RentalsUnited
         ru_floor_value = property_hash.get("Floor").to_i
         return -1 if ru_floor_value == -1000
         return ru_floor_value
+      end
+
+      def rooms
+        @rooms ||= begin
+          path = "CompositionRoomsAmenities.CompositionRoomAmenities"
+
+          Array(property_hash.get(path)).map do |room_hash|
+            Concierge::SafeAccessHash.new(room_hash)
+          end
+        end
+      end
+
+      def number_of_bathrooms
+        rooms.inject(0) do |count, room_hash|
+          if room_hash.get("@CompositionRoomID") == BATHROOM_TYPE_ID
+            count = count + 1
+          else
+            count
+          end
+        end
+      end
+
+      def beds_count(bed_codes)
+        count = 0
+
+        rooms.each do |room_hash|
+          room_amenities = Array(room_hash.get("Amenities.Amenity"))
+
+          room_amenities.each do |amenity|
+            if bed_codes.has_key?(amenity)
+              multiplier = bed_codes[amenity]
+              count = count + multiplier * amenity.attributes["Count"].to_i
+            end
+          end
+        end
+
+        # Host can forget to set up bed amenities for rooms (optional on RU)
+        #
+        # Instead of returning 0 return just nil, meaning count is unknown
+        count == 0 ? nil : count
       end
 
       def en_description(hash)
@@ -125,15 +196,11 @@ module RentalsUnited
       end
 
       def en_lang_field(key)
-        multi_lang_values = property_hash.get(key)
-        en_value = Array(multi_lang_values).find do |field|
-          text = field["Text"]
-          next unless text
+        multi_lang_values = property_hash.get("#{key}.Text")
 
-          text.attributes["LanguageID"] == EN_DESCRIPTION_LANG_CODE
+        Array(multi_lang_values).find do |field|
+          field.attributes["LanguageID"] == EN_DESCRIPTION_LANG_CODE
         end
-
-        en_value["Text"] if en_value
       end
     end
   end
