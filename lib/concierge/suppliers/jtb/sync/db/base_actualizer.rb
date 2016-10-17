@@ -65,7 +65,7 @@ module JTB
             save_state(file_path)
           end
           Result.new(true)
-        rescue Object => e
+        rescue => e
           error_result
         end
 
