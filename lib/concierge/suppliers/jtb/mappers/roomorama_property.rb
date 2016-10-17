@@ -47,7 +47,7 @@ module JTB
       private
 
       def set_rates!(property)
-        min_nightly_rate = Array(property.units).map(&:nightly_rate).compact.min
+        min_nightly_rate = property.units.map(&:nightly_rate).compact.min
         if min_nightly_rate
           property.nightly_rate = min_nightly_rate.to_f
           property.weekly_rate = 7 * property.nightly_rate
