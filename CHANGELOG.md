@@ -4,7 +4,7 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
-## Unreleased
+## [0.12.8] - 2016-10-17
 ### Added
 - Rentals United: add number_of_bathrooms, number single, double, sofa beds fields
 - Synchronisation#mark_as_processed
