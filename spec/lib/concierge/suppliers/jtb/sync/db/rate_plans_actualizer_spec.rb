@@ -20,7 +20,7 @@ RSpec.describe JTB::Sync::DB::RatePlansActualizer do
 
       it 'returns error with description' do
         allow_any_instance_of(described_class).to receive(:import_file) do
-          raise Exception.new
+          raise StandartError
         end
 
         result = subject.actualize

@@ -19,7 +19,7 @@ RSpec.describe JTB::Sync::DB::LookupsActualizer do
 
       it 'returns error with description' do
         allow_any_instance_of(described_class).to receive(:import_file) do
-          raise Exception.new
+          raise StandardError
         end
 
         result = subject.actualize
@@ -32,9 +32,8 @@ RSpec.describe JTB::Sync::DB::LookupsActualizer do
     context 'when diff file presented' do
       let(:tmp_path) { Hanami.root.join('spec', 'fixtures', 'jtb', 'sync', 'lookups', 'with_diff') }
 
-      it 'returns unsuccess result' do
-        result = subject.actualize
-        expect(result.success?).to be false
+      it 'raises error' do
+        expect { subject.actualize }.to raise_error NotImplementedError
       end
     end
 
