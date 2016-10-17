@@ -96,23 +96,27 @@ module JTB
       end
 
       def parse_latitude(str)
-        str&.gsub(/([NS])(\d+)\.(\d+)\.(.+)/) do
+        result = str&.gsub(/([NS])(\d+)\.(\d+)\.(.+)/) do
           sign = ($1 == 'N' ? 1 : -1)
           deg = $2.to_i
           min = $3.to_f
           sec = $4.to_f
           sign * (deg + min / 60 + sec / 3600)
         end
+
+        result if result != str
       end
 
       def parse_longitude(str)
-        str&.gsub(/([EW])(\d+)\.(\d+)\.(.+)/) do
+        result = str&.gsub(/([EW])(\d+)\.(\d+)\.(.+)/) do
           sign = ($1 == 'E' ? 1 : -1)
           deg = $2.to_i
           min = $3.to_f
           sec = $4.to_f
           sign * (deg + min / 60 + sec / 3600)
         end
+
+        result if result != str
       end
 
       def set_images!(result, hotel)
