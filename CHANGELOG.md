@@ -7,13 +7,13 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Added
 - Rentals United: add number_of_bathrooms, number single, double, sofa beds fields
-- Synchronisation#mark_as
+- Synchronisation#mark_as_processed
 
 ### Fixed
 - Rentals United: fix exception which was raised while parsing multi-lang check-in instructions
 - Kigo and Kigo Legacy metadata sync should not purge properties when rate limitted
 
-## [0.12.6] - 2016-10-17
+## [0.12.7] - 2016-10-17
 ### Fixed
 - Ensure synchronisation.finish! for Kigo host with empty properties
 - Kigo legacy hosts should not be deleted from Concierge
