@@ -48,32 +48,33 @@ module Workers::Suppliers::Avantio
 
       properties.each do |property|
         property_id = property.property_id
-        unless validator(property).valid?
-          synchronisation.skip_property(property_id, 'Invalid property')
-          next
-        end
-        rate = rates[property_id]
-        unless rate
-          synchronisation.skip_property(property_id, 'Rate not found')
-          next
-        end
-        description = descriptions[property_id]
-        unless description && description_validator(description).valid?
-          synchronisation.skip_property(property_id, 'Description not found or invalid')
-          next
-        end
-        occupational_rule = occupational_rules[property.occupational_rule_id]
-        unless occupational_rule
-          synchronisation.skip_property(property_id, 'Occupational rule not found')
-          next
-        end
-        # Availability is not used for property building, but used for calendar building.
-        # So just to be sure that property has availability.
-        unless availabilities[property_id]
-          synchronisation.skip_property(property_id, 'Availabilities not found')
-          next
-        end
+
         synchronisation.start(property_id) do
+          unless validator(property).valid?
+            next synchronisation.skip_property(property_id, 'Invalid property')
+          end
+
+          rate = rates[property_id]
+          unless rate
+            next synchronisation.skip_property(property_id, 'Rate not found')
+          end
+
+          description = descriptions[property_id]
+          unless description && description_validator(description).valid?
+            next synchronisation.skip_property(property_id, 'Description not found or invalid')
+          end
+
+          occupational_rule = occupational_rules[property.occupational_rule_id]
+          unless occupational_rule
+            next synchronisation.skip_property(property_id, 'Occupational rule not found')
+          end
+
+          # Availability is not used for property building, but used for calendar building.
+          # So just to be sure that property has availability.
+          unless availabilities[property_id]
+            nextsynchronisation.skip_property(property_id, 'Availabilities not found')
+          end
+
           Result.new(mapper(property, description, occupational_rule, rate).build)
         end
       end
@@ -123,7 +124,6 @@ module Workers::Suppliers::Avantio
     def importer
       @importer ||= ::Avantio::Importer.new
     end
-
 
     def validator(property)
       Avantio::Validators::PropertyValidator.new(property)

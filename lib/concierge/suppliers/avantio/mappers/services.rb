@@ -77,8 +77,9 @@ module Avantio
         service_raw = common_services_raw&.at_xpath(CLEANING_SERVICE_SELECTOR)
         if service_raw && all_year_around?(service_raw)
           amount = service_price(service_raw)
-          if amount == 0
+          if amount == 0 || included_in_price(service_raw) == 'true'
             attrs[:free_cleaning] = true
+            attrs[:services_cleaning] = false
           elsif included_in_price(service_raw) == 'false'
             attrs[:services_cleaning] = true
             attrs[:services_cleaning_rate] = amount
