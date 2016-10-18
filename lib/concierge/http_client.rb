@@ -128,6 +128,11 @@ module Concierge
       end
     end
 
+    # Updates a hash of counts of retries for a status code.
+    # @retries would look like:
+    #   { 400: 5, 500: 1 }
+    #
+    # @retries is default to {} if this method is never called
     def retry(status, count)
       @retries[status] = count
     end
