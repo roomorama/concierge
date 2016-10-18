@@ -18,25 +18,23 @@ module Workers::Suppliers::Poplidays
         properties.each do |property|
           property_id = property['id']
           if validator(property).valid?
-            details = synchronisation.new_context { fetch_property_details(property_id) }
-            next unless details.success?
-
-            unless details_validator(details.value).valid?
-              synchronisation.skip_property(property_id, 'Invalid property details')
-              next
-            end
-
-            result = fetch_availabilities(property_id)
-            next unless result.success?
-
-            availabilities = filter_availabilities(result.value)
-
-            if availabilities.empty?
-              synchronisation.skip_property(property_id, 'Empty valid availabilities list')
-              next
-            end
-
             synchronisation.start(property_id) do
+              details = fetch_property_details(property_id)
+              next details unless details.success?
+
+              unless details_validator(details.value).valid?
+                next synchronisation.skip_property(property_id, 'Invalid property details')
+              end
+
+              result = importer.fetch_availabilities(property_id)
+              next result unless result.success?
+
+              availabilities = filter_availabilities(result.value)
+
+              if availabilities.empty?
+                next synchronisation.skip_property(property_id, 'Empty valid availabilities list')
+              end
+
               result = fetch_extras(property_id)
               extras = result.value if result.success?
 
@@ -65,14 +63,14 @@ module Workers::Suppliers::Poplidays
     def fetch_property_details(property_id)
       importer.fetch_property_details(property_id).tap do |result|
         message = "Failed to fetch details for property `#{property_id}`"
-        announce_error(message, result) unless result.success?
+        augment_context_error(message) unless result.success?
       end
     end
 
     def fetch_availabilities(property_id)
       importer.fetch_availabilities(property_id).tap do |result|
         message = "Failed to fetch availabilities for property `#{property_id}`"
-        announce_error(message, result) unless result.success?
+        augment_context_error(message) unless result.success?
       end
     end
 
@@ -80,7 +78,7 @@ module Workers::Suppliers::Poplidays
       importer.fetch_extras(property_id).tap do |result|
         message = "Failed to fetch extras info for property `#{property_id}`. " \
           "But continue to sync the property as well as extras is optional information."
-        announce_error(message, result) unless result.success?
+        augment_context_error(message) unless result.success?
       end
     end
 
