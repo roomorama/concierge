@@ -53,10 +53,6 @@ module Poplidays
         [params[:property_id], params[:check_in], params[:check_out]].join('.')
       end
 
-      def mapper
-        @mapper ||= Poplidays::Mappers::Quote.new
-      end
-
       def request_json(params)
         {
           'requestType'   => 'EVALUATION', # special type for quote
