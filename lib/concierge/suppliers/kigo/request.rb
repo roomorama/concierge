@@ -30,7 +30,9 @@ module Kigo
     # For Kigo's new API, authentication happens by appending a parameter
     # to the URL, so this just returns a regular +Concierge::HTTPClient+ instance.
     def http_client
-      @http_client ||= Concierge::HTTPClient.new(base_uri, options)
+      @http_client ||= Concierge::HTTPClient.new(base_uri, options).tap do |client|
+        client.retry(429, 8)  # There are about 300 hosts, 8 retries will resolve 256 collisions
+      end
     end
 
     # builds the URL path to be used to perform a given +api_method+. For Kigo's new
