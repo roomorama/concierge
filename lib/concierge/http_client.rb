@@ -80,6 +80,7 @@ module Concierge
     #   })
     def initialize(url, options = {})
       @url = url
+      @retries = {}
       @options = options
       if options[:basic_auth]
         basic_auth = options.fetch(:basic_auth)
@@ -89,34 +90,46 @@ module Concierge
 
     def get(path, params = {}, headers = {})
       with_error_handling do |conn|
-        conn.headers.merge!(DEFAULT_HEADERS).merge!(headers)
-        announce_request(:get, path, params, conn.headers)
-        conn.get(path, params)
+        with_retries do
+          conn.headers.merge!(DEFAULT_HEADERS).merge!(headers)
+          announce_request(:get, path, params, conn.headers)
+          conn.get(path, params)
+        end
       end
     end
 
     def post(path, params = {}, headers = {})
       with_error_handling do |conn|
-        conn.headers.merge!(DEFAULT_HEADERS).merge!(headers)
-        announce_request(:post, path, params, conn.headers)
-        conn.post(path, params)
+        with_retries do
+          conn.headers.merge!(DEFAULT_HEADERS).merge!(headers)
+          announce_request(:post, path, params, conn.headers)
+          conn.post(path, params)
+        end
       end
     end
 
     def put(path, params = {}, headers = {})
       with_error_handling do |conn|
-        conn.headers.merge!(DEFAULT_HEADERS).merge!(headers)
-        announce_request(:put, path, params, conn.headers)
-        conn.put(path, params)
+        with_retries do
+          conn.headers.merge!(DEFAULT_HEADERS).merge!(headers)
+          announce_request(:put, path, params, conn.headers)
+          conn.put(path, params)
+        end
       end
     end
 
     def delete(path, params = {}, headers = {})
       with_error_handling do |conn|
-        conn.headers.merge!(DEFAULT_HEADERS).merge!(headers)
-        announce_request(:delete, path, params, conn.headers)
-        conn.delete(path) { |req| req.body = params }
+        with_retries do
+          conn.headers.merge!(DEFAULT_HEADERS).merge!(headers)
+          announce_request(:delete, path, params, conn.headers)
+          conn.delete(path) { |req| req.body = params }
+        end
       end
+    end
+
+    def retry(status, count)
+      @retries[status] = count
     end
 
     private
@@ -125,6 +138,21 @@ module Concierge
       @connection ||= self.class._connection || Faraday.new(url: url, request: { timeout: options.fetch(:timeout, CONNECTION_TIMEOUT) }) do |f|
         f.adapter :patron
       end
+    end
+
+    def with_retries
+      tries = 0
+      max_backoff_time = 1
+      response = yield
+      status = response.status
+      while !SUCCESSFUL_STATUSES.include?(status) && @retries[status].to_i > tries
+        sleep(rand(1.0..max_backoff_time))
+        tries += 1
+        max_backoff_time *= 2
+        response = yield
+        status = response.status
+      end
+      response
     end
 
     def with_error_handling

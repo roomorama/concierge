@@ -174,9 +174,27 @@ RSpec.describe Concierge::HTTPClient do
 
   end
 
+  shared_examples "method with_retries" do |http_method:|
+    it "sleeps the number of times as specified" do
+      stub_call(http_method, url) { [429, {}, "Rate limit"] }
+      n = rand(5)
+      subject.retry(429, n)
+      expect(subject).to receive(:sleep).exactly(n).times
+
+      result = subject.public_send(http_method, "/")
+
+      expect(result).to_not be_success  # 429
+      error = result.error
+      expect(error.code).to eq :http_status_429
+      expect(error.data).to eq "Rate limit"
+    end
+
+  end
+
   describe "#get" do
-    it_behaves_like "handling errors", http_method: :get
-    it_behaves_like "request hooks",   http_method: :get
+    it_behaves_like "handling errors",     http_method: :get
+    it_behaves_like "request hooks",       http_method: :get
+    it_behaves_like "method with_retries", http_method: :get
 
     it "returns the wrapped response object if successful" do
       stub_call(:get, [url, "/get-endpoint"].join) { [200, {}, "OK"] }
@@ -190,8 +208,9 @@ RSpec.describe Concierge::HTTPClient do
   end
 
   describe "#post" do
-    it_behaves_like "handling errors", http_method: :post
-    it_behaves_like "request hooks",   http_method: :post
+    it_behaves_like "handling errors",     http_method: :post
+    it_behaves_like "request hooks",       http_method: :post
+    it_behaves_like "method with_retries", http_method: :post
 
     it "returns the wrapped response object if successful" do
       stub_call(:post, [url, "/post/endpoint"].join) { [201, {}, nil] }
@@ -205,7 +224,8 @@ RSpec.describe Concierge::HTTPClient do
   end
 
   describe "#put" do
-    it_behaves_like "handling errors", http_method: :put
+    it_behaves_like "handling errors",     http_method: :put
+    it_behaves_like "method with_retries", http_method: :put
 
     it "returns the wrapped response object if successful" do
       stub_call(:put, [url, "/put/endpoint"].join) { [202, {}, "Accepted"] }
@@ -219,7 +239,8 @@ RSpec.describe Concierge::HTTPClient do
   end
 
   describe "#delete" do
-    it_behaves_like "handling errors", http_method: :delete
+    it_behaves_like "handling errors",     http_method: :delete
+    it_behaves_like "method with_retries", http_method: :delete
 
     it "returns the wrapped response object if successful" do
       stub_call(:delete, [url, "/delete/endpoint"].join) { [202, {}, "Accepted"] }
