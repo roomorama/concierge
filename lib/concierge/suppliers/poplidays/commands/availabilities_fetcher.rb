@@ -30,6 +30,11 @@ module Poplidays
 
           return result unless result.success?
 
+          if result.value.nil?
+            Rollbar.warning("Unexpected response from Poplidays availabilities endpoint: #{raw_availabilities.value}",
+                            property_id: lodging_id)
+          end
+
           Result.new(Concierge::SafeAccessHash.new(result.value))
         else
           raw_availabilities
