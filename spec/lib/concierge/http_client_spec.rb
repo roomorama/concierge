@@ -189,6 +189,15 @@ RSpec.describe Concierge::HTTPClient do
       expect(error.data).to eq "Rate limit"
     end
 
+    it "keeps count of different status codes separately" do
+      returned_statuses = [409, 409, 408, 408, 409, 409].to_enum
+      stub_call(http_method, url) { [returned_statuses.next, {}, "Rate limit"] }
+      subject.retry(409, 3)
+      subject.retry(408, 3)
+      expect(subject).to receive(:sleep).exactly(5).times
+
+      subject.public_send(http_method, "/")
+    end
   end
 
   describe "#get" do
