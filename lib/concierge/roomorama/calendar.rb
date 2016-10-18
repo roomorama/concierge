@@ -109,9 +109,10 @@ module Roomorama
       entries.all?(&:valid?) || (raise ValidationError.new("One of the entries miss required parameters."))
     end
 
-    # checks if the calendar is empty (has no entries).
+    # Non multiunit property's calendar is empty if its entries list is empty
+    # Muiltiunit property's calendar is empty if calendar of each unit is empty
     def empty?
-      entries.empty?
+      entries.empty? && (units.empty? || units.all?(&:empty?))
     end
 
     def to_h
