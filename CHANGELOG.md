@@ -7,6 +7,7 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Fixed
 - Outdated method call when Kigo calendar checks if host is active
+- Empty criteria for multiunit property's calendar
 
 ## [0.12.8] - 2016-10-17
 ### Added
