@@ -55,10 +55,10 @@ module Workers::Suppliers::Kigo::Legacy
       # case there are no changes since the last run of the synchronisation process,
       # for instance), then the +properties+ array will be empty. In such cases,
       # the process can continue, but nothing will be updated.
-      return true unless properties.first
+      return true if properties.empty?
 
-      id = properties.first.identifier
-      result = Kigo::HostCheck.new(id, request_handler).active?
+      ids = properties.collect { |p| p.identifier }
+      result = Kigo::HostCheck.new(ids, request_handler).active?
       result.success? && result.value
     end
   end
