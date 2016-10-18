@@ -146,20 +146,18 @@ module Concierge
     end
 
     def with_retries
-      tries = {}
+      tries = Hash.new(0)
       max_backoff_time = 1
       response = yield
       status = response.status
-      tries[status] = 0
       while !SUCCESSFUL_STATUSES.include?(status) && @retries[status].to_i > tries[status]
         sleep(rand(1.0..max_backoff_time))
         max_backoff_time *= 2
+        tries[status] += 1
 
         response = yield
 
         status = response.status
-        tries[status] ||= 0
-        tries[status] += 1
       end
       response
     end
