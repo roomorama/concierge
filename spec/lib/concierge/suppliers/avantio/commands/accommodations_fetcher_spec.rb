@@ -12,11 +12,12 @@ RSpec.describe Avantio::Commands::AccommodationsFetcher do
   describe '#call' do
     context 'when fetcher returns error' do
       it 'returns result with error' do
-        allow_any_instance_of(Avantio::Fetcher).to receive(:fetch) { Result.error(:error) }
+        allow_any_instance_of(Avantio::Fetcher).to receive(:fetch) { Result.error(:error, 'Description') }
         result = subject.call
 
         expect(result).not_to be_success
         expect(result.error.code).to eq :error
+        expect(result.error.data).to eq 'Description'
       end
     end
 

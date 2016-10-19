@@ -48,7 +48,7 @@ module Avantio
         # method on a newly created InputStream before reading from
         # the first entry in the archive.
         io.get_next_entry
-        io_to_xml(io)
+        io_to_xml(io, code)
       end
     end
 
@@ -62,10 +62,10 @@ module Avantio
       "/#{code}/#{code_partner}"
     end
 
-    def io_to_xml(io)
+    def io_to_xml(io, code)
       Result.new(Nokogiri::XML(io.read) { |config| config.strict })
     rescue Nokogiri::XML::SyntaxError => e
-      Result.error(:xml_syntax_error)
+      Result.error(:xml_syntax_error, "XML syntax error in file with code #{code}")
     end
   end
 end
