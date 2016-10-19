@@ -43,6 +43,14 @@ module Kigo::Mappers
       set_deposit
       set_cleaning_service
 
+      min_stay_result = Kigo::Mappers::MinStay.new(
+        property.minimum_stay.to_i,
+        pricing_mapper.minimum_stay
+      ).value
+      return min_stay_result unless min_stay_result.success?
+
+      set_minimum_stay(min_stay_result.value)
+
       Result.new(property)
     end
 
@@ -165,6 +173,10 @@ module Kigo::Mappers
       property.services_cleaning_rate     = get_fee_amount(cleaning_fee)
     end
 
+    def set_minimum_stay(minimum_stay)
+      property.minimum_stay = minimum_stay
+    end
+
     # STAYLENGTH unit means deposit has different prices for night, week, month
     # since Roomorama doesn't support variates of deposit, to be conservative
     # we are choosing maximum price
@@ -194,11 +206,6 @@ module Kigo::Mappers
       property.nightly_rate = pricing_mapper.nightly_rate
       property.weekly_rate  = pricing_mapper.weekly_rate
       property.monthly_rate = pricing_mapper.monthly_rate
-      property.minimum_stay = [
-        property.minimum_stay.to_i,
-        pricing_mapper.minimum_stay
-      ].max
-
     end
 
     def code_for(item)

@@ -40,18 +40,43 @@ RSpec.describe Kigo::Calendar do
         expect(entry.checkout_allowed).to eq true
       end
 
-      it 'returns calendar with unavailable dates' do
-        availabilities.concat([availability, unavailable_availability])
-        result = subject.perform(nil, availabilities: availabilities)
+      context "when pricing is empty" do
+        let(:pricing) { nil }
 
-        expect(result).to be_success
+        context "when property has minimum_stay value" do
+          let(:property) { create_property(data: { minimum_stay: 17 }) }
 
-        calendar          = result.value
-        available_entry   = calendar.entries.find { |entry| entry.date.to_s == availability['DATE'] }
-        unavailable_entry = calendar.entries.find { |entry| entry.date.to_s == unavailable_availability['DATE'] }
+          it 'uses entry.minimum_stay value from property' do
+            availabilities.concat([availability, unavailable_availability])
+            result = subject.perform(pricing, availabilities: availabilities)
 
-        expect(available_entry.available).to eq true
-        expect(unavailable_entry.available).to eq false
+            expect(result).to be_success
+
+            calendar          = result.value
+            available_entry   = calendar.entries.find { |entry| entry.date.to_s == availability['DATE'] }
+            unavailable_entry = calendar.entries.find { |entry| entry.date.to_s == unavailable_availability['DATE'] }
+
+            expect(available_entry.available).to eq true
+            expect(unavailable_entry.available).to eq false
+
+            calendar.entries.each do |entry|
+              expect(entry.minimum_stay).to eq(17)
+            end
+          end
+        end
+
+        context "when property hasn't minimum_stay value" do
+          it 'returns invalid_min_stay error' do
+            availabilities.concat([availability, unavailable_availability])
+            result = subject.perform(pricing, availabilities: availabilities)
+
+            expect(result).not_to be_success
+            expect(result.error.code).to eq(:invalid_min_stay)
+            expect(result.error.data).to eq(
+              "Min stay was not defined both for property and calendar entry"
+            )
+          end
+        end
       end
     end
 

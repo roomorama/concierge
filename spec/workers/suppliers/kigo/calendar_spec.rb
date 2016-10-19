@@ -7,7 +7,8 @@ RSpec.describe Workers::Suppliers::Kigo::Calendar do
   let(:supplier) { create_supplier(name: 'Kigo') }
   let(:identifier) { '123' }
   let(:host) { create_host(supplier_id: supplier.id, identifier: '14908') }
-  let!(:property) { create_property(host_id: host.id, identifier: identifier) }
+  let(:property_attrs) {{ host_id: host.id, identifier: identifier }}
+  let!(:property) { create_property(property_attrs) }
 
   subject { described_class.new(host, [identifier]) }
 
@@ -69,24 +70,52 @@ RSpec.describe Workers::Suppliers::Kigo::Calendar do
       expect(stats[:unavailable_records]).to eq 0
     end
 
-    it 'sets only availabilities' do
-      empty_prices = { 'PRICING' => nil }
-      allow_any_instance_of(Kigo::Importer).to receive(:fetch_prices) { Result.new(empty_prices) }
-      allow_any_instance_of(Kigo::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }
+    context "when pricing is empty" do
+      let(:empty_prices) {{ 'PRICING' => nil }}
 
-      subject.perform
+      context "when property has minimum_stay value" do
+        let(:property_attrs) {{ host_id: host.id, identifier: identifier, data: { minimum_stay: 13, nightly_rate: 10 }}}
 
-      sync_process = SyncProcessRepository.last
+        it 'sets only availabilities' do
+          allow_any_instance_of(Kigo::Importer).to receive(:fetch_prices) { Result.new(empty_prices) }
+          allow_any_instance_of(Kigo::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }
 
-      expect(sync_process.host_id).to eq host.id
-      expect(sync_process.type).to eq 'availabilities'
+          subject.perform
 
-      stats = sync_process.stats
+          sync_process = SyncProcessRepository.last
 
-      expect(stats[:properties_processed]).to eq 1
-      expect(stats[:available_records]).to eq 1
-      expect(stats[:unavailable_records]).to eq 7
+          expect(sync_process.host_id).to eq host.id
+          expect(sync_process.type).to eq 'availabilities'
+
+          stats = sync_process.stats
+
+          expect(stats[:properties_processed]).to eq 1
+          expect(stats[:available_records]).to eq 1
+          expect(stats[:unavailable_records]).to eq 7
+        end
+      end
+
+      context "when property has no minimum_stay value" do
+        let(:property_attrs) {{ host_id: host.id, identifier: identifier, data: { minimum_stay: nil, nightly_rate: 10 }}}
+
+        it "returns external error" do
+          allow_any_instance_of(Kigo::Importer).to receive(:fetch_prices) { Result.new(empty_prices) }
+          allow_any_instance_of(Kigo::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }
+
+          subject.perform
+
+          sync_process = SyncProcessRepository.last
+
+          expect(sync_process.host_id).to eq host.id
+          expect(sync_process.type).to eq 'availabilities'
+
+          stats = sync_process.stats
+
+          expect(stats[:properties_processed]).to eq 1
+          expect(stats[:available_records]).to eq 0
+          expect(stats[:unavailable_records]).to eq 0
+        end
+      end
     end
   end
-
 end
