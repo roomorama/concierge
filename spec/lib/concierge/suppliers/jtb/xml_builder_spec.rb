@@ -14,10 +14,11 @@ RSpec.describe JTB::XMLBuilder do
   subject { described_class.new(credentials) }
 
   describe '#quote_price' do
-    let(:params) {
-      { property_id: 10, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2, unit_id: 'JPN' }
-    }
-    let(:message) { subject.quote_price(params) }
+    let(:property_id) { 10 }
+    let(:room_type_code) { 'JPN' }
+    let(:check_in) { Date.today + 10 }
+    let(:check_out) { Date.today + 20 }
+    let(:message) { subject.quote_price(property_id, room_type_code, check_in, check_out) }
 
     it { expect(message.first).to be_a Nokogiri::XML::Element }
 
@@ -29,10 +30,10 @@ RSpec.describe JTB::XMLBuilder do
     end
 
     context 'parameters' do
-      it { expect(attribute_for(message, 'HotelCode', 'Code')).to eq params[:property_id].to_s }
-      it { expect(attribute_for(message, 'RoomStayCandidate', 'RoomTypeCode')).to eq params[:unit_id] }
-      it { expect(attribute_for(message, 'StayDateRange', 'Start')).to eq params[:check_in].to_s }
-      it { expect(attribute_for(message, 'StayDateRange', 'End')).to eq params[:check_out].to_s }
+      it { expect(attribute_for(message, 'HotelCode', 'Code')).to eq property_id.to_s }
+      it { expect(attribute_for(message, 'RoomStayCandidate', 'RoomTypeCode')).to eq room_type_code }
+      it { expect(attribute_for(message, 'StayDateRange', 'Start')).to eq check_in.to_s }
+      it { expect(attribute_for(message, 'StayDateRange', 'End')).to eq check_out.to_s }
     end
 
   end

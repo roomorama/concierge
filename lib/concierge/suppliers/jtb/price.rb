@@ -38,22 +38,33 @@ module JTB
     # gets best rate plan by JTB API. This method caches response to avoid the same request to JTB API
     # because rate plan uses for +quote+ and +JTB::Booking#book+ methods
     def best_rate_plan(params)
-      cache_key      = params.to_h.to_s
+      u_id = JTB::UnitId.from_roomorama_unit_id(params[:unit_id])
+
+      cache_key      = build_cache_key(params, u_id)
       cache_duration = 10 * 60 # ten minutes
 
       result = with_cache(cache_key, freshness: cache_duration) do
-        message = builder.quote_price(params)
+        message = builder.quote_price(params[:property_id], u_id.room_type_code, params[:check_in], params[:check_out])
         remote_call(message)
       end
 
-      if result.success?
-        response_parser.parse_rate_plan(result.value, params)
-      else
-        result
-      end
+      return result unless result.success?
+
+      rate_plans_ids = rate_plans_ids(u_id.room_code)
+      response_parser.parse_rate_plan(result.value, params[:guests], rate_plans_ids)
     end
 
     private
+
+    def build_cache_key(params, u_id)
+      h = params.to_h
+      h[:unit_id] = u_id.room_type_code
+      h.to_s
+    end
+
+    def rate_plans_ids(room_code)
+      JTB::Repositories::RatePlanRepository.by_room_code(room_code).map(&:rate_plan_id)
+    end
 
     def build_quotation(params, rate_plan)
       quotation_params = params.to_h.merge(total: rate_plan.total, available: rate_plan.available, currency: CURRENCY)
@@ -82,8 +93,7 @@ module JTB
         wsdl:                 endpoint + '?wsdl',
         env_namespace:        :soapenv,
         namespace_identifier: 'jtb',
-        endpoint:             endpoint,
-        log: true
+        endpoint:             endpoint
       }
     end
 

@@ -8,6 +8,8 @@ Hanami::Model.migration do
       column :room_code,      String, null: false, size: 16
       column :meal_plan_code, String, null: false, size: 3
       column :occupancy,      Integer, null: false
+
+      index :room_code
     end
   end
 end
