@@ -63,6 +63,7 @@ RSpec.describe Avantio::Commands::QuoteFetcher do
 
         expect(result.success?).to be false
         expect(result.error.code).to eq(:unexpected_response_structure)
+        expect(result.error.data).to eq('Unexpected `get_booking_price` response structure')
       end
     end
   end
