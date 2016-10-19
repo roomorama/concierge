@@ -72,7 +72,7 @@ module Workers::Suppliers::Avantio
           # Availability is not used for property building, but used for calendar building.
           # So just to be sure that property has availability.
           unless availabilities[property_id]
-            nextsynchronisation.skip_property(property_id, 'Availabilities not found')
+            next synchronisation.skip_property(property_id, 'Availabilities not found')
           end
 
           Result.new(mapper(property, description, occupational_rule, rate).build)

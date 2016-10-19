@@ -206,6 +206,16 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
       expect(error.code).to eq 'error'
     end
 
+    it 'skip property if descriptions not found for property' do
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_descriptions) { Result.new({}) }
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_occupational_rules) { Result.new(occupational_rules) }
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_rates) { Result.new(rates) }
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }
+
+      expect_any_instance_of(Workers::PropertySynchronisation).to receive(:skip_property).twice.and_call_original
+      subject.perform
+    end
+
     it 'doesnt finalize synchronisation with external error' do
       expect(Roomorama::Client::Operations).to_not receive(:disable)
       subject.perform
@@ -229,6 +239,15 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
       expect(error.operation).to eq 'sync'
       expect(error.supplier).to eq Avantio::Client::SUPPLIER_NAME
       expect(error.code).to eq 'error'
+    end
+
+    it 'skip property if occupational rules not found for property' do
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_occupational_rules) { Result.new({}) }
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_rates) { Result.new(rates) }
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }
+
+      expect_any_instance_of(Workers::PropertySynchronisation).to receive(:skip_property).twice.and_call_original
+      subject.perform
     end
 
     it 'doesnt finalize synchronisation with external error' do
@@ -257,6 +276,14 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
       expect(error.code).to eq 'error'
     end
 
+    it 'skip property if rates not found for property' do
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_rates) { Result.new({}) }
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }
+
+      expect_any_instance_of(Workers::PropertySynchronisation).to receive(:skip_property).twice.and_call_original
+      subject.perform
+    end
+
     it 'doesnt finalize synchronisation with external error' do
       expect(Roomorama::Client::Operations).to_not receive(:disable)
       subject.perform
@@ -268,7 +295,7 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_properties) { Result.new(properties_list) }
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_descriptions) { Result.new(descriptions) }
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_occupational_rules) { Result.new(occupational_rules) }
-      allow_any_instance_of(Avantio::Importer).to receive(:fetch_rates) { Result.new(:rates) }
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_rates) { Result.new(rates) }
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_availabilities) { Result.error(:error) }
     end
 
@@ -282,6 +309,13 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
       expect(error.operation).to eq 'sync'
       expect(error.supplier).to eq Avantio::Client::SUPPLIER_NAME
       expect(error.code).to eq 'error'
+    end
+
+    it 'skip property if availabilities not found for property' do
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_availabilities) { Result.new({}) }
+
+      expect_any_instance_of(Workers::PropertySynchronisation).to receive(:skip_property).twice.and_call_original
+      subject.perform
     end
 
     it 'doesnt finalize synchronisation with external error' do
