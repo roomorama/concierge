@@ -30,7 +30,7 @@ module JTB
     end
 
     # builds message for +JTB::API+ +quote_price+ method
-    def quote_price(params)
+    def quote_price(property_id, room_type_code, check_in, check_out)
       message = builder.new do |xml|
         xml.root(NAMESPACES) do
           build_credentials(xml)
@@ -38,11 +38,11 @@ module JTB
             xml['jtb'].AvailRequestSegment {
               xml['jtb'].HotelSearchCriteria {
                 xml['jtb'].Criterion(SortType: "PRICE", AvailStatus: "ALL") {
-                  xml['jtb'].HotelCode(Code: params[:property_id])
+                  xml['jtb'].HotelCode(Code: property_id)
                   xml['jtb'].RoomStayCandidates(SearchCondition: "OR") {
-                    xml['jtb'].RoomStayCandidate(RoomTypeCode: params[:unit_id], Quantity: "1")
+                    xml['jtb'].RoomStayCandidate(RoomTypeCode: room_type_code, Quantity: "1")
                   }
-                  xml['jtb'].StayDateRange(Start: params[:check_in], End: params[:check_out])
+                  xml['jtb'].StayDateRange(Start: check_in, End: check_out)
                 }
               }
             }

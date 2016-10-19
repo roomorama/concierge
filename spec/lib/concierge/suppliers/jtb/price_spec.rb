@@ -16,7 +16,7 @@ RSpec.describe JTB::Price do
     )
   end
   let(:params) {
-    { property_id: 10, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2, unit_id: 'JPN' }
+    { property_id: 10, check_in: Date.today + 10, check_out: Date.today + 20, guests: 2, unit_id: 'TWN|CHUHW01RM0000001' }
   }
   let(:success_response) { parse_response('jtb/success_quote_response.json') }
   let(:fail_response) { parse_response('jtb/invalid_request.json') }
@@ -28,6 +28,7 @@ RSpec.describe JTB::Price do
 
     it 'returns quotation with optimal price' do
       allow(subject).to receive(:remote_call) { Result.new(success_response) }
+      allow(subject).to receive(:rate_plans_ids) { ['TYOHKPT00STD1TWN'] }
 
       result = subject.best_rate_plan(params)
 
@@ -35,6 +36,10 @@ RSpec.describe JTB::Price do
       expect(result).to be_success
 
       expect(result.value).to be_a JTB::RatePlan
+      expect(result.value.rate_plan).to eq('TYOHKPT00STD1TWN')
+      expect(result.value.total).to eq(20700)
+      expect(result.value.available).to be true
+      expect(result.value.occupancy).to eq(2)
     end
 
     it 'caches result for the same call' do
@@ -94,8 +99,6 @@ RSpec.describe JTB::Price do
       expect(result).not_to be_success
       expect(result.error.code).to eq :some_error
     end
-
-
   end
 
   private

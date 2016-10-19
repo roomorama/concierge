@@ -33,7 +33,7 @@ module JTB
     #
     # +unit_not_found+:  the response sent back if unit not found
     # +invalid_request+: if property not found
-    def parse_rate_plan(response, params)
+    def parse_rate_plan(response, guests, rate_plans_ids)
       response = Concierge::SafeAccessHash.new(response)
 
       unless response[:ga_hotel_avail_rs]
@@ -47,8 +47,8 @@ module JTB
       rates = extract_rates(response)
       return unavailable_rate_plan if rates.empty?
 
-      rate_plans = group_to_rate_plans(rates)
-      rate_plan  = get_best_rate_plan(rate_plans, guests: params[:guests])
+      rate_plans = group_to_rate_plans(rates, rate_plans_ids)
+      rate_plan  = get_best_rate_plan(rate_plans, guests: guests)
 
       return unavailable_rate_plan unless rate_plan
 
@@ -86,14 +86,16 @@ module JTB
       Result.new(RatePlan.new(nil, nil, false))
     end
 
-    # JTB provides so deep nested scattered response. This method prepares rates and returns +RatePlan+ list
+    # JTB provides so deep nested scattered response. This method prepares rates, selects
+    # rate plans only from rate_plans_ids and returns +RatePlan+ list
     #
     # input:
     #  [
     #     {:rate_plans=>{:rate_plan => {...}},
     #     {:rate_plans=>{:rate_plan => {...}},
     #     ...
-    # ]
+    #  ],
+    #  ["good rate", "abc"]
 
     # output:
     #  [
@@ -101,16 +103,21 @@ module JTB
     #    <struct JTB::ResponseParser::RatePlan rate_plan="abc", total=2100, available=false>,
     #    ...
     # ]
-    def group_to_rate_plans(rates)
-      prepared_rates = rates.map do |room_stay|
+    def group_to_rate_plans(rates, rate_plans_ids)
+      prepared_rates = []
+      rates.each do |room_stay|
         room_stay = Concierge::SafeAccessHash.new(room_stay)
-        {
-          date:      Date.parse(room_stay[:time_span][:@start]),
-          price:     room_stay[:room_rates][:room_rate][:total][:@amount_after_tax].to_i,
-          rate_plan: room_stay[:rate_plans][:rate_plan][:@rate_plan_id],
-          available: room_stay[:@availability_status] == 'OK',
-          occupancy: room_stay[:room_types][:room_type][:occupancy][:@max_occupancy].to_i
-        }
+
+        rate_plan_id = room_stay[:rate_plans][:rate_plan][:@rate_plan_id]
+        if rate_plans_ids.include?(rate_plan_id)
+          prepared_rates << {
+            date:      Date.parse(room_stay[:time_span][:@start]),
+            price:     room_stay[:room_rates][:room_rate][:total][:@amount_after_tax].to_i,
+            rate_plan: rate_plan_id,
+            available: room_stay[:@availability_status] == 'OK',
+            occupancy: room_stay[:room_types][:room_type][:occupancy][:@max_occupancy].to_i
+          }
+        end
       end
       grouped_rates = prepared_rates.group_by { |rate| rate[:rate_plan] }
       grouped_rates.map do |rate_plan, rates|
