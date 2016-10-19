@@ -72,6 +72,7 @@ RSpec.describe Avantio::Commands::IsAvailableFetcher do
 
         expect(result.success?).to be false
         expect(result.error.code).to eq(:unexpected_response_structure)
+        expect(result.error.data).to eq('Unexpected `is_available` response structure')
       end
     end
   end
