@@ -90,7 +90,7 @@ RSpec.describe API::Controllers::Avantio::Booking do
         expect(response.status).to eq 503
         expect(response.body['status']).to eq 'error'
         expect(response.body['errors']['booking']).to eq (
-          "The `set_booking` response contains unexpected data:\nSuccess: `false`\nErrorList: `ErrorId: 5005, ErrorMessage: Fallo al desbloquear el periodo de disponibilidad`"
+          "The `set_booking` response contains unexpected data.\nSuccess: `false`\nErrorList: `ErrorId: 5005, ErrorMessage: Fallo al desbloquear el periodo de disponibilidad`"
         )
       end
     end
