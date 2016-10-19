@@ -22,6 +22,12 @@ module JTB
         end
       end
 
+      def self.by_room_code(room_code)
+        query do
+          where(room_code: room_code)
+        end
+      end
+
       def self.by_primary_key(city_code, hotel_code, rate_plan_id)
         query do
           where(rate_plan_id: rate_plan_id)
