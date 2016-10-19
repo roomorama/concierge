@@ -27,7 +27,9 @@ module Kigo
     # Kigo Legacy API uses HTTP Basic Authentication to authenticate with
     # their servers. A username and password combination is required.
     def http_client
-      @http_client ||= Concierge::HTTPClient.new(base_uri, options)
+      @http_client ||= Concierge::HTTPClient.new(base_uri, options).tap do |client|
+        client.retry(409, retries_count)
+      end
     end
 
     def endpoint_for(api_method)
@@ -68,6 +70,14 @@ module Kigo
     end
 
     private
+
+    def retries_count
+      if ["staging", "production"].include? Hanami.env
+        8 # There are about 300 hosts, 8 retries will resolve 256 collisions
+      else
+        1
+      end
+    end
 
     def auth_options
       {
