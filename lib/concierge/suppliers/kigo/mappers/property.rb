@@ -35,7 +35,7 @@ module Kigo::Mappers
       set_property_type
 
       pricing_mapper = PricingSetup.new(payload['PROP_RATE'], pricing)
-      return Result.error(:no_prices_provided) unless pricing_mapper.valid?
+      return Result.error(:no_prices_provided, "Empty or invalid price") unless pricing_mapper.valid?
 
       set_price(pricing_mapper)
       set_images
@@ -44,8 +44,6 @@ module Kigo::Mappers
       set_cleaning_service
 
       Result.new(property)
-    rescue NoPriceError
-      Result.error(:no_prices_provided, "Empty or invalid price")
     end
 
     private
