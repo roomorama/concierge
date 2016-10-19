@@ -26,7 +26,11 @@ RSpec.describe RentalsUnited::Mappers::RoomoramaProperty do
       floor:                   5,
       description:             "Test Description",
       images:                  [],
-      amenities:               []
+      amenities:               [],
+      number_of_bathrooms:     22,
+      number_of_single_beds:   5,
+      number_of_double_beds:   7,
+      number_of_sofa_beds:     9
     }
   end
 
@@ -105,6 +109,22 @@ RSpec.describe RentalsUnited::Mappers::RoomoramaProperty do
 
   it "sets floor to the property" do
     expect(property.floor).to eq(5)
+  end
+
+  it "sets number_of_bathrooms to the property" do
+    expect(property.number_of_bathrooms).to eq(22)
+  end
+
+  it "sets number_of_single_beds to the property" do
+    expect(property.number_of_single_beds).to eq(5)
+  end
+
+  it "sets number_of_double_beds to the property" do
+    expect(property.number_of_double_beds).to eq(7)
+  end
+
+  it "sets number_of_sofa_beds to the property" do
+    expect(property.number_of_sofa_beds).to eq(9)
   end
 
   it "sets surface to the property" do

@@ -56,6 +56,7 @@ RSpec.describe RentalsUnited::Commands::PriceFetcher do
 
     expect(result).not_to be_success
     expect(result.error.code).to eq("74")
+    expect(result.error.data).to eq("DateFrom has to be earlier than DateTo.")
 
     event = Concierge.context.events.last.to_h
     expect(event[:message]).to eq(
@@ -73,6 +74,7 @@ RSpec.describe RentalsUnited::Commands::PriceFetcher do
 
     expect(result).not_to be_success
     expect(result.error.code).to eq("76")
+    expect(result.error.data).to eq("Number of guests exceedes the maximum allowed.")
 
     event = Concierge.context.events.last.to_h
     expect(event[:message]).to eq(
@@ -90,6 +92,7 @@ RSpec.describe RentalsUnited::Commands::PriceFetcher do
 
     expect(result).not_to be_success
     expect(result.error.code).to eq("77")
+    expect(result.error.data).to eq("NOP: positive value required.")
 
     event = Concierge.context.events.last.to_h
     expect(event[:message]).to eq(

@@ -4,7 +4,31 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
-## Unreleased
+## [0.12.9] - 2016-10-18
+### Fixed
+- Outdated method call when Kigo calendar checks if host is active
+- Empty criteria for multiunit property's calendar
+
+## [0.12.8] - 2016-10-17
+### Added
+- Rentals United: add number_of_bathrooms, number single, double, sofa beds fields
+- Synchronisation#mark_as_processed
+
+### Fixed
+- Rentals United: fix exception which was raised while parsing multi-lang check-in instructions
+- Kigo and Kigo Legacy metadata sync should not purge properties when rate limitted
+
+## [0.12.7] - 2016-10-17
+### Fixed
+- Ensure synchronisation.finish! for Kigo host with empty properties
+- Kigo legacy hosts should not be deleted from Concierge
+- SAW: cleaning fee patch
+
+### Changed
+- Waytostay: return unavailable quotation instead error when max number of days before arrival reached
+- order of events on error show page
+
+## [0.12.6] - 2016-10-12
 ### Added
 - Rollbar warning for external warnings
 

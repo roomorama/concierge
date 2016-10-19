@@ -15,6 +15,27 @@ RSpec.describe Workers::Suppliers::Kigo::Legacy::Calendar do
     allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
   end
 
+  describe '#can_proceed' do
+    context "when host has no properties" do
+      it "should be true" do
+        host_with_no_properties = create_host(suplpier_id: supplier.id)
+        calendar = described_class.new(host_with_no_properties, [identifier])
+        expect(calendar.send(:can_proceed?)).to eq true
+      end
+    end
+
+    context  "when host has properites" do
+      it "should call Kigo::HostCheck with all property ids" do
+        expect_any_instance_of(Kigo::HostCheck).to receive(:active?) do |host_check|
+          expect(host_check.property_ids).to be_a Array
+          expect(host_check.property_ids).to_not be_empty
+          Result.new(true)
+        end
+        expect(subject.send(:can_proceed?)).to eq true
+      end
+    end
+  end
+
   describe '#perform' do
     let(:today) { Date.today }
     let(:days_count) { 5 }

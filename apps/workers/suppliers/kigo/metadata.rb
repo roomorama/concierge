@@ -35,13 +35,14 @@ module Workers::Suppliers::Kigo
       if result.success?
         properties = host_properties(result.value)
 
-        return if properties.empty?
-
         properties.each do |property|
           id          = property['PROP_ID']
           data_result = synchronisation.new_context(id) { importer.fetch_data(id) }
 
           unless data_result.success?
+            if data_result.error.code == :http_status_429
+              synchronisation.mark_as_processed(id)
+            end
             announce_error('Failed to perform the `#fetch_data` operation', data_result)
             next
           end
@@ -112,6 +113,7 @@ module Workers::Suppliers::Kigo
         operation:   'sync',
         supplier:    supplier_name,
         code:        result.error.code,
+        description: result.error.data,
         context:     Concierge.context.to_h,
         happened_at: Time.now
       })

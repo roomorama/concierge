@@ -274,4 +274,34 @@ RSpec.describe SAW::Mappers::RoomoramaProperty do
       expect(property.description).to eq(nil)
     end
   end
+
+  describe "sets cleaning fee attributes" do
+    it "keeps cleaning fee attributes empty if there is no free_cleaning amenity" do
+      detailed_property_attributes[:amenities] = ["foo", "bar"]
+
+      property = described_class.build(
+        basic_property,
+        detailed_property,
+        rates
+      )
+
+      expect(property.services_cleaning).to be_nil
+      expect(property.services_cleaning_required).to be_nil
+      expect(property.services_cleaning_rate).to be_nil
+    end
+
+    it "sets cleaning fee attributes if free_cleaning amenity is present" do
+      detailed_property_attributes[:amenities] = ["foo", "bar", "free_cleaning"]
+
+      property = described_class.build(
+        basic_property,
+        detailed_property,
+        rates
+      )
+
+      expect(property.services_cleaning).to be true
+      expect(property.services_cleaning_required).to be false
+      expect(property.services_cleaning_rate).to eq(0)
+    end
+  end
 end

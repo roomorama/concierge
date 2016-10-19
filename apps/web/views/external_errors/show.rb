@@ -65,7 +65,7 @@ module Web::Views::ExternalErrors
     #
     # Each event on the list is a hash wrapped with +Concierge::SafeAccessHash+.
     def events
-      @events ||= Array(context[:events]).map { |event| Concierge::SafeAccessHash.new(event) }
+      @events ||= Array(context[:events]).reverse.map { |event| Concierge::SafeAccessHash.new(event) }
     end
 
     # Determines the partial to be rendered for a given +event+, expected to

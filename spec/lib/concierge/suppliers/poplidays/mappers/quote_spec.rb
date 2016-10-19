@@ -66,6 +66,9 @@ RSpec.describe Poplidays::Mappers::Quote do
     it 'returns error if unexpected quote structure' do
       expect(result).to_not be_success
       expect(result.error.code).to eq(:unexpected_quote)
+      expect(result.error.data).to eq(
+        "Unexpected quote: empty response result['value'] from API"
+      )
     end
   end
 

@@ -52,6 +52,7 @@ module SAW
 
         set_units!(property, basic_property, detailed_property, unit_rates)
         set_images!(property, detailed_property.images)
+        set_cleaning!(property, detailed_property.amenities)
         property
       end
 
@@ -69,6 +70,14 @@ module SAW
         )
 
         units.each { |unit| property.add_unit(unit) }
+      end
+
+      def self.set_cleaning!(property, amenities)
+        if amenities && amenities.include?("free_cleaning")
+          property.services_cleaning = true
+          property.services_cleaning_required = false
+          property.services_cleaning_rate = 0
+        end
       end
 
       def self.description_with_additional_amenities(description, amenities)

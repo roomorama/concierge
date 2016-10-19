@@ -72,7 +72,10 @@ RSpec.describe API::Controllers::Ciirus::Booking do
 
         expect(response.status).to eq 503
         expect(response.body['status']).to eq 'error'
-        expect(response.body['errors']['booking']).to eq 'Could not create booking with remote supplier'
+
+        expect(response.body['errors']['booking']).to eq(
+          "The response contains unexpected data:\nErrorMessage: `Another reservation already exists overlapping your selected dates`\nBookingPlaced: `false`"
+        )
       end
     end
   end

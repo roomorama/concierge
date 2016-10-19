@@ -12,12 +12,15 @@ RSpec.describe Web::Views::ExternalErrors::Show do
   }
   let(:context) { Concierge::Context.new(type: "api") }
 
-  let(:event) {
-    Concierge::Context::Message.new(
-      label:     "Generic Error",
-      message:   "Something went wrong",
-      backtrace: []
-    )
+  let(:events) {
+    [
+      Concierge::Context::Message.new(
+        label:     "Generic Error",
+        message:   "Something went wrong",
+        backtrace: []
+      ),
+      Concierge::Context::JSONParsingError.new(message: 'JSON Error')
+    ]
   }
   let(:error) { ExternalError.new(attributes) }
   let(:exposures) { Hash[error: error] }
@@ -26,7 +29,9 @@ RSpec.describe Web::Views::ExternalErrors::Show do
   let(:rendered)  { view.render }
 
   before do
-    context.augment(event)
+    events.each do |event|
+      context.augment(event)
+    end
 
     # overwrite +host+ information since it is different depending on the machine
     # that runs the tests.
@@ -61,23 +66,24 @@ RSpec.describe Web::Views::ExternalErrors::Show do
   end
 
   describe "#events" do
-    it "returns an Array of SafeAccessHash objects" do
+    it "returns an Array of SafeAccessHash objects in reverse order" do
       events = view.events
       expect(events).to be_a Array
-      expect(events.size).to eq 1
+      expect(events.size).to eq 2
       expect(events).to be_all { |event| event.is_a? Concierge::SafeAccessHash }
-      expect(events.first[:type]).to eq "generic_message"
+      expect(events[0][:type]).to eq "json_parsing_error"
+      expect(events[1][:type]).to eq "generic_message"
     end
   end
 
   describe "#partial_path" do
     it "returns the prefixed event type in case it is recognised" do
       event = view.events.first
-      expect(view.partial_path(event)).to eq "external_errors/events/generic_message"
+      expect(view.partial_path(event)).to eq "external_errors/events/json_parsing_error"
     end
 
     it "returns the path to the unrecognised event partial if the event is invalid" do
-      attributes[:context][:events].first[:type] = "invalid"
+      attributes[:context][:events].last[:type] = "invalid"
       event = view.events.first
 
       expect(view.partial_path(event)).to eq "external_errors/events/unrecognised_event"

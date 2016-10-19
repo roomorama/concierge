@@ -139,7 +139,9 @@ RSpec.describe Waytostay::Client do
 
       it "should only send 1 post, book, when there're errors" do
         expect_any_instance_of(Concierge::OAuth2Client).to receive(:post).once.and_call_original
-        supplier_client.book(error_params_list.first)
+        result = supplier_client.book(error_params_list.first)
+        expect(result.error.code).to eq :unrecognised_response
+        expect(result.error.data).to eq "Missing keys: [\"booking_reference\"]"
       end
 
     end
@@ -161,12 +163,14 @@ RSpec.describe Waytostay::Client do
     let(:less_than_min_stay_waytostay_params){ quote_post_body.merge(property_reference: "less_than_min") }
     let(:malformed_response_waytostay_params){ quote_post_body.merge(property_reference: "malformed_response") }
     let(:cutoff_waytostay_params){ quote_post_body.merge(property_reference: "earlier_than_cutoff") }
+    let(:max_days_restriction_waytostay_params){ quote_post_body.merge(property_reference: "max_days_restriction") }
     let(:timeout_waytostay_params){ quote_post_body.merge(property_reference: "timeout") }
     let(:quote_responses){[
       { code: 200, body: success_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.json')},
       { code: 200, body: malformed_response_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.malformed.json')},
       { code: 422, body: unavailable_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.unavailable.json')},
       { code: 422, body: cutoff_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.cutoff.json')},
+      { code: 422, body: max_days_restriction_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.max_days_restriction.json')},
       { code: 422, body: less_than_min_stay_waytostay_params.to_json, response: read_fixture('waytostay/bookings/quote.less_than_min.json')},
     ]}
 
@@ -184,7 +188,7 @@ RSpec.describe Waytostay::Client do
 
 
       %w(success unavailable less_than_min malformed_response,
-         earlier_than_cutoff timeout).each do |id|
+         earlier_than_cutoff max_days_restriction timeout).each do |id|
         create_property(identifier: id, host_id: host.id)
       end
     end
@@ -198,6 +202,7 @@ RSpec.describe Waytostay::Client do
         success_params.merge(property_id: "unavailable"),
         success_params.merge(property_id: "less_than_min"),
         success_params.merge(property_id: "earlier_than_cutoff"),
+        success_params.merge(property_id: "max_days_restriction"),
       ]}
       let(:error_params_list) {[
         success_params.merge(property_id: "malformed_response"),

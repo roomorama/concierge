@@ -17,6 +17,7 @@ RSpec.describe RentalsUnited::Commands::SeasonsFetcher do
     result = subject.fetch_seasons
     expect(result).not_to be_success
     expect(result.error.code).to eq("56")
+    expect(result.error.data).to eq("Property does not exist.")
 
     event = Concierge.context.events.last.to_h
     expect(event[:message]).to eq(
@@ -52,6 +53,8 @@ RSpec.describe RentalsUnited::Commands::SeasonsFetcher do
   end
 
   context "when response from the api is not well-formed xml" do
+    let(:expected_error_message) { "Error response could not be recognised (no `Status` tag in the response)" }
+
     it "returns a result with an appropriate error" do
       stub_data = read_fixture("rentals_united/bad_xml.xml")
       stub_call(:post, url) { [200, {}, stub_data] }
@@ -60,11 +63,10 @@ RSpec.describe RentalsUnited::Commands::SeasonsFetcher do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq(:unrecognised_response)
+      expect(result.error.data).to eq(expected_error_message)
 
       event = Concierge.context.events.last.to_h
-      expect(event[:message]).to eq(
-        "Error response could not be recognised (no `Status` tag in the response)"
-      )
+      expect(event[:message]).to eq(expected_error_message)
       expect(event[:backtrace]).to be_kind_of(Array)
       expect(event[:backtrace].any?).to be true
     end

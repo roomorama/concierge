@@ -29,6 +29,7 @@ RSpec.describe Ciirus::Commands::PropertyPermissionsFetcher do
 
         expect(result).not_to be_success
         expect(result.error.code).to eq :savon_error
+        expect(result.error.data).to be_nil
       end
     end
 
@@ -101,6 +102,9 @@ RSpec.describe Ciirus::Commands::PropertyPermissionsFetcher do
 
         expect(result.success?).to be false
         expect(result.error.code).to eq(:not_empty_error_msg)
+        expect(result.error.data).to eq(
+          "Error (1001) This property has been orphaned, and does not have an MC.\n          Error (1010) No agent relation is configured between the supplier and the agent. Please contact Ciirus.\n        "
+        )
       end
     end
   end

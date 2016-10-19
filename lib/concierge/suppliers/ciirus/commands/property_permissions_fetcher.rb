@@ -67,7 +67,7 @@ module Ciirus
         error_msg = result_hash.get('get_property_permissions_response.get_property_permissions_result.error_msg')
         message = "The response contains not empty ErrorMsg: `#{error_msg}`"
         mismatch(message, caller)
-        Result.error(:not_empty_error_msg)
+        Result.error(:not_empty_error_msg, error_msg)
       end
     end
   end
