@@ -1,5 +1,19 @@
+# This module adds some translated fields to the class that includes it.
+# The default locale (:en) should be accessed directly on the base class.
+#
+# Usage
+#
+#   class Property
+#     attr_accessor :title, :description, :terms_and_conditions
+#     include Roomorama::Translated
+#   end
+#
+#   p = Property.new
+#   p.title = "Default title in english"
+#   p.es.title = "Translated title in spanish"
+#
 module Roomorama::Translated
-  SUPPORTED_LOCALES = %i(es de zh zh_tw)
+  TRANSLATED_LOCALES = %i(es de zh zh_tw)
 
   class Translation
     TRANSLATED_FIELDS = [:title,
@@ -47,7 +61,7 @@ module Roomorama::Translated
 
     def translations
       hash = {}
-      SUPPORTED_LOCALES.collect do |locale|
+      TRANSLATED_LOCALES.collect do |locale|
         locale_hash = self.send(locale).to_h
         hash[locale] = locale_hash unless locale_hash.empty?
       end

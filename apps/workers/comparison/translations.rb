@@ -22,7 +22,7 @@ module Workers::Comparison
     end
 
     def apply_to(diff)
-      Roomorama::Translated::SUPPORTED_LOCALES.each do |locale|
+      Roomorama::Translated::TRANSLATED_LOCALES.each do |locale|
         new_t = new[locale] || {}
         old_t = original[locale] || {}
         next if new_t.empty? && old_t.empty?
