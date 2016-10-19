@@ -6,7 +6,7 @@ module Avantio
   # Usage
   #
   #   quotation = Avantio::Client.new(credentials).quote(stay_params)
-  #   if quotation.sucessful?
+  #   if quotation.successful?
   #     # ...
   #   end
   #
