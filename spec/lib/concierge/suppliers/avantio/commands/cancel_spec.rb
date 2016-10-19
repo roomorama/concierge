@@ -49,7 +49,7 @@ RSpec.describe Avantio::Commands::Cancel do
 
         result = subject.call(booking_code)
 
-        message = "The `cancel_booking` response contains unexpected data:\nSucceed: `false`\nErrorList: `ErrorId: 303, ErrorMessage: \n"\
+        message = "The `cancel_booking` response contains unexpected data.\nSucceed: `false`\nErrorList: `ErrorId: 303, ErrorMessage: \n"\
           "ErrorId: 5005, ErrorMessage: Fallo al desbloquear el periodo de disponibilidad`"
         expect(result.success?).to be false
         expect(result.error.code).to eq(:unexpected_response)
@@ -65,16 +65,14 @@ RSpec.describe Avantio::Commands::Cancel do
 
         result = subject.call(booking_code)
 
-        message = "The `cancel_booking` response contains unexpected data:\nSucceed: `false`\nErrorList: `ErrorId: 5005, ErrorMessage: Fallo al desbloquear el periodo de disponibilidad`"
+        message = "The `cancel_booking` response contains unexpected data.\nSucceed: `false`\nErrorList: `ErrorId: 5005, ErrorMessage: Fallo al desbloquear el periodo de disponibilidad`"
         expect(result.success?).to be false
         expect(result.error.code).to eq(:unexpected_response)
         expect(result.error.data).to eq(message)
 
         event = Concierge.context.events_tracker.events.last
         expect(event).not_to be_nil
-        expect(event.message.message).to eq(
-                                           message
-        )
+        expect(event.message.message).to eq(message)
       end
     end
 
@@ -86,6 +84,7 @@ RSpec.describe Avantio::Commands::Cancel do
 
         expect(result.success?).to be false
         expect(result.error.code).to eq(:unexpected_response)
+        expect(result.error.data).to eq('The `cancel_booking` response contains unexpected data.')
       end
     end
   end
