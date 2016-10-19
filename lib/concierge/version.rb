@@ -1,3 +1,3 @@
 module Concierge
-  VERSION = "0.12.8"
+  VERSION = "0.12.10"
 end
