@@ -75,7 +75,7 @@ module Avantio
           ErrorList: fetch_error_list_as_string(result_hash)
         }
 
-        parts = ['The `set_booking` response contains unexpected data:']
+        parts = ['The `set_booking` response contains unexpected data.']
         errors.each do |label, field|
           unless field.nil?
             parts << "#{label}: `#{field}`"
@@ -96,9 +96,12 @@ module Avantio
       end
 
       def fetch_error_list_as_string(result_hash)
-        Array(result_hash.get('set_booking_rs.error_list.error')).map do |error|
-          "ErrorId: #{error[:error_id]}, ErrorMessage: #{error[:error_message]}"
-        end.join("\n")
+        error_list = result_hash.get('set_booking_rs.error_list.error')
+        if error_list
+          Array(error_list).map do |error|
+            "ErrorId: #{error[:error_id]}, ErrorMessage: #{error[:error_message]}"
+          end.join("\n")
+        end
       end
 
       def to_safe_hash(hash)
