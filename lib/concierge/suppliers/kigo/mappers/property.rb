@@ -38,18 +38,11 @@ module Kigo::Mappers
       return Result.error(:no_prices_provided, "Empty or invalid price") unless pricing_mapper.valid?
 
       set_price(pricing_mapper)
+      set_minimum_stay(pricing_mapper)
       set_images
 
       set_deposit
       set_cleaning_service
-
-      min_stay_result = Kigo::Mappers::MinStay.new(
-        property.minimum_stay.to_i,
-        pricing_mapper.minimum_stay
-      ).value
-      return min_stay_result unless min_stay_result.success?
-
-      set_minimum_stay(min_stay_result.value)
 
       Result.new(property)
     end
@@ -81,9 +74,6 @@ module Kigo::Mappers
       property.check_out_time        = info['PROP_COUT_TIME']
       property.check_in_instructions = info['PROP_ARRIVAL_SHEET']
 
-      # min_stay is set here, but maybe overided with a stricter minimum from pricingSetup
-      property.minimum_stay = stay_length(info['PROP_STAYTIME_MIN'])
-
       # Kigo properties are available by default, but most of them has a periodical rate
       # which covers almost all days. The days which not in periodical rates
       # have unavailable availabilities for these days
@@ -101,12 +91,6 @@ module Kigo::Mappers
         property.lat = coordinates['LATITUDE']
         property.lng = coordinates['LONGITUDE']
       end
-    end
-
-    # Parse the minimum stay from the given interval,
-    # or use 1 to statisfy Roomorama's property validation
-    def stay_length(interval)
-      Kigo::TimeInterval.new(interval).days || 1
     end
 
     def set_description
@@ -173,8 +157,18 @@ module Kigo::Mappers
       property.services_cleaning_rate     = get_fee_amount(cleaning_fee)
     end
 
-    def set_minimum_stay(minimum_stay)
-      property.minimum_stay = minimum_stay
+    def set_minimum_stay(pricing_mapper)
+      min_stay = Kigo::Mappers::MinStay.new(
+        stay_length(info['PROP_STAYTIME_MIN']),
+        pricing_mapper.minimum_stay
+      )
+
+      # Use 1 if min_stay is nil to satisfy Roomorama's property validation
+      property.minimum_stay = min_stay.value || 1
+    end
+
+    def stay_length(interval)
+      Kigo::TimeInterval.new(interval).days
     end
 
     # STAYLENGTH unit means deposit has different prices for night, week, month

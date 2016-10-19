@@ -35,13 +35,12 @@ module Kigo
       set_reservations(reservations)
 
       entries.each do |entry|
-        min_stay_result = Kigo::Mappers::MinStay.new(
+        min_stay = Kigo::Mappers::MinStay.new(
           property.data.get("minimum_stay"),
           entry.minimum_stay
-        ).value
-        return min_stay_result unless min_stay_result.success?
+        )
 
-        entry.minimum_stay = min_stay_result.value
+        entry.minimum_stay = min_stay.value
         calendar.add(entry)
       end
 

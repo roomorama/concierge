@@ -98,7 +98,7 @@ RSpec.describe Workers::Suppliers::Kigo::Calendar do
       context "when property has no minimum_stay value" do
         let(:property_attrs) {{ host_id: host.id, identifier: identifier, data: { minimum_stay: nil, nightly_rate: 10 }}}
 
-        it "returns external error" do
+        it "doesn't creates an external error" do
           allow_any_instance_of(Kigo::Importer).to receive(:fetch_prices) { Result.new(empty_prices) }
           allow_any_instance_of(Kigo::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }
 
@@ -112,8 +112,8 @@ RSpec.describe Workers::Suppliers::Kigo::Calendar do
           stats = sync_process.stats
 
           expect(stats[:properties_processed]).to eq 1
-          expect(stats[:available_records]).to eq 0
-          expect(stats[:unavailable_records]).to eq 0
+          expect(stats[:available_records]).to eq 1
+          expect(stats[:unavailable_records]).to eq 7
         end
       end
     end

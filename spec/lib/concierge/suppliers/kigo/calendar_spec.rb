@@ -66,15 +66,22 @@ RSpec.describe Kigo::Calendar do
         end
 
         context "when property hasn't minimum_stay value" do
-          it 'returns invalid_min_stay error' do
+          it 'returns entries with nil min stay' do
             availabilities.concat([availability, unavailable_availability])
             result = subject.perform(pricing, availabilities: availabilities)
 
-            expect(result).not_to be_success
-            expect(result.error.code).to eq(:invalid_min_stay)
-            expect(result.error.data).to eq(
-              "Min stay was not defined both for property and calendar entry"
-            )
+            expect(result).to be_success
+
+            calendar          = result.value
+            available_entry   = calendar.entries.find { |entry| entry.date.to_s == availability['DATE'] }
+            unavailable_entry = calendar.entries.find { |entry| entry.date.to_s == unavailable_availability['DATE'] }
+
+            expect(available_entry.available).to eq true
+            expect(unavailable_entry.available).to eq false
+
+            calendar.entries.each do |entry|
+              expect(entry.minimum_stay).to be_nil
+            end
           end
         end
       end

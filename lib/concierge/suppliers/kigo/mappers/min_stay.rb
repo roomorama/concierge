@@ -15,20 +15,11 @@ module Kigo::Mappers
     end
 
     # Compare and return the most strict min_stay value.
+    # Return nil if both prop_min_stay and cal_min_stay are zero
     def value
       min_stay = [prop_min_stay.to_i, cal_min_stay.to_i].max
 
-      if min_stay.zero?
-        invalid_min_stay_error
-      else
-        Result.new(min_stay)
-      end
-    end
-
-    private
-    def invalid_min_stay_error
-      desc = "Min stay was not defined both for property and calendar entry"
-      Result.error(:invalid_min_stay, desc)
+      min_stay.zero? ? nil : min_stay
     end
   end
 end
