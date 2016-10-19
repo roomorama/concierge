@@ -6,8 +6,6 @@ module Avantio
     # from data getting from Avantio.
     class RoomoramaProperty
       CANCELLATION_POLICY = 'super_elite'
-      # Until we hear from Avantio on how to determine this field, it will be.. unknown
-      SECURITY_DEPOSIT_TYPE = 'unknown'
 
       PROPERTY_TYPES = Concierge::SafeAccessHash.new({
         1  => {type: 'apartment'}, # Apartment
