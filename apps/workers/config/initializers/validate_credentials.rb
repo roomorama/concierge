@@ -1,6 +1,8 @@
-enforce_on_envs = ["staging", "production"]
+def validate_credentials?
+  ENV["VALIDATE_CREDENTIALS"] != "false"
+end
 
-if enforce_on_envs.include?(Hanami.env)
+if validate_credentials?
   Concierge::Credentials.validate_credentials!({
     sqs: %w(region queue_name access_key_id secret_access_key)
   })
