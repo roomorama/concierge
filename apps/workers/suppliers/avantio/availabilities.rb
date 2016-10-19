@@ -44,21 +44,21 @@ module Workers::Suppliers::Avantio
           unless rate
             message = "Rate for property `#{property_id}` nof found"
             augment_context_error(message)
-            next Result.error(:rate_not_found)
+            next Result.error(:rate_not_found, message)
           end
 
           availability = availabilities[property_id]
           unless availability
             message = "Availability for property `#{property_id}` nof found"
             augment_context_error(message)
-            next Result.error(:availability_not_found)
+            next Result.error(:availability_not_found, message)
           end
 
           rule = occupational_rules[availability.occupational_rule_id]
           unless rule
             message = "Occupational rule for property `#{property_id}` nof found"
             augment_context_error(message)
-            next Result.error(:rule_not_found)
+            next Result.error(:rule_not_found, message)
           end
 
           roomorama_calendar = mapper(property_id, rate, availability, rule).build
