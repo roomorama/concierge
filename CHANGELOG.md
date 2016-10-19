@@ -4,6 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## Unrelease
+### Fixed
+- Poplidays: metadata sync is safe for `nil` availabilities response
+
 ## [0.12.9] - 2016-10-18
 ### Fixed
 - Outdated method call when Kigo calendar checks if host is active
@@ -17,7 +21,6 @@ how this file is formatted and how the process works.
 ### Fixed
 - Rentals United: fix exception which was raised while parsing multi-lang check-in instructions
 - Kigo and Kigo Legacy metadata sync should not purge properties when rate limitted
-- Poplidays: metadata sync is safe for `nil` availabilities response
 
 ## [0.12.7] - 2016-10-17
 ### Fixed
