@@ -117,16 +117,33 @@ RSpec.describe Workers::Suppliers::Avantio::Availabilities do
     end
   end
 
-  it 'announces an error if fetching rates fails' do
-    allow_any_instance_of(Avantio::Importer).to receive(:fetch_rates) { Result.error(:error) }
+  context 'fetching rates' do
+    it 'announces an error if fetching rates fails' do
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_rates) { Result.error(:error) }
 
-    subject.perform
+      subject.perform
 
-    error = ExternalErrorRepository.last
+      error = ExternalErrorRepository.last
 
-    expect(error.operation).to eq 'sync'
-    expect(error.supplier).to eq Avantio::Client::SUPPLIER_NAME
-    expect(error.code).to eq 'error'
+      expect(error.operation).to eq 'sync'
+      expect(error.supplier).to eq Avantio::Client::SUPPLIER_NAME
+      expect(error.code).to eq 'error'
+    end
+
+    it 'announces an error if rates not found for property' do
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_occupational_rules) { Result.new(occupational_rules) }
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_rates) { Result.new({}) }
+
+      subject.perform
+
+      error = ExternalErrorRepository.last
+
+      expect(error.operation).to eq 'sync'
+      expect(error.supplier).to eq Avantio::Client::SUPPLIER_NAME
+      expect(error.code).to eq 'rate_not_found'
+      expect(error.description).to eq 'Rate for property `60505|1238513302|itsalojamientos` nof found'
+    end
   end
 
   context 'fetching availabilities' do
@@ -143,6 +160,20 @@ RSpec.describe Workers::Suppliers::Avantio::Availabilities do
       expect(error.operation).to eq 'sync'
       expect(error.supplier).to eq Avantio::Client::SUPPLIER_NAME
       expect(error.code).to eq 'error'
+    end
+
+    it 'announces an error if availabilities not found for property' do
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_availabilities) { Result.new({}) }
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_occupational_rules) { Result.new(occupational_rules) }
+
+      subject.perform
+
+      error = ExternalErrorRepository.last
+
+      expect(error.operation).to eq 'sync'
+      expect(error.supplier).to eq Avantio::Client::SUPPLIER_NAME
+      expect(error.code).to eq 'availability_not_found'
+      expect(error.description).to eq 'Availability for property `60505|1238513302|itsalojamientos` nof found'
     end
 
     it 'doesnt finalize synchronisation with external error' do
@@ -166,6 +197,19 @@ RSpec.describe Workers::Suppliers::Avantio::Availabilities do
       expect(error.operation).to eq 'sync'
       expect(error.supplier).to eq Avantio::Client::SUPPLIER_NAME
       expect(error.code).to eq 'error'
+    end
+
+    it 'announces an error if occupational rule not found for property' do
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_occupational_rules) { Result.new({}) }
+
+      subject.perform
+
+      error = ExternalErrorRepository.last
+
+      expect(error.operation).to eq 'sync'
+      expect(error.supplier).to eq Avantio::Client::SUPPLIER_NAME
+      expect(error.code).to eq 'rule_not_found'
+      expect(error.description).to eq 'Occupational rule for property `60505|1238513302|itsalojamientos` nof found'
     end
 
     it 'doesnt finalize synchronisation with external error' do
