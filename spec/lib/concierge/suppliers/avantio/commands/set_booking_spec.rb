@@ -82,13 +82,13 @@ RSpec.describe Avantio::Commands::SetBooking do
 
         expect(result.success?).to be false
         expect(result.error.code).to eq(:unexpected_response)
+        message = "The `set_booking` response contains unexpected data:\nSuccess: `false`\nErrorList: `ErrorId: 303, ErrorMessage: \n"\
+          "ErrorId: 5005, ErrorMessage: Fallo al desbloquear el periodo de disponibilidad`"
+        expect(result.error.data).to eq(message)
 
         event = Concierge.context.events_tracker.events.last
         expect(event).not_to be_nil
-        expect(event.message.message).to eq(
-          "The response contains unexpected data:\nSuccess: `false`\nErrorList: `ErrorId: 303, ErrorMessage: \n"\
-          "ErrorId: 5005, ErrorMessage: Fallo al desbloquear el periodo de disponibilidad`"
-        )
+        expect(event.message.message).to eq(message)
       end
 
       it 'augment context with parsed error' do
@@ -96,14 +96,14 @@ RSpec.describe Avantio::Commands::SetBooking do
 
         result = subject.call(params)
 
+        message = "The `set_booking` response contains unexpected data:\nSuccess: `false`\nErrorList: `ErrorId: 5005, ErrorMessage: Fallo al desbloquear el periodo de disponibilidad`"
         expect(result.success?).to be false
         expect(result.error.code).to eq(:unexpected_response)
+        expect(result.error.data).to eq(message)
 
         event = Concierge.context.events_tracker.events.last
         expect(event).not_to be_nil
-        expect(event.message.message).to eq(
-          "The response contains unexpected data:\nSuccess: `false`\nErrorList: `ErrorId: 5005, ErrorMessage: Fallo al desbloquear el periodo de disponibilidad`"
-        )
+        expect(event.message.message).to eq(message)
       end
     end
 
