@@ -75,7 +75,7 @@ module Avantio
           ErrorList: fetch_error_list_as_string(result_hash)
         }
 
-        parts = ['The response contains unexpected data:']
+        parts = ['The `set_booking` response contains unexpected data:']
         errors.each do |label, field|
           unless field.nil?
             parts << "#{label}: `#{field}`"
@@ -84,7 +84,7 @@ module Avantio
         message = parts.join("\n")
 
         mismatch(message, caller)
-        Result.error(:unexpected_response)
+        Result.error(:unexpected_response, message)
       end
 
       def fetch_success(result_hash)
