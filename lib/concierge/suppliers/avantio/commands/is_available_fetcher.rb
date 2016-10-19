@@ -63,7 +63,10 @@ module Avantio
       def error_result
         message = 'Unexpected `is_available` response structure'
         mismatch(message, caller)
-        Result.error(:unexpected_response_structure)
+        Result.error(
+          :unexpected_response_structure,
+          message
+        )
       end
 
       def to_safe_hash(hash)

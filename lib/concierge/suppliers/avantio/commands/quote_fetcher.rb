@@ -77,7 +77,10 @@ module Avantio
       def error_result
         message = 'Unexpected `get_booking_price` response structure'
         mismatch(message, caller)
-        Result.error(:unexpected_response_structure)
+        Result.error(
+          :unexpected_response_structure,
+          message
+        )
       end
 
       def mismatch(message, backtrace)
