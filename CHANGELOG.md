@@ -8,6 +8,9 @@ how this file is formatted and how the process works.
 ### Added
 - Atleisure, Ciirus, Poplidays, Kigo, Waytostay, RentalsUnited: add error.data reporting to Rollbar
 
+### Fixed
+- Atleisure: set cleaning fee mapping logic according to #405
+
 ## [0.12.10] - 2016-10-19
 ### Fixed
 - Poplidays: metadata sync is safe for `nil` availabilities response
