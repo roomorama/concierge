@@ -56,13 +56,13 @@ module JTB
     # full description on 28th page of JTB "API References Guide"
     # message has a test behaviour if +PassiveIndicator+ is true JTB will not create a booking
     # but return success response 'XXXXXXXXXX' reservation.reference_number
-    def build_booking(params, rate)
+    def build_booking(params, rate, room_type_code)
       params = Concierge::SafeAccessHash.new(params)
       message = builder.new(encoding: 'utf-8') do |xml|
         xml.root(NAMESPACES) do
           build_credentials(xml)
           xml['jtb'].HotelReservations {
-            xml['jtb'].HotelReservation(PassiveIndicator: Hanami.env != "production") {
+            xml['jtb'].HotelReservation(PassiveIndicator: credentials['test']) {
               xml['jtb'].ResGlobalInfo {
                 xml['jtb'].RatePlans {
                   xml['jtb'].RatePlan(RatePlanID: rate.rate_plan)
@@ -78,7 +78,7 @@ module JTB
                     end
                   }
                   xml['jtb'].RoomTypes {
-                    xml['jtb'].RoomType(RoomTypeCode: params[:unit_id])
+                    xml['jtb'].RoomType(RoomTypeCode: room_type_code)
                   }
                 }
               }
