@@ -183,6 +183,7 @@ module Roomorama
         subtype:                        subtype,
         title:                          title,
         description:                    description,
+        description_append:             description_append,
         translations:                   translations,
         address:                        address,
         apartment_number:               apartment_number,
