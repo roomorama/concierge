@@ -91,7 +91,6 @@ module RentalsUnited
         set_security_deposit!(property)
         set_rates!(property)
         set_cleaning!(property)
-        set_description_append!(property)
 
         Result.new(property)
       end
