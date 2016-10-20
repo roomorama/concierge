@@ -1,3 +1,4 @@
+require_relative "translated"
 module Roomorama
 
   # +Roomorama::Property+
@@ -23,6 +24,7 @@ module Roomorama
   #   property.add_image(image)
   class Property
     include Roomorama::Mappers
+    include Roomorama::Translated
 
     # +Roomorama::Property::ValidationError+
     #
@@ -175,6 +177,7 @@ module Roomorama
         subtype:                        subtype,
         title:                          title,
         description:                    description,
+        translations:                   translations,
         address:                        address,
         apartment_number:               apartment_number,
         postal_code:                    postal_code,
