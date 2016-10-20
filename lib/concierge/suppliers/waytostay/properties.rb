@@ -182,7 +182,7 @@ module Waytostay
     # the translations.
     def add_license_number(property, response)
       license_number = response.get("general.licence_number")  # spelled wrongly according to waytostay response
-      return if license_number.empty?
+      return if license_number.nil? || license_number.empty?
       property.description_append = "License number: #{license_number}"
       property.de.description_append = "Lizenznummer: #{license_number}"
       property.es.description_append = "Número de licencia: #{license_number}"
