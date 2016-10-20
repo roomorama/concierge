@@ -74,7 +74,7 @@ RSpec.describe API::Controllers::Avantio::Booking do
 
         expect(response.status).to eq 503
         expect(response.body['status']).to eq 'error'
-        expect(response.body['errors']['booking']).to eq 'Could not create booking with remote supplier'
+        expect(response.body['errors']['booking']).to eq 'The property user tried to book is unavailable for given period'
       end
     end
 
