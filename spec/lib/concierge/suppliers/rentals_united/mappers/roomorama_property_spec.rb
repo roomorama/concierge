@@ -30,7 +30,9 @@ RSpec.describe RentalsUnited::Mappers::RoomoramaProperty do
       number_of_bathrooms:     22,
       number_of_single_beds:   5,
       number_of_double_beds:   7,
-      number_of_sofa_beds:     9
+      number_of_sofa_beds:     9,
+      late_arrival_fees:       [],
+      early_departure_fees:    []
     }
   end
 
@@ -395,6 +397,16 @@ RSpec.describe RentalsUnited::Mappers::RoomoramaProperty do
       ru_property_hash[:images] = []
 
       expect(property.images).to eq([])
+    end
+  end
+
+  context "sets description_append" do
+    context "when there is no late/early fees" do
+
+      # Not yet implemented
+      xit "keeps description_append as nil" do
+        expect(property.description_append).to be_nil
+      end
     end
   end
 end

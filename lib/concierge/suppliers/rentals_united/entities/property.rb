@@ -10,7 +10,8 @@ module RentalsUnited
                     :images, :amenities, :owner_id, :security_deposit_type,
                     :security_deposit_amount, :check_in_instructions,
                     :number_of_bathrooms, :number_of_single_beds,
-                    :number_of_double_beds, :number_of_sofa_beds
+                    :number_of_double_beds, :number_of_sofa_beds,
+                    :late_arrival_fees, :early_departure_fees
 
       attr_writer :active, :archived
 
@@ -21,7 +22,8 @@ module RentalsUnited
                      security_deposit_type:, security_deposit_amount:,
                      check_in_instructions:, number_of_bathrooms:,
                      number_of_single_beds:, number_of_double_beds:,
-                     number_of_sofa_beds:)
+                     number_of_sofa_beds:, late_arrival_fees:,
+                     early_departure_fees:)
         @id                      = id
         @title                   = title
         @description             = description
@@ -48,6 +50,8 @@ module RentalsUnited
         @number_of_single_beds   = number_of_single_beds
         @number_of_double_beds   = number_of_double_beds
         @number_of_sofa_beds     = number_of_sofa_beds
+        @late_arrival_fees       = late_arrival_fees
+        @early_departure_fees    = early_departure_fees
       end
 
       def active?
