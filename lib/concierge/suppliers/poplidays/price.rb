@@ -81,11 +81,9 @@ module Poplidays
           if lodging['mandatoryServicesPrice']
             Result.new(lodging['mandatoryServicesPrice'])
           else
-            no_mandatory_services_data
-            unrecognised_response
+            no_mandatory_services_data_error
           end
         else
-          invalid_property
           invalid_property_error
         end
       }
@@ -99,24 +97,18 @@ module Poplidays
       @mapper ||= Poplidays::Mappers::Quote.new
     end
 
-    def unrecognised_response
-      Result.error(:unrecognised_response)
-    end
-
-    def no_mandatory_services_data
+    def no_mandatory_services_data_error
       message = "Expected to find the price for mandatory services under the " +
         "`mandatoryServicesPrice`, but none was found."
 
       mismatch(message, caller)
-    end
-
-    def invalid_property
-      message = "Property shouldn't be on request only and should have enabled prices"
-      mismatch(message, caller)
+      Result.error(:unrecognised_response, message)
     end
 
     def invalid_property_error
-      Result.error(:invalid_property_error)
+      message = "Property shouldn't be on request only and should have enabled prices"
+      mismatch(message, caller)
+      Result.error(:invalid_property_error, message)
     end
 
     def mismatch(message, backtrace)

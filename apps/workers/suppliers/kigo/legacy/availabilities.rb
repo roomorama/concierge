@@ -74,6 +74,7 @@ module Workers::Suppliers::Kigo::Legacy
         operation:   'sync',
         supplier:    supplier.name,
         code:        result.error.code,
+        description: result.error.data,
         context:     Concierge.context.to_h,
         happened_at: Time.now
       })

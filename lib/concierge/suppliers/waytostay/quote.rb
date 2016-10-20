@@ -48,7 +48,7 @@ module Waytostay
           Result.new(Quotation.new(quote_params_from(response)))
         else
           augment_missing_fields(missing_keys)
-          Result.error(:unrecognised_response)
+          Result.error(:unrecognised_response, "Missing keys: #{missing_keys}")
         end
 
       elsif unavailable?(result) # for waytostay, unavailable is returned as a 422 error

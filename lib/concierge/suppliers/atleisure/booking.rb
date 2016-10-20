@@ -55,8 +55,7 @@ module AtLeisure
       reservation = build_reservation(params)
 
       if response["BookingNumber"].blank?
-        no_booking_information
-        unrecognised_response
+        no_booking_information_error
       else
         reservation.reference_number = response["BookingNumber"]
         Result.new(reservation)
@@ -67,18 +66,15 @@ module AtLeisure
       Reservation.new(params)
     end
 
-    def unrecognised_response
-      Result.error(:unrecognised_response)
-    end
-
     def jsonrpc(endpoint)
       Concierge::JSONRPC.new(endpoint)
     end
 
-    def no_booking_information
+    def no_booking_information_error
       message = "No booking information could be retrieved. Expected field `BookingNumber`"
 
       mismatch(message, caller)
+      Result.error(:unrecognised_response, message)
     end
 
     def mismatch(message, backtrace)

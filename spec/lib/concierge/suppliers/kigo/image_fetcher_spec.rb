@@ -24,6 +24,7 @@ RSpec.describe Kigo::ImageFetcher do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :connection_timeout
+      expect(result.error.data).to be_nil
     end
   end
 

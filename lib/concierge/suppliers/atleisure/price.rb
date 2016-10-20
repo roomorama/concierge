@@ -60,13 +60,7 @@ module AtLeisure
     def parse_quote_response(params, response)
       quotation = build_quotation(params)
 
-      if response["OnRequest"] == "Yes"
-        no_instant_confirmation
-        return Result.error(
-          :unsupported_on_request_reservation,
-          'Instant booking is not supported for the given period'
-        )
-      end
+      return no_instant_confirmation_error if response["OnRequest"] == "Yes"
 
       if response["Available"] == "Yes"
         price = response["CorrectPrice"] || response["Price"]
@@ -75,8 +69,7 @@ module AtLeisure
           quotation.total     = price
           return Result.new(quotation)
         else
-          no_price_information
-          unrecognised_response(response)
+          no_price_information_error
         end
 
       elsif response["Available"] == "No"
@@ -84,8 +77,7 @@ module AtLeisure
         return Result.new(quotation)
 
       else
-        no_availability_information
-        unrecognised_response(response)
+        no_availability_information_error
       end
     end
 
@@ -99,33 +91,35 @@ module AtLeisure
       )
     end
 
-    def unrecognised_response(response)
-      Result.error(:unrecognised_response)
-    end
-
     def jsonrpc(endpoint)
       Concierge::JSONRPC.new(endpoint)
     end
 
-    def no_instant_confirmation
+    def no_instant_confirmation_error
       message = "Roomorama can only work with properties with instant confirmation from AtLeisure." +
         " However, the `OnRequest` field for given period was set to `true`."
 
       mismatch(message, caller)
+      Result.error(
+        :unsupported_on_request_reservation,
+        'Instant booking is not supported for the given period'
+      )
     end
 
-    def no_price_information
+    def no_price_information_error
       message = "No price information could be retrieved. Searched fields `CorrectPrice`" +
         " and `Price` and neither is given."
 
       mismatch(message, caller)
+      Result.error(:unrecognised_response, message)
     end
 
-    def no_availability_information
+    def no_availability_information_error
       message = "Could not determine if the property was available. The `Available` field" +
         " was not given or has an invalid value."
 
       mismatch(message, caller)
+      Result.error(:unrecognised_response, message)
     end
 
     def mismatch(message, backtrace)

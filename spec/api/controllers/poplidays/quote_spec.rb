@@ -49,19 +49,26 @@ RSpec.describe API::Controllers::Poplidays::Quote do
   end
 
   describe '#call' do
-    [
-      'poplidays/property_details_missing_mandatory_services.json',
-      'poplidays/unexpected_xml_response.xml',
-    ].each do |property_details_fixture|
-      it "returns a proper error message if the response look like fixture #{property_details_fixture}" do
-        stub_call(:get, property_details_endpoint) { [200, {}, read_fixture(property_details_fixture)] }
+    it "returns a proper error message if the response contains missing mandatory services" do
+      fixture = 'poplidays/property_details_missing_mandatory_services.json'
+      stub_call(:get, property_details_endpoint) { [200, {}, read_fixture(fixture)] }
 
-        response = parse_response(described_class.new.call(params))
+      response = parse_response(described_class.new.call(params))
 
-        expect(response.status).to eq 503
-        expect(response.body['status']).to eq 'error'
-        expect(response.body['errors']['quote']).to eq 'Could not quote price with remote supplier'
-      end
+      expect(response.status).to eq 503
+      expect(response.body['status']).to eq 'error'
+      expect(response.body['errors']['quote']).to eq 'Expected to find the price for mandatory services under the `mandatoryServicesPrice`, but none was found.'
+    end
+
+    it "returns a proper error message if the response contains unexpected xml response" do
+      fixture = 'poplidays/unexpected_xml_response.xml'
+      stub_call(:get, property_details_endpoint) { [200, {}, read_fixture(fixture)] }
+
+      response = parse_response(described_class.new.call(params))
+
+      expect(response.status).to eq 503
+      expect(response.body['status']).to eq 'error'
+      expect(response.body['errors']['quote']).to eq 'Could not quote price with remote supplier'
     end
 
     it 'returns unavailable quotation when the supplier responds so' do

@@ -4,6 +4,10 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## Unreleased
+### Added
+- Atleisure, Ciirus, Poplidays, Kigo, Waytostay, RentalsUnited: add error.data reporting to Rollbar
+
 ## [0.12.10] - 2016-10-19
 ### Fixed
 - Poplidays: metadata sync is safe for `nil` availabilities response

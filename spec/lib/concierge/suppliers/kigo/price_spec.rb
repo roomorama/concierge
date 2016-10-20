@@ -18,6 +18,7 @@ RSpec.describe Kigo::Price do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :connection_timeout
+      expect(result.error.data).to be_nil
     end
   end
 
@@ -32,6 +33,9 @@ RSpec.describe Kigo::Price do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :invalid_property_id
+      expect(result.error.data).to eq(
+        "Expected a numerical Kigo property ID, but received instead `KG-123`."
+      )
     end
   end
 end

@@ -55,7 +55,7 @@ module Waytostay
 
         @properties_cache_result.value.find do |p|
           p.value&.identifier == property_ref
-        end || Result.error(:not_found)
+        end || property_not_found_error
       end
 
       private
@@ -172,7 +172,7 @@ module Waytostay
         Result.new(property)
       else
         augment_missing_fields(missing_keys)
-        Result.error(:unrecognised_response)
+        Result.error(:unrecognised_response, "Missing keys: #{missing_keys}")
       end
     end
 
@@ -322,6 +322,10 @@ module Waytostay
       "Terrace"          => "outdoor_space"
     }
 
+  end
+
+  def property_not_found_error
+    Result.error(:not_found, "Property not found with id `#{property_ref}`")
   end
 end
 
