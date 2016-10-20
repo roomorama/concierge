@@ -30,40 +30,36 @@ module Workers::Suppliers::Ciirus
         properties.each do |property|
           property_id = property.property_id
           if validator(property).valid?
-            permissions = synchronisation.new_context(property_id) do
-              fetch_permissions(property_id)
-            end
-            next unless permissions.success?
-
-            unless permissions_validator(permissions.value).valid?
-              synchronisation.skip_property(property_id, 'Invalid permissions')
-              next
-            end
-
-            # Rates are needed for a property. Skip (and purge) properties that
-            # has no rates or has error when retrieving rates.
-            result = fetch_rates(property_id)
-            next unless result.success?
-
-            rates  = filter_rates(result.value)
-            if rates.empty?
-              synchronisation.skip_property(property_id, 'Empty valid rates list')
-              next
-            end
-
-            result = fetch_images(property_id)
-            next unless result.success?
-            images = result.value
-
-            result = fetch_description(property_id)
-            next unless result.success?
-            description = result.value
-            if description.to_s.empty?
-              synchronisation.skip_property(property_id, 'Empty description')
-              next
-            end
-
             synchronisation.start(property_id) do
+              # Puts property info to context for analyze in case of error
+              augment_property_info(property)
+
+              permissions = fetch_permissions(property_id)
+              next permissions unless permissions.success?
+
+              unless permissions_validator(permissions.value).valid?
+                next synchronisation.skip_property(property_id, 'Invalid permissions')
+              end
+
+              # Rates are needed for a property. Skip (and purge) properties that
+              # has no rates or has error when retrieving rates.
+              result = fetch_rates(property_id)
+              next result unless result.success?
+
+              rates  = filter_rates(result.value)
+              next synchronisation.skip_property(property_id, 'Empty valid rates list') if rates.empty?
+
+              result = fetch_images(property_id)
+              next result unless result.success?
+              images = result.value
+
+              result = fetch_description(property_id)
+              next result unless result.success?
+
+              description = result.value
+              if description.to_s.empty?
+                next synchronisation.skip_property(property_id, 'Empty description')
+              end
 
               result = fetch_security_deposit(property_id)
               security_deposit = result.success? ? result.value : nil
@@ -107,16 +103,16 @@ module Workers::Suppliers::Ciirus
             synchronisation.skip_property(property_id, "Ignorable images error: #{result.error.data}")
           else
             message = "Failed to fetch images for property `#{property_id}`"
-            announce_error(message, result)
+            augment_context_error(message)
           end
         end
       end
     end
 
     def fetch_description(property_id)
-      importer.fetch_description(property_id).tap do |result|
-        message = "Failed to fetch description for property `#{property_id}`"
-        announce_error(message, result) unless result.success?
+      message = "Failed to fetch description for property `#{property_id}`"
+      report_error(message) do
+        importer.fetch_description(property_id)
       end
     end
 
@@ -127,16 +123,16 @@ module Workers::Suppliers::Ciirus
             synchronisation.skip_property(property_id, "Ignorable rates error: #{result.error.data}")
           else
             message = "Failed to fetch rates for property `#{property_id}`"
-            announce_error(message, result)
+            augment_context_error(message)
           end
         end
       end
     end
 
     def fetch_permissions(property_id)
-      importer.fetch_permissions(property_id).tap do |result|
-        message = "Failed to fetch permissions for property `#{property_id}`"
-        announce_error(message, result) unless result.success?
+      message = "Failed to fetch permissions for property `#{property_id}`"
+      report_error(message) do
+        importer.fetch_permissions(property_id)
       end
     end
 
@@ -182,6 +178,16 @@ module Workers::Suppliers::Ciirus
 
     def credentials
       Concierge::Credentials.for(Ciirus::Client::SUPPLIER_NAME)
+    end
+
+    def augment_property_info(property)
+      message = {
+        label: 'Property Info',
+        message: property.to_s,
+        backtrace: caller
+      }
+      context = Concierge::Context::Message.new(message)
+      Concierge.context.augment(context)
     end
 
     def augment_context_error(message)

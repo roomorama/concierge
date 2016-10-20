@@ -215,11 +215,11 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
       end
     end
 
-    [described_class::IGNORABLE_IMAGES_ERROR_MESSAGES].each do |msg|
+    described_class::IGNORABLE_IMAGES_ERROR_MESSAGES.each do |msg|
       context "when it fails with expected error: #{msg}" do
         let(:error_message) { msg }
         it "does not create external errors" do
-          expect(subject.synchronisation).to_not receive(:start)
+          expect(subject.synchronisation).to receive(:skip_property).twice.and_call_original
           expect { subject.perform }.to_not change { ExternalErrorRepository.count }
         end
       end
@@ -263,11 +263,12 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
 
     context "when it fails with unexpected error" do
       let(:error_message) { "New weird error" }
-      it 'does not start synchronsiation, but create an external error' do
+      it 'does not finish synchronsiation, but create an external error' do
+        expect(subject.synchronisation).to_not receive(:process)
+
         # We expect rates error, and purge the property instead
         expect { subject.perform }.to change { ExternalErrorRepository.count }.by 1
 
-        expect(subject.synchronisation).to_not receive(:start)
         error = ExternalErrorRepository.last
         expect(error.operation).to eq 'sync'
         expect(error.supplier).to eq Ciirus::Client::SUPPLIER_NAME
@@ -281,11 +282,11 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
       end
     end
 
-    [described_class::IGNORABLE_RATES_ERROR_MESSAGES].each do |msg|
+    described_class::IGNORABLE_RATES_ERROR_MESSAGES.each do |msg|
       context "when it fails with expected error: #{msg}" do
         let(:error_message) { msg }
         it "does not create external errors" do
-          expect(subject.synchronisation).to_not receive(:start)
+          expect(subject.synchronisation).to receive(:skip_property).twice.and_call_original
           expect { subject.perform }.to_not change { ExternalErrorRepository.count }
         end
       end
@@ -294,9 +295,9 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
     it 'does not start synchronisation if list of actual rates is empty' do
       allow_any_instance_of(Ciirus::Importer).to receive(:fetch_rates) { Result.new(rates) }
       allow_any_instance_of(Ciirus::Validators::RateValidator).to receive(:valid?) { false }
-      subject.perform
+      expect(subject.synchronisation).to receive(:skip_property).twice.and_call_original
 
-      expect(subject.synchronisation).to_not receive(:start)
+      subject.perform
     end
 
   end
@@ -324,6 +325,12 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
         expect {
           subject.perform
         }.to change { PropertyRepository.count }.by(1)
+      end
+
+      it 'contains property info in context' do
+        subject.perform
+        error = ExternalErrorRepository.last
+        expect(error.context.get('events').to_s).to include('Property Info')
       end
     end
   end
