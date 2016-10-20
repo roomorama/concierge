@@ -8,7 +8,8 @@ RSpec.describe JTB::XMLBuilder do
       'user' => 'Roberto',
       'password' => '123',
       'company' => 'Apple',
-      'url' => 'https://trial-www.jtbgenesis.com/genesis2-demo/services'
+      'url' => 'https://trial-www.jtbgenesis.com/genesis2-demo/services',
+      'test' => true
     }
   end
   subject { described_class.new(credentials) }
@@ -39,10 +40,11 @@ RSpec.describe JTB::XMLBuilder do
   end
 
   describe '#build_booking' do
+    let(:room_type_code) { 'JPN' }
     let(:params) {
       {
         property_id: 'A123',
-        unit_id:     'JPN',
+        unit_id:     'JPN|CHUHW01RM0000001',
         check_in:    '2016-03-22',
         check_out:   '2016-03-24',
         guests:      2,
@@ -54,12 +56,13 @@ RSpec.describe JTB::XMLBuilder do
       }
     }
     let(:rate_plan) { JTB::RatePlan.new('sample', 2000, true, 2) }
-    let(:message) { subject.build_booking(params, rate_plan) }
+    let(:message) { subject.build_booking(params, rate_plan, room_type_code) }
 
     it { expect(attribute_for(message, 'RatePlan', 'RatePlanID')).to eq 'sample' }
-    it { expect(attribute_for(message, 'RoomType', 'RoomTypeCode')).to eq params[:unit_id] }
+    it { expect(attribute_for(message, 'RoomType', 'RoomTypeCode')).to eq room_type_code }
     it { expect(attribute_for(message, 'TimeSpan', 'StartDate')).to eq params[:check_in] }
     it { expect(attribute_for(message, 'TimeSpan', 'EndDate')).to eq params[:check_out] }
+    it { expect(attribute_for(message, 'HotelReservation', 'PassiveIndicator')).to eq 'true' }
 
     context 'customer' do
       let(:customer) { params[:customer] }
@@ -71,7 +74,7 @@ RSpec.describe JTB::XMLBuilder do
 
       it 'converts accented latin letters to ascii encoding' do
         params[:customer].merge!(first_name: 'Ĕřïć', last_name: 'BÁŔBÈÅÜ')
-        message = subject.build_booking(params, rate_plan)
+        message = subject.build_booking(params, rate_plan, room_type_code)
 
         expect(message.xpath('//jtb:GivenName').first.text).to be_ascii_only
         expect(message.xpath('//jtb:GivenName').first.text).to eq 'Eric'
@@ -83,7 +86,7 @@ RSpec.describe JTB::XMLBuilder do
       context 'invalid name' do
         it 'set default first name and last name if non-latin letters' do
           params[:customer].merge!(first_name: 'Игорь', last_name: 'Трофимов')
-          message = subject.build_booking(params, rate_plan)
+          message = subject.build_booking(params, rate_plan, room_type_code)
 
           expect(message.xpath('//jtb:GivenName').first.text).to eq 'Roomorama'
           expect(message.xpath('//jtb:Surname').first.text).to eq 'Guest'

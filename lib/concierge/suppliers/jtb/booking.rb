@@ -28,7 +28,9 @@ module JTB
 
       return rate_plan_result unless rate_plan_result.success?
 
-      message = builder.build_booking(params, rate_plan_result.value)
+      u_id = JTB::UnitId.from_roomorama_unit_id(params[:unit_id])
+
+      message = builder.build_booking(params, rate_plan_result.value, u_id.room_type_code)
       result  = remote_call(message)
 
       if result.success?
