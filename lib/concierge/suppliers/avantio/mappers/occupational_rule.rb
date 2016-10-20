@@ -2,6 +2,8 @@ module Avantio
   module Mappers
     class OccupationalRule
 
+      WEEKDAYS = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']
+
       def build(rule_raw)
         id = fetch_id(rule_raw)
         seasons = fetch_seasons(rule_raw)
@@ -47,7 +49,7 @@ module Avantio
       end
 
       def weekday?(str)
-        ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'].include?(str)
+        WEEKDAYS.include?(str)
       end
     end
   end
