@@ -28,7 +28,7 @@ module Avantio
         end
 
         def include?(date)
-          start_date <= date && date <= end_date
+          date.between?(start_date, end_date)
         end
 
         private
