@@ -156,17 +156,16 @@ module AtLeisure
       cleaning = find_cost('Cleaning')
       return unless cleaning
 
-      property.services_cleaning = cleaning['Payment'] != 'None'
+      cleaning_payment = cleaning['Payment']
 
-      if property.services_cleaning
-        if cleaning['Payment'] == 'Inclusive'
-          property.amenities << 'free_cleaning'
-          property.services_cleaning_required = false
-          property.services_cleaning_rate     = 0
-        else
-          property.services_cleaning_required = cleaning['Payment'] == 'Mandatory'
-          property.services_cleaning_rate     = cleaning['Amount']
-        end
+      if ['None', 'Inclusive'].include?(cleaning_payment)
+        property.services_cleaning          = false
+        property.services_cleaning_required = nil
+        property.services_cleaning_rate     = nil
+      elsif cleaning_payment == 'Mandatory'
+        property.services_cleaning          = true
+        property.services_cleaning_required = true
+        property.services_cleaning_rate     = cleaning['Amount']
       end
     end
 
