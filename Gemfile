@@ -26,7 +26,7 @@ gem 'nokogiri', '~> 1.6.7'
 gem 'net-sftp', '~> 2.1', '>= 2.1.2'
 
 group :development do
-  gem 'ruby-prof', '~> 0.16.2'
+  gem 'ruby-prof', '~> 0.16.2', require: false
 end
 
 group :test do
