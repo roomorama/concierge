@@ -83,7 +83,13 @@ module Avantio
               xml.Language 'EN'
             end
             xml.Board 'ROOM_ONLY'
-            xml.PaymentMethod '26' # TODO: what does it mean?
+            # Roomorama is responsible for charging the reservations, the paymentMethod that we have to use is 26.
+            # Take into account that this payment method implies that Roomorama must
+            # send the e-mails of the reservations to the tourists, so we need you to use the following
+            # SetBooking service configuration:
+            #   SendMailToTourist = false
+            #   SendMailToOrganization = true
+            xml.PaymentMethod '26'
             xml.BookingType booking_type
             xml.Comments
             xml.SendMailToOrganization true
