@@ -1,0 +1,37 @@
+<Credentials>
+  <Language>EN</Language>
+  <UserName>Foo</UserName>
+  <Password>123</Password>
+</Credentials><BookingData>
+  <ArrivalDate>2016-10-03</ArrivalDate>
+  <DepartureDate>2016-10-20</DepartureDate>
+  <Accommodation>
+    <AccommodationCode>55720</AccommodationCode>
+    <UserCode>1210075202</UserCode>
+    <LoginGA>itsalojamientos</LoginGA>
+  </Accommodation>
+  <Occupants>
+    <AdultsNumber>1</AdultsNumber>
+  </Occupants>
+  <ClientData>
+    <Name>John</Name>
+    <Surname>Buttler</Surname>
+    <DNI/>
+    <Address>Long bay, 43</Address>
+    <Locality/>
+    <PostCode/>
+    <City/>
+    <Country/>
+    <Telephone>+7 837 0953 32 34</Telephone>
+    <Telephone2/>
+    <EMail>avg@mail.com</EMail>
+    <Fax/>
+    <Language>EN</Language>
+  </ClientData>
+  <Board>ROOM_ONLY</Board>
+  <PaymentMethod>26</PaymentMethod>
+  <BookingType>PETICION_INFORMACION</BookingType>
+  <Comments/>
+  <SendMailToOrganization>true</SendMailToOrganization>
+  <SendMailToTourist>false</SendMailToTourist>
+</BookingData>
