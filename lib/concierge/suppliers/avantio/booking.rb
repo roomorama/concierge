@@ -30,7 +30,9 @@ module Avantio
       available = Avantio::Commands::IsAvailableFetcher.new(credentials).call(params)
       return available unless available.success?
 
-      return Result.error(:unavailable_accommodation) unless available.value
+      unless available.value
+        return Result.error(:unavailable_accommodation, 'The property user tried to book is unavailable for given period')
+      end
 
       Avantio::Commands::SetBooking.new(credentials).call(params)
     end
