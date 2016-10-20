@@ -280,6 +280,12 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
         expect(Roomorama::Client::Operations).to_not receive(:disable)
         subject.perform
       end
+
+      it 'contains property info in context' do
+        subject.perform
+        error = ExternalErrorRepository.last
+        expect(error.context.get('events').to_s).to include('Property Info')
+      end
     end
 
     described_class::IGNORABLE_RATES_ERROR_MESSAGES.each do |msg|
@@ -299,7 +305,6 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
 
       subject.perform
     end
-
   end
 
   context 'fetching security deposit' do
@@ -325,12 +330,6 @@ RSpec.describe Workers::Suppliers::Ciirus::Metadata do
         expect {
           subject.perform
         }.to change { PropertyRepository.count }.by(1)
-      end
-
-      it 'contains property info in context' do
-        subject.perform
-        error = ExternalErrorRepository.last
-        expect(error.context.get('events').to_s).to include('Property Info')
       end
     end
   end
