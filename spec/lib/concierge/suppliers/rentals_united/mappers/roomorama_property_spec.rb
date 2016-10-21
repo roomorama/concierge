@@ -400,13 +400,13 @@ RSpec.describe RentalsUnited::Mappers::RoomoramaProperty do
     end
   end
 
-  context "sets description_append" do
-    context "when there is no late/early fees" do
+  context "when mapping late/early fees" do
+    it "sets fees to the description_append field" do
+      expect_any_instance_of(RentalsUnited::Converters::CheckInOutFees)
+        .to(receive(:as_text))
+        .and_return("Check in rules")
 
-      # Not yet implemented
-      xit "keeps description_append as nil" do
-        expect(property.description_append).to be_nil
-      end
+      expect(property.description_append).to eq("Check in rules")
     end
   end
 end
