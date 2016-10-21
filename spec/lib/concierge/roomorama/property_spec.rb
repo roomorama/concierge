@@ -1,4 +1,5 @@
 require "spec_helper"
+require_relative "translated"
 
 RSpec.describe Roomorama::Property do
   let(:identifier) { "JPN123" }
@@ -156,6 +157,8 @@ RSpec.describe Roomorama::Property do
     end
   end
 
+  it_behaves_like "translated object"
+
   describe "#multi_unit!" do
     it "converts the property to multi unit" do
       expect(subject).not_to be_multi_unit
@@ -278,11 +281,14 @@ RSpec.describe Roomorama::Property do
   describe "#to_h" do
     before do
       # populate the property with some basic data
-      subject.title        = "Studio Apartment in Paris"
-      subject.description  = "Bonjour!"
-      subject.nightly_rate = 100
-      subject.currency     = "EUR"
-      subject.owner_city   = "Seoul"
+      subject.title              = "Studio Apartment in Paris"
+      subject.es.title           = "Baguette"
+      subject.description        = "Bonjour!"
+      subject.description_append = "License number: abc"
+      subject.es.description     = "Pate and Baguette"
+      subject.nightly_rate       = 100
+      subject.currency           = "EUR"
+      subject.owner_city         = "Seoul"
 
       image         = Roomorama::Image.new("IMG1")
       image.url     = "https://www.example.org/image1.png"
@@ -329,14 +335,22 @@ RSpec.describe Roomorama::Property do
 
     let(:expected_attributes) {
       {
-        identifier:      "JPN123",
-        title:           "Studio Apartment in Paris",
-        description:     "Bonjour!",
-        nightly_rate:    100,
-        currency:        "EUR",
-        multi_unit:      true,
-        owner_city:      "Seoul",
-        instant_booking: false,
+        identifier:         "JPN123",
+        title:              "Studio Apartment in Paris",
+        description:        "Bonjour!",
+        description_append: "License number: abc",
+        nightly_rate:       100,
+        currency:           "EUR",
+        multi_unit:         true,
+        owner_city:         "Seoul",
+        instant_booking:    false,
+
+        translations: {
+          es: {
+            title:       "Baguette",
+            description: "Pate and Baguette"
+          }
+        },
 
         images: [
           {

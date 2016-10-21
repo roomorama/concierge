@@ -46,6 +46,7 @@ RSpec.describe Ciirus::Commands::Booking do
 
         expect(result).not_to be_success
         expect(result.error.code).to eq :savon_error
+        expect(result.error.data).to be_nil
       end
     end
 
@@ -83,6 +84,9 @@ RSpec.describe Ciirus::Commands::Booking do
 
         expect(result.success?).to be false
         expect(result.error.code).to eq(:unexpected_response)
+        expect(result.error.data).to eq(
+          "The response contains unexpected data:\nErrorMessage: `Another reservation already exists overlapping your selected dates`\nBookingPlaced: `false`"
+        )
       end
     end
   end

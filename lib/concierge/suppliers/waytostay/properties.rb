@@ -55,7 +55,7 @@ module Waytostay
 
         @properties_cache_result.value.find do |p|
           p.value&.identifier == property_ref
-        end || Result.error(:not_found)
+        end || property_not_found_error
       end
 
       private
@@ -169,11 +169,25 @@ module Waytostay
         property_attributes_from(response).each do |key, value|
           property[key] = value unless value.nil?
         end
+        add_license_number(property, response)
         Result.new(property)
       else
         augment_missing_fields(missing_keys)
-        Result.error(:unrecognised_response)
+        Result.error(:unrecognised_response, "Missing keys: #{missing_keys}")
       end
+    end
+
+    # Because Roomorama doesn't have a license field,
+    # we add the the description_append field instead, in
+    # the translations.
+    def add_license_number(property, response)
+      license_number = response.get("general.licence_number")  # spelled wrongly according to waytostay response
+      return if license_number.nil? || license_number.empty?
+      property.description_append = "License number: #{license_number}"
+      property.de.description_append = "Lizenznummer: #{license_number}"
+      property.es.description_append = "Número de licencia: #{license_number}"
+      property.zh.description_append = "许可证号: #{license_number}"
+      property.zh_tw.description_append = "許可證號: #{license_number}"
     end
 
     # Returns params to initialize a Roomorama::Property from a SafeAccessHash
@@ -321,7 +335,10 @@ module Waytostay
       "Balcony"          => "balcony",
       "Terrace"          => "outdoor_space"
     }
+  end
 
+  def property_not_found_error
+    Result.error(:not_found, "Property not found with id `#{property_ref}`")
   end
 end
 

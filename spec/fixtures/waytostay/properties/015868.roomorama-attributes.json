@@ -44,6 +44,21 @@
   "default_to_available": true,
   "cancellation_policy": "strict",
   "instant_booking": true,
+  "description_append": "License number: HUTB-012425 68",
+  "translations": {
+    "de": {
+      "description_append": "Lizenznummer: HUTB-012425 68"
+    },
+    "es": {
+      "description_append": "Número de licencia: HUTB-012425 68"
+    },
+    "zh": {
+      "description_append": "许可证号: HUTB-012425 68"
+    },
+    "zh_tw": {
+      "description_append": "許可證號: HUTB-012425 68"
+    }
+  },
   "images": [
     {
       "identifier": "propimg1",

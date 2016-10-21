@@ -1,4 +1,5 @@
 require "spec_helper"
+require_relative "translated"
 
 RSpec.describe Roomorama::Diff do
   let(:identifier) { "JPN123" }
@@ -34,6 +35,8 @@ RSpec.describe Roomorama::Diff do
       }.not_to raise_error
     end
   end
+
+  it_behaves_like "translated object"
 
   describe "#erase" do
     it "causes the attribute to be serialized even if blank" do
@@ -197,9 +200,12 @@ RSpec.describe Roomorama::Diff do
   describe "#to_h" do
     before do
       # makes some changes to the property
-      subject.title        = "Studio Apartment in Paris"
-      subject.description  = "Bonjour!"
-      subject.nightly_rate = 100
+      subject.title              = "Studio Apartment in Paris"
+      subject.description_append = "License number: abc"
+      subject.es.title           = "Baguette"
+      subject.description        = "Bonjour!"
+      subject.es.description     = "Pate and Baguette"
+      subject.nightly_rate       = 100
 
       image         = Roomorama::Image.new("IMG1")
       image.url     = "https://www.example.org/image1.png"
@@ -244,11 +250,19 @@ RSpec.describe Roomorama::Diff do
 
     let(:expected_attributes) {
       {
-        identifier:      "JPN123",
-        title:           "Studio Apartment in Paris",
-        description:     "Bonjour!",
-        nightly_rate:    100,
-        multi_unit:      true,
+        identifier:         "JPN123",
+        title:              "Studio Apartment in Paris",
+        description:        "Bonjour!",
+        description_append: "License number: abc",
+        nightly_rate:       100,
+        multi_unit:         true,
+
+        translations: {
+          es: {
+            title:       "Baguette",
+            description: "Pate and Baguette"
+          }
+        },
 
         images: {
           create: [

@@ -45,6 +45,7 @@ module Workers::Comparison
       diff = Roomorama::Diff.new(original.identifier)
 
       extract_metadata_diff(original, new, diff)
+      Workers::Comparison::Translations.new(original.translations, new.translations).apply_to(diff)
       compare_images(original.images, new.images, diff)
 
       if original.multi_unit?

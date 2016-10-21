@@ -48,6 +48,7 @@ RSpec.describe AtLeisure::Booking do
 
       expect(result).to_not be_success
       expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq "No booking information could be retrieved. Expected field `BookingNumber`"
     end
 
     it "returns a reservation booking code according to the response" do

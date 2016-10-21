@@ -63,6 +63,7 @@ module API::Controllers::Kigo
         operation:   'image',
         supplier:    Kigo::Legacy::SUPPLIER_NAME,
         code:        result.error.code,
+        description: result.error.data,
         context:     Concierge.context.to_h,
         happened_at: Time.now
       })

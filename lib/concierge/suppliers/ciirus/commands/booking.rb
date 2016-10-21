@@ -81,7 +81,7 @@ module Ciirus
         message = parts.join("\n")
 
         mismatch(message, caller)
-        Result.error(:unexpected_response)
+        Result.error(:unexpected_response, message)
       end
 
       def extract_error_message(result_hash)

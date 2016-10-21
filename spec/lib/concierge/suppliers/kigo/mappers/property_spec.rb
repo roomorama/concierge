@@ -131,6 +131,7 @@ RSpec.describe Kigo::Mappers::Property do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :no_prices_provided
+      expect(result.error.data).to eq 'Empty or invalid price'
     end
 
     it 'returns the result with roomorama property accordingly provided data' do

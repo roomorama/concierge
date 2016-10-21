@@ -72,6 +72,9 @@ RSpec.describe Poplidays::Price do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq(
+        "Expected to find the price for mandatory services under the `mandatoryServicesPrice`, but none was found."
+      )
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq 'response_mismatch'
@@ -83,6 +86,7 @@ RSpec.describe Poplidays::Price do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :invalid_json_representation
+      expect(result.error.data).to be_nil
     end
 
     it 'returns an error in case the property is on request' do
@@ -95,6 +99,9 @@ RSpec.describe Poplidays::Price do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :invalid_property_error
+      expect(result.error.data).to eq(
+        "Property shouldn't be on request only and should have enabled prices"
+      )
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq 'response_mismatch'
@@ -110,6 +117,9 @@ RSpec.describe Poplidays::Price do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :invalid_property_error
+      expect(result.error.data).to eq(
+        "Property shouldn't be on request only and should have enabled prices"
+      )
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq 'response_mismatch'
@@ -153,6 +163,9 @@ RSpec.describe Poplidays::Price do
       quotation = result.value
 
       expect(result.error.code).to eq(:unexpected_quote)
+      expect(result.error.data).to eq(
+        "Unexpected quote: empty response result['value'] from API"
+      )
     end
 
     it 'returns an available quotation properly priced according to the response' do

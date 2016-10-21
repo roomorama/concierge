@@ -113,15 +113,15 @@ module Kigo
     def to_integer(str, error_code)
       Result.new(Integer(str))
     rescue ArgumentError => err
-      non_numerical_property_id(str)
-      Result.error(error_code)
+      non_numerical_property_id_error(str, error_code)
     end
 
-    def non_numerical_property_id(id)
+    def non_numerical_property_id_error(id, error_code)
       label   = "Invalid Kigo Property ID"
       message = "Expected a numerical Kigo property ID, but received instead `#{id}`."
 
       report_message(label, message, caller)
+      Result.error(error_code, message)
     end
 
     def report_message(label, message, backtrace)

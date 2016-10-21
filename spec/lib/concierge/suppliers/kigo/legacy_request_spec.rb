@@ -46,6 +46,9 @@ RSpec.describe Kigo::LegacyRequest do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :invalid_property_id
+      expect(result.error.data).to eq(
+        "Expected a numerical Kigo property ID, but received instead `KG-123`."
+      )
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "generic_message"

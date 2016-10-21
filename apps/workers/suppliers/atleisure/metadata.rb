@@ -93,6 +93,7 @@ module Workers::Suppliers::AtLeisure
         operation:   'sync',
         supplier:    AtLeisure::Client::SUPPLIER_NAME,
         code:        result.error.code,
+        description: result.error.data,
         context:     Concierge.context.to_h,
         happened_at: Time.now
       })

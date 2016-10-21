@@ -113,6 +113,7 @@ module Workers::Suppliers::Kigo
         operation:   'sync',
         supplier:    supplier_name,
         code:        result.error.code,
+        description: result.error.data,
         context:     Concierge.context.to_h,
         happened_at: Time.now
       })

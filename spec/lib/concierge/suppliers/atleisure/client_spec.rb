@@ -23,12 +23,13 @@ RSpec.describe AtLeisure::Client do
     end
 
     it "returns a quotation object with a generic error message on failure" do
-      failed_operation = Result.error(:something_failed)
+      failed_operation = Result.error(:something_failed, "test")
       allow_any_instance_of(AtLeisure::Price).to receive(:quote) { failed_operation }
 
       quote_result = subject.quote(params)
       expect(quote_result).to_not be_success
       expect(quote_result.error.code).to eq :something_failed
+      expect(quote_result.error.data).to eq "test"
 
       quote = quote_result.value
       expect(quote).to be_nil
@@ -69,12 +70,14 @@ RSpec.describe AtLeisure::Client do
     end
 
     it "returns a quotation object with a generic error message on failure" do
-      failed_operation = Result.error(:something_failed)
+      failed_operation = Result.error(:something_failed, "test")
       allow_any_instance_of(AtLeisure::Booking).to receive(:book) { failed_operation }
 
       reservation_result = subject.book(params)
       expect(reservation_result).to_not be_success
       expect(reservation_result.error).to_not be_nil
+      expect(reservation_result.error.code).to eq :something_failed
+      expect(reservation_result.error.data).to eq "test"
     end
   end
 end

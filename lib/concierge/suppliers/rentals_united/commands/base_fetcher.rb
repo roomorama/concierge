@@ -63,12 +63,10 @@ module RentalsUnited
           description = get_status_description(code)
 
           augment_with_error(code, description, caller)
-          Result.error(code)
+          Result.error(code, description)
         else
-          code = :unrecognised_response
-          unrecognised_response_event(caller)
+          unrecognised_response_event_error
         end
-        Result.error(code)
       end
 
       def augment_with_error(code, description, backtrace)
@@ -85,9 +83,10 @@ module RentalsUnited
         Concierge.context.augment(response_mismatch)
       end
 
-      def unrecognised_response_event(backtrace)
+      def unrecognised_response_event_error
         message = "Error response could not be recognised (no `Status` tag in the response)"
-        mismatch(message, backtrace)
+        mismatch(message, caller)
+        Result.error(:unrecognised_response, message)
       end
 
       private

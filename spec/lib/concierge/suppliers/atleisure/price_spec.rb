@@ -26,6 +26,7 @@ RSpec.describe AtLeisure::Price do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :connection_timeout
+      expect(result.error.data).to be_nil
     end
 
     it "returns the underlying JSON RPC client error if any happened" do
@@ -34,6 +35,7 @@ RSpec.describe AtLeisure::Price do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :invalid_json_representation
+      expect(result.error.data).to be_nil
     end
   end
 
@@ -52,6 +54,9 @@ RSpec.describe AtLeisure::Price do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq(
+        "Could not determine if the property was available. The `Available` field was not given or has an invalid value."
+      )
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
@@ -83,6 +88,9 @@ RSpec.describe AtLeisure::Price do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq(
+        "No price information could be retrieved. Searched fields `CorrectPrice` and `Price` and neither is given."
+      )
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"

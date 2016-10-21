@@ -46,7 +46,7 @@ module Waytostay
         Result.new(parse_calendar_entries(response))
       else
         augment_missing_fields(missing_keys)
-        Result.error(:unrecognised_response)
+        Result.error(:unrecognised_response, "Missing keys: #{missing_keys}")
       end
     end
 

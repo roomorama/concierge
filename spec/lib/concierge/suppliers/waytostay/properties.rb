@@ -218,4 +218,44 @@ RSpec.shared_examples "Waytostay property client" do
 
   end
 
+  describe "#add_license_number" do
+
+    let(:property) { Roomorama::Property.new('test') }
+    before { described_class.new.send(:add_license_number, property, response) }
+
+    context "when license is empty" do
+      let(:response) {
+        Concierge::SafeAccessHash.new(
+          "general" => {
+            "licence_number" => ""
+          }
+        )
+      }
+      it "should not add description and translations" do
+        expect(property.description_append).to be_nil
+        expect(property.de.description_append).to be_nil
+        expect(property.es.description_append).to be_nil
+        expect(property.zh.description_append).to be_nil
+        expect(property.zh_tw.description_append).to be_nil
+      end
+    end
+
+    context "when license is present" do
+      let(:response) {
+        Concierge::SafeAccessHash.new(
+          "general" => {
+            "licence_number" => "ABC"
+          }
+        )
+      }
+      it "should not add description and translations" do
+        expect(property.description_append).to eq "License number: ABC"
+        expect(property.de.description_append).to eq "Lizenznummer: ABC"
+        expect(property.es.description_append).to eq "Número de licencia: ABC"
+        expect(property.zh.description_append).to eq "许可证号: ABC"
+        expect(property.zh_tw.description_append).to eq "許可證號: ABC"
+      end
+    end
+  end
+
 end
