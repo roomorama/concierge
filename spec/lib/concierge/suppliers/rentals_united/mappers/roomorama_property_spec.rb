@@ -30,7 +30,9 @@ RSpec.describe RentalsUnited::Mappers::RoomoramaProperty do
       number_of_bathrooms:     22,
       number_of_single_beds:   5,
       number_of_double_beds:   7,
-      number_of_sofa_beds:     9
+      number_of_sofa_beds:     9,
+      late_arrival_fees:       [],
+      early_departure_fees:    []
     }
   end
 
@@ -395,6 +397,16 @@ RSpec.describe RentalsUnited::Mappers::RoomoramaProperty do
       ru_property_hash[:images] = []
 
       expect(property.images).to eq([])
+    end
+  end
+
+  context "when mapping late/early fees" do
+    it "sets fees to the description_append field" do
+      expect_any_instance_of(RentalsUnited::Converters::CheckInOutFees)
+        .to(receive(:as_text))
+        .and_return("Check in rules")
+
+      expect(property.description_append).to eq("Check in rules")
     end
   end
 end

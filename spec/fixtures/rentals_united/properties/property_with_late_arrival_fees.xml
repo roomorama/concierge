@@ -1,0 +1,100 @@
+<Pull_ListSpecProp_RS>
+  <Status ID="0">Success</Status>
+  <Property>
+    <PUID BuildingID="-1">-1</PUID>
+    <ID BuildingID="-1" BuildingName="">519688</ID>
+    <Name>Test property</Name>
+    <OwnerID>427698</OwnerID>
+    <DetailedLocationID TypeID="4">24958</DetailedLocationID>
+    <LastMod NLA="false">2016-08-31 11:39:48</LastMod>
+    <DateCreated>2016-08-31</DateCreated>
+    <IMAP>true</IMAP>
+    <IMU>true</IMU>
+    <UserID>427698</UserID>
+    <IsActive>true</IsActive>
+    <IsArchived>false</IsArchived>
+    <CleaningPrice>2.6500</CleaningPrice>
+    <Space>39</Space>
+    <StandardGuests>2</StandardGuests>
+    <CanSleepMax>2</CanSleepMax>
+    <PropertyTypeID>4</PropertyTypeID>
+    <ObjectTypeID>35</ObjectTypeID>
+    <Floor>3</Floor>
+    <Street>Test street address</Street>
+    <ZipCode>644119</ZipCode>
+    <Coordinates>
+      <Latitude>55.0003426</Latitude>
+      <Longitude>73.2965942999999</Longitude>
+    </Coordinates>
+    <ArrivalInstructions>
+      <Landlord>Ruslan Sharipov</Landlord>
+      <Email>sharipov.reg@gmail.com</Email>
+      <Phone>+79618492980</Phone>
+      <DaysBeforeArrival>1</DaysBeforeArrival>
+      <PickupService>
+        <Text LanguageID="1"><![CDATA[DetailsOfPickUpService]]></Text>
+      </PickupService>
+      <HowToArrive>
+        <Text LanguageID="1"><![CDATA[HowToArriveDescription]]></Text>
+      </HowToArrive>
+    </ArrivalInstructions>
+    <CheckInOut>
+      <CheckInFrom>13:00</CheckInFrom>
+      <CheckInTo>17:00</CheckInTo>
+      <CheckOutUntil>11:00</CheckOutUntil>
+      <Place>at_the_apartment</Place>
+      <LateArrivalFees>
+          <LateArrivalFee From="13:00" ID="1749267" To="14:00">10.0000</LateArrivalFee>
+          <LateArrivalFee From="14:00" ID="1749266" To="15:00">20.0000</LateArrivalFee>
+      </LateArrivalFees>
+      <EarlyDepartureFees/>
+    </CheckInOut>
+    <Deposit DepositTypeID="4">99.6000</Deposit>
+    <SecurityDeposit DepositTypeID="5">5.50</SecurityDeposit>
+    <AdditionalFees/>
+    <Distances/>
+    <Amenities>
+      <Amenity Count="1">7</Amenity>
+      <Amenity Count="1">100</Amenity>
+      <Amenity Count="1">180</Amenity>
+      <Amenity Count="1">187</Amenity>
+      <Amenity Count="1">227</Amenity>
+      <Amenity Count="1">281</Amenity>
+      <Amenity Count="1">368</Amenity>
+      <Amenity Count="1">596</Amenity>
+      <Amenity Count="1">689</Amenity>
+      <Amenity Count="1">802</Amenity>
+      <Amenity Count="1">803</Amenity>
+    </Amenities>
+    <CompositionRoomsAmenities>
+      <CompositionRoomAmenities CompositionRoomID="101">
+        <Amenities/>
+      </CompositionRoomAmenities>
+      <CompositionRoomAmenities CompositionRoomID="81">
+        <Amenities />
+      </CompositionRoomAmenities>
+      <CompositionRoomAmenities CompositionRoomID="81">
+        <Amenities />
+      </CompositionRoomAmenities>
+      <CompositionRoomAmenities CompositionRoomID="81">
+        <Amenities />
+      </CompositionRoomAmenities>
+      <CompositionRoomAmenities CompositionRoomID="81">
+        <Amenities />
+      </CompositionRoomAmenities>
+    </CompositionRoomsAmenities>
+    <Images>
+      <Image ImageTypeID="3">https://dwe6atvmvow8k.cloudfront.net/ru/427698/519688/636082398988145159.jpg</Image>
+      <Image ImageTypeID="1">https://dwe6atvmvow8k.cloudfront.net/ru/427698/519688/636082399089701851.jpg</Image>
+    </Images>
+    <PaymentMethods>
+      <PaymentMethod PaymentMethodID="1"><![CDATA[]]></PaymentMethod>
+    </PaymentMethods>
+    <CancellationPolicies/>
+    <Descriptions>
+      <Description LanguageID="1">
+        <Text><![CDATA[Test description]]></Text>
+      </Description>
+    </Descriptions>
+  </Property>
+</Pull_ListSpecProp_RS>

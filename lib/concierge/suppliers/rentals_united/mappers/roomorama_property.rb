@@ -64,6 +64,7 @@ module RentalsUnited
         property.number_of_single_beds = ru_property.number_of_single_beds
         property.number_of_double_beds = ru_property.number_of_double_beds
         property.number_of_sofa_beds   = ru_property.number_of_sofa_beds
+        property.description_append    = description_append
         property.country_code          = country_code(location)
         property.currency              = location.currency
         property.city                  = location.city
@@ -146,6 +147,10 @@ module RentalsUnited
 
       def country_code(location)
         Converters::CountryCode.code_by_name(location.country)
+      end
+
+      def description_append
+        Converters::CheckInOutFees.new(ru_property, location.currency).as_text
       end
 
       def supported_property_type?

@@ -77,6 +77,8 @@ module RentalsUnited
           number_of_single_beds:   beds_count(SINGLE_BED_CODES),
           number_of_double_beds:   beds_count(DOUBLE_BED_CODES),
           number_of_sofa_beds:     beds_count(SOFA_BED_CODES),
+          late_arrival_fees:       late_arrival_fees,
+          early_departure_fees:    early_departure_fees,
         )
 
         property
@@ -200,6 +202,37 @@ module RentalsUnited
 
         Array(multi_lang_values).find do |field|
           field.attributes["LanguageID"] == EN_DESCRIPTION_LANG_CODE
+        end
+      end
+
+      # Parse late arrival fee rules
+      #
+      # Returns array of hashes
+      def late_arrival_fees
+        path = "CheckInOut.LateArrivalFees.LateArrivalFee"
+        get_fees_by_path(path)
+      end
+
+      # Parse early departure fee rules
+      #
+      # Returns array of hashes
+      def early_departure_fees
+        path = "CheckInOut.EarlyDepartureFees.EarlyDepartureFee"
+        get_fees_by_path(path)
+      end
+
+      # Parse fees by given path in xml
+      #
+      # Returns array of hashes
+      def get_fees_by_path(path)
+        rules = Array(property_hash.get(path))
+
+        rules.map do |rule|
+          {
+            amount: rule.to_f,
+            from:   rule.attributes["From"],
+            to:     rule.attributes["To"]
+          }
         end
       end
     end

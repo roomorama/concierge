@@ -93,6 +93,14 @@ RSpec.describe RentalsUnited::Mappers::Property do
       expect(property.number_of_sofa_beds).to be_nil
     end
 
+    it "sets check-in-fees when there is no fees" do
+      expect(property.late_arrival_fees).to eq([])
+    end
+
+    it "sets check-out-fees when there is no fees" do
+      expect(property.early_departure_fees).to eq([])
+    end
+
     context "when property does not have some parts of check_in_instructions" do
       let(:file_name) { "rentals_united/properties/property_with_partial_check_in_instructions.xml" }
 
@@ -349,6 +357,31 @@ RSpec.describe RentalsUnited::Mappers::Property do
       expect(property.number_of_single_beds).to eq(15)
       expect(property.number_of_double_beds).to eq(18)
       expect(property.number_of_sofa_beds).to eq(13)
+    end
+  end
+
+  context "when mapping check-in fees" do
+    let(:file_name) { "rentals_united/properties/property_with_late_arrival_fees.xml" }
+
+    it "sets late_arrival_fees" do
+      expect(property.late_arrival_fees).to eq(
+        [
+          {:amount=>10.0, :from=>"13:00", :to=>"14:00"},
+          {:amount=>20.0, :from=>"14:00", :to=>"15:00"}
+        ]
+      )
+    end
+  end
+
+  context "when mapping check-out fees" do
+    let(:file_name) { "rentals_united/properties/property_with_early_departure_fees.xml" }
+
+    it "sets early_departure_fees" do
+      expect(property.early_departure_fees).to eq(
+        [
+          {:amount=>15.0, :from=>"10:00", :to=>"11:00"},
+        ]
+      )
     end
   end
 end
