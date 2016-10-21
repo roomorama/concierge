@@ -140,9 +140,6 @@ RSpec.describe AtLeisure::Mapper do
       expect(property.number_of_sofa_beds).to eq 0
       expect(property.amenities).to eq ["kitchen", "balcony", "parking"]
       expect(property.security_deposit_amount).to eq 500
-      expect(property.services_cleaning).to eq true
-      expect(property.services_cleaning_required).to eq true
-      expect(property.services_cleaning_rate).to eq 150
       expect(property.smoking_allowed).to eq false
       expect(property.type).to eq 'house'
       expect(property.subtype).to eq nil
@@ -163,6 +160,74 @@ RSpec.describe AtLeisure::Mapper do
       expect(image.caption).to eq 'ExteriorSummer'
 
       expect(property.validate!).to be true
+    end
+
+    it 'sets cleaning fields when payment is Mandatory' do
+      result = subject.prepare(property_data)
+      expect(result).to be_success
+      property = result.value
+
+      expect(property.services_cleaning).to eq true
+      expect(property.services_cleaning_required).to eq true
+      expect(property.services_cleaning_rate).to eq 150
+
+      expect(property.amenities.include?('free_cleaning')).to be false
+    end
+
+    it 'sets cleaning fields when payment is Inclusive' do
+      cost = property_data['CostsOnSiteV1'][1]["Items"].first
+      cost["Payment"] = "Inclusive"
+
+      result = subject.prepare(property_data)
+      expect(result).to be_success
+      property = result.value
+
+      expect(property.services_cleaning).to eq false
+      expect(property.services_cleaning_required).to eq nil
+      expect(property.services_cleaning_rate).to eq nil
+      expect(property.amenities.include?('free_cleaning')).to be false
+    end
+
+    it 'sets cleaning fields when payment is None' do
+      cost = property_data['CostsOnSiteV1'][1]["Items"].first
+      cost["Payment"] = "None"
+
+      result = subject.prepare(property_data)
+      expect(result).to be_success
+      property = result.value
+
+      expect(property.services_cleaning).to eq false
+      expect(property.services_cleaning_required).to eq nil
+      expect(property.services_cleaning_rate).to eq nil
+      expect(property.amenities.include?('free_cleaning')).to be false
+    end
+
+    it 'sets cleaning fields when payment is Optional' do
+      cost = property_data['CostsOnSiteV1'][1]["Items"].first
+      cost["Payment"] = "Optional"
+
+      result = subject.prepare(property_data)
+      expect(result).to be_success
+      property = result.value
+
+      expect(property.services_cleaning).to eq true
+      expect(property.services_cleaning_required).to eq false
+      expect(property.services_cleaning_rate).to eq 150
+      expect(property.amenities.include?('free_cleaning')).to be false
+    end
+
+    it 'sets cleaning fields when payment is unknown' do
+      cost = property_data['CostsOnSiteV1'][1]["Items"].first
+      cost["Payment"] = "UnknownTypeOfPayment"
+
+      result = subject.prepare(property_data)
+      expect(result).to be_success
+      property = result.value
+
+      expect(property.services_cleaning).to eq nil
+      expect(property.services_cleaning_required).to eq nil
+      expect(property.services_cleaning_rate).to eq nil
+      expect(property.amenities.include?('free_cleaning')).to be false
     end
   end
 end

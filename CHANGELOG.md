@@ -14,6 +14,9 @@ how this file is formatted and how the process works.
 - Translations for title, description, t&c, check_in_instructions and
 description_append on Roomorama::Property
 
+### Fixed
+- Atleisure: set cleaning fee mapping logic according to #405
+
 ## [0.12.10] - 2016-10-19
 ### Fixed
 - Poplidays: metadata sync is safe for `nil` availabilities response
