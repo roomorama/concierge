@@ -142,7 +142,7 @@ RSpec.describe Workers::Suppliers::Avantio::Availabilities do
       expect(error.operation).to eq 'sync'
       expect(error.supplier).to eq Avantio::Client::SUPPLIER_NAME
       expect(error.code).to eq 'rate_not_found'
-      expect(error.description).to eq 'Rate for property `60505|1238513302|itsalojamientos` nof found'
+      expect(error.description).to eq 'Rate for property `60505|1238513302|itsalojamientos` not found'
     end
   end
 
@@ -173,7 +173,7 @@ RSpec.describe Workers::Suppliers::Avantio::Availabilities do
       expect(error.operation).to eq 'sync'
       expect(error.supplier).to eq Avantio::Client::SUPPLIER_NAME
       expect(error.code).to eq 'availability_not_found'
-      expect(error.description).to eq 'Availability for property `60505|1238513302|itsalojamientos` nof found'
+      expect(error.description).to eq 'Availability for property `60505|1238513302|itsalojamientos` not found'
     end
 
     it 'doesnt finalize synchronisation with external error' do
@@ -209,7 +209,7 @@ RSpec.describe Workers::Suppliers::Avantio::Availabilities do
       expect(error.operation).to eq 'sync'
       expect(error.supplier).to eq Avantio::Client::SUPPLIER_NAME
       expect(error.code).to eq 'rule_not_found'
-      expect(error.description).to eq 'Occupational rule for property `60505|1238513302|itsalojamientos` nof found'
+      expect(error.description).to eq 'Occupational rule for property `60505|1238513302|itsalojamientos` not found'
     end
 
     it 'doesnt finalize synchronisation with external error' do

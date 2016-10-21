@@ -42,21 +42,21 @@ module Workers::Suppliers::Avantio
 
           rate = rates[property_id]
           unless rate
-            message = "Rate for property `#{property_id}` nof found"
+            message = "Rate for property `#{property_id}` not found"
             augment_context_error(message)
             next Result.error(:rate_not_found, message)
           end
 
           availability = availabilities[property_id]
           unless availability
-            message = "Availability for property `#{property_id}` nof found"
+            message = "Availability for property `#{property_id}` not found"
             augment_context_error(message)
             next Result.error(:availability_not_found, message)
           end
 
           rule = occupational_rules[availability.occupational_rule_id]
           unless rule
-            message = "Occupational rule for property `#{property_id}` nof found"
+            message = "Occupational rule for property `#{property_id}` not found"
             augment_context_error(message)
             next Result.error(:rule_not_found, message)
           end
