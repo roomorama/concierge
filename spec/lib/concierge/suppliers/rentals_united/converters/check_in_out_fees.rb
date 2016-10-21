@@ -50,11 +50,12 @@ module RentalsUnited
     end
 
     let(:ru_property) { RentalsUnited::Entities::Property.new(ru_property_hash) }
-    let(:subject) { described_class.new(ru_property) }
+    let(:currency) { "EUR" }
+    let(:subject) { described_class.new(ru_property, currency) }
 
     it "converts fee rules to text" do
       expect(subject.as_text).to eq(
-        "* Late arrival fees:\n-  14:00 - 15:00 : 20.0\n-  13:00 - 14:00 : 10.0\n* Early departure fees:\n-  17:00 - 18:00 : 67.0\n-  14:00 - 15:00 : 45.0"
+        "* Late arrival fees:\n-  14:00 - 15:00 : 20.0 EUR\n-  13:00 - 14:00 : 10.0 EUR\n* Early departure fees:\n-  17:00 - 18:00 : 67.0 EUR\n-  14:00 - 15:00 : 45.0 EUR"
       )
     end
 
@@ -63,7 +64,7 @@ module RentalsUnited
 
       it "converts fee rules to text when there is no late fees" do
         expect(subject.as_text).to eq(
-          "* Late arrival fees:\n-  14:00 - 15:00 : 20.0\n-  13:00 - 14:00 : 10.0"
+          "* Late arrival fees:\n-  14:00 - 15:00 : 20.0 EUR\n-  13:00 - 14:00 : 10.0 EUR"
         )
       end
     end
@@ -73,7 +74,7 @@ module RentalsUnited
 
       it "converts fee rules to text when there is no late fees" do
         expect(subject.as_text).to eq(
-          "* Early departure fees:\n-  17:00 - 18:00 : 67.0\n-  14:00 - 15:00 : 45.0"
+          "* Early departure fees:\n-  17:00 - 18:00 : 67.0 EUR\n-  14:00 - 15:00 : 45.0 EUR"
         )
       end
     end

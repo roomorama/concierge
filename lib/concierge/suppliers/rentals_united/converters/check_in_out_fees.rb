@@ -12,9 +12,11 @@ module RentalsUnited
       # Arguments:
       #
       #   * ru_property +RentalsUnited::Entities::Property+
-      def initialize(ru_property)
+      #   * currency +String+
+      def initialize(ru_property, currency)
         @late_arrival_fees    = ru_property.late_arrival_fees
         @early_departure_fees = ru_property.early_departure_fees
+        @currency = currency
       end
 
       # Output format:
@@ -36,7 +38,7 @@ module RentalsUnited
       end
 
       private
-      attr_reader :late_arrival_fees, :early_departure_fees
+      attr_reader :late_arrival_fees, :early_departure_fees, :currency
 
       def empty_fees?
         (late_arrival_fees + early_departure_fees).empty?
@@ -62,7 +64,7 @@ module RentalsUnited
 
       def formatted_rules(rules)
         rules.sort { |r| r[:amount] }.map do |rule|
-          "-  #{rule[:from]} - #{rule[:to]} : #{rule[:amount]}"
+          "-  #{rule[:from]} - #{rule[:to]} : #{rule[:amount]} #{currency}"
         end.join("\n")
       end
     end

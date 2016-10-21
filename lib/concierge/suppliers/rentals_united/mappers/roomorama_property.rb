@@ -150,7 +150,7 @@ module RentalsUnited
       end
 
       def description_append
-        Converters::CheckInOutFees.new(ru_property).as_text
+        Converters::CheckInOutFees.new(ru_property, location.currency).as_text
       end
 
       def supported_property_type?
