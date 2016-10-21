@@ -33,6 +33,7 @@ module Roomorama::Translated
     end
 
     def []=(attr, value)
+      attr = attr.to_sym
       if TRANSLATED_FIELDS.include?(attr)
         setter = [attr, "="].join
         public_send(setter, value)

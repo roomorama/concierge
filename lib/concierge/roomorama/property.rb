@@ -59,6 +59,12 @@ module Roomorama
         instance.add_unit(Roomorama::Unit.load(data))
       end
 
+      attributes[:translations].to_h.each do |locale, translation|
+        translation.each do |key, value|
+          instance.send(locale)[key] = value
+        end
+      end
+
       instance.validate!
       Result.new(instance)
     rescue Roomorama::Error => err
@@ -84,7 +90,7 @@ module Roomorama
       :services_cleaning_required, :services_airport_pickup, :services_car_rental,
       :services_car_rental_rate, :services_airport_pickup_rate, :services_concierge,
       :services_concierge_rate, :disabled, :instant_booking, :owner_name,
-      :owner_email, :owner_phone_number, :owner_city]
+      :owner_email, :owner_phone_number, :owner_city, :description_append]
 
     attr_accessor *ATTRIBUTES
 
@@ -177,6 +183,7 @@ module Roomorama
         subtype:                        subtype,
         title:                          title,
         description:                    description,
+        description_append:             description_append,
         translations:                   translations,
         address:                        address,
         apartment_number:               apartment_number,

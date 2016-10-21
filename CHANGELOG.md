@@ -7,6 +7,8 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Added
 - Atleisure, Ciirus, Poplidays, Kigo, Waytostay, RentalsUnited: add error.data reporting to Rollbar
+- Translations for title, description, t&c, check_in_instructions and
+description_append on Roomorama::Property
 
 ## [0.12.10] - 2016-10-19
 ### Fixed

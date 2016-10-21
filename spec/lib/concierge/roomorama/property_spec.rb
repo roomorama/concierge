@@ -281,13 +281,14 @@ RSpec.describe Roomorama::Property do
   describe "#to_h" do
     before do
       # populate the property with some basic data
-      subject.title          = "Studio Apartment in Paris"
-      subject.es.title       = "Baguette"
-      subject.description    = "Bonjour!"
-      subject.es.description = "Pate and Baguette"
-      subject.nightly_rate   = 100
-      subject.currency       = "EUR"
-      subject.owner_city     = "Seoul"
+      subject.title              = "Studio Apartment in Paris"
+      subject.es.title           = "Baguette"
+      subject.description        = "Bonjour!"
+      subject.description_append = "License number: abc"
+      subject.es.description     = "Pate and Baguette"
+      subject.nightly_rate       = 100
+      subject.currency           = "EUR"
+      subject.owner_city         = "Seoul"
 
       image         = Roomorama::Image.new("IMG1")
       image.url     = "https://www.example.org/image1.png"
@@ -334,14 +335,15 @@ RSpec.describe Roomorama::Property do
 
     let(:expected_attributes) {
       {
-        identifier:      "JPN123",
-        title:           "Studio Apartment in Paris",
-        description:     "Bonjour!",
-        nightly_rate:    100,
-        currency:        "EUR",
-        multi_unit:      true,
-        owner_city:      "Seoul",
-        instant_booking: false,
+        identifier:         "JPN123",
+        title:              "Studio Apartment in Paris",
+        description:        "Bonjour!",
+        description_append: "License number: abc",
+        nightly_rate:       100,
+        currency:           "EUR",
+        multi_unit:         true,
+        owner_city:         "Seoul",
+        instant_booking:    false,
 
         translations: {
           es: {
