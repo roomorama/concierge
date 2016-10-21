@@ -8,14 +8,15 @@ how this file is formatted and how the process works.
 ### Added
 - Rentals United: add late check-in / early check-out fees to description_append
 
+### Fixed
+- Atleisure: set cleaning fee mapping logic according to #405
+- `Kigo::Calendar` now respects to property's `minimum_stay` value if it's more stricter
+
 ## [0.12.11] - 2016-10-21
 ### Added
 - Atleisure, Ciirus, Poplidays, Kigo, Waytostay, RentalsUnited: add error.data reporting to Rollbar
 - Translations for title, description, t&c, check_in_instructions and
 description_append on Roomorama::Property
-
-### Fixed
-- Atleisure: set cleaning fee mapping logic according to #405
 
 ## [0.12.10] - 2016-10-19
 ### Fixed
