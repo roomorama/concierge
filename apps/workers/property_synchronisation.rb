@@ -82,7 +82,7 @@ module Workers
       new_context(identifier) do
         result = yield(self)
         return result if skipped_properties.skipped?(identifier) || processed.include?(identifier)
-        finish_property_sync(result)
+        finish_property_sync(result, identifier)
       end
     end
 
@@ -206,12 +206,14 @@ module Workers
 
     private
 
-    def finish_property_sync(result)
+    def finish_property_sync(result, property_id)
       if result.success?
         property = result.value
         process(property)
       else
-        failed!
+        sync_record.successful = false
+        # mark property as processed to prevent purge
+        mark_as_processed(property_id)
         announce_failure(result)
         result
       end
