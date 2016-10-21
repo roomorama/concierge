@@ -38,8 +38,9 @@ module Web::Views::ExternalErrors
     ]
 
     # content-type declarations, as specified by HTTP headers.
-    JSON = %r(json)
-    XML  = %r(xml)
+    JSON        = %r(json)
+    XML         = %r(xml)
+    PLAIN_TEXT  = %r(plain)
 
     # checks if the current +error+ is a legacy error report. Legacy errors
     # happened before the introduction of +Concierge::Context+ and therefore
@@ -98,9 +99,12 @@ module Web::Views::ExternalErrors
     end
 
     # tries to pretty print +content+ given that it is of +content_type+.
-    # Supported types are only +XML+ and +JSON+.
+    # Supported types are only +PLAIN_TEXT+, +XML+ and +JSON+.
     def pretty_print(content, content_type)
       case content_type
+      when PLAIN_TEXT
+        monospace(h(content))
+
       when JSON
         # first, checks that the content is a valid JSON string. In case it is
         # not, the content is returned as is.

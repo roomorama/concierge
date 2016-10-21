@@ -32,7 +32,7 @@ module Ciirus
         @main_image_url   = attrs[:main_image_url]
       end
 
-      def to_s
+      def to_json
         h = {
           property_id:      property_id,
           property_name:    property_name,
@@ -58,7 +58,7 @@ module Ciirus
           amenities:        amenities,
           main_image_url:   main_image_url
         }
-        Yajl::Encoder.encode(h, pretty: true)
+        Yajl::Encoder.encode(h)
       end
     end
   end

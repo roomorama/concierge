@@ -183,8 +183,9 @@ module Workers::Suppliers::Ciirus
     def augment_property_info(property)
       message = {
         label: 'Property Info',
-        message: property.to_s,
-        backtrace: caller
+        message: property.to_json,
+        backtrace: caller,
+        content_type: 'json'
       }
       context = Concierge::Context::Message.new(message)
       Concierge.context.augment(context)
