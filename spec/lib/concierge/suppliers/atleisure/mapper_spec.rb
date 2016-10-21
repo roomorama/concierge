@@ -213,7 +213,6 @@ RSpec.describe AtLeisure::Mapper do
       expect(property.services_cleaning).to eq true
       expect(property.services_cleaning_required).to eq false
       expect(property.services_cleaning_rate).to eq 150
-
       expect(property.amenities.include?('free_cleaning')).to be false
     end
 
@@ -228,7 +227,6 @@ RSpec.describe AtLeisure::Mapper do
       expect(property.services_cleaning).to eq nil
       expect(property.services_cleaning_required).to eq nil
       expect(property.services_cleaning_rate).to eq nil
-
       expect(property.amenities.include?('free_cleaning')).to be false
     end
   end
