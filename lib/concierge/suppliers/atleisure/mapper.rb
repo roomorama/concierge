@@ -21,6 +21,21 @@ module AtLeisure
       wifi:            510
     }
 
+    CLEANING_TYPES = {
+      'None' => {
+        cleaning: false, required: nil,   rate: ->(hash) { nil }
+      },
+      'Inclusive' => {
+        cleaning: false, required: nil,   rate: ->(hash) { nil }
+      },
+      'Mandatory' => {
+        cleaning: true,  required: true,  rate: ->(hash) { hash["Amount"] }
+      },
+      'Optional' => {
+        cleaning: true,  required: false, rate: ->(hash) { hash["Amount"] }
+      }
+    }
+
     attr_reader :layout_items, :property, :meta_data
 
     def initialize(layout_items:)
@@ -153,14 +168,16 @@ module AtLeisure
     end
 
     def set_cleaning_service
-      cleaning = find_cost('Cleaning')
-      return unless cleaning
+      cleaning_hash = find_cost('Cleaning')
+      return unless cleaning_hash
 
-      property.services_cleaning          = cleaning['Payment'] != 'None'
-      property.services_cleaning_required = cleaning['Payment'] == 'Mandatory'
-      property.services_cleaning_rate     = cleaning['Amount']
+      cleaning_type_name = cleaning_hash['Payment']
+      cleaning_type = CLEANING_TYPES[cleaning_type_name]
+      return unless cleaning_type
 
-      property.amenities << 'free_cleaning' if cleaning['Payment'] == 'Inclusive'
+      property.services_cleaning          = cleaning_type.fetch(:cleaning)
+      property.services_cleaning_required = cleaning_type.fetch(:required)
+      property.services_cleaning_rate     = cleaning_type.fetch(:rate).call(cleaning_hash)
     end
 
     def set_additional_info
