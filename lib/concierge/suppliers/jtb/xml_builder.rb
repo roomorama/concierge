@@ -89,6 +89,23 @@ module JTB
       message.doc.root.children
     end
 
+    def cancel(reservation)
+      reference_number = ReferenceNumber.from_roomorama_reference_number(reservation.reference_number)
+      message = builder.new(encoding: 'utf-8') do |xml|
+        xml.root(NAMESPACES) do
+          build_credentials(xml)
+          xml['jtb'].UniqueID(ID: reference_number.reservation_id)
+          xml['jtb'].Verification {
+            xml['jtb'].RatePlans {
+              xml['jtb'].RatePlan(RatePlan: reference_number.rate_plan_id)
+            }
+            xml['jtb'].ReservationTimeSpan(Start: reservation.check_in)
+          }
+        end
+      end
+      message.doc.root.children
+    end
+
     private
 
     def builder

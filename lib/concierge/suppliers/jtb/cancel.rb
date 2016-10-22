@@ -8,6 +8,7 @@ module JTB
 
     def cancel(params)
       reference_number = params[:reference_number]
+
       reservation = find_reservation(reference_number)
       return reservation_not_found(reference_number) unless reservation
 
@@ -16,7 +17,10 @@ module JTB
 
       return result unless result.success?
 
-      response_parser.parse_cancel(result.value)
+      result = response_parser.parse_cancel(result.value)
+      return result unless result.success?
+
+      Result.new(reference_number)
     end
 
     private
