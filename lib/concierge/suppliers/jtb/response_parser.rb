@@ -37,8 +37,7 @@ module JTB
       response = Concierge::SafeAccessHash.new(response)
 
       unless response[:ga_hotel_avail_rs]
-        no_field(:ga_hotel_avail_rs)
-        return unrecognised_response(response)
+        return no_field_error('ga_hotel_avail_rs')
       end
 
       errors = response[:ga_hotel_avail_rs][:errors]
@@ -59,8 +58,7 @@ module JTB
     def parse_booking(response)
       response = Concierge::SafeAccessHash.new(response)
       unless response[:ga_hotel_res_rs]
-        no_field(:ga_hotel_res_rs)
-        return unrecognised_response(response)
+        return no_field_error('ga_hotel_res_rs')
       end
 
       errors = response[:ga_hotel_res_rs][:errors]
@@ -68,15 +66,13 @@ module JTB
 
       booking = response.get('ga_hotel_res_rs.hotel_reservations.hotel_reservation')
       unless booking
-        no_field("ga_hotel_res_rs.hotel_reservations.hotel_reservation")
-        return unrecognised_response(response)
+        return no_field_error('ga_hotel_res_rs.hotel_reservations.hotel_reservation')
       end
 
       if booking[:@res_status] == 'OK'
         Result.new(booking[:unique_id][:@id])
       else
-        non_successful_booking
-        Result.error(:fail_booking)
+        non_successful_booking_error
       end
     end
 
@@ -156,23 +152,27 @@ module JTB
       ERROR_CODES.fetch(code, :request_error)
     end
 
-    def unrecognised_response(response)
-      Result.error(:unrecognised_response)
+    def no_field_error(field_name)
+      message = "Expected field `#{field_name}` to be defined, but it was not."
+      mismatch(message, caller)
+      Result.error(:unrecognised_response, message)
     end
 
-    def non_successful_booking
+    def non_successful_booking_error
       message = "JTB indicated the booking not to have been performed successfully." +
         " The `@res_status` field was supposed to be equal to `OK`, but it was not."
 
       mismatch(message, caller)
+      Result.error(:fail_booking, message)
     end
 
-    def unsuccessful_response
+    def unsuccessful_response_error(code)
       label   = "Non-successful Response"
       message = "The response indicated errors while processing the request. Check " +
         "the `errors` field."
 
       report_message(label, message, caller)
+      Result.error(code, message)
     end
 
     def no_field(field_name)
@@ -202,11 +202,9 @@ module JTB
     def handle_error(response)
       code = response.get("error_info.@code")
       if code
-        unsuccessful_response
-        Result.error(error_code(code))
+        unsuccessful_response_error(error_code(code))
       else
-        no_field("error_info.@code")
-        unrecognised_response(response)
+        no_field_error("error_info.@code")
       end
     end
 
