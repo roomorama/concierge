@@ -1,0 +1,9 @@
+{
+  "ga_hotel_res_rs": {
+    "hotel_reservations": {
+      "hotel_reservation": {
+        "@res_status": ""
+      }
+    }
+  }
+}
