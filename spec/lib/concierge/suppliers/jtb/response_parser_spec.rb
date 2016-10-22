@@ -143,7 +143,49 @@ RSpec.describe JTB::ResponseParser do
     end
   end
 
-    private
+  describe '#parse_cancel' do
+    it 'fails if ga_cancel_rs field not found' do
+      response = parse read_fixture('jtb/no_ga_cancel_rs_field.json')
+      result   = subject.parse_cancel(response)
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq 'Expected field `ga_cancel_rs` to be defined, but it was not.'
+    end
+
+    it 'fails if invalid request' do
+      response = parse read_fixture('jtb/invalid_cancel_request.json')
+      result = nil
+
+      expect {
+        result = subject.parse_cancel(response)
+      }.to change { Concierge.context.events.size }
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :invalid_request
+      expect(result.error.data).to eq 'The response indicated errors while processing the request. Check the `errors` field.'
+
+      event = Concierge.context.events.last
+      expect(event.to_h[:type]).to eq "generic_message"
+    end
+
+    it 'fails if cancel status is not success' do
+      response = parse read_fixture('jtb/unsuccessful_cancel_status.json')
+      result   = subject.parse_cancel(response)
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :fail_cancel
+      expect(result.error.data).to eq 'JTB indicated the cancel not to have been performed successfully.' +
+                                        ' The `@status` field was supposed to be equal to `XL`, but it was not.'
+    end
+
+    it 'returns success result' do
+      response = parse read_fixture('jtb/success_cancel.json')
+      result   = subject.parse_cancel(response)
+      expect(result).to be_success
+      expect(result.value).to eq true
+    end
+  end
+
+  private
 
   def parse(response)
     Yajl::Parser.parse(response, symbolize_keys: true)
