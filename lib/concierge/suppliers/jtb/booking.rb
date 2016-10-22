@@ -24,20 +24,18 @@ module JTB
     #
     #   # => #<Result error=nil value='XXXXXXXXXX'>
     def book(params)
-      rate_plan_result = price_handler.best_rate_plan(params)
+      rate_plan = price_handler.best_rate_plan(params)
 
-      return rate_plan_result unless rate_plan_result.success?
+      return rate_plan unless rate_plan.success?
 
       u_id = JTB::UnitId.from_roomorama_unit_id(params[:unit_id])
 
-      message = builder.build_booking(params, rate_plan_result.value, u_id.room_type_code)
+      message = builder.build_booking(params, rate_plan.value, u_id.room_type_code)
       result  = remote_call(message)
 
-      if result.success?
-        response_parser.parse_booking result.value
-      else
-        result
-      end
+      return result unless result.success?
+
+      response_parser.parse_booking(result.value)
     end
 
     private

@@ -1,7 +1,7 @@
 module JTB
   # +JTB::UnitId+
   #
-  # Represents identifier for JTB properties.
+  # Represents identifier for JTB rooms.
   #
   # room_code is unique for JTB unit, but we cannot use it directly
   # because JTB API methods don't have such arg.
@@ -19,18 +19,18 @@ module JTB
   # Usage when we need room_code or room_type_code:
   #
   #  # We know Roomorama unit_id
-  #  u_id = UnitId.from_roomorama_property_id(roomorama_unit_id)
+  #  u_id = UnitId.from_roomorama_unit_id(roomorama_unit_id)
   #  room_type_code = u_id.room_type_code
   #  room_code  = u_id.room_code
   class UnitId
-    PROPERTY_ID_SEPARATOR = '|'
+    SEPARATOR = '|'
 
     attr_accessor :room_type_code, :room_code
 
     # Creates UnitId from Roomorama unit id
     def self.from_roomorama_unit_id(unit_id)
       self.new.tap do |result|
-        result.room_type_code, result.room_code= unit_id.split(PROPERTY_ID_SEPARATOR)
+        result.room_type_code, result.room_code= unit_id.split(SEPARATOR)
       end
     end
 
@@ -43,7 +43,7 @@ module JTB
     end
 
     def unit_id
-      [room_type_code, room_code].join(PROPERTY_ID_SEPARATOR)
+      [room_type_code, room_code].join(SEPARATOR)
     end
   end
 end
