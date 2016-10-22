@@ -55,6 +55,7 @@ RSpec.describe JTB::ResponseParser do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :invalid_request
+      expect(result.error.data).to eq 'The response indicated errors while processing the request. Check the `errors` field.'
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "generic_message"
@@ -65,6 +66,7 @@ RSpec.describe JTB::ResponseParser do
       result   = subject.parse_rate_plan(response, guests, [])
       expect(result).not_to be_success
       expect(result.error.code).to eq :unit_not_found
+      expect(result.error.data).to eq 'The response indicated errors while processing the request. Check the `errors` field.'
     end
 
     it 'recognises the response with single rate plan response' do
@@ -73,11 +75,75 @@ RSpec.describe JTB::ResponseParser do
 
       expect(result).to be_success
       expect(result.value).to be_a JTB::RatePlan
+
+      rate_plan = result.value
+      expect(rate_plan.total).to eq 20700
+      expect(rate_plan.rate_plan).to eq 'TYOHKPT00STD1TWN'
+      expect(rate_plan.available).to be_truthy
+      expect(rate_plan.occupancy).to eq 2
     end
 
+    it 'fails if ga_hotel_avail_rs field not found' do
+      response = parse read_fixture('jtb/no_ga_hotel_avail_rs_field.json')
+      result   = subject.parse_rate_plan(response, guests, [])
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq 'Expected field `ga_hotel_avail_rs` to be defined, but it was not.'
+    end
   end
 
-  private
+  describe '#parse_booking' do
+
+    it 'fails if ga_hotel_res_rs field not found' do
+      response = parse read_fixture('jtb/no_ga_hotel_res_rs_field.json')
+      result   = subject.parse_booking(response)
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq 'Expected field `ga_hotel_res_rs` to be defined, but it was not.'
+    end
+
+    it 'fails if invalid request' do
+      response = parse read_fixture('jtb/invalid_booking_request.json')
+      result = nil
+
+      expect {
+        result = subject.parse_booking(response)
+      }.to change { Concierge.context.events.size }
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :invalid_request
+      expect(result.error.data).to eq 'The response indicated errors while processing the request. Check the `errors` field.'
+
+      event = Concierge.context.events.last
+      expect(event.to_h[:type]).to eq "generic_message"
+    end
+
+    it 'fails if hotel_reservation field not found' do
+      response = parse read_fixture('jtb/no_hotel_reservation_field.json')
+      result   = subject.parse_booking(response)
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq 'Expected field `ga_hotel_res_rs.hotel_reservations.hotel_reservation` to be defined, but it was not.'
+    end
+
+    it 'fails if booking status is not "OK"' do
+      response = parse read_fixture('jtb/unsuccessful_booking_status.json')
+      result   = subject.parse_booking(response)
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :fail_booking
+      expect(result.error.data).to eq 'JTB indicated the booking not to have been performed successfully.' +
+                                        ' The `@res_status` field was supposed to be equal to `OK`, but it was not.'
+    end
+
+    it 'returns reservation id' do
+      response = parse read_fixture('jtb/success_booking.json')
+      result   = subject.parse_booking(response)
+      expect(result).to be_success
+      expect(result.value).to eq '123456'
+    end
+  end
+
+    private
 
   def parse(response)
     Yajl::Parser.parse(response, symbolize_keys: true)
