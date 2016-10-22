@@ -32,10 +32,14 @@ module JTB
 
       message = builder.build_booking(params, rate_plan.value, u_id.room_type_code)
       result  = remote_call(message)
-
       return result unless result.success?
 
-      response_parser.parse_booking(result.value)
+      result = response_parser.parse_booking(result.value)
+      return result unless result.success?
+
+      reference_number = ReferenceNumber.from_jtb_ids(result.value, rate_plan.value.rate_plan)
+
+      Result.new(reference_number.reference_number)
     end
 
     private

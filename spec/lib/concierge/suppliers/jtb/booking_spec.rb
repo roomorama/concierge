@@ -44,7 +44,7 @@ RSpec.describe JTB::Booking do
       expect(result).to be_success
 
       expect(result.value).to be_a String
-      expect(result.value).to eq 'XXXXXXXXXX'
+      expect(result.value).to eq 'XXXXXXXXXX|some rate'
     end
 
     let(:fail_response) { parse_response('jtb/invalid_request.json') }

@@ -76,6 +76,24 @@ module JTB
       end
     end
 
+    def parse_cancel(response)
+      response = Concierge::SafeAccessHash.new(response)
+      cancel_rs = response[:ga_cancel_rs]
+      unless cancel_rs
+        no_field(:ga_cancel_rs)
+        return unrecognised_response(response)
+      end
+
+      errors = cancel_rs[:errors]
+      return handle_error(errors) if errors
+
+      if cancel_rs[:@status] == 'XL' # Success
+        Result.new(true)
+      else
+        non_successful_cancel_error
+      end
+    end
+
     private
 
     def unavailable_rate_plan
@@ -164,6 +182,14 @@ module JTB
 
       mismatch(message, caller)
       Result.error(:fail_booking, message)
+    end
+
+    def non_successful_cancel_error
+      message = "JTB indicated the cancel not to have been performed successfully." +
+        " The `@status` field was supposed to be equal to `XL`, but it was not."
+
+      mismatch(message, caller)
+      Result.error(:fail_cancel, message)
     end
 
     def unsuccessful_response_error(code)
