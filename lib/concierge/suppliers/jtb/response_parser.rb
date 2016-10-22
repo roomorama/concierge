@@ -80,8 +80,7 @@ module JTB
       response = Concierge::SafeAccessHash.new(response)
       cancel_rs = response[:ga_cancel_rs]
       unless cancel_rs
-        no_field(:ga_cancel_rs)
-        return unrecognised_response(response)
+        return no_field_error('ga_cancel_rs')
       end
 
       errors = cancel_rs[:errors]
