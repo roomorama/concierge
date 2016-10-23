@@ -1,5 +1,8 @@
 module JTB
   class Cancel
+    ENDPOINT       = 'GA_Cancel_v2013'
+    OPERATION_NAME = :gby012
+
     attr_reader :credentials
 
     def initialize(credentials)
@@ -40,6 +43,25 @@ module JTB
 
     def builder
       @builder ||= XMLBuilder.new(credentials)
+    end
+
+    def caller
+      @caller ||= Concierge::SOAPClient.new(options)
+    end
+
+    def options
+      endpoint = [credentials.api['url'], ENDPOINT].join('/')
+      {
+        wsdl:                 endpoint + '?wsdl',
+        env_namespace:        :soapenv,
+        namespace_identifier: 'jtb',
+        endpoint:             endpoint
+      }
+    end
+
+    def remote_call(message)
+      caller.call(OPERATION_NAME, message: message.to_xml,
+                  attributes: { PassiveIndicator: credentials['test'] })
     end
   end
 end
