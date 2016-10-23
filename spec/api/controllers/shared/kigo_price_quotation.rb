@@ -8,7 +8,18 @@ RSpec.shared_examples "Kigo price quotation" do
     expect(response.body["errors"]["quote"]).to eq "Could not quote price with remote supplier"
   end
 
-  ["kigo/e_nosuch.json", "kigo/no_api_reply.json", "kigo/no_total.json"].each do |fixture|
+  ["kigo/e_nosuch.json"].each do |fixture|
+    it "returns a proper error message if return looks like fixture #{fixture}" do
+      stub_call(:post, endpoint) { [200, {}, read_fixture(fixture)] }
+      response = parse_response(described_class.new.call(params))
+
+      expect(response.status).to eq 503
+      expect(response.body["status"]).to eq "error"
+      expect(response.body["errors"]["quote"]).to eq "The `API_RESULT_CODE` obtained was not equal to `E_OK`. Check Kigo's API documentation for an explanation for the `API_RESULT_CODE` returned."
+    end
+  end
+
+  ["kigo/no_api_reply.json", "kigo/no_total.json"].each do |fixture|
     it "returns a proper error message if return looks like fixture #{fixture}" do
       stub_call(:post, endpoint) { [200, {}, read_fixture(fixture)] }
       response = parse_response(described_class.new.call(params))

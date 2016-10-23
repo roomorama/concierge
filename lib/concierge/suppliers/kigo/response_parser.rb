@@ -95,8 +95,7 @@ module Kigo
         quotation.available = false
         Result.new(quotation)
       else
-        non_successful_result_code
-        Result.error(:quote_call_failed)
+        non_successful_result_error(:quote_call_failed)
       end
     end
 
@@ -129,8 +128,7 @@ module Kigo
       elsif payload["API_RESULT_CODE"] == "E_CONFLICT" && payload["API_RESULT_TEXT"] == "Dates not available"
         Result.error(:unavailable_dates)
       else
-        non_successful_result_code
-        Result.error(:booking_call_failed)
+        non_successful_result_error(:booking_call_failed)
       end
     end
 
@@ -171,11 +169,12 @@ module Kigo
       Result.error(:unrecognised_response)
     end
 
-    def non_successful_result_code
+    def non_successful_result_error(error_code)
       message = "The `API_RESULT_CODE` obtained was not equal to `E_OK`. Check Kigo's " +
         "API documentation for an explanation for the `API_RESULT_CODE` returned."
 
       mismatch(message, caller)
+      Result.error(error_code, message)
     end
 
     def no_field(name)
