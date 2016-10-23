@@ -62,6 +62,12 @@ module JTB
       end
     end
 
+    # Returns a +Result+ wrapping booking reference number in success case.
+    # Returns a +Result+ with error if cancellation fails.
+    def cancel(params)
+      JTB::Cancel.new(credentials).cancel(params)
+    end
+
     private
 
     def stay_too_long_error
