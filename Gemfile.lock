@@ -125,7 +125,7 @@ GEM
       gyoku (~> 1.2)
       httpi (~> 2.3)
       nokogiri (>= 1.4.0)
-      nori (~> 2.4) 
+      nori (~> 2.4)
       wasabi (~> 3.4)
     sequel (4.31.0)
     shotgun (0.9.1)

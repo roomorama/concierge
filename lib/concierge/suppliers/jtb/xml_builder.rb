@@ -97,7 +97,7 @@ module JTB
           xml['jtb'].UniqueID(ID: reference_number.reservation_id)
           xml['jtb'].Verification {
             xml['jtb'].RatePlans {
-              xml['jtb'].RatePlan(RatePlan: reference_number.rate_plan_id)
+              xml['jtb'].RatePlan(RatePlanID: reference_number.rate_plan_id)
             }
             xml['jtb'].ReservationTimeSpan(Start: reservation.check_in)
           }

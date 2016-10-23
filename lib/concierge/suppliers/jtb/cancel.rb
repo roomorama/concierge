@@ -50,7 +50,7 @@ module JTB
     end
 
     def options
-      endpoint = [credentials.api['url'], ENDPOINT].join('/')
+      endpoint = [credentials['url'], ENDPOINT].join('/')
       {
         wsdl:                 endpoint + '?wsdl',
         env_namespace:        :soapenv,
