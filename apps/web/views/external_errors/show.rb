@@ -98,6 +98,10 @@ module Web::Views::ExternalErrors
       end
     end
 
+    def plain_text?(content_type)
+      content_type =~ PLAIN_TEXT
+    end
+
     # tries to pretty print +content+ given that it is of +content_type+.
     # Supported types are only +PLAIN_TEXT+, +XML+ and +JSON+.
     def pretty_print(content, content_type)
