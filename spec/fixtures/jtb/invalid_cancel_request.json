@@ -2,9 +2,9 @@
   "ga_cancel_rs": {
     "errors": {
       "error_info": {
-        "@code": "GACZ005",
-        "@short_text": "Your XML Request is invalid.",
-        "@type": "003"
+        "@code": "GACZ017",
+        "@short_text": "Reservation number not found.",
+        "@type": "004"
       }
     },
     "@xmlns": "http://service.api.genesis2.jtbgmt.com/"

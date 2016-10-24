@@ -161,7 +161,7 @@ RSpec.describe JTB::ResponseParser do
       }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
-      expect(result.error.code).to eq :invalid_request
+      expect(result.error.code).to eq :request_error
       expect(result.error.data).to eq 'The response indicated errors while processing the request. Check the `errors` field.'
 
       event = Concierge.context.events.last
