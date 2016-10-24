@@ -99,7 +99,7 @@ module RentalsUnited
       let(:early_departure_fees) { [] }
 
       it "returns nil" do
-        expect(subject.build_tranlations).to eq(nil)
+        expect(subject.build_tranlations).to be_nil
       end
     end
   end
