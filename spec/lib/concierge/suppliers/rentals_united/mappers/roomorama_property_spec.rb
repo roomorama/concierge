@@ -401,12 +401,39 @@ RSpec.describe RentalsUnited::Mappers::RoomoramaProperty do
   end
 
   context "when mapping late/early fees" do
+    let(:translations) {
+      {
+        en: "test 1",
+        de: "test 2",
+        zh: "test 3",
+        es: "test 4"
+      }
+    }
+
     it "sets fees to the description_append field" do
       expect_any_instance_of(RentalsUnited::Converters::CheckInOutFees)
-        .to(receive(:as_text))
-        .and_return("Check in rules")
+        .to(receive(:build_tranlations))
+        .and_return(translations)
 
-      expect(property.description_append).to eq("Check in rules")
+      expect(property.description_append).to eq("test 1")
+      expect(property.de.description_append).to eq("test 2")
+      expect(property.zh.description_append).to eq("test 3")
+      expect(property.es.description_append).to eq("test 4")
+    end
+
+    context "when tranlations are empty" do
+      let(:translations) { nil }
+
+      it "sets fees to the description_append field" do
+        expect_any_instance_of(RentalsUnited::Converters::CheckInOutFees)
+          .to(receive(:build_tranlations))
+          .and_return(translations)
+
+        expect(property.description_append).to be_nil
+        expect(property.de.description_append).to be_nil
+        expect(property.zh.description_append).to be_nil
+        expect(property.es.description_append).to be_nil
+      end
     end
   end
 end
