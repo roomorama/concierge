@@ -95,6 +95,26 @@ RSpec.describe JTB::XMLBuilder do
     end
   end
 
+  describe '#cancel' do
+    let(:reservation) do
+      Reservation.new({
+        supplier: 'JTB',
+        property_id: '100',
+        unit_id: 'JPN|rate_plan_id',
+        check_in: '2016-11-01',
+        check_out: '2016-11-10',
+        guests: 2,
+        reference_number: 'reservation_id|rate_plan_id'
+      })
+    end
+    let(:message) { subject.cancel(reservation) }
+
+    it { expect(attribute_for(message, 'UniqueID', 'ID')).to eq 'reservation_id' }
+    it { expect(attribute_for(message, 'RatePlan', 'RatePlanID')).to eq 'rate_plan_id'}
+    it { expect(attribute_for(message, 'ReservationTimeSpan', 'Start')).to eq reservation.check_in }
+  end
+
+
   private
 
   def attribute_for(message, tag, attribute)
