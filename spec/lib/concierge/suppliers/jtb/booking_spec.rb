@@ -2,7 +2,6 @@ require 'spec_helper'
 
 RSpec.describe JTB::Booking do
   include Support::Fixtures
-  include Support::JTBClientHelper
 
   let(:credentials) do
     double(
