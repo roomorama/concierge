@@ -33,7 +33,7 @@ module JTB
     end
 
     def reservation_not_found(reference_number)
-      Result.error(:reservation_not_found, "Reservation with reference number #{reference_number} not found")
+      Result.error(:reservation_not_found, "Reservation with reference number `#{reference_number}` not found")
     end
 
     def find_reservation(reference_number)
