@@ -212,7 +212,6 @@ module Workers
         process(property)
       else
         sync_record.successful = false
-        # mark property as processed to prevent purge
         mark_as_processed(property_id)
         announce_failure(result)
         result
