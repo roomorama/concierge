@@ -53,17 +53,17 @@ RSpec.describe JTB::Cancel do
       expect(result.error.data).to eq("The response indicated errors while processing the request. Check the `errors` field.")
     end
 
-    let(:success_response) { parse_response('jtb/success_cancel_response.json') }
+    let(:success_response) { parse_response('jtb/success_cancel.json') }
 
-    xit 'returns reservation' do
+    it 'returns reservation' do
       allow(subject).to receive(:remote_call) { Result.new(success_response) }
 
-      result = subject.book(params)
+      result = subject.cancel(params)
       expect(result).to be_a Result
       expect(result).to be_success
 
       expect(result.value).to be_a String
-      expect(result.value).to eq 'XXXXXXXXXX|some rate'
+      expect(result.value).to eq 'reservation_id|rate_plan_id'
     end
   end
 
