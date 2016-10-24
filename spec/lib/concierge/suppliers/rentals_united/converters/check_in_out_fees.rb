@@ -53,9 +53,14 @@ module RentalsUnited
     let(:currency) { "EUR" }
     let(:subject) { described_class.new(ru_property, currency) }
 
-    it "converts fee rules to text" do
-      expect(subject.as_text).to eq(
-        "* Late arrival fees:\n-  14:00 - 15:00 : 20.0 EUR\n-  13:00 - 14:00 : 10.0 EUR\n* Early departure fees:\n-  17:00 - 18:00 : 67.0 EUR\n-  14:00 - 15:00 : 45.0 EUR"
+    it "converts fee rules to hash" do
+      expect(subject.build_tranlations).to eq(
+        {
+          en: "* Late arrival fees:\n-  14:00 - 15:00 : 20.0 EUR\n-  13:00 - 14:00 : 10.0 EUR\n* Early departure fees:\n-  17:00 - 18:00 : 67.0 EUR\n-  14:00 - 15:00 : 45.0 EUR",
+          zh: "* 晚到费用:\n-  14:00 - 15:00 : 20.0 EUR\n-  13:00 - 14:00 : 10.0 EUR\n* 提早离店费用:\n-  17:00 - 18:00 : 67.0 EUR\n-  14:00 - 15:00 : 45.0 EUR",
+          de: "* Gebühren für späte Ankunft:\n-  14:00 - 15:00 : 20.0 EUR\n-  13:00 - 14:00 : 10.0 EUR\n* Gebühren für frühe Abreise:\n-  17:00 - 18:00 : 67.0 EUR\n-  14:00 - 15:00 : 45.0 EUR",
+          es: "* Penalización por retraso en la llegada:\n-  14:00 - 15:00 : 20.0 EUR\n-  13:00 - 14:00 : 10.0 EUR\n* La comisión a aplicar por salida anticipada:\n-  17:00 - 18:00 : 67.0 EUR\n-  14:00 - 15:00 : 45.0 EUR"
+        }
       )
     end
 
@@ -63,8 +68,13 @@ module RentalsUnited
       let(:early_departure_fees) { [] }
 
       it "converts fee rules to text when there is no late fees" do
-        expect(subject.as_text).to eq(
-          "* Late arrival fees:\n-  14:00 - 15:00 : 20.0 EUR\n-  13:00 - 14:00 : 10.0 EUR"
+        expect(subject.build_tranlations).to eq(
+          {
+            en: "* Late arrival fees:\n-  14:00 - 15:00 : 20.0 EUR\n-  13:00 - 14:00 : 10.0 EUR",
+            zh: "* 晚到费用:\n-  14:00 - 15:00 : 20.0 EUR\n-  13:00 - 14:00 : 10.0 EUR",
+            de: "* Gebühren für späte Ankunft:\n-  14:00 - 15:00 : 20.0 EUR\n-  13:00 - 14:00 : 10.0 EUR",
+            es: "* Penalización por retraso en la llegada:\n-  14:00 - 15:00 : 20.0 EUR\n-  13:00 - 14:00 : 10.0 EUR"
+          }
         )
       end
     end
@@ -73,8 +83,13 @@ module RentalsUnited
       let(:late_arrival_fees) { [] }
 
       it "converts fee rules to text when there is no late fees" do
-        expect(subject.as_text).to eq(
-          "* Early departure fees:\n-  17:00 - 18:00 : 67.0 EUR\n-  14:00 - 15:00 : 45.0 EUR"
+        expect(subject.build_tranlations).to eq(
+          {
+            en: "* Early departure fees:\n-  17:00 - 18:00 : 67.0 EUR\n-  14:00 - 15:00 : 45.0 EUR",
+            zh: "* 提早离店费用:\n-  17:00 - 18:00 : 67.0 EUR\n-  14:00 - 15:00 : 45.0 EUR",
+            de: "* Gebühren für frühe Abreise:\n-  17:00 - 18:00 : 67.0 EUR\n-  14:00 - 15:00 : 45.0 EUR",
+            es: "* La comisión a aplicar por salida anticipada:\n-  17:00 - 18:00 : 67.0 EUR\n-  14:00 - 15:00 : 45.0 EUR"
+          }
         )
       end
     end
@@ -84,7 +99,7 @@ module RentalsUnited
       let(:early_departure_fees) { [] }
 
       it "returns nil" do
-        expect(subject.as_text).to be_nil
+        expect(subject.build_tranlations).to be_nil
       end
     end
   end

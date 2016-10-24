@@ -64,7 +64,6 @@ module RentalsUnited
         property.number_of_single_beds = ru_property.number_of_single_beds
         property.number_of_double_beds = ru_property.number_of_double_beds
         property.number_of_sofa_beds   = ru_property.number_of_sofa_beds
-        property.description_append    = description_append
         property.country_code          = country_code(location)
         property.currency              = location.currency
         property.city                  = location.city
@@ -91,6 +90,7 @@ module RentalsUnited
         set_security_deposit!(property)
         set_rates!(property)
         set_cleaning!(property)
+        set_description_append!(property)
 
         Result.new(property)
       end
@@ -149,8 +149,16 @@ module RentalsUnited
         Converters::CountryCode.code_by_name(location.country)
       end
 
-      def description_append
-        Converters::CheckInOutFees.new(ru_property, location.currency).as_text
+      def set_description_append!(property)
+        converter = Converters::CheckInOutFees.new(ru_property, location.currency)
+        tranlations = converter.build_tranlations
+
+        if tranlations
+          property.description_append    = tranlations.fetch(:en)
+          property.zh.description_append = tranlations.fetch(:zh)
+          property.de.description_append = tranlations.fetch(:de)
+          property.es.description_append = tranlations.fetch(:es)
+        end
       end
 
       def supported_property_type?
