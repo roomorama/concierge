@@ -46,11 +46,10 @@ module Kigo
         return missing_field_error("API_REPLY") unless reply
 
         currency = reply["CURRENCY"]
-        total    = reply["TOTAL_AMOUNT"]
+        return missing_field_error("CURRENCY") unless currency
 
-        { "CURRENCY" => currency, "TOTAL_AMOUNT" => total }.each do |key, value|
-          return missing_field_error(value) unless value
-        end
+        total = reply["TOTAL_AMOUNT"]
+        return missing_field_error("TOTAL_AMOUNT") unless total
 
         quotation.available           = true
         quotation.currency            = currency
@@ -151,10 +150,6 @@ module Kigo
 
     def build_quotation(params)
       Quotation.new(params)
-    end
-
-    def unrecognised_response
-      Result.error(:unrecognised_response)
     end
 
     def non_successful_result_error(error_code)
