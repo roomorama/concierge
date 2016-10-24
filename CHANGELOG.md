@@ -4,9 +4,9 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
-## Unreleased
+## [0.12.13] - 2016-10-24
 ### Added
-- Rentals United: add translations for zh de es languages for late/early fees 
+- Rentals United: add translations for zh de es languages for late/early fees
 
 ## [0.12.12] - 2016-10-21
 ### Added
