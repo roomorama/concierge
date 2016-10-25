@@ -52,7 +52,7 @@ RSpec.describe JTB::Mappers::RoomoramaProperty do
     expect(property.type).to eq('apartment')
     expect(property.address).to eq('100 Minamiekimae-cho, Himeji-shi, Hyogo Prefecture, 510-0075')
     expect(property.postal_code).to eq('510-0075')
-    expect(property.city).to eq('Kinki (Other areas) / Mie (Ise / Shima)')
+    expect(property.city).to eq('Kinki')
     expect(property.description).to eq("This large city hotel is located in front of JR Himeji Station's south exit and features a large capacity banquet hall.")
     expect(property.default_to_available).to be false
     expect(property.minimum_stay).to eq(1)

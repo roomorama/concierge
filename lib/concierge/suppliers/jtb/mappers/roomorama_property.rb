@@ -84,11 +84,26 @@ module JTB
         result.postal_code = fetch_postal_code(hotel.address)
         # May be do this in external code
         city = JTB::Repositories::LookupRepository.location_name(hotel.location_code)&.name
-        result.city = city
+        result.city = prepare_city(city) if city
         result.default_to_available = false
         result.minimum_stay = 1
         result.currency = JTB::Price::CURRENCY
         result.cancellation_policy = CANCELLATION_POLICY
+      end
+
+      # JTB location names are often complex and
+      # this method simplifies them.
+      #
+      # prepare_city('Tokyo (TokyoStation / Kanda / Kudan)') => "Tokyo"
+      # prepare_city('Kanagawa (Yokohama / Odawara)') => "Kanagawa"
+      # prepare_city('Tokyo (TokyoStation / Kanda / Kudan)') => "Tokyo"
+
+      def prepare_city(city)
+        index = city.index('(')
+
+        return city unless index
+
+        city[0..(index - 1)].strip
       end
 
       def fetch_postal_code(address)
