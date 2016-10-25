@@ -24,15 +24,15 @@ module Workers::Suppliers::Avantio
     def perform
       identifiers = all_identifiers
 
-      rates = synchronisation.new_context { fetch_rates(host) }
+      rates = synchronisation.new_context { fetch_rates }
       return unless rates.success?
       rates = rates.value
 
-      availabilities = fetch_availabilities(host)
+      availabilities = fetch_availabilities
       return unless availabilities.success?
       availabilities = availabilities.value
 
-      occupational_rules = fetch_occupational_rules(host)
+      occupational_rules = fetch_occupational_rules
       return unless occupational_rules.success?
       occupational_rules = occupational_rules.value
 
@@ -78,19 +78,19 @@ module Workers::Suppliers::Avantio
       end
     end
 
-    def fetch_rates(host)
+    def fetch_rates
       message = 'Failed to perform the `#fetch_rates` operation'
-      failed_sync(message) { importer.fetch_rates(host) }
+      failed_sync(message) { importer.fetch_rates }
     end
 
-    def fetch_availabilities(host)
+    def fetch_availabilities
       message = 'Failed to perform the `#fetch_availabilities` operation'
-      failed_sync(message) { importer.fetch_availabilities(host) }
+      failed_sync(message) { importer.fetch_availabilities }
     end
 
-    def fetch_occupational_rules(host)
+    def fetch_occupational_rules
       message = 'Failed to perform the `#fetch_occupational_rules` operation'
-      failed_sync(message) { importer.fetch_occupational_rules(host) }
+      failed_sync(message) { importer.fetch_occupational_rules }
     end
 
     def all_identifiers
