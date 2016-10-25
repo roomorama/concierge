@@ -53,15 +53,15 @@ module JTB
     end
 
     def remote_call(message)
-      caller.call(OPERATION_NAME, message: message.to_xml)
+      client.call(OPERATION_NAME, message: message.to_xml)
     end
 
     def response_parser
       @response_parser ||= ResponseParser.new
     end
 
-    def caller
-      @caller ||= Concierge::SOAPClient.new(options)
+    def client
+      @client ||= Concierge::SOAPClient.new(options)
     end
 
     def options
