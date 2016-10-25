@@ -28,7 +28,7 @@ module AtLeisure
     DEFAULT_CUSTOMER_LANGUAGE = "EN"
 
     # set default email to prevent emails to guest with confusing information
-    DEFAULT_USER_EMAIL        = "atleisure@roomorama.com"
+    DEFAULT_USER_EMAIL        = "atleisure@bridgerentals.com"
 
     attr_reader :credentials
 
