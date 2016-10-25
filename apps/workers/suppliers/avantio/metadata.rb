@@ -122,7 +122,7 @@ module Workers::Suppliers::Avantio
     end
 
     def importer
-      @importer ||= ::Avantio::Importer.new
+      @importer ||= ::Avantio::Importer.new(Concierge::Credentials.for(::Avantio::Client::SUPPLIER_NAME))
     end
 
     def validator(property)

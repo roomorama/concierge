@@ -9,6 +9,11 @@ module Avantio
   #   importer.fetch_properties(host)
   #   importer.fetch_descriptions(host)
   class Importer
+    attr_reader :credentials
+
+    def initialize(credentials)
+      @credentials = credentials
+    end
 
     # Fetches all properties for given host from Avantio
     # Returns the Result wrapping the array of +Avantio::Entities::Accommodation+
@@ -43,10 +48,6 @@ module Avantio
     def fetch_availabilities
       fetcher = Commands::AvailabilitiesFetcher.new(credentials.code_partner)
       fetcher.call
-    end
-
-    def credentials
-      @credentials ||= Concierge::Credentials.for("Avantio")
     end
   end
 end
