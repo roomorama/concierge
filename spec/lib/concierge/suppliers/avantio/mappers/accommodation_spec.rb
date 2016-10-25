@@ -11,6 +11,7 @@ RSpec.describe Avantio::Mappers::Accommodation do
     expect(accommodation).to be_a(Avantio::Entities::Accommodation)
     expect(accommodation.property_id).to eq('128498|1416325650|itsvillas')
     expect(accommodation.name).to eq('Villa Gemma')
+    expect(accommodation.ga_code).to eq('739')
     expect(accommodation.security_deposit_amount).to eq(1000.0)
     expect(accommodation.security_deposit_type).to eq('cash')
     expect(accommodation.security_deposit_currency_code).to eq('EUR')
