@@ -1,7 +1,8 @@
 module Workers::Suppliers::Avantio
   # +Workers::Suppliers::Avantio::Metadata+
   #
-  # Performs properties synchronisation with supplier
+  # Performs properties synchronisation with supplier.
+  # This is aggregated worker so it performs sync for all the hosts.
   #
   # Avantio provides all information required for sync by files and
   # updates them with different frequency. This frequency should affect the worker
