@@ -45,8 +45,8 @@ module JTB
       @builder ||= XMLBuilder.new(credentials)
     end
 
-    def caller
-      @caller ||= Concierge::SOAPClient.new(options)
+    def client
+      @client ||= Concierge::SOAPClient.new(options)
     end
 
     def options
@@ -60,7 +60,7 @@ module JTB
     end
 
     def remote_call(message)
-      caller.call(OPERATION_NAME, message: message.to_xml,
+      client.call(OPERATION_NAME, message: message.to_xml,
                   attributes: { PassiveIndicator: credentials['test'] })
     end
   end
