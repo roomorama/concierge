@@ -91,6 +91,7 @@ RSpec.describe Workers::Suppliers::AtLeisure::Metadata do
     before do
       allow_any_instance_of(AtLeisure::Importer).to receive(:fetch_properties) { success_result }
       allow_any_instance_of(AtLeisure::Importer).to receive(:fetch_layout_items) { Result.new(layout_items) }
+      allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
     end
 
     it 'skips purge' do
@@ -105,7 +106,7 @@ RSpec.describe Workers::Suppliers::AtLeisure::Metadata do
         properties_data.shift
       end
 
-      expect_any_instance_of(Workers::PropertySynchronisation).to receive(:skip_purge!)
+      expect(subject.synchronisation).to receive(:skip_purge!).and_call_original
       subject.perform
     end
   end
