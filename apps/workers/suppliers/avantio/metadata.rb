@@ -25,24 +25,24 @@ module Workers::Suppliers::Avantio
 
     def perform
       properties = synchronisation.new_context do
-        fetch_properties(host)
+        fetch_properties
       end
       return unless properties.success?
       properties = properties.value
 
-      descriptions = fetch_descriptions(host)
+      descriptions = fetch_descriptions
       return unless descriptions.success?
       descriptions = descriptions.value
 
-      occupational_rules = fetch_occupational_rules(host)
+      occupational_rules = fetch_occupational_rules
       return unless occupational_rules.success?
       occupational_rules = occupational_rules.value
 
-      rates = fetch_rates(host)
+      rates = fetch_rates
       return unless rates.success?
       rates = rates.value
 
-      availabilities = fetch_availabilities(host)
+      availabilities = fetch_availabilities
       return unless availabilities.success?
       availabilities = availabilities.value
 
@@ -92,29 +92,29 @@ module Workers::Suppliers::Avantio
       end
     end
 
-    def fetch_occupational_rules(host)
+    def fetch_occupational_rules
       message = 'Failed to perform the `#fetch_occupational_rules` operation'
-      failed_sync(message) { importer.fetch_occupational_rules(host) }
+      failed_sync(message) { importer.fetch_occupational_rules }
     end
 
-    def fetch_properties(host)
+    def fetch_properties
       message = 'Failed to perform the `#fetch_properties` operation'
-      failed_sync(message) { importer.fetch_properties(host) }
+      failed_sync(message) { importer.fetch_properties }
     end
 
-    def fetch_descriptions(host)
+    def fetch_descriptions
       message = 'Failed to perform the `#fetch_descriptions` operation'
-      failed_sync(message) { importer.fetch_descriptions(host) }
+      failed_sync(message) { importer.fetch_descriptions }
     end
 
-    def fetch_rates(host)
+    def fetch_rates
       message = 'Failed to perform the `#fetch_rates` operation'
-      failed_sync(message) { importer.fetch_rates(host) }
+      failed_sync(message) { importer.fetch_rates }
     end
 
-    def fetch_availabilities(host)
+    def fetch_availabilities
       message = 'Failed to perform the `#fetch_availabilities` operation'
-      failed_sync(message) { importer.fetch_availabilities(host) }
+      failed_sync(message) { importer.fetch_availabilities }
     end
 
     def mapper(property, description, occupational_rule, rate)
