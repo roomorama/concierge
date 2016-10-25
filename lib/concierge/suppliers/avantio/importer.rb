@@ -12,37 +12,41 @@ module Avantio
 
     # Fetches all properties for given host from Avantio
     # Returns the Result wrapping the array of +Avantio::Entities::Accommodation+
-    def fetch_properties(host)
-      fetcher = Commands::AccommodationsFetcher.new(host.identifier)
+    def fetch_properties
+      fetcher = Commands::AccommodationsFetcher.new(credentials.code_partner)
       fetcher.call
     end
 
     # Fetches all descriptions for given host from Avantio
     # Returns the Result wrapping the hash with +Avantio::Entities::Description+
-    def fetch_descriptions(host)
-      fetcher = Commands::DescriptionsFetcher.new(host.identifier)
+    def fetch_descriptions
+      fetcher = Commands::DescriptionsFetcher.new(credentials.code_partner)
       fetcher.call
     end
 
     # Fetches all occupational rules for given host from Avantio
     # Returns the Result wrapping the hash with +Avantio::Entities::OccupationalRule+
-    def fetch_occupational_rules(host)
-      fetcher = Commands::OccupationalRulesFetcher.new(host.identifier)
+    def fetch_occupational_rules
+      fetcher = Commands::OccupationalRulesFetcher.new(credentials.code_partner)
       fetcher.call
     end
 
     # Fetches all rates for given host from Avantio
     # Returns the Result wrapping the hash with +Avantio::Entities::Rate+
-    def fetch_rates(host)
-      fetcher = Commands::RatesFetcher.new(host.identifier)
+    def fetch_rates
+      fetcher = Commands::RatesFetcher.new(credentials.code_partner)
       fetcher.call
     end
 
     # Fetches all availabilities for given host from Avantio
     # Returns the Result wrapping the hash with +Avantio::Entities::Availability+
-    def fetch_availabilities(host)
-      fetcher = Commands::AvailabilitiesFetcher.new(host.identifier)
+    def fetch_availabilities
+      fetcher = Commands::AvailabilitiesFetcher.new(credentials.code_partner)
       fetcher.call
+    end
+
+    def credentials
+      @credentials ||= Concierge::Credentials.for("Avantio")
     end
   end
 end
