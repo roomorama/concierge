@@ -6,6 +6,7 @@ module Avantio
         accommodation_code:     'AccommodationCode',
         user_code:              'UserCode',
         login_ga:               'LoginGA',
+        ga_code:                'GACode',
         accommodation_name:     'AccommodationName',
         occupational_rule_id:   'OccupationalRuleId',
         master_kind_code:       'MasterKind/MasterKindCode',
