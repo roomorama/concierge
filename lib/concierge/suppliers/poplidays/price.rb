@@ -56,14 +56,14 @@ module Poplidays
       quote_result = retrieve_quote(params)
 
       return no_longer_available_error if no_longer_available?(quote_result)
-      return quote_result if unknown_errors?(quote_result)
+      return quote_result if unknown_error?(quote_result)
 
       mapper.build(params, mandatory_services.value, quote_result)
     end
 
     private
 
-    def unknown_errors?(result)
+    def unknown_error?(result)
       !result.success? && !SILENCED_ERROR_CODES.include?(result.error.code)
     end
 
