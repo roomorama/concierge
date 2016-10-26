@@ -31,6 +31,12 @@ module Poplidays
     CACHE_PREFIX = 'poplidays'
     MANDATORY_SERVICES_FRESHNESS = 12 * 60 * 60 # twelve hours
 
+    # Some unsuccessful (not 20X) http statuses of quote response
+    # are valid business cases for us and should be handled:
+    SILENCED_ERROR_CODES = [
+      :http_status_400, # 400 - bad arrival/departure date
+    ]
+
     attr_reader :credentials
 
     def initialize(credentials)
@@ -47,20 +53,22 @@ module Poplidays
       mandatory_services = retrieve_mandatory_services(params[:property_id])
       return mandatory_services unless mandatory_services.success?
 
-      quote = retrieve_quote(params)
-      return quote if unknown_errors?(quote)
+      quote_result = retrieve_quote(params)
 
-      mapper.build(params, mandatory_services.value, quote)
+      return no_longer_available_error if no_longer_available?(quote_result)
+      return quote_result if unknown_errors?(quote_result)
+
+      mapper.build(params, mandatory_services.value, quote_result)
     end
 
     private
 
-    # Some unsuccessful (not 20X) http statuses of quote request
-    # are valid business cases for us and should be handled:
-    #   409 - stay specified in booking is no more available
-    #   400 - bad arrival/departure date
-    def unknown_errors?(quote)
-      !quote.success? && ![:http_status_400, :http_status_409].include?(quote.error.code)
+    def unknown_errors?(result)
+      !result.success? && !SILENCED_ERROR_CODES.include?(result.error.code)
+    end
+
+    def no_longer_available?(quote)
+      quote.error.code == :http_status_409
     end
 
     def retrieve_quote(params)
@@ -109,6 +117,12 @@ module Poplidays
       message = "Property shouldn't be on request only and should have enabled prices"
       mismatch(message, caller)
       Result.error(:property_not_instant_bookable, message)
+    end
+
+    def no_longer_available_error
+      message = "Stay specified in booking is no more available"
+      mismatch(message, caller)
+      Result.error(:property_no_longer_available, message)
     end
 
     def mismatch(message, backtrace)

@@ -125,7 +125,7 @@ RSpec.describe Poplidays::Price do
       expect(event.to_h[:type]).to eq 'response_mismatch'
     end
 
-    [400, 409].each do |status|
+    [400].each do |status|
       it "returns an unavailable quotation for poplidays response with #{status} status" do
         stub_with_fixture(property_details_endpoint, 'poplidays/property_details.json')
         stub_call(:post, quote_endpoint) { [status, {}, unavailable_quote_response] }
@@ -143,6 +143,18 @@ RSpec.describe Poplidays::Price do
         expect(quotation.currency).to be_nil
         expect(quotation.total).to be_nil
       end
+    end
+
+    it "returns not success result for poplidays response with 409 status" do
+      stub_with_fixture(property_details_endpoint, 'poplidays/property_details.json')
+      stub_call(:post, quote_endpoint) { [409, {}, unavailable_quote_response] }
+      result = subject.quote(params)
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq(:property_no_longer_available)
+      expect(result.error.data).to eq(
+        "Stay specified in booking is no more available"
+      )
     end
 
     it "returns not success result for poplidays response with 500 status" do
