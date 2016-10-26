@@ -35,7 +35,7 @@ RSpec.describe Workers::Suppliers::JTB::Metadata do
         subject.perform
 
         sync = SyncProcessRepository.last
-        expect(sync.successful).to eq   true
+        expect(sync.successful).to eq true
         expect(sync.skipped_properties_count).to eq 2
         expect(sync.stats[:properties_skipped].length).to eq 1
         expect(sync.stats[:properties_skipped][0]['reason']).to eq error_code.to_s
@@ -63,9 +63,9 @@ RSpec.describe Workers::Suppliers::JTB::Metadata do
         )
       end
 
-      it 'finalizes synchronisation' do
+      it 'finalizes synchronisation and call calendar sync' do
+        expect(subject).to receive(:sync_calendar).and_return(true)
         allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
-
         expect(subject.synchronisation).to receive(:finish!)
         subject.perform
       end
@@ -78,6 +78,7 @@ RSpec.describe Workers::Suppliers::JTB::Metadata do
       end
 
       it 'creates valid properties in database' do
+        expect(subject).to receive(:sync_calendar).and_return(true)
         allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
         expect {
           subject.perform
