@@ -8,6 +8,7 @@ module JTB
       CANCELLATION_POLICY = 'super_elite'
       IMAGE_URL_PREFIX = 'https://www.jtbgenesis.com/image'
       PROPERTY_TYPE = 'apartment'
+      COUNTRY_CODE = 'JP'
 
       ROOM_TYPE_CODES = {
         'SGL' => 'Single',
@@ -89,6 +90,7 @@ module JTB
         result.minimum_stay = 1
         result.currency = JTB::Price::CURRENCY
         result.cancellation_policy = CANCELLATION_POLICY
+        result.country_code = COUNTRY_CODE
       end
 
       # JTB location names are often complex and
