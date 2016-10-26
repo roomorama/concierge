@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 RSpec.describe SAW::Client do
+  include Support::HTTPStubbing
+  include Support::Fixtures
+  include Support::SAW::MockRequest
+
   let(:credentials) { Concierge::Credentials.for("SAW") }
   let(:client) { described_class.new(credentials) }
 
@@ -51,6 +55,8 @@ RSpec.describe SAW::Client do
       expect_any_instance_of(SAW::PayloadBuilder).to receive(:build_booking_request)
         .with(expected_payload)
         .and_call_original
+
+      mock_request(:propertybooking, :success)
 
       client.book(params)
     end
