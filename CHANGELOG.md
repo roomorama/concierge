@@ -7,6 +7,7 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Added
 - Changed atleisure customer email
+- Changed SAW customer email
 - Kigo: add better error reporting by adding descriptions to response parser errors
 
 ## [0.12.13] - 2016-10-24
