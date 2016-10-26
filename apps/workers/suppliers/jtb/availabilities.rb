@@ -1,35 +1,25 @@
 module Workers::Suppliers::JTB
   # +Workers::Suppliers::JTB::Availabilities+
   #
-  # Performs properties availabilities synchronisation with supplier
+  # Performs availabilities synchronisation for given property
   class Availabilities
-    attr_reader :synchronisation, :host
+    attr_reader :synchronisation, :host, :property
 
-    def initialize(host)
+    def initialize(host, property)
       @host            = host
+      @property        = property
       @synchronisation = Workers::CalendarSynchronisation.new(host)
     end
 
     def perform
-      result = synchronisation.new_context do
-        actualizer.actualize
+      synchronisation.start(property.identifier) do
+
+        calendar = Roomorama::Calendar.new(property.identifier)
+        units = Array(property.data['units'])
+
+        fill_property_calendar(calendar, units)
       end
-
-      if result.success?
-        properties = synced_properties
-
-        properties.each do |property|
-
-          synchronisation.start(property.identifier) do
-
-            calendar = Roomorama::Calendar.new(property.identifier)
-            units = Array(property.data['units'])
-
-            fill_property_calendar(calendar, units)
-          end
-        end
-        synchronisation.finish!
-      end
+      synchronisation.finish!
     end
 
     private
@@ -57,15 +47,5 @@ module Workers::Suppliers::JTB
     def credentials
       Concierge::Credentials.for(JTB::Client::SUPPLIER_NAME)
     end
-
-    def synced_properties
-      PropertyRepository.from_host(host)
-    end
   end
-end
-
-# listen supplier worker
-Concierge::Announcer.on('availabilities.JTB') do |host, args|
-  Workers::Suppliers::JTB::Availabilities.new(host).perform
-  Result.new({})
 end

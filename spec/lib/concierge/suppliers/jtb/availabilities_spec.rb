@@ -5,7 +5,7 @@ RSpec.describe Workers::Suppliers::JTB::Availabilities do
 
   let(:supplier) { create_supplier(name: JTB::Client::SUPPLIER_NAME) }
   let(:host) { create_host(supplier_id: supplier.id) }
-  let!(:properties) do
+  let!(:property) do
     create_property(
       {
         host_id: host.id,
@@ -37,36 +37,34 @@ RSpec.describe Workers::Suppliers::JTB::Availabilities do
     end
   end
 
-  subject { described_class.new(host) }
+  subject { described_class.new(host, property) }
 
   describe '#perform' do
 
-    context 'success' do
-      before do
-        allow_any_instance_of(JTB::Sync::Actualizer).to receive(:actualize) { Result.new(true) }
-        allow_any_instance_of(JTB::Mappers::UnitCalendar).to receive(:build) do
-          Result.new(unit_calendar)
-        end
+    it 'finalizes synchronisation' do
+      allow_any_instance_of(JTB::Mappers::UnitCalendar).to receive(:build) do
+        Result.new(unit_calendar)
       end
+      allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
+      expect(subject.synchronisation).to receive(:finish!)
+      subject.perform
+    end
 
-      it 'finalizes synchronisation' do
-        allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
-        expect(subject.synchronisation).to receive(:finish!)
-        subject.perform
-      end
+    it 'fails if at unit calendar building fails' do
+      allow_any_instance_of(JTB::Mappers::UnitCalendar).to receive(:build).and_return(
+        Result.error(:some_error, 'Some error')
+      )
 
-      it 'doesnt create property with unsuccessful publishing' do
-        allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.error('fail') }
-        expect {
-          subject.perform
-        }.to_not change { PropertyRepository.count }
-      end
+      allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
+      expect(subject.synchronisation).to receive(:finish!)
+      subject.perform
 
-      it 'creates valid properties in database' do
-        allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
-        expect(subject.synchronisation).to receive(:run_operation)
-        subject.perform
-      end
+      error = ExternalErrorRepository.last
+
+      expect(error.operation).to eq 'sync'
+      expect(error.supplier).to eq JTB::Client::SUPPLIER_NAME
+      expect(error.code).to eq 'some_error'
+      expect(error.description).to eq 'Some error'
     end
   end
 end
