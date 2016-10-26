@@ -23,9 +23,9 @@ module Poplidays
   #
   # * +unrecognised_response+:  happens when the request was successful, but the format
   #                             of the response is not compatible to this class' expectations.
-  # * +invalid_property_error+: only properties that require no confirmation and have enabled prices
-  #                             (accessed without Poplidays call center)
-  #                             are supported at this moment.
+  # * +property_not_instant_bookable+: only properties that require no confirmation and have enabled prices
+  #                                    (accessed without Poplidays call center)
+  #                                    are supported at this moment.
   class Price
 
     CACHE_PREFIX = 'poplidays'
@@ -84,7 +84,7 @@ module Poplidays
             no_mandatory_services_data_error
           end
         else
-          invalid_property_error
+          property_not_instant_bookable_error
         end
       }
     end
@@ -105,10 +105,10 @@ module Poplidays
       Result.error(:unrecognised_response, message)
     end
 
-    def invalid_property_error
+    def property_not_instant_bookable_error
       message = "Property shouldn't be on request only and should have enabled prices"
       mismatch(message, caller)
-      Result.error(:invalid_property_error, message)
+      Result.error(:property_not_instant_bookable, message)
     end
 
     def mismatch(message, backtrace)

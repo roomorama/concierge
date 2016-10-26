@@ -98,7 +98,7 @@ RSpec.describe Poplidays::Price do
       }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
-      expect(result.error.code).to eq :invalid_property_error
+      expect(result.error.code).to eq :property_not_instant_bookable
       expect(result.error.data).to eq(
         "Property shouldn't be on request only and should have enabled prices"
       )
@@ -116,7 +116,7 @@ RSpec.describe Poplidays::Price do
       }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
-      expect(result.error.code).to eq :invalid_property_error
+      expect(result.error.code).to eq :property_not_instant_bookable
       expect(result.error.data).to eq(
         "Property shouldn't be on request only and should have enabled prices"
       )
