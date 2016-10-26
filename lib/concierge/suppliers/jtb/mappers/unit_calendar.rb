@@ -38,8 +38,10 @@ module JTB
 
         from = Date.today
         to = from + Workers::Suppliers::JTB::Metadata::PERIOD_SYNC
-        stocks = JTB::Repositories::RoomStockRepository.availabilities(rate_plans, from, to)
 
+        # All rate plans have the same availabilities for a given unit
+        # so we can take only first one
+        stocks = JTB::Repositories::RoomStockRepository.availabilities(rate_plans.first&.rate_plan_id, from, to)
         entries = stocks.map do |stock|
           available = false
           nightly_rate = 0
