@@ -7,8 +7,8 @@ module Waytostay
     ENDPOINT = "/bookings/quote".freeze
     SILENCED_ERROR_MESSAGES = [
       "Apartment is not available for the selected dates",
-      "The minimum number of nights to book this apartment is",
     ].freeze
+    STAY_TOO_SHORT_ERROR_MESSAGE    = /The minimum number of nights to book this apartment is \d+/
     CHECK_IN_TOO_NEAR_ERROR_MESSAGE = "Cut off days restriction"
     CHECK_IN_TOO_FAR_ERROR_MESSAGE  = "Max days for arrival restriction"
     REQUIRED_RESPONSE_KEYS = [
@@ -40,6 +40,8 @@ module Waytostay
         Result.new(build_quotation(response))
       elsif error_should_be_silenced?(result)
         Result.new(build_unavailable_quotation(params))
+      elsif stay_too_short?(result)
+        stay_too_short_error(result)
       elsif check_in_too_near?(result)
         check_in_too_near_error
       elsif check_in_too_far?(result)
@@ -80,6 +82,15 @@ module Waytostay
       end
     end
 
+    def stay_too_short?(result)
+      !!stay_too_short_message(result)
+    end
+
+    def stay_too_short_message(result)
+      match_data = result.error.data.to_s.match(STAY_TOO_SHORT_ERROR_MESSAGE)
+      match_data ? match_data.to_s : nil
+    end
+
     def check_in_too_near?(result)
       result.error.data.to_s.include?(CHECK_IN_TOO_NEAR_ERROR_MESSAGE)
     end
@@ -101,6 +112,10 @@ module Waytostay
         currency:            response.get("pricing.currency"),
         available:           true
       }
+    end
+
+    def stay_too_short_error(result)
+      Result.error(:stay_too_short, stay_too_short_message(result))
     end
 
     def check_in_too_near_error

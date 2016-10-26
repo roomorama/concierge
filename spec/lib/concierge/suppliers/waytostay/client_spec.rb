@@ -199,8 +199,7 @@ RSpec.describe Waytostay::Client do
         { property_id: "success", check_in: Date.today + 10, check_out: Date.today + 20, guests: 2 }
       }
       let(:unavailable_params_list) {[
-        success_params.merge(property_id: "unavailable"),
-        success_params.merge(property_id: "less_than_min"),
+        success_params.merge(property_id: "unavailable")
       ]}
       let(:error_params_list) {[
         success_params.merge(property_id: "malformed_response"),
@@ -221,6 +220,12 @@ RSpec.describe Waytostay::Client do
       expect(quotation).not_to be_success
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
+    end
+
+    it "should return error when stay is less than minimum stay" do
+      quotation = stubbed_client.quote({ property_id: "less_than_min", check_in: Date.today + 10, check_out: Date.today + 20, guests: 2 })
+      expect(quotation.error.code).to eq(:stay_too_short)
+      expect(quotation.error.data).to eq("The minimum number of nights to book this apartment is 7")
     end
 
     it "should return error when check-in date is too near" do
