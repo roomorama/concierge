@@ -1,7 +1,8 @@
 module Workers::Suppliers::Avantio
   # +Workers::Suppliers::Avantio::Metadata+
   #
-  # Performs properties synchronisation with supplier
+  # Performs properties synchronisation with supplier.
+  # This is aggregated worker so it performs sync for all the hosts.
   #
   # Avantio provides all information required for sync by files and
   # updates them with different frequency. This frequency should affect the worker
@@ -16,17 +17,14 @@ module Workers::Suppliers::Avantio
     # Count of days
     PERIOD_SYNC = 365
 
-    attr_reader :synchronisation, :host
+    attr_reader :supplier
 
-    def initialize(host)
-      @host            = host
-      @synchronisation = Workers::PropertySynchronisation.new(host)
+    def initialize(supplier)
+      @supplier = supplier
     end
 
     def perform
-      properties = synchronisation.new_context do
-        fetch_properties
-      end
+      properties = new_context { fetch_properties }
       return unless properties.success?
       properties = properties.value
 
@@ -46,49 +44,79 @@ module Workers::Suppliers::Avantio
       return unless availabilities.success?
       availabilities = availabilities.value
 
+      hosts.each do |host|
+        perform_for_host(host, properties.fetch(host.identifier, []), descriptions,
+                         occupational_rules, rates, availabilities)
+      end
+    end
+
+    private
+
+    def new_context
+      Concierge.context = Concierge::Context.new(type: "batch")
+
+      message = Concierge::Context::Message.new(
+        label:     'Aggregated Sync',
+        message:   "Started aggregated metadata sync for `#{supplier}`",
+        backtrace: caller
+      )
+
+      Concierge.context.augment(message)
+      yield
+    end
+
+    def perform_for_host(host, properties, descriptions, occupational_rules, rates, availabilities)
+      synchronisation = Workers::PropertySynchronisation.new(host)
       properties.each do |property|
         property_id = property.property_id
 
         synchronisation.start(property_id) do
           unless validator(property).valid?
-            next synchronisation.skip_property(property_id, 'Invalid property')
+            next skip_property(synchronisation, property_id, 'Invalid property')
           end
 
           rate = rates[property_id]
           unless rate
-            next synchronisation.skip_property(property_id, 'Rate not found')
+            next skip_property(synchronisation, property_id, 'Rate not found')
           end
 
           description = descriptions[property_id]
           unless description && description_validator(description).valid?
-            next synchronisation.skip_property(property_id, 'Description not found or invalid')
+            next skip_property(synchronisation, property_id, 'Description not found or invalid')
           end
 
           occupational_rule = occupational_rules[property.occupational_rule_id]
           unless occupational_rule
-            next synchronisation.skip_property(property_id, 'Occupational rule not found')
+            next skip_property(synchronisation, property_id, 'Occupational rule not found')
           end
 
           # Availability is not used for property building, but used for calendar building.
           # So just to be sure that property has availability.
           unless availabilities[property_id]
-            next synchronisation.skip_property(property_id, 'Availabilities not found')
+            next skip_property(synchronisation, property_id, 'Availabilities not found')
           end
 
           Result.new(mapper(property, description, occupational_rule, rate).build)
         end
       end
-      synchronisation.finish!
+      finish_sync(synchronisation)
     end
 
-    private
+    # The method extracted only for specs because RSpec doesn't allow expect the result for
+    # several instances of the same class.
+    def finish_sync(sync)
+      sync.finish!
+    end
+
+    # The method extracted only for specs because RSpec doesn't allow expect the result for
+    # several instances of the same class.
+    def skip_property(sync, property_id, message)
+      sync.skip_property(property_id, message)
+    end
 
     def failed_sync(message)
       yield.tap do |result|
-        unless result.success?
-          synchronisation.failed!
-          announce_error(message, result)
-        end
+        announce_error(message, result) unless result.success?
       end
     end
 
@@ -133,6 +161,10 @@ module Workers::Suppliers::Avantio
       Avantio::Validators::DescriptionValidator.new(description)
     end
 
+    def hosts
+      HostRepository.from_supplier(supplier)
+    end
+
     def augment_context_error(message)
       message = {
         label: 'Synchronisation Failure',
@@ -159,7 +191,7 @@ module Workers::Suppliers::Avantio
 end
 
 # listen supplier worker
-Concierge::Announcer.on('metadata.Avantio') do |host, args|
-  Workers::Suppliers::Avantio::Metadata.new(host).perform
+Concierge::Announcer.on('metadata.Avantio') do |supplier, args|
+  Workers::Suppliers::Avantio::Metadata.new(supplier).perform
   Result.new({})
 end

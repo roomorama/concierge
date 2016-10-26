@@ -4,7 +4,7 @@ module Avantio
     #
     # Avantio provides accommodations' information in zipped file available by URL.
     # This class fetches the file and parses the accommodations to the
-    # array of +Avantio::Entities::Accommodation+
+    # hash of +Avantio::Entities::Accommodation+ grouped by GACode
     #
     # Usage
     #
@@ -44,7 +44,7 @@ module Avantio
 
       def build_accommodations(accommodations_raw)
         accommodations = accommodations_raw.xpath('/AccommodationList/AccommodationData')
-        Array(accommodations).map { |accommodation| mapper.build(accommodation) }
+        Array(accommodations).map { |accommodation| mapper.build(accommodation) }.group_by(&:ga_code)
       end
     end
   end

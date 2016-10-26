@@ -5,13 +5,13 @@ RSpec.describe Workers::Suppliers::Avantio::Availabilities do
   include Support::Factories
 
   before(:example) do
-    create_property(
-      identifier: '60505|1238513302|itsalojamientos', host_id: host.id
-    )
+    create_property(identifier: '60505|1238513302|itsalojamientos', host_id: host1.id)
   end
 
   let(:supplier) { create_supplier(name: Avantio::Client::SUPPLIER_NAME) }
-  let(:host) { create_host(supplier_id: supplier.id) }
+  let!(:host1) { create_host(supplier_id: supplier.id, identifier: '137') }
+  let!(:host2) { create_host(supplier_id: supplier.id, identifier: '138') }
+  let!(:host3) { create_host(supplier_id: supplier.id, identifier: '139') }
 
   let(:descriptions) do
     {
@@ -94,8 +94,7 @@ RSpec.describe Workers::Suppliers::Avantio::Availabilities do
     allow(Date).to receive(:today).and_return(today)
   end
 
-
-  subject { described_class.new(host) }
+  subject { described_class.new(supplier) }
 
   context 'there are events from previous syncs in current context' do
     before do
@@ -226,10 +225,19 @@ RSpec.describe Workers::Suppliers::Avantio::Availabilities do
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_occupational_rules) { Result.new(occupational_rules) }
     end
 
+    it 'calls perform_for_host for each host' do
+      allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
+
+      expect(subject).to receive(:perform_for_host).with(host1, any_args).exactly(1).times.and_call_original
+      expect(subject).to receive(:perform_for_host).with(host2, any_args).exactly(1).times.and_call_original
+      expect(subject).to receive(:perform_for_host).with(host3, any_args).exactly(1).times.and_call_original
+      subject.perform
+    end
+
     it 'finalizes synchronisation' do
       allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
 
-      expect(subject.synchronisation).to receive(:finish!)
+      expect(subject).to receive(:finish_sync).exactly(3).times.and_call_original
       subject.perform
     end
   end

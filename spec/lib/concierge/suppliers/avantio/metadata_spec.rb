@@ -5,12 +5,15 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
   include Support::Factories
 
   let(:supplier) { create_supplier(name: Avantio::Client::SUPPLIER_NAME) }
-  let(:host) { create_host(supplier_id: supplier.id) }
+  let!(:host1) { create_host(supplier_id: supplier.id, identifier: '137') }
+  let!(:host2) { create_host(supplier_id: supplier.id, identifier: '138') }
+  let!(:host3) { create_host(supplier_id: supplier.id, identifier: '139') }
   let(:attrs) do
     {
       accommodation_code: "60505",
       user_code: "1238513302",
       login_ga: "itsalojamientos",
+      ga_code: "137",
       name: "Edificio ITS 2/4",
       occupational_rule_id: "204",
       master_kind_code: "1",
@@ -66,11 +69,13 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
       internet: nil
     }
   end
-  let(:properties_list) do
-    [
-      Avantio::Entities::Accommodation.new(attrs),
-      Avantio::Entities::Accommodation.new(attrs.merge({user_code: '123123'}))
-    ]
+  let(:properties) do
+    {
+      '137' => [Avantio::Entities::Accommodation.new(attrs)],
+      '138' => [Avantio::Entities::Accommodation.new(
+        attrs.merge({user_code: '123123', ga_code: '138'})
+      )]
+    }
   end
   let(:descriptions) do
     {
@@ -152,8 +157,7 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
     allow(Date).to receive(:today).and_return(today)
   end
 
-
-  subject { described_class.new(host) }
+  subject { described_class.new(supplier) }
 
   context 'there are events from previous syncs in current context' do
     before do
@@ -177,7 +181,6 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
 
   it 'announces an error if fetching properties fails' do
     allow_any_instance_of(Avantio::Importer).to receive(:fetch_properties) { Result.error(:error) }
-    expect_any_instance_of(Workers::PropertySynchronisation).to receive(:failed!).once
 
     subject.perform
 
@@ -190,13 +193,11 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
 
   context 'fetching descriptions' do
     before do
-      allow_any_instance_of(Avantio::Importer).to receive(:fetch_properties) { Result.new(properties_list) }
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_properties) { Result.new(properties) }
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_descriptions) { Result.error(:error) }
     end
 
     it 'announces an error if fetching descriptions fails' do
-      expect_any_instance_of(Workers::PropertySynchronisation).to receive(:failed!).once
-
       subject.perform
 
       error = ExternalErrorRepository.last
@@ -212,7 +213,8 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_rates) { Result.new(rates) }
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }
 
-      expect_any_instance_of(Workers::PropertySynchronisation).to receive(:skip_property).twice.and_call_original
+      expect(subject).to receive(:skip_property).exactly(2).times.and_call_original
+
       subject.perform
     end
 
@@ -224,14 +226,12 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
 
   context 'fetching occupational rules' do
     before do
-      allow_any_instance_of(Avantio::Importer).to receive(:fetch_properties) { Result.new(properties_list) }
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_properties) { Result.new(properties) }
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_descriptions) { Result.new(descriptions) }
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_occupational_rules) { Result.error(:error) }
     end
 
     it 'announces an error if fetching rules fails' do
-      expect_any_instance_of(Workers::PropertySynchronisation).to receive(:failed!).once
-
       subject.perform
 
       error = ExternalErrorRepository.last
@@ -246,7 +246,7 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_rates) { Result.new(rates) }
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }
 
-      expect_any_instance_of(Workers::PropertySynchronisation).to receive(:skip_property).twice.and_call_original
+      expect(subject).to receive(:skip_property).exactly(2).times.and_call_original
       subject.perform
     end
 
@@ -258,15 +258,13 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
 
   context 'fetching rates' do
     before do
-      allow_any_instance_of(Avantio::Importer).to receive(:fetch_properties) { Result.new(properties_list) }
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_properties) { Result.new(properties) }
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_descriptions) { Result.new(descriptions) }
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_occupational_rules) { Result.new(occupational_rules) }
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_rates) { Result.error(:error) }
     end
 
     it 'announces an error if fetching rates fails' do
-      expect_any_instance_of(Workers::PropertySynchronisation).to receive(:failed!).once
-
       subject.perform
 
       error = ExternalErrorRepository.last
@@ -280,7 +278,8 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_rates) { Result.new({}) }
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }
 
-      expect_any_instance_of(Workers::PropertySynchronisation).to receive(:skip_property).twice.and_call_original
+      expect(subject).to receive(:skip_property).exactly(2).times.and_call_original
+
       subject.perform
     end
 
@@ -292,7 +291,7 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
 
   context 'fetching availabilities' do
     before do
-      allow_any_instance_of(Avantio::Importer).to receive(:fetch_properties) { Result.new(properties_list) }
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_properties) { Result.new(properties) }
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_descriptions) { Result.new(descriptions) }
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_occupational_rules) { Result.new(occupational_rules) }
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_rates) { Result.new(rates) }
@@ -300,8 +299,6 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
     end
 
     it 'announces an error if fetching availabilities fails' do
-      expect_any_instance_of(Workers::PropertySynchronisation).to receive(:failed!).once
-
       subject.perform
 
       error = ExternalErrorRepository.last
@@ -314,7 +311,7 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
     it 'skip property if availabilities not found for property' do
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_availabilities) { Result.new({}) }
 
-      expect_any_instance_of(Workers::PropertySynchronisation).to receive(:skip_property).twice.and_call_original
+      expect(subject).to receive(:skip_property).exactly(2).times.and_call_original
       subject.perform
     end
 
@@ -327,17 +324,26 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
   context 'success' do
 
     before do
-      allow_any_instance_of(Avantio::Importer).to receive(:fetch_properties) { Result.new(properties_list) }
+      allow_any_instance_of(Avantio::Importer).to receive(:fetch_properties) { Result.new(properties) }
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_descriptions) { Result.new(descriptions) }
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_occupational_rules) { Result.new(occupational_rules) }
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_rates) { Result.new(rates) }
       allow_any_instance_of(Avantio::Importer).to receive(:fetch_availabilities) { Result.new(availabilities) }
     end
 
-    it 'finalizes synchronisation' do
+    it 'finalizes synchronisation for each host' do
       allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
 
-      expect(subject.synchronisation).to receive(:finish!)
+      expect(subject).to receive(:finish_sync).exactly(3).times
+      subject.perform
+    end
+
+    it 'calls perform_for_host for each host' do
+      allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
+
+      expect(subject).to receive(:perform_for_host).with(host1, any_args).exactly(1).times.and_call_original
+      expect(subject).to receive(:perform_for_host).with(host2, any_args).exactly(1).times.and_call_original
+      expect(subject).to receive(:perform_for_host).with(host3, any_args).exactly(1).times.and_call_original
       subject.perform
     end
 

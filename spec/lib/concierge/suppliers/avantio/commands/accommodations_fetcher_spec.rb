@@ -28,12 +28,15 @@ RSpec.describe Avantio::Commands::AccommodationsFetcher do
 
         expect(result).to be_a Result
         expect(result).to be_success
-        expect(result.value).to be_an(Array)
-        expect(result.value.length).to eq(3)
-        expect(result.value).to all(be_a Avantio::Entities::Accommodation)
+        expect(result.value).to be_a(Hash)
+        expect(result.value.length).to eq(2)
+
+        accommodations = result.value.values.flatten
+        expect(accommodations.length).to eq(3)
+        expect(accommodations).to all(be_a Avantio::Entities::Accommodation)
       end
 
-      it 'returns empty array for empty response' do
+      it 'returns empty hash for empty response' do
         allow_any_instance_of(Avantio::Fetcher).to receive(:fetch) do
           xml = Nokogiri::XML('<AccommodationList></AccommodationList>')
           Result.new(xml)
