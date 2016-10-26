@@ -67,8 +67,8 @@ module Poplidays
       !result.success? && !SILENCED_ERROR_CODES.include?(result.error.code)
     end
 
-    def no_longer_available?(quote)
-      quote.error.code == :http_status_409
+    def no_longer_available?(quote_result)
+      quote_result.error.code == :http_status_409
     end
 
     def retrieve_quote(params)
