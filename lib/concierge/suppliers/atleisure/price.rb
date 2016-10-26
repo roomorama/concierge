@@ -60,7 +60,7 @@ module AtLeisure
     def parse_quote_response(params, response)
       quotation = build_quotation(params)
 
-      return no_instant_confirmation_error if response["OnRequest"] == "Yes"
+      return not_instant_bookable_error if response["OnRequest"] == "Yes"
 
       if response["Available"] == "Yes"
         price = response["CorrectPrice"] || response["Price"]
@@ -95,13 +95,13 @@ module AtLeisure
       Concierge::JSONRPC.new(endpoint)
     end
 
-    def no_instant_confirmation_error
+    def not_instant_bookable_error
       message = "Roomorama can only work with properties with instant confirmation from AtLeisure." +
         " However, the `OnRequest` field for given period was set to `true`."
 
       mismatch(message, caller)
       Result.error(
-        :unsupported_on_request_reservation,
+        :property_not_instant_bookable,
         'Instant booking is not supported for the given period'
       )
     end
