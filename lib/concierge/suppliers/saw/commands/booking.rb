@@ -17,6 +17,8 @@ module SAW
     #     handle_error(result.error)
     #   end
     class Booking < BaseFetcher
+      DEFAULT_CUSTOMER_EMAIL = "saw@bridgerentals.com"
+
       # Calls the SAW API method usung the HTTP client.
       #
       # Arguments
@@ -53,7 +55,7 @@ module SAW
 
           if valid_result?(result_hash)
             reservation = SAW::Mappers::Reservation.build(params, result_hash)
-            
+
             Result.new(reservation)
           else
             error_result(result_hash, result.value.body)
@@ -76,7 +78,7 @@ module SAW
           user: {
             first_name:  params.get("customer.first_name"),
             last_name:   params.get("customer.last_name"),
-            email:       params.get("customer.email")
+            email:       DEFAULT_CUSTOMER_EMAIL
           }
         )
       end
