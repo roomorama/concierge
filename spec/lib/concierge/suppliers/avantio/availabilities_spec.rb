@@ -32,7 +32,6 @@ RSpec.describe Workers::Suppliers::Avantio::Availabilities do
           Avantio::Entities::OccupationalRule::Season.new(
             Date.new(2016, 6, 10),
             Date.new(2017, 8, 10),
-            2,
             1,
             (1..31).map(&:to_s),
             ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'],

@@ -68,7 +68,7 @@ RSpec.describe Avantio::Mappers::RoomoramaProperty do
     expect(image.url).to eq 'http://img.crs.itsolutions.es/fotos/1258485483aea4571d97cbf40fc90373c2a0883e23/12584854836f07364bd3aaa7a7e6e977f89438ce8a.jpg'
 
     expect(property.description).to eq(description_text)
-    expect(property.minimum_stay).to eq(2)
+    expect(property.minimum_stay).to eq(1)
     expect(property.nightly_rate).to eq(299)
     expect(property.weekly_rate).to eq(2093)
     expect(property.monthly_rate).to eq(8970)

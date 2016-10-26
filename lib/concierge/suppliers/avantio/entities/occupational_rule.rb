@@ -2,15 +2,14 @@ module Avantio
   module Entities
     class OccupationalRule
       class Season
-        attr_reader :start_date, :end_date, :min_nights, :min_nights_online,
-                    :checkin_days, :checkin_weekdays, :checkout_days, :checkout_weekdays
+        attr_reader :start_date, :end_date, :min_nights, :checkin_days, :checkin_weekdays, :checkout_days,
+                    :checkout_weekdays
 
-        def initialize(start_date, end_date, min_nights, min_nights_online, checkin_days,
+        def initialize(start_date, end_date, min_nights, checkin_days,
                        checkin_weekdays, checkout_days, checkout_weekdays)
           @start_date        = start_date
           @end_date          = end_date
           @min_nights        = min_nights
-          @min_nights_online = min_nights_online
           @checkin_days      = checkin_days
           @checkin_weekdays  = checkin_weekdays
           @checkout_days     = checkout_days
@@ -61,7 +60,7 @@ module Avantio
       # Returns min nights among all actual seasons
       def min_nights(length)
         actual_seasons(length).map do |season|
-          season.min_nights_online || season.min_nights
+          season.min_nights
         end.min
       end
 
@@ -70,7 +69,7 @@ module Avantio
         from = Date.today
         to = from + length
         seasons.select do |s|
-          (s.min_nights.to_i > 0 || s.min_nights_online.to_i > 0) &&
+          s.min_nights.to_i > 0 &&
             from < s.end_date &&
             s.start_date <= to
         end

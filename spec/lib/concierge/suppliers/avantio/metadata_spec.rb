@@ -97,7 +97,6 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
             Date.new(2016, 6, 10),
             Date.new(2017, 6, 10),
             2,
-            1,
             (1..31).map(&:to_s),
             ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'],
             (1..31).map(&:to_s),

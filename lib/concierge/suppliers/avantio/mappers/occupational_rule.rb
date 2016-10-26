@@ -23,7 +23,6 @@ module Avantio
           start_date = s.at_xpath('StartDate').text
           end_date = s.at_xpath('EndDate').text
           # nils if they are not presented
-          min_nights_online = s.at_xpath('MinimumNightsOnline')&.text&.to_i
           min_nights = s.at_xpath('MinimumNights')&.text&.to_i
 
           checkin_weekdays = s.xpath('CheckInDays/WeekDay').map(&:text).select { |x| weekday?(x) }
@@ -35,7 +34,6 @@ module Avantio
             Date.parse(start_date),
             Date.parse(end_date),
             min_nights,
-            min_nights_online,
             checkin_days,
             checkin_weekdays,
             checkout_days,

@@ -53,7 +53,7 @@ module Avantio
               date:             date.to_s,
               available:        availability_period.available?,
               nightly_rate:     rate_period.price,
-              minimum_stay:     rule_season.min_nights_online || rule.season.min_nights,
+              minimum_stay:     rule_season.min_nights,
               checkin_allowed:  rule_season.checkin_allowed(date),
               checkout_allowed: rule_season.checkout_allowed(date)
             )

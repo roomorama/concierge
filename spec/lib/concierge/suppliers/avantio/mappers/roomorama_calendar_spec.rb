@@ -60,7 +60,6 @@ RSpec.describe Avantio::Mappers::RoomoramaCalendar do
         Avantio::Entities::OccupationalRule::Season.new(
           Date.new(2014, 6, 10),
           Date.new(2020, 10, 16),
-          2,
           1,
           (1..31).map(&:to_s),
           ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'],
