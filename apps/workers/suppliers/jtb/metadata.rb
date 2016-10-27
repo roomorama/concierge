@@ -19,7 +19,7 @@ module Workers::Suppliers::JTB
     end
 
     def perform
-      result = synchronisation.new_context do
+      result = property_synchronisation.new_context do
         actualizer.actualize
       end
 
@@ -28,7 +28,6 @@ module Workers::Suppliers::JTB
 
         hotels.each do |hotel|
           property_id = hotel.jtb_hotel_code
-          puts property_id
           property_synchronisation.start(property_id) do
             result = mapper.build(hotel)
 
