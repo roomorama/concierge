@@ -10,6 +10,9 @@ how this file is formatted and how the process works.
 - Changed SAW customer email
 - Kigo: add better error reporting by adding descriptions to response parser errors
 
+## Fixed
+- Kigo: Bug in availabilities min stay parsing
+
 ## [0.12.13] - 2016-10-24
 ### Added
 - Rentals United: add translations for zh de es languages for late/early fees
