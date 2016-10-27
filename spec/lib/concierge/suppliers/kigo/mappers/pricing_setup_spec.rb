@@ -79,6 +79,181 @@ RSpec.describe Kigo::Mappers::PricingSetup do
 
   end
 
+  describe '#minimum_stay' do
+    it 'sets minimum_stay to 0 when min stay rules are empty' do
+      periodical_rates['MIN_STAY']['MIN_STAY_RULES'] = []
+      subject = described_class.new(base_rate, wrap_hash(periodical_rates))
+
+      expect(subject).to be_valid
+      expect(subject.minimum_stay).to eq 0
+    end
+
+    it 'sets minimum_stay when min stay rules does not exist for given date' do
+      allow(DateTime).to receive(:now) { DateTime.parse("2015-10-25") }
+
+      periodical_rates['MIN_STAY']['MIN_STAY_RULES'] = [
+        {
+          "DATE_FROM"=>"2016-10-24",
+          "DATE_TO"=>"2016-11-30",
+          "LABEL"=>"Min Stay Fall Season",
+          "MIN_STAY_VALUE"=>2
+        }
+      ]
+      subject = described_class.new(base_rate, wrap_hash(periodical_rates))
+
+      expect(subject).to be_valid
+      expect(subject.minimum_stay).to eq 0
+    end
+
+    it 'sets minimum_stay when min stay rules exist for given date' do
+      allow(DateTime).to receive(:now) { DateTime.parse("2016-10-25") }
+
+      periodical_rates['MIN_STAY']['MIN_STAY_RULES'] = [
+        {
+          "DATE_FROM"=>"2016-10-24",
+          "DATE_TO"=>"2016-11-30",
+          "LABEL"=>"Min Stay Fall Season",
+          "MIN_STAY_VALUE"=>2
+        }
+      ]
+      subject = described_class.new(base_rate, wrap_hash(periodical_rates))
+
+      expect(subject).to be_valid
+      expect(subject.minimum_stay).to eq 2
+    end
+
+    it 'sets minimum_stay when min stay rules are from the beginning of the time and exist for given date' do
+      allow(DateTime).to receive(:now) { DateTime.parse("2016-10-25") }
+
+      periodical_rates['MIN_STAY']['MIN_STAY_RULES'] = [
+        {
+          "DATE_FROM"=>nil,
+          "DATE_TO"=>"2016-11-30",
+          "LABEL"=>"Min Stay Fall Season",
+          "MIN_STAY_VALUE"=>2
+        }
+      ]
+      subject = described_class.new(base_rate, wrap_hash(periodical_rates))
+
+      expect(subject).to be_valid
+      expect(subject.minimum_stay).to eq 2
+    end
+
+    it 'sets minimum_stay when min stay rules are till the end of time and exist for given date' do
+      allow(DateTime).to receive(:now) { DateTime.parse("2016-10-25") }
+
+      periodical_rates['MIN_STAY']['MIN_STAY_RULES'] = [
+        {
+          "DATE_FROM"=>"2016-10-24",
+          "DATE_TO"=>nil,
+          "LABEL"=>"Min Stay Fall Season",
+          "MIN_STAY_VALUE"=>2
+        }
+      ]
+      subject = described_class.new(base_rate, wrap_hash(periodical_rates))
+
+      expect(subject).to be_valid
+      expect(subject.minimum_stay).to eq 2
+    end
+
+    it 'sets minimum_stay by using the first matched min stay rule' do
+      allow(DateTime).to receive(:now) { DateTime.parse("2016-11-01") }
+
+      periodical_rates['MIN_STAY']['MIN_STAY_RULES'] = [
+        {
+          "DATE_FROM"=>"2016-10-26",
+          "DATE_TO"=>"2016-10-28",
+          "LABEL"=>"Min Stay Fall Season",
+          "MIN_STAY_VALUE"=>2
+        },
+        {
+          "DATE_FROM"=>"2016-10-28",
+          "DATE_TO"=>"2016-11-03",
+          "LABEL"=>"Min Stay Fall Season",
+          "MIN_STAY_VALUE"=>3
+        },
+        {
+          "DATE_FROM"=>"2016-11-04",
+          "DATE_TO"=>"2016-11-07",
+          "LABEL"=>"Min Stay Fall Season",
+          "MIN_STAY_VALUE"=>4
+        }
+      ]
+      subject = described_class.new(base_rate, wrap_hash(periodical_rates))
+
+      expect(subject).to be_valid
+      expect(subject.minimum_stay).to eq 3
+    end
+
+    it 'sets minimum_stay when min stay rules exist but date is less than DATE_FROM' do
+      allow(DateTime).to receive(:now) { DateTime.parse("2016-10-23") }
+
+      periodical_rates['MIN_STAY']['MIN_STAY_RULES'] = [
+        {
+          "DATE_FROM"=>"2016-10-24",
+          "DATE_TO"=>"2016-11-30",
+          "LABEL"=>"Min Stay Fall Season",
+          "MIN_STAY_VALUE"=>2
+        }
+      ]
+      subject = described_class.new(base_rate, wrap_hash(periodical_rates))
+
+      expect(subject).to be_valid
+      expect(subject.minimum_stay).to eq 0
+    end
+
+    it 'sets minimum_stay when min stay rules exist and date is equal to DATE_FROM' do
+      allow(DateTime).to receive(:now) { DateTime.parse("2016-10-24") }
+
+      periodical_rates['MIN_STAY']['MIN_STAY_RULES'] = [
+        {
+          "DATE_FROM"=>"2016-10-24",
+          "DATE_TO"=>"2016-11-30",
+          "LABEL"=>"Min Stay Fall Season",
+          "MIN_STAY_VALUE"=>2
+        }
+      ]
+      subject = described_class.new(base_rate, wrap_hash(periodical_rates))
+
+      expect(subject).to be_valid
+      expect(subject.minimum_stay).to eq 2
+    end
+
+    it 'sets minimum_stay when min stay rules exist and date is equal to DATE_TO' do
+      allow(DateTime).to receive(:now) { DateTime.parse("2016-11-30") }
+
+      periodical_rates['MIN_STAY']['MIN_STAY_RULES'] = [
+        {
+          "DATE_FROM"=>"2016-10-24",
+          "DATE_TO"=>"2016-11-30",
+          "LABEL"=>"Min Stay Fall Season",
+          "MIN_STAY_VALUE"=>2
+        }
+      ]
+      subject = described_class.new(base_rate, wrap_hash(periodical_rates))
+
+      expect(subject).to be_valid
+      expect(subject.minimum_stay).to eq 2
+    end
+
+    it 'sets minimum_stay when min stay rules exist but date is greater than DATE_TO' do
+      allow(DateTime).to receive(:now) { DateTime.parse("2016-12-01") }
+
+      periodical_rates['MIN_STAY']['MIN_STAY_RULES'] = [
+        {
+          "DATE_FROM"=>"2016-10-24",
+          "DATE_TO"=>"2016-11-30",
+          "LABEL"=>"Min Stay Fall Season",
+          "MIN_STAY_VALUE"=>2
+        }
+      ]
+      subject = described_class.new(base_rate, wrap_hash(periodical_rates))
+
+      expect(subject).to be_valid
+      expect(subject.minimum_stay).to eq 0
+    end
+  end
+
   private
 
   def wrap_hash(hash)

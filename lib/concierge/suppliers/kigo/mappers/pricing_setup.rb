@@ -45,13 +45,14 @@ module Kigo::Mappers
     def minimum_stay
       return 0 unless min_stay_valid?
       rules = periodical_rate.get('MIN_STAY.MIN_STAY_RULES')
-      rules.collect do |rule|
-        before_to = rule['DATE_TO'].nil? || DateTime.parse(rule['DATE_TO']) < DateTime.now
-        after_from = rule['DATE_FROM'].nil? || DateTime.parse(rule['DATE_FROM']) > DateTime.now
-        if before_to && after_from
-          rule['MIN_STAY_VALUE']
-        end
-      end.first.to_i
+
+      applied_rule = rules.find do |rule|
+        before_to = rule['DATE_TO'].nil? || DateTime.parse(rule['DATE_TO']) >= DateTime.now
+        after_from = rule['DATE_FROM'].nil? || DateTime.parse(rule['DATE_FROM']) <= DateTime.now
+        before_to && after_from
+      end
+
+      applied_rule ? applied_rule['MIN_STAY_VALUE'] : 0
     end
 
     private
