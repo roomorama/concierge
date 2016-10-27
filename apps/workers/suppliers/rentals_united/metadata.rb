@@ -81,6 +81,7 @@ module Workers::Suppliers::RentalsUnited
       end
 
       property_sync.finish!
+      calendar_sync.finish!
     end
 
     private
@@ -99,8 +100,6 @@ module Workers::Suppliers::RentalsUnited
         )
         mapper.build_calendar
       end
-
-      calendar_sync.finish!
     end
 
     # Checks whether property exists in database or not.
