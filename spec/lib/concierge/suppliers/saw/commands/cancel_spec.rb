@@ -25,11 +25,10 @@ RSpec.describe SAW::Commands::Cancel do
       result = subject.call(reference_number)
 
       expect(result).not_to be_success
+      expected_error_message = "Error response could not be recognised (no `code` or `description` fields). Original response: `Internal Server Error\n`"
       expect(result.error.code).to eq(:unrecognised_response)
-      expect(result.error.data).to eq("Internal Server Error\n")
-      expect(last_context_event[:message]).to eq(
-        "Error response could not be recognised (no `code` or `description` fields)."
-      )
+      expect(result.error.data).to eq(expected_error_message)
+      expect(last_context_event[:message]).to eq(expected_error_message)
       expect(last_context_event[:backtrace]).to be_kind_of(Array)
       expect(last_context_event[:backtrace].any?).to be true
     end
@@ -42,13 +41,10 @@ RSpec.describe SAW::Commands::Cancel do
       result = subject.call(reference_number)
 
       expect(result).not_to be_success
-      expect(result.error.code).to eq("9008")
-      expect(result.error.data).to eq(
-        "Booking cancellation is not allowed for this booking."
-      )
-      expect(last_context_event[:message]).to eq(
-        "Response indicating the error `9008`, and description `Booking cancellation is not allowed for this booking.`"
-      )
+      expected_error_message = "Response indicating the error `9008`, and description `Booking cancellation is not allowed for this booking.`"
+      expect(result.error.code).to eq(:unrecognised_response)
+      expect(result.error.data).to eq(expected_error_message)
+      expect(last_context_event[:message]).to eq(expected_error_message)
       expect(last_context_event[:backtrace]).to be_kind_of(Array)
       expect(last_context_event[:backtrace].any?).to be true
     end
@@ -61,13 +57,10 @@ RSpec.describe SAW::Commands::Cancel do
       result = subject.call(reference_number)
 
       expect(result).not_to be_success
-      expect(result.error.code).to eq("9007")
-      expect(result.error.data).to eq(
-        "The valid booking_ref_number tag is not supplied"
-      )
-      expect(last_context_event[:message]).to eq(
-        "Response indicating the error `9007`, and description `The valid booking_ref_number tag is not supplied`"
-      )
+      expected_error_message = "Response indicating the error `9007`, and description `The valid booking_ref_number tag is not supplied`"
+      expect(result.error.code).to eq(:unrecognised_response)
+      expect(result.error.data).to eq(expected_error_message)
+      expect(last_context_event[:message]).to eq(expected_error_message)
       expect(last_context_event[:backtrace]).to be_kind_of(Array)
       expect(last_context_event[:backtrace].any?).to be true
     end
