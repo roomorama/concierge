@@ -24,7 +24,8 @@ RSpec.describe Kigo::ResponseParser do
       }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
-      expect(result.error.code).to eq :quote_call_failed
+      expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq "The `API_RESULT_CODE` obtained was not equal to `E_OK`. Check Kigo's API documentation for an explanation for the `API_RESULT_CODE` returned."
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
@@ -135,7 +136,8 @@ RSpec.describe Kigo::ResponseParser do
       }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
-      expect(result.error.code).to eq :booking_call_failed
+      expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq "The `API_RESULT_CODE` obtained was not equal to `E_OK`. Check Kigo's API documentation for an explanation for the `API_RESULT_CODE` returned."
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"

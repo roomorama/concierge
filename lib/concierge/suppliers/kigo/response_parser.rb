@@ -58,7 +58,7 @@ module Kigo
       elsif check_in_too_far?(payload)
         check_in_too_far_error
       else
-        non_successful_result_error(:quote_call_failed)
+        non_successful_result_error
       end
     end
 
@@ -88,7 +88,7 @@ module Kigo
       elsif payload["API_RESULT_CODE"] == "E_CONFLICT" && payload["API_RESULT_TEXT"] == DATES_NOT_AVAILABLE_MSG
         dates_not_available_error
       else
-        non_successful_result_error(:booking_call_failed)
+        non_successful_result_error
       end
     end
 
@@ -183,12 +183,12 @@ module Kigo
       quotation
     end
 
-    def non_successful_result_error(error_code)
+    def non_successful_result_error
       message = "The `API_RESULT_CODE` obtained was not equal to `E_OK`. Check Kigo's " +
         "API documentation for an explanation for the `API_RESULT_CODE` returned."
 
       mismatch(message, caller)
-      Result.error(error_code, message)
+      Result.error(:unrecognised_response, message)
     end
 
     def check_in_too_far_error
