@@ -204,7 +204,8 @@ RSpec.describe Kigo::ResponseParser do
       result   = subject.parse_reservation(response)
 
       expect(result).not_to be_success
-      expect(result.error.code).to eq :unavailable_dates
+      expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq "Dates not available"
     end
 
     it "returns a reservation with the returned information on success" do
@@ -236,7 +237,8 @@ RSpec.describe Kigo::ResponseParser do
       }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
-      expect(result.error.code).to eq :reservation_not_found
+      expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq "The reservation was not found, or does not belong to your Rental Agency Kigo account."
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
@@ -251,7 +253,8 @@ RSpec.describe Kigo::ResponseParser do
       }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
-      expect(result.error.code).to eq :already_cancelled
+      expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq "The reservation already cancelled"
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"

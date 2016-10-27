@@ -85,7 +85,7 @@ module Kigo
 
         reservation.reference_number = code
         Result.new(reservation)
-      elsif payload["API_RESULT_CODE"] == "E_CONFLICT" && payload["API_RESULT_TEXT"] == DATES_NOT_AVAILABLE_MSG
+      elsif dates_not_available_error?(payload)
         dates_not_available_error
       else
         non_successful_result_error
@@ -165,6 +165,10 @@ module Kigo
       payload["API_RESULT_CODE"] == "E_CONFLICT" && payload["API_RESULT_TEXT"] =~ /#{CHECK_IN_TOO_FAR_MSG}/
     end
 
+    def dates_not_available_error?(payload)
+      payload["API_RESULT_CODE"] == "E_CONFLICT" && payload["API_RESULT_TEXT"] == DATES_NOT_AVAILABLE_MSG
+    end
+
     def build_reservation(params)
       Reservation.new(params)
     end
@@ -202,25 +206,25 @@ module Kigo
       message = DATES_NOT_AVAILABLE_MSG
 
       mismatch(message, caller)
-      Result.error(:unavailable_dates, message)
+      Result.error(:unrecognised_response, message)
     end
 
     def reservation_not_found_error
       message = 'The reservation was not found, or does not belong to your Rental Agency Kigo account.'
       mismatch(message, caller)
-      Result.error(:reservation_not_found, message)
+      Result.error(:unrecognised_response, message)
     end
 
     def already_cancelled_error
       message = 'The reservation already cancelled'
       mismatch(message, caller)
-      Result.error(:already_cancelled, message)
+      Result.error(:unrecognised_response, message)
     end
 
     def cancellation_failed_error
       message = 'Undefined error result'
       mismatch(message, caller)
-      Result.error(:cancellation_failed, message)
+      Result.error(:unrecognised_response, message)
     end
 
     def missing_field_error(name)
