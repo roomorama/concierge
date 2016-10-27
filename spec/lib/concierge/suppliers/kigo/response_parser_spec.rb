@@ -68,6 +68,22 @@ RSpec.describe Kigo::ResponseParser do
       expect(event.to_h[:type]).to eq "response_mismatch"
     end
 
+    it "fails if check-in date is too far" do
+      response = read_fixture("kigo/check_in_too_far.json")
+      result   = nil
+
+      expect {
+        result = subject.compute_pricing(response)
+      }.to change { Concierge.context.events.size }
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :check_in_too_far
+      expect(result.error.data).to eq "Selected check-in date is too far"
+
+      event = Concierge.context.events.last
+      expect(event.to_h[:type]).to eq "response_mismatch"
+    end
+
     it "is unavailable if the API indicates so" do
       response = read_fixture("kigo/unavailable.json")
       result   = subject.compute_pricing(response)

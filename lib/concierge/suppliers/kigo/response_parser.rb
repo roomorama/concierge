@@ -192,7 +192,10 @@ module Kigo
     end
 
     def check_in_too_far_error
-      Result.error(:check_in_too_far, "Selected check-in date is too far")
+      message = "Selected check-in date is too far"
+
+      mismatch(message, caller)
+      Result.error(:check_in_too_far, message)
     end
 
     def dates_not_available_error
