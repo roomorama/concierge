@@ -7,7 +7,8 @@ module JTB
                  :location_code, :hotel_description, :latitude, :longitude, :hotel_type,
                  :address, :non_smoking_room, :parking, :internet, :wifi, :indoor_pool_free,
                  :indoor_pool_charged, :outdoor_pool_free, :outdoor_pool_charged, :indoor_gym_free,
-                 :indoor_gym_charged, :outdoor_gym_free, :outdoor_gym_charged, :wheelchair_access
+                 :indoor_gym_charged, :outdoor_gym_free, :outdoor_gym_charged, :wheelchair_access,
+                 :check_in, :check_out
     end
   end
 end

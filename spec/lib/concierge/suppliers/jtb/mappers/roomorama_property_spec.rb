@@ -54,6 +54,8 @@ RSpec.describe JTB::Mappers::RoomoramaProperty do
     expect(property.postal_code).to eq('510-0075')
     expect(property.city).to eq('Kinki')
     expect(property.description).to eq("This large city hotel is located in front of JR Himeji Station's south exit and features a large capacity banquet hall.")
+    expect(property.check_in_time).to eq('10:00')
+    expect(property.check_out_time).to eq('11:30')
     expect(property.default_to_available).to be false
     expect(property.minimum_stay).to eq(1)
     expect(property.currency).to eq('JPY')

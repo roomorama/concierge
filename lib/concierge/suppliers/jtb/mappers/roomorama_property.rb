@@ -91,6 +91,18 @@ module JTB
         result.currency = JTB::Price::CURRENCY
         result.cancellation_policy = CANCELLATION_POLICY
         result.country_code = COUNTRY_CODE
+        result.check_in_time = prepare_time(hotel.check_in)
+        result.check_out_time = prepare_time(hotel.check_out)
+      end
+
+      # convert JTB time format
+      # "1130" => "11:30"
+      def prepare_time(time)
+        if time
+          h = time[0..1]
+          m = time[2..3]
+          [h, m].join(':')
+        end
       end
 
       # JTB location names are often complex and
