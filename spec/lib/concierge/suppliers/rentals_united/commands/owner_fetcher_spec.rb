@@ -43,7 +43,7 @@ RSpec.describe RentalsUnited::Commands::OwnerFetcher do
       result = subject.fetch_owner
 
       expect(result).not_to be_success
-      expect(result.error.code).to eq("9999")
+      expect(result.error.code).to eq(:unrecognised_response)
 
       event = Concierge.context.events.last.to_h
       expect(event[:message]).to eq(
