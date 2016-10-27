@@ -48,12 +48,13 @@ RSpec.describe Kigo::ResponseParser do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq "Response does not contain mandatory field `API_REPLY`."
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
     end
 
-    it "fails if there is no currency or total fields" do
+    it "fails if there is no total field" do
       response = read_fixture("kigo/no_total.json")
       result   = nil
 
@@ -63,6 +64,23 @@ RSpec.describe Kigo::ResponseParser do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq "Response does not contain mandatory field `TOTAL_AMOUNT`."
+
+      event = Concierge.context.events.last
+      expect(event.to_h[:type]).to eq "response_mismatch"
+    end
+
+    it "fails if there is no currency field" do
+      response = read_fixture("kigo/no_currency.json")
+      result   = nil
+
+      expect {
+        result = subject.compute_pricing(response)
+      }.to change { Concierge.context.events.size }
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq "Response does not contain mandatory field `CURRENCY`."
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
