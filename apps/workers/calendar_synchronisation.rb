@@ -135,6 +135,14 @@ module Workers
     end
 
     def update_counters(calendar)
+      update_calendar_counters(calendar)
+
+      calendar.units.each do |c|
+        update_calendar_counters(c)
+      end
+    end
+
+    def update_calendar_counters(calendar)
       data    = calendar.to_h
       mapping = data[:availabilities].to_s.chars.group_by(&:to_s)
 

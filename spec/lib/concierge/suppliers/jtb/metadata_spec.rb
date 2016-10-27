@@ -43,6 +43,16 @@ RSpec.describe Workers::Suppliers::JTB::Metadata do
       end
     end
 
+    it 'doesnot sync calendar for not synced properties' do
+      allow_any_instance_of(JTB::Sync::Actualizer).to receive(:actualize) { Result.new(true) }
+      allow(JTB::Repositories::HotelRepository).to receive(:english_ryokans).and_return(
+        [double(jtb_hotel_code: '1234'), double(jtb_hotel_code: '2345')]
+      )
+      allow_any_instance_of(JTB::Mappers::RoomoramaProperty).to receive(:build) { Result.error(:error) }
+      expect(subject).not_to receive(:sync_calendar)
+      subject.perform
+    end
+
     context 'success' do
       let(:image) do
         Roomorama::Image.new('identifier').tap do |image|
@@ -63,10 +73,11 @@ RSpec.describe Workers::Suppliers::JTB::Metadata do
         )
       end
 
-      it 'finalizes synchronisation and call calendar sync' do
+      it 'finalizes synchronisations and call calendar sync' do
         expect(subject).to receive(:sync_calendar).and_return(true)
         allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
-        expect(subject.synchronisation).to receive(:finish!)
+        expect(subject.property_synchronisation).to receive(:finish!)
+        expect(subject.calendar_synchronisation).to receive(:finish!)
         subject.perform
       end
 

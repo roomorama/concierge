@@ -6,24 +6,14 @@ RSpec.describe Workers::CalendarSynchronisation do
   include Support::Fixtures
 
   let(:host) { create_host }
-  let(:calendar) {
-    Roomorama::Calendar.new("prop1").tap do |calendar|
-      entry = Roomorama::Calendar::Entry.new(
-        date:         "2016-04-22",
-        available:    true,
-        nightly_rate: 100,
-        weekly_rate:  500
-      )
-      calendar.add(entry)
+  let(:calendar) { create_calendar('prop1') }
 
-      entry = Roomorama::Calendar::Entry.new(
-        date:         "2016-04-23",
-        available:    false,
-        nightly_rate: 100
-      )
-      calendar.add(entry)
+  let(:multiunit_calendar) do
+    Roomorama::Calendar.new("prop1").tap do |c|
+      c.add_unit(create_calendar('unit1'))
+      c.add_unit(create_calendar('unit2'))
     end
-  }
+  end
 
   let(:empty_calendar) { Roomorama::Calendar.new("prop1") }
 
@@ -161,6 +151,47 @@ RSpec.describe Workers::CalendarSynchronisation do
       expect(sync.stats[:properties_processed]).to eq 2
       expect(sync.stats[:available_records]).to eq 1
       expect(sync.stats[:unavailable_records]).to eq 1
+    end
+
+    context 'multiunit calendar' do
+      it "calcs stats for each unit" do
+        create_property(identifier: "prop1", host_id: host.id)
+        subject.start("prop1") { Result.new(multiunit_calendar) }
+
+        expect {
+          subject.finish!
+        }.to change { SyncProcessRepository.count }.by(1)
+
+        sync = SyncProcessRepository.last
+        expect(sync).to be_a SyncProcess
+        expect(sync.type).to eq "availabilities"
+        expect(sync.host_id).to eq host.id
+        expect(sync.successful).to eq true
+        expect(sync.started_at).not_to be_nil
+        expect(sync.finished_at).not_to be_nil
+        expect(sync.stats[:properties_processed]).to eq 1
+        expect(sync.stats[:available_records]).to eq 2
+        expect(sync.stats[:unavailable_records]).to eq 2
+      end
+    end
+  end
+
+  def create_calendar(identifier)
+    Roomorama::Calendar.new(identifier).tap do |calendar|
+      entry = Roomorama::Calendar::Entry.new(
+        date:         "2016-04-22",
+        available:    true,
+        nightly_rate: 100,
+        weekly_rate:  500
+      )
+      calendar.add(entry)
+
+      entry = Roomorama::Calendar::Entry.new(
+        date:         "2016-04-23",
+        available:    false,
+        nightly_rate: 100
+      )
+      calendar.add(entry)
     end
   end
 end
