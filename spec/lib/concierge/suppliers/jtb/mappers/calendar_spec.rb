@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Workers::Suppliers::JTB::Availabilities do
+RSpec.describe JTB::Mappers::Calendar do
   include Support::Factories
 
   let(:supplier) { create_supplier(name: JTB::Client::SUPPLIER_NAME) }
@@ -37,17 +37,21 @@ RSpec.describe Workers::Suppliers::JTB::Availabilities do
     end
   end
 
-  subject { described_class.new(host, property) }
+  subject { described_class.new(property) }
 
-  describe '#perform' do
-
-    it 'finalizes synchronisation' do
+  describe '#build' do
+    it 'builds calendar' do
       allow_any_instance_of(JTB::Mappers::UnitCalendar).to receive(:build) do
         Result.new(unit_calendar)
       end
       allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
-      expect(subject.synchronisation).to receive(:finish!)
-      subject.perform
+
+      result = subject.build
+
+      expect(result).to be_a(Result)
+      expect(result).to be_success
+      expect(result.value).to be_a(Roomorama::Calendar)
+      expect(result.value.units.length).to eq(1)
     end
 
     it 'fails if at unit calendar building fails' do
@@ -56,15 +60,12 @@ RSpec.describe Workers::Suppliers::JTB::Availabilities do
       )
 
       allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
-      expect(subject.synchronisation).to receive(:finish!)
-      subject.perform
+      result = subject.build
 
-      error = ExternalErrorRepository.last
-
-      expect(error.operation).to eq 'sync'
-      expect(error.supplier).to eq JTB::Client::SUPPLIER_NAME
-      expect(error.code).to eq 'some_error'
-      expect(error.description).to eq 'Some error'
+      expect(result).to be_a(Result)
+      expect(result).not_to be_success
+      expect(result.error.code).to eq(:some_error)
+      expect(result.error.data).to eq('Some error')
     end
   end
 end

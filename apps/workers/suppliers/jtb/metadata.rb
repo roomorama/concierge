@@ -5,7 +5,7 @@ module Workers::Suppliers::JTB
   class Metadata
     PERIOD_SYNC = 365
 
-    attr_reader :synchronisation, :host
+    attr_reader :property_synchronisation, :calendar_synchronisation, :host
 
     SKIPABLE_ERROR_CODES = [
       :empty_images,
@@ -14,7 +14,8 @@ module Workers::Suppliers::JTB
 
     def initialize(host)
       @host            = host
-      @synchronisation = Workers::PropertySynchronisation.new(host)
+      @property_synchronisation = Workers::PropertySynchronisation.new(host)
+      @calendar_synchronisation = Workers::CalendarSynchronisation.new(host)
     end
 
     def perform
@@ -27,11 +28,12 @@ module Workers::Suppliers::JTB
 
         hotels.each do |hotel|
           property_id = hotel.jtb_hotel_code
-          synchronisation.start(property_id) do
+          puts property_id
+          property_synchronisation.start(property_id) do
             result = mapper.build(hotel)
 
             if !result.success? && SKIPABLE_ERROR_CODES.include?(result.error.code)
-              synchronisation.skip_property(property_id, result.error.code)
+              property_synchronisation.skip_property(property_id, result.error.code)
             else
               result
             end
@@ -42,18 +44,21 @@ module Workers::Suppliers::JTB
           sync_calendar(property) if property
         end
       else
-        synchronisation.failed!
+        property_synchronisation.failed!
         message = 'Failed to perform full actualization of DB'
         announce_error(message, result)
       end
 
-      synchronisation.finish!
+      calendar_synchronisation.finish!
+      property_synchronisation.finish!
     end
 
     private
 
     def sync_calendar(property)
-      Availabilities.new(host, property).perform
+      calendar_synchronisation.start(property.identifier) do
+        calendar_mapper(property).build
+      end
     end
 
     def fetch_property(property_id)
@@ -66,6 +71,10 @@ module Workers::Suppliers::JTB
 
     def mapper
       @mapper ||= ::JTB::Mappers::RoomoramaProperty.new
+    end
+
+    def calendar_mapper(property)
+      ::JTB::Mappers::Calendar.new(property)
     end
 
     def credentials
