@@ -172,6 +172,8 @@ collection :jtb_hotels do
   attribute :outdoor_gym_free,     String
   attribute :outdoor_gym_charged,  String
   attribute :wheelchair_access,    String
+  attribute :check_in,             String
+  attribute :check_out,            String
 end
 
 collection :jtb_pictures do

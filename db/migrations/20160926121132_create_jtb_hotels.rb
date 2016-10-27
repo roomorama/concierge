@@ -9,6 +9,8 @@ Hanami::Model.migration do
       column :hotel_name,           String, null: false, size: 240
       column :location_code,        String, size: 5
       column :hotel_description,    String, text: true
+      column :check_in,             String, size: 4
+      column :check_out,            String, size: 4
       column :latitude,             String, size: 15
       column :longitude,            String, size: 15
       column :hotel_type,           String, size: 1

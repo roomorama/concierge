@@ -16,6 +16,8 @@ module Support
           hotel_name: "Hotel Nikko Himeji",
           location_code: "63",
           hotel_description: "This large city hotel is located in front of JR Himeji Station's south exit and features a large capacity banquet hall.",
+          check_in: "1000",
+          check_out: "1130",
           latitude: "N34.49.31.31205",
           longitude: "E134.41.24.7647",
           hotel_type: "H",

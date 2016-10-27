@@ -17,6 +17,8 @@ module JTB
           6   => :hotel_name,
           9   => :location_code,
           10  => :hotel_description,
+          13  => :check_in,
+          14  => :check_out,
           19  => :latitude,
           20  => :longitude,
           22  => :hotel_type,
