@@ -76,7 +76,7 @@ RSpec.describe AtLeisure::Booking do
           "CustomerInitials"         => "Alex",
           "CustomerTelephone1Number" => "555-55-55",
           "BookingOrOption"          => "Booking",
-          "CustomerEmail"            => "atleisure@roomorama.com",
+          "CustomerEmail"            => "atleisure@bridgerentals.com",
           "CustomerCountry"          => "SG",
           "CustomerLanguage"         => "EN",
           "NumberOfChildren"         => 0,

@@ -4,6 +4,15 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.12.14] - 2016-10-27
+### Added
+- Changed atleisure customer email
+- Changed SAW customer email
+- Kigo: add better error reporting by adding descriptions to response parser errors
+
+## Fixed
+- Kigo: Bug in availabilities min stay parsing
+
 ## [0.12.13] - 2016-10-24
 ### Added
 - Rentals United: add translations for zh de es languages for late/early fees
