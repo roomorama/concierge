@@ -52,7 +52,7 @@ module Avantio
       def build(accommodation_raw)
         attrs = fetch_attrs(accommodation_raw)
         convert_attrs!(attrs)
-
+        attrs[:check_in_rules] = check_in_rules_mapper.build(accommodation_raw).to_s
         services_attrs = services_mapper.build(accommodation_raw)
 
         Avantio::Entities::Accommodation.new(attrs.merge(services_attrs))
@@ -62,6 +62,10 @@ module Avantio
 
       def services_mapper
         Avantio::Mappers::Services.new
+      end
+
+      def check_in_rules_mapper
+        Avantio::Mappers::CheckInRules.new
       end
 
       def fetch_attrs(accommodation_raw)

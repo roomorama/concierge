@@ -61,6 +61,7 @@ RSpec.describe Avantio::Mappers::Accommodation do
     expect(accommodation.towels).to be true
     expect(accommodation.parking).to be true
     expect(accommodation.airconditioning).to be true
+    expect(accommodation.check_in_rules).to eq('anytime')
   end
 
   def xml_from_file(filename)
