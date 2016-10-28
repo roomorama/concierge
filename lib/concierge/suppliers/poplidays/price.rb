@@ -35,6 +35,7 @@ module Poplidays
     # are valid business cases for us and should be handled:
     SILENCED_ERROR_CODES = [
       :http_status_400, # 400 - bad arrival/departure date
+      :http_status_409, # 409 - stay specified in booking is no more available
     ]
 
     attr_reader :credentials
@@ -55,7 +56,6 @@ module Poplidays
 
       quote_result = retrieve_quote(params)
 
-      return no_longer_available_error if no_longer_available?(quote_result)
       return quote_result if unknown_error?(quote_result)
 
       mapper.build(params, mandatory_services.value, quote_result)
@@ -65,10 +65,6 @@ module Poplidays
 
     def unknown_error?(result)
       !result.success? && !SILENCED_ERROR_CODES.include?(result.error.code)
-    end
-
-    def no_longer_available?(quote_result)
-      quote_result.error.code == :http_status_409
     end
 
     def retrieve_quote(params)
@@ -117,12 +113,6 @@ module Poplidays
       message = "Property shouldn't be on request only and should have enabled prices"
       mismatch(message, caller)
       Result.error(:property_not_instant_bookable, message)
-    end
-
-    def no_longer_available_error
-      message = "Stay specified in booking is no more available"
-      mismatch(message, caller)
-      Result.error(:property_no_longer_available, message)
     end
 
     def mismatch(message, backtrace)
