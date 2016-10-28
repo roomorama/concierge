@@ -125,7 +125,7 @@ RSpec.describe Poplidays::Price do
       expect(event.to_h[:type]).to eq 'response_mismatch'
     end
 
-    [400, 409].each do |status|
+    [409].each do |status|
       it "returns an unavailable quotation for poplidays response with #{status} status" do
         stub_with_fixture(property_details_endpoint, 'poplidays/property_details.json')
         stub_call(:post, quote_endpoint) { [status, {}, unavailable_quote_response] }
@@ -143,6 +143,23 @@ RSpec.describe Poplidays::Price do
         expect(quotation.currency).to be_nil
         expect(quotation.total).to be_nil
       end
+    end
+
+    it "returns an error for poplidays response with 400 status" do
+      stub_with_fixture(property_details_endpoint, 'poplidays/property_details.json')
+      stub_call(:post, quote_endpoint) { [400, {}, unavailable_quote_response] }
+      result = nil
+
+      expect {
+        result = subject.quote(params)
+      }.to change { Concierge.context.events.size }
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq("Unknown poplidays error")
+
+      event = Concierge.context.events.last
+      expect(event.to_h[:type]).to eq 'response_mismatch'
     end
 
     it "returns not success result for poplidays response with 500 status" do

@@ -34,7 +34,6 @@ module Poplidays
     # Some unsuccessful (not 20X) http statuses of quote response
     # are valid business cases for us and should be handled:
     SILENCED_ERROR_CODES = [
-      :http_status_400, # 400 - bad arrival/departure date
       :http_status_409, # 409 - stay specified in booking is no more available
     ]
 
@@ -56,15 +55,23 @@ module Poplidays
 
       quote_result = retrieve_quote(params)
 
-      return quote_result if unknown_error?(quote_result)
-
-      mapper.build(params, mandatory_services.value, quote_result)
+      if http_status_400_error?(quote_result)
+        http_status_400_error(quote_result)
+      elsif unknown_error?(quote_result)
+        quote_result
+      else
+        mapper.build(params, mandatory_services.value, quote_result)
+      end
     end
 
     private
 
     def unknown_error?(result)
       !result.success? && !SILENCED_ERROR_CODES.include?(result.error.code)
+    end
+
+    def http_status_400_error?(result)
+      !result.success? && result.error.code == :http_status_400
     end
 
     def retrieve_quote(params)
@@ -113,6 +120,13 @@ module Poplidays
       message = "Property shouldn't be on request only and should have enabled prices"
       mismatch(message, caller)
       Result.error(:property_not_instant_bookable, message)
+    end
+
+    def http_status_400_error(result)
+      message = "Unknown poplidays error"
+
+      mismatch(message, caller)
+      Result.error(:unrecognised_response, message)
     end
 
     def mismatch(message, backtrace)
