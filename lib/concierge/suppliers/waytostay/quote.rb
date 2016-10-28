@@ -3,12 +3,13 @@ module Waytostay
   # Handles all things quote related for waytostay
   #
   module Quote
+    include Concierge::Errors::Quote
 
     ENDPOINT = "/bookings/quote".freeze
     SILENCED_ERROR_MESSAGES = [
       "Apartment is not available for the selected dates",
     ].freeze
-    STAY_TOO_SHORT_ERROR_MESSAGE    = /The minimum number of nights to book this apartment is \d+/
+    STAY_TOO_SHORT_ERROR_MESSAGE    = /The minimum number of nights to book this apartment is (\d+)/
     CHECK_IN_TOO_NEAR_ERROR_MESSAGE = "Cut off days restriction"
     CHECK_IN_TOO_FAR_ERROR_MESSAGE  = "Max days for arrival restriction"
     REQUIRED_RESPONSE_KEYS = [
@@ -41,11 +42,11 @@ module Waytostay
       elsif error_should_be_silenced?(result)
         Result.new(build_unavailable_quotation(params))
       elsif stay_too_short?(result)
-        stay_too_short_error(result)
+        stay_too_short(min_stay_from_error(result))
       elsif check_in_too_near?(result)
-        check_in_too_near_error
+        check_in_too_near
       elsif check_in_too_far?(result)
-        check_in_too_far_error
+        check_in_too_far
       else
         result
       end
@@ -83,12 +84,12 @@ module Waytostay
     end
 
     def stay_too_short?(result)
-      !!stay_too_short_message(result)
+      !!min_stay_from_error(result)
     end
 
-    def stay_too_short_message(result)
+    def min_stay_from_error(result)
       match_data = result.error.data.to_s.match(STAY_TOO_SHORT_ERROR_MESSAGE)
-      match_data ? match_data.to_s : nil
+      match_data ? match_data[1] : nil
     end
 
     def check_in_too_near?(result)
@@ -112,18 +113,6 @@ module Waytostay
         currency:            response.get("pricing.currency"),
         available:           true
       }
-    end
-
-    def stay_too_short_error(result)
-      Result.error(:stay_too_short, stay_too_short_message(result))
-    end
-
-    def check_in_too_near_error
-      Result.error(:check_in_too_near, "Selected check-in date is too near")
-    end
-
-    def check_in_too_far_error
-      Result.error(:check_in_too_far, "Selected check-in date is too far")
     end
   end
 end
