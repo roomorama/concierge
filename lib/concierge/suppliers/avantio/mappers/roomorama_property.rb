@@ -86,6 +86,8 @@ module Avantio
         result.services_cleaning = accommodation.services_cleaning
         result.services_cleaning_rate = accommodation.services_cleaning_rate
         result.services_cleaning_required = accommodation.services_cleaning_required
+
+        result.description_append = accommodation.check_in_rules
       end
 
       def fetch_surface_unit

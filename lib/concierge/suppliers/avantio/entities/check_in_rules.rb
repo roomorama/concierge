@@ -80,7 +80,7 @@ module Avantio
       # Build string representation of rules.
       # For examples see specs.
       def to_s
-        parts = []
+        parts = ['Check-in time:']
 
         season_rules = @rules.group_by(&:season)
 
@@ -88,18 +88,18 @@ module Avantio
           indent = ''
           unless season.empty?
             indent = '  '
-            parts << "#{season}"
+            parts << "  #{season}"
           end
 
           rule = rules[0]
           if rule.anyweekday?
-            parts << "#{rule.time}"
+            parts << "  #{rule.time}"
           else
             weekdays_parts = []
             Date::DAYNAMES.each do |weekday|
               day_rule = rules.find { |rule| rule.weekdays.include?(weekday) }
               if day_rule
-                weekdays_parts << "#{indent}#{weekday}: #{day_rule.time}"
+                weekdays_parts << "  #{indent}#{weekday}: #{day_rule.time}"
               end
             end
 
