@@ -80,34 +80,31 @@ module Avantio
       # Build string representation of rules.
       # For examples see specs.
       def to_s
-        parts = ['Check-in time:']
+        title = 'Check-in time:'
+
+        parts = []
 
         season_rules = @rules.group_by(&:season)
 
         season_rules.each do |season, rules|
-          indent = ''
-          unless season.empty?
-            indent = '  '
-            parts << "  #{season}"
-          end
+          parts << "* #{season}" unless season.empty?
 
           rule = rules[0]
           if rule.anyweekday?
-            parts << "  #{rule.time}"
+            parts << "#{rule.time}"
           else
-            weekdays_parts = []
             Date::DAYNAMES.each do |weekday|
               day_rule = rules.find { |rule| rule.weekdays.include?(weekday) }
-              if day_rule
-                weekdays_parts << "  #{indent}#{weekday}: #{day_rule.time}"
-              end
+              parts << "- #{weekday}: #{day_rule.time}" if day_rule
             end
-
-            parts << weekdays_parts.join("\n")
           end
         end
 
-        parts.join("\n")
+        case parts.length
+        when 0 then ''
+        when 1 then [title, *parts].join(' ')
+        else [title, *parts].join("\n")
+        end
       end
     end
   end

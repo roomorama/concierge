@@ -22,8 +22,7 @@ RSpec.describe Avantio::Entities::CheckInRules do
 
       it 'returns anytime' do
         expect(subject.to_s).to eq(
-          "Check-in time:\n"\
-          "  anytime"
+          "Check-in time: anytime"
         )
       end
     end
@@ -39,8 +38,7 @@ RSpec.describe Avantio::Entities::CheckInRules do
 
       it 'returns string without weekdays' do
         expect(subject.to_s).to eq(
-          "Check-in time:\n"\
-          "  from 10:00 to 11:00"
+          "Check-in time: from 10:00 to 11:00"
         )
       end
     end
@@ -60,13 +58,13 @@ RSpec.describe Avantio::Entities::CheckInRules do
       it 'returns string without weekdays' do
         expect(subject.to_s).to eq(
           "Check-in time:\n"\
-          "  Sunday: from 10:30 to 11:30\n"\
-          "  Monday: from 10:00 to 11:00\n"\
-          "  Tuesday: from 10:00 to 11:00\n"\
-          "  Wednesday: from 10:00 to 11:00\n"\
-          "  Thursday: from 10:30 to 11:30\n"\
-          "  Friday: from 10:30 to 11:30\n"\
-          "  Saturday: from 10:30 to 11:30"
+          "- Sunday: from 10:30 to 11:30\n"\
+          "- Monday: from 10:00 to 11:00\n"\
+          "- Tuesday: from 10:00 to 11:00\n"\
+          "- Wednesday: from 10:00 to 11:00\n"\
+          "- Thursday: from 10:30 to 11:30\n"\
+          "- Friday: from 10:30 to 11:30\n"\
+          "- Saturday: from 10:30 to 11:30"
         )
       end
     end
@@ -86,11 +84,11 @@ RSpec.describe Avantio::Entities::CheckInRules do
       it 'returns string without weekdays' do
         expect(subject.to_s).to eq(
           "Check-in time:\n"\
-          "  Monday: from 10:00 to 11:00\n"\
-          "  Tuesday: from 10:00 to 11:00\n"\
-          "  Wednesday: from 10:00 to 11:00\n"\
-          "  Thursday: from 10:30 to 11:30\n"\
-          "  Friday: from 10:30 to 11:30"
+          "- Monday: from 10:00 to 11:00\n"\
+          "- Tuesday: from 10:00 to 11:00\n"\
+          "- Wednesday: from 10:00 to 11:00\n"\
+          "- Thursday: from 10:30 to 11:30\n"\
+          "- Friday: from 10:30 to 11:30"
         )
       end
     end
@@ -110,13 +108,13 @@ RSpec.describe Avantio::Entities::CheckInRules do
       it 'returns string with all seasons' do
         expect(subject.to_s).to eq(
           "Check-in time:\n"\
-          "  1 Jan - 1 Jun\n"\
-          "    Monday: from 10:00 to 11:00\n"\
-          "    Tuesday: from 10:00 to 11:00\n"\
-          "    Wednesday: from 10:00 to 11:00\n"\
-          "  2 Jun - 31 Dec\n"\
-          "    Thursday: from 10:30 to 11:30\n"\
-          "    Friday: from 10:30 to 11:30"
+          "* 1 Jan - 1 Jun\n"\
+          "- Monday: from 10:00 to 11:00\n"\
+          "- Tuesday: from 10:00 to 11:00\n"\
+          "- Wednesday: from 10:00 to 11:00\n"\
+          "* 2 Jun - 31 Dec\n"\
+          "- Thursday: from 10:30 to 11:30\n"\
+          "- Friday: from 10:30 to 11:30"
         )
       end
     end
