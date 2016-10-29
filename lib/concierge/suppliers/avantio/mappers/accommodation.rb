@@ -47,6 +47,7 @@ module Avantio
         handicapped_facilities: 'Features/HouseCharacteristics/HandicappedFacilities',
         number_of_kitchens:     'Features/HouseCharacteristics/Kitchen/NumberOfKitchens',
         washing_machine:        'Features/HouseCharacteristics/Kitchen/WashingMachine',
+        check_out_time:         'CheckInCheckOutInfo/CheckOutSchedule',
       }
 
       def build(accommodation_raw)

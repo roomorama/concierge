@@ -61,7 +61,8 @@ RSpec.describe Avantio::Mappers::Accommodation do
     expect(accommodation.towels).to be true
     expect(accommodation.parking).to be true
     expect(accommodation.airconditioning).to be true
-    expect(accommodation.check_in_rules).to eq('anytime')
+    expect(accommodation.check_in_rules).to eq("Check-in time:\n  anytime")
+    expect(accommodation.check_out_time).to eq('01:00')
   end
 
   def xml_from_file(filename)

@@ -11,7 +11,7 @@ module Avantio
         :handicapped_facilities, :number_of_kitchens, :washing_machine, :pets_allowed, :security_deposit_amount,
         :security_deposit_type, :security_deposit_currency_code, :services_cleaning, :services_cleaning_rate,
         :services_cleaning_required, :bed_linen, :towels, :parking, :airconditioning, :free_cleaning, :internet,
-        :check_in_rules
+        :check_in_rules, :check_out_time
       ]
 
       attr_reader *ATTRIBUTES
@@ -75,6 +75,7 @@ module Avantio
         @free_cleaning                   = attrs[:free_cleaning]
         @internet                        = attrs[:internet]
         @check_in_rules                  = attrs[:check_in_rules]
+        @check_out_time                  = attrs[:check_out_time]
       end
 
       # Roomorama property id for given accommodation
