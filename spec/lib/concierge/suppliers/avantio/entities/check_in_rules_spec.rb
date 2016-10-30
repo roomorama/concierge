@@ -21,9 +21,7 @@ RSpec.describe Avantio::Entities::CheckInRules do
       end
 
       it 'returns anytime' do
-        expect(subject.to_s).to eq(
-          "Check-in time: anytime"
-        )
+        expect(subject.to_s).to eq("Check-in time: anytime")
       end
     end
 
@@ -37,9 +35,7 @@ RSpec.describe Avantio::Entities::CheckInRules do
       end
 
       it 'returns string without weekdays' do
-        expect(subject.to_s).to eq(
-          "Check-in time: from 10:00 to 11:00"
-        )
+        expect(subject.to_s).to eq("Check-in time: from 10:00 to 11:00")
       end
     end
 
