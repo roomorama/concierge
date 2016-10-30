@@ -93,6 +93,19 @@ module JTB
         result.country_code = COUNTRY_CODE
         result.check_in_time = prepare_time(hotel.check_in)
         result.check_out_time = prepare_time(hotel.check_out)
+        result.amenities = hotel_amenities(hotel)
+      end
+
+      def hotel_amenities(hotel)
+        amenities = []
+        amenities << 'parking' if hotel.parking == '1'
+        amenities << 'wifi' if hotel.wifi == '1'
+        amenities << 'internet' if hotel.internet == '1'
+        amenities << 'wheelchairaccess' if hotel.wheelchair_access == '1'
+        amenities << 'pool' if hotel.has_pool?
+        amenities << 'gym' if hotel.has_gym?
+
+        amenities
       end
 
       # convert JTB time format
