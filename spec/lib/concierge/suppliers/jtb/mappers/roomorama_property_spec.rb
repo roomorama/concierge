@@ -62,6 +62,7 @@ RSpec.describe JTB::Mappers::RoomoramaProperty do
     expect(property.cancellation_policy).to eq('super_elite')
     expect(property.lat).to eq('34.82536445833334')
     expect(property.lng).to eq('134.69021241666667')
+    expect(property.amenities).to eq(['parking', 'internet', 'wheelchairaccess', 'pool'])
     expect(property.units.length).to eq(1)
 
     expect(property.images.length).to eq(1)
