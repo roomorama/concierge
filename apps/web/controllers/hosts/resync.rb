@@ -9,9 +9,9 @@ module Web::Controllers::Hosts
       if host
         trigger_sync!(host)
 
-        flash[:error] = "Couldn't find requested host"
-      else
         flash[:notice] = "Host #{host.identifier} (#{host.username}) was queued to synchronisation"
+      else
+        flash[:error] = "Couldn't find requested host"
       end
 
       redirect_to routes.supplier_path(params[:supplier_id])
