@@ -1,6 +1,8 @@
 require "spec_helper"
 
 RSpec.describe API::Middlewares::RoomoramaWebhook do
+  include Concierge::Errors::Quote
+
   let(:roomorama_webhook) {
     {
       "action"  => "quote_instant",
@@ -155,19 +157,36 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
     }
 
     it "returns a modified webhook with the correct information on success" do
-      expect(post("/", headers)).to eq webhook_response_payload(total: 150, currency: "EUR")
+      expect(post("/", headers)).to eq webhook_200_response(total: 150, currency: "EUR")
     end
 
     it "returns the upstream (Concierge) response if the property is unavailable" do
       concierge_response[:available] = false
-      expect(post("/", headers)).to eq webhook_response_payload(total: 150, currency: "EUR", errors: {"base"=> "room unavailable"})
+      expect(post("/", headers)).to eq webhook_200_response(total: 150, currency: "EUR", errors: {"base"=> "room unavailable"})
     end
 
-    it "returns the upstream (Concierge) response if there was an error quoting the booking" do
-      concierge_response[:status] = "error"
-      concierge_response[:errors] = {"quote" => "Maximum length of stay must be less than 15 nights."}
+    context "there was an Concierge::Errors::Quote error while quoting" do
+      it "returns the upstream (Concierge) response" do
+        [check_in_too_near, check_in_too_far, stay_too_short(15)].each do |result|
+          concierge_response[:status] = "error"
+          concierge_response[:errors] = {
+            "quote" => result.error.data
+          }
+          expect(post("/", headers)).to eq webhook_200_response(total: 150, currency: "EUR", errors: concierge_response[:errors])
+        end
+      end
+    end
 
-      expect(post("/", headers)).to eq webhook_response_payload(total: 150, currency: "EUR", errors: concierge_response[:errors])
+    context "there was a network error while quoting" do
+      # Errors other than those in Concierge::Errors::Quote are 503
+      let(:upstream) { lambda { |env| [503, {}, [concierge_response.to_json]] } }
+      it "returns generic error" do
+        concierge_response[:status] = "error"
+        concierge_response[:errors] = {
+          "quote" => "Could not quote price with remote supplier"
+        }
+        expect(post("/", headers)).to eq webhook_503_response(total: 150, currency: "EUR", errors: concierge_response[:errors])
+      end
     end
   end
 
@@ -234,7 +253,7 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
     [422, { "Content-Length" => "15" }, "Invalid webhook"]
   end
 
-  def webhook_response_payload(total:, currency:, errors: nil)
+  def webhook_200_response(total:, currency:, errors: nil)
     response = {
       "action"  => "quote_instant",
       "event"   => "quote_instant",
@@ -242,6 +261,16 @@ RSpec.describe API::Middlewares::RoomoramaWebhook do
     }.to_json
 
     [200, { "Content-Length" => response.size.to_s }, response]
+  end
+
+  def webhook_503_response(total:, currency:, errors: nil)
+    response = {
+      "action"  => "quote_instant",
+      "event"   => "quote_instant",
+      "inquiry" => inquiry_json(total:total, currency:currency, errors:errors),
+    }.to_json
+
+    [503, { "Content-Length" => response.size.to_s }, response]
   end
 
   def inquiry_json(total:, currency:, errors:nil)
