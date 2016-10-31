@@ -75,6 +75,11 @@ module Waytostay
       Concierge.context.augment(event)
     end
 
+    def missing_keys_error(missing_keys)
+      augment_missing_fields(missing_keys)
+      Result.error(:unrecognised_response, "Missing keys: #{missing_keys}")
+    end
+
     def announce_error(operation, result)
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
         operation:   operation,
