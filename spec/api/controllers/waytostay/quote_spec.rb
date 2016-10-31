@@ -6,6 +6,7 @@ require_relative "../shared/external_error_reporting"
 RSpec.describe API::Controllers::Waytostay::Quote do
   include Support::HTTPStubbing
   include Support::Factories
+  include Concierge::Errors::Quote
 
   let(:supplier) { create_supplier(name: Waytostay::Client::SUPPLIER_NAME) }
   let(:host) { create_host(supplier_id: supplier.id, fee_percentage: 7) }
@@ -35,13 +36,37 @@ RSpec.describe API::Controllers::Waytostay::Quote do
   describe "#call" do
     subject { described_class.new.call(params) }
 
-    it "returns a proper error message if client returns quotation with error" do
+    it "returns a proper error message if client returns network error" do
       expect_any_instance_of(Waytostay::Client).to receive(:quote).and_return(Result.error(:network_error))
 
       response = parse_response(subject)
       expect(response.status).to eq 503
       expect(response.body["status"]).to eq "error"
       expect(response.body["errors"]["quote"]).to eq "Could not quote price with remote supplier"
+    end
+
+    it "returns proper error messages if client returns check_in_too_near" do
+      expect_any_instance_of(Waytostay::Client).to receive(:quote).and_return(check_in_too_near)
+      response = parse_response(subject)
+      expect(response.status).to eq 200
+      expect(response.body["status"]).to eq "error"
+      expect(response.body["errors"]["quote"]).to eq "Selected check-in date is too near"
+    end
+
+    it "returns proper error messages if client returns check_in_too_near" do
+      expect_any_instance_of(Waytostay::Client).to receive(:quote).and_return(check_in_too_far)
+      response = parse_response(subject)
+      expect(response.status).to eq 200
+      expect(response.body["status"]).to eq "error"
+      expect(response.body["errors"]["quote"]).to eq "Selected check-in date is too far"
+    end
+
+    it "returns proper error messages if client returns stay_too_short" do
+      expect_any_instance_of(Waytostay::Client).to receive(:quote).and_return(stay_too_short(15))
+      response = parse_response(subject)
+      expect(response.status).to eq 200
+      expect(response.body["status"]).to eq "error"
+      expect(response.body["errors"]["quote"]).to eq "The minimum number of nights to book this apartment is 15"
     end
 
     it "returns unavailable quotation when client returns so" do
