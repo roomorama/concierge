@@ -200,6 +200,27 @@ RSpec.describe Workers::PropertySynchronisation do
       expect(prop3).to be_a Property
     end
 
+    it "does purge if even one of the property sync fails" do
+      stub_call(:delete, "https://api.roomorama.com/v1.0/host/disable") { [200, {}, [""]] }
+      create_property(host_id: host.id, identifier: "prop1", data: roomorama_property.to_h)
+      create_property(host_id: host.id, identifier: "prop2", data: roomorama_property.to_h.merge!(identifier: "prop2"))
+      create_property(host_id: host.id, identifier: "prop3", data: roomorama_property.to_h.merge!(identifier: "prop3"))
+
+      subject.start("prop1") { Result.new(roomorama_property) }
+      subject.start("prop2") { Result.error(:some_error) }
+      subject.finish!
+
+      prop1 = PropertyRepository.from_host(host).identified_by("prop2").first
+      expect(prop1).to be_a Property
+
+      prop2 = PropertyRepository.from_host(host).identified_by("prop2").first
+      expect(prop2).to be_a Property
+
+      # prop3 should be purged
+      prop3 = PropertyRepository.from_host(host).identified_by("prop3").first
+      expect(prop3).to be_nil
+    end
+
     it "enqueues a disable operation with non-processed identifiers" do
       data = {
         identifier: "prop1",
