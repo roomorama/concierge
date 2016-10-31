@@ -5,6 +5,8 @@ RSpec.describe Web::Views::Suppliers::Show do
 
   let(:supplier)  { create_supplier(name: "Supplier Y") }
   let(:hosts)     { HostRepository.from_supplier(supplier) }
+  let(:flash)     { {} }
+  let(:params)    { Hanami::Action::Params.new({}) }
 
   # Hanami has a weird issue when rendering partials on the test environment when
   # the views are initialized as above (as suggested on the official guides). For some
@@ -13,7 +15,7 @@ RSpec.describe Web::Views::Suppliers::Show do
   #
   # Hardcoding the format to +html+ for the rendered view allows the specs to pass.
   # TODO get rid of this when upgrading Hanami, hopefully it will have been fixed.
-  let(:exposures) { Hash[supplier: supplier, hosts: hosts, format: :html] }
+  let(:exposures) { Hash[supplier: supplier, hosts: hosts, flash: flash, params: params, format: :html] }
 
   let(:template)  { Hanami::View::Template.new('apps/web/templates/suppliers/show.html.erb') }
   let(:view)      { described_class.new(template, exposures) }
