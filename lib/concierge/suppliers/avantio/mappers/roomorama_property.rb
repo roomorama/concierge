@@ -87,8 +87,21 @@ module Avantio
         result.services_cleaning_rate = accommodation.services_cleaning_rate
         result.services_cleaning_required = accommodation.services_cleaning_required
 
-        result.description_append = accommodation.check_in_rules
-        result.check_out_time = accommodation.check_out_time
+        result.description_append = build_append(accommodation)
+      end
+
+      def build_append(accommodation)
+        parts = []
+
+        if accommodation.check_in_rules
+          parts << accommodation.check_in_rules
+        end
+
+        if accommodation.check_out_time
+          parts << "Check-out time: #{accommodation.check_out_time}"
+        end
+
+        parts.join("\n")
       end
 
       def fetch_surface_unit

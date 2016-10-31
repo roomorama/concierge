@@ -72,8 +72,8 @@ RSpec.describe Avantio::Mappers::RoomoramaProperty do
     expect(property.nightly_rate).to eq(299)
     expect(property.weekly_rate).to eq(2093)
     expect(property.monthly_rate).to eq(8970)
-    expect(property.description_append).to eq("Check-in time: anytime")
-    expect(property.check_out_time).to eq('01:00')
+    expect(property.description_append).to eq("Check-in time: anytime\nCheck-out time: 01:00")
+    expect(property.check_out_time).to be_nil
   end
 
   def accommodation_from_file(filename)
