@@ -69,7 +69,7 @@
         },
         {
           "CHECK_IN": "2016-09-01",
-          "CHECK_OUT": "2016-11-01",
+          "CHECK_OUT": "2018-11-01",
           "NAME": "",
           "STAY_MIN": {
             "UNIT": "NIGHT",
@@ -131,8 +131,8 @@
           ]
         },
         {
-          "CHECK_IN": "2016-11-01",
-          "CHECK_OUT": "2018-01-22",
+          "CHECK_IN": "2018-11-01",
+          "CHECK_OUT": "2019-01-22",
           "NAME": "",
           "STAY_MIN": {
             "UNIT": "NIGHT",
