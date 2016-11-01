@@ -19,13 +19,9 @@ module Waytostay
 
       response = Concierge::SafeAccessHash.new(cancellation_result.value)
       missing_keys = response.missing_keys_from(REQUIRED_RESPONSE_KEYS)
-      if missing_keys.empty?
-        Result.new(response.get("booking_reference"))
-      else
-        augment_missing_fields(missing_keys)
-        Result.error(:response_mismatch, "Missing keys: #{missing_keys}")
-      end
+      return missing_keys_error(missing_keys) unless missing_keys.empty?
 
+      Result.new(response.get("booking_reference"))
     end
   end
 end

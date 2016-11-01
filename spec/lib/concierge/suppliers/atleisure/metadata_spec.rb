@@ -7,7 +7,7 @@ RSpec.describe Workers::Suppliers::AtLeisure::Metadata do
   let(:supplier) { create_supplier }
   let(:host) { create_host(supplier_id: supplier.id) }
   let(:properties_list) { JSON.parse(read_fixture('atleisure/properties_list.json')) }
-  let(:success_result) { Result.new(properties_list) }
+  let(:success_result) { Result.new(properties_list * described_class::BATCH_SIZE) }
 
   before do
     allow(Date).to receive(:today).and_return(Date.new(2016, 6, 18))
@@ -82,7 +82,33 @@ RSpec.describe Workers::Suppliers::AtLeisure::Metadata do
         subject.perform
       }.to change { PropertyRepository.count }.by(1)
     end
+  end
 
+  context 'if at least one fetching data fails' do
+    let(:layout_items) { JSON.parse(read_fixture('atleisure/layout_items.json')) }
+    let(:property_data) { JSON.parse(read_fixture('atleisure/property_data.json')) }
+
+    before do
+      allow_any_instance_of(AtLeisure::Importer).to receive(:fetch_properties) { success_result }
+      allow_any_instance_of(AtLeisure::Importer).to receive(:fetch_layout_items) { Result.new(layout_items) }
+      allow_any_instance_of(Roomorama::Client).to receive(:perform) { Result.new('success') }
+    end
+
+    it 'skips purge' do
+      properties_data = [
+        Result.new([property_data, property_data]),
+        Result.error(:error, 'Some error'),
+        Result.new([property_data, property_data]),
+        Result.new([property_data, property_data])
+
+      ]
+      allow_any_instance_of(AtLeisure::Importer).to receive(:fetch_data) do
+        properties_data.shift
+      end
+
+      expect(subject.synchronisation).to receive(:skip_purge!).and_call_original
+      subject.perform
+    end
   end
 
 end

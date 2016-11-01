@@ -3,14 +3,15 @@ module Waytostay
   # Handles all things quote related for waytostay
   #
   module Quote
+    include Concierge::Errors::Quote
 
     ENDPOINT = "/bookings/quote".freeze
-    UNAVAILBLE_ERROR_MESSAGES = [
+    SILENCED_ERROR_MESSAGES = [
       "Apartment is not available for the selected dates",
-      "The minimum number of nights to book this apartment is",
-      "Cut off days restriction",
-      "Max days for arrival restriction"
     ].freeze
+    STAY_TOO_SHORT_ERROR_MESSAGE    = /The minimum number of nights to book this apartment is (\d+)/
+    CHECK_IN_TOO_NEAR_ERROR_MESSAGE = "Cut off days restriction"
+    CHECK_IN_TOO_FAR_ERROR_MESSAGE  = "Max days for arrival restriction"
     REQUIRED_RESPONSE_KEYS = [
       "booking_details.property_reference",
       "booking_details.arrival_date",
@@ -27,55 +28,76 @@ module Waytostay
     # is logged.
     #
     # Returns a +Result+ wrapping a +Quotation+ when operation succeeds
-    # Returns a +Result+ wrapping a nil object when operation fails
+    # Returns a +Result+ wrapping a +Result.error+ when operation fails
     def quote(params)
-      post_body = {
-        property_reference: params[:property_id],
-        arrival_date:       params[:check_in],
-        departure_date:     params[:check_out],
-        number_of_adults:   params[:guests],
-        payment_option:     Waytostay::Client::SUPPORTED_PAYMENT_METHOD
-      }
-      result = oauth2_client.post(ENDPOINT,
-                                  body: post_body.to_json,
-                                  headers: headers)
+      json = build_payload(params)
+      result = oauth2_client.post(ENDPOINT, body: json, headers: headers)
 
       if result.success?
         response = Concierge::SafeAccessHash.new(result.value)
-
         missing_keys = response.missing_keys_from(REQUIRED_RESPONSE_KEYS)
-        if missing_keys.empty?
-          Result.new(Quotation.new(quote_params_from(response)))
-        else
-          augment_missing_fields(missing_keys)
-          Result.error(:unrecognised_response, "Missing keys: #{missing_keys}")
-        end
+        return missing_keys_error(missing_keys) unless missing_keys.empty?
 
-      elsif unavailable?(result) # for waytostay, unavailable is returned as a 422 error
-
-        Result.new(Quotation.new({
-          property_id: params[:property_id],
-          check_in:    params[:check_in],
-          check_out:   params[:check_out],
-          guests:      params[:guests],
-          available:   false
-        }))
-
+        Result.new(build_quotation(response))
+      elsif error_should_be_silenced?(result)
+        Result.new(build_unavailable_quotation(params))
+      elsif stay_too_short?(result)
+        stay_too_short(min_stay_from_error(result))
+      elsif check_in_too_near?(result)
+        check_in_too_near
+      elsif check_in_too_far?(result)
+        check_in_too_far
       else
         result
       end
     end
 
     private
-
-    def unavailable?(result)
-      result.error.data && unavailable_error_message?(result.error.data)
+    def build_payload(params)
+      {
+        property_reference: params[:property_id],
+        arrival_date:       params[:check_in],
+        departure_date:     params[:check_out],
+        number_of_adults:   params[:guests],
+        payment_option:     Waytostay::Client::SUPPORTED_PAYMENT_METHOD
+      }.to_json
     end
 
-    def unavailable_error_message?(message)
-      UNAVAILBLE_ERROR_MESSAGES.any? { |err_msg|
-        message.include? err_msg
-      }
+    def build_quotation(response)
+      Quotation.new(quote_params_from(response))
+    end
+
+    def build_unavailable_quotation(params)
+      Quotation.new(
+        property_id: params[:property_id],
+        check_in:    params[:check_in],
+        check_out:   params[:check_out],
+        guests:      params[:guests],
+        available:   false
+      )
+    end
+
+    def error_should_be_silenced?(result)
+      SILENCED_ERROR_MESSAGES.any? do |msg|
+        result.error.data.to_s.include?(msg)
+      end
+    end
+
+    def stay_too_short?(result)
+      !!min_stay_from_error(result)
+    end
+
+    def min_stay_from_error(result)
+      match_data = result.error.data.to_s.match(STAY_TOO_SHORT_ERROR_MESSAGE)
+      match_data ? match_data[1] : nil
+    end
+
+    def check_in_too_near?(result)
+      result.error.data.to_s.include?(CHECK_IN_TOO_NEAR_ERROR_MESSAGE)
+    end
+
+    def check_in_too_far?(result)
+      result.error.data.to_s.include?(CHECK_IN_TOO_FAR_ERROR_MESSAGE)
     end
 
     # Returns the hash that can be plugged into Quotation initialization.
@@ -92,6 +114,5 @@ module Waytostay
         available:           true
       }
     end
-
   end
 end

@@ -57,7 +57,11 @@ module API::Controllers
         else
           announce_error(quotation_result)
           error_message = { quote: quotation_result.error.data || GENERIC_ERROR }
-          status 503, error_response(error_message)
+          code = 503
+          if Concierge::Errors::Quote::ERROR_CODES_WITH_SUCCESS_RESPONSE.include? quotation_result.error.code
+            code = 200
+          end
+          status code, error_response(error_message)
         end
       else
         status 422, error_response(params.error_messages)
