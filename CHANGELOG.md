@@ -4,6 +4,14 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## [0.12.15] - 2016-11-01
+### Added
+- Streamlined errors from waytostay quote
+- More detailed errors in quote response
+
+### Changed
+- Property synchronisation would not skip purging properties when 1 property fail in #start
+
 ## [0.12.14] - 2016-10-27
 ### Added
 - Changed atleisure customer email
