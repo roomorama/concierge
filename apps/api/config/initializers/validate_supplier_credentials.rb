@@ -11,6 +11,7 @@ if enforce_on_envs.include?(Hanami.env)
     saw:           %w(username password url),
     poplidays:     %w(url client_key passphrase),
     rentalsunited: %w(username password url),
-    avantio:       %w(username password)
+    avantio:       %w(username password),
+    tth:           %w(key url)
   })
 end
