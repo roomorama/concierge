@@ -31,6 +31,35 @@ module Ciirus
         @amenities        = attrs[:amenities]
         @main_image_url   = attrs[:main_image_url]
       end
+
+      def to_json
+        h = {
+          property_id:      property_id,
+          property_name:    property_name,
+          mc_property_name: mc_property_name,
+          address:          address,
+          zip:              zip,
+          city:             city,
+          bedrooms:         bedrooms,
+          sleeps:           sleeps,
+          type:             type,
+          country:          country,
+          xco:              xco,
+          yco:              yco,
+          bathrooms:        bathrooms,
+          king_beds:        king_beds,
+          queen_beds:       queen_beds,
+          full_beds:        full_beds,
+          twin_beds:        twin_beds,
+          extra_bed:        extra_bed,
+          sofa_bed:         sofa_bed,
+          pets_allowed:     pets_allowed,
+          currency_code:    currency_code,
+          amenities:        amenities,
+          main_image_url:   main_image_url
+        }
+        Yajl::Encoder.encode(h)
+      end
     end
   end
 end

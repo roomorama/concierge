@@ -143,6 +143,11 @@ RSpec.describe Web::Views::ExternalErrors::Show do
         %(})
     end
 
+    it "returns the properly formatted plain text" do
+      pretty = view.pretty_print('simple `text`', "text/plain")
+      expect(pretty).to eq 'simple <code>text</code>'
+    end
+
     it "doubles the line breaks for XML content and escapes the content" do
       content = "" +
         %(<response>\n) +
