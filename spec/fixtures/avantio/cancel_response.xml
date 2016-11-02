@@ -1,0 +1,7 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <ns1:CancelBookingRS xmlns:ns1="ws.avantio.com/crsConnectionServices/xsd" xmlns:ns2="ws.avantio.com/crsConnectionServices">
+      <ns2:Succeed>true</ns2:Succeed>
+    </ns1:CancelBookingRS>
+  </soapenv:Body>
+</soapenv:Envelope>

@@ -1,0 +1,10 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <ns1:IsAvailableRS xmlns:ns1="ws.avantio.com/crsConnectionServices/xsd" xmlns:ns2="ws.avantio.com/crsConnectionServices">
+      <ns2:Available>
+        <ns2:AvailableCode>1</ns2:AvailableCode>
+        <ns2:AvailableMessage>Available</ns2:AvailableMessage>
+      </ns2:Available>
+    </ns1:IsAvailableRS>
+  </soapenv:Body>
+</soapenv:Envelope>
