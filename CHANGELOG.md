@@ -14,6 +14,9 @@ how this file is formatted and how the process works.
 ### Added
 - Avantio integrations: quote, book, cancel and synchronisation
 
+### Fixed
+- net_rate calculation
+
 ## [0.12.15] - 2016-11-01
 ### Added
 - Streamlined errors from waytostay quote

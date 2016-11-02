@@ -91,8 +91,8 @@ RSpec.describe Kigo::ResponseParser do
       expect(quotation.available).to eq true
       expect(quotation.currency).to eq "EUR"
       expect(quotation.total).to eq 570.0
-      expect(quotation.net_rate).to eq 532.71
-      expect(quotation.host_fee).to eq 37.29
+      expect(quotation.net_rate).to eq 530.1
+      expect(quotation.host_fee).to eq 39.9
       expect(quotation.host_fee_percentage).to eq 7
     end
 
@@ -105,7 +105,7 @@ RSpec.describe Kigo::ResponseParser do
       result   = subject.compute_pricing(response)
 
       expect(result.value.total).to eq 570
-      expect(result.value.net_rate).to eq 527.78
+      expect(result.value.net_rate).to eq 524.4
     end
 
   end
