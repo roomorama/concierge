@@ -1,0 +1,16 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <ns1:CancelBookingRS xmlns:ns1="ws.avantio.com/crsConnectionServices/xsd" xmlns:ns2="ws.avantio.com/crsConnectionServices">
+      <ns2:Succeed>false</ns2:Succeed>
+      <ns2:ErrorList>
+        <ns2:Error>
+          <ns2:ErrorId>303</ns2:ErrorId>
+        </ns2:Error>
+        <ns2:Error>
+          <ns2:ErrorId>5005</ns2:ErrorId>
+          <ns2:ErrorMessage>Fallo al desbloquear el periodo de disponibilidad</ns2:ErrorMessage>
+        </ns2:Error>
+      </ns2:ErrorList>
+    </ns1:CancelBookingRS>
+  </soapenv:Body>
+</soapenv:Envelope>

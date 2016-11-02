@@ -1,0 +1,1672 @@
+<AccommodationList>
+  <AccommodationItem>
+    <Accommodation>
+      <AccommodationCode>60505</AccommodationCode>
+      <UserCode>1238513302</UserCode>
+      <LoginGA>itsalojamientos</LoginGA>
+    </Accommodation>
+    <Images>
+      <LastModified>2009-11-17</LastModified>
+      <Image>
+        <ThumbnailImageURL>http://img.crs.itsolutions.es/fotos/1258485483aea4571d97cbf40fc90373c2a0883e23/th12584854836f07364bd3aaa7a7e6e977f89438ce8a.jpg</ThumbnailImageURL>
+        <AdaptedImageURL>http://img.crs.itsolutions.es/fotos/1258485483aea4571d97cbf40fc90373c2a0883e23/big12584854836f07364bd3aaa7a7e6e977f89438ce8a.jpg</AdaptedImageURL>
+        <OriginalImageURL>http://img.crs.itsolutions.es/fotos/1258485483aea4571d97cbf40fc90373c2a0883e23/12584854836f07364bd3aaa7a7e6e977f89438ce8a.jpg</OriginalImageURL>
+      </Image>
+      <Image>
+        <ThumbnailImageURL>http://img.crs.itsolutions.es/fotos/1258485483aea4571d97cbf40fc90373c2a0883e23/th1258485484da3be6e237044109158d21d1a7544821.jpg</ThumbnailImageURL>
+        <AdaptedImageURL>http://img.crs.itsolutions.es/fotos/1258485483aea4571d97cbf40fc90373c2a0883e23/big1258485484da3be6e237044109158d21d1a7544821.jpg</AdaptedImageURL>
+        <OriginalImageURL>http://img.crs.itsolutions.es/fotos/1258485483aea4571d97cbf40fc90373c2a0883e23/1258485484da3be6e237044109158d21d1a7544821.jpg</OriginalImageURL>
+      </Image>
+    </Images>
+    <InternationalizedItem>
+      <Language>es</Language>
+      <DetailsURL>http://crs.itsolutions.es/apartamento-benidorm-edificio-its-2-4-W177BCPZREDNA60505IES.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/reservar-apartamento-benidorm-edificio-its-2-4-W177BCPZREDNA60505IES.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Apartamento</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>España</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>C. Valenciana</Name>
+      </Region>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Benidorm</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Alicante Costa</Name>
+      </Area>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Alicante - Costa Blanca</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Alicante</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Sin especificar</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>2</Code>
+            <Name>Aire acondicionado</Name>
+            <Description>Incluido</Description>
+          </Extra>
+          <Extra>
+            <Code>1</Code>
+            <Name>Calefacción</Name>
+            <Description>Incluida</Description>
+          </Extra>
+          <Extra>
+            <Code>18</Code>
+            <Name>Cuna</Name>
+            <Description>Incluida</Description>
+          </Extra>
+          <Extra>
+            <Code>11</Code>
+            <Name>Fianza (reembolsable)</Name>
+            <Description>Incluida</Description>
+          </Extra>
+          <Extra>
+            <Code>10</Code>
+            <Name>Limpieza final</Name>
+            <Description>Incluida</Description>
+          </Extra>
+          <Extra>
+            <Code>9</Code>
+            <Name>Mascota</Name>
+            <Description>Incluido</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional></Optional>
+      </ExtrasSummary>
+      <Description>El &lt;b&gt;apartamento en Benidorm&lt;/b&gt;  posee capacidad para 4 personas. &lt;br&gt;Alojamiento amueblado con gusto y de recién construcción. &lt;br&gt;Está ubicado en una zona animada y junto al mar.&lt;br&gt;Dispone de plancha, caja&amp;nbsp;fuerte, calefacción&amp;nbsp;bomba&amp;nbsp;de&amp;nbsp;calor, aire&amp;nbsp;acondicionado en todo el alojamiento, piscina comunitaria, garaje, televisión, equipo de música.&lt;br&gt;La cocina americana, de inducción, está equipada con nevera, horno, congelador, lavadora y secadora.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+    <InternationalizedItem>
+      <Language>en</Language>
+      <DetailsURL>http://crs.itsolutions.es/apartment-benidorm-edificio-its-2-4-W177BCPZREDNA60505IEN.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/book-apartment-benidorm-edificio-its-2-4-W177BCPZREDNA60505IEN.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Apartment</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>Spain</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>Valencia</Name>
+      </Region>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Alicante - Costa Blanca</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Alicante Coast</Name>
+      </Area>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Benidorm</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Alicante / Alacant</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Not specified</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>2</Code>
+            <Name>Air-conditioning</Name>
+            <Description>Included</Description>
+          </Extra>
+          <Extra>
+            <Code>18</Code>
+            <Name>Cot/Crib</Name>
+            <Description>Included</Description>
+          </Extra>
+          <Extra>
+            <Code>11</Code>
+            <Name>Deposit (refundable)</Name>
+            <Description>Included</Description>
+          </Extra>
+          <Extra>
+            <Code>10</Code>
+            <Name>Final Cleaning</Name>
+            <Description>Included</Description>
+          </Extra>
+          <Extra>
+            <Code>1</Code>
+            <Name>Heating</Name>
+            <Description>Included</Description>
+          </Extra>
+          <Extra>
+            <Code>9</Code>
+            <Name>Pet</Name>
+            <Description>Included</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional></Optional>
+      </ExtrasSummary>
+      <Description>The &lt;b&gt;apartment in Benidorm&lt;/b&gt;  has capacity for 4 people. &lt;br&gt;The apartment is nicely furnished, is newly constructed. &lt;br&gt;The house is situated in an animated neighborhood next to the sea.&lt;br&gt;The accommodation is equipped with the following things: iron, safe, air conditioning (heat/cold), air conditioned in the whole house, communal swimming pool, garage, tv, stereo.&lt;br&gt;In the induction open plan kitchen, refrigerator, oven, freezer, washing&amp;nbsp;machine and dryer are provided.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+    <InternationalizedItem>
+      <Language>du</Language>
+      <DetailsURL>http://crs.itsolutions.es/appartement-benidorm-edificio-its-2-4-W177BCPZREDNA60505IDU.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/reserveren-appartement-benidorm-edificio-its-2-4-W177BCPZREDNA60505IDU.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Appartement</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>Spanje</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>Valenciaanse Gemeenschap</Name>
+      </Region>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Benidorm</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Alicante Coast</Name>
+      </Area>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Alicante - Costa Blanca</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Alicante</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Not specified</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>2</Code>
+            <Name>Air-conditioning</Name>
+            <Description>Inclusief</Description>
+          </Extra>
+          <Extra>
+            <Code>18</Code>
+            <Name>Babyledikantje</Name>
+            <Description>Inclusief</Description>
+          </Extra>
+          <Extra>
+            <Code>11</Code>
+            <Name>Borg (Terug betaalbaar)</Name>
+            <Description>Inclusief</Description>
+          </Extra>
+          <Extra>
+            <Code>10</Code>
+            <Name>Eindschoonmaak</Name>
+            <Description>Inclusief</Description>
+          </Extra>
+          <Extra>
+            <Code>9</Code>
+            <Name>Huisdier</Name>
+            <Description>Inclusief</Description>
+          </Extra>
+          <Extra>
+            <Code>1</Code>
+            <Name>Verwarming</Name>
+            <Description>Inclusief</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional></Optional>
+      </ExtrasSummary>
+      <Description>Het &lt;b&gt;appartement in Benidorm&lt;/b&gt;  heeft is geschikt voor families en groepen tot 4 personen. &lt;br&gt;Deze smaakvol gemeubileerde woning is recent gebouwd. &lt;br&gt;Uw acommodatie ligt in een levendige omgeving en vlak aan zee.&lt;br&gt;Tevens heeft u de beschikking over Strijkijzer, Kluis, Airconditioning (warm / koud), Airconditioning in de gehele woning, Gemeenschappelijk Zwembad, Garage, Televisie, Radio.&lt;br&gt;De open keuken, met inductie kookplaat, is uitgerust met koelkast, oven, vriezer, wasmachine en droger.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+    <InternationalizedItem>
+      <Language>it</Language>
+      <DetailsURL>http://crs.itsolutions.es/appartamento-benidorm-edificio-its-2-4-W177BCPZREDNA60505IIT.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/book-appartamento-benidorm-edificio-its-2-4-W177BCPZREDNA60505IIT.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Appartamento</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>Spagna</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>Valencia</Name>
+      </Region>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Alicante - Costa Blanca</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Alicante Costa</Name>
+      </Area>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Benidorm</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Alicante / Alacant</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Non specificato</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>9</Code>
+            <Name>Animali domestici</Name>
+            <Description>Incluso</Description>
+          </Extra>
+          <Extra>
+            <Code>2</Code>
+            <Name>Aria condizionata</Name>
+            <Description>Incluso</Description>
+          </Extra>
+          <Extra>
+            <Code>18</Code>
+            <Name>Culla</Name>
+            <Description>Inclusa</Description>
+          </Extra>
+          <Extra>
+            <Code>11</Code>
+            <Name>Deposito (rimborsabile)</Name>
+            <Description>Inclusa</Description>
+          </Extra>
+          <Extra>
+            <Code>10</Code>
+            <Name>Pulizia finale</Name>
+            <Description>Inclusa</Description>
+          </Extra>
+          <Extra>
+            <Code>1</Code>
+            <Name>Riscaldamento</Name>
+            <Description>Inclusa</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional></Optional>
+      </ExtrasSummary>
+      <Description>L&#039;&lt;b&gt;appartamento a Benidorm&lt;/b&gt;  ha capacità per 4 persone. &lt;br&gt;Alloggio arredato con gusto e nuova costruzione. &lt;br&gt;Si trova in una zona animata e vicino al mare.&lt;br&gt;Ha ferro da stiro, cassaforte, riscaldamento&amp;nbsp;pompa&amp;nbsp;di&amp;nbsp;calore, aria&amp;nbsp;condizionata in tutte la stanze, piscina in comune, garage, televisione, impianto stereo.&lt;br&gt;La cucina americana, a induzione, è attrezzata con frigorifero, forno, congelatore, lavatrice e asciugatrice.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+    <InternationalizedItem>
+      <Language>fr</Language>
+      <DetailsURL>http://crs.itsolutions.es/appartement-benidorm-edificio-its-2-4-W177BCPZREDNA60505IFR.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/reserver-appartement-benidorm-edificio-its-2-4-W177BCPZREDNA60505IFR.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Appartement</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>Espagne</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>Communauté de Valence</Name>
+      </Region>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Benidorm</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Alicante Côte</Name>
+      </Area>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Alicante - Costa Blanca</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Dpt. Alicante</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Non spécifié</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>9</Code>
+            <Name>Animaux de compagnie</Name>
+            <Description>Inclus</Description>
+          </Extra>
+          <Extra>
+            <Code>11</Code>
+            <Name>Caution (remboursable)</Name>
+            <Description>Inclus</Description>
+          </Extra>
+          <Extra>
+            <Code>1</Code>
+            <Name>Chauffage</Name>
+            <Description>Inclus</Description>
+          </Extra>
+          <Extra>
+            <Code>2</Code>
+            <Name>Climatisation</Name>
+            <Description>Inclus</Description>
+          </Extra>
+          <Extra>
+            <Code>18</Code>
+            <Name>Lit bébé</Name>
+            <Description>Inclus</Description>
+          </Extra>
+          <Extra>
+            <Code>10</Code>
+            <Name>Ménage fin de séjour</Name>
+            <Description>Inclus</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional></Optional>
+      </ExtrasSummary>
+      <Description>&lt;b&gt;Appartement à Benidorm&lt;/b&gt;  qui  possède  Capacité pour 4 personnes. &lt;br&gt;Logement ammeublé avec goût et de construction récente. &lt;br&gt; il est situé dans une zone  animée et près de la mer.&lt;br&gt;Elle dispose de fer à repasser, coffre-fort, chauffage pompe à chaleur, climatisation dans tout le logement, piscine collective, garage, tv, hifi.&lt;br&gt;La cuisine américaine, de induction, est équipée avec réfrigérateur, four, congelateur, lave-linge et sèche-linge.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+    <InternationalizedItem>
+      <Language>de</Language>
+      <DetailsURL>http://crs.itsolutions.es/ferienwohnung-benidorm-edificio-its-2-4-W177BCPZREDNA60505IDE.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/reserve-ferienwohnung-benidorm-edificio-its-2-4-W177BCPZREDNA60505IDE.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Ferienwohnung</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>Spanien</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>Valencia Region</Name>
+      </Region>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Alicante - Costa Blanca</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Alicante Küste</Name>
+      </Area>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Benidorm</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Alicante Provinz</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Not specified</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>10</Code>
+            <Name>Endreinigung</Name>
+            <Description>inklusive</Description>
+          </Extra>
+          <Extra>
+            <Code>9</Code>
+            <Name>Haustier</Name>
+            <Description>inklusive</Description>
+          </Extra>
+          <Extra>
+            <Code>1</Code>
+            <Name>Heizung</Name>
+            <Description>inklusive</Description>
+          </Extra>
+          <Extra>
+            <Code>11</Code>
+            <Name>Kaution (rückzahlbar)</Name>
+            <Description>inklusive</Description>
+          </Extra>
+          <Extra>
+            <Code>18</Code>
+            <Name>Kinderbett</Name>
+            <Description>inklusive</Description>
+          </Extra>
+          <Extra>
+            <Code>2</Code>
+            <Name>Klimaanlage</Name>
+            <Description>inklusive</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional></Optional>
+      </ExtrasSummary>
+      <Description>Die &lt;b&gt;Ferienwohnung in Benidorm&lt;/b&gt;  hat eine Kapazität 4 Personen. &lt;br&gt;Geschmackvoll ausgestattet Unterkunft, vor kurzem fertiggestellte. &lt;br&gt;Befindet sich  in einer belebten Umgebung und am Meer.&lt;br&gt;Verfügt über Bügeleisen/-brett, Zimmersafe, Heizung, Klimaanlage in der ganzen Unterkunft, gemeinschaftlicher Swimming-Pool, Garage, Fernseher, Musikanlage.&lt;br&gt;Die Offene K&amp;uuml;che mit Induktions-Kochfeld ist ausgestattet mit K&amp;uuml;hlschrank, Backofen, Gefrierschrank, Waschmaschine und Trockner.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+    <InternationalizedItem>
+      <Language>ca</Language>
+      <DetailsURL>http://crs.itsolutions.es/apartament-benidorm-edificio-its-2-4-W177BCPZREDNA60505ICA.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/book-apartament-benidorm-edificio-its-2-4-W177BCPZREDNA60505ICA.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Apartament</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>Espanya</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>Valencia</Name>
+      </Region>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Benidorm</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Alicante Costa</Name>
+      </Area>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Alacant - Costa Blanca</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Alicante / Alacant</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Sense especificar</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>2</Code>
+            <Name>Aire Condicionat</Name>
+            <Description>inclòs</Description>
+          </Extra>
+          <Extra>
+            <Code>18</Code>
+            <Name>Bressol</Name>
+            <Description>inclosa</Description>
+          </Extra>
+          <Extra>
+            <Code>1</Code>
+            <Name>Cal·lefacció</Name>
+            <Description>inclosa</Description>
+          </Extra>
+          <Extra>
+            <Code>11</Code>
+            <Name>Fiança (reembolsable)</Name>
+            <Description>inclosa</Description>
+          </Extra>
+          <Extra>
+            <Code>9</Code>
+            <Name>Mascota</Name>
+            <Description>inclòs</Description>
+          </Extra>
+          <Extra>
+            <Code>10</Code>
+            <Name>Neteja Final</Name>
+            <Description>inclosa</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional></Optional>
+      </ExtrasSummary>
+      <Description>El &lt;b&gt;apartament en Benidorm&lt;/b&gt;  posseeix Capacitat per a 4 persones. &lt;br&gt;Allotjament moblat amb gust i de recent construcció. &lt;br&gt;és ubicat en una zona animada i junt al mar.&lt;br&gt;Disposa de planxa, caixa&amp;nbsp;forta, calefacció bomba de calor, aire acondicionat en tot l´allotjament, piscina comunitària, garatge, televisió, equip de música.&lt;br&gt;La cuina americana, de inducció, està equipada amb nevera, forn, congelador, rentadora i assecadora.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+    <InternationalizedItem>
+      <Language>po</Language>
+      <DetailsURL>http://crs.itsolutions.es/mieszkanie-benidorm-edificio-its-2-4-W177BCPZREDNA60505IPO.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/book-mieszkanie-benidorm-edificio-its-2-4-W177BCPZREDNA60505IPO.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Mieszkanie</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>Hiszpania</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>Valencia</Name>
+      </Region>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Alicante - Costa Blanca</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Alicante Costa</Name>
+      </Area>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Benidorm</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Alicante / Alacant</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Not specified</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>11</Code>
+            <Name>Depozyt (refundable)</Name>
+            <Description>Included</Description>
+          </Extra>
+          <Extra>
+            <Code>2</Code>
+            <Name>Klimatyzacja</Name>
+            <Description>Included</Description>
+          </Extra>
+          <Extra>
+            <Code>1</Code>
+            <Name>Ogrzewanie</Name>
+            <Description>Included</Description>
+          </Extra>
+          <Extra>
+            <Code>10</Code>
+            <Name>Sprzątanie końcowe</Name>
+            <Description>Included</Description>
+          </Extra>
+          <Extra>
+            <Code>9</Code>
+            <Name>Zwierzęta</Name>
+            <Description>Included</Description>
+          </Extra>
+          <Extra>
+            <Code>18</Code>
+            <Name>Łóżeczko dziecięce</Name>
+            <Description>Included</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional></Optional>
+      </ExtrasSummary>
+      <Description>The &lt;b&gt;mieszkanie in Benidorm&lt;/b&gt;  has capacity for 4 persons. &lt;br&gt;Nocleg furnished with pleasure and of newly construction. &lt;br&gt;It is located in a animated zone and next to the sea.&lt;br&gt;It has plate, safe, air conditioning (heat/cold), air conditioned in the whole house, swimming pool communitarian, garage, telewizor, stereo.&lt;br&gt;The open plan kitchen,  of  induction, is equipped with refrigerator, oven, congelador, pralka and freezer.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+    <InternationalizedItem>
+      <Language>ru</Language>
+      <DetailsURL>http://crs.itsolutions.es/apartment-benidorm-edificio-its-2-4-W177BCPZREDNA60505IRU.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/book-apartment-benidorm-edificio-its-2-4-W177BCPZREDNA60505IRU.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Апартаменты</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>Испания</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>Валенсийское Сообщество</Name>
+      </Region>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Бенидорм</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Побережье Аликанте</Name>
+      </Area>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Коста Бланка - Costa Blanca</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Аликанте / Alicante</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Бенидорм / Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Not specified</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>18</Code>
+            <Name>Детская кроватка</Name>
+            <Description>включена</Description>
+          </Extra>
+          <Extra>
+            <Code>9</Code>
+            <Name>Допускаются домашние животные</Name>
+            <Description>включено</Description>
+          </Extra>
+          <Extra>
+            <Code>11</Code>
+            <Name>Залог (возвращается)</Name>
+            <Description>включена</Description>
+          </Extra>
+          <Extra>
+            <Code>2</Code>
+            <Name>Кондиционер</Name>
+            <Description>включено</Description>
+          </Extra>
+          <Extra>
+            <Code>1</Code>
+            <Name>Отопление</Name>
+            <Description>включена</Description>
+          </Extra>
+          <Extra>
+            <Code>10</Code>
+            <Name>Финальная уборка</Name>
+            <Description>включена</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional></Optional>
+      </ExtrasSummary>
+      <Description>&lt;b&gt;Апартаменты в Бенидорм / Benidorm&lt;/b&gt;  , вместимостью на 4 чел. &lt;br&gt;Размещение меблировано со вкусом и новые постройки. &lt;br&gt;расположено в оживленной зоне и рядом с морем.&lt;br&gt;Размещение имеет утюг, сейф, систему отопления, систему кондиционирования во всем помещении, бассейн жилого комплекса, гараж, телевизор, музыкальный проигрыватель.&lt;br&gt; Кухня, совмещенная с салоном, оснащена индукционной плитой, оборудовано холодильником, духовкой, морозильной камерой, стиральной машиной и сушилкой для белья.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+    <InternationalizedItem>
+      <Language>pt</Language>
+      <DetailsURL>http://crs.itsolutions.es/apartamento-benidorm-edificio-its-2-4-W177BCPZREDNA60505IPT.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/book-apartamento-benidorm-edificio-its-2-4-W177BCPZREDNA60505IPT.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Apartamento</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>Espanha</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>C. Valenciana</Name>
+      </Region>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Alicante - Costa Blanca</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Alicante Costa</Name>
+      </Area>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Benidorm</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Alicante</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Não especificado</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>9</Code>
+            <Name>Animal de estimação</Name>
+            <Description>Incluído</Description>
+          </Extra>
+          <Extra>
+            <Code>1</Code>
+            <Name>Aquecimento</Name>
+            <Description>Incluídas</Description>
+          </Extra>
+          <Extra>
+            <Code>2</Code>
+            <Name>Ar-condicionado</Name>
+            <Description>Incluído</Description>
+          </Extra>
+          <Extra>
+            <Code>18</Code>
+            <Name>Berço</Name>
+            <Description>Incluídas</Description>
+          </Extra>
+          <Extra>
+            <Code>11</Code>
+            <Name>Fiança (reembolsável)</Name>
+            <Description>Incluídas</Description>
+          </Extra>
+          <Extra>
+            <Code>10</Code>
+            <Name>Limpeza final</Name>
+            <Description>Incluídas</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional></Optional>
+      </ExtrasSummary>
+      <Description>O &lt;b&gt;apartamento em Benidorm&lt;/b&gt;  tem capacidade para 4 pessoa(s). &lt;br&gt;Alojamento mobilado com gosto e de construção recente. &lt;br&gt;Localizado numa zona animada junto ao mar.&lt;br&gt;Dispõe de ferro de engomar, cofre, aquecimento de bomba de calor, ar-condicionado em todo o alojamento, piscina comunitária, garagem, televisão, aparelhagem de som.&lt;br&gt;A cozinha americana, de inducção, está equipada com frigorífico, forno, congelador, máquina de lavar roupa e máquina de secar roupa.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+    <InternationalizedItem>
+      <Language>tr</Language>
+      <DetailsURL>http://crs.itsolutions.es/daire-benidorm-edificio-its-2-4-W177BCPZREDNA60505ITR.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/book-daire-benidorm-edificio-its-2-4-W177BCPZREDNA60505ITR.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Daire</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>İspanya</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>Valencia</Name>
+      </Region>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Benidorm</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Alicante Coast</Name>
+      </Area>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Alicante - Costa Blanca</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Alicante / Alacant</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Not specified</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>18</Code>
+            <Name>Bebek yatagi / Besik</Name>
+            <Description>Dâhil</Description>
+          </Extra>
+          <Extra>
+            <Code>11</Code>
+            <Name>Depozito</Name>
+            <Description>Dâhil</Description>
+          </Extra>
+          <Extra>
+            <Code>9</Code>
+            <Name>Evcil Hayvan</Name>
+            <Description>Dâhil</Description>
+          </Extra>
+          <Extra>
+            <Code>1</Code>
+            <Name>Isitma</Name>
+            <Description>Dâhil</Description>
+          </Extra>
+          <Extra>
+            <Code>2</Code>
+            <Name>Klima</Name>
+            <Description>Dâhil</Description>
+          </Extra>
+          <Extra>
+            <Code>10</Code>
+            <Name>Son temizleme</Name>
+            <Description>Dâhil</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional></Optional>
+      </ExtrasSummary>
+      <Description>&lt;b&gt;Benidorm &#039;daki daire&lt;/b&gt; ve 4 kisi kapasitelidir. &lt;br&gt;Daire güzel döşenmiş, yeni inşa edilmiş. &lt;br&gt;Ev deniz kenarında, hareketli alanda yer almaktadir.&lt;br&gt;Ütü, emanet kasasi, klima (sicak/soguk), full klimali, ortak havuz, garaj, tv, radio.&lt;br&gt;Indüksiyon  amerikan mutfak, buzdolabı, fırın, dondurucu,  Çamaşır makinesi ve kurutma makinesi temin edilmektedir.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+  </AccommodationItem>
+  <AccommodationItem>
+    <Accommodation>
+      <AccommodationCode>119296</AccommodationCode>
+      <UserCode>157</UserCode>
+      <LoginGA>carlademo</LoginGA>
+    </Accommodation>
+    <Images>
+      <LastModified>2038-01-01</LastModified>
+      <Image></Image>
+    </Images>
+    <InternationalizedItem>
+      <Language>es</Language>
+      <DetailsURL>http://crs.itsolutions.es/apartamento-benidorm-edimar-33-W177BCPZREDNA119296IES.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/reservar-apartamento-benidorm-edimar-33-W177BCPZREDNA119296IES.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Apartamento</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>España</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>C. Valenciana</Name>
+      </Region>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Benidorm</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Alicante Costa</Name>
+      </Area>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Alicante - Costa Blanca</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Alicante</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Sin especificar</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>18</Code>
+            <Name>Cuna</Name>
+            <Description>Incluida</Description>
+          </Extra>
+          <Extra>
+            <Code>11</Code>
+            <Name>Fianza (reembolsable)</Name>
+            <Description>Se deberá facilitar una tarjeta de crédito válida como garantía. En su defecto, un depósito de 100,00 €/reserva</Description>
+          </Extra>
+          <Extra>
+            <Code>10</Code>
+            <Name>Limpieza final</Name>
+            <Description>50,00 €/reserva</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional>
+          <Extra>
+            <Code>8</Code>
+            <Name>Acceso a Internet</Name>
+            <Description>10,00 €/reserva</Description>
+          </Extra>
+        </Optional>
+      </ExtrasSummary>
+      <Description>El &lt;b&gt;apartamento en Benidorm&lt;/b&gt; posee 3 dormitorio(s) y capacidad para 6 personas. &lt;br&gt;Alojamiento de 90 m&amp;sup2; cómodo y exterior, con vistas al mar. &lt;br&gt;Está ubicado en una zona animada y junto al mar.&lt;br&gt;Dispone de ascensor, jardín, terraza, plancha, calefacción&amp;nbsp;radiadores&amp;nbsp;eléctricos, piscina comunitaria, parking aire libre en mismo edificio.&lt;br&gt;La cocina independiente, de vitrocerámica, está equipada con nevera, microondas, horno, congelador, lavadora, vajilla/cubertería, utensilios/cocina, cafetera y tostadora.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+    <InternationalizedItem>
+      <Language>en</Language>
+      <DetailsURL>http://crs.itsolutions.es/apartment-benidorm-edimar-33-W177BCPZREDNA119296IEN.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/book-apartment-benidorm-edimar-33-W177BCPZREDNA119296IEN.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Apartment</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>Spain</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>Valencia</Name>
+      </Region>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Alicante - Costa Blanca</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Alicante Coast</Name>
+      </Area>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Benidorm</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Alicante / Alacant</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Not specified</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>18</Code>
+            <Name>Cot/Crib</Name>
+            <Description>Included</Description>
+          </Extra>
+          <Extra>
+            <Code>11</Code>
+            <Name>Deposit (refundable)</Name>
+            <Description>As a garanty a valid credit card must be faciliated. By default, a deposit of 100,00 €/booking</Description>
+          </Extra>
+          <Extra>
+            <Code>10</Code>
+            <Name>Final Cleaning</Name>
+            <Description>50,00 €/booking</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional>
+          <Extra>
+            <Code>8</Code>
+            <Name>Internet Access</Name>
+            <Description>10,00 €/booking</Description>
+          </Extra>
+        </Optional>
+      </ExtrasSummary>
+      <Description>The &lt;b&gt;apartment in Benidorm&lt;/b&gt; has 3 bedrooms and has capacity for 6 people. &lt;br&gt;The apartment is comfortable, has an exterior, and  has 90 m&amp;sup2;.  It has views to the sea. &lt;br&gt;The house is situated in an animated neighborhood next to the sea.&lt;br&gt;The accommodation is equipped with the following things: elevator, garden, terrace, iron, electric heating, communal swimming pool, open-air car parking in the same building.&lt;br&gt;In the vitroceramic independent kitchen, refrigerator, microwave, oven, freezer, washing&amp;nbsp;machine, dishes/cutlery, kitchen utensils, coffee machine and toaster are provided.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+    <InternationalizedItem>
+      <Language>du</Language>
+      <DetailsURL>http://crs.itsolutions.es/appartement-benidorm-edimar-33-W177BCPZREDNA119296IDU.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/reserveren-appartement-benidorm-edimar-33-W177BCPZREDNA119296IDU.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Appartement</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>Spanje</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>Valenciaanse Gemeenschap</Name>
+      </Region>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Benidorm</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Alicante Coast</Name>
+      </Area>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Alicante - Costa Blanca</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Alicante</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Not specified</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>18</Code>
+            <Name>Babyledikantje</Name>
+            <Description>Inclusief</Description>
+          </Extra>
+          <Extra>
+            <Code>11</Code>
+            <Name>Borg (Terug betaalbaar)</Name>
+            <Description>U moet een kredietkaartnummer geven als garantie. Standaard is er een waarborgsom van 100,00 €/reservering</Description>
+          </Extra>
+          <Extra>
+            <Code>10</Code>
+            <Name>Eindschoonmaak</Name>
+            <Description>50,00 €/reservering</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional>
+          <Extra>
+            <Code>8</Code>
+            <Name>Internet toegang</Name>
+            <Description>10,00 €/reservering</Description>
+          </Extra>
+        </Optional>
+      </ExtrasSummary>
+      <Description>Het &lt;b&gt;appartement in Benidorm&lt;/b&gt; heeft 3 slaapkamer(s) en is geschikt voor families en groepen tot 6 personen. &lt;br&gt;Deze comfortabel ingerichte woning heeft een mooie buitenkant,   De accommodatie heeft een oppervlakte van 90 m&amp;sup2;,  en Uitzicht op zee. &lt;br&gt;Uw acommodatie ligt in een levendige omgeving en vlak aan zee.&lt;br&gt;Tevens heeft u de beschikking over Lift, Tuin, Terras, Strijkijzer, Elektrische verwarming, Gemeenschappelijk Zwembad, Buitenparkeerplaats in Het zelfde gebouw.&lt;br&gt;De aparte keuken, met keramisch fornuis, is uitgerust met koelkast, magnetron, oven, vriezer, wasmachine, servies/bestek, keukengerei, koffiezetapparaat en broodrooster.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+    <InternationalizedItem>
+      <Language>it</Language>
+      <DetailsURL>http://crs.itsolutions.es/appartamento-benidorm-edimar-33-W177BCPZREDNA119296IIT.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/book-appartamento-benidorm-edimar-33-W177BCPZREDNA119296IIT.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Appartamento</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>Spagna</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>Valencia</Name>
+      </Region>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Alicante - Costa Blanca</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Alicante Costa</Name>
+      </Area>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Benidorm</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Alicante / Alacant</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Non specificato</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>18</Code>
+            <Name>Culla</Name>
+            <Description>Inclusa</Description>
+          </Extra>
+          <Extra>
+            <Code>11</Code>
+            <Name>Deposito (rimborsabile)</Name>
+            <Description>È necessario fornire una carta di credito come garanzia. In mancanza, un deposito di 100,00 €/prenotazione</Description>
+          </Extra>
+          <Extra>
+            <Code>10</Code>
+            <Name>Pulizia finale</Name>
+            <Description>50,00 €/prenotazione</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional>
+          <Extra>
+            <Code>8</Code>
+            <Name>Accesso ad internet</Name>
+            <Description>10,00 €/prenotazione</Description>
+          </Extra>
+        </Optional>
+      </ExtrasSummary>
+      <Description>L&#039;&lt;b&gt;appartamento a Benidorm&lt;/b&gt; ha 3 camera da letto e capacità per 6 persone. &lt;br&gt;Alloggio dal 90 m&amp;sup2; comodo e esterno, con vista al mare. &lt;br&gt;Si trova in una zona animata e vicino al mare.&lt;br&gt;Ha ascensore, giardino, terrazza, ferro da stiro, riscaldamento&amp;nbsp;radiatori&amp;nbsp;elettrici, piscina in comune, parcheggio all&#039;aperto in nella stessa struttura.&lt;br&gt;La cucina indipendente, a vetroceramica, è attrezzata con frigorifero, microonde, forno, congelatore, lavatrice, stoviglie/posate, utensili da cucina, caffettiera e tostapane.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+    <InternationalizedItem>
+      <Language>fr</Language>
+      <DetailsURL>http://crs.itsolutions.es/appartement-benidorm-edimar-33-W177BCPZREDNA119296IFR.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/reserver-appartement-benidorm-edimar-33-W177BCPZREDNA119296IFR.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Appartement</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>Espagne</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>Communauté de Valence</Name>
+      </Region>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Benidorm</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Alicante Côte</Name>
+      </Area>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Alicante - Costa Blanca</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Dpt. Alicante</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Non spécifié</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>11</Code>
+            <Name>Caution (remboursable)</Name>
+            <Description>Vous devrez fournir un numéro de carte de crédit en guise de garantie. A défaut, il faudra payer une caution de 100,00 €/réservation</Description>
+          </Extra>
+          <Extra>
+            <Code>18</Code>
+            <Name>Lit bébé</Name>
+            <Description>Inclus</Description>
+          </Extra>
+          <Extra>
+            <Code>10</Code>
+            <Name>Ménage fin de séjour</Name>
+            <Description>50,00 €/réservation</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional>
+          <Extra>
+            <Code>8</Code>
+            <Name>Accès à internet</Name>
+            <Description>10,00 €/réservation</Description>
+          </Extra>
+        </Optional>
+      </ExtrasSummary>
+      <Description>&lt;b&gt;Appartement à Benidorm&lt;/b&gt; qui  possède  3  chambre(s) et Capacité pour 6 personnes. &lt;br&gt;Logement de 90 m&amp;sup2; confortable et extérieur,  avec vue sur   la mer. &lt;br&gt; il est situé dans une zone  animée et près de la mer.&lt;br&gt;Elle dispose de ascenseur, jardin, terrasse, fer à repasser, chauffage électrique, piscine collective, parking extérieur même bâtiment.&lt;br&gt;La cuisine indépendante, de vitrocéramique, est équipée avec réfrigérateur, micro-ondes, four, congelateur, lave-linge, vaisselle/couvert, ustensiles/cuisine, cafetière et grille pain.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+    <InternationalizedItem>
+      <Language>de</Language>
+      <DetailsURL>http://crs.itsolutions.es/ferienwohnung-benidorm-edimar-33-W177BCPZREDNA119296IDE.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/reserve-ferienwohnung-benidorm-edimar-33-W177BCPZREDNA119296IDE.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Ferienwohnung</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>Spanien</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>Valencia Region</Name>
+      </Region>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Alicante - Costa Blanca</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Alicante Küste</Name>
+      </Area>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Benidorm</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Alicante Provinz</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Not specified</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>10</Code>
+            <Name>Endreinigung</Name>
+            <Description>50,00 €/Buchung</Description>
+          </Extra>
+          <Extra>
+            <Code>11</Code>
+            <Name>Kaution (rückzahlbar)</Name>
+            <Description>Eine gültige Kreditkarte muss als Garantie bereitgestellt werden. Bei Nichtvorhandensein, ein Deposit von 100,00 €/Buchung</Description>
+          </Extra>
+          <Extra>
+            <Code>18</Code>
+            <Name>Kinderbett</Name>
+            <Description>inklusive</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional>
+          <Extra>
+            <Code>8</Code>
+            <Name>Internetzugang</Name>
+            <Description>10,00 €/Buchung</Description>
+          </Extra>
+        </Optional>
+      </ExtrasSummary>
+      <Description>Die &lt;b&gt;Ferienwohnung in Benidorm&lt;/b&gt; verfügt über 3 Schlafzimmer und hat eine Kapazität 6 Personen. &lt;br&gt;Die behagliche und in Randlage gelegene Unterkunft  mit 90 m&amp;sup2;, mit Blick auf der Strand / das Meer. &lt;br&gt;Befindet sich  in einer belebten Umgebung und am Meer.&lt;br&gt;Verfügt über Aufzug, Garten, Terrasse, Bügeleisen/-brett, Elektroheizung, gemeinschaftlicher Swimming-Pool, Parkplatz im Freien auf dem Grundstück.&lt;br&gt;Die separate K&amp;uuml;che mit Ceranfeld ist ausgestattet mit K&amp;uuml;hlschrank, Mikrowelle, Backofen, Gefrierschrank, Waschmaschine, Geschirr/Besteck, Kochutensilien, Kaffeemaschine und Toaster.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+    <InternationalizedItem>
+      <Language>ca</Language>
+      <DetailsURL>http://crs.itsolutions.es/apartament-benidorm-edimar-33-W177BCPZREDNA119296ICA.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/book-apartament-benidorm-edimar-33-W177BCPZREDNA119296ICA.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Apartament</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>Espanya</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>Valencia</Name>
+      </Region>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Benidorm</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Alicante Costa</Name>
+      </Area>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Alacant - Costa Blanca</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Alicante / Alacant</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Sense especificar</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>18</Code>
+            <Name>Bressol</Name>
+            <Description>inclosa</Description>
+          </Extra>
+          <Extra>
+            <Code>11</Code>
+            <Name>Fiança (reembolsable)</Name>
+            <Description>Deurà facilitar una tarjeta de crèdit vàlida com a garantía. Sinó, hi haurà un depòsit 100,00 €/reserva</Description>
+          </Extra>
+          <Extra>
+            <Code>10</Code>
+            <Name>Neteja Final</Name>
+            <Description>50,00 €/reserva</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional>
+          <Extra>
+            <Code>8</Code>
+            <Name>Accés a internet</Name>
+            <Description>10,00 €/reserva</Description>
+          </Extra>
+        </Optional>
+      </ExtrasSummary>
+      <Description>El &lt;b&gt;apartament en Benidorm&lt;/b&gt; posseeix 3 dormitori(s) i Capacitat per a 6 persones. &lt;br&gt;Allotjament de 90 m&amp;sup2; còmode i exterior, amb vistes al mar. &lt;br&gt;és ubicat en una zona animada i junt al mar.&lt;br&gt;Disposa de ascensor, jardí, terrassa, planxa, calefacció radiadors elèctrics, piscina comunitària, parking a l´aire lliure en mateix edifici.&lt;br&gt;La cuina independent, de vitroceràmica, està equipada amb nevera, microones, forn, congelador, rentadora, vaixella/coberteria, estris/cuina, cafetera i torradora.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+    <InternationalizedItem>
+      <Language>po</Language>
+      <DetailsURL>http://crs.itsolutions.es/mieszkanie-benidorm-edimar-33-W177BCPZREDNA119296IPO.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/book-mieszkanie-benidorm-edimar-33-W177BCPZREDNA119296IPO.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Mieszkanie</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>Hiszpania</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>Valencia</Name>
+      </Region>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Alicante - Costa Blanca</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Alicante Costa</Name>
+      </Area>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Benidorm</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Alicante / Alacant</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Not specified</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>11</Code>
+            <Name>Depozyt (refundable)</Name>
+            <Description>a credit card will be faciliated. In default, a deposit of 100,00 €/booking</Description>
+          </Extra>
+          <Extra>
+            <Code>10</Code>
+            <Name>Sprzątanie końcowe</Name>
+            <Description>50,00 €/booking</Description>
+          </Extra>
+          <Extra>
+            <Code>18</Code>
+            <Name>Łóżeczko dziecięce</Name>
+            <Description>Included</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional>
+          <Extra>
+            <Code>8</Code>
+            <Name>Dostęp do Internetu</Name>
+            <Description>10,00 €/booking</Description>
+          </Extra>
+        </Optional>
+      </ExtrasSummary>
+      <Description>The &lt;b&gt;mieszkanie in Benidorm&lt;/b&gt; has 3 room(s) and capacity for 6 persons. &lt;br&gt;Nocleg  of  90 m&amp;sup2; comfortable and outer, With views to the sea. &lt;br&gt;It is located in a animated zone and next to the sea.&lt;br&gt;It has elevator, ogród, taras, plate, electric heating, swimming pool communitarian, open-air car parking in same building.&lt;br&gt;The independent kitchen,  of  vitroceramic, is equipped with refrigerator, microwave, oven, congelador, pralka, dishes/cutlery, utensils/kitchen, coffee pot and toaster.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+    <InternationalizedItem>
+      <Language>ru</Language>
+      <DetailsURL>http://crs.itsolutions.es/apartment-benidorm-edimar-33-W177BCPZREDNA119296IRU.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/book-apartment-benidorm-edimar-33-W177BCPZREDNA119296IRU.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Апартаменты</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>Испания</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>Валенсийское Сообщество</Name>
+      </Region>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Бенидорм</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Побережье Аликанте</Name>
+      </Area>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Коста Бланка - Costa Blanca</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Аликанте / Alicante</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Бенидорм / Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Not specified</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>18</Code>
+            <Name>Детская кроватка</Name>
+            <Description>включена</Description>
+          </Extra>
+          <Extra>
+            <Code>11</Code>
+            <Name>Залог (возвращается)</Name>
+            <Description>В качестве гарантии - действительная кредитная карта. В случае её отсутствия, залог составит 100,00 €/бронь</Description>
+          </Extra>
+          <Extra>
+            <Code>10</Code>
+            <Name>Финальная уборка</Name>
+            <Description>50,00 €/бронь</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional>
+          <Extra>
+            <Code>8</Code>
+            <Name>Доступ в Internet</Name>
+            <Description>10,00 €/бронь</Description>
+          </Extra>
+        </Optional>
+      </ExtrasSummary>
+      <Description>&lt;b&gt;Апартаменты в Бенидорм / Benidorm&lt;/b&gt;  3 количество спален вместимостью на 6 чел. &lt;br&gt;Размещение площадью 90 &amp;#1082;&amp;#1074;.&amp;#1084; удобный и внешний, с видом на море. &lt;br&gt;расположено в оживленной зоне и рядом с морем.&lt;br&gt;Размещение имеет лифт, Зеленая зона, Терраса, утюг, электрические радиаторы, бассейн жилого комплекса, открытую парковку чел этом же здании.&lt;br&gt; Отдельная кухня, оснащена плитой с керамическим покрытием, оборудовано холодильником, микроволновой печью, духовкой, морозильной камерой, стиральной машиной, столовыми приборами, кухонной утварью, кофеваркой и тостером.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+    <InternationalizedItem>
+      <Language>pt</Language>
+      <DetailsURL>http://crs.itsolutions.es/apartamento-benidorm-edimar-33-W177BCPZREDNA119296IPT.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/book-apartamento-benidorm-edimar-33-W177BCPZREDNA119296IPT.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Apartamento</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>Espanha</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>C. Valenciana</Name>
+      </Region>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Alicante - Costa Blanca</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Alicante Costa</Name>
+      </Area>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Benidorm</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Alicante</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Não especificado</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>18</Code>
+            <Name>Berço</Name>
+            <Description>Incluídas</Description>
+          </Extra>
+          <Extra>
+            <Code>11</Code>
+            <Name>Fiança (reembolsável)</Name>
+            <Description>Deve fornecer um cartão de crédito válido como garantia. Caso não tenha um disponível, deverá efectuar um depósito de 100,00 €/reserva</Description>
+          </Extra>
+          <Extra>
+            <Code>10</Code>
+            <Name>Limpeza final</Name>
+            <Description>50,00 €/reserva</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional>
+          <Extra>
+            <Code>8</Code>
+            <Name>Acesso à internet</Name>
+            <Description>10,00 €/reserva</Description>
+          </Extra>
+        </Optional>
+      </ExtrasSummary>
+      <Description>O &lt;b&gt;apartamento em Benidorm&lt;/b&gt; tem 3 quarto(s) e capacidade para 6 pessoa(s). &lt;br&gt;Alojamento de 90 m&amp;sup2; cómodo e exterior, com vistas para o mar. &lt;br&gt;Localizado numa zona animada junto ao mar.&lt;br&gt;Dispõe de elevador, jardim, terraço, ferro de engomar, aquecimento com radiadores eléctricos, piscina comunitária, estacionamento ao ar livre no mesmo edifício.&lt;br&gt;A cozinha é independente, de vitrocerâmica, está equipada com frigorífico, microondas, forno, congelador, máquina de lavar roupa, louça/talheres, utensílios/cozinha, cafeteira e torradeira.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+    <InternationalizedItem>
+      <Language>tr</Language>
+      <DetailsURL>http://crs.itsolutions.es/daire-benidorm-edimar-33-W177BCPZREDNA119296ITR.html</DetailsURL>
+      <BookingURL>http://crs.itsolutions.es/book-daire-benidorm-edimar-33-W177BCPZREDNA119296ITR.html</BookingURL>
+      <MasterKind>
+        <MasterKindCode>1</MasterKindCode>
+        <MasterKindName>Daire</MasterKindName>
+      </MasterKind>
+      <Country>
+        <CountryCode>1</CountryCode>
+        <Name>İspanya</Name>
+      </Country>
+      <Region>
+        <RegionCode>1</RegionCode>
+        <Name>Valencia</Name>
+      </Region>
+      <Area>
+        <AreaCode>2</AreaCode>
+        <Name>Benidorm</Name>
+      </Area>
+      <Area>
+        <AreaCode>3</AreaCode>
+        <Name>Alicante Coast</Name>
+      </Area>
+      <Area>
+        <AreaCode>16</AreaCode>
+        <Name>Alicante - Costa Blanca</Name>
+      </Area>
+      <City>
+        <CityCode>3</CityCode>
+        <Name>Alicante / Alacant</Name>
+      </City>
+      <Locality>
+        <LocalityCode>13</LocalityCode>
+        <Name>Benidorm</Name>
+      </Locality>
+      <District>
+        <DistrictCode>15</DistrictCode>
+        <PostalCode>03502</PostalCode>
+        <Name>Not specified</Name>
+      </District>
+      <ExtrasSummary>
+        <ObligatoryOrIncluded>
+          <Extra>
+            <Code>18</Code>
+            <Name>Bebek yatagi / Besik</Name>
+            <Description>Dâhil</Description>
+          </Extra>
+          <Extra>
+            <Code>11</Code>
+            <Name>Depozito</Name>
+            <Description>Bir garanti olarak geçerli bir kredi kartı kullanılması gerekir. Varsayılan olarak, şu  tutarda bir depozito 100,00 €/ rezervasyon</Description>
+          </Extra>
+          <Extra>
+            <Code>10</Code>
+            <Name>Son temizleme</Name>
+            <Description>50,00 €/ rezervasyon</Description>
+          </Extra>
+        </ObligatoryOrIncluded>
+        <Optional>
+          <Extra>
+            <Code>8</Code>
+            <Name>Internet Baglantisi</Name>
+            <Description>10,00 €/ rezervasyon</Description>
+          </Extra>
+        </Optional>
+      </ExtrasSummary>
+      <Description>&lt;b&gt;Benidorm &#039;daki daire&lt;/b&gt; 3 yatak odali ve 6 kisi kapasitelidir. &lt;br&gt;Daire konforlu, bir dışarısı var, ve   90 m&amp;sup2; dir. Deniz manzaralidir. &lt;br&gt;Ev deniz kenarında, hareketli alanda yer almaktadir.&lt;br&gt;Asansör, bahçe, teras, Ütü, elektrikli ısıtma, ortak havuz, aynı binada açık otopark.&lt;br&gt; vitroseramik  bağımsız mutfak, buzdolabı, mikrodalga, fırın, dondurucu,  Çamaşır makinesi, tabak / Çatal bıçak takımı, mutfak eşyaları, kahve makinesi ve ekmek kızartma makinesi temin edilmektedir.</Description>
+      <GalleryDescription></GalleryDescription>
+    </InternationalizedItem>
+  </AccommodationItem>
+</AccommodationList>

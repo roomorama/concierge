@@ -1,0 +1,16 @@
+<Credentials>
+  <Language>EN</Language>
+  <UserName>Foo</UserName>
+  <Password>123</Password>
+</Credentials><Criteria>
+  <Accommodation>
+    <AccommodationCode>55720</AccommodationCode>
+    <UserCode>1210075202</UserCode>
+    <LoginGA>itsalojamientos</LoginGA>
+  </Accommodation>
+  <Occupants>
+    <AdultsNumber>1</AdultsNumber>
+  </Occupants>
+  <DateFrom>2016-10-03</DateFrom>
+  <DateTo>2016-10-20</DateTo>
+</Criteria>
