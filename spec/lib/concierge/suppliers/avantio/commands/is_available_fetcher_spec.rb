@@ -18,6 +18,7 @@ RSpec.describe Avantio::Commands::IsAvailableFetcher do
 
   let(:available_response) { read_fixture('avantio/is_available_response.xml') }
   let(:unavailable_response) { read_fixture('avantio/not_available_response.xml') }
+  let(:not_valid_code_response) { read_fixture('avantio/is_available_-3_code.xml') }
   let(:unexpected_response) { read_fixture('avantio/unexpected_response.xml') }
   let(:wsdl) { read_fixture('avantio/wsdl.xml') }
 
@@ -71,8 +72,20 @@ RSpec.describe Avantio::Commands::IsAvailableFetcher do
         result = subject.call(params)
 
         expect(result.success?).to be false
-        expect(result.error.code).to eq(:unexpected_response_structure)
-        expect(result.error.data).to eq('Unexpected `is_available` response structure')
+        expect(result.error.code).to eq(:unrecognised_response)
+        expect(result.error.data).to eq('Unexpected `is_available` response with code `` and message ``')
+      end
+    end
+
+    context 'when response with not valid codes' do
+      it 'returns a result with error' do
+        stub_call(method: described_class::OPERATION_NAME, response: not_valid_code_response)
+
+        result = subject.call(params)
+
+        expect(result.success?).to be false
+        expect(result.error.code).to eq(:unrecognised_response)
+        expect(result.error.data).to eq('Unexpected `is_available` response with code `-3` and message `The compulsory arrival date is not fulfilled`')
       end
     end
   end
