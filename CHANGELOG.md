@@ -3,7 +3,7 @@
 This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
-## Unreleased
+## [0.13.0] - 2016-11-02
 ### Added
 - Avantio integrations: quote, book, cancel and synchronisation
 
