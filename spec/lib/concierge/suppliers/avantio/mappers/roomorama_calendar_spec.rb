@@ -36,6 +36,11 @@ RSpec.describe Avantio::Mappers::RoomoramaCalendar do
       '204',
       [
         Avantio::Entities::Availability::Period.new(
+          Date.new(2014, 7, 13),
+          Date.new(2014, 8, 16),
+          'AVAILABLE'
+        ),
+        Avantio::Entities::Availability::Period.new(
           Date.new(2014, 8, 24),
           Date.new(2014, 8, 27),
           'AVAILABLE'
@@ -91,10 +96,17 @@ RSpec.describe Avantio::Mappers::RoomoramaCalendar do
     end
 
     it 'returns calendar only from synced period' do
-      before = Date.today + length
-      invalid_entries = calendar.entries.select { |e| e.date < Date.today || before < e.date }
+      before = Date.today
+      after = before + length
+      invalid_entries = calendar.entries.select { |e| e.date < before || after < e.date }
 
       expect(invalid_entries).to be_empty
+    end
+
+    it "marks first #{described_class::MARGIN} days as unavailable"  do
+      invalid_entries = calendar.entries.first(described_class::MARGIN)
+
+      expect(invalid_entries.all? { |e| !e.available }).to be true
     end
 
     it 'returns unavailable entries for unavailable days' do
