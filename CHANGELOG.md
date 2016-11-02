@@ -4,6 +4,9 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 ## Unreleased
+### Fixed
+- Kigo: prevent context hell for availabilities worker
+
 ### Changed
 - Improved Ciirus context info during sync process
 
@@ -18,10 +21,6 @@ how this file is formatted and how the process works.
 
 ### Changed
 - Property synchronisation would not skip purging properties when 1 property fail in #start
-
-## Unreleased
-### Fixed
-- Kigo: prevent context hell for availabilities worker
 
 ## [0.12.14] - 2016-10-27
 ### Added
