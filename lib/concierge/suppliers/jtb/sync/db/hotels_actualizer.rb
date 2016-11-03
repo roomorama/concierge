@@ -80,6 +80,7 @@ module JTB
 
         private
 
+        # Returns 1 for new, 2 for updated, 3 for deleted
         def extract_update_category(line)
           line.split(CSV_DELIMITER, -1)[UPDATE_CATEGORY_INDEX].to_i
         end

@@ -7,7 +7,7 @@ module Workers::Suppliers::JTB
 
     attr_reader :property_synchronisation, :calendar_synchronisation, :host
 
-    SKIPABLE_ERROR_CODES = [
+    SKIPPABLE_ERROR_CODES = [
       :empty_images,
       :unknown_nightly_rate
     ]
@@ -31,7 +31,7 @@ module Workers::Suppliers::JTB
           property_synchronisation.start(property_id) do
             result = mapper.build(hotel)
 
-            if !result.success? && SKIPABLE_ERROR_CODES.include?(result.error.code)
+            if !result.success? && SKIPPABLE_ERROR_CODES.include?(result.error.code)
               property_synchronisation.skip_property(property_id, result.error.code)
             else
               result
