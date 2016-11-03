@@ -1,4 +1,4 @@
-module TTH
+module THH
   module Commands
     class BaseFetcher
       TIMEOUT = 10
