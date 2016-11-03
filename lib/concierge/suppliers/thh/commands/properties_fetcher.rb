@@ -1,4 +1,4 @@
-module TTH
+module THH
   module Commands
     class PropertiesFetcher < BaseFetcher
       # Currency response contains prices in.

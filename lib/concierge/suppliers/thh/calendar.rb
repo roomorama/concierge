@@ -2,10 +2,8 @@ module THH
   # +THH::Calendar+
   #
   # Util class for work with THH rates and calendar.
-  #
-  # Usage:
-  #
-  #
+  # Allows to calculate min_stay, min_rate and get day by day
+  # rates and book info
   class Calendar
     attr_reader :rates, :booked_periods
 
@@ -17,25 +15,28 @@ module THH
       # Filter only actual periods.
       # NOTE: End date of period is not booked
       @booked_periods = booked_periods.map do |p|
-        new_p = p.dup
-        new_p['date_from'] = Date.parse(r['date_from'])
-        new_p['date_to'] = Date.parse(r['date_to']) - 1
+        new_p = p.to_h.dup
+        new_p['date_from'] = Date.parse(p['@date_from'])
+        new_p['date_to'] = Date.parse(p['@date_to']) - 1
+        new_p
       end.select do |p|
         p['date_from'] <= to && today <= p['date_to']
       end
 
       @rates = rates.map do |r|
-        new_r = r.dup
+        new_r = r.to_h.dup
         new_r['start_date'] = Date.parse(r['start_date'])
         new_r['end_date'] = Date.parse(r['end_date'])
         new_r['night'] = rate_to_f(r['night'])
+        new_r['min_nights'] = r['min_nights'].to_i
+        new_r
       end.select do |r|
         r['start_date'] <= to && today < r['end_date']
       end
     end
 
     def min_stay
-      available_days.values.map { |r| r['min_nights'].to_i }.min
+      available_days.values.map { |r| r['min_nights'] }.min
     end
 
     def min_rate

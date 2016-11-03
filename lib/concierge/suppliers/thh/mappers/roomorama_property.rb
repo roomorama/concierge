@@ -8,7 +8,7 @@ module THH
       SYNC_PERIOD = 365
       SECURITY_DEPOSIT_TYPE = 'cash'
       SECURITY_DEPOSIT_CURRENCY = 'THB'
-      CANCELLATION_POLICY = 'super_elite'
+      CANCELLATION_POLICY = 'super_strict'
 
       # Maps THH type to Roomorama property type/subtype.
       PROPERTY_TYPES = Concierge::SafeAccessHash.new({
@@ -21,7 +21,7 @@ module THH
       #
       #  * +raw_property+ [Hash] property from +data_all+ response
       #
-      # Returns result wrapped a +Roomorama::Property+
+      # Returns +Roomorama::Property+
       def build(raw_property)
         raw_property = Concierge::SafeAccessHash.new(raw_property)
         property = Roomorama::Property.new(raw_property['property_id'])
@@ -29,9 +29,11 @@ module THH
 
         set_base_info!(property, raw_property)
         set_images!(property, raw_property)
-        set_amenities!(property, details)
+        set_amenities!(property, raw_property)
         set_rates_and_min_stay!(property, raw_property)
         set_security_deposit!(property, raw_property)
+
+        property
       end
 
       private
@@ -41,7 +43,7 @@ module THH
         property.title = raw_property['property_name']
         property.type = PROPERTY_TYPES.get("#{raw_property['type']}.type")
         property.subtype = PROPERTY_TYPES.get("#{raw_property['type']}.subtype")
-        property.country = country_converter.code_by_name(raw_property['country'])
+        property.country_code = country_converter.code_by_name(raw_property['country'])
         property.city = raw_property['city']
         property.neighborhood = raw_property['region']
         property.description = build_description(raw_property)
@@ -98,7 +100,7 @@ module THH
         kitchen = attributes.get('equipment.kitchen')
         # Possible values in kitchen: cooker, fridge, freezer, microwave,
         # toaster, oven, hob, kettle, dishwasher
-        kitchen && kitchen.length > 1
+        kitchen && kitchen.to_h.length > 1
       end
 
       def has_pool?(attributes)
@@ -106,7 +108,7 @@ module THH
           attributes.get('pool.private_pool')
       end
 
-      def set_rates_and_min_stay(property, raw_property)
+      def set_rates_and_min_stay!(property, raw_property)
         rates = Array(raw_property.get('rates.rate'))
         booked_periods = Array(raw_property.get('calendar.periods.period'))
 
@@ -114,7 +116,11 @@ module THH
 
         property.minimum_stay = calendar.min_stay
         property.nightly_rate = calendar.min_rate
-        property.currency = THH::Commands::PropertiesFetcher::CURRENCY
+        if property.nightly_rate
+          property.weekly_rate = property.nightly_rate * 7
+          property.monthly_rate = property.nightly_rate * 30
+          property.currency = THH::Commands::PropertiesFetcher::CURRENCY
+        end
       end
 
       def set_images!(property, raw_property)
@@ -143,7 +149,7 @@ module THH
           raw_property.get('descriptions.rooms.utility_room'),
           raw_property.get('descriptions.rooms.other'),
           raw_property.get('descriptions.rooms.cleaning'),
-        ].compact.joint("\n")
+        ].compact.join("\n\n")
       end
 
       def set_security_deposit!(property, raw_property)
@@ -151,7 +157,7 @@ module THH
         if value
           property.security_deposit_amount = rate_to_f(value)
           property.security_deposit_type = SECURITY_DEPOSIT_TYPE
-          property.security_currency_code = SECURITY_DEPOSIT_CURRENCY
+          property.security_deposit_currency_code = SECURITY_DEPOSIT_CURRENCY
         end
       end
 
