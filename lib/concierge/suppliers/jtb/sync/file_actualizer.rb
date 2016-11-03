@@ -47,7 +47,7 @@ module JTB
         end
         Result.error(
           :actualize_file_error,
-          "Error during actualizing files with prefix `#{file_prefix}`"
+          "Error during actualizing files with prefix `#{file_prefix}`. #{e.message}"
         )
       end
 
@@ -56,7 +56,9 @@ module JTB
         FileUtils.rm_rf(path)
         Result.new(true)
       rescue => e
-        Result.error(:jtb_file_cleanup_error, "Error during cleaning up files with prefix `#{file_prefix}`")
+        Result.error(
+          :jtb_file_cleanup_error,
+          "Error during cleaning up files with prefix `#{file_prefix}`. #{e.message}")
       end
 
       private

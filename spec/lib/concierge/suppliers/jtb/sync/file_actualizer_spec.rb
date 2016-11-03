@@ -14,6 +14,18 @@ RSpec.describe JTB::Sync::FileActualizer do
   subject { described_class.new(credentials, file_prefix)}
 
   describe '#actualize' do
+    context 'unknown error during actualization' do
+      it 'returns error' do
+        allow(subject).to receive(:prepare_tmp_dir) { raise StandardError.new('Some message') }
+
+        result = subject.actualize(nil)
+
+        expect(result.success?).to be false
+        expect(result.error.code).to eq :actualize_file_error
+        expect(result.error.data).to eq 'Error during actualizing files with prefix `RoomStock`. Some message'
+      end
+    end
+
     context 'when first sync' do
       let(:last_synced) { nil }
 
