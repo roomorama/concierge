@@ -4,7 +4,7 @@ module JTB
     # Class responsible for actualizing JTB DB tables required to run JTB sync workers.
     #
     # It fetches required CSV files from JTB server and imports them to DB.
-    # Interrupt the process and return unsuccess result if error occurs during some table actualization.
+    # Interrupt the process and return unsuccessful result if error occurs during some table actualization.
     class Actualizer
 
       attr_reader :credentials

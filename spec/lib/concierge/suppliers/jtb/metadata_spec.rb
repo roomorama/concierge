@@ -24,7 +24,7 @@ RSpec.describe Workers::Suppliers::JTB::Metadata do
       expect(error.description).to eq 'Description'
     end
 
-    described_class::SKIPABLE_ERROR_CODES.each do |error_code|
+    described_class::SKIPPABLE_ERROR_CODES.each do |error_code|
       it "skips property if mapper returns skipable error #{error_code}" do
         allow_any_instance_of(JTB::Sync::Actualizer).to receive(:actualize) { Result.new(true) }
         allow(JTB::Repositories::HotelRepository).to receive(:english_ryokans).and_return(

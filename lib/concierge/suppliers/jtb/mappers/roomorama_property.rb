@@ -75,25 +75,25 @@ module JTB
         JTB::Repositories::RoomPriceRepository.room_min_price(rate_plans, from, to)
       end
 
-      def set_base_info!(result, hotel)
-        result.title = hotel.hotel_name
-        result.description = hotel.hotel_description
-        result.type = PROPERTY_TYPE
-        result.lat = parse_latitude(hotel.latitude)
-        result.lng = parse_longitude(hotel.longitude)
-        result.address = hotel.address
-        result.postal_code = fetch_postal_code(hotel.address)
+      def set_base_info!(property, hotel)
+        property.title = hotel.hotel_name
+        property.description = hotel.hotel_description
+        property.type = PROPERTY_TYPE
+        property.lat = parse_latitude(hotel.latitude)
+        property.lng = parse_longitude(hotel.longitude)
+        property.address = hotel.address
+        property.postal_code = fetch_postal_code(hotel.address)
         # May be do this in external code
         city = JTB::Repositories::LookupRepository.location_name(hotel.location_code)&.name
-        result.city = prepare_city(city) if city
-        result.default_to_available = false
-        result.minimum_stay = 1
-        result.currency = JTB::Price::CURRENCY
-        result.cancellation_policy = CANCELLATION_POLICY
-        result.country_code = COUNTRY_CODE
-        result.check_in_time = prepare_time(hotel.check_in)
-        result.check_out_time = prepare_time(hotel.check_out)
-        result.amenities = hotel_amenities(hotel)
+        property.city = prepare_city(city) if city
+        property.default_to_available = false
+        property.minimum_stay = 1
+        property.currency = JTB::Price::CURRENCY
+        property.cancellation_policy = CANCELLATION_POLICY
+        property.country_code = COUNTRY_CODE
+        property.check_in_time = prepare_time(hotel.check_in)
+        property.check_out_time = prepare_time(hotel.check_out)
+        property.amenities = hotel_amenities(hotel)
       end
 
       def hotel_amenities(hotel)
@@ -193,7 +193,7 @@ module JTB
           unit.number_of_units = 1
           unit.number_of_bedrooms = 1
 
-          # Unknown how to handle next room types:
+          # Unknown how to handle number of beds for the following next room types:
           #  JWS: Japanese and Western Style
           #  DSR: Stateroom
           #  MSN: Maisonette
