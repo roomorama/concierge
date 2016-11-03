@@ -83,7 +83,6 @@ module JTB
         property.lng = parse_longitude(hotel.longitude)
         property.address = hotel.address
         property.postal_code = fetch_postal_code(hotel.address)
-        # May be do this in external code
         city = JTB::Repositories::LookupRepository.location_name(hotel.location_code)&.name
         property.city = prepare_city(city) if city
         property.default_to_available = false
