@@ -34,9 +34,10 @@ module JTB
       private
 
       def actualize_table(db_actualizer)
-        last_synced = fetch_last_synced(db_actualizer.file_prefix)
-        file_actualizer = FileActualizer.new(credentials, db_actualizer.file_prefix)
-        result = file_actualizer.actualize(last_synced&.file_name)
+        file_prefix = db_actualizer.file_prefix
+        last_synced = fetch_last_synced(file_prefix)
+        file_actualizer = FileActualizer.new(credentials, file_prefix)
+        result = file_actualizer.actualize(last_synced&.file_name, force_all = force_all(file_prefix))
         return result unless result.success?
 
         result = db_actualizer.actualize
@@ -44,6 +45,11 @@ module JTB
         file_actualizer.cleanup
 
         result
+      end
+
+
+      def force_all(file_prefix)
+        file_prefix == 'GenericMaster'
       end
 
       def tmp_path
