@@ -1,7 +1,11 @@
 module TTH
   module Commands
     class PropertiesFetcher < BaseFetcher
-      CURRENCY = 'USD'
+      # Currency response contains prices in.
+      # Currently THH has a bug with security deposit amount,
+      # it is always in THB. If you want to change this value
+      # check the behavior of security deposit
+      CURRENCY = 'THB'
       LANGUAGE = 'en'
       TIMEOUT = 60
       PROPERTIES_KEY = 'response.property'

@@ -6,6 +6,8 @@ module THH
     # from data getting from THH API.
     class RoomoramaProperty
       SYNC_PERIOD = 365
+      SECURITY_DEPOSIT_TYPE = 'cash'
+      SECURITY_DEPOSIT_CURRENCY = 'THB'
 
       # Maps THH type to Roomorama property type/subtype.
       PROPERTY_TYPES = Concierge::SafeAccessHash.new({
@@ -28,6 +30,7 @@ module THH
         set_images!(property, raw_property)
         set_amenities!(property, details)
         set_rates_and_min_stay!(property, raw_property)
+        set_security_deposit!(property, raw_property)
       end
 
       private
@@ -127,7 +130,31 @@ module THH
       end
 
       def build_description(raw_property)
-        raw_property.get('descriptions.description_full.text')
+        [
+          raw_property.get('descriptions.description_short.brief'),
+          raw_property.get('descriptions.description_full.text'),
+          raw_property.get('descriptions.rooms.living_area'),
+          raw_property.get('descriptions.rooms.kitchen'),
+          raw_property.get('descriptions.rooms.dining_room'),
+          raw_property.get('descriptions.rooms.bedrooms'),
+          raw_property.get('descriptions.rooms.bathrooms'),
+          raw_property.get('descriptions.rooms.utility_room'),
+          raw_property.get('descriptions.rooms.other'),
+          raw_property.get('descriptions.rooms.cleaning'),
+        ].compact.joint("\n")
+      end
+
+      def set_security_deposit!(property, raw_property)
+        value = raw_property.get('additional_information.deposit')
+        if value
+          property.security_deposit_amount = rate_to_f(value)
+          property.security_deposit_type = SECURITY_DEPOSIT_TYPE
+          property.security_currency_code = SECURITY_DEPOSIT_CURRENCY
+        end
+      end
+
+      def rate_to_f(rate)
+        rate.gsub(/[,\s]/, '').to_f
       end
 
       def country_converter

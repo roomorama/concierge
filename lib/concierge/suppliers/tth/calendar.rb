@@ -28,6 +28,7 @@ module THH
         new_r = r.dup
         new_r['start_date'] = Date.parse(r['start_date'])
         new_r['end_date'] = Date.parse(r['end_date'])
+        new_r['night'] = rate_to_f(r['night'])
       end.select do |r|
         r['start_date'] <= to && today < r['end_date']
       end
@@ -38,7 +39,7 @@ module THH
     end
 
     def min_rate
-      available_days.values.map { |r| r['night'].to_f }.min
+      available_days.values.map { |r| r['night'] }.min
     end
 
     def rates_days
@@ -72,6 +73,10 @@ module THH
           h[k] = hash[k]
         end
       end
+    end
+
+    def rate_to_f(rate)
+      rate.gsub(/[,\s]/, '').to_f
     end
   end
 end
