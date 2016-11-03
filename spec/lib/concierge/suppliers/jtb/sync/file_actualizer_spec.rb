@@ -3,17 +3,35 @@ require 'spec_helper'
 RSpec.describe JTB::Sync::FileActualizer do
   let(:sftp_mock) { double('sftp') }
   let(:file_prefix) { 'RoomStock' }
-  let(:credentials) { double(sftp: {}) }
+  let(:credentials) { double(sftp: { 'tmp_path' => '/tmp/jtb' }) }
 
   before do
     allow_any_instance_of(described_class).to receive(:sftp) { sftp_mock }
     allow(File).to receive(:exists?) { true }
-    allow_any_instance_of(described_class).to receive(:cleanup) { Result.new(true) }
   end
 
   subject { described_class.new(credentials, file_prefix)}
 
+  describe '#cleanup' do
+    context 'when we ask to cleanup /* dir' do
+      let(:credentials) { double(sftp: { 'tmp_path' => '/' }) }
+      let(:file_prefix) { '' }
+
+      it 'doesnot allow' do
+        result = subject.cleanup
+
+        expect(result.success?).to be false
+        expect(result.error.code).to eq :jtb_file_cleanup_error
+        expect(result.error.data).to eq 'Forbidden to delete files from `/*`'
+      end
+    end
+  end
+
   describe '#actualize' do
+    before do
+      allow_any_instance_of(described_class).to receive(:cleanup) { Result.new(true) }
+    end
+
     context 'unknown error during actualization' do
       it 'returns error' do
         allow(subject).to receive(:prepare_tmp_dir) { raise StandardError.new('Some message') }
