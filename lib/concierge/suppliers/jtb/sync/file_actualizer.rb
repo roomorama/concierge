@@ -52,8 +52,11 @@ module JTB
       end
 
       def cleanup
-        path = Dir.glob(File.join(options['tmp_path'], "#{file_prefix}*"))
-        FileUtils.rm_rf(path)
+        path = File.join(options['tmp_path'], "#{file_prefix}*")
+        return Result.error(:jtb_file_cleanup_error, "Forbidden to delete files from `#{path}`") if path == '/*'
+
+        files = Dir.glob(path)
+        FileUtils.rm_rf(files)
         Result.new(true)
       rescue => e
         Result.error(
