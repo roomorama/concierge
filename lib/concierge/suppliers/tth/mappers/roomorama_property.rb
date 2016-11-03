@@ -8,6 +8,7 @@ module THH
       SYNC_PERIOD = 365
       SECURITY_DEPOSIT_TYPE = 'cash'
       SECURITY_DEPOSIT_CURRENCY = 'THB'
+      CANCELLATION_POLICY = 'super_elite'
 
       # Maps THH type to Roomorama property type/subtype.
       PROPERTY_TYPES = Concierge::SafeAccessHash.new({
@@ -52,6 +53,7 @@ module THH
         property.number_of_double_beds = raw_property.get('beds.double_beds')
         property.number_of_single_beds = raw_property.get('beds.single_beds')
         property.number_of_sofa_beds = raw_property.get('beds.sofa_beds')
+        property.cancellation_policy = CANCELLATION_POLICY
       end
 
       def set_amenities!(property, raw_property)
