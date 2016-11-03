@@ -16,10 +16,11 @@ module THH
 
         response = result.value
 
-        properties = response.get(PROPERTIES_KEY)
-        return unrecognised_response_error unless properties
+        return unrecognised_response_error('response') unless response.to_h.key?('response')
 
-        Result.new(Array(properties))
+        properties = response.get(PROPERTIES_KEY)
+
+        Result.new(to_array(properties))
       end
 
       protected
@@ -34,8 +35,14 @@ module THH
 
       private
 
-      def unrecognised_response_error
-        Result.error(:unrecognised_response, "Response does not contain `#{PROPERTIES_KEY}` field")
+      def to_array(properties)
+        Array(properties).map do |p|
+          Concierge::SafeAccessHash.new(p)
+        end
+      end
+
+      def unrecognised_response_error(field)
+        Result.error(:unrecognised_response, "Response does not contain `#{field}` field")
       end
 
       def params

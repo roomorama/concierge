@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <property>
+    <property_id>3</property_id>
+    <property_name>View Talay (1 Bed Pool Villa)</property_name>
+    <pageurl>http://www.thailandholidayhomes.com/pattaya/view-talay-villa-1-bedroom-house-private-pool-garden-jomtien-pattaya.html</pageurl>
+    <instant_confirmation>true</instant_confirmation>
+    <country>Thailand</country>
+    <region>Chonburi</region>
+    <city>Pattaya</city>
+    <type>Villa</type>
+    <pax>2</pax>
+    <bedrooms>1</bedrooms>
+    <beds>
+      <double_beds>1</double_beds>
+    </beds>
+    <bathrooms>1</bathrooms>
+    <geodata>
+      <lat>12.89784</lat>
+      <lng>100.871744</lng>
+    </geodata>
+    <descriptions>
+      <description_short>
+        <brief>
+          <![CDATA[The villa offers striking perpendicular design swimming pool, trimmed with matching tropical foliage, privately enclosed in the View Talay resort, nestled in the heart of bustling Jomtien, a private getaway walking distance from all that sights and sounds Jomtien town and beach has to offer the loan traveler or romantic adventurers.]]>
+        </brief>
+      </description_short>
+      <description_full>
+        <text>
+          <![CDATA[Everything about this property is designed for ease, the open plan dinning and kitchen area merges with the privacy and safety of the enclosed pool and lounging area, all feeding into one comfortable , peaceful living space. Just 400 metres from Jometien a short walk and you are in the centre of Jomtien. A further quick and easy ride on the selection of available transport will have you in Pattaya in 10 minutes to sample the more lively side of the coast. All within a gated and secured resort.  The interioer of total 5 available villas can be slightly different.]]>
+        </text>
+      </description_full>
+      <rooms>
+        <living_area>
+          <![CDATA[The open plan nature of the living room ideally suits the warmth of the Thai sunrays. With the tall patio windows open, you can not only enjoy the poolside views, but also allows tremendous airflow throughout the property. Within this area you will find a LG flat-screen TV, a DVD player, a coffee table and a three-piece-suite.]]>
+        </living_area>
+        <kitchen>
+          <![CDATA[Within a stone’s throw of the dining room, you can enjoy the top notch self-catering facilities of the western kitchen. The modern appliances include a microwave, refrigerator, stovetop, tea and coffee making facilities and a host of dishware and cutlery.]]>
+        </kitchen>
+        <dining_room>
+          <![CDATA[The dining area is conveniently part of the open plan space. From the comfort of your dining table/breakfast bar within close proximity to the western kitchen, you can also gaze out towards the garden and pool.]]>
+        </dining_room>
+        <bedrooms>
+          <![CDATA[The bedroom is a peaceful space to enjoy your relaxing time while on holiday in this beautiful country. The bedroom owns a Samsung TV, large wooden wardrobes and direct access to the pool and terrace. What a great way to wake up! The adjoining bathroom is also steeped in luxury. Enjoy the large sunken bathtub and relax away an hour or two after a day on the beach.]]>
+        </bedrooms>
+        <bathrooms>
+          <![CDATA[The bathroom features a large sunken bath where you can fully relax and soak away after a full day at the beach. With a luxurious design and modern amenities directly adjoined to the bedroom, convenience and comfort find the perfect blend. 24-hour security will provide you with peace of mind during your holiday and the daily cleaning service included within the rental price will ensure you can devote your time to relaxation. Linens and towels are provided free of charge and an additional local laundry service with reasonable prices is within close proximity. Residents should bring their own beach towels or purchase them locally.]]>
+        </bathrooms>
+      </rooms>
+    </descriptions>
+    <attributes>
+      <pool>
+        <private_pool>1</private_pool>
+      </pool>
+      <amenities>
+        <car_available>1</car_available>
+        <chef_available>1</chef_available>
+        <wifi>1</wifi>
+        <air_conditioning>1</air_conditioning>
+        <linen_provided>1</linen_provided>
+        <towels_provided>1</towels_provided>
+      </amenities>
+      <inside>
+        <dining_seats>2</dining_seats>
+        <lounge_seats>4</lounge_seats>
+      </inside>
+      <equipment>
+        <kitchen>
+          <fridge>1</fridge>
+          <freezer>1</freezer>
+          <microwave>1</microwave>
+          <hob>1</hob>
+          <kettle>1</kettle>
+        </kitchen>
+        <living_room>
+          <cable_tv>1</cable_tv>
+        </living_room>
+        <other></other>
+      </equipment>
+      <outside>
+        <balcony>1</balcony>
+      </outside>
+    </attributes>
+    <distances>
+      <distance>
+        <type>beach</type>
+        <value>400</value>
+        <unit>meter</unit>
+      </distance>
+      <distance>
+        <type>restaurant</type>
+        <value>500</value>
+        <unit>meter</unit>
+      </distance>
+      <distance>
+        <type>nightlife</type>
+        <value>500</value>
+        <unit>meter</unit>
+      </distance>
+      <distance>
+        <type>shops</type>
+        <value>500</value>
+        <unit>meter</unit>
+      </distance>
+      <distance>
+        <type>massage</type>
+        <value>500</value>
+        <unit>meter</unit>
+      </distance>
+    </distances>
+    <pictures>
+      <picture_main>http://img.thailandholidayhomes.com/cache/villa_3-530x354-1.jpg</picture_main>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_3_11911-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_3_11912-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_3_11913-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_3_11907-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_3_11908-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_3_11909-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_3_11906-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_3_11914-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_3_11910-530x354-1.jpg</picture>
+    </pictures>
+    <videos>
+      <video>http://www.youtube.com/watch?v=4galyi2Ra4E</video>
+    </videos>
+    <additional_information>
+      <deposit>5000</deposit>
+      <free_electricity>57 KW/day</free_electricity>
+      <water>free</water>
+      <electricity_over>7 THB/KW</electricity_over>
+      <support_1>Landline: +66 (0) 38-757-142</support_1>
+      <support_2>Mobil 1: +66 (0) 88-212-3556</support_2>
+      <support_3>Mobil 2: +66 (0) 83-306-9417</support_3>
+    </additional_information>
+    <promotion></promotion>
+    <rates>
+      <rate>
+        <start_date>01.02.2015</start_date>
+        <end_date>31.08.2015</end_date>
+        <title>high1</title>
+        <night>5,825</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.09.2015</start_date>
+        <end_date>30.09.2015</end_date>
+        <title>low1</title>
+        <night>5,364</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.10.2015</start_date>
+        <end_date>14.12.2015</end_date>
+        <title>high2</title>
+        <night>5,825</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>15.12.2015</start_date>
+        <end_date>31.01.2016</end_date>
+        <title>peak1</title>
+        <night>6,334</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.02.2016</start_date>
+        <end_date>31.08.2016</end_date>
+        <title>High 1 / 2016</title>
+        <night>5,825</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.09.2016</start_date>
+        <end_date>30.09.2016</end_date>
+        <title>Low / 2016</title>
+        <night>5,364</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.10.2016</start_date>
+        <end_date>17.12.2016</end_date>
+        <title>High 2 / 2016</title>
+        <night>5,825</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>18.12.2016</start_date>
+        <end_date>10.01.2017</end_date>
+        <title>Peak / 2016</title>
+        <night>6,334</night>
+        <currency>THB</currency>
+        <min_nights>10</min_nights>
+      </rate>
+      <rate>
+        <start_date>11.01.2017</start_date>
+        <end_date>31.08.2017</end_date>
+        <title>High 1 / 2017</title>
+        <night>5,825</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.09.2017</start_date>
+        <end_date>30.09.2017</end_date>
+        <title>Low / 2017</title>
+        <night>5,364</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.10.2017</start_date>
+        <end_date>17.12.2017</end_date>
+        <title>High 2 / 2017</title>
+        <night>5,825</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>18.12.2017</start_date>
+        <end_date>10.01.2018</end_date>
+        <title>Peak / 2017</title>
+        <night>6,334</night>
+        <currency>THB</currency>
+        <min_nights>10</min_nights>
+      </rate>
+      <rate>
+        <start_date>11.01.2018</start_date>
+        <end_date>31.08.2018</end_date>
+        <title>High1/2018</title>
+        <night>5,825</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.09.2018</start_date>
+        <end_date>30.09.2018</end_date>
+        <title>Low/2018</title>
+        <night>5,364</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.10.2018</start_date>
+        <end_date>17.12.2018</end_date>
+        <title>High2/2018</title>
+        <night>5,825</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+    </rates>
+    <calendar>
+      <periods>
+        <period date_from="26.11.2016" date_to="2017-02-25"></period>
+        <period date_from="18.11.2017" date_to="2018-02-10"></period>
+      </periods>
+    </calendar>
+    <reviews>
+      <review>
+        <name>
+          <![CDATA[ SERHAT]]>
+        </name>
+        <text>
+          <![CDATA[Thankyou Paul & Kritsana for the best holiday we have ever had. It was so nice . we will come back there .. Thankyou again and best wishes . Serhat & Ercan & Zafer & ?nal]]>
+        </text>
+        <photo></photo>
+      </review>
+      <review>
+        <name>
+          <![CDATA[]]>
+        </name>
+        <text>
+          <![CDATA[]]>
+        </text>
+        <photo>http://img.thailandholidayhomes.com/cache/56299-80x80-1.jpg</photo>
+      </review>
+      <review>
+        <name>
+          <![CDATA[Fethi Hayri helvacioglu, Turkey]]>
+        </name>
+        <text>
+          <![CDATA[thanks for everything]]>
+        </text>
+        <photo>http://img.thailandholidayhomes.com/cache/6518-80x80-1.jpg</photo>
+      </review>
+    </reviews>
+  </property>
+  <property>
+    <property_id>15</property_id>
+    <property_name>Baan Duan Chai</property_name>
+    <pageurl>http://www.thailandholidayhomes.com/pattaya/baan-duan-chai-5-bedroom-pool-villa-jomtien-pattaya.html</pageurl>
+    <instant_confirmation>true</instant_confirmation>
+    <country>Thailand</country>
+    <region>Chonburi</region>
+    <city>Pattaya</city>
+    <type>Villa</type>
+    <pax>10</pax>
+    <bedrooms>5</bedrooms>
+    <beds>
+      <double_beds>4</double_beds>
+      <sofa_beds>2</sofa_beds>
+    </beds>
+    <bathrooms>5</bathrooms>
+    <shower>1</shower>
+    <geodata>
+      <lat>12.884067</lat>
+      <lng>100.896267</lng>
+    </geodata>
+    <descriptions>
+      <description_short>
+        <brief>
+          <![CDATA[This modern tropical five-bedroom house at Jomtein is the holiday home of your dreams. Picture relaxing in your private swimming pool minutes from the best amenities and facilities Jomtein has to offer. With a hire car inclusive in our attractive rates, you can be at the beach within minutes, be it Jomtein or Pattaya.]]>
+        </brief>
+      </description_short>
+      <description_full>
+        <text>
+          <![CDATA[ Crossing the finely landscaped gardens, and entering this property through a set of French doors, the occupant is greeted by a stylish, modern decor theme, which is repeated throughout the entire villa. The large lounge, which incorporates a spacious dining area, runs the full length of the property. A well-equipped modern kitchen, with black granite worktops, is tucked away in a separate room, with easy access to the dining area. Moving upstairs, three of the four bedrooms seem to vie for the title of “Master Bedroom”, each being elegantly decorated and entirely comfortable, with their own en-suite wet rooms. This is a beautiful holiday property, decorated in a fun and fresh style, a wonderful home away from home in which to enjoy your vacation. Conveniently close to all of the major amenities, in the quite gated community of Viewpoint, just a few minutes from the beach. ]]>
+        </text>
+      </description_full>
+      <rooms>
+        <living_area>
+          <![CDATA[The living area is light and spacious with modern furnishings, seating for eight persons with Cable TV, DVD/CD player and separate radio / CD player, please note this player will not accept copy CD’s. The living area opens to a dining facility for six persons.]]>
+        </living_area>
+        <kitchen>
+          <![CDATA[Fully fitted with granite worktops and tiled floors, appliances include fridge/freezer, microwave, oven, cooker, rice cooker, toaster and all utensils. There are place settings for eight people. A washing machine is available at the covered utility area. Iron and ironing board are also provided.]]>
+        </kitchen>
+        <bedrooms>
+          <![CDATA[Bedroom 1 Queen-size bed with ample furniture. Bedroom 2 Queen-size bed with ample furniture. Bedroom 3 Queen-size bed with ample furniture. Bedroom 4 Queen-size bed with ample furniture.]]>
+        </bedrooms>
+        <bathrooms>
+          <![CDATA[Bedroom 1 offers a full bathroom - bedrooms 2 &amp; 3 have good size shower rooms with toilet and wash hand basins. There is a cloakroom off the living area for your convenience.]]>
+        </bathrooms>
+      </rooms>
+    </descriptions>
+    <attributes>
+      <pool>
+        <private_pool>1</private_pool>
+        <childrens_pool>1</childrens_pool>
+      </pool>
+      <amenities>
+        <car_available>1</car_available>
+        <chef_available>1</chef_available>
+        <wifi>1</wifi>
+        <air_conditioning>1</air_conditioning>
+        <pool_table>1</pool_table>
+        <linen_provided>1</linen_provided>
+        <towels_provided>1</towels_provided>
+      </amenities>
+      <inside>
+        <dining_seats>6</dining_seats>
+        <lounge_seats>6</lounge_seats>
+      </inside>
+      <equipment>
+        <kitchen>
+          <cooker>1</cooker>
+          <fridge>1</fridge>
+          <freezer>1</freezer>
+          <microwave>1</microwave>
+          <toaster>1</toaster>
+          <oven>1</oven>
+          <hob>1</hob>
+          <kettle>1</kettle>
+        </kitchen>
+        <living_room>
+          <cable_tv>1</cable_tv>
+          <cd_player>1</cd_player>
+        </living_room>
+        <other></other>
+      </equipment>
+      <outside>
+        <bbq>1</bbq>
+        <balcony>1</balcony>
+        <parking>1</parking>
+      </outside>
+    </attributes>
+    <distances>
+      <distance>
+        <type>beach</type>
+        <value>1000</value>
+        <unit>meter</unit>
+      </distance>
+      <distance>
+        <type>restaurant</type>
+        <value>500</value>
+        <unit>meter</unit>
+      </distance>
+      <distance>
+        <type>nightlife</type>
+        <value>1500</value>
+        <unit>meter</unit>
+      </distance>
+      <distance>
+        <type>shops</type>
+        <value>500</value>
+        <unit>meter</unit>
+      </distance>
+      <distance>
+        <type>massage</type>
+        <value>700</value>
+        <unit>meter</unit>
+      </distance>
+    </distances>
+    <pictures>
+      <picture_main>http://img.thailandholidayhomes.com/cache/villa_15-530x354-1.jpg</picture_main>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_15_6863-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_15_15007-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_15_14995-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_15_14996-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_15_14997-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_15_14998-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_15_14999-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_15_15000-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_15_15001-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_15_15002-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_15_15003-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_15_15004-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_15_15005-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_15_15006-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_15_15008-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_15_15009-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_15_15010-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_15_15011-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_15_15029-530x354-1.jpg</picture>
+      <picture>http://img.thailandholidayhomes.com/cache/villa_15_15030-530x354-1.jpg</picture>
+    </pictures>
+    <videos>
+      <video>http://www.youtube.com/watch?v=s3zzgGxu4hE</video>
+    </videos>
+    <additional_information>
+      <deposit>10000</deposit>
+      <free_electricity>100 KW/day</free_electricity>
+      <water>free</water>
+      <electricity_over>7 THB/KW</electricity_over>
+      <support_1>Landline: +66 (0) 38-757-142</support_1>
+      <support_2>Mobil 1: +66 (0) 88-212-3556</support_2>
+      <support_3>Mobil 2: +66 (0) 83-306-9417</support_3>
+    </additional_information>
+    <promotion></promotion>
+    <rates>
+      <rate>
+        <start_date>15.12.2015</start_date>
+        <end_date>05.01.2016</end_date>
+        <title>Peak/2015</title>
+        <night>8,820</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>06.04.2016</start_date>
+        <end_date>31.08.2016</end_date>
+        <title>high1</title>
+        <night>7,800</night>
+        <currency>THB</currency>
+        <min_nights>1</min_nights>
+      </rate>
+      <rate>
+        <start_date>06.04.2016</start_date>
+        <end_date>31.08.2016</end_date>
+        <title>high1</title>
+        <night>7,475</night>
+        <currency>THB</currency>
+        <min_nights>2</min_nights>
+      </rate>
+      <rate>
+        <start_date>06.04.2016</start_date>
+        <end_date>31.08.2016</end_date>
+        <title>high1</title>
+        <night>6,500</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.09.2016</start_date>
+        <end_date>30.09.2016</end_date>
+        <title>Low</title>
+        <night>7,680</night>
+        <currency>THB</currency>
+        <min_nights>1</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.09.2016</start_date>
+        <end_date>30.09.2016</end_date>
+        <title>Low</title>
+        <night>7,360</night>
+        <currency>THB</currency>
+        <min_nights>2</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.09.2016</start_date>
+        <end_date>30.09.2016</end_date>
+        <title>Low</title>
+        <night>6,400</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.10.2016</start_date>
+        <end_date>17.12.2016</end_date>
+        <title>high2</title>
+        <night>8,510</night>
+        <currency>THB</currency>
+        <min_nights>1</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.10.2016</start_date>
+        <end_date>17.12.2016</end_date>
+        <title>high2</title>
+        <night>8,510</night>
+        <currency>THB</currency>
+        <min_nights>2</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.10.2016</start_date>
+        <end_date>17.12.2016</end_date>
+        <title>high2</title>
+        <night>6,000</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>18.12.2016</start_date>
+        <end_date>10.01.2017</end_date>
+        <title>peak1</title>
+        <night>9,400</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>11.01.2017</start_date>
+        <end_date>31.08.2017</end_date>
+        <title>high1 2017</title>
+        <night>10,068</night>
+        <currency>THB</currency>
+        <min_nights>1</min_nights>
+      </rate>
+      <rate>
+        <start_date>11.01.2017</start_date>
+        <end_date>31.08.2017</end_date>
+        <title>high1 2017</title>
+        <night>9,649</night>
+        <currency>THB</currency>
+        <min_nights>2</min_nights>
+      </rate>
+      <rate>
+        <start_date>11.01.2017</start_date>
+        <end_date>31.08.2017</end_date>
+        <title>high1 2017</title>
+        <night>8,390</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.09.2017</start_date>
+        <end_date>30.09.2017</end_date>
+        <title>Low 2017</title>
+        <night>8,808</night>
+        <currency>THB</currency>
+        <min_nights>1</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.09.2017</start_date>
+        <end_date>30.09.2017</end_date>
+        <title>Low 2017</title>
+        <night>8,441</night>
+        <currency>THB</currency>
+        <min_nights>2</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.09.2017</start_date>
+        <end_date>30.09.2017</end_date>
+        <title>Low 2017</title>
+        <night>7,340</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.10.2017</start_date>
+        <end_date>17.12.2017</end_date>
+        <title>high2 2017</title>
+        <night>10,068</night>
+        <currency>THB</currency>
+        <min_nights>1</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.10.2017</start_date>
+        <end_date>17.12.2017</end_date>
+        <title>high2 2017</title>
+        <night>9,649</night>
+        <currency>THB</currency>
+        <min_nights>2</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.10.2017</start_date>
+        <end_date>17.12.2017</end_date>
+        <title>high2 2017</title>
+        <night>8,390</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>18.12.2017</start_date>
+        <end_date>10.01.2018</end_date>
+        <title>peak1 2017</title>
+        <night>11,538</night>
+        <currency>THB</currency>
+        <min_nights>10</min_nights>
+      </rate>
+      <rate>
+        <start_date>11.01.2018</start_date>
+        <end_date>31.08.2018</end_date>
+        <title>high12017/2018</title>
+        <night>10,068</night>
+        <currency>THB</currency>
+        <min_nights>1</min_nights>
+      </rate>
+      <rate>
+        <start_date>11.01.2018</start_date>
+        <end_date>31.08.2018</end_date>
+        <title>high12017/2018</title>
+        <night>9,649</night>
+        <currency>THB</currency>
+        <min_nights>2</min_nights>
+      </rate>
+      <rate>
+        <start_date>11.01.2018</start_date>
+        <end_date>31.08.2018</end_date>
+        <title>high12017/2018</title>
+        <night>8,390</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.09.2018</start_date>
+        <end_date>30.09.2018</end_date>
+        <title>Low2017/2018</title>
+        <night>8,808</night>
+        <currency>THB</currency>
+        <min_nights>1</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.09.2018</start_date>
+        <end_date>30.09.2018</end_date>
+        <title>Low2017/2018</title>
+        <night>8,441</night>
+        <currency>THB</currency>
+        <min_nights>2</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.09.2018</start_date>
+        <end_date>30.09.2018</end_date>
+        <title>Low2017/2018</title>
+        <night>7,340</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.10.2018</start_date>
+        <end_date>17.12.2018</end_date>
+        <title>high22017/2018</title>
+        <night>10,068</night>
+        <currency>THB</currency>
+        <min_nights>1</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.10.2018</start_date>
+        <end_date>17.12.2018</end_date>
+        <title>high22017/2018</title>
+        <night>9,649</night>
+        <currency>THB</currency>
+        <min_nights>2</min_nights>
+      </rate>
+      <rate>
+        <start_date>01.10.2018</start_date>
+        <end_date>17.12.2018</end_date>
+        <title>high22017/2018</title>
+        <night>8,390</night>
+        <currency>THB</currency>
+        <min_nights>3</min_nights>
+      </rate>
+    </rates>
+    <calendar>
+      <periods>
+        <period date_from="02.12.2016" date_to="2016-12-05"></period>
+        <period date_from="16.12.2016" date_to="2016-12-19"></period>
+        <period date_from="21.12.2016" date_to="2016-12-26"></period>
+        <period date_from="30.12.2016" date_to="2017-01-12"></period>
+      </periods>
+    </calendar>
+    <reviews>
+      <review>
+        <name>
+          <![CDATA[SERHAT OZDEMIR]]>
+        </name>
+        <text>
+          <![CDATA[I would like to thank you for everthing you have done for us!! We hope we want come there and see you .. Thank you Paul: 5* service!]]>
+        </text>
+        <photo></photo>
+      </review>
+      <review>
+        <name>
+          <![CDATA[Amelia Leung]]>
+        </name>
+        <text>
+          <![CDATA[We stay there for 7 days, really enjoy the holidays there and thank you Ms. Teuk for your best help and care for us. ]]>
+        </text>
+        <photo></photo>
+      </review>
+      <review>
+        <name>
+          <![CDATA[Dean Kennedy]]>
+        </name>
+        <text>
+          <![CDATA[Hi Paul,
+Thanks again for a great stay in Thailand, please thank your wife Nom for having us round for your family celebrations.
+
+A special thanks to Tuk and the maids for looking after us.
+
+Cheers ]]>
+        </text>
+        <photo></photo>
+      </review>
+      <review>
+        <name>
+          <![CDATA[Paul Chung]]>
+        </name>
+        <text>
+          <![CDATA[Viewpoint and Thailand Holiday Homes = WIN
+
+Paul at Thailand Holiday Homes made my enquiry easy and assisting with organizing 3 villas in close quarters to each other for a party of 16 in Viewpoint Village Jomtien.
+
+Everything prior to arriving was very smooth and made easy. He advised us of one original villa becoming unavailable and promptly organized a new one for us in the same location.
+
+Transfers were also organized through Paul which was pleasant for a group of 16 tired travellers.
+
+On arrival, Tuk showed us all 3 properties, and was very thorough in providing contact details if we needed assistance with anything, left business cards for taxi drivers to find our location easily (this came handy countless times in our 4 night stay), as well as advising us of policies and checking electricity meters. She also helped organize scooters which of course are always a convenient way of getting around.
+
+All three residences were comfortable and after staying in hotels we felt at home very easily and quickly. Everything was in working order and the pools were a lazy way of having a morning or evening dip.
+
+Convenience stores and local restaurants location nearby, Viewpoint were a short distance from Jomtien beach, and a brief drive to Pattaya Walking Street. After a day, we were glad to be distant from Walking Street as our surroundings in Viewpoint were peaceful and convenient in its own way.
+
+Thanks to Thailand Holiday Homes for making our stay pleasant and would definitely consider another stay with Paul and his crew, hopefully for a longer period next time.]]>
+        </text>
+        <photo></photo>
+      </review>
+      <review>
+        <name>
+          <![CDATA[Ponroy, Thailand]]>
+        </name>
+        <text>
+          <![CDATA[I will recommend to all my clients and family. We had the best time at your swimming pool. Housekeeping very friendly and helpful. I have 6 children running around all wet! I had requested extra towels. They came within 10 minutes, plus they did my dishes for only 500 THB after hosting 20 people for dinner the night before.]]>
+        </text>
+        <photo></photo>
+      </review>
+      <review>
+        <name>
+          <![CDATA[nuchsarin changpong, Thailand]]>
+        </name>
+        <text>
+          <![CDATA[ห้องด้านหลังมีกลิ่นอับ โทรแจ้ง check out ใช้เวลา 45 นาที เจ้าหน้าที่จึงจะมา]]>
+        </text>
+        <photo>http://img.thailandholidayhomes.com/cache/4548-80x80-1.jpg</photo>
+      </review>
+      <review>
+        <name>
+          <![CDATA[Wanchai Apichitsakchai TH Phone call08-3431-7111, Thailand]]>
+        </name>
+        <text>
+          <![CDATA[ประทับใจมากตั้งแต่พนักงานต้อนรับ]]>
+        </text>
+        <photo>http://img.thailandholidayhomes.com/cache/118375-80x80-1.jpg</photo>
+      </review>
+      <review>
+        <name>
+          <![CDATA[MOON JEONG-GIL Existing, Korea]]>
+        </name>
+        <text>
+          <![CDATA[Thanks everyone who work in Thailand Holiday Homes Paul, Nom, Elle, Sandy,Tuk and View.....all Thank you so much]]>
+        </text>
+        <photo>http://img.thailandholidayhomes.com/cache/58235-80x80-1.jpg</photo>
+      </review>
+      <review>
+        <name>
+          <![CDATA[Nopchanok  Kantasansakul, Thailand]]>
+        </name>
+        <text>
+          <![CDATA[บ้านสวย เดินทางสะดวก เหมาะกับการไปพักผ่อนกันเพื่อนคร้าาาา]]>
+        </text>
+        <photo>http://img.thailandholidayhomes.com/cache/59487-80x80-1.jpg</photo>
+      </review>
+    </reviews>
+  </property>
+</response>
