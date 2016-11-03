@@ -38,13 +38,13 @@ RSpec.describe JTB::Sync::DB::HotelsActualizer do
 
       it 'returns error with description' do
         allow_any_instance_of(described_class).to receive(:import_file) do
-          raise StandartError
+          raise StandardError.new('Some error')
         end
 
         result = subject.actualize
         expect(result.success?).to be false
         expect(result.error.code).to eq(:jtb_db_actualization_error)
-        expect(result.error.data).to eq('Error during import file with prefix `HotelInfo` to DB')
+        expect(result.error.data).to eq('Error during import file with prefix `HotelInfo` to DB. Some error')
       end
     end
 
