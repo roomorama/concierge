@@ -4,6 +4,7 @@ module JTB
       # +JTB::Sync::LookupActualizer+
       #
       # Class responsible for actualizing DB jtb_lookups table
+      # This is the references for JTB enums (location codes, room types, room grades, amenities, etc.)
       # JTB does not provide Diff files for GenericMaster, so
       # the class doesn't implement +import_diff_file+
       # In case of appearance of Diff file we will see exception
