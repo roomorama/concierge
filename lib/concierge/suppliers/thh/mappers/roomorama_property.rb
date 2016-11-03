@@ -23,7 +23,6 @@ module THH
       #
       # Returns +Roomorama::Property+
       def build(raw_property)
-        raw_property = Concierge::SafeAccessHash.new(raw_property)
         property = Roomorama::Property.new(raw_property['property_id'])
         property.instant_booking!
 
