@@ -66,7 +66,7 @@ module JTB
           end
           Result.new(true)
         rescue => e
-          error_result
+          error_result(e.message)
         end
 
         # Returns prefix of filename to be looking for in tmp_path directory and imported to DB.as string
@@ -76,10 +76,10 @@ module JTB
 
         protected
 
-        def error_result
+        def error_result(msg)
           Result.error(
             :jtb_db_actualization_error,
-            "Error during import file with prefix `#{file_prefix}` to DB"
+            "Error during import file with prefix `#{file_prefix}` to DB. #{msg}"
           )
         end
 
