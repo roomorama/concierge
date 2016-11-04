@@ -15,7 +15,6 @@ RSpec.describe THH::Mappers::RoomoramaProperty do
       "Bedroom 1 Queen-size bed with ample furniture. Bedroom 2 Queen-size bed with ample furniture. Bedroom 3 Queen-size bed with ample furniture. Bedroom 4 Queen-size bed with ample furniture.\n\n"\
       "Bedroom 1 offers a full bathroom - bedrooms 2 &amp; 3 have good size shower rooms with toilet and wash hand basins. There is a cloakroom off the living area for your convenience."
   end
-  # TODO:: add all amenities
   let(:amenities) do
     ['kitchen', 'wifi', 'cabletv', 'parking', 'airconditioning', 'laundry', 'pool', 'balcony', 'outdoor_space', 'gym', 'bed_linen_and_towels']
   end
