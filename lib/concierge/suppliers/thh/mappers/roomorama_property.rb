@@ -67,7 +67,7 @@ module THH
           amenities << 'wifi' if attributes.get('amenities.wifi')
           amenities << 'cabletv' if attributes.get('equipment.living_room.cable_tv')
           amenities << 'parking' if attributes.get('outside.parking')
-          amenities << 'airconditioning' if attributes.get('amenitites.air_conditioning')
+          amenities << 'airconditioning' if attributes.get('amenities.air_conditioning')
           amenities << 'laundry' if has_laundry?(attributes)
           amenities << 'pool' if has_pool?(attributes)
           amenities << 'balcony' if attributes.get('outside.balcony')

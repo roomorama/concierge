@@ -60,6 +60,7 @@
         <pool_table>1</pool_table>
         <linen_provided>1</linen_provided>
         <towels_provided>1</towels_provided>
+        <gym>1</gym>
       </amenities>
       <inside>
         <dining_seats>6</dining_seats>
@@ -80,7 +81,9 @@
           <cable_tv>1</cable_tv>
           <cd_player>1</cd_player>
         </living_room>
-        <other></other>
+        <other>
+          <washing_machine>1</washing_machine>
+        </other>
       </equipment>
       <outside>
         <bbq>1</bbq>
