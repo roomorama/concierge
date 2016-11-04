@@ -61,8 +61,8 @@ RSpec.describe THH::Calendar do
 
       rate = rates_days[Date.new(2017, 1, 9)]
       expect(rate).not_to be_nil
-      expect(rate['night']).to eq(9400.0)
-      expect(rate['min_nights']).to eq(3)
+      expect(rate[:night]).to eq(9400.0)
+      expect(rate[:min_nights]).to eq(3)
     end
   end
 

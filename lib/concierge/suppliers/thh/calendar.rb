@@ -17,39 +17,39 @@ module THH
       # Filter only actual periods.
       # NOTE: End date of period is not booked
       @booked_periods = booked_periods.map do |p|
-        new_p = p.to_h.dup
-        new_p['date_from'] = Date.parse(p['@date_from'])
-        new_p['date_to'] = Date.parse(p['@date_to']) - 1
-        new_p
+        {
+          date_from: Date.parse(p['@date_from']),
+          date_to: Date.parse(p['@date_to']) - 1
+        }
       end.select do |p|
-        p['date_from'] <= to && from <= p['date_to']
+        p[:date_from] <= to && from <= p[:date_to]
       end
 
       @rates = rates.map do |r|
-        new_r = r.to_h.dup
-        new_r['start_date'] = Date.parse(r['start_date'])
-        new_r['end_date'] = Date.parse(r['end_date'])
-        new_r['night'] = rate_to_f(r['night'])
-        new_r['min_nights'] = r['min_nights'].to_i
-        new_r
+        {
+          start_date: Date.parse(r['start_date']),
+          end_date: Date.parse(r['end_date']),
+          night: rate_to_f(r['night']),
+          min_nights: r['min_nights'].to_i
+        }
       end.select do |r|
-        r['start_date'] <= to && from <= r['end_date']
+        r[:start_date] <= to && from <= r[:end_date]
       end
     end
 
     def min_stay
-      available_days.values.map { |r| r['min_nights'] }.min
+      available_days.values.map { |r| r[:min_nights] }.min
     end
 
     def min_rate
-      available_days.values.map { |r| r['night'] }.min
+      available_days.values.map { |r| r[:night] }.min
     end
 
     def rates_days
       @rates_days ||= {}.tap do |days|
         rates.each do |r|
-          from = [calendar_start, r['start_date']].max
-          to = [calendar_end, r['end_date']].min
+          from = [calendar_start, r[:start_date]].max
+          to = [calendar_end, r[:end_date]].min
           if from <= to
             (from..to).each do |day|
               # One date can have several rates with different min_nights,
@@ -57,13 +57,13 @@ module THH
               cur_r = days[day]
               if cur_r
                 days[day] = {
-                  'min_nights' => [cur_r['min_nights'], r['min_nights']].min,
-                  'night'      => [cur_r['night'], r['night']].max
+                  min_nights: [cur_r[:min_nights], r[:min_nights]].min,
+                  night:      [cur_r[:night], r[:night]].max
                 }
               else
                 days[day] = {
-                  'min_nights' => r['min_nights'],
-                  'night'      => r['night']
+                  min_nights: r[:min_nights],
+                  night:      r[:night]
                 }
               end
             end
@@ -75,8 +75,8 @@ module THH
     def booked_days
       @booked_days ||= Set.new.tap do |days|
         booked_periods.each do |p|
-          from = [calendar_start, p['date_from']].max
-          to = [calendar_end, p['date_to']].min
+          from = [calendar_start, p[:date_from]].max
+          to = [calendar_end, p[:date_to]].min
           if from <= to
             days.merge(from..to)
           end
