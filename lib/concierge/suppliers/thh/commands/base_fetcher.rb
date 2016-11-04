@@ -1,5 +1,10 @@
 module THH
   module Commands
+    # +THH::Commands::BaseCommand+
+    #
+    # Base class for all call THH API commands. Each child should
+    # implement:
+    #  - action - name of API action
     class BaseFetcher
       TIMEOUT = 10
 
