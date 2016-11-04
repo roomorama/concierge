@@ -241,7 +241,7 @@
         <min_nights>3</min_nights>
       </rate>
       <rate>
-        <start_date>11.01.2017</start_date>
+        <start_date>12.01.2017</start_date>
         <end_date>31.08.2017</end_date>
         <title>high1 2017</title>
         <night>10,068</night>
@@ -249,7 +249,7 @@
         <min_nights>1</min_nights>
       </rate>
       <rate>
-        <start_date>11.01.2017</start_date>
+        <start_date>12.01.2017</start_date>
         <end_date>31.08.2017</end_date>
         <title>high1 2017</title>
         <night>9,649</night>
@@ -257,7 +257,7 @@
         <min_nights>2</min_nights>
       </rate>
       <rate>
-        <start_date>11.01.2017</start_date>
+        <start_date>12.01.2017</start_date>
         <end_date>31.08.2017</end_date>
         <title>high1 2017</title>
         <night>8,390</night>
@@ -399,6 +399,7 @@
         <period date_from="16.12.2016" date_to="2016-12-19"></period>
         <period date_from="21.12.2016" date_to="2016-12-26"></period>
         <period date_from="30.12.2016" date_to="2017-01-12"></period>
+        <period date_from="30.12.2018" date_to="2018-01-12"></period>
       </periods>
     </calendar>
     <reviews>
