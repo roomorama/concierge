@@ -22,7 +22,7 @@ RSpec.describe THH::Calendar do
 
   describe '#min_rate' do
     it 'returns minimum rate' do
-      expect(subject.min_rate).to eq(6000.0)
+      expect(subject.min_rate).to eq(8510.0)
     end
   end
 
