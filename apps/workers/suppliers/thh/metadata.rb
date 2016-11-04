@@ -30,7 +30,6 @@ module Workers::Suppliers::THH
           end
         end
       else
-        synchronisation.skip_purge!
         synchronisation.failed!
         message = 'Failed to perform the `#fetch_properties` operation'
         announce_error(message, result)
