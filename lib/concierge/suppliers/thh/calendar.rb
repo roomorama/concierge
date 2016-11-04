@@ -51,7 +51,22 @@ module THH
           from = [calendar_start, r['start_date']].max
           to = [calendar_end, r['end_date']].min
           if from <= to
-            (from..to).each { |day| days[day] = r }
+            (from..to).each do |day|
+              # One date can have several rates with different min_nights,
+              # To fill calendar Concierge uses min minimum stay and max price.
+              cur_r = days[day]
+              if cur_r
+                days[day] = {
+                  'min_nights' => [cur_r['min_nights'], r['min_nights']].min,
+                  'night'      => [cur_r['night'], r['night']].max
+                }
+              else
+                days[day] = {
+                  'min_nights' => r['min_nights'],
+                  'night'      => r['night']
+                }
+              end
+            end
           end
         end
       end
