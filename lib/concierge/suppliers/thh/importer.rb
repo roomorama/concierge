@@ -16,5 +16,12 @@ module THH
       fetcher = Commands::PropertiesFetcher.new(credentials)
       fetcher.call
     end
+
+    # Fetches property details from THH API
+    # Returns the Result wrapping the SafeAccessHash.
+    def fetch_property(property_id)
+      fetcher = Commands::PropertyFetcher.new(credentials)
+      fetcher.call(property_id)
+    end
   end
 end

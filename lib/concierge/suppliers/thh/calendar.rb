@@ -45,6 +45,7 @@ module THH
       available_days.values.map { |r| r[:night] }.min
     end
 
+    # Returns Hash where keys are days and values are Hash with rate and min stay info
     def rates_days
       @rates_days ||= {}.tap do |days|
         rates.each do |r|
@@ -72,6 +73,7 @@ module THH
       end
     end
 
+    # Returns Set of booked dates
     def booked_days
       @booked_days ||= Set.new.tap do |days|
         booked_periods.each do |p|

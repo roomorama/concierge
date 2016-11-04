@@ -1,5 +1,19 @@
 module THH
   module Commands
+    #  +THH::Commands::PropertyFetcher+
+    #
+    # This class is responsible for fetching a property details
+    # from THH API and parsing the response to +Concierge::SafeAccessHash+.
+    #
+    # Usage
+    #
+    #   result = THH::Commands::PropertyFetcher.new(credentials).call(property_id)
+    #   if result.success?
+    #     result.value # SafeAccessHash with details
+    #   end
+    #
+    # The +call+ method returns a +Result+ object that, when successful,
+    # encapsulates SafeAccessHash.
     class PropertyFetcher < BaseFetcher
       LANGUAGE = 'en'
       PROPERTY_KEY = 'response.property'
