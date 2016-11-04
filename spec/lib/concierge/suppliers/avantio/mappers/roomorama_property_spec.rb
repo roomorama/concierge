@@ -52,7 +52,7 @@ RSpec.describe Avantio::Mappers::RoomoramaProperty do
     expect(property.surface_unit).to be_nil
     expect(property.pets_allowed).to be true
     expect(property.currency).to eq('EUR')
-    expect(property.cancellation_policy).to eq('super_elite')
+    expect(property.cancellation_policy).to eq('super_strict')
     expect(property.security_deposit_amount).to eq(1000.0)
     expect(property.security_deposit_type).to eq('cash')
     expect(property.security_deposit_currency_code).to eq('EUR')

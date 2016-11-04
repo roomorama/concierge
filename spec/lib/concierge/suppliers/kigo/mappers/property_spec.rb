@@ -151,7 +151,7 @@ RSpec.describe Kigo::Mappers::Property do
       expect(property.floor).to eq 3
       expect(property.pets_allowed).to eq true
       expect(property.smoking_allowed).to eq false
-      expect(property.cancellation_policy).to eq 'super_elite'
+      expect(property.cancellation_policy).to eq 'super_strict'
       expect(property.default_to_available).to eq true
       expect(property.check_in_time).to eq '15:00'
       expect(property.check_out_time).to eq '10:00'

@@ -10,7 +10,7 @@ module AtLeisure
   # * +meta_data+    - hash based AtLeisure payload
   #
   class Mapper
-    CANCELLATION_POLICY = 'super_elite'
+    CANCELLATION_POLICY = Roomorama::CancellationPolicy::SUPER_STRICT
 
     CODES = {
       property_type:   10,

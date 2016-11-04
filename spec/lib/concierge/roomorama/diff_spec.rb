@@ -12,10 +12,10 @@ RSpec.describe Roomorama::Diff do
 
   it "is able to set and retrieve property attributes" do
     subject.title = "Beautiful Apartment in Paris"
-    subject.cancellation_policy = "elite"
+    subject.cancellation_policy = Roomorama::CancellationPolicy::STRICT
 
     expect(subject.title).to eq "Beautiful Apartment in Paris"
-    expect(subject.cancellation_policy).to eq "elite"
+    expect(subject.cancellation_policy).to eq Roomorama::CancellationPolicy::STRICT
   end
 
   it "is nil for attributes not set" do

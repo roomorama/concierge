@@ -125,7 +125,7 @@ RSpec.describe Poplidays::Mappers::RoomoramaProperty do
     expect(roomorama_property.currency).to eq('EUR')
     expect(roomorama_property.surface).to eq(45)
     expect(roomorama_property.surface_unit).to eq('metric')
-    expect(roomorama_property.cancellation_policy).to eq('super_elite')
+    expect(roomorama_property.cancellation_policy).to eq('super_strict')
     expect(roomorama_property.security_deposit_amount).to eq(500.0)
     expect(roomorama_property.security_deposit_currency_code).to eq('EUR')
     expect(roomorama_property.security_deposit_type).to eq('unknown')

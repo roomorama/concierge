@@ -5,7 +5,7 @@ module Ciirus
     # This class is responsible for building a +Roomorama::Property+ object
     # from data getting from Ciirus API.
     class RoomoramaProperty
-      CANCELLATION_POLICY = 'super_elite'
+      CANCELLATION_POLICY = Roomorama::CancellationPolicy::SUPER_STRICT
       # Until we hear from ciirus on how to determine this field, it will be.. unknown
       SECURITY_DEPOSIT_TYPE = 'unknown'
 
