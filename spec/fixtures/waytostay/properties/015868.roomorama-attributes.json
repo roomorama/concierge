@@ -42,7 +42,7 @@
   "security_deposit_currency": "EUR",
   "security_deposit_type": "cash",
   "default_to_available": true,
-  "cancellation_policy": "strict",
+  "cancellation_policy": "firm",
   "instant_booking": true,
   "description_append": "License number: HUTB-012425 68",
   "translations": {

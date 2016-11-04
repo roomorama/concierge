@@ -7,7 +7,7 @@ module RentalsUnited
       attr_reader :ru_property, :location, :owner, :seasons
 
       EN_DESCRIPTION_LANG_CODE = "1"
-      CANCELLATION_POLICY = "super_elite"
+      CANCELLATION_POLICY = Roomorama::CancellationPolicy::SUPER_STRICT
       DEFAULT_PROPERTY_RATE = "9999"
       MINIMUM_STAY = 1
       SURFACE_UNIT = "metric"

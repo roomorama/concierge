@@ -32,7 +32,7 @@
   "check_out_time": "11:00:00",
   "currency":  "EUR",
   "default_to_available": true,
-  "cancellation_policy": "strict",
+  "cancellation_policy": "firm",
   "services_cleaning": true,
   "services_cleaning_rate": 75,
   "services_cleaning_required": true,
