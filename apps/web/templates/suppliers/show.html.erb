@@ -16,7 +16,6 @@
         <th>Fees Applied</th>
         <th>Access Token</th>
         <th># Properties</th>
-        <th>Actions</th>
       </tr>
     </thead>
 
@@ -29,14 +28,6 @@
           <td><%= format_fee_percentage(host.fee_percentage) %></td>
           <td><code><%= format_access_token(host) %></code></td>
           <td><%= host_properties(host) %></td>
-          <td>
-            <%=
-              form_for :host, routes.resync_host_path(host.supplier_id) do
-                hidden_field :host_id, value: host.id
-                submit 'Resync'
-              end
-            %>
-          </td>
         </tr>
       <% end %>
     </tbody>

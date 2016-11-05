@@ -4,6 +4,7 @@
       <th>Worker</th>
       <th>Status</th>
       <th>Scheduled to Run At</th>
+      <th>Actions</th>
     </tr>
   </thead>
 
@@ -13,6 +14,14 @@
         <td><%= worker.type %></td>
         <td><%= status_label(worker.status) %></td>
         <td><%= format_time(worker)%></td>
+        <td>
+          <%=
+            form_for :worker, routes.worker_resync_path(worker.supplier_id) do
+              hidden_field :worker_id, value: worker.id
+              submit 'Resync'
+            end
+          %>
+        </td>
       </tr>
     <% end %>
   </tbody>
