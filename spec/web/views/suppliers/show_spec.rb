@@ -6,7 +6,7 @@ RSpec.describe Web::Views::Suppliers::Show do
   let(:supplier)  { create_supplier(name: "Supplier Y") }
   let(:hosts)     { HostRepository.from_supplier(supplier) }
   let(:flash)     { {} }
-  let(:params)    { Hanami::Action::Params.new({}) }
+  let(:params)    { Hanami::Action::Params.new(supplier_id: supplier.id) }
 
   # Hanami has a weird issue when rendering partials on the test environment when
   # the views are initialized as above (as suggested on the official guides). For some
@@ -60,12 +60,14 @@ RSpec.describe Web::Views::Suppliers::Show do
     create_background_worker(
       type:        "metadata",
       host_id:     hosts.first.id,
+      supplier_id: supplier.id,
       status:      "idle",
       next_run_at: nil
     )
     create_background_worker(
       type:        "availabilities",
       host_id:     hosts.first.id,
+      supplier_id: supplier.id,
       status:      "running",
       next_run_at: Time.new(2016, 5, 22, 12, 32)
     )
