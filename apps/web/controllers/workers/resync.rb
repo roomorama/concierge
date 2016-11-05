@@ -7,9 +7,13 @@ module Web::Controllers::Workers
       worker = find_worker(params.get("worker.worker_id"))
 
       if worker
-        trigger_sync!(worker)
+        if worker.idle?
+          trigger_sync!(worker)
 
-        flash[:notice] = "#{worker.type} worker with id #{worker.id} was queued to synchronisation"
+          flash[:notice] = "#{worker.type} worker with id #{worker.id} was queued to synchronisation"
+        else
+          flash[:error] = "#{worker.type} worker with id #{worker.id} cannot be queued because it has #{worker.status} status"
+        end
       else
         flash[:error] = "Couldn't find requested worker"
       end
@@ -23,8 +27,8 @@ module Web::Controllers::Workers
     end
 
     def trigger_sync!(worker)
-      # enqueue(worker)
-      # update_status(worker)
+      enqueue(worker)
+      update_status(worker)
     end
 
     def enqueue(worker)
