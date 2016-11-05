@@ -83,5 +83,8 @@ RSpec.describe Web::Views::Suppliers::Show do
 
     expect(sanitized).to include %(<td>Soon (in at most 10 minutes)</td>)
     expect(sanitized).to include %(<td>May 22, 2016 at 12:32</td>)
+
+    # two resync buttons (for each worker)
+    expect(sanitized.scan(%(<button type="submit">Resync</button>)).size).to eq(2)
   end
 end
