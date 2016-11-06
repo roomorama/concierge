@@ -37,6 +37,17 @@ RSpec.describe Poplidays::Price do
     }'
   end
 
+  let(:error_without_message_quote_response) do
+    '{
+      "code": 400,
+      "ruid": "76b95928b4fec0ca2dc6ddb33e89b044"
+    }'
+  end
+
+  let(:invalid_json_quote_response) do
+    'not-json'
+  end
+
   subject { described_class.new(credentials) }
 
   describe '#quote' do
@@ -156,7 +167,41 @@ RSpec.describe Poplidays::Price do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unrecognised_response
-      expect(result.error.data).to eq("Unknown poplidays error")
+      expect(result.error.data).to eq("Unauthorized arriving day")
+
+      event = Concierge.context.events.last
+      expect(event.to_h[:type]).to eq 'response_mismatch'
+    end
+
+    it "returns an error when poplidays response is error but has no message" do
+      stub_with_fixture(property_details_endpoint, 'poplidays/property_details.json')
+      stub_call(:post, quote_endpoint) { [400, {}, error_without_message_quote_response] }
+      result = nil
+
+      expect {
+        result = subject.quote(params)
+      }.to change { Concierge.context.events.size }
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq("Failed to parse `message` attribute from poplidays error message")
+
+      event = Concierge.context.events.last
+      expect(event.to_h[:type]).to eq 'response_mismatch'
+    end
+
+    it "returns an error when poplidays response is invalid json" do
+      stub_with_fixture(property_details_endpoint, 'poplidays/property_details.json')
+      stub_call(:post, quote_endpoint) { [400, {}, invalid_json_quote_response] }
+      result = nil
+
+      expect {
+        result = subject.quote(params)
+      }.to change { Concierge.context.events.size }
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq("Failed to parse poplidays error message JSON")
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq 'response_mismatch'

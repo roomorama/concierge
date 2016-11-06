@@ -27,6 +27,7 @@ module Poplidays
   #                                    (accessed without Poplidays call center)
   #                                    are supported at this moment.
   class Price
+    include Concierge::JSON
 
     CACHE_PREFIX = 'poplidays'
     MANDATORY_SERVICES_FRESHNESS = 12 * 60 * 60 # twelve hours
@@ -123,10 +124,24 @@ module Poplidays
     end
 
     def http_status_400_error(result)
-      message = "Unknown poplidays error"
-
+      message = parse_error_message(result)
       mismatch(message, caller)
       Result.error(:unrecognised_response, message)
+    end
+
+    def parse_error_message(result)
+      data = result.error.data
+      json_result = json_decode(data)
+
+      if json_result.success?
+        safe_hash = Concierge::SafeAccessHash.new(json_result.value)
+        message = safe_hash.get("message")
+        message = "Failed to parse `message` attribute from poplidays error message" unless message
+      else
+        message = "Failed to parse poplidays error message JSON"
+      end
+
+      message
     end
 
     def mismatch(message, backtrace)

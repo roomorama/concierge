@@ -79,7 +79,7 @@ RSpec.describe API::Controllers::Poplidays::Quote do
 
       expect(response.status).to eq 503
       expect(response.body['status']).to eq 'error'
-      expect(response.body['errors']['quote']).to eq 'Unknown poplidays error'
+      expect(response.body['errors']['quote']).to eq 'Unauthorized arriving day'
     end
 
     it 'returns available quotations with price when the call is successful' do
