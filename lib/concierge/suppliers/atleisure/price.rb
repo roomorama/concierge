@@ -27,6 +27,8 @@ module AtLeisure
   #                                      automatic confirmation, this is an error.
   # * +host_not_found+:                  happens when host is not found for AtLeisure supplier
   class Price
+    include Concierge::Errors::Quote
+
     ENDPOINT = "https://checkavailabilityv1.jsonrpc-partner.net/cgi/lars/jsonrpc-partner/jsonrpc.htm"
     CURRENCY = "EUR"
     attr_reader :credentials
@@ -100,10 +102,7 @@ module AtLeisure
         " However, the `OnRequest` field for given period was set to `true`."
 
       mismatch(message, caller)
-      Result.error(
-        :property_not_instant_bookable,
-        'Instant booking is not supported for the given period'
-      )
+      not_instant_bookable
     end
 
     def no_price_information_error
