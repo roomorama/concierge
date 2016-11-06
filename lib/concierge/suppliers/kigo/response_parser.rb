@@ -15,6 +15,7 @@ module Kigo
   # and possible errors.
   class ResponseParser
     include Concierge::JSON
+    include Concierge::Errors::Quote
 
     DATES_NOT_AVAILABLE_MSG = "Dates not available"
     CHECK_IN_TOO_FAR_MSG = "Unfortunately we do not allow bookings over 366 days into the future"
@@ -199,7 +200,7 @@ module Kigo
       message = "Selected check-in date is too far"
 
       mismatch(message, caller)
-      Result.error(:check_in_too_far, message)
+      check_in_too_far
     end
 
     def dates_not_available_error
