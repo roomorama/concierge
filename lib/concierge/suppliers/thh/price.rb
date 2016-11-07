@@ -4,7 +4,8 @@ module THH
   #
   # This class is responsible for performing price quotations for properties coming
   # from THH, parsing the response and building the +Quotation+ object according
-  # with the data returned by their API.
+  # with the data returned by their API. THH available method doesn't have guests param,
+  # Concierge checks it using property data from DB.
   #
   # Usage
   #
@@ -18,12 +19,9 @@ module THH
   # The +quote+ method returns a +Result+ object that, when successful, encapsulates
   # the resulting +Quotation+ object. Possible errors at this stage are:
   #
-  # * +unrecognised_response+:  happens when the request was successful, but the format
-  #                             of the response is not compatible to this class' expectations.
-  # * +invalid_property_error+: only properties that require no confirmation and have enabled prices
-  #                             (accessed without Poplidays call center)
-  #                             are supported at this moment.
+  # * +max_guests_exceeded+
   class Price
+    include Concierge::Errors::Quote
 
     attr_reader :credentials
 
@@ -31,90 +29,52 @@ module THH
       @credentials = credentials
     end
 
-    # Checks the price with Poplidays. Used booking/easy endpoint in "EVALUATION"
-    # mode to get the price.
-    #
-    # Properties have also "mandatory services". These need to be accounted
-    # for when calculating the subtotal. For that purpose, an API call to
-    # the property details endpoint is made and that value is extracted.
     def quote(params)
-      
-      mandatory_services = retrieve_mandatory_services(params[:property_id])
-      return mandatory_services unless mandatory_services.success?
+      max_guests = max_guests(params[:property_id])
+
+      return max_guests_exceeded(max_guests) if params[:guests] > max_guests
 
       quote = retrieve_quote(params)
-      return quote if unknown_errors?(quote)
+      return quote unless quote.success?
 
-      mapper.build(params, mandatory_services.value, quote)
+      Result.new(build_quotation(params, quote.value))
     end
 
     private
 
-    # Some unsuccessful (not 20X) http statuses of quote request
-    # are valid business cases for us and should be handled:
-    #   409 - stay specified in booking is no more available
-    #   400 - bad arrival/departure date
-    def unknown_errors?(quote)
-      !quote.success? && ![:http_status_400, :http_status_409].include?(quote.error.code)
+    def build_quotation(params, quote)
+      quotation = Quotation.new(params)
+      quotation.available = (quote['available'] == 'yes')
+
+      if quotation.available
+        quotation.total = rate_to_f(quote['price'])
+        quotation.currency = THH::Commands::PropertiesFetcher::CURRENCY
+      end
+
+      quotation
+    end
+
+    def rate_to_f(rate)
+      rate.gsub(/[,\s]/, '').to_f
+    end
+
+    def max_guests(property_id)
+      property = find_property(property_id)
+      property&.data&.get('max_guests').to_i
+    end
+
+    def find_property(identifier)
+      PropertyRepository.identified_by(identifier).
+        from_supplier(supplier).first
+    end
+
+    def supplier
+      @supplier ||= SupplierRepository.named THH::Client::SUPPLIER_NAME
     end
 
     def retrieve_quote(params)
-      fetcher = Poplidays::Commands::QuoteFetcher.new(credentials)
+      fetcher = THH::Commands::QuoteFetcher.new(credentials)
       fetcher.call(params)
     end
-
-    def retrieve_mandatory_services(property_id)
-      key = ['property', property_id, 'mandatory_services'].join('.')
-      options = { freshness: MANDATORY_SERVICES_FRESHNESS }
-      with_cache(key, options) {
-        fetcher = Poplidays::Commands::LodgingFetcher.new(credentials)
-        result = fetcher.call(property_id)
-        return result unless result.success?
-
-        lodging = result.value
-        if details_validator(lodging).valid?
-          if lodging['mandatoryServicesPrice']
-            Result.new(lodging['mandatoryServicesPrice'])
-          else
-            no_mandatory_services_data_error
-          end
-        else
-          invalid_property_error
-        end
-      }
-    end
-
-    def details_validator(lodging)
-      Poplidays::Validators::PropertyDetailsValidator.new(lodging)
-    end
-
-    def mapper
-      @mapper ||= Poplidays::Mappers::Quote.new
-    end
-
-    def no_mandatory_services_data_error
-      message = "Expected to find the price for mandatory services under the " +
-        "`mandatoryServicesPrice`, but none was found."
-
-      mismatch(message, caller)
-      Result.error(:unrecognised_response, message)
-    end
-
-    def invalid_property_error
-      message = "Property shouldn't be on request only and should have enabled prices"
-      mismatch(message, caller)
-      Result.error(:invalid_property_error, message)
-    end
-
-    def mismatch(message, backtrace)
-      response_mismatch = Concierge::Context::ResponseMismatch.new(
-        message:   message,
-        backtrace: backtrace
-      )
-
-      Concierge.context.augment(response_mismatch)
-    end
-
   end
-
 end

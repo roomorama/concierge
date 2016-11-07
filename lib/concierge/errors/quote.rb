@@ -15,4 +15,8 @@ module Concierge::Errors::Quote
   def stay_too_short(min_stay)
     Result.error(:stay_too_short, "The minimum number of nights to book this apartment is #{min_stay}")
   end
+
+  def max_guests_exceeded(max)
+    Result.error(:max_guests_exceeded, "The maximum number of guests to book this apartment is #{max}")
+  end
 end
