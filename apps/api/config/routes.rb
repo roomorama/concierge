@@ -8,6 +8,7 @@ post '/waytostay/quote',      to: 'waytostay#quote'
 post '/saw/quote',            to: 's_a_w#quote'
 post '/rentalsunited/quote',  to: 'rentals_united#quote'
 post '/avantio/quote',        to: 'avantio#quote'
+post '/thh/quote',            to: 't_h_h#quote'
 
 post '/jtb/booking',            to: 'j_t_b#booking'
 post '/atleisure/booking',      to: 'at_leisure#booking'

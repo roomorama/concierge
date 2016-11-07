@@ -28,7 +28,7 @@ module THH
         result = validate_response(response, params)
         return result unless result.success?
 
-        Result.new(response)
+        Result.new(response['response'])
       end
 
       protected
