@@ -54,7 +54,7 @@ RSpec.describe RentalsUnited::Mappers::Property do
     end
 
     it "sets check_in_time to the property" do
-      expect(property.check_in_time).to eq("13:00-17:00")
+      expect(property.check_in_time).to eq("17:00")
     end
 
     it "sets check_out_time to the property" do
