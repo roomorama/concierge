@@ -7,6 +7,7 @@ how this file is formatted and how the process works.
 ### Fixed
 - Kigo: prevent context hell for availabilities worker
 - net_rate calculation
+- Rentals United check in time takes CheckInTo
 
 ### Changed
 - Improved Ciirus context info during sync process
