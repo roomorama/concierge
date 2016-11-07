@@ -6,6 +6,7 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Fixed
 - Kigo: prevent context hell for availabilities worker
+- net_rate calculation
 
 ### Changed
 - Improved Ciirus context info during sync process
@@ -13,9 +14,6 @@ how this file is formatted and how the process works.
 ## [0.13.0] - 2016-11-02
 ### Added
 - Avantio integrations: quote, book, cancel and synchronisation
-
-### Fixed
-- net_rate calculation
 
 ## [0.12.15] - 2016-11-01
 ### Added
