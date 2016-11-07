@@ -17,5 +17,9 @@ module THH
     def quote(params)
       THH::Price.new(credentials).quote(params)
     end
+
+    def book(params)
+      THH::Booking.new(credentials).book(params)
+    end
   end
 end
