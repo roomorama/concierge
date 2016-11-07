@@ -28,6 +28,7 @@ module Poplidays
   #                                    are supported at this moment.
   class Price
     include Concierge::JSON
+    include Concierge::Errors::Quote
 
     CACHE_PREFIX = 'poplidays'
     MANDATORY_SERVICES_FRESHNESS = 12 * 60 * 60 # twelve hours
@@ -120,7 +121,7 @@ module Poplidays
     def property_not_instant_bookable_error
       message = "Property shouldn't be on request only and should have enabled prices"
       mismatch(message, caller)
-      Result.error(:property_not_instant_bookable, message)
+      not_instant_bookable
     end
 
     def http_status_400_error(result)
