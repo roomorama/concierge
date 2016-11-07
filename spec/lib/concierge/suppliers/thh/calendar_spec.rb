@@ -102,8 +102,16 @@ RSpec.describe THH::Calendar do
 
     it 'does not include end date of booked periods to the result' do
       booked_days = subject.booked_days
+      rates_days = subject.rates_days
 
       expect(booked_days.include?(Date.new(2017, 1, 12))).to be false
+      expect(rates_days.include?(Date.new(2017, 1, 13))).to be true
+    end
+
+    it 'include first date of booked period' do
+      booked_days = subject.booked_days
+
+      expect(booked_days.include?(Date.new(2016, 12, 30))).to be true
     end
   end
 

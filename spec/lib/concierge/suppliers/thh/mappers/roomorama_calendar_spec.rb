@@ -38,10 +38,16 @@ RSpec.describe THH::Mappers::RoomoramaCalendar do
       expect(entry.available).to be false
     end
 
-    it 'allows to arrive in day of departure' do
+    it 'allows to arrive on day of departure' do
       entry = calendar.entries.detect { |e| e.date == Date.new(2016, 12, 26) }
 
       expect(entry.available).to be true
+    end
+
+    it 'does not allow to arrive on start day of booking period' do
+      entry = calendar.entries.detect { |e| e.date == Date.new(2016, 12, 21) }
+
+      expect(entry.available).to be false
     end
 
     it 'returns filled entries' do
