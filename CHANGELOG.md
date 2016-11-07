@@ -6,6 +6,7 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Fixed
 - Kigo: prevent context hell for availabilities worker
+- net_rate calculation
 
 ### Changed
 - Improved Ciirus context info during sync process
