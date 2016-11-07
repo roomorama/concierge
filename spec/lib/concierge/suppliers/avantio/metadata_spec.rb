@@ -5,7 +5,7 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
   include Support::Factories
 
   let(:supplier) { create_supplier(name: Avantio::Client::SUPPLIER_NAME) }
-  let!(:host1) { create_host(supplier_id: supplier.id, identifier: '137') }
+  let!(:host1) { create_host(supplier_id: supplier.id, identifier: 'itsalojamientos') }
   let!(:host2) { create_host(supplier_id: supplier.id, identifier: '138') }
   let!(:host3) { create_host(supplier_id: supplier.id, identifier: '139') }
   let(:attrs) do
@@ -71,9 +71,9 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
   end
   let(:properties) do
     {
-      '137' => [Avantio::Entities::Accommodation.new(attrs)],
+      'itsalojamientos' => [Avantio::Entities::Accommodation.new(attrs)],
       '138' => [Avantio::Entities::Accommodation.new(
-        attrs.merge({user_code: '123123', ga_code: '138'})
+        attrs.merge({user_code: '123123', login_ga: '138'})
       )]
     }
   end

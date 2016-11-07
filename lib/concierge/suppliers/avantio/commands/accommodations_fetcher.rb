@@ -44,7 +44,7 @@ module Avantio
 
       def build_accommodations(accommodations_raw)
         accommodations = accommodations_raw.xpath('/AccommodationList/AccommodationData')
-        Array(accommodations).map { |accommodation| mapper.build(accommodation) }.group_by(&:ga_code)
+        Array(accommodations).map { |accommodation| mapper.build(accommodation) }.group_by(&:login_ga)
       end
     end
   end
