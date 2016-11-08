@@ -1,6 +1,6 @@
 module THH
   module Commands
-    #  +THH::Commands::PropertyFetcher+
+    # +THH::Commands::PropertyFetcher+
     #
     # This class is responsible for fetching a property details
     # from THH API and parsing the response to +Concierge::SafeAccessHash+.
