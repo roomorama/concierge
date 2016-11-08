@@ -15,12 +15,7 @@ module THH
       end
 
       def api_call(params)
-        additional_params = {
-          'action' => action,
-          'key'    => credentials.key
-        }
         result = http.get('', params.merge(additional_params), headers)
-
         return result unless result.success?
 
         to_safe_hash(result.value.body)
@@ -37,6 +32,13 @@ module THH
       end
 
       private
+
+      def additional_params
+        {
+          'action' => action,
+          'key'    => credentials.key
+        }
+      end
 
       def http
         @http_client ||= Concierge::HTTPClient.new(credentials.url, timeout: timeout)
