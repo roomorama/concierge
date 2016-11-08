@@ -1,6 +1,6 @@
 module THH
   module Commands
-    #  +THH::Commands::PropertiesFetcher+
+    # +THH::Commands::PropertiesFetcher+
     #
     # This class is responsible for fetching a list of all properties
     # from THH API and parsing the response to Array of +Concierge::SafeAccessHash+.
@@ -13,7 +13,7 @@ module THH
     #   end
     #
     # The +call+ method returns a +Result+ object that, when successful,
-    # encapsulates Array of SafeAccessHash.
+    # encapsulates +Array+ of +Concierge::SafeAccessHash+.
     class PropertiesFetcher < BaseFetcher
       # Currency response contains prices in.
       # Currently THH has a bug with security deposit amount,
