@@ -34,4 +34,31 @@ RSpec.describe THH::Client do
       expect(quote).to be_nil
     end
   end
+
+  describe '#book' do
+    it 'returns the wrapped reservation when successful' do
+      successful_reservation = Reservation.new(reference_number: '654987')
+      allow_any_instance_of(THH::Booking).to receive(:book) { Result.new(successful_reservation) }
+
+      book_result = subject.book(params)
+      expect(book_result).to be_success
+
+      reservation = book_result.value
+      expect(reservation).to be_a Reservation
+      expect(reservation.reference_number).to eq '654987'
+    end
+
+    it 'returns a reservation object with a generic error message on failure' do
+      failed_operation = Result.error(:something_failed)
+      allow_any_instance_of(THH::Booking).to receive(:book) { failed_operation }
+
+      book_result = subject.book(params)
+      expect(book_result).to_not be_success
+      expect(book_result.error.code).to eq :something_failed
+
+      reservation = book_result.value
+      expect(reservation).to be_nil
+    end
+  end
+
 end
