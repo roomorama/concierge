@@ -14,7 +14,7 @@ module Kigo::Mappers
   #
   class Property
 
-    CANCELLATION_POLICY = 'super_elite'
+    CANCELLATION_POLICY = Roomorama::CancellationPolicy::SUPER_STRICT
 
     attr_reader :property, :payload, :references, :pricing, :resolver
 

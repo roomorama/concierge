@@ -199,7 +199,7 @@ module Waytostay
       attr.merge!({
         surface_unit:         "metric",
         default_to_available: true,
-        cancellation_policy:  "strict",
+        cancellation_policy:  Roomorama::CancellationPolicy::FIRM,
         instant_booking:      true
       })
       attr.merge! parse_floors(response)

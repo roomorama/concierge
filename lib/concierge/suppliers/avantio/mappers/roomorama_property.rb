@@ -5,7 +5,7 @@ module Avantio
     # This class is responsible for building a +Roomorama::Property+ object
     # from data getting from Avantio.
     class RoomoramaProperty
-      CANCELLATION_POLICY = 'super_elite'
+      CANCELLATION_POLICY = Roomorama::CancellationPolicy::SUPER_STRICT
 
       PROPERTY_TYPES = Concierge::SafeAccessHash.new({
         1  => {type: 'apartment'}, # Apartment
