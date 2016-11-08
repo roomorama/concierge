@@ -9,7 +9,7 @@ module API::Controllers::THH
     include API::Controllers::Quote
 
     def quote_price(params)
-      credentials = Concierge::Credentials.for(THH::Client::SUPPLIER_NAME)
+      credentials = Concierge::Credentials.for(supplier_name)
       THH::Client.new(credentials).quote(params)
     end
 

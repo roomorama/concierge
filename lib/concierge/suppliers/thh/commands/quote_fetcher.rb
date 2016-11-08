@@ -1,6 +1,6 @@
 module THH
   module Commands
-    #  +THH::Commands::PropertyFetcher+
+    # +THH::Commands::PropertyFetcher+
     #
     # This class is responsible for fetching availability information
     # (including price) from THH API and parsing the response
