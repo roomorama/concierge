@@ -4,7 +4,7 @@ module Avantio
     #
     # Avantio provides accommodations' information in zipped file available by URL.
     # This class fetches the file and parses the accommodations to the
-    # hash of +Avantio::Entities::Accommodation+ grouped by GACode
+    # hash of +Avantio::Entities::Accommodation+ grouped by LoginGA
     #
     # Usage
     #

@@ -13,7 +13,6 @@ RSpec.describe Workers::Suppliers::Avantio::Metadata do
       accommodation_code: "60505",
       user_code: "1238513302",
       login_ga: "itsalojamientos",
-      ga_code: "137",
       name: "Edificio ITS 2/4",
       occupational_rule_id: "204",
       master_kind_code: "1",
