@@ -48,7 +48,7 @@ RSpec.describe Workers::Suppliers::THH::Metadata do
     expect(error.description).to eq 'Some error'
   end
 
-  it 'saves sync process even if error occures before start call' do
+  it 'saves sync process even if error occurs before start call' do
     allow_any_instance_of(THH::Importer).to receive(:fetch_properties) { Result.error(:error, 'Some error') }
 
     expect(subject.synchronisation).to receive(:skip_purge!).once.and_call_original
