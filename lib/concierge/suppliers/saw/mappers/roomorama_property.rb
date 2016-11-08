@@ -6,7 +6,7 @@ module SAW
     # Object initialization includes mapping of property attributes, rates,
     # amenitites, images, units.
     class RoomoramaProperty
-      CANCELLATION_POLICY = 'moderate'
+      CANCELLATION_POLICY = Roomorama::CancellationPolicy::MODERATE
 
       # Bulds Roomorama::Property object
       #

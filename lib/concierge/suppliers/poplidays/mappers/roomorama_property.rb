@@ -6,7 +6,7 @@ module Poplidays
     # from data getting from Poplidays API.
     class RoomoramaProperty
       # NOTE: actually Poplidays API doesn't support cancellation
-      CANCELLATION_POLICY = 'super_elite'
+      CANCELLATION_POLICY = Roomorama::CancellationPolicy::SUPER_STRICT
 
       # Apparently Poplidays does not have the "security deposit method",
       # and they ask the guest to figure out directly with the host.
