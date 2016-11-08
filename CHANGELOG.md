@@ -12,6 +12,7 @@ how this file is formatted and how the process works.
 
 ### Changed
 - Improved Ciirus context info during sync process
+- Avantio filter users by Login GA instead of GA Code
 
 ## [0.13.1] - 2016-11-08
 ## Changed

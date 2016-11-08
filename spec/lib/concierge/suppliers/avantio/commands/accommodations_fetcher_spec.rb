@@ -34,6 +34,7 @@ RSpec.describe Avantio::Commands::AccommodationsFetcher do
         accommodations = result.value.values.flatten
         expect(accommodations.length).to eq(3)
         expect(accommodations).to all(be_a Avantio::Entities::Accommodation)
+        expect(result.value.keys).to contain_exactly("itsalojamientos", "carlademo")
       end
 
       it 'returns empty hash for empty response' do
