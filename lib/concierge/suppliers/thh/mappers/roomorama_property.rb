@@ -8,7 +8,7 @@ module THH
       SYNC_PERIOD = 365
       SECURITY_DEPOSIT_TYPE = 'cash'
       SECURITY_DEPOSIT_CURRENCY = 'THB'
-      CANCELLATION_POLICY = Roomorama::CancellationPolicy::FIRM
+      CANCELLATION_POLICY = Roomorama::CancellationPolicy::STRICT
 
       # Maps THH type to Roomorama property type/subtype.
       PROPERTY_TYPES = Concierge::SafeAccessHash.new({
