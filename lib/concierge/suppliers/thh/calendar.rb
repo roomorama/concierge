@@ -7,7 +7,13 @@ module THH
   class Calendar
     attr_reader :rates, :booked_periods, :length
 
-    # length - count of days from today calendar works with
+    # Arguments:
+    # * rates - +Array+ of +Concierge::SafeAccessHash+ getting from raw
+    #           THH property response (parsed by Nori) by key 'response.rates.rate'
+    # * booked_periods - +Array+ of +Concierge::SafeAccessHash+ getting from
+    #                    raw THH property response (parsed by Nori)
+    #                    by key 'response.calendar.periods.period'
+    # * length - count of days from today calendar works with
     def initialize(rates, booked_periods, length)
       @length = length
 
