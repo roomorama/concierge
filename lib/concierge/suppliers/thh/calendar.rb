@@ -8,39 +8,20 @@ module THH
     attr_reader :rates, :booked_periods, :length
 
     # Arguments:
-    # * rates - +Array+ of +Concierge::SafeAccessHash+ getting from raw
-    #           THH property response (parsed by Nori) by key 'response.rates.rate'
-    # * booked_periods - +Array+ of +Concierge::SafeAccessHash+ getting from
-    #                    raw THH property response (parsed by Nori)
-    #                    by key 'response.calendar.periods.period'
+    # * raw_rates - +Array+ of +Concierge::SafeAccessHash+ getting from raw
+    #               THH property response (parsed by Nori) by key 'response.rates.rate'
+    # * raw_booked_periods - +Array+ of +Concierge::SafeAccessHash+ getting from
+    #                        raw THH property response (parsed by Nori)
+    #                        by key 'response.calendar.periods.period'
     # * length - count of days from today calendar works with
-    def initialize(rates, booked_periods, length)
+    def initialize(raw_rates, raw_booked_periods, length)
       @length = length
 
       from = calendar_start
       to = calendar_end
 
-      # Filter only actual periods.
-      # NOTE: End date of period is not booked
-      @booked_periods = booked_periods.map do |p|
-        {
-          date_from: Date.parse(p['@date_from']),
-          date_to: Date.parse(p['@date_to']) - 1
-        }
-      end.select do |p|
-        p[:date_from] <= to && from <= p[:date_to]
-      end
-
-      @rates = rates.map do |r|
-        {
-          start_date: Date.parse(r['start_date']),
-          end_date: Date.parse(r['end_date']),
-          night: rate_to_f(r['night']),
-          min_nights: r['min_nights'].to_i
-        }
-      end.select do |r|
-        r[:start_date] <= to && from <= r[:end_date]
-      end
+      @booked_periods = actual_booked_periods(raw_booked_periods, from, to)
+      @rates = actual_rates(raw_rates, from, to)
     end
 
     def min_stay
@@ -93,6 +74,31 @@ module THH
     end
 
     private
+
+    def actual_rates(raw_rates, from, to)
+      raw_rates.map do |r|
+        {
+            start_date: Date.parse(r['start_date']),
+            end_date: Date.parse(r['end_date']),
+            night: rate_to_f(r['night']),
+            min_nights: r['min_nights'].to_i
+        }
+      end.select do |r|
+        r[:start_date] <= to && from <= r[:end_date]
+      end
+    end
+
+    def actual_booked_periods(raw_booked_periods, from, to)
+      # NOTE: End date of period is not booked
+      raw_booked_periods.map do |p|
+        {
+            date_from: Date.parse(p['@date_from']),
+            date_to: Date.parse(p['@date_to']) - 1
+        }
+      end.select do |p|
+        p[:date_from] <= to && from <= p[:date_to]
+      end
+    end
 
     def calendar_start
       Date.today
