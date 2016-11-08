@@ -61,4 +61,12 @@ RSpec.describe THH::Client do
     end
   end
 
+  describe '#cancel' do
+    let(:params) { { reference_number: '123' } }
+
+    it 'calls cancel command class' do
+      expect_any_instance_of(THH::Commands::Cancel).to(receive(:call).with('123'))
+      subject.cancel(params)
+    end
+  end
 end
