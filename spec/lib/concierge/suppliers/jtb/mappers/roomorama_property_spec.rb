@@ -59,7 +59,7 @@ RSpec.describe JTB::Mappers::RoomoramaProperty do
     expect(property.default_to_available).to be false
     expect(property.minimum_stay).to eq(1)
     expect(property.currency).to eq('JPY')
-    expect(property.cancellation_policy).to eq('super_elite')
+    expect(property.cancellation_policy).to eq('super_strict')
     expect(property.lat).to eq('34.82536445833334')
     expect(property.lng).to eq('134.69021241666667')
     expect(property.amenities).to eq(['parking', 'internet', 'wheelchairaccess', 'pool'])

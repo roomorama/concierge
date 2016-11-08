@@ -5,7 +5,7 @@ module JTB
     # This class is responsible for building a +Roomorama::Property+ object
     # from data getting from JTB.
     class RoomoramaProperty
-      CANCELLATION_POLICY = 'super_elite'
+      CANCELLATION_POLICY = Roomorama::CancellationPolicy::SUPER_STRICT
       IMAGE_URL_PREFIX = 'https://www.jtbgenesis.com/image'
       PROPERTY_TYPE = 'apartment'
       COUNTRY_CODE = 'JP'
