@@ -2,7 +2,6 @@ require "spec_helper"
 
 RSpec.describe THH::Price do
   include Support::Fixtures
-  include Support::HTTPStubbing
   include Support::Factories
 
   let!(:supplier) { create_supplier(name: THH::Client::SUPPLIER_NAME) }
