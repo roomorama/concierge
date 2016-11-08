@@ -42,8 +42,8 @@ RSpec.describe THH::Commands::QuoteFetcher do
     end
 
     context 'when xml has unexpected structure' do
-      it 'returns an error' do
-        stub_with_fixture('thh/invalid_availability_response.xml')
+      it 'returns an error if no available field' do
+        stub_with_fixture('thh/no_available_availability_response.xml')
 
         result = subject.call(params)
 
@@ -51,6 +51,17 @@ RSpec.describe THH::Commands::QuoteFetcher do
         expect(result.success?).to be false
         expect(result.error.code).to eq(:unrecognised_response)
         expect(result.error.data).to eq('Available response for params `{"property_id"=>"15", "check_in"=>"2016-12-09", "check_out"=>"2016-12-17"}` does not contain `response.available` field')
+      end
+
+      it 'returns an error if no price field' do
+        stub_with_fixture('thh/no_price_availability_response.xml')
+
+        result = subject.call(params)
+
+        expect(result).to be_a Result
+        expect(result.success?).to be false
+        expect(result.error.code).to eq(:unrecognised_response)
+        expect(result.error.data).to eq('Available response for params `{"property_id"=>"15", "check_in"=>"2016-12-09", "check_out"=>"2016-12-17"}` does not contain `response.price` field')
       end
     end
   end
