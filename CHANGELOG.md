@@ -5,6 +5,9 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+-
+
+## [0.13.2]
 ### Fixed
 - Kigo: prevent context hell for availabilities worker
 - net_rate calculation
