@@ -58,6 +58,28 @@ RSpec.describe THH::Commands::PropertiesFetcher do
     end
 
     context 'when xml has unexpected structure' do
+      it 'returns an error for empty response' do
+        stub_call(:get, url) { [200, {}, ''] }
+
+        result = subject.call
+
+        expect(result).to be_a Result
+        expect(result.success?).to be false
+        expect(result.error.code).to eq(:unrecognised_response)
+        expect(result.error.data).to eq('Response does not contain `response` field')
+      end
+
+      it 'returns an error for invalid xml' do
+        stub_call(:get, url) { [200, {}, '<a><b></a></b>invalid xml'] }
+
+        result = subject.call
+
+        expect(result).to be_a Result
+        expect(result.success?).to be false
+        expect(result.error.code).to eq(:unrecognised_response)
+        expect(result.error.data).to eq('Response does not contain `response` field')
+      end
+
       it 'returns an error' do
         stub_with_fixture('thh/unexpected_response.xml')
 
