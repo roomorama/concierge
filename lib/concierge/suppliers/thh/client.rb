@@ -21,5 +21,9 @@ module THH
     def book(params)
       THH::Booking.new(credentials).book(params)
     end
+
+    def cancel(params)
+      THH::Commands::Cancel.new(credentials).call(params[:reference_number])
+    end
   end
 end
