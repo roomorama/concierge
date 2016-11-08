@@ -47,7 +47,7 @@ RSpec.describe THH::Mappers::RoomoramaProperty do
       expect(property.number_of_sofa_beds).to eq('2')
       expect(property.amenities).to eq(amenities)
       expect(property.currency).to eq('THB')
-      expect(property.cancellation_policy).to eq('strict')
+      expect(property.cancellation_policy).to eq('firm')
 
       expect(property.images.length).to eq(21)
       image = property.images.first
