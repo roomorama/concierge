@@ -3,7 +3,11 @@
 
   <h3><%= event[:label] %></h3>
 
-  <p><%= monospace(h(event[:message])) %></p>
+<% if plain_text?(event[:content_type]) %>
+  <p><%= pretty_print(event[:message], event[:content_type]) %></p>
+ <% else %>
+  <pre class="code-block"><%= pretty_print(event[:message], event[:content_type]) %></pre>
+<% end %>
 
   <% if event[:backtrace] && !event[:backtrace].empty? %>
     <p>Follows the backtrace of the notification:</p>

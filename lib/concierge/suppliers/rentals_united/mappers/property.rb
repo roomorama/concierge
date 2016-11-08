@@ -166,10 +166,7 @@ module RentalsUnited
       end
 
       def check_in_time
-        from = property_hash.get("CheckInOut.CheckInFrom")
-        to   = property_hash.get("CheckInOut.CheckInTo")
-
-        "#{from}-#{to}" if from && to
+        property_hash.get("CheckInOut.CheckInTo")
       end
 
       def check_out_time

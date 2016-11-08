@@ -19,6 +19,26 @@ RSpec.describe Workers::Suppliers::Kigo::Availabilities do
     let(:prices_diff) { Hash['DIFF_ID' => 'abc', 'PROP_ID' => [1, 2]] }
     let(:availabilities_diff) { Hash['DIFF_ID' => 'xyz', 'PROP_ID' => [2, 3]] }
 
+    context 'there are events from previous syncs in current context' do
+      before do
+        Concierge.context = Concierge::Context.new(type: "batch")
+
+        sync_process = Concierge::Context::SyncProcess.new(
+          worker:     "availabilities",
+          host_id:    "UNRELATED_HOST",
+          identifier: "UNRELATED_PROPERTY"
+        )
+        Concierge.context.augment(sync_process)
+        allow_any_instance_of(Kigo::Importer).to receive(:fetch_prices_diff) { Result.error(:connection_timeout) }
+      end
+
+      it 'announces an error without any unrelated context' do
+        subject.perform
+        error = ExternalErrorRepository.last
+        expect(error.context.get("events").to_s).to_not include("UNRELATED_PROPERTY")
+      end
+    end
+
     it 'announces external error' do
       expect_any_instance_of(Kigo::Importer).
         to receive(:fetch_prices_diff).with(args[:prices_diff_id]) { Result.error(:connection_timeout) }

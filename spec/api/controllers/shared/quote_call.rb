@@ -90,8 +90,8 @@ RSpec.shared_examples "quote call" do
     expect(response.body["guests"]).to eq params[:guests]
     expect(response.body["currency"]).to eq "EUR"
     expect(response.body["total"]).to eq 56.78
-    expect(response.body["net_rate"]).to eq 53.07
-    expect(response.body["host_fee"]).to eq 3.71
+    expect(response.body["net_rate"]).to eq 52.81
+    expect(response.body["host_fee"]).to eq 3.97
     expect(response.body["host_fee_percentage"]).to eq 7.0
   end
 end

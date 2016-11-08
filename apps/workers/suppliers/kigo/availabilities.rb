@@ -15,7 +15,7 @@ module Workers::Suppliers::Kigo
     end
 
     def perform
-      prices_diff = importer.fetch_prices_diff(prices_diff_id)
+      prices_diff = new_context { importer.fetch_prices_diff(prices_diff_id) }
       unless prices_diff.success?
         announce_error('Failed to perform `#fetch_prices_diff` operation', prices_diff)
         return initial_args_result
@@ -38,6 +38,19 @@ module Workers::Suppliers::Kigo
     end
 
     private
+
+    def new_context
+      Concierge.context = Concierge::Context.new(type: "batch")
+
+      message = Concierge::Context::Message.new(
+        label:     'Aggregated Sync',
+        message:   "Started aggregated availabilities sync for `#{supplier}`",
+        backtrace: caller
+      )
+
+      Concierge.context.augment(message)
+      yield
+    end
 
     def importer
       @importer ||= Kigo::Importer.new(credentials, request_handler)

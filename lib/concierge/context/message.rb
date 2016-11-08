@@ -4,34 +4,38 @@ class Concierge::Context
   #
   # This class encapsulates an event that does not fit the predefind categories,
   # and can be defined as a message to be print with further information.
+  # By default content type of message is plain text, but it also can be json or xml.
   #
   # Usage
   #
   #   mismatch = Concierge::Context::Message.new(
-  #     label:    "Parsing failure",
-  #     message:  "Failed to parse init file."
-  #     backtrace: caller
+  #     label:        "Parsing failure",
+  #     message:      "Failed to parse init file."
+  #     backtrace:    caller,
+  #     content_type: 'json'
   #   )
   class Message
 
     CONTEXT_TYPE = "generic_message"
 
-    attr_reader :label, :message, :backtrace, :timestamp
+    attr_reader :label, :message, :backtrace, :timestamp, :content_type
 
-    def initialize(label:, message:, backtrace:)
-      @label     = label
-      @message   = message
-      @backtrace = scrub(backtrace)
-      @timestamp = Time.now
+    def initialize(label:, message:, backtrace:, content_type: 'plain')
+      @label        = label
+      @message      = message
+      @content_type = content_type
+      @backtrace    = scrub(backtrace)
+      @timestamp    = Time.now
     end
 
     def to_h
       {
-        type:      CONTEXT_TYPE,
-        timestamp: timestamp,
-        label:     label,
-        message:   message,
-        backtrace: backtrace
+        type:         CONTEXT_TYPE,
+        timestamp:    timestamp,
+        label:        label,
+        message:      message,
+        backtrace:    backtrace,
+        content_type: content_type
       }
     end
 

@@ -210,9 +210,9 @@ RSpec.describe Waytostay::Client do
     it "appends net_rate and fee_percentage info" do
       quotation = stubbed_client.quote( { property_id: "success", check_in: Date.today + 10, check_out: Date.today + 20, guests: 2 } )
       expect(quotation.value.total).to eq 603.0
-      expect(quotation.value.net_rate).to eq 563.55
+      expect(quotation.value.net_rate).to eq 560.79
       expect(quotation.value.host_fee_percentage).to eq 7
-      expect(quotation.value.host_fee).to eq (603 - 563.55).round(2)
+      expect(quotation.value.host_fee).to eq (603 - 560.79).round(2)
     end
 
     it "should announce missing fields from response for malformed responses" do

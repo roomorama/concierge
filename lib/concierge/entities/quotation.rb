@@ -37,8 +37,8 @@ class Quotation
 
   # The quotation without host fee
   def net_rate
-    coefficient = 1 + (host_fee_percentage.to_f / 100)
-    (total / coefficient).round(2)
+    coefficient = 1 - host_fee_percentage.to_f / 100
+    (total * coefficient).round(2)
   end
 
   # The fee percentage, already included in quoted total price

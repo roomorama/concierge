@@ -22,14 +22,15 @@ RSpec.describe Concierge::Context::Message do
       allow(Time).to receive(:now) { Time.new("2016", "05", "21", "16", "15", "42") }
 
       expect(subject.to_h).to eq({
-        type:      "generic_message",
-        timestamp: Time.now,
-        label:     "Parsing Failure",
-        message:   "Expected a non-null nightly rate",
-        backtrace: [
+        type:        "generic_message",
+        timestamp:   Time.now,
+        label:       "Parsing Failure",
+        message:     "Expected a non-null nightly rate",
+        backtrace:   [
           "lib/concierge/supplier/parser.rb:19 in get_rates",
           "lib/concierge/supplier/client/requester.rb:392 in perform_call"
-        ]
+        ],
+        content_type: "plain"
       })
     end
   end
