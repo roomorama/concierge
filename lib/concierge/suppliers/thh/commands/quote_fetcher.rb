@@ -14,7 +14,7 @@ module THH
     #   end
     #
     # The +call+ method returns a +Result+ object that, when successful,
-    # encapsulates SafeAccessHash.
+    # encapsulates +Concierge::SafeAccessHash+.
     class QuoteFetcher < BaseFetcher
       ROOMORAMA_DATE_FORMAT = '%Y-%m-%d'
       THH_DATE_FORMAT = '%d/%m/%Y'
