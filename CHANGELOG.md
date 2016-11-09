@@ -5,7 +5,8 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
--
+### Fixed
+- RU: create only one sync process during availability sync
 
 ## [0.13.2]
 ### Fixed
