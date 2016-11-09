@@ -37,6 +37,11 @@ RSpec.describe JTB::Mappers::RoomoramaProperty do
     create_room_price({ rate_plan_id: 'CHUHW0101TRP2PSG', date: '2016-10-12', room_rate: 8011.0 })
     create_room_price({ rate_plan_id: 'CHUHW0101TRP2PSG', date: '2016-10-13', room_rate: 7011.0 })
 
+    room_without_stocks = create_room_type({ room_code: 'CHUHW01RM0000002' })
+    create_rate_plan({ rate_plan_id: "CHUHW0102TRP1PSG", room_code: room_without_stocks.room_code })
+    create_room_stock({ rate_plan_id: 'CHUHW0102TRP1PSG', service_date: '2016-10-12', number_of_units: 0 })
+    create_room_price({ rate_plan_id: 'CHUHW0102TRP1PSG', date: '2016-10-13', room_rate: 7012.0 })
+
     result = subject.build(hotel)
 
     expect(result).to be_a(Result)
@@ -63,7 +68,7 @@ RSpec.describe JTB::Mappers::RoomoramaProperty do
     expect(property.lat).to eq('34.82536445833334')
     expect(property.lng).to eq('134.69021241666667')
     expect(property.amenities).to eq(['parking', 'internet', 'wheelchairaccess', 'pool'])
-    expect(property.units.length).to eq(1)
+    expect(property.units.length).to eq(2)
 
     expect(property.images.length).to eq(1)
     image = property.images.first
@@ -95,6 +100,10 @@ RSpec.describe JTB::Mappers::RoomoramaProperty do
     expect(image.identifier).to eq('45abfcbf754f38144899b2f30467aadd')
     expect(image.url).to eq('https://www.jtbgenesis.com/image/GMTGEWEB01/CHUW01/64400131000000063.jpg')
     expect(image.position).to eq(2)
+
+    # expect that room without available days still has price
+    unit = property.units[1]
+    expect(unit.nightly_rate).to eq(7012.0)
   end
 
   context 'when coordinates have unexpected format' do

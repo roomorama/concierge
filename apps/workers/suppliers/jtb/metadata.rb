@@ -13,7 +13,7 @@ module Workers::Suppliers::JTB
     ]
 
     def initialize(host)
-      @host            = host
+      @host = host
       @property_synchronisation = Workers::PropertySynchronisation.new(host)
       @calendar_synchronisation = Workers::CalendarSynchronisation.new(host)
     end

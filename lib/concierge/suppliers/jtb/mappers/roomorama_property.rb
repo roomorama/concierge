@@ -72,7 +72,13 @@ module JTB
         rate_plans = JTB::Repositories::RatePlanRepository.room_rate_plans(room)
         from = Date.today
         to = from + Workers::Suppliers::JTB::Metadata::PERIOD_SYNC
-        JTB::Repositories::RoomPriceRepository.room_min_price(rate_plans, from, to)
+
+        min_price = JTB::Repositories::RoomPriceRepository.room_min_price(rate_plans, from, to)
+        unless min_price
+          min_price = JTB::Repositories::RoomPriceRepository.room_absolute_min_price(room, rate_plans, from, to)
+        end
+
+        min_price
       end
 
       def set_base_info!(property, hotel)

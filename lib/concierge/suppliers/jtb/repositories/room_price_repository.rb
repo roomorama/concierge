@@ -23,6 +23,7 @@ module JTB
         end.min(:room_rate)
       end
 
+      # Min price for given rate plans from only available dates between from and to
       def self.room_min_price(rate_plans, from, to)
         return if rate_plans.count == 0
 
@@ -46,6 +47,17 @@ module JTB
           ",
           *attributes
         ].first[:min]
+      end
+
+      # Min price for given rate plans from all dates between from and to
+      def self.room_absolute_min_price(room, rate_plans, from, to)
+        query do
+          # add more criteria (city_code, hotel_code) to make postgres to use PK
+          where(rate_plan_id: rate_plans.map(&:rate_plan_id))
+            .and("date between '#{from}' and '#{to}'")
+            .and(city_code: room.city_code)
+            .and(hotel_code: room.hotel_code)
+        end.min(:room_rate)
       end
 
       def self.by_primary_key(city_code, hotel_code, rate_plan_id, date)
