@@ -49,6 +49,11 @@ module Web::Views::ExternalErrors
       concierge_version.to_s.empty?
     end
 
+    # checks if the current +error+ has +description+
+    def has_description?
+      !error.description.to_s.empty?
+    end
+
     # extracts the version of Concierge that was running at the time of the error.
     def concierge_version
       context[:version]
