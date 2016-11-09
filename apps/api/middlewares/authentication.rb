@@ -137,9 +137,12 @@ module API
       end
 
       def valid_non_webhook_request?(env)
+        puts "Signing: #{request_path(env)}"
         expected_signature = sign(request_path(env), secret: ENV["CONCIERGE_API_SECRET"])
+        puts "Expected: #{expected_signature}"
+        puts "Checking: #{expected_signature}"
         env[SIGNATURE_HEADER] == expected_signature
-       end
+      end
 
       # +env["rack.input"]+ is a IO-like object. According to the Rack spec,
       # it must respond to +read+ and +rewind+ methods without throwing errors.
