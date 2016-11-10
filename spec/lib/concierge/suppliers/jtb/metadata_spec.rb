@@ -30,7 +30,7 @@ RSpec.describe Workers::Suppliers::JTB::Metadata do
         allow(JTB::Repositories::HotelRepository).to receive(:english_ryokans).and_return(
           [double(jtb_hotel_code: '1234'), double(jtb_hotel_code: '2345')]
         )
-        allow_any_instance_of(JTB::Mappers::RoomoramaProperty).to receive(:build) { Result.error(error_code) }
+        allow_any_instance_of(JTB::Mappers::RoomoramaProperty).to receive(:build) { Result.error(error_code, 'Description') }
 
         subject.perform
 
@@ -38,7 +38,6 @@ RSpec.describe Workers::Suppliers::JTB::Metadata do
         expect(sync.successful).to eq true
         expect(sync.skipped_properties_count).to eq 2
         expect(sync.stats[:properties_skipped].length).to eq 1
-        expect(sync.stats[:properties_skipped][0]['reason']).to eq error_code.to_s
         expect(sync.stats[:properties_skipped][0]['ids']).to eq ['1234', '2345']
       end
     end

@@ -60,16 +60,18 @@ module JTB
         if property.empty_images?
           return Result.error(:empty_images, 'Property images list is empty')
         end
-        unless property.nightly_rate
-          return Result.error(:unknown_nightly_rate, 'No one of property units has prices information')
+        if property.empty_units?
+          return Result.error(
+            :empty_valid_units,
+            "Property does not have valid units. Usually it means that all property units don't have rate plans or price information"
+          )
         end
       end
 
       # Each room has several rate plans.
       # Each rate plan has available dates.
       # Returns minimum price for room available dates.
-      def fetch_room_min_price(room)
-        rate_plans = JTB::Repositories::RatePlanRepository.room_rate_plans(room)
+      def fetch_room_min_price(room, rate_plans)
         from = Date.today
         to = from + Workers::Suppliers::JTB::Metadata::PERIOD_SYNC
 
@@ -190,6 +192,13 @@ module JTB
         rooms = JTB::Repositories::RoomTypeRepository.hotel_english_rooms(hotel.city_code, hotel.hotel_code)
 
         rooms.each do |room|
+          rate_plans = JTB::Repositories::RatePlanRepository.room_rate_plans(room)
+          # Ignore units without rate plans, they don't have prices and availability calendar
+          next if rate_plans.count == 0
+          nightly_rate = fetch_room_min_price(room, rate_plans)
+          # Ignore units without price information
+          next unless nightly_rate
+
           u_id = JTB::UnitId.from_jtb_codes(room.room_type_code, room.room_code)
           unit = Roomorama::Unit.new(u_id.unit_id)
           unit.title = room.room_name
@@ -216,11 +225,9 @@ module JTB
           parse_room_amenities!(unit, room)
 
           unit.minimum_stay = 1
-          unit.nightly_rate = fetch_room_min_price(room)
-          if unit.nightly_rate
-            unit.weekly_rate = 7 * unit.nightly_rate
-            unit.monthly_rate = 30 * unit.nightly_rate
-          end
+          unit.nightly_rate = nightly_rate
+          unit.weekly_rate = 7 * unit.nightly_rate
+          unit.monthly_rate = 30 * unit.nightly_rate
 
           result.add_unit(unit)
         end

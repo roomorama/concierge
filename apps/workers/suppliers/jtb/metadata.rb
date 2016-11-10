@@ -9,7 +9,7 @@ module Workers::Suppliers::JTB
 
     SKIPPABLE_ERROR_CODES = [
       :empty_images,
-      :unknown_nightly_rate
+      :empty_valid_units
     ]
 
     def initialize(host)
@@ -32,7 +32,7 @@ module Workers::Suppliers::JTB
             result = mapper.build(hotel)
 
             if !result.success? && SKIPPABLE_ERROR_CODES.include?(result.error.code)
-              property_synchronisation.skip_property(property_id, result.error.code)
+              property_synchronisation.skip_property(property_id, result.error.data)
             else
               result
             end

@@ -139,6 +139,10 @@ module Roomorama
       units << unit
     end
 
+    def empty_units?
+      units.empty?
+    end
+
     # validates that all required fields for a unit are present. A unit needs:
     #
     # * a non-empty identifier

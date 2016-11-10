@@ -39,10 +39,11 @@ module JTB
         from = Date.today
         to = from + Workers::Suppliers::JTB::Metadata::PERIOD_SYNC
 
-        # All rate plans have the same availabilities for a given unit
-        # so we can take only first one
-        stocks = JTB::Repositories::RoomStockRepository.availabilities(rate_plans.first&.rate_plan_id, from, to)
-        entries = stocks.map do |stock|
+        entries = {}
+        stocks = JTB::Repositories::RoomStockRepository.availabilities(rate_plans, from, to)
+        stocks.map do |stock|
+          next if entries[stock.service_date] && entries[stock.service_date].available
+
           available = false
           nightly_rate = 0
           if available_stock?(stock)
@@ -52,13 +53,13 @@ module JTB
               nightly_rate = min_price
             end
           end
-          Roomorama::Calendar::Entry.new(
+          entries[stock.service_date] = Roomorama::Calendar::Entry.new(
             date: stock.service_date,
             available: available,
             nightly_rate: nightly_rate
           )
         end
-        Result.new(entries)
+        Result.new(entries.values)
       end
 
       def available_stock?(stock)
