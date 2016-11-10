@@ -8,6 +8,9 @@ how this file is formatted and how the process works.
 ### Fixed
 - RU: create only one sync process during availability sync
 
+### Changed
+- Waytostay: Upgrade cancellation policy from firm to strict
+
 ## [0.13.2]
 ### Fixed
 - Kigo: prevent context hell for availabilities worker
