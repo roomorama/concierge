@@ -30,13 +30,12 @@ RSpec.describe RentalsUnited::Commands::Cancel do
 
     expect(result).to be_kind_of(Result)
     expect(result).not_to be_success
-    expect(result.error.code).to eq("28")
-    expect(result.error.data).to eq("Reservation does not exist.")
+    expected_error_message = "Response indicating the Status with ID `28`, and description `Reservation does not exist.`"
+    expect(result.error.code).to eq(:unrecognised_response)
+    expect(result.error.data).to eq(expected_error_message)
 
     event = Concierge.context.events.last.to_h
-    expect(event[:message]).to eq(
-      "Response indicating the Status with ID `28`, and description `Reservation does not exist.`"
-    )
+    expect(event[:message]).to eq(expected_error_message)
     expect(event[:backtrace]).to be_kind_of(Array)
     expect(event[:backtrace].any?).to be true
   end

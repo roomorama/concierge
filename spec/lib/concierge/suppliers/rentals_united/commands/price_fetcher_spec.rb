@@ -55,13 +55,12 @@ RSpec.describe RentalsUnited::Commands::PriceFetcher do
     result = subject.call
 
     expect(result).not_to be_success
-    expect(result.error.code).to eq("74")
-    expect(result.error.data).to eq("DateFrom has to be earlier than DateTo.")
+    expected_error_message = "Response indicating the Status with ID `74`, and description `DateFrom has to be earlier than DateTo.`"
+    expect(result.error.code).to eq(:unrecognised_response)
+    expect(result.error.data).to eq(expected_error_message)
 
     event = Concierge.context.events.last.to_h
-    expect(event[:message]).to eq(
-      "Response indicating the Status with ID `74`, and description `DateFrom has to be earlier than DateTo.`"
-    )
+    expect(event[:message]).to eq(expected_error_message)
     expect(event[:backtrace]).to be_kind_of(Array)
     expect(event[:backtrace].any?).to be true
   end
@@ -73,13 +72,12 @@ RSpec.describe RentalsUnited::Commands::PriceFetcher do
     result = subject.call
 
     expect(result).not_to be_success
-    expect(result.error.code).to eq("76")
-    expect(result.error.data).to eq("Number of guests exceedes the maximum allowed.")
+    expected_error_message = "The maximum number of guests to book this apartment is exceeded"
+    expect(result.error.code).to eq(:max_guests_exceeded)
+    expect(result.error.data).to eq(expected_error_message)
 
     event = Concierge.context.events.last.to_h
-    expect(event[:message]).to eq(
-      "Response indicating the Status with ID `76`, and description `Number of guests exceedes the maximum allowed.`"
-    )
+    expect(event[:message]).to eq(expected_error_message)
     expect(event[:backtrace]).to be_kind_of(Array)
     expect(event[:backtrace].any?).to be true
   end
@@ -91,13 +89,12 @@ RSpec.describe RentalsUnited::Commands::PriceFetcher do
     result = subject.call
 
     expect(result).not_to be_success
-    expect(result.error.code).to eq("77")
-    expect(result.error.data).to eq("NOP: positive value required.")
+    expected_error_message = "Response indicating the Status with ID `77`, and description `NOP: positive value required.`"
+    expect(result.error.code).to eq(:unrecognised_response)
+    expect(result.error.data).to eq(expected_error_message)
 
     event = Concierge.context.events.last.to_h
-    expect(event[:message]).to eq(
-      "Response indicating the Status with ID `77`, and description `NOP: positive value required.`"
-    )
+    expect(event[:message]).to eq(expected_error_message)
     expect(event[:backtrace]).to be_kind_of(Array)
     expect(event[:backtrace].any?).to be true
   end

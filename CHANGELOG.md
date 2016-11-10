@@ -11,11 +11,14 @@ how this file is formatted and how the process works.
 
 ### Added
 - Ciirus: add new spec for cancel action when `CancelBookingResponse` contains API error
+- Concierge: support for `max_guests_exceeded` error for `Concierge::Errors::Quote`
 
 ### Changed
 - AtLeisure: rename `unsupported_on_request_reservation` to `property_not_instant_bookable`
 - Ciirus: rename `unexpected_response` to `unrecognised_response` for booking and cancel
 - SAW: use `unrecognised_response` instead of custom error codes coming from API
+- RU: use `unrecognised_response` instead of custom error codes coming from API
+- RU: use `max_guests_exceeded` instead of `unrecognised_response`
 
 ## [0.13.3] - 2016-11-10
 ### Fixed
