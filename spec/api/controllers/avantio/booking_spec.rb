@@ -31,6 +31,7 @@ RSpec.describe API::Controllers::Avantio::Booking do
   let(:set_booking_error_response) { read_fixture('avantio/set_booking_error_response.xml') }
   let(:is_available_response) { read_fixture('avantio/is_available_response.xml') }
   let(:not_available_response) { read_fixture('avantio/not_available_response.xml') }
+  let(:not_valid_available_code_response) { read_fixture('avantio/is_available_-3_code.xml') }
   let(:wsdl) { read_fixture('avantio/wsdl.xml') }
 
   it_behaves_like "performing booking parameters validations", controller_generator: -> { described_class.new }
@@ -75,6 +76,17 @@ RSpec.describe API::Controllers::Avantio::Booking do
         expect(response.status).to eq 503
         expect(response.body['status']).to eq 'error'
         expect(response.body['errors']['booking']).to eq 'The property user tried to book is unavailable for given period'
+      end
+
+      it 'returns error if property is not available' do
+        stub_call(method: Avantio::Commands::IsAvailableFetcher::OPERATION_NAME,
+                  response: not_valid_available_code_response)
+
+        response = parse_response(described_class.new.call(params))
+
+        expect(response.status).to eq 503
+        expect(response.body['status']).to eq 'error'
+        expect(response.body['errors']['booking']).to eq 'Unexpected `is_available` response with code `-3` and message `The compulsory arrival date is not fulfilled`'
       end
     end
 

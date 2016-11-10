@@ -18,6 +18,7 @@ RSpec.describe API::Controllers::Avantio::Quote do
   let(:get_booking_price_response) { read_fixture('avantio/get_booking_price_response.xml') }
   let(:is_available_response) { read_fixture('avantio/is_available_response.xml') }
   let(:not_available_response) { read_fixture('avantio/not_available_response.xml') }
+  let(:not_valid_available_code_response) { read_fixture('avantio/is_available_-3_code.xml') }
 
   let(:wsdl) { read_fixture('avantio/wsdl.xml') }
 
@@ -71,6 +72,17 @@ RSpec.describe API::Controllers::Avantio::Quote do
         expect(response.body['guests']).to eq 3
         expect(response.body).not_to have_key('currency')
         expect(response.body).not_to have_key('total')
+      end
+
+      it 'returns unavailable quotation for unavailable response' do
+        stub_call(method: Avantio::Commands::IsAvailableFetcher::OPERATION_NAME,
+                  response: not_valid_available_code_response)
+
+        response = parse_response(described_class.new.call(params))
+
+        expect(response.status).to eq 503
+        expect(response.body['status']).to eq 'error'
+        expect(response.body['errors']['quote']).to eq 'Unexpected `is_available` response with code `-3` and message `The compulsory arrival date is not fulfilled`'
       end
     end
   end

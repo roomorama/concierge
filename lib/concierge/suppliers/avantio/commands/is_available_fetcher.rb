@@ -19,6 +19,8 @@ module Avantio
 
       OPERATION_NAME = :is_available
       AVAILABLE_CODE = '1'
+      VALID_RESPONSE_CODES = ['0', '1'] # Not available, Available
+      CHECK_IN_TO_NEAR_CODE = '-10'
 
       attr_reader :credentials
 
@@ -33,7 +35,7 @@ module Avantio
         return result unless result.success?
 
         result_hash = to_safe_hash(result.value)
-        return error_result unless valid_result?(result_hash)
+        return error_result(result_hash) unless valid_result?(result_hash)
 
         Result.new(available?(result_hash))
       end
@@ -49,24 +51,34 @@ module Avantio
       end
 
       def valid_result?(result_hash)
-        !!fetch_available_code(result_hash)
+        code = fetch_available_code(result_hash)
+        code && VALID_RESPONSE_CODES.include?(code)
       end
 
       def fetch_available_code(result_hash)
         result_hash.get('is_available_rs.available.available_code')
       end
 
+      def fetch_available_message(result_hash)
+        result_hash.get('is_available_rs.available.available_message')
+      end
+
       def available?(result_hash)
         fetch_available_code(result_hash) == AVAILABLE_CODE
       end
 
-      def error_result
-        message = 'Unexpected `is_available` response structure'
+      def error_result(result_hash)
+        code = fetch_available_code(result_hash)
+        available_message = fetch_available_message(result_hash)
+        message = "Unexpected `is_available` response with code `#{code}` and message `#{available_message}`"
+        if code == CHECK_IN_TO_NEAR_CODE
+          error_code = :check_in_too_near
+        else
+          error_code = :unrecognised_response
+        end
+
         mismatch(message, caller)
-        Result.error(
-          :unexpected_response_structure,
-          message
-        )
+        Result.error(error_code, message)
       end
 
       def to_safe_hash(hash)
