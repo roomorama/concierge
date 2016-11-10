@@ -47,26 +47,22 @@ module SAW
       end
 
       def error_result(parsed_hash, original_response)
-        code = parsed_hash.get("response.errors.error.code")
-        description = parsed_hash.get("response.errors.error.description")
+        saw_code = parsed_hash.get("response.errors.error.code")
+        saw_description = parsed_hash.get("response.errors.error.description")
 
-        if code && description
-          augment_with_error(code, description, caller)
-          Result.error(code, description)
+        if saw_code && saw_description
+          message = "Response indicating the error `#{saw_code}`, and description `#{saw_description}`"
+          unrecognised_response_error(message)
         else
-          unrecognised_response_event(caller)
-          Result.error(:unrecognised_response, original_response)
+          message = "Error response could not be recognised (no `code` or `description` fields). "
+          message += "Original response: `#{original_response}`"
+          unrecognised_response_error(message)
         end
       end
 
-      def augment_with_error(code, description, backtrace)
-        message = "Response indicating the error `#{code}`, and description `#{description}`"
-        mismatch(message, backtrace)
-      end
-
-      def unrecognised_response_event(backtrace)
-        message = "Error response could not be recognised (no `code` or `description` fields)."
-        mismatch(message, backtrace)
+      def unrecognised_response_error(message)
+        mismatch(message, caller)
+        Result.error(:unrecognised_response, message)
       end
 
       def mismatch(message, backtrace)

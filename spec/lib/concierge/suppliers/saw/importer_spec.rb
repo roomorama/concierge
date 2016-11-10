@@ -41,8 +41,8 @@ RSpec.describe SAW::Importer do
 
       properties_result = subject.fetch_properties_by_country(current_country)
       expect(properties_result.success?).to be false
-      expect(properties_result.error.code).to eq("9999")
-      expect(properties_result.error.data).to eq("Custom Error")
+      expect(properties_result.error.code).to eq(:unrecognised_response)
+      expect(properties_result.error.data).to eq("Response indicating the error `9999`, and description `Custom Error`")
     end
   end
 
@@ -69,8 +69,8 @@ RSpec.describe SAW::Importer do
         countries_result.value
       )
       expect(properties_result).not_to be_success
-      expect(properties_result.error.code).to eq("9999")
-      expect(properties_result.error.data).to eq("Custom Error")
+      expect(properties_result.error.code).to eq(:unrecognised_response)
+      expect(properties_result.error.data).to eq("Response indicating the error `9999`, and description `Custom Error`")
     end
 
     it "returns a result with array of all properties from all countries" do
