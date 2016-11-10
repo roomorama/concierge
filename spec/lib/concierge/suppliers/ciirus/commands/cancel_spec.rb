@@ -13,7 +13,7 @@ RSpec.describe Ciirus::Commands::Cancel do
   let(:reservation_id) { 134550 }
 
   let(:success_response) { read_fixture('ciirus/responses/cancel_response.xml') }
-  let(:error_response) { read_fixture('ciirus/responses/error_cancel_response.xml') }
+  let(:error_response) { read_fixture('ciirus/responses/error_cancel_response(soap).xml') }
   let(:wsdl) { read_fixture('ciirus/additional_wsdl.xml') }
 
   subject { described_class.new(credentials) }
@@ -53,6 +53,22 @@ RSpec.describe Ciirus::Commands::Cancel do
         expect(result.error.code).to eq(:soap_error)
         expect(result.error.data).to eq(
           "(soap:Server) Server was unable to process request. ---> You do not have access to this booking"
+        )
+      end
+    end
+
+    context 'when CancelBookingResponse contains error message' do
+      let(:error_response) { read_fixture('ciirus/responses/error_cancel_response(api).xml') }
+
+      it 'returns a result with error' do
+        stub_call(method: described_class::OPERATION_NAME, response: error_response)
+
+        result = subject.call(reservation_id)
+
+        expect(result.success?).to be false
+        expect(result.error.code).to eq(:unrecognised_response)
+        expect(result.error.data).to eq(
+          "The response contains unexpected response: `Unknown error message`"
         )
       end
     end

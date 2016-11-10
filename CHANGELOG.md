@@ -5,8 +5,12 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+### Added
+- Ciirus: add new spec for cancel action when `CancelBookingResponse` contains API error
+
 ### Changed
 - AtLeisure: rename `unsupported_on_request_reservation` to `property_not_instant_bookable`
+- Ciirus: rename `unexpected_response` to `unrecognised_response` for booking and cancel
 
 ## [0.13.3] - 2016-11-10
 ### Fixed
