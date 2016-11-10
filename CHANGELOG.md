@@ -5,7 +5,8 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
--
+### Changed
+- AtLeisure: rename `unsupported_on_request_reservation` to `property_not_instant_bookable`
 
 ## [0.13.3] - 2016-11-10
 ### Fixed

@@ -27,6 +27,8 @@ module AtLeisure
   #                                      automatic confirmation, this is an error.
   # * +host_not_found+:                  happens when host is not found for AtLeisure supplier
   class Price
+    include Concierge::Errors::Quote
+
     ENDPOINT = "https://checkavailabilityv1.jsonrpc-partner.net/cgi/lars/jsonrpc-partner/jsonrpc.htm"
     CURRENCY = "EUR"
     attr_reader :credentials
@@ -60,7 +62,7 @@ module AtLeisure
     def parse_quote_response(params, response)
       quotation = build_quotation(params)
 
-      return no_instant_confirmation_error if response["OnRequest"] == "Yes"
+      return not_instant_bookable_error if response["OnRequest"] == "Yes"
 
       if response["Available"] == "Yes"
         price = response["CorrectPrice"] || response["Price"]
@@ -95,15 +97,12 @@ module AtLeisure
       Concierge::JSONRPC.new(endpoint)
     end
 
-    def no_instant_confirmation_error
+    def not_instant_bookable_error
       message = "Roomorama can only work with properties with instant confirmation from AtLeisure." +
         " However, the `OnRequest` field for given period was set to `true`."
 
       mismatch(message, caller)
-      Result.error(
-        :unsupported_on_request_reservation,
-        'Instant booking is not supported for the given period'
-      )
+      not_instant_bookable
     end
 
     def no_price_information_error

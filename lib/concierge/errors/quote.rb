@@ -15,4 +15,8 @@ module Concierge::Errors::Quote
   def stay_too_short(min_stay)
     Result.error(:stay_too_short, "The minimum number of nights to book this apartment is #{min_stay}")
   end
+
+  def not_instant_bookable
+    Result.error(:property_not_instant_bookable, 'Instant booking is not supported for the given period')
+  end
 end
