@@ -72,8 +72,8 @@ RSpec.describe RentalsUnited::Commands::PriceFetcher do
     result = subject.call
 
     expect(result).not_to be_success
-    expected_error_message = "Response indicating the Status with ID `76`, and description `Number of guests exceedes the maximum allowed.`"
-    expect(result.error.code).to eq(:unrecognised_response)
+    expected_error_message = "The maximum number of guests to book this apartment is exceeded"
+    expect(result.error.code).to eq(:max_guests_exceeded)
     expect(result.error.data).to eq(expected_error_message)
 
     event = Concierge.context.events.last.to_h
