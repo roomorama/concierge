@@ -67,9 +67,12 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
       successful_locations_fetch!
       successful_location_currencies_fetch!
 
-      result = worker.perform
-      expect(result).to be_kind_of(SyncProcess)
-      expect(worker.property_sync.sync_record.successful).to be true
+      worker.perform
+      sync = metadata_sync
+      expect(sync.successful).to be true
+
+      sync = availabilities_sync
+      expect(sync.successful).to be true
     end
 
     it "fails when there is no location for property and continues worker process" do
@@ -78,9 +81,9 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
       successful_but_wrong_locations_fetch!
       successful_location_currencies_fetch!
 
-      result = worker.perform
-      expect(result).to be_kind_of(SyncProcess)
-      expect(worker.property_sync.sync_record.successful).to be true
+      worker.perform
+      sync = metadata_sync
+      expect(sync.successful).to be true
 
       expect_sync_error("Failed to find location with id `1505`")
     end
@@ -91,9 +94,9 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
       successful_locations_fetch!
       successful_but_wrong_location_currencies_fetch!
 
-      result = worker.perform
-      expect(result).to be_kind_of(SyncProcess)
-      expect(worker.property_sync.sync_record.successful).to be true
+      worker.perform
+      sync = metadata_sync
+      expect(sync.successful).to be true
 
       expect_sync_error("Failed to find currency for location with id `1505`")
     end
@@ -105,9 +108,10 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
       successful_location_currencies_fetch!
       failing_property_fetch!
 
-      result = worker.perform
-      expect(result).to be_kind_of(SyncProcess)
-      expect(worker.property_sync.sync_record.successful).to be false
+      worker.perform
+
+      sync = metadata_sync
+      expect(sync.successful).to be false
 
       expect_sync_error("Failed to fetch property with property_id `519688`")
     end
@@ -120,9 +124,9 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
       successful_property_fetch!
       failing_seasons_fetch!
 
-      result = worker.perform
-      expect(result).to be_kind_of(SyncProcess)
-      expect(worker.property_sync.sync_record.successful).to be false
+      worker.perform
+      sync = metadata_sync
+      expect(sync.successful).to be false
 
       expect_sync_error("Failed to fetch seasons for property `519688`")
     end
@@ -140,10 +144,11 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
         expected_property_ids = ["519688"]
         expected_property_ids.each do |property_id|
           expect {
-            sync_process = worker.perform
+            worker.perform
+            sync_process = metadata_sync
 
             expect(sync_process.stats.get("properties_skipped")).to eq(
-              [{ "reason" => code, "ids" => [property_id] }]
+              [{ "reason" => code.to_s, "ids" => [property_id] }]
             )
             expect(worker.property_sync).not_to(
               receive(:start).with(property_id)
@@ -167,10 +172,9 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
         expect(worker.property_sync).to receive(:start).with(property_id)
       end
 
-      result = worker.perform
-      expect(result).to be_kind_of(SyncProcess)
-      expect(result.to_h[:successful]).to be true
-      expect(worker.property_sync.sync_record.successful).to be true
+      worker.perform
+      sync = metadata_sync
+      expect(sync.successful).to be true
     end
 
     it "creates record in the database" do
@@ -218,10 +222,12 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
         expect(worker.calendar_sync).to receive(:start).with(property_id)
       end
 
-      result = worker.perform
-      expect(result).to be_kind_of(SyncProcess)
-      expect(result.to_h[:successful]).to be true
-      expect(worker.calendar_sync.sync_record.successful).to be true
+      worker.perform
+      sync = metadata_sync
+      expect(sync.successful).to be true
+
+      sync = availabilities_sync
+      expect(sync.successful).to be true
     end
 
     it "fails when #fetch_availabilities returns an error" do
@@ -235,26 +241,35 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
       already_synced_property!
       failing_availabilities_fetch!
 
-      result = worker.perform
-      expect(result).to be_kind_of(SyncProcess)
+      worker.perform
 
       expect_sync_error("Failed to fetch availabilities for property `519688`")
     end
 
     it "finishes everything" do
       successful_owner_fetch!
-      successful_properties_collection_fetch!
+      successful_two_properties_collection_fetch!
       successful_locations_fetch!
       successful_location_currencies_fetch!
       successful_property_fetch!
-      successful_seasons_fetch!
+      successful_seasons_fetch!(count = 2)
       successful_publishing_to_roomorama!
       already_synced_property!
-      successful_availabilities_fetch!
+      successful_availabilities_fetch!(count = 2)
 
-      result = worker.perform
-      expect(result).to be_kind_of(SyncProcess)
-      expect(result.to_h[:successful]).to be true
+      worker.perform
+
+      metadata_syncs = SyncProcessRepository.for_host(host).of_type("metadata").to_a
+      expect(metadata_syncs.length).to eq(1)
+
+      metadata_sync = metadata_syncs.first
+      expect(metadata_sync.successful).to be true
+
+      availability_syncs = SyncProcessRepository.for_host(host).of_type("availabilities").to_a
+      expect(availability_syncs.length).to eq(1)
+
+      availability_sync = availability_syncs.first
+      expect(availability_sync.successful).to be true
     end
 
     private
@@ -332,6 +347,20 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
       )
     end
 
+    def successful_two_properties_collection_fetch!
+      collection = RentalsUnited::Entities::PropertiesCollection.new(
+        [
+          { property_id: '519688', location_id: '1505' },
+          { property_id: '519689', location_id: '1505' }
+        ]
+      )
+
+      stub_importer_action!(
+        :fetch_properties_collection_for_owner,
+        Result.new(collection)
+      )
+    end
+
     def successful_but_empty_properties_collection_fetch!
       collection = RentalsUnited::Entities::PropertiesCollection.new([])
 
@@ -378,23 +407,23 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
       stub_call(:post, url) { [200, {}, stub_data] }
     end
 
-    def successful_seasons_fetch!
+    def successful_seasons_fetch!(count = 1)
       season = RentalsUnited::Entities::Season.new(
         date_from: Date.parse("2016-09-01"),
         date_to:   Date.parse("2016-09-30"),
         price:     200.00
       )
-      stub_importer_action!(:fetch_seasons, Result.new([season]))
+      stub_importer_action!(:fetch_seasons, Result.new([season]), count = count)
     end
 
-    def successful_availabilities_fetch!
+    def successful_availabilities_fetch!(count = 1)
       availability = RentalsUnited::Entities::Availability.new(
         date:         Date.parse("2016-09-01"),
         available:    true,
         minimum_stay: 1,
         changeover:   "4"
       )
-      stub_importer_action!(:fetch_availabilities, Result.new([availability]))
+      stub_importer_action!(:fetch_availabilities, Result.new([availability]), count = count)
     end
 
     def successful_publishing_to_roomorama!
@@ -412,10 +441,19 @@ RSpec.describe Workers::Suppliers::RentalsUnited::Metadata do
       end
     end
 
-    def stub_importer_action!(action, result)
+    def stub_importer_action!(action, result, count = 1)
       expect_any_instance_of(RentalsUnited::Importer)
         .to(receive(action))
+        .exactly(count)
         .and_return(result)
+    end
+
+    def metadata_sync
+      SyncProcessRepository.for_host(host).of_type("metadata").first
+    end
+
+    def availabilities_sync
+      SyncProcessRepository.for_host(host).of_type("availabilities").first
     end
   end
 end
