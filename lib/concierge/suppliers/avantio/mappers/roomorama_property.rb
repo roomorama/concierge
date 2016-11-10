@@ -14,6 +14,7 @@ module Avantio
         14 => {type: 'apartment', subtype: 'studio_bachelor'}, # Studio
         20 => {type: 'house', subtype: 'cottage'}, # Chalet
         9  => {type: 'house', subtype: 'cottage'}, # Cottage
+        19 => {type: 'house', subtype: 'cottage'}, # House
         21 => {type: 'house', subtype: 'bungalow'} # Bungalow
       })
 
