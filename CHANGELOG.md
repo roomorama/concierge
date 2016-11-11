@@ -22,6 +22,8 @@ how this file is formatted and how the process works.
 - RU: use `max_guests_exceeded` instead of `unrecognised_response`
 - Kigo: change `quote_call_failed` and `booking_call_failed` error codes to `unrecognized_response`
 - Kigo: change `reservation_not_found`, `unavailable_dates` to `unrecognized_response`
+- Poplidays: rename `invalid_property_error` to `property_not_instant_bookable`
+- Poplidays: use `property_no_longer_available` instead of unavailable quotation when `http_status_409` is got
 
 ## [0.13.3] - 2016-11-10
 ### Fixed
