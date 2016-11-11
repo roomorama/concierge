@@ -20,12 +20,13 @@ module Web::Controllers::Workers
         flash[:error] = "Couldn't find requested worker"
       end
 
-      redirect_to routes.supplier_path(params[:supplier_id])
+      redirect_to request.referer
     end
 
     private
     def find_worker(worker_id)
       BackgroundWorkerRepository.find(worker_id)
     end
+
   end
 end
