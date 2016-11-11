@@ -1,3 +1,5 @@
+require_relative "../internal_error"
+
 module Web::Controllers::Workers
   class Resync
     include Web::Action
