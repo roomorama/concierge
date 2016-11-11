@@ -13,6 +13,8 @@ how this file is formatted and how the process works.
 - Ciirus: add new spec for cancel action when `CancelBookingResponse` contains API error
 - Concierge: support for `max_guests_exceeded` error for `Concierge::Errors::Quote`
 - Kigo: add support for `check_in_too_far`
+- Support for rendering flash messages in templates (flash[:notice] and flash[:error] are supported)
+- UI button to resync host from supplier's hosts listning page
 
 ### Changed
 - AtLeisure: rename `unsupported_on_request_reservation` to `property_not_instant_bookable`
