@@ -16,7 +16,7 @@
         <td><%= format_time(worker)%></td>
         <td>
           <%=
-            form_for :worker, routes.worker_resync_path(worker.supplier_id) do
+            form_for :worker, routes.worker_resync_path(supplier_id: worker.supplier_id) do
               hidden_field :worker_id, value: worker.id
               submit 'Resync'
             end
