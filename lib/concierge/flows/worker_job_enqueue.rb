@@ -1,4 +1,12 @@
 module Concierge::Flows
+  # This flow is intended to queue given worker.
+  #
+  # Class is used by multiple places of the Concierge, so it's possible that
+  # given worker will be started simultaneously from different places.
+  #
+  # In other words, `perform` operation is non-transactional and may lead to
+  # situation when due to race condition given worker will attempt to start
+  # twice.
   class WorkerJobEnqueue
     attr_reader :worker
 
