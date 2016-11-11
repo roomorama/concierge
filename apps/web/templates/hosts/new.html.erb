@@ -1,6 +1,8 @@
 <%= stylesheet "host_form" %>
 
 <div class="content">
+  <h2 class="content-subhead"><%= supplier.name %></h2>
+  <h3>Create new host</h3>
   <%=
     form_for :host, routes.supplier_hosts_path(supplier.id), class: 'host-form' do
       div(class: 'host-form-control') do
