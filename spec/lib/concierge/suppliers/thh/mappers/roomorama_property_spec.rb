@@ -33,7 +33,6 @@ RSpec.describe THH::Mappers::RoomoramaProperty do
       expect(property.type).to eq('house')
       expect(property.subtype).to eq('villa')
       expect(property.title).to eq('Baan Duan Chai')
-      expect(property.neighborhood).to eq('Chonburi')
       expect(property.city).to eq('Pattaya')
       expect(property.description).to eq(description)
       expect(property.number_of_bedrooms).to eq('5')
