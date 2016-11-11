@@ -1,0 +1,9 @@
+{
+  "API_VERSION": 1,
+  "API_REVISION": 3,
+  "API_METHOD": "computePricing",
+  "API_CALL_ID": "ff54de27-abb9-49f5-b2c3-054174b23140",
+  "API_RESULT_CODE": "E_CONFLICT",
+  "API_RESULT_TEXT": "The property pricing information is unavailable due to a constraint. Unfortunately we do not allow bookings over 366 days into the future.",
+  "API_REPLY": null
+}

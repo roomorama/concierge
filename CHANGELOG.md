@@ -12,6 +12,7 @@ how this file is formatted and how the process works.
 ### Added
 - Ciirus: add new spec for cancel action when `CancelBookingResponse` contains API error
 - Concierge: support for `max_guests_exceeded` error for `Concierge::Errors::Quote`
+- Kigo: add support for `check_in_too_far`
 
 ### Changed
 - AtLeisure: rename `unsupported_on_request_reservation` to `property_not_instant_bookable`
@@ -19,6 +20,8 @@ how this file is formatted and how the process works.
 - SAW: use `unrecognised_response` instead of custom error codes coming from API
 - RU: use `unrecognised_response` instead of custom error codes coming from API
 - RU: use `max_guests_exceeded` instead of `unrecognised_response`
+- Kigo: change `quote_call_failed` and `booking_call_failed` error codes to `unrecognized_response`
+- Kigo: change `reservation_not_found`, `unavailable_dates` to `unrecognized_response`
 
 ## [0.13.3] - 2016-11-10
 ### Fixed
