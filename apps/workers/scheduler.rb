@@ -76,42 +76,18 @@ module Workers
       end
     end
 
-    private
+    def enqueue(worker)
+      Concierge::Flows::WorkerJobEnqueue.new(worker).perform
+    end
 
+    private
     def default_logger
       ::Logger.new(LOG_PATH)
     end
 
-    def enqueue(worker)
-      element = Workers::Queue::Element.new(
-        operation: "background_worker",
-        data:      { background_worker_id: worker.id }
-      )
-
-      queue.add(element)
-      update_status(worker)
-    end
-
     def log_event(worker)
-      host = HostRepository.find(worker.host_id)
       entity_logger = entity_logger_for(worker)
-
       logger.info(entity_logger.to_s)
-    end
-
-    # Marks the worker as +queued+ so that, if the worker is not processed by
-    # the time the scheduler runs again, the same worker will not be enqueued,
-    # causing unneeded processing.
-    def update_status(worker)
-      worker.status = "queued"
-      BackgroundWorkerRepository.update(worker)
-    end
-
-    def queue
-      @queue ||= begin
-        credentials = Concierge::Credentials.for("sqs")
-        Workers::Queue.new(credentials)
-      end
     end
 
     def entity_logger_for(worker)
@@ -121,7 +97,5 @@ module Workers
         HostLogger.new(worker)
       end
     end
-
   end
-
 end

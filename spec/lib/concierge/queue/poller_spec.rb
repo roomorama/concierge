@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Workers::Queue::Poller do
+RSpec.describe Concierge::Queue::Poller do
   describe "#poll" do
     class TestPoller
       attr_reader :message

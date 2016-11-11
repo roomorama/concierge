@@ -48,6 +48,10 @@ module Web
         include Hanami::Helpers
         include Web::Assets::Helpers
       end
+
+      controller.prepare do
+        expose :flash
+      end
     end
 
     configure :development do
