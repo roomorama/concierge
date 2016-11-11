@@ -2,12 +2,7 @@
 
 <div class="content">
   <%=
-    form_for :host, routes.new_supplier_host_path(supplier.id), class: 'host-form' do
-      div(class: 'host-form-control') do
-        label :name
-        text_field :name
-      end
-
+    form_for :host, routes.supplier_hosts_path(supplier.id), class: 'host-form' do
       div(class: 'host-form-control') do
         label :identifier
         text_field :identifier
