@@ -20,6 +20,7 @@ post '/saw/booking',            to: 's_a_w#booking'
 post '/poplidays/booking',      to: 'poplidays#booking'
 post '/rentalsunited/booking',  to: 'rentals_united#booking'
 post '/avantio/booking',        to: 'avantio#booking'
+post '/thh/booking',            to: 't_h_h#booking'
 
 post '/waytostay/cancel',     to: 'waytostay#cancel'
 post '/ciirus/cancel',        to: 'ciirus#cancel'
