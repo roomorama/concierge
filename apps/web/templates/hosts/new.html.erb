@@ -1,0 +1,33 @@
+<%= stylesheet "host_form" %>
+
+<div class="content">
+  <h2 class="content-subhead"><%= supplier.name %></h2>
+  <h3>Create new host</h3>
+  <%=
+    form_for :host, routes.supplier_hosts_path(supplier.id), class: 'host-form' do
+      div(class: 'host-form-control') do
+        label :identifier
+        text_field :identifier
+      end
+
+      div(class: 'host-form-control') do
+        label :username
+        text_field :username
+      end
+
+      div(class: 'host-form-control') do
+        label :access_token
+        text_field :access_token
+      end
+
+      div(class: 'host-form-control') do
+        label :fee_percentage
+        number_field :fee_percentage
+      end
+
+      div do
+        submit 'Create host'
+      end
+    end
+  %>
+</div>
