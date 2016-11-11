@@ -44,7 +44,6 @@ module THH
         property.subtype = PROPERTY_TYPES.get("#{raw_property['type']}.subtype")
         property.country_code = country_converter.code_by_name(raw_property['country'])
         property.city = raw_property['city']
-        property.neighborhood = raw_property['region']
         property.description = build_description(raw_property)
         property.number_of_bedrooms = raw_property['bedrooms']
         property.max_guests = raw_property['pax']
