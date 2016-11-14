@@ -86,7 +86,13 @@
       }
     ],
     "city_tourist_tax": [
-
+      {
+        "included": false,
+        "rate": 0.83,
+        "rate_type": "per_person_per_night",
+        "from_age": 18,
+        "max_nights": 0
+      }
     ],
     "lowest_rate": 163,
     "lowest_rate_pp": 25,

@@ -170,6 +170,7 @@ module Waytostay
           property[key] = value unless value.nil?
         end
         add_license_number(property, response)
+        add_city_tourist_tax(property, response)
         Result.new(property)
       else
         augment_missing_fields(missing_keys)
@@ -188,6 +189,13 @@ module Waytostay
       property.es.description_append = "Número de licencia: #{license_number}"
       property.zh.description_append = "许可证号: #{license_number}"
       property.zh_tw.description_append = "許可證號: #{license_number}"
+    end
+
+    def add_city_tourist_tax(property, response)
+      city_tourist_taxes = response.get("payment.city_tourist_tax")
+      return if city_tourist_taxes.empty?
+      property.description_append ||= ""
+      property.description_append += Properties::CityTouristTax.new(city_tourist_taxes).parse
     end
 
     # Returns params to initialize a Roomorama::Property from a SafeAccessHash
