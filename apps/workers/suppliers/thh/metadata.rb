@@ -64,7 +64,7 @@ module Workers::Suppliers::THH
     def augment_property_info(property)
       message = {
         label: 'Property Info',
-        message: property.to_json,
+        message: property.to_h.to_json,
         backtrace: caller,
         content_type: 'json'
       }
