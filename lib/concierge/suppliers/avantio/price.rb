@@ -18,6 +18,8 @@ module Avantio
   # The +quote+ method returns a +Result+ object that, when successful, encapsulates the
   # resulting +Quotation+ object.
   class Price
+    include Concierge::Errors::Quote
+
     attr_reader :credentials
 
     def initialize(credentials)
@@ -28,7 +30,15 @@ module Avantio
       # We should check availability at first, because
       # Avantio quote call returns valid price even for not available periods
       available = Avantio::Commands::IsAvailableFetcher.new(credentials).call(params)
-      return available unless available.success?
+
+      unless available.success?
+        result = available
+        if available.error.code == :check_in_too_near
+          result = check_in_too_near
+        end
+
+        return result
+      end
 
       quotation = ::Quotation.new(
         property_id: params[:property_id],

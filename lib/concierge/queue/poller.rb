@@ -1,6 +1,6 @@
-class Workers::Queue
+class Concierge::Queue
 
-  # +Workers::Queue::Poller+
+  # +Concierge::Queue::Poller+
   #
   # Wraps the function of polling for incoming messages of a given queue. Thin wrapper
   # over +Aws::SQS::QueuePoller+

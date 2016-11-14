@@ -71,21 +71,15 @@ RSpec.describe API::Controllers::Poplidays::Quote do
       expect(response.body['errors']['quote']).to eq 'Could not quote price with remote supplier'
     end
 
-    it 'returns unavailable quotation when the supplier responds so' do
+    it 'returns a proper error message when the supplier responds so' do
       stub_call(:get, property_details_endpoint) { [200, {}, read_fixture('poplidays/property_details.json')] }
       stub_call(:post, quote_endpoint) { [400, {}, unavailable_quote_response] }
 
       response = parse_response(described_class.new.call(params))
 
-      expect(response.status).to eq 200
-      expect(response.body['status']).to eq 'ok'
-      expect(response.body['available']).to eq false
-      expect(response.body['property_id']).to eq '48327'
-      expect(response.body['check_in']).to eq '2016-12-17'
-      expect(response.body['check_out']).to eq '2016-12-26'
-      expect(response.body['guests']).to eq 2
-      expect(response.body).not_to have_key('currency')
-      expect(response.body).not_to have_key('total')
+      expect(response.status).to eq 503
+      expect(response.body['status']).to eq 'error'
+      expect(response.body['errors']['quote']).to eq 'Unauthorized arriving day'
     end
 
     it 'returns available quotations with price when the call is successful' do

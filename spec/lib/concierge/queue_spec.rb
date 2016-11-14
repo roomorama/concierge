@@ -1,17 +1,17 @@
 require "spec_helper"
 
-RSpec.describe Workers::Queue do
+RSpec.describe Concierge::Queue do
   let(:credentials) { Concierge::Credentials.for("sqs") }
-  let(:element) { Workers::Queue::Element.new(operation: "background_worker", data: { key: "value" }) }
+  let(:element) { Concierge::Queue::Element.new(operation: "background_worker", data: { key: "value" }) }
   subject { described_class.new(credentials) }
 
   describe "#add" do
     it "denies invalid elements" do
-      element = Workers::Queue::Element.new(operation: nil, data: {})
+      element = Concierge::Queue::Element.new(operation: nil, data: {})
 
       expect {
         subject.add(element)
-      }.to raise_error Workers::Queue::Element::InvalidOperationError
+      }.to raise_error Concierge::Queue::Element::InvalidOperationError
     end
 
     it "enqueues the message on SQS if the argument is valid" do

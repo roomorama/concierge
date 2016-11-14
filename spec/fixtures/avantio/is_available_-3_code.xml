@@ -1,0 +1,27 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <ns1:IsAvailableRS xmlns:ns1="ws.avantio.com/crsConnectionServices/xsd" xmlns:ns2="ws.avantio.com/crsConnectionServices">
+      <ns2:Available>
+        <ns2:AvailableCode>-3</ns2:AvailableCode>
+        <ns2:AvailableMessage>The compulsory arrival date is not fulfilled</ns2:AvailableMessage>
+      </ns2:Available>
+      <ns2:OccupationalRule>
+        <ns2:StartDate>21/06/2016</ns2:StartDate>
+        <ns2:EndDate>31/12/2016</ns2:EndDate>
+        <ns2:MinimumNights>5</ns2:MinimumNights>
+        <ns2:MinimumNightsOnline>1</ns2:MinimumNightsOnline>
+        <ns2:CheckInDays>
+          <ns2:WeekDay>MONDAY</ns2:WeekDay>
+          <ns2:WeekDay>TUESDAY</ns2:WeekDay>
+          <ns2:WeekDay>WEDNESDAY</ns2:WeekDay>
+        </ns2:CheckInDays>
+        <ns2:CheckOutDays>
+          <ns2:WeekDay>THURSDAY</ns2:WeekDay>
+          <ns2:WeekDay>FRIDAY</ns2:WeekDay>
+          <ns2:WeekDay>SATURDAY</ns2:WeekDay>
+          <ns2:WeekDay>SUNDAY</ns2:WeekDay>
+        </ns2:CheckOutDays>
+      </ns2:OccupationalRule>
+    </ns1:IsAvailableRS>
+  </soapenv:Body>
+</soapenv:Envelope>

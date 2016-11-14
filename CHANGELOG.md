@@ -4,8 +4,29 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
-## Unreleased
--
+## [1.0.0]
+### Fixed
+- Avantio: add handling of `check_in_too_near` response code
+- Avantio: mark first MARGIN = 3 days as unavailable
+
+### Added
+- Ciirus: add new spec for cancel action when `CancelBookingResponse` contains API error
+- Concierge: support for `max_guests_exceeded` error for `Concierge::Errors::Quote`
+- Kigo: add support for `check_in_too_far`
+- Support for rendering flash messages in templates (flash[:notice] and flash[:error] are supported)
+- UI button to resync host from supplier's hosts listning page
+- UI form to add host
+
+### Changed
+- AtLeisure: rename `unsupported_on_request_reservation` to `property_not_instant_bookable`
+- Ciirus: rename `unexpected_response` to `unrecognised_response` for booking and cancel
+- SAW: use `unrecognised_response` instead of custom error codes coming from API
+- RU: use `unrecognised_response` instead of custom error codes coming from API
+- RU: use `max_guests_exceeded` instead of `unrecognised_response`
+- Kigo: change `quote_call_failed` and `booking_call_failed` error codes to `unrecognized_response`
+- Kigo: change `reservation_not_found`, `unavailable_dates` to `unrecognized_response`
+- Poplidays: rename `invalid_property_error` to `property_not_instant_bookable`
+- Poplidays: use `property_no_longer_available` instead of unavailable quotation when `http_status_409` is got
 
 ## [0.13.3] - 2016-11-10
 ### Fixed

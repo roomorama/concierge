@@ -24,7 +24,8 @@ RSpec.describe Kigo::ResponseParser do
       }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
-      expect(result.error.code).to eq :quote_call_failed
+      expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq "The `API_RESULT_CODE` obtained was not equal to `E_OK`. Check Kigo's API documentation for an explanation for the `API_RESULT_CODE` returned."
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
@@ -47,12 +48,13 @@ RSpec.describe Kigo::ResponseParser do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq "Response does not contain mandatory field `API_REPLY`."
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
     end
 
-    it "fails if there is no currency or total fields" do
+    it "fails if there is no total field" do
       response = read_fixture("kigo/no_total.json")
       result   = nil
 
@@ -62,6 +64,39 @@ RSpec.describe Kigo::ResponseParser do
 
       expect(result).not_to be_success
       expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq "Response does not contain mandatory field `TOTAL_AMOUNT`."
+
+      event = Concierge.context.events.last
+      expect(event.to_h[:type]).to eq "response_mismatch"
+    end
+
+    it "fails if there is no currency field" do
+      response = read_fixture("kigo/no_currency.json")
+      result   = nil
+
+      expect {
+        result = subject.compute_pricing(response)
+      }.to change { Concierge.context.events.size }
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq "Response does not contain mandatory field `CURRENCY`."
+
+      event = Concierge.context.events.last
+      expect(event.to_h[:type]).to eq "response_mismatch"
+    end
+
+    it "fails if check-in date is too far" do
+      response = read_fixture("kigo/check_in_too_far.json")
+      result   = nil
+
+      expect {
+        result = subject.compute_pricing(response)
+      }.to change { Concierge.context.events.size }
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :check_in_too_far
+      expect(result.error.data).to eq "Selected check-in date is too far"
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
@@ -135,7 +170,8 @@ RSpec.describe Kigo::ResponseParser do
       }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
-      expect(result.error.code).to eq :booking_call_failed
+      expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq "The `API_RESULT_CODE` obtained was not equal to `E_OK`. Check Kigo's API documentation for an explanation for the `API_RESULT_CODE` returned."
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
@@ -168,7 +204,8 @@ RSpec.describe Kigo::ResponseParser do
       result   = subject.parse_reservation(response)
 
       expect(result).not_to be_success
-      expect(result.error.code).to eq :unavailable_dates
+      expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq "Dates not available"
     end
 
     it "returns a reservation with the returned information on success" do
@@ -200,7 +237,8 @@ RSpec.describe Kigo::ResponseParser do
       }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
-      expect(result.error.code).to eq :reservation_not_found
+      expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq "The reservation was not found, or does not belong to your Rental Agency Kigo account."
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"
@@ -215,7 +253,8 @@ RSpec.describe Kigo::ResponseParser do
       }.to change { Concierge.context.events.size }
 
       expect(result).not_to be_success
-      expect(result.error.code).to eq :already_cancelled
+      expect(result.error.code).to eq :unrecognised_response
+      expect(result.error.data).to eq "The reservation already cancelled"
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "response_mismatch"

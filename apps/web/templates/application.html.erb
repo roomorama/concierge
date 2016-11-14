@@ -3,7 +3,7 @@
   <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
     <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
-    <%= stylesheet "dashboard", "external_errors" %>
+    <%= stylesheet "dashboard", "external_errors", "flash_messages" %>
 
     <title>Concierge - Monitoring</title>
     <%= favicon %>
@@ -34,6 +34,7 @@
           </h1>
         </div>
 
+        <%= render partial: 'components/flash_messages', locals: { flash: flash } %>
         <%= yield %>
       </div>
     </div>

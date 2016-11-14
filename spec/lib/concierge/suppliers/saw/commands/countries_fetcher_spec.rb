@@ -55,11 +55,10 @@ RSpec.describe SAW::Commands::CountriesFetcher do
     countries = results.value
 
     expect(results.success?).to be false
-    expect(results.error.code).to eq("9999")
-    expect(results.error.data).to eq("Custom Error")
-    expect(last_context_event[:message]).to eq(
-      "Response indicating the error `9999`, and description `Custom Error`"
-    )
+    expected_error_message = "Response indicating the error `9999`, and description `Custom Error`"
+    expect(results.error.code).to eq(:unrecognised_response)
+    expect(results.error.data).to eq(expected_error_message)
+    expect(last_context_event[:message]).to eq(expected_error_message)
     expect(last_context_event[:backtrace]).to be_kind_of(Array)
     expect(last_context_event[:backtrace].any?).to be true
     expect(countries).to be_nil
@@ -72,11 +71,10 @@ RSpec.describe SAW::Commands::CountriesFetcher do
       result = subject.call
 
       expect(result.success?).to be false
+      expected_error_message = "Error response could not be recognised (no `code` or `description` fields). Original response: `Internal Server Error\n`"
       expect(result.error.code).to eq(:unrecognised_response)
-      expect(result.error.data).to eq("Internal Server Error\n")
-      expect(last_context_event[:message]).to eq(
-        "Error response could not be recognised (no `code` or `description` fields)."
-      )
+      expect(result.error.data).to eq(expected_error_message)
+      expect(last_context_event[:message]).to eq(expected_error_message)
       expect(last_context_event[:backtrace]).to be_kind_of(Array)
       expect(last_context_event[:backtrace].any?).to be true
     end

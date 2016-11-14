@@ -5,6 +5,9 @@ module Avantio
     # This class is responsible for building a +Roomorama::Calendar+ object
     # from data getting from Avantio.
     class RoomoramaCalendar
+      # Avantio does not allow to book properties for dates near then today + 3 days
+      MARGIN = 3
+
       attr_reader :property_id, :rate, :availability, :rule, :length
 
       # Arguments
@@ -42,13 +45,17 @@ module Avantio
       end
 
       def build_entries
+        # Mark first MARGIN days as unavailable
+        unavailable_counter = MARGIN
         index.map do |date, data|
+          unavailable_counter -= 1
+
           availability_period = data[:availability_period]
           rate_period = data[:rate_period]
           rule_season = data[:rule_season]
           # Avantio doesn't allow to book if at least one of these
           # not determine for the date, so mark it as unavailable
-          if availability_period && rate_period && rule_season
+          if unavailable_counter < 0 && availability_period && rate_period && rule_season
             Roomorama::Calendar::Entry.new(
               date:             date.to_s,
               available:        availability_period.available?,
@@ -83,10 +90,14 @@ module Avantio
       #   }
       # }
       def index
+        availability_actual_periods = availability.actual_periods(length)
+        rate_actual_periods = rate.actual_periods(length)
+        rule_actual_seasons = rule.actual_seasons(length)
+
         (calendar_start..calendar_end).map do |date|
-          availability_period = availability.actual_periods(length).detect { |p| p.include?(date) }
-          rate_period = rate.actual_periods(length).detect { |p| p.include?(date) }
-          rule_season = rule.actual_seasons(length).detect { |s| s.include?(date) }
+          availability_period = availability_actual_periods.detect { |p| p.include?(date) }
+          rate_period = rate_actual_periods.detect { |p| p.include?(date) }
+          rule_season = rule_actual_seasons.detect { |s| s.include?(date) }
           [
             date,
             {

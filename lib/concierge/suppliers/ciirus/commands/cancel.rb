@@ -55,7 +55,7 @@ module Ciirus
         message = "The response contains unexpected response: `#{cancel_booking_result}`"
 
         mismatch(message, caller)
-        Result.error(:unexpected_response, message)
+        Result.error(:unrecognised_response, message)
       end
 
       def extract_cancel_booking_result(result_hash)

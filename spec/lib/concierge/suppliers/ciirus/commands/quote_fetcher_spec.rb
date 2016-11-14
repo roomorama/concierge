@@ -83,7 +83,7 @@ RSpec.describe Ciirus::Commands::QuoteFetcher do
         result = subject.call(params)
 
         expect(result.success?).to be false
-        expect(result.error.code).to eq(:not_empty_error_msg)
+        expect(result.error.code).to eq(:unrecognised_response)
         expect(result.error.data).to eq("Some Error Here")
       end
     end

@@ -14,9 +14,16 @@ module RentalsUnited
     #   )
     #   result = command.call
     class PriceFetcher < BaseFetcher
+      include Concierge::Errors::Quote
+
       attr_reader :stay_params
 
       ROOT_TAG = "Pull_GetPropertyAvbPrice_RS"
+      MAX_GUESTS_EXCEEDED_CODE = "76"
+
+      COMMON_QUOTE_ERRORS = [
+        MAX_GUESTS_EXCEEDED_CODE
+      ]
 
       # Initialize +PriceFetcher+ command.
       #
@@ -54,11 +61,19 @@ module RentalsUnited
         if valid_status?(result_hash, ROOT_TAG)
           Result.new(build_price(result_hash))
         else
-          error_result(result_hash, ROOT_TAG)
+          status = get_status(result_hash, ROOT_TAG)
+          code = get_status_code(status) if status
+
+          if common_quote_error?(code)
+            common_quote_error_by_code(code)
+          else
+            error_result(result_hash, ROOT_TAG)
+          end
         end
       end
 
       private
+
       def build_payload
         payload_builder.build_price_fetch_payload(
           property_id: stay_params[:property_id],
@@ -73,6 +88,17 @@ module RentalsUnited
 
         mapper = Mappers::Price.new(price)
         mapper.build_price
+      end
+
+      def common_quote_error?(code)
+        COMMON_QUOTE_ERRORS.include?(code)
+      end
+
+      def common_quote_error_by_code(code)
+        case code
+        when MAX_GUESTS_EXCEEDED_CODE
+          max_guests_exceeded
+        end
       end
     end
   end

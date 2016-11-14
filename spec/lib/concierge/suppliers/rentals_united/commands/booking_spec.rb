@@ -45,15 +45,12 @@ RSpec.describe RentalsUnited::Commands::Booking do
 
     result = subject.call
     expect(result).not_to be_success
-    expect(result.error.code).to eq("1")
-    expect(result.error.data).to eq(
-      "Property is not available for a given dates"
-    )
+    expected_error_message = "Response indicating the Status with ID `1`, and description `Property is not available for a given dates`"
+    expect(result.error.code).to eq(:unrecognised_response)
+    expect(result.error.data).to eq(expected_error_message)
 
     event = Concierge.context.events.last.to_h
-    expect(event[:message]).to eq(
-      "Response indicating the Status with ID `1`, and description `Property is not available for a given dates`"
-    )
+    expect(event[:message]).to eq(expected_error_message)
     expect(event[:backtrace]).to be_kind_of(Array)
     expect(event[:backtrace].any?).to be true
   end

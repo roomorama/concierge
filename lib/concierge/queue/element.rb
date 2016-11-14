@@ -1,6 +1,6 @@
-class Workers::Queue
+class Concierge::Queue
 
-  # +Workers::Queue::Element+
+  # +Concierge::Queue::Element+
   #
   # This class is wraps the concept of one element that can be added to the workers
   # queue. All elements must follow the standard implemented by this class, so
@@ -14,13 +14,13 @@ class Workers::Queue
   #
   # Usage
   #
-  #   element = Workers::Queue::Element.new(operation: "sync", data: { host_id: 2 })
+  #   element = Queue::Element.new(operation: "sync", data: { host_id: 2 })
   #   element.serialize => "{ \"operation\": \"sync\", \"data\": { \"host_id\": 2 }"
   class Element
 
-    # +Workers::Queue::Element::InvalidOperationError+
+    # +Queue::Element::InvalidOperationError+
     #
-    # This error might be raised upon invokation of the +Workers::Queue::Element#validate!+
+    # This error might be raised upon invokation of the +Queue::Element#validate!+
     # method, if the operation given on initialization is +nil+ or not supported.
     class InvalidOperationError < StandardError
       def initialize(operation)
@@ -44,7 +44,7 @@ class Workers::Queue
     end
 
     # validates that the operation given is supported by the queue.
-    # Raises +Workers::Queue::Element::InvalidOperationError+ in
+    # Raises +Queue::Element::InvalidOperationError+ in
     # case it is not; returns +true+ when successful.
     def validate!
       unless SUPPORTED_OPERATIONS.include?(operation.to_s)

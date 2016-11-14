@@ -23,13 +23,21 @@ module Poplidays
   #
   # * +unrecognised_response+:  happens when the request was successful, but the format
   #                             of the response is not compatible to this class' expectations.
-  # * +invalid_property_error+: only properties that require no confirmation and have enabled prices
-  #                             (accessed without Poplidays call center)
-  #                             are supported at this moment.
+  # * +property_not_instant_bookable+: only properties that require no confirmation and have enabled prices
+  #                                    (accessed without Poplidays call center)
+  #                                    are supported at this moment.
   class Price
+    include Concierge::JSON
+    include Concierge::Errors::Quote
 
     CACHE_PREFIX = 'poplidays'
     MANDATORY_SERVICES_FRESHNESS = 12 * 60 * 60 # twelve hours
+
+    # Some unsuccessful (not 20X) http statuses of quote response
+    # are valid business cases for us and should be handled:
+    SILENCED_ERROR_CODES = [
+      :http_status_409, # 409 - stay specified in booking is no more available
+    ]
 
     attr_reader :credentials
 
@@ -47,20 +55,25 @@ module Poplidays
       mandatory_services = retrieve_mandatory_services(params[:property_id])
       return mandatory_services unless mandatory_services.success?
 
-      quote = retrieve_quote(params)
-      return quote if unknown_errors?(quote)
+      quote_result = retrieve_quote(params)
 
-      mapper.build(params, mandatory_services.value, quote)
+      if http_status_400_error?(quote_result)
+        http_status_400_error(quote_result)
+      elsif unknown_error?(quote_result)
+        quote_result
+      else
+        mapper.build(params, mandatory_services.value, quote_result)
+      end
     end
 
     private
 
-    # Some unsuccessful (not 20X) http statuses of quote request
-    # are valid business cases for us and should be handled:
-    #   409 - stay specified in booking is no more available
-    #   400 - bad arrival/departure date
-    def unknown_errors?(quote)
-      !quote.success? && ![:http_status_400, :http_status_409].include?(quote.error.code)
+    def unknown_error?(result)
+      !result.success? && !SILENCED_ERROR_CODES.include?(result.error.code)
+    end
+
+    def http_status_400_error?(result)
+      !result.success? && result.error.code == :http_status_400
     end
 
     def retrieve_quote(params)
@@ -84,7 +97,7 @@ module Poplidays
             no_mandatory_services_data_error
           end
         else
-          invalid_property_error
+          property_not_instant_bookable_error
         end
       }
     end
@@ -105,10 +118,31 @@ module Poplidays
       Result.error(:unrecognised_response, message)
     end
 
-    def invalid_property_error
+    def property_not_instant_bookable_error
       message = "Property shouldn't be on request only and should have enabled prices"
       mismatch(message, caller)
-      Result.error(:invalid_property_error, message)
+      not_instant_bookable
+    end
+
+    def http_status_400_error(result)
+      message = parse_error_message(result)
+      mismatch(message, caller)
+      Result.error(:unrecognised_response, message)
+    end
+
+    def parse_error_message(result)
+      data = result.error.data
+      json_result = json_decode(data)
+
+      if json_result.success?
+        safe_hash = Concierge::SafeAccessHash.new(json_result.value)
+        message = safe_hash.get("message")
+        message = "Failed to parse `message` attribute from poplidays error message" unless message
+      else
+        message = "Failed to parse poplidays error message JSON"
+      end
+
+      message
     end
 
     def mismatch(message, backtrace)

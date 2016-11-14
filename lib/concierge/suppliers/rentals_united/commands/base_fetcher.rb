@@ -62,16 +62,17 @@ module RentalsUnited
           code = get_status_code(status)
           description = get_status_description(code)
 
-          augment_with_error(code, description, caller)
-          Result.error(code, description)
+          message = "Response indicating the Status with ID `#{code}`, and description `#{description}`"
+          unrecognised_response_error(message)
         else
-          unrecognised_response_event_error
+          message = "Error response could not be recognised (no `Status` tag in the response)"
+          unrecognised_response_error(message)
         end
       end
 
-      def augment_with_error(code, description, backtrace)
-        message = "Response indicating the Status with ID `#{code}`, and description `#{description}`"
-        mismatch(message, backtrace)
+      def unrecognised_response_error(message)
+        mismatch(message, caller)
+        Result.error(:unrecognised_response, message)
       end
 
       def mismatch(message, backtrace)
@@ -81,12 +82,6 @@ module RentalsUnited
         )
 
         Concierge.context.augment(response_mismatch)
-      end
-
-      def unrecognised_response_event_error
-        message = "Error response could not be recognised (no `Status` tag in the response)"
-        mismatch(message, caller)
-        Result.error(:unrecognised_response, message)
       end
 
       private

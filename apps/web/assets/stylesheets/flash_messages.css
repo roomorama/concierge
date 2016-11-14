@@ -1,0 +1,19 @@
+.flash-message {
+  font-size: 0.9em;
+  color: #aaa;
+  padding: 20px;
+  background-color: #eee;
+  margin-bottom: 20px;
+  border: 1px solid #bbb;
+  text-align: center;
+}
+
+.flash-message.notice {
+  background-color: #2ebbab;
+  color: #fff;
+}
+
+.flash-message.error {
+  background-color: #e14536;
+  color: #fff;
+}
