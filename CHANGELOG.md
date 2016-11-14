@@ -4,7 +4,7 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
-## Unreleased
+## [1.0.0]
 ### Fixed
 - Avantio: add handling of `check_in_too_near` response code
 - Avantio: mark first MARGIN = 3 days as unavailable
@@ -15,6 +15,7 @@ how this file is formatted and how the process works.
 - Kigo: add support for `check_in_too_far`
 - Support for rendering flash messages in templates (flash[:notice] and flash[:error] are supported)
 - UI button to resync host from supplier's hosts listning page
+- UI form to add host
 
 ### Changed
 - AtLeisure: rename `unsupported_on_request_reservation` to `property_not_instant_bookable`
