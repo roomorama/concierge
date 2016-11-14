@@ -4,11 +4,14 @@ This file summarises the most important changes that went live on each release
 of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
+## Unreleased
+### Fixed
+- Avantio: add House(Casa) property type
+
 ## [1.0.0]
 ### Fixed
 - Avantio: add handling of `check_in_too_near` response code
 - Avantio: mark first MARGIN = 3 days as unavailable
-- Avantio: add House(Casa) property type
 
 ### Added
 - Ciirus: add new spec for cancel action when `CancelBookingResponse` contains API error
