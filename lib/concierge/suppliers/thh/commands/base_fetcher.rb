@@ -54,7 +54,7 @@ module THH
         # and convert it to the hash
         xml = Nokogiri::XML(str)
         valid_xml = xml.to_s
-        parser = Nori.new
+        parser = Nori.new(advanced_typecasting: false)
         Result.new(Concierge::SafeAccessHash.new(parser.parse(valid_xml)))
       end
     end

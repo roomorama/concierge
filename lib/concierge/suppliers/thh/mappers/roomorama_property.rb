@@ -29,10 +29,13 @@ module THH
         set_base_info!(property, raw_property)
         set_images!(property, raw_property)
         set_amenities!(property, raw_property)
-        set_rates_and_min_stay!(property, raw_property)
+
+        result = set_rates_and_min_stay!(property, raw_property)
+        return result unless result.success?
+
         set_security_deposit!(property, raw_property)
 
-        property
+        Result.new(property)
       end
 
       private
@@ -111,6 +114,7 @@ module THH
         booked_periods = Array(raw_property.get('calendar.periods.period'))
 
         calendar = THH::Calendar.new(rates, booked_periods, SYNC_PERIOD)
+        return Result.error(:no_available_dates, 'All available days of the property are booked') unless calendar.has_available_days?
 
         property.minimum_stay = calendar.min_stay
         property.nightly_rate = calendar.min_rate
@@ -119,6 +123,8 @@ module THH
           property.monthly_rate = property.nightly_rate * 30
           property.currency = THH::Commands::PropertiesFetcher::CURRENCY
         end
+
+        Result.new(true)
       end
 
       def set_images!(property, raw_property)

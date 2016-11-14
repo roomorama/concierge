@@ -2,8 +2,8 @@ require 'spec_helper'
 
 RSpec.describe THH::Validators::PropertyValidator do
 
-  let(:invalid_property) { { 'instant_confirmation' => false } }
-  let(:valid_property) { { 'instant_confirmation' => true } }
+  let(:invalid_property) { { 'instant_confirmation' => 'false' } }
+  let(:valid_property) { { 'instant_confirmation' => 'true' } }
 
   describe '#valid?' do
     it 'returns true for valid property' do

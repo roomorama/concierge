@@ -73,6 +73,10 @@ module THH
       end
     end
 
+    def has_available_days?
+      ! (Set.new(rates_days.keys) - booked_days).empty?
+    end
+
     private
 
     def actual_rates(raw_rates, from, to)

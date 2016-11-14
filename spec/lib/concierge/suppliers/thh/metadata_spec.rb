@@ -98,10 +98,24 @@ RSpec.describe Workers::Suppliers::THH::Metadata do
         subject.perform
       }.to change { PropertyRepository.count }.by(1)
     end
+
+    described_class::SKIPPABLE_ERROR_CODES.each do |error_code|
+      it "skips property if mapper returns skipable error #{error_code}" do
+        allow_any_instance_of(THH::Mappers::RoomoramaProperty).to receive(:build) { Result.error(error_code, 'Description') }
+
+        subject.perform
+
+        sync = SyncProcessRepository.last
+        expect(sync.successful).to eq true
+        expect(sync.skipped_properties_count).to eq 1
+        expect(sync.stats[:properties_skipped].length).to eq 1
+        expect(sync.stats[:properties_skipped][0]['ids']).to eq ['15']
+      end
+    end
   end
 
   def read_properties(name)
-    parser = Nori.new
+    parser = Nori.new(advanced_typecasting: false)
     response = parser.parse(read_fixture(name))['response']
     Array(Concierge::SafeAccessHash.new(response['property']))
   end

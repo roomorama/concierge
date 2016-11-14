@@ -3,6 +3,8 @@ module Workers::Suppliers::THH
   #
   # Performs properties synchronisation with supplier
   class Metadata
+    SKIPPABLE_ERROR_CODES = [:no_available_dates]
+
     attr_reader :synchronisation, :host
 
     def initialize(host)
@@ -22,8 +24,12 @@ module Workers::Suppliers::THH
               # Puts property info to context for analyze in case of error
               augment_property_info(property)
 
-              roomorama_property = mapper.build(property)
-              Result.new(roomorama_property)
+              result = mapper.build(property)
+              if !result.success? && SKIPPABLE_ERROR_CODES.include?(result.error.code)
+                synchronisation.skip_property(property_id, result.error.data)
+              else
+                result
+              end
             end
           else
             synchronisation.skip_property(property_id, 'Invalid property')

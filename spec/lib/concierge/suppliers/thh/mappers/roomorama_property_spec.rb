@@ -18,16 +18,19 @@ RSpec.describe THH::Mappers::RoomoramaProperty do
   let(:amenities) do
     ['kitchen', 'wifi', 'cabletv', 'parking', 'airconditioning', 'laundry', 'pool', 'balcony', 'outdoor_space', 'gym', 'bed_linen_and_towels']
   end
+  let(:today) { Date.new(2016, 12, 10) }
 
   before do
-    allow(Date).to receive(:today).and_return(Date.new(2016, 12, 10))
+    allow(Date).to receive(:today).and_return(today)
   end
 
   describe '#build' do
     it 'returns mapped roomorama property' do
-      property = subject.build(raw_property)
+      result = subject.build(raw_property)
 
-      expect(property).to be_a(Roomorama::Property)
+      expect(result).to be_a(Result)
+      expect(result).to be_success
+      property = result.value
       expect(property.identifier).to eq('15')
       expect(property.default_to_available).to be false
       expect(property.type).to eq('house')
@@ -62,10 +65,24 @@ RSpec.describe THH::Mappers::RoomoramaProperty do
       expect(property.security_deposit_currency_code).to eq('THB')
       expect(property.security_deposit_type).to eq('cash')
     end
+
+    context 'when no available days' do
+      let(:raw_property) { parsed_property('thh/properties_without_available_days_response.xml') }
+      let(:today) { Date.new(2016, 11, 14) }
+
+      it 'returns an error' do
+        result = subject.build(raw_property)
+
+        expect(result).to be_a(Result)
+        expect(result.success?).to eq false
+        expect(result.error.code).to eq :no_available_dates
+        expect(result.error.data).to eq 'All available days of the property are booked'
+      end
+    end
   end
 
   def parsed_property(name)
-    parser = Nori.new
+    parser = Nori.new(advanced_typecasting: false)
     response = parser.parse(read_fixture(name))['response']
     Concierge::SafeAccessHash.new(response['property'])
   end

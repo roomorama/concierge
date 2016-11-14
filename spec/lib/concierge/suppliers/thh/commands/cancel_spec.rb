@@ -47,7 +47,7 @@ RSpec.describe THH::Commands::Cancel do
         expect(result.error.data).to eq('Cancel booking `30884` response does not contain `response.status` field')
       end
 
-      it 'returns an error if no price field' do
+      it 'returns an error if unexpected status value' do
         stub_with_fixture('thh/unexpected_status_cancel_response.xml')
 
         result = subject.call(booking_id)
@@ -55,7 +55,7 @@ RSpec.describe THH::Commands::Cancel do
         expect(result).to be_a Result
         expect(result.success?).to be false
         expect(result.error.code).to eq(:unrecognised_response)
-        expect(result.error.data).to eq('Cancel booking `30884` response does not contain `response.status` field')
+        expect(result.error.data).to eq('Cancel booking `30884` response contains unexpected value for `response.status` field: `false`')
       end
     end
   end

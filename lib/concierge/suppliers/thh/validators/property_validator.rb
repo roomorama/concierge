@@ -22,7 +22,7 @@ module THH
       private
 
       def instant_confirmation?
-        property['instant_confirmation']
+        property['instant_confirmation'] == 'true'
       end
     end
   end

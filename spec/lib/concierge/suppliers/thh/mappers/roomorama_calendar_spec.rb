@@ -60,7 +60,7 @@ RSpec.describe THH::Mappers::RoomoramaCalendar do
   end
 
   def parsed_property(name)
-    parser = Nori.new
+    parser = Nori.new(advanced_typecasting: false)
     response = parser.parse(read_fixture(name))['response']
     Concierge::SafeAccessHash.new(response['property'])
   end

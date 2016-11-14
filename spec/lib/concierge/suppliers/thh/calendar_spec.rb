@@ -14,6 +14,31 @@ RSpec.describe THH::Calendar do
     allow(Date).to receive(:today).and_return(Date.new(2016, 12, 10))
   end
 
+  describe '#has_available_days?' do
+    it 'returns true if property has available days' do
+      expect(subject.has_available_days?).to be true
+    end
+
+    context 'no available days' do
+      let(:rates) do
+        [
+          {"start_date" => "15.12.2015", "end_date" => "20.12.2016", "title" => "Peak/2015", "night" => "8,820", "currency" => "THB", "min_nights" => "3"},
+          {"start_date" => "01.01.2017", "end_date" => "05.01.2017", "title" => "High", "night" => "8,830", "currency" => "THB", "min_nights" => "3"}
+        ]
+      end
+      let(:booked_periods) do
+        [
+          {"@date_from" => "01.12.2016", "@date_to" => "2016-12-31"},
+          {"@date_from" => "01.01.2017", "@date_to" => "2017-01-10"}
+        ]
+      end
+
+      it 'returns false' do
+        expect(subject.has_available_days?).to be false
+      end
+    end
+  end
+
   describe '#min_stay' do
     it 'returns minimum stay' do
       expect(subject.min_stay).to eq(1)
@@ -116,7 +141,7 @@ RSpec.describe THH::Calendar do
   end
 
   def parsed_property(name)
-    parser = Nori.new
+    parser = Nori.new(advanced_typecasting: false)
     response = parser.parse(read_fixture(name))['response']
     Concierge::SafeAccessHash.new(response['property'])
   end
