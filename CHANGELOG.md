@@ -17,6 +17,7 @@ how this file is formatted and how the process works.
 ## [1.1.0] - 2016-11-15
 ### Fixed
 - Avantio: add House(Casa) property type
+- AtLeisure: prevent "undefined method `[]' for nil:NilClass" if property doesn't have deposit info
 
 ### Added
 - THH integrations: quote, book, cancel and synchronisation
