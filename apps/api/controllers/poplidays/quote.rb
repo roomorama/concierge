@@ -9,7 +9,7 @@ module API::Controllers::Poplidays
     include API::Controllers::Quote
 
     def quote_price(params)
-      credentials = Concierge::Credentials.for(Poplidays::Client::SUPPLIER_NAME)
+      credentials = Concierge::Credentials.for(supplier_name)
       Poplidays::Client.new(credentials).quote(params)
     end
 

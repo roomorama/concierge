@@ -55,7 +55,8 @@ module API
           "/ciirus"         => ENV["ROOMORAMA_SECRET_CIIRUS"],
           "/saw"            => ENV["ROOMORAMA_SECRET_SAW"],
           "/rentalsunited"  => ENV["ROOMORAMA_SECRET_RENTALS_UNITED"],
-          "/avantio"        => ENV["ROOMORAMA_SECRET_AVANTIO"]
+          "/avantio"        => ENV["ROOMORAMA_SECRET_AVANTIO"],
+          "/thh"            => ENV["ROOMORAMA_SECRET_THH"]
         }
 
         attr_reader :mapping
