@@ -71,3 +71,10 @@ Avantio:
     availabilities:
       every: "3h"
       aggregated: true
+
+THH:
+  workers:
+    metadata:
+      every: "1d"
+    availabilities:
+      every: "5h"

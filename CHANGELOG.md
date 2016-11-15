@@ -8,6 +8,9 @@ how this file is formatted and how the process works.
 ### Fixed
 - Avantio: add House(Casa) property type
 
+### Added
+- THH integrations: quote, book, cancel and synchronisation
+
 ## [1.0.0]
 ### Fixed
 - Avantio: add handling of `check_in_too_near` response code
