@@ -2,7 +2,17 @@ require 'spec_helper'
 
 RSpec.describe JTB::Client do
 
-  let(:credentials) { double(id: 'some id', user: 'Roberto', password: '123', company: 'Apple', url: 'https://trial-www.jtbgenesis.com/genesis2-demo/services') }
+  let(:credentials) do
+    double(
+      api: {
+        'id' => 'some id',
+        'user' => 'Roberto',
+        'password' => '123',
+        'company' => 'Apple',
+        'url' => 'https://trial-www.jtbgenesis.com/genesis2-demo/services'
+      }
+    )
+  end
 
   subject { described_class.new(credentials) }
 

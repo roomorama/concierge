@@ -103,3 +103,131 @@ collection :background_workers do
   attribute :created_at,    Time
   attribute :updated_at,    Time
 end
+
+# JTB mapping
+
+collection :jtb_room_types do
+  entity     JTB::Entities::RoomType
+  repository JTB::Repositories::RoomTypeRepository
+
+  attribute :language,       String
+  attribute :city_code,      String
+  attribute :hotel_code,     String
+  attribute :room_code,      String
+  attribute :room_grade,     String
+  attribute :room_type_code, String
+  attribute :room_name,      String
+  attribute :min_guests,     Integer
+  attribute :max_guests,     Integer
+  attribute :extra_bed,      String
+  attribute :extra_bed_type, String
+  attribute :size1,          String
+  attribute :size2,          String
+  attribute :size3,          String
+  attribute :size4,          String
+  attribute :size5,          String
+  attribute :size6,          String
+  attribute :amenities,      String
+end
+
+collection :jtb_room_stocks do
+  entity     JTB::Entities::RoomStock
+  repository JTB::Repositories::RoomStockRepository
+
+  attribute :city_code,                String
+  attribute :hotel_code,               String
+  attribute :rate_plan_id,             String
+  attribute :service_date,             Date
+  attribute :number_of_units,          Integer
+  attribute :closing_date,             String
+  attribute :sale_status,              String
+  attribute :reservation_closing_date, String
+end
+
+collection :jtb_hotels do
+  entity     JTB::Entities::Hotel
+  repository JTB::Repositories::HotelRepository
+
+  attribute :language,             String
+  attribute :city_code,            String
+  attribute :hotel_code,           String
+  attribute :jtb_hotel_code,       String
+  attribute :hotel_name,           String
+  attribute :location_code,        String
+  attribute :hotel_description,    String
+  attribute :latitude,             String
+  attribute :longitude,            String
+  attribute :hotel_type,           String
+  attribute :address,              String
+  attribute :non_smoking_room,     String
+  attribute :parking,              String
+  attribute :internet,             String
+  attribute :wifi,                 String
+  attribute :indoor_pool_free,     String
+  attribute :indoor_pool_charged,  String
+  attribute :outdoor_pool_free,    String
+  attribute :outdoor_pool_charged, String
+  attribute :indoor_gym_free,      String
+  attribute :indoor_gym_charged,   String
+  attribute :outdoor_gym_free,     String
+  attribute :outdoor_gym_charged,  String
+  attribute :wheelchair_access,    String
+  attribute :check_in,             String
+  attribute :check_out,            String
+end
+
+collection :jtb_pictures do
+  entity     JTB::Entities::Picture
+  repository JTB::Repositories::PictureRepository
+
+  attribute :language,   String
+  attribute :city_code,  String
+  attribute :hotel_code, String
+  attribute :sequence,   Integer
+  attribute :category,   String
+  attribute :room_code,  String
+  attribute :url,        String
+  attribute :comments,   String
+end
+
+collection :jtb_lookups do
+  entity     JTB::Entities::Lookup
+  repository JTB::Repositories::LookupRepository
+
+  attribute :language,   String
+  attribute :category,   String
+  attribute :id,         String
+  attribute :related_id, String
+  attribute :name,       String
+end
+
+collection :jtb_rate_plans do
+  entity     JTB::Entities::RatePlan
+  repository JTB::Repositories::RatePlanRepository
+
+  attribute :city_code,      String
+  attribute :hotel_code,     String
+  attribute :rate_plan_id,   String
+  attribute :room_code,      String
+  attribute :meal_plan_code, String
+  attribute :occupancy,      String
+end
+
+collection :jtb_room_prices do
+  entity     JTB::Entities::RoomPrice
+  repository JTB::Repositories::RoomPriceRepository
+
+  attribute :city_code,    String
+  attribute :hotel_code,   String
+  attribute :rate_plan_id, String
+  attribute :date,         Date
+  attribute :room_rate,    Float
+end
+
+collection :jtb_state do
+  entity     JTB::Entities::State
+  repository JTB::Repositories::StateRepository
+
+  attribute :prefix,    String
+  attribute :file_name, String
+end

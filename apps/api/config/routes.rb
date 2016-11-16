@@ -32,6 +32,7 @@ post '/atleisure/cancel',     to: 'at_leisure#cancel'
 post '/rentalsunited/cancel', to: 'rentals_united#cancel'
 post '/avantio/cancel',       to: 'avantio#cancel'
 post '/thh/cancel',           to: 't_h_h#cancel'
+post '/jtb/cancel',           to: 'j_t_b#cancel'
 
 post '/checkout', to: 'static#checkout'
 get '/kigo/image/:property_id/:image_id', to: 'kigo#image'
