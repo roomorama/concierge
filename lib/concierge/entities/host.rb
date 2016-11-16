@@ -17,6 +17,5 @@ class Host
   include Hanami::Entity
 
   attributes :id, :supplier_id, :identifier, :username, :access_token, :fee_percentage,
-    :created_at, :updated_at, :payment_terms
-
+    :created_at, :updated_at, :payment_terms, :email, :name, :phone
 end
