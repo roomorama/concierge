@@ -8,6 +8,9 @@ RSpec.describe Roomorama::Client::Operations::CreateHost do
   let(:supplier) { Supplier.new(name: "KigoLegacy") }
   let(:phone) { '123456798' }
 
+  before {
+    ENV["ROOMORAMA_API_ENVIRONMENT"] = "production"
+  }
 
   describe "#request_data" do
     it "should return the correct create-host request data" do

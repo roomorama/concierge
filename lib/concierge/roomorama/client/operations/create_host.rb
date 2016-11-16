@@ -42,26 +42,48 @@ class Roomorama::Client::Operations
         },
         "webhooks": {
           "quote": {
-            "production": "https://concierge.roomorama.com/#{supplier_path}/quote",
-            "test":       "https://concierge-staging.roomorama.com/#{supplier_path}/quote"
+            "production": "#{webhook_host}/#{supplier_path}/quote",
+            "test":       "#{test_webhook_host}/#{supplier_path}/quote"
           },
           "checkout": {
-            "production": "https://concierge.roomorama.com/#{supplier_path}/checkout"
+            "production": "#{webhook_host}/#{supplier_path}/checkout"
           },
           "booking": {
-            "production": "https://concierge.roomorama.com/#{supplier_path}/booking",
-            "test": "https://concierge-staging.roomorama.com/#{supplier_path}/booking"
+            "production": "#{webhook_host}/#{supplier_path}/booking",
+            "test":       "#{test_webhook_host}/#{supplier_path}/booking"
           },
           "cancellation": {
-            "production": "https://concierge.roomorama.com/#{supplier_path}/cancel",
-            "test":       "https://concierge-staging.roomorama.com/#{supplier_path}/cancel"
+            "production": "#{webhook_host}/#{supplier_path}/cancel",
+            "test":       "#{test_webhook_host}/#{supplier_path}/cancel"
           }
         }
       }
     end
 
+    def webhook_host
+      resolve_api_url!(ENV["ROOMORAMA_API_ENVIRONMENT"])
+    end
+
+    def test_webhook_host
+      resolve_api_url!(:staging)
+    end
+
     def supplier_path
       Concierge::SupplierRoutes.sub_path(supplier.name)
+    end
+
+    private
+
+    def resolve_api_url!(environment)
+      {
+        production: "https://concierge.roomorama.com",
+        sandbox:    "https://concierge-sandbox.roomorama.com",
+        staging:    "https://concierge-staging.roomorama.com",
+        staging2:   "https://concierge-staging2.roomorama.com",
+        staging3:   "https://concierge-staging3.roomorama.com"
+      }[environment.to_s.to_sym].tap do |url|
+        raise UnknownEnvironmentError.new(environment) unless url
+      end
     end
   end
 end
