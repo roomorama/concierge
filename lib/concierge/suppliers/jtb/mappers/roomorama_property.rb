@@ -9,6 +9,7 @@ module JTB
       IMAGE_URL_PREFIX = 'https://www.jtbgenesis.com/image'
       PROPERTY_TYPE = 'apartment'
       COUNTRY_CODE = 'JP'
+      TATAMI_TO_METRIC = 1.62
 
       ROOM_TYPE_CODES = {
         'SGL' => 'Single',
@@ -235,23 +236,25 @@ module JTB
 
       def set_unit_surface!(unit, room)
         if room.size1
-          # Room Size (Western Type)
+          # Room Size (Western Type) metric
           unit.surface = room.size1.to_f
-          unit.surface_unit = 'metric'
         elsif room.size6
-          # Room Size of Western Stype Room
+          # Room Size of Western Stype Room metric
           unit.surface = room.size6.to_f
-          unit.surface_unit = 'metric'
         elsif room.size2
           # Room Size of Main Room
           # Room Size of Room Entrance
           # Room Size of Anteroom
-          unit.surface = room.size2.to_f + room.size3.to_f + room.size4.to_f
-          unit.surface_unit = 'tatami mat'
+          # tatami mat
+          unit.surface = (room.size2.to_f + room.size3.to_f + room.size4.to_f) * TATAMI_TO_METRIC
         elsif room.size5
           # Room Size of Japanese Stype Room
-          unit.surface = room.size5.to_f
-          unit.surface_unit = 'tatami mat'
+          # tatami mat
+          unit.surface = room.size5.to_f * TATAMI_TO_METRIC
+        end
+        if unit.surface
+          unit.surface = unit.surface.round(2)
+          unit.surface_unit = 'metric'
         end
       end
 
