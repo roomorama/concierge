@@ -101,10 +101,8 @@ RSpec.describe Concierge::Flows::HostCreation do
 
     it "creates the host and associated workers" do
       expect {
-        expect {
-          expect(subject.perform).to be_success
-        }.to change { HostRepository.count }.by(1)
-      }.to change { BackgroundWorkerRepository.count }.by(2)
+        expect(subject.perform).to be_success
+      }.to change { [HostRepository.count, BackgroundWorkerRepository.count] }.by([1, 2])
 
       host     = HostRepository.last
       workers  = BackgroundWorkerRepository.for_host(host).to_a
