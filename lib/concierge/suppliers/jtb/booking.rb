@@ -24,18 +24,22 @@ module JTB
     #
     #   # => #<Result error=nil value='XXXXXXXXXX'>
     def book(params)
-      rate_plan_result = price_handler.best_rate_plan(params)
+      rate_plan = price_handler.best_rate_plan(params)
 
-      return rate_plan_result unless rate_plan_result.success?
+      return rate_plan unless rate_plan.success?
 
-      message = builder.build_booking(params, rate_plan_result.value)
+      u_id = JTB::UnitId.from_roomorama_unit_id(params[:unit_id])
+
+      message = builder.build_booking(params, rate_plan.value, u_id.room_type_code)
       result  = remote_call(message)
+      return result unless result.success?
 
-      if result.success?
-        response_parser.parse_booking result.value
-      else
-        result
-      end
+      result = response_parser.parse_booking(result.value)
+      return result unless result.success?
+
+      reference_number = ReferenceNumber.from_jtb_ids(result.value, rate_plan.value.rate_plan)
+
+      Result.new(reference_number.reference_number)
     end
 
     private
@@ -45,23 +49,23 @@ module JTB
     end
 
     def builder
-      XMLBuilder.new(credentials)
+      XMLBuilder.new(credentials.api)
     end
 
     def remote_call(message)
-      caller.call(OPERATION_NAME, message: message.to_xml)
+      client.call(OPERATION_NAME, message: message.to_xml)
     end
 
     def response_parser
       @response_parser ||= ResponseParser.new
     end
 
-    def caller
-      @caller ||= Concierge::SOAPClient.new(options)
+    def client
+      @client ||= Concierge::SOAPClient.new(options)
     end
 
     def options
-      endpoint = [credentials.url, ENDPOINT].join('/')
+      endpoint = [credentials.api['url'], ENDPOINT].join('/')
       {
         wsdl:                 endpoint + '?wsdl',
         env_namespace:        :soapenv,

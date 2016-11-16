@@ -78,3 +78,10 @@ THH:
       every: "1d"
     availabilities:
       every: "5h"
+
+JTB:
+  workers:
+    metadata:
+      every: "5h"
+    availabilities:
+      absence: "JTB calendar is synchronised with property metadata, because Concierge has to actualize jtb_* DB tables before each sync."

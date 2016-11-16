@@ -15,4 +15,12 @@ class ReservationRepository
   def self.reverse_date
     query.desc(:created_at)
   end
+
+  def self.by_supplier(supplier)
+    query { where(supplier: supplier) }
+  end
+
+  def self.by_reference_number(reference_number)
+    query { where(reference_number: reference_number) }
+  end
 end

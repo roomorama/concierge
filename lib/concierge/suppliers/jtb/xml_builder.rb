@@ -30,7 +30,7 @@ module JTB
     end
 
     # builds message for +JTB::API+ +quote_price+ method
-    def quote_price(params)
+    def quote_price(property_id, room_type_code, check_in, check_out)
       message = builder.new do |xml|
         xml.root(NAMESPACES) do
           build_credentials(xml)
@@ -38,11 +38,11 @@ module JTB
             xml['jtb'].AvailRequestSegment {
               xml['jtb'].HotelSearchCriteria {
                 xml['jtb'].Criterion(SortType: "PRICE", AvailStatus: "ALL") {
-                  xml['jtb'].HotelCode(Code: params[:property_id])
+                  xml['jtb'].HotelCode(Code: property_id)
                   xml['jtb'].RoomStayCandidates(SearchCondition: "OR") {
-                    xml['jtb'].RoomStayCandidate(RoomTypeCode: params[:unit_id], Quantity: "1")
+                    xml['jtb'].RoomStayCandidate(RoomTypeCode: room_type_code, Quantity: "1")
                   }
-                  xml['jtb'].StayDateRange(Start: params[:check_in], End: params[:check_out])
+                  xml['jtb'].StayDateRange(Start: check_in, End: check_out)
                 }
               }
             }
@@ -56,13 +56,13 @@ module JTB
     # full description on 28th page of JTB "API References Guide"
     # message has a test behaviour if +PassiveIndicator+ is true JTB will not create a booking
     # but return success response 'XXXXXXXXXX' reservation.reference_number
-    def build_booking(params, rate)
+    def build_booking(params, rate, room_type_code)
       params = Concierge::SafeAccessHash.new(params)
       message = builder.new(encoding: 'utf-8') do |xml|
         xml.root(NAMESPACES) do
           build_credentials(xml)
           xml['jtb'].HotelReservations {
-            xml['jtb'].HotelReservation(PassiveIndicator: Hanami.env != "production") {
+            xml['jtb'].HotelReservation(PassiveIndicator: credentials['test']) {
               xml['jtb'].ResGlobalInfo {
                 xml['jtb'].RatePlans {
                   xml['jtb'].RatePlan(RatePlanID: rate.rate_plan)
@@ -78,11 +78,28 @@ module JTB
                     end
                   }
                   xml['jtb'].RoomTypes {
-                    xml['jtb'].RoomType(RoomTypeCode: params[:unit_id])
+                    xml['jtb'].RoomType(RoomTypeCode: room_type_code)
                   }
                 }
               }
             }
+          }
+        end
+      end
+      message.doc.root.children
+    end
+
+    def cancel(reservation)
+      reference_number = ReferenceNumber.from_roomorama_reference_number(reservation.reference_number)
+      message = builder.new(encoding: 'utf-8') do |xml|
+        xml.root(NAMESPACES) do
+          build_credentials(xml)
+          xml['jtb'].UniqueID(ID: reference_number.reservation_id)
+          xml['jtb'].Verification {
+            xml['jtb'].RatePlans {
+              xml['jtb'].RatePlan(RatePlanID: reference_number.rate_plan_id)
+            }
+            xml['jtb'].ReservationTimeSpan(Start: reservation.check_in)
           }
         end
       end
@@ -98,8 +115,8 @@ module JTB
     def build_credentials(xml)
       xml['jtb'].POS {
         xml['jtb'].Source {
-          xml['jtb'].RequestorID(ID: credentials.id, UserName: credentials.user, MessagePassword: credentials.password) {
-            xml['jtb'].CompanyName(Code: credentials.company)
+          xml['jtb'].RequestorID(ID: credentials['id'], UserName: credentials['user'], MessagePassword: credentials['password']) {
+            xml['jtb'].CompanyName(Code: credentials['company'])
             xml['jtb'].BasicInfo(Version: VERSION, Language: LANGUAGE)
           }
         }

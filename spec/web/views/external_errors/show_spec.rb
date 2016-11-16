@@ -53,6 +53,23 @@ RSpec.describe Web::Views::ExternalErrors::Show do
     end
   end
 
+  describe "#has_description?" do
+    it "reports that error has description" do
+      attributes[:description] = "some description"
+      expect(view.has_description?).to be true
+    end
+
+    it "reports that error has no description" do
+      attributes[:description] = nil
+      expect(view.has_description?).to be false
+    end
+
+    it "reports that error has no description when it's an empty string" do
+      attributes[:description] = ""
+      expect(view.has_description?).to be false
+    end
+  end
+
   describe "#concierge_version" do
     it "returns the running version of Concierge according to the data" do
       expect(view.concierge_version).to eq Concierge::VERSION

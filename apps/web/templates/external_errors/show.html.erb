@@ -2,6 +2,13 @@
   <h2 class="content-subhead">Error #<%= error.id %> - <code> <%= error.code %></code> during a <code><%= error.operation %></code> operation</h2>
   <h4 class="affected-supplier">Affected supplier: <%= error.supplier %>, on <%= error.happened_at.strftime("%B %d, %Y") %></h4>
 
+  <% if has_description? %>
+    <div class="error-description">
+      Description:<br>
+      <code><%= error.description %></code>
+    </div>
+  <% end %>
+
   <% unless legacy? %>
     <div class="error-event">
       Follows the timeline for the error. At the time, Concierge was running version
