@@ -1,9 +1,15 @@
 module Concierge::SupplierRoutes
-  @@config = YAML.load_file(Hanami.root.join("config", "suppliers.yml").to_s)
-
-  def self.load(path)
-    @@config = YAML.load_file(path)
+  # Convenient method for testing
+  def self.load(path=nil)
+    if path.nil?
+      @@config = YAML.load_file(Hanami.root.join("config", "suppliers.yml").to_s)
+    else
+      @@config = YAML.load_file(path)
+    end
   end
+
+  self.load
+
   # ["Avantio", "Kigo", ...] declared at config/suppliers.yml
   def self.declared_suppliers
     @@config.keys

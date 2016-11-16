@@ -245,6 +245,9 @@ RSpec.describe Concierge::Flows::HostCreation do
         }
         Concierge::SupplierRoutes.load(parameters[:config_path])
       end
+
+      after { Concierge::SupplierRoutes.load() }
+
       it "should call Roomorama create_host operation" do
         parameters[:access_token] = nil
         flow = described_class.new(parameters)
