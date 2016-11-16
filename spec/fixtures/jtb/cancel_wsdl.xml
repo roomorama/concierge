@@ -1,0 +1,341 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="GA_Cancel_v2013" targetNamespace="http://service.api.genesis2.jtbgmt.com/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://service.api.genesis2.jtbgmt.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://service.api.genesis2.jtbgmt.com/" xmlns:tns="http://service.api.genesis2.jtbgmt.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:complexType name="gaCancelRQDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="POS" type="tns:rqPOSDTO" />
+<xs:element minOccurs="0" name="UniqueID" type="tns:rqUniqueIDDTO" />
+<xs:element minOccurs="0" name="Verification" type="tns:rqVerificationDTO" />
+</xs:sequence>
+<xs:attribute name="PassiveIndicator" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="rqPOSDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="Source" type="tns:rqSourceDTO" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rqSourceDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="RequestorID" type="tns:rqRequestorIDDTO" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rqRequestorIDDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="BasicInfo" type="tns:rqBasicInfoDTO" />
+<xs:element minOccurs="0" name="CompanyName" type="tns:rqCompanyNameDTO" />
+</xs:sequence>
+<xs:attribute name="ID" type="xs:string" />
+<xs:attribute name="MessagePassword" type="xs:string" />
+<xs:attribute name="UserName" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="rqBasicInfoDTO">
+<xs:sequence />
+<xs:attribute name="Language" type="xs:string" />
+<xs:attribute name="Version" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="rqCompanyNameDTO">
+<xs:sequence />
+<xs:attribute name="Code" type="xs:string" />
+<xs:attribute name="ExemptionFlag" type="xs:string" />
+<xs:attribute name="Payment" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="rqUniqueIDDTO">
+<xs:sequence />
+<xs:attribute name="ID" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="rqVerificationDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="Comments" type="tns:rqCommentsDTO" />
+<xs:element minOccurs="0" name="FAXInfo" type="tns:rqFAXInfoDTO" />
+<xs:element minOccurs="0" name="RatePlans" type="tns:rqRatePlansDTO" />
+<xs:element minOccurs="0" name="ReservationTimeSpan" type="tns:rqReservationTimeSpanDTO" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rqCommentsDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="Comment" type="tns:rqCommentDTO" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rqCommentDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="Text" type="xs:string" />
+<xs:element minOccurs="0" name="Text" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rqFAXInfoDTO">
+<xs:sequence />
+<xs:attribute name="FAXSendFlag" type="xs:string" />
+<xs:attribute name="PersonNameInCharge" type="xs:string" />
+<xs:attribute name="TelInCharge" type="xs:string" />
+<xs:attribute name="TourName" type="xs:string" />
+<xs:attribute name="TourNo" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="rqRatePlansDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="RatePlan" type="tns:rqRatePlanDTO" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rqRatePlanDTO">
+<xs:sequence />
+<xs:attribute name="RatePlanID" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="rqReservationTimeSpanDTO">
+<xs:sequence />
+<xs:attribute name="Start" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="gaCancelRSDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="CancelInfoRS" type="tns:rsCancelInfoRSDTO" />
+<xs:element minOccurs="0" name="Comment" type="tns:rsCommentDTO" />
+<xs:element minOccurs="0" name="Errors" type="tns:rsErrorsDTO" />
+<xs:element minOccurs="0" name="Success" type="xs:string" />
+<xs:element minOccurs="0" name="UniqueID" type="tns:rsUniqueIDDTO" />
+<xs:element minOccurs="0" name="Verification" type="tns:rsVerificationDTO" />
+</xs:sequence>
+<xs:attribute name="PassiveIndicator" type="xs:boolean" />
+<xs:attribute name="Status" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="rsCancelInfoRSDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="CancelRules" type="tns:rsCancelRulesDTO" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rsCancelRulesDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="CancelRule" type="tns:rsCancelRuleDTO" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rsCancelRuleDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="OptionRatePlans" type="tns:rsOptionRatePlansDTO" />
+<xs:element minOccurs="0" name="RoomStays" type="tns:rsRoomStaysDTO" />
+<xs:element minOccurs="0" name="Tours" type="tns:rsToursDTO" />
+</xs:sequence>
+<xs:attribute name="Amount" type="xs:decimal" />
+<xs:attribute name="AmountBeforeTax" type="xs:decimal" />
+<xs:attribute name="AmountC" type="xs:decimal" />
+<xs:attribute name="AmountEx" type="xs:decimal" />
+<xs:attribute name="AmountFace" type="xs:decimal" />
+<xs:attribute name="AmountFee" type="xs:decimal" />
+<xs:attribute name="AmountG" type="xs:decimal" />
+<xs:attribute name="AmountN" type="xs:decimal" />
+</xs:complexType>
+<xs:complexType name="rsOptionRatePlansDTO">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="OptionRatePlan" type="tns:rsOptionRatePlanDTO" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rsOptionRatePlanDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="CancelPenalties" type="tns:rsCancelPenaltiesDTO" />
+</xs:sequence>
+<xs:attribute name="CommissionRate" type="xs:decimal" />
+<xs:attribute name="NumberOfOptionOrder" type="xs:int" />
+<xs:attribute name="OptionPlanID" type="xs:string" />
+<xs:attribute name="TotalForCancellation" type="xs:decimal" />
+<xs:attribute name="TotalForCancellationBeforeTax" type="xs:decimal" />
+<xs:attribute name="TotalForCancellationC" type="xs:decimal" />
+<xs:attribute name="TotalForCancellationEx" type="xs:decimal" />
+<xs:attribute name="TotalForCancellationFace" type="xs:decimal" />
+<xs:attribute name="TotalForCancellationFee" type="xs:decimal" />
+<xs:attribute name="TotalForCancellationN" type="xs:decimal" />
+</xs:complexType>
+<xs:complexType name="rsCancelPenaltiesDTO">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="CancelPenalty" type="tns:rsCancelPenaltyDTO" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rsCancelPenaltyDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="AmountPercent" type="tns:rsAmountPercentDTO" />
+</xs:sequence>
+<xs:attribute name="duration" type="xs:int" />
+<xs:attribute name="End" type="xs:string" />
+<xs:attribute name="Start" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="rsAmountPercentDTO">
+<xs:sequence />
+<xs:attribute name="Amount" type="xs:decimal" />
+<xs:attribute name="AmountN" type="xs:decimal" />
+<xs:attribute name="Percent" type="xs:decimal" />
+</xs:complexType>
+<xs:complexType name="rsRoomStaysDTO">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="RoomStay" type="tns:rsRoomStayDTO" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rsRoomStayDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="CancelPenalties" type="tns:rsCancelPenaltiesDTO" />
+<xs:element minOccurs="0" name="RoomRates" type="tns:rsRoomRatesDTO" />
+<xs:element minOccurs="0" name="TimeSpan" type="tns:rsTimeSpanDTO" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rsRoomRatesDTO">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="RoomRate" type="tns:rsRoomRateDTO" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rsRoomRateDTO">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="GuestRate" type="tns:rsGuestRateDTO" />
+</xs:sequence>
+<xs:attribute name="CommissionRate" type="xs:decimal" />
+<xs:attribute name="RoomID" type="xs:int" />
+<xs:attribute name="TotalForCancellation" type="xs:decimal" />
+<xs:attribute name="TotalForCancellationBeforeTax" type="xs:decimal" />
+<xs:attribute name="TotalForCancellationC" type="xs:decimal" />
+<xs:attribute name="TotalForCancellationEx" type="xs:decimal" />
+<xs:attribute name="TotalForCancellationFace" type="xs:decimal" />
+<xs:attribute name="TotalForCancellationFee" type="xs:decimal" />
+<xs:attribute name="TotalForCancellationN" type="xs:decimal" />
+</xs:complexType>
+<xs:complexType name="rsGuestRateDTO">
+<xs:sequence />
+<xs:attribute name="Amount" type="xs:decimal" />
+<xs:attribute name="AmountN" type="xs:decimal" />
+<xs:attribute name="AmountBeforeTax" type="xs:decimal" />
+<xs:attribute name="AmountC" type="xs:decimal" />
+<xs:attribute name="AmountEx" type="xs:decimal" />
+<xs:attribute name="AmountFace" type="xs:decimal" />
+<xs:attribute name="AmountFee" type="xs:decimal" />
+<xs:attribute name="PNRPAXID" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="rsTimeSpanDTO">
+<xs:sequence />
+<xs:attribute name="End" type="xs:string" />
+<xs:attribute name="EndTime" type="xs:string" />
+<xs:attribute name="Start" type="xs:string" />
+<xs:attribute name="StartTime" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="rsToursDTO">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="Tour" type="tns:rsTourDTO" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rsTourDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="TimeSpan" type="tns:rsTimeSpanDTO" />
+<xs:element minOccurs="0" name="CancelPenalties" type="tns:rsTourCancelPenaltiesDTO" />
+<xs:element minOccurs="0" name="TourRates" type="tns:rsTourRatesDTO" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rsTourCancelPenaltiesDTO">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="CancelPenalty" type="tns:rsTourCancelPenaltyDTO" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rsTourCancelPenaltyDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="AmountPercent" type="tns:rsTourAmountPercentDTO" />
+</xs:sequence>
+<xs:attribute name="End" type="xs:string" />
+<xs:attribute name="Start" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="rsTourAmountPercentDTO">
+<xs:sequence />
+<xs:attribute name="Amount" type="xs:decimal" />
+<xs:attribute name="AmountA" type="xs:decimal" />
+<xs:attribute name="AmountN" type="xs:decimal" />
+<xs:attribute name="Percent" type="xs:decimal" />
+</xs:complexType>
+<xs:complexType name="rsTourRatesDTO">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="TourRate" type="tns:rsTourRateDTO" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rsTourRateDTO">
+<xs:sequence />
+<xs:attribute name="PNRPAXID" type="xs:string" />
+<xs:attribute name="TotalForCancellation" type="xs:decimal" />
+<xs:attribute name="TotalForCancellationA" type="xs:decimal" />
+<xs:attribute name="TotalForCancellationN" type="xs:decimal" />
+</xs:complexType>
+<xs:complexType name="rsCommentDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="Text" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rsErrorsDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="ErrorInfo" type="tns:errorInfoDTO" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="errorInfoDTO">
+<xs:sequence />
+<xs:attribute name="Code" type="xs:string" />
+<xs:attribute name="ShortText" type="xs:string" />
+<xs:attribute name="Type" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="rsUniqueIDDTO">
+<xs:sequence />
+<xs:attribute name="ID" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="rsVerificationDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="Comments" type="tns:rsCommentsDTO" />
+<xs:element minOccurs="0" name="RatePlans" type="tns:rsRatePlansDTO" />
+<xs:element minOccurs="0" name="ReservationTimeSpan" type="tns:rsReservationTimeSpanDTO" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rsCommentsDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="Comment" type="tns:rsCommentyykDTO" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rsCommentyykDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="Text" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rsRatePlansDTO">
+<xs:sequence>
+<xs:element minOccurs="0" name="RatePlan" type="tns:rsRatePlanDTO" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="rsRatePlanDTO">
+<xs:sequence />
+<xs:attribute name="RatePlanID" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="rsReservationTimeSpanDTO">
+<xs:sequence />
+<xs:attribute name="Start" type="xs:string" />
+</xs:complexType>
+<xs:element name="GA_CancelRQ" nillable="true" type="tns:gaCancelRQDTO" />
+<xs:element name="GA_CancelRS" nillable="true" type="tns:gaCancelRSDTO" />
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="GBY012">
+    <wsdl:part element="tns:GA_CancelRQ" name="GA_CancelRQ">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GBY012Response">
+    <wsdl:part element="tns:GA_CancelRS" name="GA_CancelRS">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="GBY012">
+    <wsdl:operation name="GBY012">
+      <wsdl:input message="tns:GBY012" name="GBY012">
+    </wsdl:input>
+      <wsdl:output message="tns:GBY012Response" name="GBY012Response">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="GA_Cancel_v2013SoapBinding" type="tns:GBY012">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GBY012">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="GBY012">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GBY012Response">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="GA_Cancel_v2013">
+    <wsdl:port binding="tns:GA_Cancel_v2013SoapBinding" name="GBY012Port">
+      <soap:address location="http://10.93.120.99:8080/bcwsgateway/services/GA_Cancel_v2013" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,9 @@
+<soap:Envelope xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/'>
+  <soap:Body>
+    <GA_CancelRS xmlns='http://service.api.genesis2.jtbgmt.com/'>
+      <Errors>
+        <ErrorInfo Code='FZZE017' ShortText='Due to system busy reason, your process did not complete successfully.Please try again later.' Type='001'/>
+      </Errors>
+    </GA_CancelRS>
+  </soap:Body>
+</soap:Envelope>
