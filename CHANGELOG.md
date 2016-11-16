@@ -7,6 +7,7 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Added
 - Concierge: add error.description to external_errors/show page
+- JTB integrations: quote, book, cancel and synchronisation
 
 ## [1.1.0]
 ### Fixed
