@@ -1,6 +1,7 @@
 require "spec_helper"
 
 RSpec.describe Concierge::Flows::HostCreation do
+  include Support::HTTPStubbing
   include Support::Factories
 
   let(:supplier) { create_supplier(name: "Supplier X") }
@@ -233,6 +234,23 @@ RSpec.describe Concierge::Flows::HostCreation do
           find { |w| w.type == "availabilities" }
 
         expect(worker.interval).to eq 10 * 60
+      end
+    end
+
+    context "access_token is missing" do
+      before do
+        url = "https://api.roomorama.com/v1.0/create-host"
+        stub_call(:post, url) {
+          [200, {}, '{"status": "success", "access_token": "test_access_token"}']
+        }
+        Concierge::SupplierRoutes.load(parameters[:config_path])
+      end
+      it "should call Roomorama create_host operation" do
+        parameters[:access_token] = nil
+        flow = described_class.new(parameters)
+        expect(flow.perform).to be_success
+        host = HostRepository.last
+        expect(host.access_token).to eq "test_access_token"
       end
     end
   end

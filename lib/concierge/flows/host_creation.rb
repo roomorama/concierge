@@ -157,6 +157,7 @@ module Concierge::Flows
   # background workers. Hosts belong to a supplier and other related
   # attributes.
   class HostCreation
+    include Concierge::JSON
     include Hanami::Validations
 
     IDLE = "idle"
@@ -164,8 +165,11 @@ module Concierge::Flows
     attribute :supplier,       presence: true
     attribute :identifier,     presence: true
     attribute :username,       presence: true
-    attribute :access_token,   presence: true
     attribute :fee_percentage, presence: true
+    attribute :access_token
+    attribute :name
+    attribute :email
+    attribute :phone
 
     attr_reader :config_path
 
@@ -182,6 +186,11 @@ module Concierge::Flows
     # for the supplier the host belongs to.
     def perform
       if valid?
+        if self.access_token.nil?
+          result = create_roomorama_user
+          return result unless result.success?
+          self.access_token = result.value
+        end
         transaction do
           host = create_host
           workers_definition = find_workers_definition
@@ -215,6 +224,19 @@ module Concierge::Flows
     end
 
     private
+
+    def create_roomorama_user
+      client = Roomorama::Client.new(ENV["CONCIERGE_CREATE_HOST_TOKEN"])
+      creation = Roomorama::Client::Operations::CreateHost.new(supplier, username, name, email, phone)
+      post_result = client.perform(creation)
+      decode_result = json_decode(post_result.value.body)
+
+      if decode_result.success?
+        return Result.new(decode_result.value["access_token"])
+      else
+        return decode_result
+      end
+    end
 
     def create_host
       existing = HostRepository.from_supplier(supplier).identified_by(identifier).first
