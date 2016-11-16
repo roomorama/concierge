@@ -5,7 +5,7 @@ RSpec.describe Concierge::SupplierRoutes do
     [
       "AtLeisure", "WayToStay", "Ciirus", "SAW",
       "Kigo", "KigoLegacy", "Poplidays", "RentalsUnited",
-      "Avantio", "THH"
+      "Avantio", "THH", "JTB"
     ]
   }
 
