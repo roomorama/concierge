@@ -8,6 +8,8 @@
 # added here (properties synchronisation as well as webhooks.)
 
 AtLeisure:
+  path: "atleisure"
+  controller: "at_leisure"
   workers:
     metadata:
       every: "1d"
@@ -15,6 +17,8 @@ AtLeisure:
       every: "5h"
 
 WayToStay:
+  path: "waytostay"
+  controller: "waytostay"
   workers:
     metadata:
       every: "1d"
@@ -22,6 +26,8 @@ WayToStay:
       absence: "WayToStay calendar is synchronised with property metadata, due to the diff-like API provided."
 
 Ciirus:
+  path: "ciirus"
+  controller: "ciirus"
   workers:
     metadata:
       every: "1d"
@@ -29,6 +35,8 @@ Ciirus:
       every: "5h"
 
 SAW:
+  path: "saw"
+  controller: "s_a_w"
   workers:
     metadata:
       every: "1d"
@@ -36,6 +44,8 @@ SAW:
       absence: "SAW does not provide a way to fetch the calendar of availabilities. Default availability is assumed."
 
 Kigo:
+  path: "kigo"
+  controller: "kigo"
   workers:
     metadata:
       every: "1d"
@@ -44,6 +54,8 @@ Kigo:
       aggregated: true
 
 KigoLegacy:
+  path: "kigo/legacy"
+  controller: "kigo/legacy"
   workers:
     metadata:
       every: "1d"
@@ -52,6 +64,8 @@ KigoLegacy:
       aggregated: true
 
 Poplidays:
+  path: "poplidays"
+  controller: "poplidays"
   workers:
     metadata:
       every: "1d"
@@ -59,11 +73,15 @@ Poplidays:
       every: "5h"
 
 RentalsUnited:
+  path: "rentalsunited"
+  controller: "rentals_united"
   workers:
     metadata:
       every: "1d"
 
 Avantio:
+  path: "avantio"
+  controller: "avantio"
   workers:
     metadata:
       every: "1d"
@@ -73,6 +91,8 @@ Avantio:
       aggregated: true
 
 THH:
+  path: "thh"
+  controller: "t_h_h"
   workers:
     metadata:
       every: "1d"
@@ -80,6 +100,8 @@ THH:
       every: "5h"
 
 JTB:
+  path: "jtb"
+  controller: "j_t_b"
   workers:
     metadata:
       every: "5h"
