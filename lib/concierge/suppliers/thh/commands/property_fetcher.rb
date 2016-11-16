@@ -45,7 +45,7 @@ module THH
         {
           'rate'   => 'd', # rate per day
           'date'   => '3', # YYYY-MM-DD format
-          'booked' => '2', # booked dates as periods
+          'booked' => '1', # booked dates as dates
           'text'   => '2', # Clean Text without HTML
           'curr'   => THH::Commands::PropertiesFetcher::CURRENCY,
           'lang'   => LANGUAGE,

@@ -5,10 +5,10 @@ RSpec.describe THH::Calendar do
 
   let(:property) { parsed_property('thh/properties_response.xml') }
   let(:rates) { property.get('rates.rate') }
-  let(:booked_periods) { property.get('calendar.periods.period') }
+  let(:booked_dates) { property.get('calendar.booked.date') }
   let(:length) { 365 }
 
-  subject { described_class.new(rates, booked_periods, length)}
+  subject { described_class.new(rates, booked_dates, length)}
 
   before do
     allow(Date).to receive(:today).and_return(Date.new(2016, 12, 10))
@@ -26,10 +26,25 @@ RSpec.describe THH::Calendar do
           {"start_date" => "01.01.2017", "end_date" => "05.01.2017", "title" => "High", "night" => "8,830", "currency" => "THB", "min_nights" => "3"}
         ]
       end
-      let(:booked_periods) do
+      let(:booked_dates) do
         [
-          {"@date_from" => "01.12.2016", "@date_to" => "2016-12-31"},
-          {"@date_from" => "01.01.2017", "@date_to" => "2017-01-10"}
+          '2016-12-10',
+          '2016-12-11',
+          '2016-12-12',
+          '2016-12-13',
+          '2016-12-14',
+          '2016-12-15',
+          '2016-12-16',
+          '2016-12-17',
+          '2016-12-18',
+          '2016-12-19',
+          '2016-12-20',
+          '2017-01-01',
+          '2017-01-02',
+          '2017-01-03',
+          '2017-01-04',
+          '2017-01-05',
+          '2017-01-06'
         ]
       end
 

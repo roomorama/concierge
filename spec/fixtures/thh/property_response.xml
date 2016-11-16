@@ -382,14 +382,41 @@
       </rate>
     </rates>
     <calendar>
-      <periods>
-        <period date_from="2016-11-05" date_to="2016-11-07"></period>
-        <period date_from="2016-11-13" date_to="2016-11-20"></period>
-        <period date_from="2016-12-02" date_to="2016-12-05"></period>
-        <period date_from="2016-12-16" date_to="2016-12-19"></period>
-        <period date_from="2016-12-21" date_to="2016-12-26"></period>
-        <period date_from="2016-12-30" date_to="2017-01-12"></period>
-      </periods>
+      <booked>
+        <date>2016-11-05</date>
+        <date>2016-11-06</date>
+        <date>2016-11-13</date>
+        <date>2016-11-14</date>
+        <date>2016-11-15</date>
+        <date>2016-11-16</date>
+        <date>2016-11-17</date>
+        <date>2016-11-18</date>
+        <date>2016-11-19</date>
+        <date>2016-12-02</date>
+        <date>2016-12-03</date>
+        <date>2016-12-04</date>
+        <date>2016-12-16</date>
+        <date>2016-12-17</date>
+        <date>2016-12-18</date>
+        <date>2016-12-21</date>
+        <date>2016-12-22</date>
+        <date>2016-12-23</date>
+        <date>2016-12-24</date>
+        <date>2016-12-25</date>
+        <date>2016-12-30</date>
+        <date>2016-12-31</date>
+        <date>2017-01-01</date>
+        <date>2017-01-02</date>
+        <date>2017-01-03</date>
+        <date>2017-01-04</date>
+        <date>2017-01-05</date>
+        <date>2017-01-06</date>
+        <date>2017-01-07</date>
+        <date>2017-01-08</date>
+        <date>2017-01-09</date>
+        <date>2017-01-10</date>
+        <date>2017-01-11</date>
+      </booked>
     </calendar>
     <reviews>
       <review>
