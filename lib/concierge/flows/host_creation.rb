@@ -170,6 +170,7 @@ module Concierge::Flows
     attribute :name
     attribute :email
     attribute :phone
+    attribute :payment_terms
 
     attr_reader :config_path
 
@@ -227,7 +228,7 @@ module Concierge::Flows
 
     def create_roomorama_user
       client = Roomorama::Client.new(ENV["CONCIERGE_CREATE_HOST_TOKEN"])
-      creation = Roomorama::Client::Operations::CreateHost.new(supplier, username, name, email, phone)
+      creation = Roomorama::Client::Operations::CreateHost.new(supplier, username, name, email, phone, payment_terms)
       post_result = client.perform(creation)
       decode_result = json_decode(post_result.value.body)
 

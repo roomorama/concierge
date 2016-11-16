@@ -14,14 +14,15 @@ class Roomorama::Client::Operations
     # the Roomorama API endpoint for the +create-host+ call
     ENDPOINT = '/v1.0/create-host'
 
-    attr_reader :supplier, :username, :name, :email, :phone
+    attr_reader :supplier, :username, :name, :email, :phone, :payment_terms
 
-    def initialize(supplier, username, name, email, phone)
-      @supplier = supplier
-      @name     = name
-      @username = username
-      @email    = email
-      @phone    = phone
+    def initialize(supplier, username, name, email, phone, payment_terms)
+      @supplier      = supplier
+      @name          = name
+      @username      = username
+      @email         = email
+      @phone         = phone
+      @payment_terms = payment_terms
     end
 
     def endpoint
@@ -36,9 +37,11 @@ class Roomorama::Client::Operations
       {
         "supplier": supplier.name,
         "host": {
-          "username": username,
-          "name":     name,
-          "email":    email
+          "username":      username,
+          "name":          name,
+          "email":         email,
+          "phone":         phone,
+          "payment_terms": payment_terms
         },
         "webhooks": {
           "quote": {

@@ -6,7 +6,8 @@ RSpec.describe Roomorama::Client::Operations::CreateHost do
   let(:email) { "test@guy.com" }
   let(:username) { "test_guy" }
   let(:supplier) { Supplier.new(name: "KigoLegacy") }
-  let(:phone) { '123456798' }
+  let(:phone) { '12345678' }
+  let(:payment_terms) { "Pay after checkout" }
 
   before {
     ENV["ROOMORAMA_API_ENVIRONMENT"] = "production"
@@ -17,9 +18,11 @@ RSpec.describe Roomorama::Client::Operations::CreateHost do
       expected_data = {
         "supplier": "KigoLegacy",
         "host": {
-          "username": "test_guy",
-          "name":     "Test Guy",
-          "email":    "test@guy.com"
+          "username":      "test_guy",
+          "name":          "Test Guy",
+          "email":         "test@guy.com",
+          "phone":         "12345678",
+          "payment_terms": "Pay after checkout"
         },
         "webhooks": {
           "quote": {
@@ -39,7 +42,7 @@ RSpec.describe Roomorama::Client::Operations::CreateHost do
           }
         }
       }
-      operation =  described_class.new(supplier, username, name, email, phone)
+      operation =  described_class.new(supplier, username, name, email, phone, payment_terms)
       expect(operation.request_data).to eq expected_data
 
       expected_data = {
@@ -47,7 +50,9 @@ RSpec.describe Roomorama::Client::Operations::CreateHost do
         "host": {
           "username": "test_guy",
           "name":     "Test Guy",
-          "email":    "test@guy.com"
+          "email":    "test@guy.com",
+          "phone":         "12345678",
+          "payment_terms": "Pay after checkout"
         },
         "webhooks": {
           "quote": {
@@ -69,7 +74,7 @@ RSpec.describe Roomorama::Client::Operations::CreateHost do
       }
 
       supplier = Supplier.new(name: "THH")
-      operation =  described_class.new(supplier, username, name, email, phone)
+      operation =  described_class.new(supplier, username, name, email, phone, payment_terms)
       expect(operation.request_data).to eq expected_data
     end
   end
