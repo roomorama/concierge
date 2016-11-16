@@ -16,13 +16,35 @@
       end
 
       div(class: 'host-form-control') do
+        label :fee_percentage
+        number_field :fee_percentage
+      end
+
+      p "Optional: "
+
+      div(class: 'host-form-control') do
         label :access_token
         text_field :access_token
       end
 
       div(class: 'host-form-control') do
-        label :fee_percentage
-        number_field :fee_percentage
+        label :first_and_last_name
+        text_field :name
+      end
+
+      div(class: 'host-form-control') do
+        label :email
+        text_field :email
+      end
+
+      div(class: 'host-form-control') do
+        label :phone
+        text_field :phone
+      end
+
+      div(class: 'host-form-control') do
+        label :payment_terms
+        text_field :payment_terms
       end
 
       div do

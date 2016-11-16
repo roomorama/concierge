@@ -7,7 +7,11 @@ module Web::Controllers::Hosts
       param :host do
         param :identifier,     type: String,  presence: true
         param :username,       type: String,  presence: true
-        param :access_token,   type: String,  presence: true
+        param :access_token,   type: String
+        param :email,          type: String
+        param :name,           type: String
+        param :phone,          type: String
+        param :payment_terms,  type: String
         param :fee_percentage, type: Integer, presence: true
       end
     end
@@ -37,6 +41,10 @@ module Web::Controllers::Hosts
         username:       params.get("host.username"),
         access_token:   params.get("host.access_token"),
         fee_percentage: params.get("host.fee_percentage"),
+        email:          params.get("host.email"),
+        phone:          params.get("host.phone"),
+        name:           params.get("host.name"),
+        payment_terms:  params.get("host.payment_terms"),
         config_path:    config_path
       )
     end
