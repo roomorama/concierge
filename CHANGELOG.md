@@ -5,18 +5,21 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+-
+
+## [1.2.0] - 2016-11-16
 ### Added
 - Concierge: add error.description to external_errors/show page
 - JTB integrations: quote, book, cancel and synchronisation
 
-## [1.1.0]
+## [1.1.0] - 2016-11-15
 ### Fixed
 - Avantio: add House(Casa) property type
 
 ### Added
 - THH integrations: quote, book, cancel and synchronisation
 
-## [1.0.0]
+## [1.0.0] - 2016-11-14
 ### Fixed
 - Avantio: add handling of `check_in_too_near` response code
 - Avantio: mark first MARGIN = 3 days as unavailable
