@@ -187,11 +187,9 @@ module Concierge::Flows
     # for the supplier the host belongs to.
     def perform
       if valid?
-        if self.access_token.to_s.empty?
-          result = create_roomorama_user
-          return result unless result.success?
-          self.access_token = result.value
-        end
+        access_token_result = create_roomorama_user
+        return result unless access_token_result.success?
+        self.access_token = access_token_result.value
         transaction do
           host = create_host
           workers_definition = find_workers_definition
