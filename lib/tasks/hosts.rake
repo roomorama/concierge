@@ -45,7 +45,7 @@ namespace :hosts do
           fee_percentage: host.fee_percentage,
           config_path:    path
         ).perform.tap do |result|
-          raise HostUpserionError.new(result.error.code) unless result.success?
+          raise HostUpsertionError.new(result.error.code) unless result.success?
         end
       end
     end

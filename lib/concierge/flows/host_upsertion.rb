@@ -193,7 +193,7 @@ module Concierge::Flows
     def perform
       if valid?
         access_token_result = create_roomorama_user
-        return result unless access_token_result.success?
+        return access_token_result unless access_token_result.success?
         self.access_token = access_token_result.value
         transaction do
           host = create_host
