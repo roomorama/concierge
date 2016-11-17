@@ -5,6 +5,8 @@ class Roomorama::Client::Operations
   # This class is responsible for encapsulating the operation of creating host
   # using Roomorama's API.
   #
+  # The /create-host api behaves like "update or insert"
+  #
   # Usage
   #
   #   operation = Roomorama::Client::Operations::CreateHost.new
