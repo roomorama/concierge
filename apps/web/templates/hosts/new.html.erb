@@ -1,8 +1,8 @@
 <div class="content">
   <h2 class="content-subhead"><%= supplier.name %></h2>
-  <h3>Create new host</h3>
+  <h3>Create/edit host</h3>
   <%=
-    form_for :host, routes.supplier_hosts_path(supplier.id), class: 'pure-form pure-form-aligned' do
+    form_for :host, routes.supplier_hosts_path(supplier.id), values: {host: host}, class: 'pure-form pure-form-aligned' do
       fieldset do
         legend :Required
         div(class: 'pure-control-group') do
@@ -45,7 +45,7 @@
         end
 
         div do
-          submit 'Create host', class: 'pure-button pure-button-primary'
+          submit "Submit", class: 'pure-button pure-button-primary'
         end
       end
     end

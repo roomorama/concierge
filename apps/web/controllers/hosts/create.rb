@@ -22,7 +22,7 @@ module Web::Controllers::Hosts
         result = host_creation.perform
 
         if result.success?
-          flash[:notice] = "Host was successfully created"
+          flash[:notice] = "Host was successfully created/updated"
         else
           announce_error(result)
           flash[:error] = "Host creation unsuccessful: #{result.error.code}; See External Errors for details."
