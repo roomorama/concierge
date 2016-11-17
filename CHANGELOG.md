@@ -5,7 +5,10 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
-## Added
+### Fixed
+- AtLeisure: prevent "undefined method `[]' for nil:NilClass" if property doesn't have deposit info
+
+### Added
 - Host creation calls Roomorama api
 - Host entity has email, phone, name and payment terms
 
@@ -17,7 +20,6 @@ how this file is formatted and how the process works.
 ## [1.1.0] - 2016-11-15
 ### Fixed
 - Avantio: add House(Casa) property type
-- AtLeisure: prevent "undefined method `[]' for nil:NilClass" if property doesn't have deposit info
 
 ### Added
 - THH integrations: quote, book, cancel and synchronisation
