@@ -35,6 +35,12 @@ RSpec.describe Concierge::Flows::HostUpsertion do
   subject { described_class.new(parameters) }
 
   describe "#perform" do
+    it "doesn't call create_host operation if access_token is given" do
+      parameters[:access_token] = "existing_access_token"
+      expect(subject).not_to receive(:create_roomorama_user)
+      subject.perform
+    end
+
     it "returns an unsuccessful if any required parameter is missing" do
       [nil, ""].each do |invalid_value|
         [:supplier, :identifier, :username, :fee_percentage].each do |attribute|
