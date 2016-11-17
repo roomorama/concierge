@@ -28,6 +28,10 @@ RSpec.describe Concierge::Flows::HostUpsertion do
     Concierge::SupplierRoutes.load(parameters[:config_path])
   end
 
+  after do
+    Concierge::SupplierRoutes.load
+  end
+
   subject { described_class.new(parameters) }
 
   describe "#perform" do
