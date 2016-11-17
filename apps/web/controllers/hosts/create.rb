@@ -52,7 +52,6 @@ module Web::Controllers::Hosts
         supplier:       supplier,
         identifier:     params.get("host.identifier"),
         username:       params.get("host.username"),
-        access_token:   params.get("host.access_token"),
         fee_percentage: params.get("host.fee_percentage"),
         email:          params.get("host.email"),
         phone:          params.get("host.phone"),
