@@ -156,6 +156,11 @@ module Concierge::Flows
   # This class encapsulates the creation of host, a including associated
   # background workers. Hosts belong to a supplier and other related
   # attributes.
+  #
+  # A Roomorama::CreateHost operation will be run on every #perform,
+  # which behaves more or less like upsert, except for AccessToken.
+  # The same AccessToken is always returned for the same Roomorama username
+  #
   class HostUpsertion
     include Concierge::JSON
     include Hanami::Validations

@@ -5,7 +5,8 @@ class Roomorama::Client::Operations
   # This class is responsible for encapsulating the operation of creating host
   # using Roomorama's API.
   #
-  # The /create-host api behaves like "update or insert"
+  # The /create-host api behaves like "update or insert" , except for AccessToken.
+  # The same AccessToken is always returned for the same Roomorama username
   #
   # Usage
   #
