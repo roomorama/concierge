@@ -249,11 +249,19 @@ RSpec.describe Concierge::Flows::HostCreation do
       after { Concierge::SupplierRoutes.load() }
 
       it "should call Roomorama create_host operation" do
-        parameters[:access_token] = nil
+        parameters[:access_token] = ""
+        parameters[:email] = "user@test.com"
+        parameters[:name] = "Test User"
+        parameters[:phone] = "12345432"
+        parameters[:payment_terms] = "Pay before checkin"
         flow = described_class.new(parameters)
         expect(flow.perform).to be_success
         host = HostRepository.last
-        expect(host.access_token).to eq "test_access_token"
+        expect(host.access_token).to  eq "test_access_token"
+        expect(host.email).to         eq "user@test.com"
+        expect(host.name).to          eq "Test User"
+        expect(host.phone).to         eq "12345432"
+        expect(host.payment_terms).to eq "Pay before checkin"
       end
     end
   end

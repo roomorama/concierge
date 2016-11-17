@@ -187,7 +187,7 @@ module Concierge::Flows
     # for the supplier the host belongs to.
     def perform
       if valid?
-        if self.access_token.nil?
+        if self.access_token.to_s.empty?
           result = create_roomorama_user
           return result unless result.success?
           self.access_token = result.value
@@ -246,6 +246,10 @@ module Concierge::Flows
       host.username       = username
       host.access_token   = access_token
       host.fee_percentage = fee_percentage.to_f
+      host.email          = email
+      host.name           = name
+      host.phone          = phone
+      host.payment_terms  = payment_terms
       HostRepository.persist(host)
     end
 
