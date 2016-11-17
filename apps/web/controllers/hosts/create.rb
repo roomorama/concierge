@@ -24,7 +24,8 @@ module Web::Controllers::Hosts
         if result.success?
           flash[:notice] = "Host was successfully created"
         else
-          flash[:error] = "Host creation unsuccessful: #{result.error.code}"
+          announce_error(result)
+          flash[:error] = "Host creation unsuccessful: #{result.error.code}; See External Errors for details."
         end
       else
         flash[:error] = "Host parameters validation error"
@@ -34,6 +35,18 @@ module Web::Controllers::Hosts
     end
 
     private
+
+    def announce_error(result)
+      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
+        operation:   "host_creation",
+        supplier:    supplier.name,
+        code:        result.error.code,
+        description: result.error.data,
+        context:     Concierge.context.to_h,
+        happened_at: Time.now
+      })
+    end
+
     def build_host_creation(params)
       Concierge::Flows::HostCreation.new(
         supplier:       supplier,

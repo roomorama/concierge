@@ -229,7 +229,9 @@ module Concierge::Flows
     def create_roomorama_user
       client = Roomorama::Client.new(ENV["CONCIERGE_CREATE_HOST_TOKEN"])
       creation = Roomorama::Client::Operations::CreateHost.new(supplier, username, name, email, phone, payment_terms)
+      Concierge.context = Concierge::Context.new(type: "host_creation")
       post_result = client.perform(creation)
+      return post_result unless post_result.success?
       decode_result = json_decode(post_result.value.body)
 
       if decode_result.success?
