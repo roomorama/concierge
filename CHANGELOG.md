@@ -5,7 +5,9 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
--
+## Added
+- Host creation calls Roomorama api
+- Host entity has email, phone, name and payment terms
 
 ## [1.2.0] - 2016-11-16
 ### Added

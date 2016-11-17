@@ -1,6 +1,7 @@
 require "spec_helper"
 
 RSpec.describe Concierge::Flows::HostCreation do
+  include Support::HTTPStubbing
   include Support::Factories
 
   let(:supplier) { create_supplier(name: "Supplier X") }
@@ -101,10 +102,8 @@ RSpec.describe Concierge::Flows::HostCreation do
 
     it "creates the host and associated workers" do
       expect {
-        expect {
-          expect(subject.perform).to be_success
-        }.to change { HostRepository.count }.by(1)
-      }.to change { BackgroundWorkerRepository.count }.by(2)
+        expect(subject.perform).to be_success
+      }.to change { [HostRepository.count, BackgroundWorkerRepository.count] }.by([1, 2])
 
       host     = HostRepository.last
       workers  = BackgroundWorkerRepository.for_host(host).to_a
@@ -235,6 +234,34 @@ RSpec.describe Concierge::Flows::HostCreation do
           find { |w| w.type == "availabilities" }
 
         expect(worker.interval).to eq 10 * 60
+      end
+    end
+
+    context "access_token is missing" do
+      before do
+        url = "https://api.roomorama.com/v1.0/create-host"
+        stub_call(:post, url) {
+          [200, {}, '{"status": "success", "access_token": "test_access_token"}']
+        }
+        Concierge::SupplierRoutes.load(parameters[:config_path])
+      end
+
+      after { Concierge::SupplierRoutes.load() }
+
+      it "should call Roomorama create_host operation" do
+        parameters[:access_token] = ""
+        parameters[:email] = "user@test.com"
+        parameters[:name] = "Test User"
+        parameters[:phone] = "12345432"
+        parameters[:payment_terms] = "Pay before checkin"
+        flow = described_class.new(parameters)
+        expect(flow.perform).to be_success
+        host = HostRepository.last
+        expect(host.access_token).to  eq "test_access_token"
+        expect(host.email).to         eq "user@test.com"
+        expect(host.name).to          eq "Test User"
+        expect(host.phone).to         eq "12345432"
+        expect(host.payment_terms).to eq "Pay before checkin"
       end
     end
   end

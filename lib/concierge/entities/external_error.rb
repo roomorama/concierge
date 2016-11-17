@@ -26,7 +26,7 @@
 class ExternalError
   include Hanami::Entity
 
-  OPERATIONS = %w(quote booking sync cancellation image)
+  OPERATIONS = %w(quote booking sync cancellation image host_creation)
 
   attributes :id, :operation, :supplier, :code, :description, :context, :happened_at
 end

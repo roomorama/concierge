@@ -7,7 +7,11 @@ module Web::Controllers::Hosts
       param :host do
         param :identifier,     type: String,  presence: true
         param :username,       type: String,  presence: true
-        param :access_token,   type: String,  presence: true
+        param :access_token,   type: String
+        param :email,          type: String
+        param :name,           type: String
+        param :phone,          type: String
+        param :payment_terms,  type: String
         param :fee_percentage, type: Integer, presence: true
       end
     end
@@ -20,7 +24,8 @@ module Web::Controllers::Hosts
         if result.success?
           flash[:notice] = "Host was successfully created"
         else
-          flash[:error] = "Host creation unsuccessful: #{result.error.code}"
+          announce_error(result)
+          flash[:error] = "Host creation unsuccessful: #{result.error.code}; See External Errors for details."
         end
       else
         flash[:error] = "Host parameters validation error"
@@ -30,6 +35,18 @@ module Web::Controllers::Hosts
     end
 
     private
+
+    def announce_error(result)
+      Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
+        operation:   "host_creation",
+        supplier:    supplier.name,
+        code:        result.error.code,
+        description: result.error.data,
+        context:     Concierge.context.to_h,
+        happened_at: Time.now
+      })
+    end
+
     def build_host_creation(params)
       Concierge::Flows::HostCreation.new(
         supplier:       supplier,
@@ -37,6 +54,10 @@ module Web::Controllers::Hosts
         username:       params.get("host.username"),
         access_token:   params.get("host.access_token"),
         fee_percentage: params.get("host.fee_percentage"),
+        email:          params.get("host.email"),
+        phone:          params.get("host.phone"),
+        name:           params.get("host.name"),
+        payment_terms:  params.get("host.payment_terms"),
         config_path:    config_path
       )
     end
