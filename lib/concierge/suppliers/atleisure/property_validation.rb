@@ -53,7 +53,8 @@ module AtLeisure
     end
 
     def no_deposit_upfront?
-      deposit['Items'].find { |item| item['Payment'] == 'MandatoryDepositUpFront' }.nil?
+      d = deposit
+      d.nil? || d['Items'].find { |item| item['Payment'] == 'MandatoryDepositUpFront' }.nil?
     end
 
     def deposit
