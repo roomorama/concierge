@@ -85,7 +85,7 @@ class Roomorama::Client::Operations
         staging2:   "https://concierge-staging2.roomorama.com",
         staging3:   "https://concierge-staging3.roomorama.com"
       }[environment.to_s.to_sym].tap do |url|
-        raise UnknownEnvironmentError.new(environment) unless url
+        raise Roomorama::Client::UnknownEnvironmentError.new(environment) unless url
       end
     end
   end
