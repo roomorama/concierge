@@ -48,7 +48,7 @@ module Web::Controllers::Hosts
     end
 
     def build_host_creation(params)
-      Concierge::Flows::HostCreation.new(
+      Concierge::Flows::HostUpsertion.new(
         supplier:       supplier,
         identifier:     params.get("host.identifier"),
         username:       params.get("host.username"),

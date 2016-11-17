@@ -151,12 +151,12 @@ module Concierge::Flows
     end
   end
 
-  # +Concierge::Flows::HostCreation+
+  # +Concierge::Flows::HostUpsertion+
   #
   # This class encapsulates the creation of host, a including associated
   # background workers. Hosts belong to a supplier and other related
   # attributes.
-  class HostCreation
+  class HostUpsertion
     include Concierge::JSON
     include Hanami::Validations
 

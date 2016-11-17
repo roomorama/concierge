@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Concierge::Flows::HostCreation do
+RSpec.describe Concierge::Flows::HostUpsertion do
   include Support::HTTPStubbing
   include Support::Factories
 
