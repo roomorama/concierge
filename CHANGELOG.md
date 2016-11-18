@@ -5,6 +5,9 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+### Added
+- Laos country code for SAW
+
 ### Changed
 - ExternalError from booking and cancellation are reported as critical errors on Rollbar
 
