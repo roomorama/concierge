@@ -13,6 +13,7 @@ how this file is formatted and how the process works.
 ### Added
 - Laos country code for SAW
 - WayToStay city tourist tax and late checkin fee to description append
+- Poplidays: skip properties with zero `max_guest`
 
 ### Fixed
 - THH: min_stay = max(min_nights)
