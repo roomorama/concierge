@@ -19,7 +19,7 @@ module Concierge::Flows
         @ext_error = ext_error
       end
 
-      def report()
+      def report
         if ext_error.critical?
           Rollbar.critical(error_message, custom_attributes)
         else
