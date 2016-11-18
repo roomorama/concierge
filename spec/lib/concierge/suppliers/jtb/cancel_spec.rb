@@ -3,8 +3,12 @@ require 'spec_helper'
 RSpec.describe JTB::Cancel do
   include Support::Fixtures
   include Support::Factories
+  include Support::SOAPStubbing
 
+  let(:wsdl) { read_fixture('jtb/cancel_wsdl.xml') }
   let(:reference_number) { 'reservation_id|rate_plan_id' }
+  let(:invalid_response) { read_fixture('jtb/invalid_cancel_response.xml') }
+
   before do
     create_reservation({ supplier: JTB::Client::SUPPLIER_NAME,
                          reference_number: reference_number })
@@ -45,6 +49,16 @@ RSpec.describe JTB::Cancel do
 
     it 'fails with bad response' do
       allow(subject).to receive(:remote_call) { Result.new(fail_response) }
+
+      result = subject.cancel(params)
+      expect(result).to be_a Result
+      expect(result).not_to be_success
+      expect(result.error.code).to eq(:request_error)
+      expect(result.error.data).to eq("The response indicated errors while processing the request. Check the `errors` field.")
+    end
+
+    it 'fails with bad xml response' do
+      stub_call(method: described_class::OPERATION_NAME, response: invalid_response)
 
       result = subject.cancel(params)
       expect(result).to be_a Result

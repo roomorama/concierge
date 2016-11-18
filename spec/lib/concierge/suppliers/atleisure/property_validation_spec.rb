@@ -22,6 +22,10 @@ RSpec.describe AtLeisure::PropertyValidation do
       expect(validation.valid?).to be true
     end
 
+    it 'returns successful result if no deposit info' do
+      validation = described_class.new(build_property('property_data_without_deposit'))
+      expect(validation.valid?).to be true
+    end
   end
 
   private

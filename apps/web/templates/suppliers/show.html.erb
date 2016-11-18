@@ -19,6 +19,7 @@
         <th>Fees Applied</th>
         <th>Access Token</th>
         <th># Properties</th>
+        <th></th>
       </tr>
     </thead>
 
@@ -31,6 +32,7 @@
           <td><%= format_fee_percentage(host.fee_percentage) %></td>
           <td><code><%= format_access_token(host) %></code></td>
           <td><%= host_properties(host) %></td>
+          <td> <%= link_to "Edit", routes.edit_supplier_host_path(supplier_id: supplier.id, id: host.id), class: "pure-button" %></p>
         </tr>
       <% end %>
     </tbody>

@@ -56,6 +56,10 @@ collection :hosts do
   attribute :identifier,     String
   attribute :username,       String
   attribute :access_token,   String
+  attribute :payment_terms,  String
+  attribute :email,          String
+  attribute :name,           String
+  attribute :phone,          String
   attribute :fee_percentage, Float
   attribute :created_at,     Time
   attribute :updated_at,     Time

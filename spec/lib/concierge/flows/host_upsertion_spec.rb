@@ -1,6 +1,7 @@
 require "spec_helper"
 
-RSpec.describe Concierge::Flows::HostCreation do
+RSpec.describe Concierge::Flows::HostUpsertion do
+  include Support::HTTPStubbing
   include Support::Factories
 
   let(:supplier) { create_supplier(name: "Supplier X") }
@@ -10,7 +11,6 @@ RSpec.describe Concierge::Flows::HostCreation do
       supplier:     supplier,
       identifier:   "host1",
       username:     "roomorama-user",
-      access_token: "a1b2c3",
       fee_percentage:   7
     }
   }
@@ -21,14 +21,29 @@ RSpec.describe Concierge::Flows::HostCreation do
 
   before do
     config_suppliers "suppliers.yml"
+    url = "https://api.roomorama.com/v1.0/create-host"
+    stub_call(:post, url) {
+      [200, {}, '{"status": "success", "access_token": "test_access_token"}']
+    }
+    Concierge::SupplierRoutes.load(parameters[:config_path])
+  end
+
+  after do
+    Concierge::SupplierRoutes.load
   end
 
   subject { described_class.new(parameters) }
 
   describe "#perform" do
+    it "doesn't call create_host operation if access_token is given" do
+      parameters[:access_token] = "existing_access_token"
+      expect(subject).not_to receive(:create_roomorama_user)
+      subject.perform
+    end
+
     it "returns an unsuccessful if any required parameter is missing" do
       [nil, ""].each do |invalid_value|
-        [:supplier, :identifier, :username, :access_token, :fee_percentage].each do |attribute|
+        [:supplier, :identifier, :username, :fee_percentage].each do |attribute|
           parameters[attribute] = invalid_value
 
           result = subject.perform
@@ -101,17 +116,15 @@ RSpec.describe Concierge::Flows::HostCreation do
 
     it "creates the host and associated workers" do
       expect {
-        expect {
-          expect(subject.perform).to be_success
-        }.to change { HostRepository.count }.by(1)
-      }.to change { BackgroundWorkerRepository.count }.by(2)
+        expect(subject.perform).to be_success
+      }.to change { [HostRepository.count, BackgroundWorkerRepository.count] }.by([1, 2])
 
       host     = HostRepository.last
       workers  = BackgroundWorkerRepository.for_host(host).to_a
 
       expect(host.identifier).to eq "host1"
       expect(host.username).to eq "roomorama-user"
-      expect(host.access_token).to eq "a1b2c3"
+      expect(host.access_token).to eq "test_access_token"
       expect(host.fee_percentage).to eq 7
 
       expect(workers.size).to eq 2

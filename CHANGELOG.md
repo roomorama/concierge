@@ -7,6 +7,15 @@ how this file is formatted and how the process works.
 ## Unreleased
 -
 
+## [1.3.0]
+### Fixed
+- AtLeisure: prevent "undefined method '[]' for nil:NilClass" if property doesn't have deposit info
+
+### Added
+- Host creation calls Roomorama api
+- Host entity has email, phone, name and payment terms
+- Edit host page
+
 ## [1.2.0] - 2016-11-16
 ### Added
 - Concierge: add error.description to external_errors/show page

@@ -1,32 +1,52 @@
-<%= stylesheet "host_form" %>
-
 <div class="content">
   <h2 class="content-subhead"><%= supplier.name %></h2>
-  <h3>Create new host</h3>
+  <h3>Create/edit host</h3>
   <%=
-    form_for :host, routes.supplier_hosts_path(supplier.id), class: 'host-form' do
-      div(class: 'host-form-control') do
-        label :identifier
-        text_field :identifier
-      end
+    form_for :host, routes.supplier_hosts_path(supplier.id), values: {host: host}, class: 'pure-form pure-form-aligned' do
+      fieldset do
+        legend :Required
+        div(class: 'pure-control-group') do
+          label :identifier
+          text_field :identifier, class: 'pure-input-1-2', placeholder: "Host id in supplier's system. Duplicate username for single host suppliers"
+        end
 
-      div(class: 'host-form-control') do
-        label :username
-        text_field :username
-      end
+        div(class: 'pure-control-group') do
+          label :username
+          text_field :username, class: 'pure-input-1-2', placeholder: "Use Roomorama's user login"
+        end
 
-      div(class: 'host-form-control') do
-        label :access_token
-        text_field :access_token
-      end
+        div(class: 'pure-control-group') do
+          label :fee_percentage
+          number_field :fee_percentage, class: 'pure-input-1-2'
+        end
 
-      div(class: 'host-form-control') do
-        label :fee_percentage
-        number_field :fee_percentage
-      end
+        br
 
-      div do
-        submit 'Create host'
+        legend :Optional
+
+        div(class: 'pure-control-group') do
+          label :first_and_last_name
+          text_field :name, class: 'pure-input-1-2'
+        end
+
+        div(class: 'pure-control-group') do
+          label :email
+          text_field :email, class: 'pure-input-1-2'
+        end
+
+        div(class: 'pure-control-group') do
+          label :phone
+          text_field :phone, class: 'pure-input-1-2'
+        end
+
+        div(class: 'pure-control-group') do
+          label :payment_terms
+          text_area :payment_terms, class: 'pure-input-1-2'
+        end
+
+        div do
+          submit "Submit", class: 'pure-button pure-button-primary'
+        end
       end
     end
   %>
