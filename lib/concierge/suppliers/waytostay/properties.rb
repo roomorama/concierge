@@ -193,23 +193,25 @@ module Waytostay
     def add_license_number(property, response)
       license_number = response.get("general.licence_number")  # spelled wrongly according to waytostay response
       return if license_number.nil? || license_number.empty?
-      property.description_append += "License number: #{license_number}\n"
-      property.de.description_append += "Lizenznummer: #{license_number}\n"
-      property.es.description_append += "Número de licencia: #{license_number}\n"
-      property.zh.description_append += "许可证号: #{license_number}\n"
-      property.zh_tw.description_append += "許可證號: #{license_number}\n"
+      locals = {license_number: license_number}
+      property.description_append += Localiser.translate("en.license_number", locals)
+      property.de.description_append += Localiser.translate("de.license_number", locals)
+      property.es.description_append += Localiser.translate("es.license_number", locals)
+      property.zh.description_append += Localiser.translate("zh.license_number", locals)
+      property.zh_tw.description_append += Localiser.translate("zh_tw.license_number", locals)
     end
 
     def add_city_tourist_tax(property, response)
       city_tourist_taxes = response.get("payment.city_tourist_tax")
       return if city_tourist_taxes.empty?
+      currency = response.get("payment.currency")
 
-      tax_in_words = Properties::CityTouristTax.new(city_tourist_taxes).parse
-      property.description_append += tax_in_words[:en] + '\n'
-      property.de.description_append += tax_in_words[:de] + '\n'
-      property.es.description_append += tax_in_words[:es] + '\n'
-      property.zh.description_append += tax_in_words[:zh] + '\n'
-      property.zh_tw.description_append += tax_in_words[:zh_tw] + '\n'
+      tax_in_words = Properties::CityTouristTax.new(city_tourist_taxes, currency).parse
+      property.description_append += tax_in_words[:en]
+      property.de.description_append += tax_in_words[:de]
+      property.es.description_append += tax_in_words[:es]
+      property.zh.description_append += tax_in_words[:zh]
+      property.zh_tw.description_append += tax_in_words[:zh_tw]
     end
 
     # Returns params to initialize a Roomorama::Property from a SafeAccessHash

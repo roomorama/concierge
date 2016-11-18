@@ -221,7 +221,15 @@ RSpec.shared_examples "Waytostay property client" do
   describe "#add_license_number" do
 
     let(:property) { Roomorama::Property.new('test') }
-    before { described_class.new.send(:add_license_number, property, response) }
+    before {
+      property.description_append ||= ""
+      property.de.description_append ||= ""
+      property.es.description_append ||= ""
+      property.zh.description_append ||= ""
+      property.zh_tw.description_append ||= ""
+
+      described_class.new.send(:add_license_number, property, response)
+    }
 
     context "when license is empty" do
       let(:response) {
@@ -232,11 +240,11 @@ RSpec.shared_examples "Waytostay property client" do
         )
       }
       it "should not add description and translations" do
-        expect(property.description_append).to be_nil
-        expect(property.de.description_append).to be_nil
-        expect(property.es.description_append).to be_nil
-        expect(property.zh.description_append).to be_nil
-        expect(property.zh_tw.description_append).to be_nil
+        expect(property.description_append).to eq ""
+        expect(property.de.description_append).to eq ""
+        expect(property.es.description_append).to eq ""
+        expect(property.zh.description_append).to eq ""
+        expect(property.zh_tw.description_append).to eq ""
       end
     end
 
@@ -249,11 +257,11 @@ RSpec.shared_examples "Waytostay property client" do
         )
       }
       it "should not add description and translations" do
-        expect(property.description_append).to eq "License number: ABC"
-        expect(property.de.description_append).to eq "Lizenznummer: ABC"
-        expect(property.es.description_append).to eq "Número de licencia: ABC"
-        expect(property.zh.description_append).to eq "许可证号: ABC"
-        expect(property.zh_tw.description_append).to eq "許可證號: ABC"
+        expect(property.description_append).to eq "License number: ABC\n"
+        expect(property.de.description_append).to eq "Lizenznummer: ABC\n"
+        expect(property.es.description_append).to eq "Número de licencia: ABC\n"
+        expect(property.zh.description_append).to eq "许可证号: ABC\n"
+        expect(property.zh_tw.description_append).to eq "許可證號: ABC\n"
       end
     end
   end

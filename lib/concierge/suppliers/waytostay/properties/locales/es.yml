@@ -1,10 +1,10 @@
 es:
   city_tourist_tax:
-    per_stay: "Impuesto municipal de turismo adicional: %{rate} %{currency} tendrá que ser pagado en la propieda."
-    per_night: "Impuesto municipal de turismo adicional: %{rate} %{currency} por noche tendrá que ser pagado en la propieda para un máximo de %{max_nights} noche."
-    per_night_no_max: "Impuesto municipal de turismo adicional: %{rate} %{currency} por noche tendrá que ser pagado en la propieda."
-    per_person_per_night: "Impuesto municipal de turismo adicional: %{rate} %{currency} por noche tendrá que ser pagado en la propieda para un máximo de %{max_nights} noche."
-    per_person_per_night_no_max: "Impuesto municipal de turismo adicional: %{rate} %{currency} por noche tendrá que ser pagado en la propieda."
-    percent_off_gross: "Impuesto municipal de turismo adicional: %{rate}%% del precio total tendrá que ser pagado en la propiedad."
-    percent_off_net: "Impuesto municipal de turismo adicional: %{rate}%% de las tarifas nocturnas tendrá que ser pagado en la propiedad."
-
+    per_stay: "Impuesto municipal de turismo adicional: %{rate} %{currency} tendrá que ser pagado en la propieda.\n"
+    per_night: "Impuesto municipal de turismo adicional: %{rate} %{currency} por noche tendrá que ser pagado en la propieda para un máximo de %{max_nights} noche.\n"
+    per_night_no_max: "Impuesto municipal de turismo adicional: %{rate} %{currency} por noche tendrá que ser pagado en la propieda.\n"
+    per_person_per_night: "Impuesto municipal de turismo adicional: %{rate} %{currency} por noche tendrá que ser pagado en la propieda para un máximo de %{max_nights} noche.\n"
+    per_person_per_night_no_max: "Impuesto municipal de turismo adicional: %{rate} %{currency} por noche tendrá que ser pagado en la propieda.\n"
+    percent_off_gross: "Impuesto municipal de turismo adicional: %{rate}%% del precio total tendrá que ser pagado en la propiedad.\n"
+    percent_off_net: "Impuesto municipal de turismo adicional: %{rate}%% de las tarifas nocturnas tendrá que ser pagado en la propiedad.\n"
+  license_number: "Número de licencia: %{license_number}\n"

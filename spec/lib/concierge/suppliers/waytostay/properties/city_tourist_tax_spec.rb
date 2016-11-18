@@ -18,11 +18,11 @@ RSpec.describe Waytostay::Properties::CityTouristTax do
 
     it "should be correct" do
       tax_in_words = described_class.new(taxes, currency).parse
-      expect(tax_in_words[:en]).to eq "Additional City Tourist Tax: 17 EUR will need to be paid at the property."
-      expect(tax_in_words[:de]).to eq "Zusätzliche Abgabe für Touristen in Höhe von 17 EUR wird direkt beim Gastgeber bezahlt."
-      expect(tax_in_words[:es]).to eq "Impuesto municipal de turismo adicional: 17 EUR tendrá que ser pagado en la propieda."
-      expect(tax_in_words[:zh]).to eq " 附加城市旅游税17 EUR， 需到达酒店时支付"
-      expect(tax_in_words[:zh_tw]).to eq " 附加城市旅游税17 EUR， 需到达酒店时支付"
+      expect(tax_in_words[:en]).to eq "Additional City Tourist Tax: 17 EUR will need to be paid at the property.\n"
+      expect(tax_in_words[:de]).to eq "Zusätzliche Abgabe für Touristen in Höhe von 17 EUR wird direkt beim Gastgeber bezahlt.\n"
+      expect(tax_in_words[:es]).to eq "Impuesto municipal de turismo adicional: 17 EUR tendrá que ser pagado en la propieda.\n"
+      expect(tax_in_words[:zh]).to eq " 附加城市旅游税17 EUR， 需到达酒店时支付\n"
+      expect(tax_in_words[:zh_tw]).to eq " 附加城市旅游税17 EUR， 需到达酒店时支付\n"
     end
   end
 
@@ -41,11 +41,11 @@ RSpec.describe Waytostay::Properties::CityTouristTax do
 
     it "should be correct" do
       tax_in_words = described_class.new(taxes, currency).parse
-      expect(tax_in_words[:en]).to eq "Additional City Tourist Tax: 13 EUR per night will need to be paid at the property for up to 10 nights."
-      expect(tax_in_words[:de]).to eq "Zusätzliche Abgabe für Touristen in Höhe von 13 EUR pro Nacht wird direkt beim Gastgeber bezahlt, für bis zu 10 Nächte."
-      expect(tax_in_words[:es]).to eq "Impuesto municipal de turismo adicional: 13 EUR por noche tendrá que ser pagado en la propieda para un máximo de 10 noche."
-      expect(tax_in_words[:zh]).to eq " 附加城市旅游税13 EUR 每晚，需到达酒店时支付最多10晚"
-      expect(tax_in_words[:zh_tw]).to eq " 附加城市旅游税13 EUR 每晚，需到达酒店时支付最多10晚"
+      expect(tax_in_words[:en]).to eq "Additional City Tourist Tax: 13 EUR per night will need to be paid at the property for up to 10 nights.\n"
+      expect(tax_in_words[:de]).to eq "Zusätzliche Abgabe für Touristen in Höhe von 13 EUR pro Nacht wird direkt beim Gastgeber bezahlt, für bis zu 10 Nächte.\n"
+      expect(tax_in_words[:es]).to eq "Impuesto municipal de turismo adicional: 13 EUR por noche tendrá que ser pagado en la propieda para un máximo de 10 noche.\n"
+      expect(tax_in_words[:zh]).to eq " 附加城市旅游税13 EUR 每晚，需到达酒店时支付最多10晚\n"
+      expect(tax_in_words[:zh_tw]).to eq " 附加城市旅游税13 EUR 每晚，需到达酒店时支付最多10晚\n"
     end
   end
 
@@ -64,11 +64,11 @@ RSpec.describe Waytostay::Properties::CityTouristTax do
 
     it "should be correct" do
       tax_in_words = described_class.new(taxes, currency).parse
-      expect(tax_in_words[:en]).to eq "Additional City Tourist Tax: 13 EUR per night will need to be paid at the property."
-      expect(tax_in_words[:de]).to eq "Zusätzliche Abgabe für Touristen in Höhe von 13 EUR pro Nacht wird direkt beim Gastgeber bezahlt."
-      expect(tax_in_words[:es]).to eq "Impuesto municipal de turismo adicional: 13 EUR por noche tendrá que ser pagado en la propieda."
-      expect(tax_in_words[:zh]).to eq " 附加城市旅游税13 EUR 每晚，需到达酒店时支付"
-      expect(tax_in_words[:zh_tw]).to eq " 附加城市旅游税13 EUR 每晚，需到达酒店时支付"
+      expect(tax_in_words[:en]).to eq "Additional City Tourist Tax: 13 EUR per night will need to be paid at the property.\n"
+      expect(tax_in_words[:de]).to eq "Zusätzliche Abgabe für Touristen in Höhe von 13 EUR pro Nacht wird direkt beim Gastgeber bezahlt.\n"
+      expect(tax_in_words[:es]).to eq "Impuesto municipal de turismo adicional: 13 EUR por noche tendrá que ser pagado en la propieda.\n"
+      expect(tax_in_words[:zh]).to eq " 附加城市旅游税13 EUR 每晚，需到达酒店时支付\n"
+      expect(tax_in_words[:zh_tw]).to eq " 附加城市旅游税13 EUR 每晚，需到达酒店时支付\n"
     end
   end
 
@@ -87,11 +87,11 @@ RSpec.describe Waytostay::Properties::CityTouristTax do
 
     it "should be correct" do
       tax_in_words = described_class.new(taxes, currency).parse
-      expect(tax_in_words[:en]).to eq "Additional City Tourist Tax: 0.83 EUR per night per person will need to be paid at the property for guests above 18 years of age for up to 10 nights."
-      expect(tax_in_words[:de]).to eq "Zusätzliche Abgabe für Touristen in Höhe von 0.83 EUR pro Nacht, pro Person wird direkt beim Gastgeber bezahlt, für Gäste älter als 18 Jahre, für bis zu 10 Nächte."
-      expect(tax_in_words[:es]).to eq "Impuesto municipal de turismo adicional: 0.83 EUR por noche tendrá que ser pagado en la propieda para un máximo de 10 noche."
-      expect(tax_in_words[:zh]).to eq "超过18岁的客人，附加城市旅游税0.83 EUR每人，每晚需到达酒店时支付，最多10晚。"
-      expect(tax_in_words[:zh_tw]).to eq "超过18岁的客人，附加城市旅游税0.83 EUR每人，每晚需到达酒店时支付，最多10晚。"
+      expect(tax_in_words[:en]).to eq "Additional City Tourist Tax: 0.83 EUR per night per person will need to be paid at the property for guests above 18 years of age for up to 10 nights.\n"
+      expect(tax_in_words[:de]).to eq "Zusätzliche Abgabe für Touristen in Höhe von 0.83 EUR pro Nacht, pro Person wird direkt beim Gastgeber bezahlt, für Gäste älter als 18 Jahre, für bis zu 10 Nächte.\n"
+      expect(tax_in_words[:es]).to eq "Impuesto municipal de turismo adicional: 0.83 EUR por noche tendrá que ser pagado en la propieda para un máximo de 10 noche.\n"
+      expect(tax_in_words[:zh]).to eq "超过18岁的客人，附加城市旅游税0.83 EUR每人，每晚需到达酒店时支付，最多10晚。\n"
+      expect(tax_in_words[:zh_tw]).to eq "超过18岁的客人，附加城市旅游税0.83 EUR每人，每晚需到达酒店时支付，最多10晚。\n"
     end
   end
 
@@ -110,11 +110,11 @@ RSpec.describe Waytostay::Properties::CityTouristTax do
 
     it "should be correct" do
       tax_in_words = described_class.new(taxes, currency).parse
-      expect(tax_in_words[:en]).to eq "Additional City Tourist Tax: 0.83 EUR per night per person will need to be paid at the property for guests above 18 years of age."
-      expect(tax_in_words[:de]).to eq "Zusätzliche Abgabe für Touristen in Höhe von 0.83 EUR pro Nacht, pro Person wird direkt beim Gastgeber bezahlt, für Gäste älter als 18 Jahre."
-      expect(tax_in_words[:es]).to eq "Impuesto municipal de turismo adicional: 0.83 EUR por noche tendrá que ser pagado en la propieda."
-      expect(tax_in_words[:zh]).to eq "超过18岁的客人，附加城市旅游税0.83 EUR每人，每晚需到达酒店时支付。"
-      expect(tax_in_words[:zh_tw]).to eq "超过18岁的客人，附加城市旅游税0.83 EUR每人，每晚需到达酒店时支付。"
+      expect(tax_in_words[:en]).to eq "Additional City Tourist Tax: 0.83 EUR per night per person will need to be paid at the property for guests above 18 years of age.\n"
+      expect(tax_in_words[:de]).to eq "Zusätzliche Abgabe für Touristen in Höhe von 0.83 EUR pro Nacht, pro Person wird direkt beim Gastgeber bezahlt, für Gäste älter als 18 Jahre.\n"
+      expect(tax_in_words[:es]).to eq "Impuesto municipal de turismo adicional: 0.83 EUR por noche tendrá que ser pagado en la propieda.\n"
+      expect(tax_in_words[:zh]).to eq "超过18岁的客人，附加城市旅游税0.83 EUR每人，每晚需到达酒店时支付。\n"
+      expect(tax_in_words[:zh_tw]).to eq "超过18岁的客人，附加城市旅游税0.83 EUR每人，每晚需到达酒店时支付。\n"
     end
   end
 
@@ -133,11 +133,11 @@ RSpec.describe Waytostay::Properties::CityTouristTax do
 
     it "should be correct" do
       tax_in_words = described_class.new(taxes, currency).parse
-      expect(tax_in_words[:en]).to eq "Additional City Tourist Tax: 0.83% of the total price will need to be paid at the property."
-      expect(tax_in_words[:de]).to eq "Zusätzliche Abgabe für Touristen in Höhe von 0.83% der Gesamtsumme wird direkt beim Gastgeber bezahlt."
-      expect(tax_in_words[:es]).to eq "Impuesto municipal de turismo adicional: 0.83% del precio total tendrá que ser pagado en la propiedad."
-      expect(tax_in_words[:zh]).to eq "附加城市旅游税：定单总额的0.83%会在酒店到付。"
-      expect(tax_in_words[:zh_tw]).to eq "附加城市旅游税：定单总额的0.83%会在酒店到付。"
+      expect(tax_in_words[:en]).to eq "Additional City Tourist Tax: 0.83% of the total price will need to be paid at the property.\n"
+      expect(tax_in_words[:de]).to eq "Zusätzliche Abgabe für Touristen in Höhe von 0.83% der Gesamtsumme wird direkt beim Gastgeber bezahlt.\n"
+      expect(tax_in_words[:es]).to eq "Impuesto municipal de turismo adicional: 0.83% del precio total tendrá que ser pagado en la propiedad.\n"
+      expect(tax_in_words[:zh]).to eq "附加城市旅游税：定单总额的0.83%会在酒店到付。\n"
+      expect(tax_in_words[:zh_tw]).to eq "附加城市旅游税：定单总额的0.83%会在酒店到付。\n"
     end
   end
 
@@ -156,11 +156,11 @@ RSpec.describe Waytostay::Properties::CityTouristTax do
 
     it "should be correct" do
       tax_in_words = described_class.new(taxes, currency).parse
-      expect(tax_in_words[:en]).to eq"Additional City Tourist Tax: 0.83% of the nightly rates will need to be paid at the property."
-      expect(tax_in_words[:de]).to eq"Zusätzliche Abgabe für Touristen in Höhe von 0.83% der Preise pro Nacht wird direkt beim Gastgeber bezahlt."
-      expect(tax_in_words[:es]).to eq"Impuesto municipal de turismo adicional: 0.83% de las tarifas nocturnas tendrá que ser pagado en la propiedad."
-      expect(tax_in_words[:zh]).to eq "附加城市旅游税：每晚价格的0.83%会在酒店到付。"
-      expect(tax_in_words[:zh_tw]).to eq "附加城市旅游税：每晚价格的0.83%会在酒店到付。"
+      expect(tax_in_words[:en]).to eq"Additional City Tourist Tax: 0.83% of the nightly rates will need to be paid at the property.\n"
+      expect(tax_in_words[:de]).to eq"Zusätzliche Abgabe für Touristen in Höhe von 0.83% der Preise pro Nacht wird direkt beim Gastgeber bezahlt.\n"
+      expect(tax_in_words[:es]).to eq"Impuesto municipal de turismo adicional: 0.83% de las tarifas nocturnas tendrá que ser pagado en la propiedad.\n"
+      expect(tax_in_words[:zh]).to eq "附加城市旅游税：每晚价格的0.83%会在酒店到付。\n"
+      expect(tax_in_words[:zh_tw]).to eq "附加城市旅游税：每晚价格的0.83%会在酒店到付。\n"
     end
   end
 end
