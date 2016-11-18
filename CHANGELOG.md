@@ -5,6 +5,8 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+
+## [1.3.1] - 2016-11-18
 ### Added
 - Laos country code for SAW
 - WayToStay city tourist tax and late checkin fee to description append
@@ -17,7 +19,7 @@ how this file is formatted and how the process works.
 - ExternalError from booking and cancellation are reported as critical errors on Rollbar
 - RentalsUnited cancellation policy is no refund
 
-## [1.3.0]
+## [1.3.0] - 2016-11-18
 ### Fixed
 - AtLeisure: prevent "undefined method '[]' for nil:NilClass" if property doesn't have deposit info
 
