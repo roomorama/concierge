@@ -7,6 +7,11 @@ module SAW
       expect(code).to eq("KR")
     end
 
+    it "knows Laos" do
+      code = described_class.code_by_name("Laos")
+      expect(code).to eq("LA")
+    end
+
     it "uses original name if there is no custom name" do
       code = described_class.code_by_name("Kuwait")
       expect(code).to eq("KW")
