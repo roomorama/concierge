@@ -169,12 +169,23 @@ module Waytostay
         property_attributes_from(response).each do |key, value|
           property[key] = value unless value.nil?
         end
-        add_license_number(property, response)
+        add_description_append(property, response)
         Result.new(property)
       else
         augment_missing_fields(missing_keys)
         Result.error(:unrecognised_response, "Missing keys: #{missing_keys}")
       end
+    end
+
+    def add_description_append(property, response)
+      property.description_append ||= ""
+      property.de.description_append ||= ""
+      property.es.description_append ||= ""
+      property.zh.description_append ||= ""
+      property.zh_tw.description_append ||= ""
+      add_license_number(property, response)
+      add_city_tourist_tax(property, response)
+      add_late_checkin_fee(property, response)
     end
 
     # Because Roomorama doesn't have a license field,
@@ -183,11 +194,40 @@ module Waytostay
     def add_license_number(property, response)
       license_number = response.get("general.licence_number")  # spelled wrongly according to waytostay response
       return if license_number.nil? || license_number.empty?
-      property.description_append = "License number: #{license_number}"
-      property.de.description_append = "Lizenznummer: #{license_number}"
-      property.es.description_append = "Número de licencia: #{license_number}"
-      property.zh.description_append = "许可证号: #{license_number}"
-      property.zh_tw.description_append = "許可證號: #{license_number}"
+      locals = {license_number: license_number}
+      property.description_append += Localiser.translate("en.license_number", locals)
+      property.de.description_append += Localiser.translate("de.license_number", locals)
+      property.es.description_append += Localiser.translate("es.license_number", locals)
+      property.zh.description_append += Localiser.translate("zh.license_number", locals)
+      property.zh_tw.description_append += Localiser.translate("zh_tw.license_number", locals)
+    end
+
+    def add_city_tourist_tax(property, response)
+      city_tourist_taxes = response.get("payment.city_tourist_tax")
+      return if city_tourist_taxes.empty?
+      currency = response.get("payment.currency")
+
+      tax_in_words = Properties::CityTouristTax.new(city_tourist_taxes, currency).parse
+      property.description_append += tax_in_words[:en]
+      property.de.description_append += tax_in_words[:de]
+      property.es.description_append += tax_in_words[:es]
+      property.zh.description_append += tax_in_words[:zh]
+      property.zh_tw.description_append += tax_in_words[:zh_tw]
+    end
+
+    def add_late_checkin_fee(property, response)
+      return unless response.get("general.late_checkin_possible")
+      locals = {
+        from:     response.get("general.late_checkin_from"),
+        to:       response.get("general.late_checkin_to"),
+        fee:      response.get("general.late_checkin_fee"),
+        currency: response.get("payment.currency")
+      }
+      property.description_append += Localiser.translate("en.late_checkin", locals)
+      property.de.description_append += Localiser.translate("de.late_checkin", locals)
+      property.es.description_append += Localiser.translate("es.late_checkin", locals)
+      property.zh.description_append += Localiser.translate("zh.late_checkin", locals)
+      property.zh_tw.description_append += Localiser.translate("zh_tw.late_checkin", locals)
     end
 
     # Returns params to initialize a Roomorama::Property from a SafeAccessHash

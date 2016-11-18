@@ -66,7 +66,7 @@ RSpec.describe PropertyRepository do
       3.times { |n| create_property(identifier: "prop#{n}") }
 
       identifiers = described_class.only(:identifier).map(&:identifier)
-      expect(identifiers).to eq ["prop0", "prop1", "prop2"]
+      expect(identifiers).to match_array ["prop0", "prop1", "prop2"]
     end
   end
 end

@@ -27,6 +27,11 @@ class ExternalError
   include Hanami::Entity
 
   OPERATIONS = %w(quote booking sync cancellation image host_creation)
+  CRITICAL_OPERATIONS = %w(booking cancellation)
 
   attributes :id, :operation, :supplier, :code, :description, :context, :happened_at
+
+  def critical?
+    CRITICAL_OPERATIONS.include? operation
+  end
 end
