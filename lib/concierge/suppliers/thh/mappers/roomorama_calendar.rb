@@ -27,9 +27,9 @@ module THH
 
       def build_entries(property)
         rates = Array(property.get('rates.rate'))
-        booked_periods = Array(property.get('calendar.periods.period'))
+        booked_dates = Array(property.get('calendar.booked.date'))
 
-        calendar = THH::Calendar.new(rates, booked_periods, THH::Mappers::RoomoramaProperty::SYNC_PERIOD)
+        calendar = THH::Calendar.new(rates, booked_dates, THH::Mappers::RoomoramaProperty::SYNC_PERIOD)
 
         rates_days = calendar.rates_days
         booked_days = calendar.booked_days

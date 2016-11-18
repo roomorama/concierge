@@ -11,6 +11,7 @@ how this file is formatted and how the process works.
 
 ### Fixed
 - THH: min_stay = max(min_nights)
+- THH: calendar sync uses `by days` format
 
 ### Changed
 - ExternalError from booking and cancellation are reported as critical errors on Rollbar

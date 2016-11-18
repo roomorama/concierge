@@ -5,22 +5,23 @@ module THH
   # Allows to calculate min_stay, min_rate and get day by day
   # rates and book info
   class Calendar
-    attr_reader :rates, :booked_periods, :length
+    attr_reader :rates, :booked_days, :length
 
     # Arguments:
     # * raw_rates - +Array+ of +Concierge::SafeAccessHash+ getting from raw
     #               THH property response (parsed by Nori) by key 'response.rates.rate'
-    # * raw_booked_periods - +Array+ of +Concierge::SafeAccessHash+ getting from
-    #                        raw THH property response (parsed by Nori)
-    #                        by key 'response.calendar.periods.period'
+    # * raw_booked_dates - +Array+ of +String+ getting from
+    #                       raw THH property response (parsed by Nori)
+    #                       by key 'response.calendar.booked.date'
     # * length - count of days from today calendar works with
-    def initialize(raw_rates, raw_booked_periods, length)
+    def initialize(raw_rates, raw_booked_dates, length)
       @length = length
 
       from = calendar_start
       to = calendar_end
 
-      @booked_periods = actual_booked_periods(raw_booked_periods, from, to)
+      # Set of booked dates
+      @booked_days = actual_booked_days(raw_booked_dates, from, to)
       @rates = actual_rates(raw_rates, from, to)
     end
 
@@ -63,19 +64,6 @@ module THH
       end
     end
 
-    # Returns Set of booked dates
-    def booked_days
-      @booked_days ||= Set.new.tap do |days|
-        booked_periods.each do |p|
-          from = [calendar_start, p[:date_from]].max
-          to = [calendar_end, p[:date_to]].min
-          if from <= to
-            days.merge(from..to)
-          end
-        end
-      end
-    end
-
     def has_available_days?
       ! (Set.new(rates_days.keys) - booked_days).empty?
     end
@@ -95,16 +83,12 @@ module THH
       end
     end
 
-    def actual_booked_periods(raw_booked_periods, from, to)
-      # NOTE: End date of period is not booked
-      raw_booked_periods.map do |p|
-        {
-            date_from: Date.parse(p['@date_from']),
-            date_to: Date.parse(p['@date_to']) - 1
-        }
-      end.select do |p|
-        p[:date_from] <= to && from <= p[:date_to]
-      end
+    def actual_booked_days(raw_booked_dates, from, to)
+      Set.new(
+        raw_booked_dates
+          .map { |d| Date.parse(d) }
+          .select { |d| from <= d && d <= to }
+      )
     end
 
     def calendar_start

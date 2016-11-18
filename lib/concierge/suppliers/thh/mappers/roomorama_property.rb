@@ -111,9 +111,9 @@ module THH
 
       def set_rates_and_min_stay!(property, raw_property)
         rates = Array(raw_property.get('rates.rate'))
-        booked_periods = Array(raw_property.get('calendar.periods.period'))
+        booked_dates = Array(raw_property.get('calendar.booked.date'))
 
-        calendar = THH::Calendar.new(rates, booked_periods, SYNC_PERIOD)
+        calendar = THH::Calendar.new(rates, booked_dates, SYNC_PERIOD)
         return Result.error(:no_available_dates, 'All available days of the property are booked') unless calendar.has_available_days?
 
         property.minimum_stay = calendar.min_stay
