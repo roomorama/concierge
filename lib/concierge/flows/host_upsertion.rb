@@ -151,12 +151,17 @@ module Concierge::Flows
     end
   end
 
-  # +Concierge::Flows::HostCreation+
+  # +Concierge::Flows::HostUpsertion+
   #
   # This class encapsulates the creation of host, a including associated
   # background workers. Hosts belong to a supplier and other related
   # attributes.
-  class HostCreation
+  #
+  # A Roomorama::CreateHost operation will be run on every #perform,
+  # which behaves more or less like upsert, except for AccessToken.
+  # The same AccessToken is always returned for the same Roomorama username
+  #
+  class HostUpsertion
     include Concierge::JSON
     include Hanami::Validations
 
@@ -188,9 +193,9 @@ module Concierge::Flows
     def perform
       if valid?
         if self.access_token.to_s.empty?
-          result = create_roomorama_user
-          return result unless result.success?
-          self.access_token = result.value
+          access_token_result = create_roomorama_user
+          return access_token_result unless access_token_result.success?
+          self.access_token = access_token_result.value
         end
         transaction do
           host = create_host

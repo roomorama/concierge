@@ -11,6 +11,7 @@ how this file is formatted and how the process works.
 ### Added
 - Host creation calls Roomorama api
 - Host entity has email, phone, name and payment terms
+- Edit host page
 
 ## [1.2.0] - 2016-11-16
 ### Added

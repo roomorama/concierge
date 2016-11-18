@@ -22,7 +22,7 @@ module Web::Controllers::Hosts
         result = host_creation.perform
 
         if result.success?
-          flash[:notice] = "Host was successfully created"
+          flash[:notice] = "Host was successfully created/updated"
         else
           announce_error(result)
           flash[:error] = "Host creation unsuccessful: #{result.error.code}; See External Errors for details."
@@ -48,11 +48,10 @@ module Web::Controllers::Hosts
     end
 
     def build_host_creation(params)
-      Concierge::Flows::HostCreation.new(
+      Concierge::Flows::HostUpsertion.new(
         supplier:       supplier,
         identifier:     params.get("host.identifier"),
         username:       params.get("host.username"),
-        access_token:   params.get("host.access_token"),
         fee_percentage: params.get("host.fee_percentage"),
         email:          params.get("host.email"),
         phone:          params.get("host.phone"),

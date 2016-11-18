@@ -1,5 +1,5 @@
 module Web::Controllers::Hosts
-  class New
+  class Edit
     include Web::Action
 
     expose :supplier
@@ -7,7 +7,8 @@ module Web::Controllers::Hosts
 
     def call(params)
       @supplier = SupplierRepository.find(params[:supplier_id])
-      @host = Host.new
+      @host = HostRepository.find(params[:id])
     end
   end
 end
+
