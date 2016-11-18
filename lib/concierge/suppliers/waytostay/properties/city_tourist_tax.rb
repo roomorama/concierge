@@ -17,12 +17,16 @@ class Waytostay::Properties::CityTouristTax
   end
 
   def parse
-    {
-      en: Waytostay::Properties::Localiser.translate("en.city_tourist_tax.#{tax[:rate_type]}", tax),
-      de: Waytostay::Properties::Localiser.translate("de.city_tourist_tax.#{tax[:rate_type]}", tax),
-      es: Waytostay::Properties::Localiser.translate("es.city_tourist_tax.#{tax[:rate_type]}", tax),
-      zh: Waytostay::Properties::Localiser.translate("zh.city_tourist_tax.#{tax[:rate_type]}", tax),
-      zh_tw: Waytostay::Properties::Localiser.translate("zh_tw.city_tourist_tax.#{tax[:rate_type]}", tax),
-    }
+    unless tax[:included]
+      {
+        en: Waytostay::Properties::Localiser.translate("en.city_tourist_tax.#{tax[:rate_type]}", tax),
+        de: Waytostay::Properties::Localiser.translate("de.city_tourist_tax.#{tax[:rate_type]}", tax),
+        es: Waytostay::Properties::Localiser.translate("es.city_tourist_tax.#{tax[:rate_type]}", tax),
+        zh: Waytostay::Properties::Localiser.translate("zh.city_tourist_tax.#{tax[:rate_type]}", tax),
+        zh_tw: Waytostay::Properties::Localiser.translate("zh_tw.city_tourist_tax.#{tax[:rate_type]}", tax),
+      }
+    else
+      Hash.new("")
+    end
   end
 end

@@ -3,6 +3,27 @@ require 'spec_helper'
 RSpec.describe Waytostay::Properties::CityTouristTax do
   let(:currency) { "EUR" }
 
+  context "included already" do
+    let(:taxes) {
+      [
+        {
+          "included"   => true,
+          "rate"       => 17,
+          "rate_type"  => "per_stay",
+          "from_age"   => 18,
+          "max_nights" => 0
+        }
+      ]
+    }
+    it "should be correct" do
+      tax_in_words = described_class.new(taxes, currency).parse
+      expect(tax_in_words[:en]).to eq ""
+      expect(tax_in_words[:de]).to eq ""
+      expect(tax_in_words[:es]).to eq ""
+      expect(tax_in_words[:zh]).to eq ""
+      expect(tax_in_words[:zh_tw]).to eq ""
+    end
+  end
   context "of type per_stay" do
     let(:taxes) {
       [
