@@ -46,7 +46,7 @@
     "min_stay_default": 2,
     "checkin_time": "15:00:00",
     "checkout_time": "11:00:00",
-    "late_checkin_possible": false,
+    "late_checkin_possible": true,
     "late_checkin_from": "22:00:00",
     "late_checkin_to": "08:00:00",
     "late_checkin_fee": 20,

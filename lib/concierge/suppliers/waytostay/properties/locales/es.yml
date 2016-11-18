@@ -8,3 +8,4 @@ es:
     percent_off_gross: "Impuesto municipal de turismo adicional: %{rate}%% del precio total tendrá que ser pagado en la propiedad.\n"
     percent_off_net: "Impuesto municipal de turismo adicional: %{rate}%% de las tarifas nocturnas tendrá que ser pagado en la propiedad.\n"
   license_number: "Número de licencia: %{license_number}\n"
+  late_checkin: "Tarde de facturación de %{from} a %{to} - %{fee} %{currency}\n"

@@ -185,6 +185,7 @@ module Waytostay
       property.zh_tw.description_append ||= ""
       add_license_number(property, response)
       add_city_tourist_tax(property, response)
+      add_late_checkin_fee(property, response)
     end
 
     # Because Roomorama doesn't have a license field,
@@ -212,6 +213,21 @@ module Waytostay
       property.es.description_append += tax_in_words[:es]
       property.zh.description_append += tax_in_words[:zh]
       property.zh_tw.description_append += tax_in_words[:zh_tw]
+    end
+
+    def add_late_checkin_fee(property, response)
+      return unless response.get("general.late_checkin_possible")
+      locals = {
+        from:     response.get("general.late_checkin_from"),
+        to:       response.get("general.late_checkin_to"),
+        fee:      response.get("general.late_checkin_fee"),
+        currency: response.get("payment.currency")
+      }
+      property.description_append += Localiser.translate("en.late_checkin", locals)
+      property.de.description_append += Localiser.translate("de.late_checkin", locals)
+      property.es.description_append += Localiser.translate("es.late_checkin", locals)
+      property.zh.description_append += Localiser.translate("zh.late_checkin", locals)
+      property.zh_tw.description_append += Localiser.translate("zh_tw.late_checkin", locals)
     end
 
     # Returns params to initialize a Roomorama::Property from a SafeAccessHash

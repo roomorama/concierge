@@ -218,6 +218,65 @@ RSpec.shared_examples "Waytostay property client" do
 
   end
 
+  describe "#add_late_checkin_fees" do
+    let(:property) { Roomorama::Property.new('test') }
+    let(:response) {
+      Concierge::SafeAccessHash.new(
+        "general" => {
+          "late_checkin_possible" => true,
+          "late_checkin_from" => "22:00",
+          "late_checkin_to" => "08:00",
+          "late_checkin_fee" => "30"
+        },
+        "payment" => {
+          "currency" => "USD"
+        }
+      )
+    }
+
+    before {
+      property.description_append ||= ""
+      property.de.description_append ||= ""
+      property.es.description_append ||= ""
+      property.zh.description_append ||= ""
+      property.zh_tw.description_append ||= ""
+
+      described_class.new.send(:add_late_checkin_fee, property, response)
+    }
+
+    it "should be correct" do
+      expect(property.description_append).to eq "Late check-in fees from 22:00 to 08:00 - 30 USD\n"
+      expect(property.de.description_append).to eq "Gebühr in Höhe von 30 USD für späte Anreise (22:00 bis 08:00)\n"
+      expect(property.es.description_append).to eq "Tarde de facturación de 22:00 a 08:00 - 30 USD\n"
+      expect(property.zh.description_append).to eq "延迟入住费从22:00至08:00  -  30 USD\n"
+      expect(property.zh_tw.description_append).to eq "延遲入住費從22:00至08:00  -  30 USD\n"
+    end
+
+    context "late checkin not possible" do
+      let(:response) {
+        Concierge::SafeAccessHash.new(
+          "general" => {
+            "late_checkin_possible" => false,
+            "late_checkin_from" => "22:00",
+            "late_checkin_to" => "08:00",
+            "late_checkin_fee" => "30"
+          },
+          "payment" => {
+            "currency" => "USD"
+          }
+        )
+      }
+
+      it "should not append to description_apend" do
+        expect(property.description_append).to eq ""
+        expect(property.de.description_append).to eq ""
+        expect(property.es.description_append).to eq ""
+        expect(property.zh.description_append).to eq ""
+        expect(property.zh_tw.description_append).to eq ""
+      end
+    end
+  end
+
   describe "#add_license_number" do
 
     let(:property) { Roomorama::Property.new('test') }

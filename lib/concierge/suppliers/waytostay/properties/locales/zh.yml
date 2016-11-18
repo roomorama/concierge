@@ -8,3 +8,4 @@ zh:
     percent_off_gross: "附加城市旅游税：定单总额的%{rate}%%会在酒店到付。\n"
     percent_off_net: "附加城市旅游税：每晚价格的%{rate}%%会在酒店到付。\n"
   license_number: "许可证号: %{license_number}\n"
+  late_checkin: "延迟入住费从%{from}至%{to}  -  %{fee} %{currency}\n"

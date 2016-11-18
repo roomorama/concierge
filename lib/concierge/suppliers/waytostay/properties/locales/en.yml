@@ -8,3 +8,4 @@ en:
     percent_off_gross: "Additional City Tourist Tax: %{rate}%% of the total price will need to be paid at the property.\n"
     percent_off_net: "Additional City Tourist Tax: %{rate}%% of the nightly rates will need to be paid at the property.\n"
   license_number: "License number: %{license_number}\n"
+  late_checkin: "Late check-in fees from %{from} to %{to} - %{fee} %{currency}\n"

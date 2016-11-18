@@ -8,3 +8,4 @@ de:
     percent_off_gross: "Zusätzliche Abgabe für Touristen in Höhe von %{rate}%% der Gesamtsumme wird direkt beim Gastgeber bezahlt.\n"
     percent_off_net: "Zusätzliche Abgabe für Touristen in Höhe von %{rate}%% der Preise pro Nacht wird direkt beim Gastgeber bezahlt.\n"
   license_number: "Lizenznummer: %{license_number}\n"
+  late_checkin: "Gebühr in Höhe von %{fee} %{currency} für späte Anreise (%{from} bis %{to})\n"
