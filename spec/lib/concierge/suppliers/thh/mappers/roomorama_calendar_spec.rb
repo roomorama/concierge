@@ -55,7 +55,7 @@ RSpec.describe THH::Mappers::RoomoramaCalendar do
 
       expect(entry.nightly_rate).to eq(10068.0)
       expect(entry.available).to be true
-      expect(entry.minimum_stay).to eq(1)
+      expect(entry.minimum_stay).to eq(3)
     end
   end
 
