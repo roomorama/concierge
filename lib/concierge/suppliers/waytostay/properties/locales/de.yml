@@ -1,0 +1,10 @@
+de:
+  city_tourist_tax:
+    per_stay: "Zusätzliche Abgabe für Touristen in Höhe von %{rate} %{currency} wird direkt beim Gastgeber bezahlt."
+    per_night: "Zusätzliche Abgabe für Touristen in Höhe von %{rate} %{currency} pro Nacht wird direkt beim Gastgeber bezahlt, für bis zu %{max_nights} Nächte."
+    per_night_no_max: "Zusätzliche Abgabe für Touristen in Höhe von %{rate} %{currency} pro Nacht wird direkt beim Gastgeber bezahlt."
+    per_person_per_night: "Zusätzliche Abgabe für Touristen in Höhe von %{rate} %{currency} pro Nacht, pro Person wird direkt beim Gastgeber bezahlt, für Gäste älter als %{from_age} Jahre, für bis zu %{max_nights} Nächte."
+    per_person_per_night_no_max: "Zusätzliche Abgabe für Touristen in Höhe von %{rate} %{currency} pro Nacht, pro Person wird direkt beim Gastgeber bezahlt, für Gäste älter als %{from_age} Jahre."
+    percent_off_gross: "Zusätzliche Abgabe für Touristen in Höhe von %{rate}%% der Gesamtsumme wird direkt beim Gastgeber bezahlt."
+    percent_off_net: "Zusätzliche Abgabe für Touristen in Höhe von %{rate}%% der Preise pro Nacht wird direkt beim Gastgeber bezahlt."
+

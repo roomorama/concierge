@@ -195,7 +195,17 @@ module Waytostay
       city_tourist_taxes = response.get("payment.city_tourist_tax")
       return if city_tourist_taxes.empty?
       property.description_append ||= ""
-      property.description_append += Properties::CityTouristTax.new(city_tourist_taxes).parse
+      property.de.description_append ||= ""
+      property.es.description_append ||= ""
+      property.zh.description_append ||= ""
+      property.zh_tw.description_append ||= ""
+
+      tax_in_words = Properties::CityTouristTax.new(city_tourist_taxes).parse
+      property.description_append += '\n' + tax_in_words[:en]
+      property.de.description_append += '\n' + tax_in_words[:de]
+      property.es.description_append += '\n' + tax_in_words[:es]
+      property.zh.description_append += '\n' + tax_in_words[:zh]
+      property.zh_tw.description_append += '\n' + tax_in_words[:zh_tw]
     end
 
     # Returns params to initialize a Roomorama::Property from a SafeAccessHash

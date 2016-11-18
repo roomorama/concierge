@@ -1,0 +1,9 @@
+zh:
+  city_tourist_tax:
+    per_stay: " 附加城市旅游税%{rate} %{currency}， 需到达酒店时支付"
+    per_night: " 附加城市旅游税%{rate} %{currency} 每晚，需到达酒店时支付最多%{max_nights}晚"
+    per_night_no_max: " 附加城市旅游税%{rate} %{currency} 每晚，需到达酒店时支付"
+    per_person_per_night: "超过%{from_age}岁的客人，附加城市旅游税%{rate} %{currency}每人，每晚需到达酒店时支付，最多%{max_nights}晚。"
+    per_person_per_night_no_max: "超过%{from_age}岁的客人，附加城市旅游税%{rate} %{currency}每人，每晚需到达酒店时支付。"
+    percent_off_gross: "附加城市旅游税：定单总额的%{rate}%%会在酒店到付。"
+    percent_off_net: "附加城市旅游税：每晚价格的%{rate}%%会在酒店到付。"
