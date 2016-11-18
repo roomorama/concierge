@@ -5,8 +5,11 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+-
+
+## [1.3.0]
 ### Fixed
-- AtLeisure: prevent "undefined method `[]' for nil:NilClass" if property doesn't have deposit info
+- AtLeisure: prevent "undefined method '[]' for nil:NilClass" if property doesn't have deposit info
 
 ### Added
 - Host creation calls Roomorama api
