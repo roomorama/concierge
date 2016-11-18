@@ -169,13 +169,22 @@ module Waytostay
         property_attributes_from(response).each do |key, value|
           property[key] = value unless value.nil?
         end
-        add_license_number(property, response)
-        add_city_tourist_tax(property, response)
+        add_description_append(property, response)
         Result.new(property)
       else
         augment_missing_fields(missing_keys)
         Result.error(:unrecognised_response, "Missing keys: #{missing_keys}")
       end
+    end
+
+    def add_description_append(property, response)
+      property.description_append ||= ""
+      property.de.description_append ||= ""
+      property.es.description_append ||= ""
+      property.zh.description_append ||= ""
+      property.zh_tw.description_append ||= ""
+      add_license_number(property, response)
+      add_city_tourist_tax(property, response)
     end
 
     # Because Roomorama doesn't have a license field,
@@ -184,28 +193,23 @@ module Waytostay
     def add_license_number(property, response)
       license_number = response.get("general.licence_number")  # spelled wrongly according to waytostay response
       return if license_number.nil? || license_number.empty?
-      property.description_append = "License number: #{license_number}"
-      property.de.description_append = "Lizenznummer: #{license_number}"
-      property.es.description_append = "Número de licencia: #{license_number}"
-      property.zh.description_append = "许可证号: #{license_number}"
-      property.zh_tw.description_append = "許可證號: #{license_number}"
+      property.description_append += "License number: #{license_number}\n"
+      property.de.description_append += "Lizenznummer: #{license_number}\n"
+      property.es.description_append += "Número de licencia: #{license_number}\n"
+      property.zh.description_append += "许可证号: #{license_number}\n"
+      property.zh_tw.description_append += "許可證號: #{license_number}\n"
     end
 
     def add_city_tourist_tax(property, response)
       city_tourist_taxes = response.get("payment.city_tourist_tax")
       return if city_tourist_taxes.empty?
-      property.description_append ||= ""
-      property.de.description_append ||= ""
-      property.es.description_append ||= ""
-      property.zh.description_append ||= ""
-      property.zh_tw.description_append ||= ""
 
       tax_in_words = Properties::CityTouristTax.new(city_tourist_taxes).parse
-      property.description_append += '\n' + tax_in_words[:en]
-      property.de.description_append += '\n' + tax_in_words[:de]
-      property.es.description_append += '\n' + tax_in_words[:es]
-      property.zh.description_append += '\n' + tax_in_words[:zh]
-      property.zh_tw.description_append += '\n' + tax_in_words[:zh_tw]
+      property.description_append += tax_in_words[:en] + '\n'
+      property.de.description_append += tax_in_words[:de] + '\n'
+      property.es.description_append += tax_in_words[:es] + '\n'
+      property.zh.description_append += tax_in_words[:zh] + '\n'
+      property.zh_tw.description_append += tax_in_words[:zh_tw] + '\n'
     end
 
     # Returns params to initialize a Roomorama::Property from a SafeAccessHash
