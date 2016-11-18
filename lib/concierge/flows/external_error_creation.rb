@@ -11,6 +11,7 @@ module Concierge::Flows
     include Hanami::Validations
 
     # Notifies exception tracker
+    # Currently Rollbar is used
     class ErrorReporter
       attr_reader :ext_error
 
@@ -19,7 +20,11 @@ module Concierge::Flows
       end
 
       def report
-        Rollbar.warning(error_message, custom_attributes)
+        if ext_error.critical?
+          Rollbar.critical(error_message, custom_attributes)
+        else
+          Rollbar.warning(error_message, custom_attributes)
+        end
       end
 
       private
