@@ -8,6 +8,9 @@ how this file is formatted and how the process works.
 ### Added
 - Laos country code for SAW
 
+### Fixed
+- THH: min_stay = max(min_nights)
+
 ### Changed
 - ExternalError from booking and cancellation are reported as critical errors on Rollbar
 

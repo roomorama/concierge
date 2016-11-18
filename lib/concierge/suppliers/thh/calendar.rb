@@ -41,11 +41,14 @@ module THH
           if from <= to
             (from..to).each do |day|
               # One date can have several rates with different min_nights,
-              # To fill calendar Concierge uses min minimum stay and max price.
+              # To fill calendar Concierge uses max minimum stay and max price.
+              # It's hard to use min minimum stay because of THH's rule: if booking is less than min stay - it must be
+              # close to already existing booking (another words they allow to book less then max(min_nights)
+              # only for small gaps inside existing booking calendar or if user's small vacation is near some other reservation)
               cur_r = days[day]
               if cur_r
                 days[day] = {
-                  min_nights: [cur_r[:min_nights], r[:min_nights]].min,
+                  min_nights: [cur_r[:min_nights], r[:min_nights]].max,
                   night:      [cur_r[:night], r[:night]].max
                 }
               else

@@ -56,7 +56,7 @@ RSpec.describe THH::Mappers::RoomoramaProperty do
       expect(image.identifier).to eq 'db41cdc9d16bd1504daffedbc2652de9'
       expect(image.url).to eq 'http://img.thailandholidayhomes.com/cache/villa_15_6863-530x354-1.jpg'
 
-      expect(property.minimum_stay).to eq(1)
+      expect(property.minimum_stay).to eq(3)
       expect(property.nightly_rate).to eq(8510.0)
       expect(property.weekly_rate).to eq(59570.0)
       expect(property.monthly_rate).to eq(255300.0)

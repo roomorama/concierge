@@ -41,7 +41,7 @@ RSpec.describe THH::Calendar do
 
   describe '#min_stay' do
     it 'returns minimum stay' do
-      expect(subject.min_stay).to eq(1)
+      expect(subject.min_stay).to eq(3)
     end
   end
 
