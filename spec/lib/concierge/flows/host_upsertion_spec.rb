@@ -129,14 +129,14 @@ RSpec.describe Concierge::Flows::HostUpsertion do
 
       expect(workers.size).to eq 2
 
-      worker = workers.first
-      expect(worker.type).to eq "metadata"
+      worker = workers.find{ |w| w.type == "metadata" }
+      expect(worker).to_not be_nil
       expect(worker.next_run_at).to be_nil
       expect(worker.interval).to eq 24 * 60 * 60 # one day
       expect(worker.status).to eq "idle"
 
-      worker = workers.last
-      expect(worker.type).to eq "availabilities"
+      worker = workers.find{ |w| w.type == "availabilities" }
+      expect(worker).to_not be_nil
       expect(worker.next_run_at).to be_nil
       expect(worker.interval).to eq 2 * 60 * 60 # two hours
       expect(worker.status).to eq "idle"

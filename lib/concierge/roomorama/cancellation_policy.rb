@@ -5,5 +5,6 @@ module Roomorama
     FIRM         = 'firm'.freeze
     STRICT       = 'strict'.freeze
     SUPER_STRICT = 'super_strict'.freeze
+    NO_REFUND    = 'no_refund'.freeze
   end
 end
