@@ -44,19 +44,19 @@
   "default_to_available": true,
   "cancellation_policy": "strict",
   "instant_booking": true,
-  "description_append": "License number: HUTB-012425 68",
+  "description_append": "License number: HUTB-012425 68\nAdditional City Tourist Tax: 0.83 EUR per night per person will need to be paid at the property for guests above 18 years of age.\nLate check-in fees from 22:00:00 to 08:00:00 - 20 EUR\n",
   "translations": {
     "de": {
-      "description_append": "Lizenznummer: HUTB-012425 68"
+      "description_append": "Lizenznummer: HUTB-012425 68\nZusätzliche Abgabe für Touristen in Höhe von 0.83 EUR pro Nacht, pro Person wird direkt beim Gastgeber bezahlt, für Gäste älter als 18 Jahre.\nGebühr in Höhe von 20 EUR für späte Anreise (22:00:00 bis 08:00:00)\n"
     },
     "es": {
-      "description_append": "Número de licencia: HUTB-012425 68"
+      "description_append": "Número de licencia: HUTB-012425 68\nImpuesto municipal de turismo adicional: 0.83 EUR por noche tendrá que ser pagado en la propieda.\nTarde de facturación de 22:00:00 a 08:00:00 - 20 EUR\n"
     },
     "zh": {
-      "description_append": "许可证号: HUTB-012425 68"
+      "description_append": "许可证号: HUTB-012425 68\n超过18岁的客人，附加城市旅游税0.83 EUR每人，每晚需到达酒店时支付。\n延迟入住费从22:00:00至08:00:00  -  20 EUR\n"
     },
     "zh_tw": {
-      "description_append": "許可證號: HUTB-012425 68"
+      "description_append": "許可證號: HUTB-012425 68\n超过18岁的客人，附加城市旅游税0.83 EUR每人，每晚需到達酒店時支付。\n延遲入住費從22:00:00至08:00:00  -  20 EUR\n"
     }
   },
   "images": [
