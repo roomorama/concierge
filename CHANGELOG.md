@@ -7,12 +7,14 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Added
 - Laos country code for SAW
+- WayToStay city tourist tax and late checkin fee to description append
 
 ### Fixed
 - THH: min_stay = max(min_nights)
 
 ### Changed
 - ExternalError from booking and cancellation are reported as critical errors on Rollbar
+- RentalsUnited cancellation policy is no refund
 
 ## [1.3.0]
 ### Fixed
