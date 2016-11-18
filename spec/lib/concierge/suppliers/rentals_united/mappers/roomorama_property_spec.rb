@@ -164,7 +164,7 @@ RSpec.describe RentalsUnited::Mappers::RoomoramaProperty do
   end
 
   it "sets cancellation_policy to the property" do
-    expect(property.cancellation_policy).to eq("super_strict")
+    expect(property.cancellation_policy).to eq("no_refund")
   end
 
   it "sets default_to_available flag to false" do
