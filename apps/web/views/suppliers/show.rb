@@ -62,7 +62,7 @@ module Web::Views::Suppliers
     # If there are no +workers+ entry or no +metadata+ entry in the workers
     # definition on +config/suppliers.yml+, this method returns +NO_WORKERS_DEFINED+.
     def metadata_frequency(supplier)
-      definition = workers_definitions[supplier.name]
+      definition = Concierge::Suppliers.for(supplier.name)
       unless definition && definition["workers"]
         return NO_WORKERS_DEFINED
       end
@@ -90,7 +90,7 @@ module Web::Views::Suppliers
     # If there are no +workers+ entry or no +metadata+ entry in the workers
     # definition on +config/suppliers.yml+, this method returns +NO_WORKERS_DEFINED+.
     def availabilities_frequency(supplier)
-      definition = workers_definitions[supplier.name]
+      definition = Concierge::Suppliers.for(supplier.name)
       unless definition && definition["workers"]
         return NO_WORKERS_DEFINED
       end
@@ -115,7 +115,7 @@ module Web::Views::Suppliers
     end
 
     def aggregated?(type)
-      definitions     = workers_definitions[supplier.name] && workers_definitions[supplier.name]["workers"]
+      definitions     = Concierge::Suppliers.for(supplier.name)
       type_definition = definitions && definitions[type]
 
       !!(type_definition && type_definition["aggregated"])
@@ -197,10 +197,6 @@ module Web::Views::Suppliers
       end
 
       ["every", quantifier, unit_name].join(" ")
-    end
-
-    def workers_definitions
-      @definitions ||= YAML.load_file(Hanami.root.join("config", "suppliers.yml").to_s)
     end
   end
 end

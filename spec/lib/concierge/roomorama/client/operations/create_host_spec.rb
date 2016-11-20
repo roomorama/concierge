@@ -11,7 +11,7 @@ RSpec.describe Roomorama::Client::Operations::CreateHost do
 
   before {
     ENV["ROOMORAMA_API_ENVIRONMENT"] = "production"
-    Concierge::SupplierRoutes.load
+    Concierge::Suppliers.reload!
   }
 
   describe "#request_data" do

@@ -1,6 +1,6 @@
-Concierge::SupplierRoutes.declared_suppliers.each do |supplier_name|
-  subpath = Concierge::SupplierRoutes.sub_path(supplier_name)
-  controller = Concierge::SupplierRoutes.controller_name(supplier_name)
+Concierge::Suppliers.data.values.each do |config|
+  subpath = config["path"]
+  controller = config["controller"]
   post "/#{subpath}/quote",   to: "#{controller}#quote"
   post "/#{subpath}/booking", to: "#{controller}#booking"
   post "/#{subpath}/cancel",  to: "#{controller}#cancel"

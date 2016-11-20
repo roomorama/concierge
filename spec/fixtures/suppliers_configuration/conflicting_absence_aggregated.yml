@@ -1,4 +1,6 @@
 Supplier X:
+  path: "supplier_x"
+  controller: "supplier_x"
   workers:
     metadata:
       every: "1d"

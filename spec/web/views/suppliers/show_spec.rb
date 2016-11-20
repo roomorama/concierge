@@ -27,6 +27,7 @@ RSpec.describe Web::Views::Suppliers::Show do
     2.times { |n|
       create_host(supplier_id: supplier.id, fee_percentage: (n + 2).to_f, identifier: "host#{n}", access_token: "token#{n}")
     }
+    Concierge::Suppliers.reload!
   end
 
   it "includes the number of integrated hosts and properties" do
