@@ -248,7 +248,7 @@ module Concierge::Flows
     end
 
     def find_workers_definition
-      definition = Concierge::Suppliers.for(supplier.name)
+      definition = Concierge::SupplierConfig.for(supplier.name)
 
       if definition
         Result.new(definition["workers"].to_h)

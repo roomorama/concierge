@@ -1,4 +1,4 @@
-Concierge::Suppliers.data.values.each do |config|
+Concierge::SupplierConfig.data.values.each do |config|
   subpath = config["path"]
   controller = config["controller"]
   post "/#{subpath}/quote",   to: "#{controller}#quote"

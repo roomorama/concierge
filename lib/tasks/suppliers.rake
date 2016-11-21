@@ -4,7 +4,7 @@ namespace :suppliers do
   desc "Loads the suppliers.yml file into the database"
   task load: :environment do
     total = 0
-    Concierge::Suppliers.suppliers.map do |name|
+    Concierge::SupplierConfig.suppliers.map do |name|
       existing = SupplierRepository.named(name)
 
       unless existing

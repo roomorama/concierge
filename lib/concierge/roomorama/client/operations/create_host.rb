@@ -75,7 +75,7 @@ class Roomorama::Client::Operations
     end
 
     def supplier_path
-      Concierge::Suppliers.for(supplier.name)["path"]
+      Concierge::SupplierConfig.for(supplier.name)["path"]
     end
 
     private

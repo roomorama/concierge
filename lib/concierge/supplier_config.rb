@@ -2,21 +2,21 @@ require "erb"
 
 module Concierge
 
-  # +Concierge::Suppliers+
+  # +Concierge::SupplierConfig+
   #
   # This class manages suppliers' configs.
   # Config is stored in the +config/suppliers.yml+ file
   #
   # Usage
   #
-  #   Concierge::Suppliers.for("Supplier")
+  #   Concierge::SupplierConfig.for("Supplier")
   #   # => Hash
-  class Suppliers
+  class SupplierConfig
     REQUIRED_FIELDS = ["path", "controller", "workers"]
     # one of this field should be configured for each worker
     WORKER_FIELDS = ["every", "absence", "aggregated"]
 
-    # +Concierge::Suppliers::MissingFieldError+
+    # +Concierge::SupplierConfig::MissingFieldError+
     #
     # This is raised when validating suppliers and one of the required fields
     # is either not defined or empty for some supplier.
@@ -26,7 +26,7 @@ module Concierge
       end
     end
 
-    # +Concierge::Suppliers::InvalidWorkerError+
+    # +Concierge::SupplierConfig::InvalidWorkerError+
     #
     # This is raised when validating suppliers' workers
     class InvalidWorkerError < StandardError
@@ -58,7 +58,7 @@ module Concierge
       #
       # Usage:
       #
-      #   Suppliers.validate_suppliers!
+      #   SupplierConfig.validate_suppliers!
       #
       # This will raise exceptions in case the required supplier fields are
       # not defined or empty. This ensures that when the application boots,
