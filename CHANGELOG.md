@@ -5,6 +5,8 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+### Added
+- Vietnam country code for SAW
 
 ## [1.3.1] - 2016-11-18
 ### Added

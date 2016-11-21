@@ -13,7 +13,8 @@ module SAW
     class CountryCode
       CUSTOM_COUNTRY_CODES = {
         "Korea, Republic of" => "KR",
-        "Laos"               => "LA"
+        "Laos"               => "LA",
+        "Vietnam"            => "VN"
       }
 
       class << self
