@@ -9,6 +9,9 @@ module THH
       SECURITY_DEPOSIT_TYPE = 'cash'
       SECURITY_DEPOSIT_CURRENCY = 'THB'
       CANCELLATION_POLICY = Roomorama::CancellationPolicy::STRICT
+      # All properties from THH have the same check in/out time
+      CHECK_IN_TIME = '13:00'
+      CHECK_OUT_TIME = '11:00'
 
       # Maps THH type to Roomorama property type/subtype.
       PROPERTY_TYPES = Concierge::SafeAccessHash.new({
@@ -57,6 +60,8 @@ module THH
         property.number_of_single_beds = raw_property.get('beds.single_beds')
         property.number_of_sofa_beds = raw_property.get('beds.sofa_beds')
         property.cancellation_policy = CANCELLATION_POLICY
+        property.check_in_time = CHECK_IN_TIME
+        property.check_out_time = CHECK_OUT_TIME
       end
 
       def set_amenities!(property, raw_property)

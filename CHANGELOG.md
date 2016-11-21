@@ -7,6 +7,7 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Added
 - Vietnam country code for SAW
+- THH: check in/out time info
 
 ## [1.3.1] - 2016-11-18
 ### Added
