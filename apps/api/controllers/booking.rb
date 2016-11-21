@@ -54,7 +54,11 @@ module API::Controllers
         else
           announce_error(reservation_result)
           error_message = { booking: reservation_result.error.data || GENERIC_ERROR }
-          status 503, invalid_request(error_message)
+          code = 503
+          if Concierge::Errors::Booking::ERROR_CODES_WITH_SUCCESS_RESPONSE.include? reservation_result.error.code
+            code = 200
+          end
+          status code, invalid_request(error_message)
         end
       else
         status 422, invalid_request(params.error_messages)

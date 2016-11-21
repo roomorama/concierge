@@ -50,6 +50,16 @@ RSpec.describe THH::Booking do
       expect(result.error.data).to eq 'Some error'
     end
 
+    it 'returns a special error if not availalbe response in the command call' do
+      allow_any_instance_of(THH::Commands::Booking).to receive(:call) { Result.error(:not_available, 'Some error') }
+
+      result = subject.book(params)
+
+      expect(result).not_to be_success
+      expect(result.error.code).to eq :not_available
+      expect(result.error.data).to eq 'Property not available for booking'
+    end
+
     it 'returns mapped reservation' do
       allow_any_instance_of(THH::Commands::Booking).to receive(:call) { Result.new(success_response) }
 

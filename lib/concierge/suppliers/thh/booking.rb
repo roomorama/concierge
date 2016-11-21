@@ -19,6 +19,7 @@ module THH
   # resulting +Reservation+ object.
 
   class Booking
+    include Concierge::Errors::Booking
     attr_reader :credentials
 
     def initialize(credentials)
@@ -30,6 +31,9 @@ module THH
       fetcher = THH::Commands::Booking.new(credentials)
       raw_booking = fetcher.call(params)
 
+      if !raw_booking.success? && raw_booking.error.code == :not_available
+        return not_available
+      end
       return raw_booking unless raw_booking.success?
 
       reservation = build_reservation(params, raw_booking.value)

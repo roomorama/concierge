@@ -1,4 +1,5 @@
 require "spec_helper"
+require_relative "../shared/booking_call"
 require_relative "../shared/booking_validations"
 
 RSpec.describe API::Controllers::THH::Booking do
@@ -28,6 +29,7 @@ RSpec.describe API::Controllers::THH::Booking do
   let(:credentials) { double(key: 'Foo', url: url) }
 
   it_behaves_like "performing booking parameters validations", controller_generator: -> { described_class.new }
+  it_behaves_like "booking call"
 
   describe '#call' do
 

@@ -9,6 +9,8 @@ how this file is formatted and how the process works.
 - Vietnam country code for SAW
 - THH: check in/out time info
 - Poplidays: skip properties with zero `max_guest`
+- Common booking errors module `Concierge::Errors::Booking`
+- THH: handle booking not available case in common manner
 
 ### Fixed
 - JTB: ignore units without availability calendar

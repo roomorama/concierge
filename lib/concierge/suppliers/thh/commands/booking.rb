@@ -49,7 +49,14 @@ module THH
             :unrecognised_response,
             "Booking response for params `#{params.to_h}` does not contain `#{VILLA_STATUS}` field")
         end
+
         # Possible values for villa status: on_request, instant, not_available
+        if villa_status == 'not_available'
+          # Handle not_available as special case
+          return Result.error(
+            :not_available,
+            "Booking response for params `#{params.to_h}` contains `not_available` value for `#{VILLA_STATUS}` field")
+        end
         if villa_status != 'instant'
           return Result.error(
             :unrecognised_response,
