@@ -13,7 +13,7 @@ module THH
       CHECK_IN_TIME = '13:00'
       CHECK_OUT_TIME = '11:00'
 
-        # Maps THH type to Roomorama property type/subtype.
+      # Maps THH type to Roomorama property type/subtype.
       PROPERTY_TYPES = Concierge::SafeAccessHash.new({
         'Villa'     => {type: 'house', subtype: 'villa'},
         'Apartment' => {type: 'apartment'},
