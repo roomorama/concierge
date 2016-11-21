@@ -37,10 +37,26 @@ RSpec.describe JTB::Mappers::RoomoramaProperty do
     create_room_price({ rate_plan_id: 'CHUHW0101TRP2PSG', date: '2016-10-12', room_rate: 8011.0 })
     create_room_price({ rate_plan_id: 'CHUHW0101TRP2PSG', date: '2016-10-13', room_rate: 7011.0 })
 
+    # room without available days
     room_without_stocks = create_room_type({ room_code: 'CHUHW01RM0000002' })
     create_rate_plan({ rate_plan_id: "CHUHW0102TRP1PSG", room_code: room_without_stocks.room_code })
     create_room_stock({ rate_plan_id: 'CHUHW0102TRP1PSG', service_date: '2016-10-12', number_of_units: 0 })
     create_room_price({ rate_plan_id: 'CHUHW0102TRP1PSG', date: '2016-10-13', room_rate: 7012.0 })
+
+    # Next rooms should be ignored by mapper:
+
+    # room without rate plans
+    room_without_rate_plans = create_room_type({ room_code: 'CHUHW01RM0000003' })
+
+    # room without stocks
+    room_without_stocks = create_room_type({ room_code: 'CHUHW01RM0000004' })
+    create_rate_plan({ rate_plan_id: "CHUHW0103TRP1PSG", room_code: room_without_stocks.room_code })
+    create_room_price({ rate_plan_id: 'CHUHW0103TRP1PSG', date: '2016-10-13', room_rate: 7013.0 })
+
+    # room without price
+    room_without_stocks = create_room_type({ room_code: 'CHUHW01RM0000005' })
+    create_rate_plan({ rate_plan_id: "CHUHW0104TRP1PSG", room_code: room_without_stocks.room_code })
+    create_room_stock({ rate_plan_id: 'CHUHW0104TRP1PSG', service_date: '2016-10-12' })
 
     result = subject.build(hotel)
 

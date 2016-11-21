@@ -10,6 +10,9 @@ how this file is formatted and how the process works.
 - THH: check in/out time info
 - Poplidays: skip properties with zero `max_guest`
 
+### Fixed
+- JTB: ignore units without availability calendar
+
 ## [1.3.1] - 2016-11-18
 ### Added
 - Laos country code for SAW
