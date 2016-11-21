@@ -13,6 +13,9 @@ how this file is formatted and how the process works.
 ### Fixed
 - JTB: ignore units without availability calendar
 
+### Changed
+- Refactor reading `suppliers.yml`, extract all logic in `Concierge::SupplierConfig` class 
+
 ## [1.3.1] - 2016-11-18
 ### Added
 - Laos country code for SAW
