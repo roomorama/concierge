@@ -14,6 +14,7 @@ how this file is formatted and how the process works.
 
 ### Fixed
 - JTB: ignore units without availability calendar
+- Add `:property_not_instant_bookable` and `:max_guests_exceeded` errors to `ERROR_CODES_WITH_SUCCESS_RESPONSE`
 
 ### Changed
 - Refactor reading `suppliers.yml`, extract all logic in `Concierge::SupplierConfig` class 

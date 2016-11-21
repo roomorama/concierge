@@ -44,6 +44,27 @@ RSpec.shared_examples "quote call" do
     end
   end
 
+  context "client returns property_not_instant_bookable" do
+    it "returns proper error messages" do
+      expect_any_instance_of(described_class).to receive(:quote_price).and_return(not_instant_bookable)
+      response = parse_response(subject)
+      expect(response.status).to eq 200
+      expect(response.body["status"]).to eq "error"
+      expect(response.body["errors"]["quote"]).to eq "Instant booking is not supported for the given period"
+    end
+  end
+
+  context "client returns max_guests_exceeded" do
+    it "returns proper error messages" do
+      expect_any_instance_of(described_class).to receive(:quote_price).and_return(max_guests_exceeded(5))
+      response = parse_response(subject)
+      expect(response.status).to eq 200
+      expect(response.body["status"]).to eq "error"
+      expect(response.body["errors"]["quote"]).to eq "The maximum number of guests to book this apartment is 5"
+    end
+  end
+
+
   it "returns unavailable quotation" do
     unavailable_quotation = Quotation.new({
       property_id: params[:property_id],
