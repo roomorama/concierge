@@ -177,21 +177,14 @@ module Concierge::Flows
     attribute :phone
     attribute :payment_terms
 
-    attr_reader :config_path
-
-    # overrides the initializer definition by +Hanami::Validations+ to read the
-    # required +config_path+ option that indicates the path to the +suppliers.yml+
-    # file to read the workers definition.
-    def initialize(attributes)
-      @config_path = attributes.delete(:config_path)
-      super
-    end
-
     # creates database records for the host, as well as associated workers.
     # Parses the +config/suppliers.yml+ file to read the workers definition
     # for the supplier the host belongs to.
     def perform
       if valid?
+        workers_definition = find_workers_definition
+        return workers_definition unless workers_definition.success?
+
         if self.access_token.to_s.empty?
           access_token_result = create_roomorama_user
           return access_token_result unless access_token_result.success?
@@ -199,15 +192,9 @@ module Concierge::Flows
         end
         transaction do
           host = create_host
-          workers_definition = find_workers_definition
-
-          return workers_definition unless workers_definition.success?
 
           workers_definition.value.each do |type, data|
             data = data.to_h
-
-            validation = compile_definition(data)
-            return validation unless validation.success?
 
             # if there is an +absence+ field for a given worker definition, it means
             # the worker is not supported, and the +absence+ field indicates the reason
@@ -261,38 +248,12 @@ module Concierge::Flows
     end
 
     def find_workers_definition
-      definition = nil
-
-      suppliers_config.find do |name, workers|
-        if name == supplier.name
-          definition = workers
-        end
-      end
+      definition = Concierge::SupplierConfig.for(supplier.name)
 
       if definition
         Result.new(definition["workers"].to_h)
       else
         Result.error(:no_workers_definition)
-      end
-    end
-
-    # makes sure there are no conflicting keys in a worker definition.
-    # Namely:
-    #
-    # * if the +absence+ field is declared, there is no point to have either
-    #   the +every+ or the +aggregated+ field. That is flagged as an error.
-    #
-    # Returns a +Result+ instance indicating whether or not the +definition+
-    # given is valid.
-    def compile_definition(definition)
-      absence    = definition.key?("absence")
-      interval   = definition.key?("every")
-      aggregated = definition.key?("aggregated")
-
-      if absence && (interval || aggregated)
-        Result.error(:invalid_worker_definition)
-      else
-        Result.new(definition)
       end
     end
 
@@ -314,10 +275,6 @@ module Concierge::Flows
         type:     type.to_s,
         status:   IDLE
       }.merge!(attributes)
-    end
-
-    def suppliers_config
-      @config ||= YAML.load_file(config_path)
     end
 
     def transaction

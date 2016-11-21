@@ -15,21 +15,16 @@ RSpec.describe Concierge::Flows::HostUpsertion do
     }
   }
 
-  def config_suppliers(file)
-    parameters[:config_path] = Hanami.root.join("spec", "fixtures", "suppliers_configuration", file).to_s
+  def config_path(file)
+    Hanami.root.join("spec", "fixtures", "suppliers_configuration", file).to_s
   end
 
   before do
-    config_suppliers "suppliers.yml"
+    Concierge::SupplierConfig.reload!(config_path("suppliers.yml"))
     url = "https://api.roomorama.com/v1.0/create-host"
     stub_call(:post, url) {
       [200, {}, '{"status": "success", "access_token": "test_access_token"}']
     }
-    Concierge::SupplierRoutes.load(parameters[:config_path])
-  end
-
-  after do
-    Concierge::SupplierRoutes.load
   end
 
   subject { described_class.new(parameters) }
@@ -64,7 +59,7 @@ RSpec.describe Concierge::Flows::HostUpsertion do
     end
 
     it "returns an unsuccessful result without a workers definition" do
-      config_suppliers "no_supplier_x.yml"
+      Concierge::SupplierConfig.reload!(config_path("no_supplier_x.yml"))
 
       result = subject.perform
       expect(result).to be_a Result
@@ -73,7 +68,7 @@ RSpec.describe Concierge::Flows::HostUpsertion do
     end
 
     it "returns an unsuccessful result if parameters for the workers are missing" do
-      config_suppliers "no_metadata_interval.yml"
+      Concierge::SupplierConfig.reload!(config_path("no_metadata_interval.yml"))
 
       result = subject.perform
       expect(result).to be_a Result
@@ -82,7 +77,7 @@ RSpec.describe Concierge::Flows::HostUpsertion do
     end
 
     it "returns an unsuccessful result if the worker type is unknown" do
-      config_suppliers "invalid_worker_type.yml"
+      Concierge::SupplierConfig.reload!(config_path("invalid_worker_type.yml"))
 
       result = subject.perform
       expect(result).to be_a Result
@@ -91,27 +86,12 @@ RSpec.describe Concierge::Flows::HostUpsertion do
     end
 
     it "returns an unsuccessful result if the interval specified is not recognised" do
-      config_suppliers "invalid_interval.yml"
+      Concierge::SupplierConfig.reload!(config_path("invalid_interval.yml"))
 
       result = subject.perform
       expect(result).to be_a Result
       expect(result).not_to be_success
       expect(result.error.code).to eq :invalid_parameters
-    end
-
-    context "conflicting keys" do
-      %w(absence_interval absence_aggregated).each do |scenario|
-        fields = scenario.sub("_", " and ") # "absence_interval" => "absence and interval"
-
-        it "returns an unsuccessful result if the definition has both #{fields}" do
-          config_suppliers "conflicting_#{scenario}.yml"
-
-          result = subject.perform
-          expect(result).to be_a Result
-          expect(result).not_to be_success
-          expect(result.error.code).to eq :invalid_worker_definition
-        end
-      end
     end
 
     it "creates the host and associated workers" do
@@ -152,7 +132,7 @@ RSpec.describe Concierge::Flows::HostUpsertion do
       expect(metadata_worker.interval).to eq 24 * 60 * 60
 
       # updates metadata worker interval to every 2 days
-      config_suppliers "2d_interval.yml"
+      Concierge::SupplierConfig.reload!(config_path("2d_interval.yml"))
 
       expect {
         described_class.new(parameters).perform
@@ -163,7 +143,7 @@ RSpec.describe Concierge::Flows::HostUpsertion do
     end
 
     it "does not create workers for which there is an +absence+ entry" do
-      config_suppliers "availabilities_absence.yml"
+      Concierge::SupplierConfig.reload!(config_path("availabilities_absence.yml"))
 
       expect {
         described_class.new(parameters).perform
@@ -177,7 +157,7 @@ RSpec.describe Concierge::Flows::HostUpsertion do
     end
 
     it "creates workers for the supplier and not for the host if the declared as aggregated" do
-      config_suppliers "aggregated.yml"
+      Concierge::SupplierConfig.reload!(config_path("aggregated.yml"))
 
       expect {
         described_class.new(parameters).perform
@@ -204,7 +184,8 @@ RSpec.describe Concierge::Flows::HostUpsertion do
     end
 
     it "updates changed data on consecutive runs for aggregated suppliers" do
-      config_suppliers "aggregated.yml"
+      Concierge::SupplierConfig.reload!(config_path("aggregated.yml"))
+
       subject.perform
 
       workers = BackgroundWorkerRepository.for_supplier(supplier).to_a
@@ -213,7 +194,7 @@ RSpec.describe Concierge::Flows::HostUpsertion do
       expect(worker.interval).to eq 2 * 60 * 60 # 2h
 
       # updates availabilities worker interval to every 2 days
-      config_suppliers "aggregated_1h_interval.yml"
+      Concierge::SupplierConfig.reload!(config_path("aggregated_1h_interval.yml"))
 
       expect {
         expect {
@@ -227,7 +208,8 @@ RSpec.describe Concierge::Flows::HostUpsertion do
 
     context "interval parsing" do
       it "understands seconds notation" do
-        config_suppliers "seconds_interval.yml"
+        Concierge::SupplierConfig.reload!(config_path("seconds_interval.yml"))
+
         subject.perform
 
         host   = HostRepository.last
@@ -239,7 +221,8 @@ RSpec.describe Concierge::Flows::HostUpsertion do
       end
 
       it "understands minutes notation" do
-        config_suppliers "minutes_interval.yml"
+        Concierge::SupplierConfig.reload!(config_path("minutes_interval.yml"))
+
         subject.perform
 
         host   = HostRepository.last

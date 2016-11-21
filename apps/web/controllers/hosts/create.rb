@@ -56,17 +56,12 @@ module Web::Controllers::Hosts
         email:          params.get("host.email"),
         phone:          params.get("host.phone"),
         name:           params.get("host.name"),
-        payment_terms:  params.get("host.payment_terms"),
-        config_path:    config_path
+        payment_terms:  params.get("host.payment_terms")
       )
     end
 
     def supplier
       SupplierRepository.find(params[:supplier_id])
-    end
-
-    def config_path
-      Hanami.root.join("config", "suppliers.yml").to_s
     end
   end
 end

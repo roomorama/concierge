@@ -6,4 +6,11 @@ Supplier X:
       every: "1d"
     availabilities:
       every: "2h"
-      absence: "This supplier does not provide calendar information"
+
+Supplier FOO:
+  controller: "supplier_foo"
+  workers:
+    metadata:
+      every: "3d"
+    availabilities:
+      every: "7h"
