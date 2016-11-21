@@ -8,6 +8,7 @@ how this file is formatted and how the process works.
 ### Added
 - Vietnam country code for SAW
 - THH: check in/out time info
+- Poplidays: skip properties with zero `max_guest`
 
 ## [1.3.1] - 2016-11-18
 ### Added
