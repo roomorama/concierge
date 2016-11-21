@@ -5,6 +5,9 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+-
+
+## [1.3.2] - 2016-11-21
 ### Added
 - Vietnam country code for SAW
 - THH: check in/out time info
@@ -16,7 +19,7 @@ how this file is formatted and how the process works.
 - JTB: ignore units without availability calendar
 
 ### Changed
-- Refactor reading `suppliers.yml`, extract all logic in `Concierge::SupplierConfig` class 
+- Refactor reading `suppliers.yml`, extract all logic in `Concierge::SupplierConfig` class
 
 ## [1.3.1] - 2016-11-18
 ### Added
