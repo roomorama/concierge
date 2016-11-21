@@ -64,6 +64,9 @@ RSpec.describe THH::Mappers::RoomoramaProperty do
       expect(property.security_deposit_amount).to eq(10000.0)
       expect(property.security_deposit_currency_code).to eq('THB')
       expect(property.security_deposit_type).to eq('cash')
+
+      expect(property.check_in_time).to eq('13:00')
+      expect(property.check_out_time).to eq('11:00')
     end
 
     context 'when no available days' do
