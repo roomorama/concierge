@@ -77,7 +77,7 @@ RentalsUnited:
   controller: "rentals_united"
   workers:
     metadata:
-#      every: "1d"
+      every: "1d"
 
 Avantio:
   path: "avantio"
