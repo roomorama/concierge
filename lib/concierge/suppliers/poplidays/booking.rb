@@ -19,6 +19,8 @@ module Poplidays
   # resulting +Reservation+ object.
 
   class Booking
+    include Concierge::Errors::Booking
+
     attr_reader :credentials
 
     def initialize(credentials)
@@ -30,6 +32,7 @@ module Poplidays
       fetcher = Poplidays::Commands::Booking.new(credentials)
       raw_booking = fetcher.call(params)
 
+      return not_available if not_available?(raw_booking)
       return raw_booking unless raw_booking.success?
 
       reservation = mapper.build(params, raw_booking.value)
@@ -37,6 +40,11 @@ module Poplidays
     end
 
     private
+
+    def not_available?(raw_booking)
+      # If stay specified in booking is no more available, response status code will be 409 (conflict)
+      !raw_booking.success? && raw_booking.error.code == :http_status_409
+    end
 
     def mapper
       @mapper ||= Poplidays::Mappers::RoomoramaReservation.new
