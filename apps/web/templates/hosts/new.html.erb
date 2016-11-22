@@ -25,6 +25,23 @@
         legend :Optional
 
         div(class: 'pure-control-group') do
+          label :cancellation_policy do
+            span 'Cancellation policy'
+            br
+            small do
+              a 'See details',
+                href: 'http://roomorama.com/cancellation-policies',
+                target: "_blank"
+            end
+          end
+
+          values = Roomorama::CancellationPolicy.all.unshift("")
+          select :cancellation_policy,
+            Hash[values.zip values],
+            class: 'pure-input-1-2'
+        end
+
+        div(class: 'pure-control-group') do
           label :first_and_last_name
           text_field :name, class: 'pure-input-1-2'
         end
