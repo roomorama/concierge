@@ -55,8 +55,8 @@ RSpec.describe Avantio::Booking do
       result = subject.book(params)
 
       expect(result).not_to be_success
-      expect(result.error.code).to eq :unavailable_accommodation
-      expect(result.error.data).to eq 'The property user tried to book is unavailable for given period'
+      expect(result.error.code).to eq :not_available
+      expect(result.error.data).to eq 'Property not available for booking'
     end
 
     it 'returns result of SetBooking command' do

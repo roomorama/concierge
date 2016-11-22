@@ -1,4 +1,5 @@
 require "spec_helper"
+require_relative "../shared/booking_call"
 require_relative "../shared/booking_validations"
 
 RSpec.describe API::Controllers::Avantio::Booking do
@@ -35,6 +36,7 @@ RSpec.describe API::Controllers::Avantio::Booking do
   let(:wsdl) { read_fixture('avantio/wsdl.xml') }
 
   it_behaves_like "performing booking parameters validations", controller_generator: -> { described_class.new }
+  it_behaves_like "booking call"
 
   describe '#call' do
 
@@ -73,9 +75,9 @@ RSpec.describe API::Controllers::Avantio::Booking do
 
         response = parse_response(described_class.new.call(params))
 
-        expect(response.status).to eq 503
+        expect(response.status).to eq 200
         expect(response.body['status']).to eq 'error'
-        expect(response.body['errors']['booking']).to eq 'The property user tried to book is unavailable for given period'
+        expect(response.body['errors']['booking']).to eq 'Property not available for booking'
       end
 
       it 'returns error if property is not available' do
