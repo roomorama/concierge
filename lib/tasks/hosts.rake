@@ -18,14 +18,12 @@ namespace :hosts do
                  :username,
                  :access_token,
                  :fee_percentage] => :environment do |task, args|
-    config_path = Hanami.root.join("config", "suppliers.yml").to_s
     Concierge::Flows::HostUpsertion.new(
       supplier:       SupplierRepository.named(args[:supplier_name]),
       identifier:     args[:identifier],
       username:       args[:username],
       access_token:   args[:access_token],
       fee_percentage: args[:fee_percentage],
-      config_path:    config_path
     ).perform.tap do |result|
       raise HostUpsertionError.new(result.error.code) unless result.success?
     end
@@ -33,7 +31,6 @@ namespace :hosts do
 
   desc "Updates background worker definitions for all hosts"
   task update_worker_definitions: :environment do
-    path = Hanami.root.join("config", "suppliers.yml").to_s
 
     SupplierRepository.all.each do |supplier|
       HostRepository.from_supplier(supplier).each do |host|
@@ -43,7 +40,6 @@ namespace :hosts do
           username:       host.username,
           access_token:   host.access_token,
           fee_percentage: host.fee_percentage,
-          config_path:    path
         ).perform.tap do |result|
           raise HostUpsertionError.new(result.error.code) unless result.success?
         end

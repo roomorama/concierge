@@ -76,6 +76,17 @@ RSpec.describe THH::Commands::Booking do
         expect(result.error.data).to eq('Booking response for params `{"property_id"=>"15", "check_in"=>"2016-12-09", "check_out"=>"2016-12-17", "guests"=>3, "subtotal"=>3000, "customer"=>{"first_name"=>"John", "last_name"=>"Butler", "email"=>"john@email.com", "phone"=>"+3 5486 4560"}}` contains unexpected value for `response.villa_status` field: `on_request`')
       end
 
+      it 'returns a special error if not_available villa status' do
+        stub_with_fixture('thh/not_available_villa_status_booking_response.xml')
+
+        result = subject.call(params)
+
+        expect(result).to be_a Result
+        expect(result.success?).to be false
+        expect(result.error.code).to eq(:not_available)
+        expect(result.error.data).to eq('Booking response for params `{"property_id"=>"15", "check_in"=>"2016-12-09", "check_out"=>"2016-12-17", "guests"=>3, "subtotal"=>3000, "customer"=>{"first_name"=>"John", "last_name"=>"Butler", "email"=>"john@email.com", "phone"=>"+3 5486 4560"}}` contains `not_available` value for `response.villa_status` field')
+      end
+
       it 'returns an error if no booking status field' do
         stub_with_fixture('thh/no_booking_status_booking_response.xml')
 

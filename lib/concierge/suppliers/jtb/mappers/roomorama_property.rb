@@ -72,10 +72,8 @@ module JTB
       # Each room has several rate plans.
       # Each rate plan has available dates.
       # Returns minimum price for room available dates.
-      def fetch_room_min_price(room, rate_plans)
-        from = Date.today
-        to = from + Workers::Suppliers::JTB::Metadata::PERIOD_SYNC
-
+      def fetch_room_min_price(room, rate_plans, from, to)
+        # Tries to fetch only for available days, if can't - fetch for all days.
         min_price = JTB::Repositories::RoomPriceRepository.room_min_price(rate_plans, from, to)
         unless min_price
           min_price = JTB::Repositories::RoomPriceRepository.room_absolute_min_price(room, rate_plans, from, to)
@@ -196,7 +194,16 @@ module JTB
           rate_plans = JTB::Repositories::RatePlanRepository.room_rate_plans(room)
           # Ignore units without rate plans, they don't have prices and availability calendar
           next if rate_plans.count == 0
-          nightly_rate = fetch_room_min_price(room, rate_plans)
+
+          from = Date.today
+          to = from + Workers::Suppliers::JTB::Metadata::PERIOD_SYNC
+
+          # Some units have prices but don't have availability calendar, here is calendar check
+          stocks = JTB::Repositories::RoomStockRepository.availabilities(rate_plans, from, to)
+          # Ignore units without availability calendar
+          next if stocks.count == 0
+
+          nightly_rate = fetch_room_min_price(room, rate_plans, from, to)
           # Ignore units without price information
           next unless nightly_rate
 

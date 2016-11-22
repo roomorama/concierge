@@ -22,8 +22,9 @@ module Workers::Suppliers::Poplidays
               details = fetch_property_details(property_id)
               next details unless details.success?
 
-              unless details_validator(details.value).valid?
-                next synchronisation.skip_property(property_id, 'Invalid property details')
+              validator = details_validator(details.value)
+              unless validator.valid?
+                next synchronisation.skip_property(property_id, validator.error)
               end
 
               result = importer.fetch_availabilities(property_id)

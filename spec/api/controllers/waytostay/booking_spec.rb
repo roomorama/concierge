@@ -1,4 +1,5 @@
 require 'spec_helper'
+require_relative "../shared/booking_call"
 require_relative "../shared/booking_validations"
 
 RSpec.describe API::Controllers::Waytostay::Booking do
@@ -25,7 +26,7 @@ RSpec.describe API::Controllers::Waytostay::Booking do
   }
 
   it_behaves_like "performing booking parameters validations", controller_generator: -> { described_class.new }
-
+  it_behaves_like "booking call"
 
   describe "#call" do
 

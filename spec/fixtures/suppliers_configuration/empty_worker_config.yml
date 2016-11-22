@@ -1,0 +1,7 @@
+Supplier FOO:
+  path: "supplier_foo"
+  controller: "supplier_foo"
+  workers:
+    metadata:
+    availabilities:
+      every: "7h"
