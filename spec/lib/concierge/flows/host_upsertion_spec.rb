@@ -36,6 +36,12 @@ RSpec.describe Concierge::Flows::HostUpsertion do
       subject.perform
     end
 
+    it "saves cancellation policy" do
+      parameters[:cancellation_policy] = "no_refund"
+      expect{ subject.perform }.to change { HostRepository.count }.by 1
+      expect(HostRepository.last.cancellation_policy).to eq Roomorama::CancellationPolicy::NO_REFUND
+    end
+
     it "returns an unsuccessful if any required parameter is missing" do
       [nil, ""].each do |invalid_value|
         [:supplier, :identifier, :username, :fee_percentage].each do |attribute|

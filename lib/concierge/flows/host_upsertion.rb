@@ -172,6 +172,7 @@ module Concierge::Flows
     attribute :username,       presence: true
     attribute :fee_percentage, presence: true
     attribute :access_token
+    attribute :cancellation_policy
     attribute :name
     attribute :email
     attribute :phone
@@ -237,13 +238,14 @@ module Concierge::Flows
       existing = HostRepository.from_supplier(supplier).identified_by(identifier).first
       host = existing || Host.new(supplier_id: supplier.id, identifier: identifier)
 
-      host.username       = username
-      host.access_token   = access_token
-      host.fee_percentage = fee_percentage.to_f
-      host.email          = email
-      host.name           = name
-      host.phone          = phone
-      host.payment_terms  = payment_terms
+      host.username            = username
+      host.access_token        = access_token
+      host.fee_percentage      = fee_percentage.to_f
+      host.email               = email
+      host.name                = name
+      host.phone               = phone
+      host.payment_terms       = payment_terms
+      host.cancellation_policy = cancellation_policy
       HostRepository.persist(host)
     end
 
