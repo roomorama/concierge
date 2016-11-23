@@ -22,8 +22,7 @@ module THH
       BOOKING_STATUS        = 'response.booking_status'
       BOOKING_ID            = 'response.booking_id'
 
-      # Overrides the default timeout, take Roomorama's concierge booking timeout
-      # because this is an important operation
+      # Give a generous timeout because this is an important operation
       TIMEOUT = 60
 
       def call(params)
