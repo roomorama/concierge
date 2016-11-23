@@ -5,6 +5,9 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+-
+
+## [1.3.3] - 2016-11-23
 ### Changed
 - THH Booking timeout to 60s
 
