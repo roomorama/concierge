@@ -7,6 +7,10 @@ how this file is formatted and how the process works.
 ## Unreleased
 -
 
+## [1.3.3] - 2016-11-23
+### Changed
+- THH Booking timeout to 60s
+
 ## [1.3.2] - 2016-11-21
 ### Added
 - Vietnam country code for SAW
