@@ -17,11 +17,13 @@ module THH
     # encapsulates the +Hash+.
     class Booking < BaseFetcher
       ROOMORAMA_DATE_FORMAT = '%Y-%m-%d'
-      THH_DATE_FORMAT = '%d/%m/%Y'
-      VILLA_STATUS = 'response.villa_status'
-      BOOKING_STATUS = 'response.booking_status'
-      BOOKING_ID = 'response.booking_id'
+      THH_DATE_FORMAT       = '%d/%m/%Y'
+      VILLA_STATUS          = 'response.villa_status'
+      BOOKING_STATUS        = 'response.booking_status'
+      BOOKING_ID            = 'response.booking_id'
 
+      # Give a generous timeout because this is an important operation
+      TIMEOUT = 60
 
       def call(params)
         result = api_call(params(params))
@@ -38,6 +40,10 @@ module THH
 
       def action
         'book'
+      end
+
+      def timeout
+        TIMEOUT
       end
 
       private
