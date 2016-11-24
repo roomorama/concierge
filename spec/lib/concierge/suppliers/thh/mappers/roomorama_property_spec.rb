@@ -100,6 +100,28 @@ RSpec.describe THH::Mappers::RoomoramaProperty do
         expect(result.value.description_append).to be_nil
       end
     end
+
+    context 'when electricity shows free' do
+      let(:raw_property) {
+        parsed_property('thh/properties_response.xml').
+          merge({
+            "additional_information" => {
+              "free_electricity" => "free KW/day",
+              "electricity_over" => "7 THB/KW"
+            }
+        })
+      }
+
+      it 'returns empty description_append' do
+        expect(raw_property.get('additional_information.free_electricity')).to eq "free KW/day"
+        expect(raw_property.get('additional_information.electricity_over')).to_not be_nil
+        result = subject.build(raw_property)
+
+        expect(result).to be_a(Result)
+        expect(result.success?).to eq true
+        expect(result.value.description_append).to be_nil
+      end
+    end
   end
 
   def parsed_property(name)
