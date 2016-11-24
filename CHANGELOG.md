@@ -7,6 +7,7 @@ how this file is formatted and how the process works.
 ## Unreleased
 ### Added
 - Avantio: handle booking not available case in common manner
+- Poplidays: handle booking not available case in common manner
 
 ## [1.3.3] - 2016-11-23
 ### Changed
