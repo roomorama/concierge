@@ -18,6 +18,7 @@ module Avantio
   # The +quote+ method returns a +Result+ object that, when successful, encapsulates the
   # resulting +Reservation+ object.
   class Booking
+    include Concierge::Errors::Booking
     attr_reader :credentials
 
     def initialize(credentials)
@@ -29,10 +30,7 @@ module Avantio
       # Avantio booking call can return valid reservation even for not available periods
       available = Avantio::Commands::IsAvailableFetcher.new(credentials).call(params)
       return available unless available.success?
-
-      unless available.value
-        return Result.error(:unavailable_accommodation, 'The property user tried to book is unavailable for given period')
-      end
+      return not_available unless available.value
 
       Avantio::Commands::SetBooking.new(credentials).call(params)
     end
