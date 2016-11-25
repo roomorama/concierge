@@ -68,8 +68,8 @@ module THH
       def set_description_append!(property, raw_property)
         limit = raw_property.get('additional_information.free_electricity')&.split('/')&.first  # extracts "100KW" from "100KW/day"
         charge = raw_property.get('additional_information.electricity_over')  # "7 THB/KW"
-        return unless limit && charge
-        return if limit == 'free KW'
+        return if !limit || !charge || /free/ =~ limit
+
         locals = {limit: limit, charge: charge}
 
         templates = {
