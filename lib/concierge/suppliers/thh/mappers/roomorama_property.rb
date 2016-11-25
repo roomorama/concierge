@@ -32,6 +32,7 @@ module THH
         set_base_info!(property, raw_property)
         set_images!(property, raw_property)
         set_amenities!(property, raw_property)
+        set_description_append!(property, raw_property)
 
         result = set_rates_and_min_stay!(property, raw_property)
         return result unless result.success?
@@ -62,6 +63,27 @@ module THH
         property.cancellation_policy = CANCELLATION_POLICY
         property.check_in_time = CHECK_IN_TIME
         property.check_out_time = CHECK_OUT_TIME
+      end
+
+      def set_description_append!(property, raw_property)
+        limit = raw_property.get('additional_information.free_electricity')&.split('/')&.first  # extracts "100KW" from "100KW/day"
+        charge = raw_property.get('additional_information.electricity_over')  # "7 THB/KW"
+        return if !limit || !charge || /free/ =~ limit
+
+        locals = {limit: limit, charge: charge}
+
+        templates = {
+          en:    "Electricity allowance: %{limit}/day. Additional charge on exceeding the allowance: %{charge}",
+          de:    "Inklusive Stromverbrauch von: %{limit}/Tag. Zuschlaggebühr für höheren Verbrauch von: %{charge}",
+          es:    "Electricidad: %{limit}/día. Cargo adicional por exceder la asignación: %{charge}",
+          zh:    "电费：%{limit} /天。 超过津贴的额外费用：%{charge} ",
+          zh_tw: "電費：%{limit} /天。超過津貼的額外費用：%{charge}"
+        }
+        property.description_append       = templates[:en] % locals
+        property.de.description_append    = templates[:de] % locals
+        property.es.description_append    = templates[:es] % locals
+        property.zh.description_append    = templates[:zh] % locals
+        property.zh_tw.description_append = templates[:zh_tw] % locals
       end
 
       def set_amenities!(property, raw_property)

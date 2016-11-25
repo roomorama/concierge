@@ -51,6 +51,12 @@ RSpec.describe THH::Mappers::RoomoramaProperty do
       expect(property.currency).to eq('THB')
       expect(property.cancellation_policy).to eq('strict')
 
+      expect(property.description_append).to eq "Electricity allowance: 100 KW/day. Additional charge on exceeding the allowance: 7 THB/KW"
+      expect(property.de.description_append).to eq "Inklusive Stromverbrauch von: 100 KW/Tag. Zuschlaggebühr für höheren Verbrauch von: 7 THB/KW"
+      expect(property.es.description_append).to eq "Electricidad: 100 KW/día. Cargo adicional por exceder la asignación: 7 THB/KW"
+      expect(property.zh.description_append).to eq "电费：100 KW /天。 超过津贴的额外费用：7 THB/KW "
+      expect(property.zh_tw.description_append).to eq "電費：100 KW /天。超過津貼的額外費用：7 THB/KW"
+
       expect(property.images.length).to eq(21)
       image = property.images.first
       expect(image.identifier).to eq 'db41cdc9d16bd1504daffedbc2652de9'
@@ -80,6 +86,40 @@ RSpec.describe THH::Mappers::RoomoramaProperty do
         expect(result.success?).to eq false
         expect(result.error.code).to eq :no_available_dates
         expect(result.error.data).to eq 'All available days of the property are booked'
+      end
+    end
+
+    context 'when no electricty information' do
+      let(:raw_property) { parsed_property('thh/properties_without_electricity_info.xml') }
+
+      it 'returns empty description_append' do
+        result = subject.build(raw_property)
+
+        expect(result).to be_a(Result)
+        expect(result.success?).to eq true
+        expect(result.value.description_append).to be_nil
+      end
+    end
+
+    context 'when electricity shows free' do
+      let(:raw_property) {
+        parsed_property('thh/properties_response.xml').
+          merge({
+            "additional_information" => {
+              "free_electricity" => "free KW/day",
+              "electricity_over" => "7 THB/KW"
+            }
+        })
+      }
+
+      it 'returns empty description_append' do
+        expect(raw_property.get('additional_information.free_electricity')).to eq "free KW/day"
+        expect(raw_property.get('additional_information.electricity_over')).to_not be_nil
+        result = subject.build(raw_property)
+
+        expect(result).to be_a(Result)
+        expect(result.success?).to eq true
+        expect(result.value.description_append).to be_nil
       end
     end
   end
