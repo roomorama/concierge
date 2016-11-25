@@ -174,6 +174,14 @@ module Roomorama
       end
     end
 
+    def apply_overwrites!(overwrites)
+      overwrites.each do |o|
+        o.data.to_h.each do |attribute, value|
+          self[attribute.to_sym] = value
+        end
+      end
+    end
+
     def images
       @images ||= []
     end
