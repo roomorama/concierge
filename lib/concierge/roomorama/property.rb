@@ -174,6 +174,7 @@ module Roomorama
       end
     end
 
+    # overwrites: an array of Overwrite objects
     def apply_overwrites!(overwrites)
       overwrites.each do |o|
         o.data.to_h.each do |attribute, value|
