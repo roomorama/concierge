@@ -159,6 +159,23 @@ RSpec.describe Workers::PropertySynchronisation do
       expect(sync.stats[:properties_updated]).to eq 0
       expect(sync.stats[:properties_deleted]).to eq 0
     end
+
+    context "overwrites are present" do
+      let!(:host_overwrites) { create_overwrite(host_id: host.id, property_identifier: nil, data: { "currency"=>"KHR" } ) }
+      let!(:prop_overwrites) { create_overwrite(host_id: host.id, property_identifier: roomorama_property.identifier, data: { "cancellation_policy"=>"no_refund" } ) }
+      let!(:other_overwrites) { create_overwrite(host_id: create_host.id, property_identifier: nil) }
+
+      it "checks for admin overwrites and applies if any is present" do
+        expect_any_instance_of(Workers::OperationRunner).to receive(:perform) do |runner, op, property|
+          expect(property.cancellation_policy).to eq "no_refund"
+          expect(property.currency).to eq "KHR"
+          double(success?: true)
+        end
+
+        res = subject.start("prop1") { Result.new(roomorama_property) }
+        expect(res).to be_success
+      end
+    end
   end
 
   describe "#finish!" do

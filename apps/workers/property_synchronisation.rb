@@ -82,8 +82,17 @@ module Workers
       new_context(identifier) do
         result = yield(self)
         return result if skipped_properties.skipped?(identifier) || processed.include?(identifier)
+        overwrite_attributes!(result)
         finish_property_sync(result, identifier)
       end
+    end
+
+    def overwrite_attributes!(result)
+      return unless result.success?
+      property = result.value
+      overwrites = OverwriteRepository.all_for(identifier: property.identifier, host_id: host.id)
+      property.apply_overwrites! overwrites
+      return Result.new(property)
     end
 
     # indicates that the synchronisation process failed. As a consequence:
