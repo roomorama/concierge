@@ -5,6 +5,9 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+-
+
+## [1.3.4] - 2016-11-25
 ### Added
 - Avantio: handle booking not available case in common manner
 - Poplidays: handle booking not available case in common manner
