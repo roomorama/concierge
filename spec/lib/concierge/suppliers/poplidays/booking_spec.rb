@@ -72,6 +72,8 @@ RSpec.describe Poplidays::Booking do
       result = subject.book(params)
 
       expect(result).not_to be_success
+      expect(result.error.code).to eq :not_available
+      expect(result.error.data).to eq 'Property not available for booking'
 
       event = Concierge.context.events.last
       expect(event.to_h[:type]).to eq "network_response"

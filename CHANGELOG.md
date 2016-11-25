@@ -7,6 +7,12 @@ how this file is formatted and how the process works.
 ## Unreleased
 -
 
+## [1.3.4] - 2016-11-25
+### Added
+- Avantio: handle booking not available case in common manner
+- Poplidays: handle booking not available case in common manner
+- THH: Add electricy charges to description append
+
 ## [1.3.3] - 2016-11-23
 ### Changed
 - THH Booking timeout to 60s

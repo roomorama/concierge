@@ -1,4 +1,5 @@
 require "spec_helper"
+require_relative "../shared/booking_call"
 require_relative "../shared/booking_validations"
 
 RSpec.describe API::Controllers::Poplidays::Booking do
@@ -36,6 +37,7 @@ RSpec.describe API::Controllers::Poplidays::Booking do
   let(:endpoint) { 'https://api.poplidays.com/v2/bookings/easy' }
 
   it_behaves_like "performing booking parameters validations", controller_generator: -> { described_class.new }
+  it_behaves_like "booking call"
 
   describe '#call' do
 
