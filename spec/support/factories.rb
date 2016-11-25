@@ -115,6 +115,19 @@ module Support
       worker = BackgroundWorker.new(attributes)
       BackgroundWorkerRepository.create(worker)
     end
+
+    def create_overwrite(overrides = {})
+      attributes = {
+        supplier_id: create_supplier.id,
+        property_identifier: SecureRandom.hex(3),
+        data: { "cancellation_policy" => "flexible" }
+      }.merge(overrides)
+
+      attributes[:host_id] ||= create_host.id
+
+      overwrite = Overwrite.new(attributes)
+      OverwriteRepository.create(overwrite)
+    end
   end
 
 end
