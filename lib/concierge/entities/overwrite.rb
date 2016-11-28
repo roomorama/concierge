@@ -10,12 +10,11 @@
 #     data: {"cancellation_policy": "flexible"},
 #     property_identifier: "abc",
 #     host_id: 1,
-#     supplier_id: 1
 #   )
 #
 class Overwrite
   include Hanami::Entity
 
-  attributes :id, :supplier_id, :host_id, :property_identifier,
+  attributes :id, :host_id, :property_identifier,
     :data, :created_at, :updated_at
 end

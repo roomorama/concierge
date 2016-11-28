@@ -2,7 +2,6 @@ Hanami::Model.migration do
   change do
     create_table :overwrites do
       primary_key :id
-      foreign_key :supplier_id, :suppliers, on_delete: :set_null, null: false
       foreign_key :host_id,     :hosts,     on_delete: :set_null, null: false
 
       column :property_identifier, String

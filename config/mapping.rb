@@ -82,7 +82,6 @@ collection :overwrites do
   repository OverwriteRepository
 
   attribute :id,                  Integer
-  attribute :supplier_id,         Integer
   attribute :host_id,             Integer
   attribute :property_identifier, String
   attribute :data,                Concierge::PGJSON
