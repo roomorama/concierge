@@ -5,7 +5,8 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
--
+### Fixed
+- Fix showing external error with sync process event for deleted host
 
 ## [1.3.4] - 2016-11-25
 ### Added
