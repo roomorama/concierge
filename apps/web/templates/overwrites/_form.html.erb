@@ -1,0 +1,14 @@
+<%=
+  form_for :overwrite, routes.supplier_host_overwrites_path(supplier_id, host_id), values: {overwrite: overwrite}, class: 'pure-form pure-form-aligned' do
+    fieldset do
+      div(class: 'pure-control-group') do
+        label :rules
+        text_area :data_json, class: 'pure-input-1-2', placeholder: "Enter json format only"
+      end
+
+      div do
+        submit "Submit", class: 'pure-button pure-button-primary'
+      end
+    end
+  end
+%>
