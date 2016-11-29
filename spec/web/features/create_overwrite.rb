@@ -27,13 +27,15 @@ RSpec.describe 'managing overwrites for a host', type: :feature do
   end
 
   describe "creating new" do
-    it 'is successful for empty property_identifier' do
+    it 'is successful' do
       expect {
         visit "/suppliers/#{supplier.id}/hosts/#{host.id}/overwrites/new"
         fill_in "overwrite[data_json]", with: '{"cancellation_policy":"flexible"}'
+        fill_in "overwrite[property_identifier]", with: 'asdf'
         click_on "Submit"
       }.to change { OverwriteRepository.count }.by 1
     expect(page.current_path).to eq "/suppliers/#{supplier.id}/hosts/#{host.id}/overwrites"
+    expect(OverwriteRepository.last.property_identifier).to eq 'asdf'
     end
 
     it 'shows error message if data is not of valid json format' do

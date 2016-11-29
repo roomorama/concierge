@@ -5,6 +5,7 @@ module Concierge::Flows
 
     attribute :data_json, presence: true
     attribute :host_id,   presence: true
+    attribute :property_identifier
 
 
     def validate
@@ -15,6 +16,7 @@ module Concierge::Flows
 
     def perform
       overwrite = Overwrite.new(host_id: host_id,
+                                property_identifier: property_identifier,
                                 data: data_hash)
       overwrite = OverwriteRepository.create overwrite
       Result.new(overwrite)
