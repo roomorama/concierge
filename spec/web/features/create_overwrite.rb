@@ -21,8 +21,9 @@ RSpec.describe 'managing overwrites for a host', type: :feature do
     end
 
     expect(page.body).to have_content "Property attribute enforcements for #{host.username}"
-    expect(page.body).to have_content '{"cancellation_policy":"flexible"}'
-    expect(page.body).to have_content 'Create New'
+    expect(page.body).to have_content "{\"cancellation_policy\":\"flexible\"}"
+    click_on "Create New"
+    expect(page.current_path).to eq "/suppliers/#{supplier.id}/hosts/#{host.id}/overwrites/new"
   end
 
   describe "creating new" do
@@ -32,6 +33,7 @@ RSpec.describe 'managing overwrites for a host', type: :feature do
         fill_in "overwrite[data_json]", with: '{"cancellation_policy":"flexible"}'
         click_on "Submit"
       }.to change { OverwriteRepository.count }.by 1
+    expect(page.current_path).to eq "/suppliers/#{supplier.id}/hosts/#{host.id}/overwrites"
     end
 
     it 'shows error message if data is not of valid json format' do

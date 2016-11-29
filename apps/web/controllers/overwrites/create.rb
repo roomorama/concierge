@@ -14,7 +14,7 @@ module Web::Controllers::Overwrites
         flash[:error] = validation.error.data
       end
 
-      redirect_to routes.supplier_path(params[:supplier_id])
+      redirect_to routes.supplier_host_overwrites_path(params[:supplier_id], params[:host_id])
     end
   end
 end
