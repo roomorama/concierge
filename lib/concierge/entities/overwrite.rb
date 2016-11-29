@@ -17,4 +17,14 @@ class Overwrite
 
   attributes :id, :host_id, :property_identifier,
     :data, :created_at, :updated_at
+
+  def validate
+    return Result.error(:invalid_data, "Must be valid cancellation policy") unless valid_cancellation_policy?
+    Result.new(true)
+  end
+
+  def valid_cancellation_policy?
+    data["cancellation_policy"].nil? || Roomorama::CancellationPolicy.all.include?(data["cancellation_policy"])
+  end
+
 end

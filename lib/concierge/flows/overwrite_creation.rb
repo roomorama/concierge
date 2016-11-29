@@ -7,33 +7,30 @@ module Concierge::Flows
     attribute :host_id,   presence: true
     attribute :property_identifier
 
+    def perform
+      @overwrite = OverwriteRepository.create overwrite
+      Result.new(overwrite)
+    end
 
     def validate
       return Result.error(:invalid_data, "Invalid format: data not in JSON format") unless valid_json?
-      return Result.error(:invalid_data, "Must be valid cancellation policy") unless valid_cancellation_policy?
-      return Result.new(true)
-    end
-
-    def perform
-      overwrite = Overwrite.new(host_id: host_id,
-                                property_identifier: property_identifier,
-                                data: data_hash)
-      overwrite = OverwriteRepository.create overwrite
-      Result.new(overwrite)
+      overwrite.validate
     end
 
     private
 
-    def valid_cancellation_policy?
-      Roomorama::CancellationPolicy.all.include? data_hash["cancellation_policy"]
-    end
-
-    def valid_json?
-      json_decode(data_json).success?
+    def overwrite
+      @overwrite ||= Overwrite.new(host_id: host_id,
+                    property_identifier: property_identifier,
+                    data: data_hash)
     end
 
     def data_hash
       @data_hash ||= json_decode(data_json).value
+    end
+
+    def valid_json?
+      json_decode(data_json).success?
     end
 
   end
