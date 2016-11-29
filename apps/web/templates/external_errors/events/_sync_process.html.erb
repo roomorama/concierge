@@ -8,7 +8,7 @@
     if host
       description = "<code>#{host.username}</code> (identifier: <code>#{host.identifier}</code>)"
     else
-      description = "of ID <code>#{host.id}</code>, no longer in the database"
+      description = "of ID <code>#{event[:host_id]}</code>, no longer in the database"
     end
 
     if event[:worker] == "metadata"
