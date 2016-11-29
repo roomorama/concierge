@@ -5,6 +5,11 @@
 class OverwriteRepository
   include Hanami::Repository
 
+  # returns the total number of suppliers in the database.
+  def self.count
+    query.count
+  end
+
   def self.for_host_id(host_id)
     query { where(host_id: host_id) }
   end

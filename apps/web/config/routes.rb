@@ -5,6 +5,8 @@ get "/",                         to: "dashboard#index",      as: :root
 resources :errors,         only: [:index, :show], controller: "external_errors"
 resources :reservations,   only: [:index]
 resources :suppliers,      only: [:show] do
-  resources :hosts,        only: [:new, :create, :edit], controller: "hosts"
+  resources :hosts,        only: [:new, :create, :edit], controller: "hosts" do
+    resources :overwrites, controller: "overwrites"
+  end
 end
 resources :sync_processes, only: [:index]
