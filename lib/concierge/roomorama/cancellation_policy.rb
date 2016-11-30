@@ -6,5 +6,9 @@ module Roomorama
     STRICT       = 'strict'.freeze
     SUPER_STRICT = 'super_strict'.freeze
     NO_REFUND    = 'no_refund'.freeze
+
+    def self.all
+      [FLEXIBLE, MODERATE, FIRM, STRICT, SUPER_STRICT, NO_REFUND]
+    end
   end
 end

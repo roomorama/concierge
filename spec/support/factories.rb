@@ -110,10 +110,19 @@ module Support
         status:   "idle"
       }.merge(overrides)
 
-      attributes[:host_id] ||= create_host.id
-
       worker = BackgroundWorker.new(attributes)
       BackgroundWorkerRepository.create(worker)
+    end
+
+    def create_overwrite(overrides = {})
+      attributes = {
+        host_id: create_host.id,
+        property_identifier: SecureRandom.hex(3),
+        data: { "cancellation_policy" => "flexible" }
+      }.merge(overrides)
+
+      overwrite = Overwrite.new(attributes)
+      OverwriteRepository.create(overwrite)
     end
   end
 

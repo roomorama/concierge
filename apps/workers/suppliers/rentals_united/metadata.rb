@@ -195,6 +195,10 @@ module Workers::Suppliers::RentalsUnited
       end
     end
 
+    def overwrites(identifier)
+      OverwriteRepository.all_for(identifier: identifier, host_id: host.id)
+    end
+
     def skip?(result, property)
       if !result.success? && IGNORABLE_ERROR_CODES.include?(result.error.code)
         property_sync.skip_property(property.id, result.error.code)
