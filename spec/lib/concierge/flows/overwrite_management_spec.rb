@@ -7,7 +7,7 @@ RSpec.describe Concierge::Flows::OverwriteManagement do
   let(:subject) { described_class.new(attributes) }
 
   describe "#validate" do
-    describe "validating json" do
+    context "invalid json" do
       let(:data_json) { '"cancellation_policy" : flexible' }
       it "should return error" do
         result = subject.validate
@@ -17,7 +17,17 @@ RSpec.describe Concierge::Flows::OverwriteManagement do
       end
     end
 
-    describe "validating cancellation_policy" do
+    context "nil data_json" do
+      let(:data_json) { nil }
+      it "should return error" do
+        result = subject.validate
+        expect(result).to be_a Result
+        expect(result).to_not be_success
+        expect(result.error.data).to eq "Invalid format: data not in JSON format"
+      end
+    end
+
+    context "invalid cancellation_policy" do
       let(:data_json) { '{"cancellation_policy": "some_other"}' }
       it "should return error" do
         result = subject.validate

@@ -5,7 +5,7 @@ module Web::Controllers::Overwrites
     expose :overwrite
 
     def call(params)
-      @overwrite   = Overwrite.new
+      @overwrite  = Overwrite.new
     end
   end
 end

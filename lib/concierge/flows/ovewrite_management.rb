@@ -38,7 +38,7 @@ module Concierge::Flows
     end
 
     def valid_json?
-      json_decode(data_json).success?
+      json_decode(data_json).success? && data_hash.is_a?(Hash)
     end
 
   end
