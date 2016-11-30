@@ -1,18 +1,18 @@
 module Web::Controllers::Overwrites
-  class Create
+  class Update
     include Web::Action
 
     def call(params)
-      attributes = { host_id: params[:host_id] }.merge params["overwrite"]
+      attributes = { host_id: params[:host_id], id: params[:id] }.merge params["overwrite"]
       management = Concierge::Flows::OverwriteManagement.new(attributes)
 
       validation = management.validate
       if validation.success?
-        create_result = management.create
-        if create_result.success?
-          flash[:notice] = "Successfully created"
+        update_result = management.update
+        if update_result.success?
+          flash[:notice] = "Successfully updated"
         else
-          flash[:error] = create_result.error.data
+          flash[:error] = update_result.error.data
         end
       else
         flash[:error] = validation.error.data

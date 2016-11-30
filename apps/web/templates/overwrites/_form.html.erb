@@ -1,14 +1,14 @@
 <%=
-  form_for :overwrite, routes.supplier_host_overwrites_path(supplier_id, host_id), values: {overwrite: overwrite}, class: 'pure-form pure-form-aligned' do
+  form_for :overwrite, form_path, method: form_method, values: {overwrite: overwrite}, class: 'pure-form pure-form-aligned' do
     fieldset do
       div(class: 'pure-control-group') do
         label :property_identifier
-        text_field :property_identifier, class: 'pure-input-1-2', placeholder: "Property id in supplier's system"
+        text_field :property_identifier, class: 'pure-input-1-2', placeholder: "Leave blank to apply to all properties"
       end
 
       div(class: 'pure-control-group') do
         label :rules
-        text_area :data_json, class: 'pure-input-1-2', placeholder: "Enter json format only"
+        text_area :data_json, overwrite.data.to_h.to_json, class: 'pure-input-1-2', placeholder: "Enter json format only"
       end
 
       div do

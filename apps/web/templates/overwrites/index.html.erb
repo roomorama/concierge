@@ -7,14 +7,16 @@
         <th>#</th>
         <th>Property identifier</th>
         <th>Attribute enforcements</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
       <% overwrites.each do |o| %>
         <tr id="overwrite-row-<%=o.id%>">
           <td><%= o.id %></td>
-          <td><code><%= o.property_identifier %></code></td>
+          <td><code><%= o.property_identifier.empty? ? "(Applied to all properties)" : o.property_identifier %></code></td>
           <td><code><%= o.data.to_h.to_json %></code></td>
+          <td> <%= link_to "Edit", routes.edit_supplier_host_overwrite_path(supplier_id: supplier_id, host_id: host_id, id: o.id), class: "pure-button" %></p>
         </tr>
       <% end %>
     </tbody>

@@ -1,5 +1,5 @@
 module Web::Views::Overwrites
-  class New
+  class Edit
     include Web::View
 
     def supplier_id
@@ -15,11 +15,11 @@ module Web::Views::Overwrites
     end
 
     def form_method
-      :post
+      :patch
     end
 
     def form_path
-      routes.supplier_host_overwrites_path(supplier_id, host_id)
+      routes.supplier_host_overwrite_path(supplier_id, host_id, params[:id])
     end
   end
 end
