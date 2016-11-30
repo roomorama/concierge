@@ -1,5 +1,5 @@
 require 'spec_helper'
-RSpec.describe Concierge::Flows::OverwriteCreation do
+RSpec.describe Concierge::Flows::OverwriteManagement do
   include Support::Factories
 
   let(:host) { create_host }
@@ -28,13 +28,23 @@ RSpec.describe Concierge::Flows::OverwriteCreation do
     end
   end
 
-  describe "#perform" do
+  describe "#create" do
     let(:data_json) { '{"cancellation_policy": "flexible"' }
     it "should create an overwrite" do
-      expect { subject.perform }.to change { OverwriteRepository.count }.by 1
+      expect { subject.create }.to change { OverwriteRepository.count }.by 1
       overwrite = OverwriteRepository.last
       expect(overwrite.property_identifier).to eq 'test'
       expect(overwrite.data.get("cancellation_policy")).to eq "flexible"
+    end
+  end
+
+  describe "#update" do
+    let!(:overwrite) { create_overwrite }
+    let(:attributes) { Hash[id: overwrite.id, host_id: host.id, data_json: data_json, property_identifier: 'test'] }
+    let(:data_json) { '{"cancellation_policy": "no_refund"' }
+    it "should update the overwrite" do
+      expect { subject.update }.to_not change { OverwriteRepository.count }
+      expect(OverwriteRepository.last.data.get "cancellation_policy").to eq "no_refund"
     end
   end
 end

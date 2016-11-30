@@ -1,14 +1,20 @@
 module Concierge::Flows
-  class OverwriteCreation
+  class OverwriteManagement
     include Hanami::Validations
     include Concierge::JSON
 
     attribute :data_json, presence: true
     attribute :host_id,   presence: true
     attribute :property_identifier
+    attribute :id
 
-    def perform
+    def create
       @overwrite = OverwriteRepository.create overwrite
+      Result.new(overwrite)
+    end
+
+    def update
+      @overwrite = OverwriteRepository.update overwrite
       Result.new(overwrite)
     end
 
@@ -20,9 +26,11 @@ module Concierge::Flows
     private
 
     def overwrite
-      @overwrite ||= Overwrite.new(host_id: host_id,
-                    property_identifier: property_identifier,
-                    data: data_hash)
+      @overwrite ||= OverwriteRepository.find(id) || Overwrite.new
+      @overwrite.host_id             = host_id
+      @overwrite.property_identifier = property_identifier
+      @overwrite.data                = data_hash
+      @overwrite
     end
 
     def data_hash
