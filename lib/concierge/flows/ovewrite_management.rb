@@ -8,6 +8,14 @@ module Concierge::Flows
     attribute :property_identifier
     attribute :id
 
+    def initialize(attr)
+      attr.each do |key, value|
+        attr[key] = nil if value.to_s.empty?
+      end
+
+      super(attr)  # calls Hanami::Validations#initialize
+    end
+
     def create
       @overwrite = OverwriteRepository.create overwrite
       Result.new(overwrite)
