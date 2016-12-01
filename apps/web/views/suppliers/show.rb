@@ -134,7 +134,8 @@ module Web::Views::Suppliers
     end
 
     def overwrite_count_for(host)
-      OverwriteRepository.for_host_id(host.id).count
+      count = OverwriteRepository.for_host_id(host.id).count
+      "#{count} overwrite#{'s' if count > 1}"
     end
 
     # Creates an HTML button/label for the status of a worker. +status+ is expected

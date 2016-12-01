@@ -17,7 +17,7 @@ RSpec.describe 'managing overwrites for a host', type: :feature do
     visit '/'
     click_on supplier.id
     within "#host-row-#{host.id}" do
-      click_on "1 overwrites"
+      click_on "1 overwrite"
     end
 
     expect(page.body).to have_content "Property attribute enforcements for #{host.username}"
