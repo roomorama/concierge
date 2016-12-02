@@ -2,6 +2,8 @@ require "spec_helper"
 require_relative "translated"
 
 RSpec.describe Roomorama::Property do
+  include Support::Factories
+
   let(:identifier) { "JPN123" }
 
   subject { described_class.new(identifier) }
@@ -22,7 +24,7 @@ RSpec.describe Roomorama::Property do
     expect(subject.description).to be_nil
   end
 
-  describe ".load" do
+  describe "#load" do
     let(:attributes) {
       {
         identifier:           "prop1",
@@ -209,6 +211,22 @@ RSpec.describe Roomorama::Property do
       subject.add_unit(unit)
 
       expect(subject).to be_multi_unit
+    end
+  end
+
+  describe "#apply_overwrite" do
+    let!(:overwrites) {
+      [
+        create_overwrite(property_identifier: subject.identifier, data: {"cancellation_policy" => "no_refund"}),
+        create_overwrite(data: {"currency" => "THB"})
+      ]
+    }
+
+    before { subject.apply_overwrites! overwrites }
+
+    it "should take overwrite all fields" do
+       expect(subject.cancellation_policy).to eq "no_refund"
+       expect(subject.currency).to eq "THB"
     end
   end
 

@@ -7,7 +7,7 @@ RSpec.describe Web::Views::ExternalErrors::Show do
       operation: "quote",
       supplier: "JTB",
       code: "invalid_response",
-      happed_at: Time.now - 2 * 24 * 60 * 60 # 2 days ago
+      happened_at: Time.now - 2 * 24 * 60 * 60 # 2 days ago
     }
   }
   let(:context) { Concierge::Context.new(type: "api") }
@@ -23,7 +23,15 @@ RSpec.describe Web::Views::ExternalErrors::Show do
     ]
   }
   let(:error) { ExternalError.new(attributes) }
-  let(:exposures) { Hash[error: error] }
+
+  # Hanami has a weird issue when rendering partials on the test environment when
+  # the views are initialized as above (as suggested on the official guides). For some
+  # reason, the format is not recognised, and it fails to render with a cryptic error
+  # message.
+  #
+  # Hardcoding the format to +html+ for the rendered view allows the specs to pass.
+  # TODO get rid of this when upgrading Hanami, hopefully it will have been fixed.
+  let(:exposures) { Hash[error: error, format: :html, flash: {}] }
   let(:template)  { Hanami::View::Template.new('apps/web/templates/external_errors/show.html.erb') }
   let(:view)      { described_class.new(template, exposures) }
   let(:rendered)  { view.render }
@@ -213,5 +221,12 @@ RSpec.describe Web::Views::ExternalErrors::Show do
     it "escapes html" do
       expect(view.h("<h1>Foo</h1>")).to eq "&lt;h1&gt;Foo&lt;&#x2F;h1&gt;"
     end
+  end
+
+  it "renders a view" do
+    attributes[:context][:events].each do |event|
+      event[:timestamp] = event[:timestamp].to_s
+    end
+    expect { rendered }.not_to raise_error
   end
 end

@@ -77,6 +77,18 @@ collection :properties do
   attribute :updated_at, Time
 end
 
+collection :overwrites do
+  entity     Overwrite
+  repository OverwriteRepository
+
+  attribute :id,                  Integer
+  attribute :host_id,             Integer
+  attribute :property_identifier, String
+  attribute :data,                Concierge::PGJSON
+  attribute :created_at,          Time
+  attribute :updated_at,          Time
+end
+
 collection :sync_processes do
   entity     SyncProcess
   repository SyncProcessRepository

@@ -5,7 +5,13 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
--
+
+## [1.4.0] - 2016-12-02
+### Fixed
+- Fix showing external error with sync process event for deleted host
+
+### Added
+- Overwrites management: ability to overwrite property attributes like cancellation_policy, etc
 
 ## [1.3.4] - 2016-11-25
 ### Added

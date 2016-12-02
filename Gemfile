@@ -30,6 +30,7 @@ group :development do
 end
 
 group :test do
+  gem 'capybara'
   gem 'rspec', '~> 3.4.0'
   gem 'database_cleaner', '~> 1.5'
   gem 'byebug'
