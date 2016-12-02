@@ -11,6 +11,15 @@
         text_area :data_json, overwrite.data.to_h.to_json, class: 'pure-input-1-2', placeholder: "Enter json format only"
       end
 
+      p do
+        span "To enforce cancellation policies, enter the following format:"
+        code  '{"cancellation_policy":"flexible"}'
+      end
+      p do
+        span "Possible cancellation policy values are:"
+        code  Roomorama::CancellationPolicy.all.join(", ")
+      end
+
       div do
         submit "Submit", class: 'pure-button pure-button-primary'
       end

@@ -88,4 +88,16 @@ RSpec.describe Web::Views::Suppliers::Show do
     # two resync buttons (for each worker)
     expect(sanitized.scan(%(<button type="submit">Resync</button>)).size).to eq(2)
   end
+
+  describe "#overwrite_count_for_host" do
+    context "singular overwrite" do
+      before { create_overwrite(host_id: hosts.first.id) }
+      it { expect(sanitized).to include %(1 overwrite) }
+    end
+
+    context "multiple overwrites" do
+      before { 2.times { create_overwrite(host_id: hosts.first.id) } }
+      it { expect(sanitized).to include %(2 overwrites) }
+    end
+  end
 end

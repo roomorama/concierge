@@ -46,6 +46,14 @@ RSpec.describe Concierge::Flows::OverwriteManagement do
       expect(overwrite.property_identifier).to eq 'test'
       expect(overwrite.data.get("cancellation_policy")).to eq "flexible"
     end
+
+    context "property_identifier is empty string" do
+      let(:attributes) { Hash[host_id: host.id, data_json: data_json, property_identifier: ''] }
+      it "should coerce empty string to nil" do
+        expect { subject.create }.to change { OverwriteRepository.count }.by 1
+        expect(OverwriteRepository.last.property_identifier).to eq nil
+      end
+    end
   end
 
   describe "#update" do

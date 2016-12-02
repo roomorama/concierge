@@ -133,6 +133,11 @@ module Web::Views::Suppliers
       BackgroundWorkerRepository.for_supplier(supplier)
     end
 
+    def overwrite_count_for(host)
+      count = OverwriteRepository.for_host_id(host.id).count
+      "#{count} overwrite#{'s' if count > 1}"
+    end
+
     # Creates an HTML button/label for the status of a worker. +status+ is expected
     # to be a +String+ equal to one of +BackgroundWorker::STATUSES+.
     def status_label(status)

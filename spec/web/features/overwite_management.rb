@@ -13,11 +13,11 @@ RSpec.describe 'managing overwrites for a host', type: :feature do
 
   before { page.driver.browser.authorize 'admin', 'admin' }
 
-  it 'navigatable from home page' do
+  it 'overwrites index is navigatable from home page' do
     visit '/'
     click_on supplier.id
     within "#host-row-#{host.id}" do
-      click_on "Overwrites"
+      click_on "1 overwrite"
     end
 
     expect(page.body).to have_content "Property attribute enforcements for #{host.username}"

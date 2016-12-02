@@ -8,6 +8,9 @@ how this file is formatted and how the process works.
 ### Fixed
 - Fix showing external error with sync process event for deleted host
 
+### Added
+- Overwrites management: ability to overwrite property attributes like cancellation_policy, etc
+
 ## [1.3.4] - 2016-11-25
 ### Added
 - Avantio: handle booking not available case in common manner
