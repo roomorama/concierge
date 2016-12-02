@@ -43,7 +43,7 @@ RSpec.describe Concierge::PropertyDescription do
         ).value
 
         subject = described_class.new(p)
-        expect(subject.build).to eq 'This is a charming apartment in Omsk, which can accommodate 4 guests.It has 3 bedrooms and 2 bathrooms.'
+        expect(subject.build).to eq 'This is a charming apartment in Omsk, which can accommodate 4 guests. It has 3 bedrooms and 2 bathrooms.'
       end
     end
 
@@ -63,7 +63,7 @@ RSpec.describe Concierge::PropertyDescription do
         ).value
 
         subject = described_class.new(p)
-        expect(subject.build).to eq 'This is a charming apartment in Omsk, which can accommodate 4 guests.The 56 square metres apartment has 3 bedrooms and 2 bathrooms.'
+        expect(subject.build).to eq 'This is a charming apartment in Omsk, which can accommodate 4 guests. The 56 square metres apartment has 3 bedrooms and 2 bathrooms.'
       end
     end
   end

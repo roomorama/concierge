@@ -19,7 +19,7 @@ module Concierge
       result = ''
       if valid?
         result = "This is a charming #{property.type} in #{property.city}, which can accommodate "\
-        "#{pluralize(property.max_guests, 'guest', 'guests')}."
+        "#{pluralize(property.max_guests, 'guest', 'guests')}. "
 
         rooms_part_start = if property.surface
                              "The #{property.surface} square metres apartment"
