@@ -41,7 +41,7 @@ class Kigo::Calendar
     end
 
     def nightly_rate
-      amounts.map { |amount| amount['AMOUNT'].to_f }.min
+      amounts.map { |amount| amount['AMOUNT'].to_f }.max
     end
 
     def minimum_stay

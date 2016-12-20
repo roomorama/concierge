@@ -15,11 +15,11 @@ RSpec.describe Kigo::Calendar::WeeklyPeriod do
       'WEEKLY_AMOUNTS' => [
         {
           'GUESTS_FROM' => 1,
-          'AMOUNT'      => '700.00'
+          'AMOUNT'      => '500.00'
         },
         {
           'GUESTS_FROM' => 1,
-          'AMOUNT'      => '900.00'
+          'AMOUNT'      => '700.00'
         }
       ]
     }
