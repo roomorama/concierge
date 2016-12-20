@@ -71,7 +71,7 @@ module Kigo::Mappers
         else
           period['NIGHTLY_AMOUNTS'].map { |d| d['AMOUNT'].to_f }
         end
-      end.flatten.min
+      end.flatten.max
     end
 
   end

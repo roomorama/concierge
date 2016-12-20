@@ -46,8 +46,8 @@ class Kigo::Calendar
     end
 
     def nightly_rate
-      cheapest_weekly_rate = amounts.map { |amount| amount['AMOUNT'].to_f }.min
-      cheapest_weekly_rate / 7
+      max_weekly_rate = amounts.map { |amount| amount['AMOUNT'].to_f }.max
+      max_weekly_rate / 7
     end
 
     def minimum_stay
