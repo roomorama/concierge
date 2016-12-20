@@ -56,7 +56,7 @@ RSpec.describe Kigo::Mappers::PricingSetup do
         ]
       }
 
-      it { expect(subject.nightly_rate).to eq 23.46 }
+      it { expect(subject.nightly_rate).to eq 30.86 }
 
       it 'returns daily price according to weekly rates' do
         periodical_rates['RENT']['PERIODS'] = weekly_rates
