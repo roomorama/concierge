@@ -109,6 +109,8 @@ JTB:
       absence: "JTB calendar is synchronised with property metadata, because Concierge has to actualize jtb_* DB tables before each sync."
 
 BnbHero:
+  path: "bnb_hero"
+  controller: "bnb_hero"
   workers:
     metadata:
       absence: "BnbHero is only imported through rake"
