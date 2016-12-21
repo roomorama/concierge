@@ -6,6 +6,7 @@ module Web::Views::Suppliers
     include Web::View
 
     NO_WORKERS_DEFINED = "No definition found. Please report this to the Roomorama developers."
+    NO_METADATA_SYNC   = "This supplier does not synchronise metadata."
     NO_CALENDAR_SYNC   = "This supplier does not synchronise calendar."
 
     # calculates the number of properties provided by a given +Supplier+
@@ -68,7 +69,14 @@ module Web::Views::Suppliers
       end
 
       definition = definition["workers"]
-      format_frequency(definition["metadata"]["every"])
+      metadata = definition["metadata"]
+      if metadata["every"]
+        format_frequency(metadata["every"])
+      elsif metadata["absence"]
+        metadata["absence"]
+      else
+        NO_METADATA_SYNC
+      end
     end
 
     # Determines the frequency of the +calendar+ worker for a given +Supplier+,
