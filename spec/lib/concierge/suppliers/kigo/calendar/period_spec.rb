@@ -76,7 +76,7 @@ RSpec.describe Kigo::Calendar::Period do
       entry = subject.entries.first
 
       expect(entry.date).to eq start_date
-      expect(entry.nightly_rate).to eq 35.26
+      expect(entry.nightly_rate).to eq 36.26
       expect(entry.minimum_stay).to eq 5
       expect(entry.checkin_allowed).to eq true
       expect(entry.checkout_allowed).to eq true
