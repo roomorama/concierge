@@ -63,6 +63,8 @@ module BnbHero
           property[key] = value
         end
 
+        property = add_translations(property, data)
+
         parse_images(data).each do |image|
           property.add_image(image)
         end
@@ -71,6 +73,22 @@ module BnbHero
       end
 
       private
+
+      def add_translations(property, data)
+        property.tap do |p|
+          p.title = data.get("content.en.title")
+          p.description = data.get("content.en.description")
+          p.check_in_instructions = data.get("content.en.check_in_instructions")
+
+          p.zh.title = data.get("content.zh-CN.title")
+          p.zh.description = data.get("content.zh-CN.description")
+          p.zh.check_in_instructions = data.get("content.zh-CN.check_in_instructions")
+
+          p.zh_tw.title = data.get("content.zh-TW.title")
+          p.zh_tw.description = data.get("content.zh-TW.description")
+          p.zh_tw.check_in_instructions = data.get("content.zh-TW.check_in_instructions")
+        end
+      end
 
       def parse_images(data)
         images = []
