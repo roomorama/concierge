@@ -112,6 +112,15 @@ module BnbHero
         attr[:instant_booking] = false
         attr.merge! security_deposit(data)
         attr.merge! type_and_subtype(data)
+        attr.merge! owner_info(data)
+      end
+
+      def owner_info(data)
+        {
+          owner_name:         data.get("host.name"),
+          owner_phone_number: data.get("host.phone"),
+          owner_email:        data.get("host.email")
+        }
       end
 
       def type_and_subtype(data)
