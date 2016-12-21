@@ -6,6 +6,10 @@ how this file is formatted and how the process works.
 
 ## Unreleased
 
+## [1.4.1] - 2016-12-21
+## Changed
+- Kigo: Max price of periods instead of min
+
 ## [1.4.0] - 2016-12-02
 ### Fixed
 - Fix showing external error with sync process event for deleted host
