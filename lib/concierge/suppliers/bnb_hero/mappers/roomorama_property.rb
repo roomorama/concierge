@@ -119,6 +119,8 @@ module BnbHero
       def sanitize!(attr)
         attr.each do |key, value|
           attr[key] = nil if value=="null"
+          attr[key] = false if value=="false"
+          attr[key] = true if value=="true"
         end
       end
 
