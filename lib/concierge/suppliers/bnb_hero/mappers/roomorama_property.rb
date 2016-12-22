@@ -23,7 +23,8 @@ module BnbHero
 
         "max_guests":   "max_guests",
         "minimum_stay": "minimum_stay",
-        "base_guests":  "rate_base_max_guests",
+        "rate_base_max_guests": "base_guests",
+        "extra_guest_surcharge": "extra_guest_surcharge",
 
         "postal_code": "postal_code",
         "address":     "address",
@@ -104,7 +105,6 @@ module BnbHero
         RM_BBH_FIELD_MAPPINGS.each do |rm_field, bbh_field|
           attr[rm_field] = data.get(bbh_field)
         end
-        attr[:extra_guest_surcharge] = data["extra_guest_surcharge"] unless data["extra_guest_surcharge"].nil?
         attr[:surface] = data["surface"].to_f if data["surface"].to_f > 0.0
         attr[:instant_booking] = false
         attr.merge! security_deposit(data)

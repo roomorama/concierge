@@ -32,6 +32,8 @@
     "cabletv"
   ],
   "max_guests": 2,
+  "extra_guest_surcharge": 10.0,
+  "rate_base_max_guests": 1,
   "minimum_stay": 1,
   "multi_unit": false,
   "smoking_allowed": false,
