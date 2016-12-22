@@ -21,9 +21,6 @@ module BnbHero
         "lat":         "lat",
         "lng":         "lng",
 
-        "nightly_rate": "nightly_rate",
-        "weekly_rate":  "weekly_rate",
-        "monthly_rate": "monthly_rate",
         "max_guests":   "max_guests",
         "minimum_stay": "minimum_stay",
         "base_guests":  "rate_base_max_guests",
@@ -76,16 +73,16 @@ module BnbHero
 
       def add_translations(property, data)
         property.tap do |p|
-          p.title = data.get("content.en.title")
-          p.description = data.get("content.en.description")
+          p.title                 = data.get("content.en.title")
+          p.description           = data.get("content.en.description")
           p.check_in_instructions = data.get("content.en.check_in_instructions")
 
-          p.zh.title = data.get("content.zh-CN.title")
-          p.zh.description = data.get("content.zh-CN.description")
+          p.zh.title                 = data.get("content.zh-CN.title")
+          p.zh.description           = data.get("content.zh-CN.description")
           p.zh.check_in_instructions = data.get("content.zh-CN.check_in_instructions")
 
-          p.zh_tw.title = data.get("content.zh-TW.title")
-          p.zh_tw.description = data.get("content.zh-TW.description")
+          p.zh_tw.title                 = data.get("content.zh-TW.title")
+          p.zh_tw.description           = data.get("content.zh-TW.description")
           p.zh_tw.check_in_instructions = data.get("content.zh-TW.check_in_instructions")
         end
       end
@@ -113,14 +110,28 @@ module BnbHero
         attr.merge! security_deposit(data)
         attr.merge! type_and_subtype(data)
         attr.merge! owner_info(data)
+        attr.merge! rates(data)
         sanitize! attr
+      end
+
+      def rates(data)
+        nightly = data["nightly_rate"].to_f
+        weekly  = data["weekly_rate"].to_f
+        weekly  = nightly * 7 if weekly == 0.0  # weekly maybe given as "null"
+        monthly = data["monthly_rate"].to_f
+        monthly = nightly * 30 if monthly == 0.0  # monthly maybe given as "null"
+        {
+          nightly_rate: nightly,
+          weekly_rate:  weekly,
+          monthly_rate: monthly
+        }
       end
 
       def sanitize!(attr)
         attr.each do |key, value|
-          attr[key] = nil if value=="null"
-          attr[key] = false if value=="false"
-          attr[key] = true if value=="true"
+          attr[key] = nil if   value == "null"
+          attr[key] = false if value == "false"
+          attr[key] = true if  value == "true"
         end
         attr[:city] = nil unless ~ /([A-Z])\w+/
         attr

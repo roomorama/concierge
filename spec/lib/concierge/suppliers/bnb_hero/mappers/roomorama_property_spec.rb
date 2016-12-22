@@ -87,6 +87,19 @@ RSpec.describe BnbHero::Mappers::RoomoramaProperty do
     end
   end
 
+  describe "#rate" do
+    let(:rates) { described_class.new.send(:rates, data) }
+    let(:data) { {"nightly_rate" => 12.4,
+                  "weekly_rate"  => 50.2,
+                  "monthly_rate" => "null" } }
+    it "should parse valid rates" do
+      expect(rates[:nightly_rate]).to eq 12.4
+      expect(rates[:weekly_rate]).to  eq 50.2
+      expect(rates[:monthly_rate]).to eq 12.4 * 30
+    end
+
+  end
+
   describe "#sanitize!" do
     let(:sanitized) { described_class.new.send(:sanitize!, data) }
     let(:data) { {a: "false",
@@ -103,4 +116,5 @@ RSpec.describe BnbHero::Mappers::RoomoramaProperty do
       expect(sanitized[:city]).to be_nil
     end
   end
+
 end
