@@ -123,8 +123,9 @@ module BnbHero
         }
       end
 
+      # See PROPERTY_TYPE_MAPPINGS for supported bnbhero subtype
       def type_and_subtype(data)
-        PROPERTY_TYPE_MAPPINGS[data["subtype"]]
+        PROPERTY_TYPE_MAPPINGS[data["subtype"]] || {}
       end
 
       def security_deposit(data)
