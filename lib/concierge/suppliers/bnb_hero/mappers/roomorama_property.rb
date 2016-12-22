@@ -113,6 +113,13 @@ module BnbHero
         attr.merge! security_deposit(data)
         attr.merge! type_and_subtype(data)
         attr.merge! owner_info(data)
+        sanitize! attr
+      end
+
+      def sanitize!(attr)
+        attr.each do |key, value|
+          attr[key] = nil if value=="null"
+        end
       end
 
       def owner_info(data)
