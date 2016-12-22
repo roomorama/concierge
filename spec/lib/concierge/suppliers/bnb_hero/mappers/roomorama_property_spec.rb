@@ -3,25 +3,28 @@ require 'spec_helper'
 RSpec.describe BnbHero::Mappers::RoomoramaProperty do
   include Support::Fixtures
 
-  let(:property_hash) { JSON.parse(read_fixture('bnb_hero/property.json')) }
+  describe "#map" do
+    let(:property_hash) { JSON.parse(read_fixture('bnb_hero/property.json')) }
 
-  subject { described_class.new.map property_hash }
+    subject { described_class.new.map property_hash }
 
-  it "should return a valid Roomorama::Property result" do
-    expect(subject).to be_success
-    expect(subject.result).to be_a Roomorama::Property
+    it "should return a valid Roomorama::Property result" do
+      expect(subject).to be_success
+      expect(subject.result).to be_a Roomorama::Property
 
-    expected_property = Roomorama::Property.load(
-      Concierge::SafeAccessHash.new(
-        JSON.parse(read_fixture("bnb_hero/property.roomorama-attributes.json"))
+      expected_property = Roomorama::Property.load(
+        Concierge::SafeAccessHash.new(
+          JSON.parse(read_fixture("bnb_hero/property.roomorama-attributes.json"))
+        )
       )
-    )
-    expect(expected_property).to be_success
-    expect(subject.result.to_h).to match expected_property.result.to_h
-    expect(subject.result.identifier).to eq "1011"
-    expect { subject.result.validate! }.to_not raise_error
-    expect(subject.result.default_to_available).to be_truthy
-    expect(subject.result.instant_booking).to eq false
+      expect(expected_property).to be_success
+      expect(subject.result.to_h).to match expected_property.result.to_h
+      expect(subject.result.identifier).to eq "1011"
+      expect { subject.result.validate! }.to_not raise_error
+      expect(subject.result.default_to_available).to be_truthy
+      expect(subject.result.multi_unit).to be_falsey
+      expect(subject.result.instant_booking).to eq false
+    end
   end
 
   describe "#type_and_subtype" do
@@ -81,6 +84,23 @@ RSpec.describe BnbHero::Mappers::RoomoramaProperty do
         expect(subject[:type]).to eq "apartment"
         expect(subject[:subtype]).to be_nil
       end
+    end
+  end
+
+  describe "#sanitize!" do
+    let(:sanitized) { described_class.new.send(:sanitize!, data) }
+    let(:data) { {a: "false",
+                  b: "true",
+                  c: "null",
+                  city: "서울시" } }
+
+    it "cleans up bad json data" do
+      expect(sanitized[:a]).to eq false
+      expect(sanitized[:b]).to eq true
+      expect(sanitized[:c]).to be_nil
+    end
+    it "rejects city name in korean" do
+      expect(sanitized[:city]).to be_nil
     end
   end
 end

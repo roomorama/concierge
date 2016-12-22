@@ -122,6 +122,8 @@ module BnbHero
           attr[key] = false if value=="false"
           attr[key] = true if value=="true"
         end
+        attr[:city] = nil unless ~ /([A-Z])\w+/
+        attr
       end
 
       def owner_info(data)
