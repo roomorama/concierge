@@ -8,6 +8,9 @@ how this file is formatted and how the process works.
 ### Added
 - BnbHero: Mapper and rake synchronisation task
 
+### Changed
+- No request logging for healthcheck pings
+
 ## [1.4.1] - 2016-12-21
 ## Changed
 - Kigo: Max price of periods instead of min
