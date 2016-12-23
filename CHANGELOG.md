@@ -5,6 +5,8 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+### Added
+- BnbHero: Mapper and rake synchronisation task
 
 ## [1.4.1] - 2016-12-21
 ## Changed
