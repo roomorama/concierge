@@ -53,7 +53,7 @@ module Concierge
     private
 
     def health_check?(path)
-      path == "_ping"
+      path =~ /_ping/
     end
 
     def format(http_method, status, path, query, time, request_body)
