@@ -21,9 +21,9 @@ module BnbHero
         "lat":         "lat",
         "lng":         "lng",
 
-        "max_guests":   "max_guests",
-        "minimum_stay": "minimum_stay",
-        "rate_base_max_guests": "base_guests",
+        "max_guests":            "max_guests",
+        "minimum_stay":          "minimum_stay",
+        "rate_base_max_guests":  "base_guests",
         "extra_guest_surcharge": "extra_guest_surcharge",
 
         "postal_code": "postal_code",
