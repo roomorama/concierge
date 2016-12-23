@@ -45,11 +45,16 @@ module Concierge
     end
 
     def log(http_method:, status:, path:, query:, time:, request_body:)
+      return if health_check?(path)
       message = format(http_method, status, path, query, time, request_body)
       engine.info(message)
     end
 
     private
+
+    def health_check?(path)
+      path =~ /_ping/
+    end
 
     def format(http_method, status, path, query, time, request_body)
       summary = "%s %s | T: %.2fs | S: %s" % [http_method.upcase, with_query_string(path, query), time.to_f, status]
