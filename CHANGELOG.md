@@ -5,6 +5,8 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+### Fixed
+- Waytostay: Add commas to English city tourist tax
 
 ## [1.4.2] - 2016-12-27
 ### Added
