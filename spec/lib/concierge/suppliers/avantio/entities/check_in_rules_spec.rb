@@ -125,7 +125,7 @@ RSpec.describe Avantio::Entities::CheckInRules do
       end
 
       it 'returns anytime' do
-        expect(subject.to_s).to eq("Check-in time: anytime")
+        expect(subject.to_s).to eq("")
       end
     end
   end
