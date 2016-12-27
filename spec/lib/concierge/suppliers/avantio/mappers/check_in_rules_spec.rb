@@ -21,6 +21,14 @@ RSpec.describe Avantio::Mappers::CheckInRules do
     expect(rule.weekdays).to eq(%w(Monday Tuesday Wednesday Thursday Friday Saturday Sunday))
   end
 
+  context 'no start day' do
+    let(:accommodation_raw) { xml_from_file('avantio/no_check_in_start_day.xml') }
+    it 'returns CheckInRules instance' do
+      rules = subject.build(accommodation_raw)
+      expect(rules).to be_a(Avantio::Entities::CheckInRules)
+    end
+  end
+
   def xml_from_file(filename)
     Nokogiri::XML(read_fixture(filename)).at_xpath('AccommodationData')
   end

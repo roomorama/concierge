@@ -114,5 +114,19 @@ RSpec.describe Avantio::Entities::CheckInRules do
         )
       end
     end
+
+    context 'empty weekdays given' do
+      let(:rules) do
+        [
+          described_class::Rule.new(
+            1, 1, 31, 12, '00:00', '00:00', %w()
+          )
+        ]
+      end
+
+      it 'returns anytime' do
+        expect(subject.to_s).to eq("")
+      end
+    end
   end
 end

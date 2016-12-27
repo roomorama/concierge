@@ -26,4 +26,22 @@ namespace :properties do
       end
     end
   end
+
+  desc "Import from json feed"
+  task :import_bnb, [:json_file, :host_id] => :environment do |t, args|
+    file = File.read(args[:json_file])
+    feed = JSON.parse(file)
+
+    host = HostRepository.find args[:host_id]
+    sync = Workers::PropertySynchronisation.new(host)
+    sync.skip_purge!
+
+    feed.each do |bnb_hero_room_hash|
+      sync.start(bnb_hero_room_hash["identifier"]) do
+        ::BnbHero::Mappers::RoomoramaProperty.new.map(bnb_hero_room_hash)
+      end
+    end
+
+    sync.finish!
+  end
 end
