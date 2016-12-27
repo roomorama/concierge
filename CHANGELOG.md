@@ -11,6 +11,9 @@ how this file is formatted and how the process works.
 ### Changed
 - No request logging for healthcheck pings
 
+### Fixed
+- Avantio: Handle empty check in rule season
+
 ## [1.4.1] - 2016-12-21
 ## Changed
 - Kigo: Max price of periods instead of min
