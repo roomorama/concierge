@@ -20,10 +20,17 @@ module Avantio
       private
 
       def build_rule(raw_rule)
-        start_day   = raw_rule.at_xpath('Season/StartDay').text.to_i
-        start_month = raw_rule.at_xpath('Season/StartMonth').text.to_i
-        final_day   = raw_rule.at_xpath('Season/FinalDay').text.to_i
-        final_month = raw_rule.at_xpath('Season/FinalMonth').text.to_i
+        valid_season = raw_rule.at_xpath('Season[text()]')
+        if valid_season.nil?
+          # No season defined, so we assume this rule applies all year round
+          start_day, start_month = 1, 1
+          final_day, final_month = 31, 12
+        else
+          start_day   = raw_rule.at_xpath('Season/StartDay').text.to_i
+          start_month = raw_rule.at_xpath('Season/StartMonth').text.to_i
+          final_day   = raw_rule.at_xpath('Season/FinalDay').text.to_i
+          final_month = raw_rule.at_xpath('Season/FinalMonth').text.to_i
+        end
         from        = raw_rule.at_xpath('Schedule/From').text
         to          = raw_rule.at_xpath('Schedule/To').text
         weekdays    = raw_rule.xpath('DaysOfApplication/*[text() = "true"]').map(&:name)
