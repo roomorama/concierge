@@ -56,7 +56,7 @@ RSpec.describe API::Controllers::AtLeisure::Quote do
       stub_call(:post, endpoint) { [200, {}, jsonrpc_fixture("atleisure/on_request.json")] }
       response = parse_response(described_class.new.call(params))
 
-      expect(response.status).to eq 503
+      expect(response.status).to eq 200
       expect(response.body["status"]).to eq "error"
       expect(response.body["errors"]["quote"]).to eq "Instant booking is not supported for the given period"
     end
