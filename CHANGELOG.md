@@ -5,8 +5,11 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+
+## [1.5.0] - 2016-12-28
 ### Fixed
 - Waytostay: Add commas to English city tourist tax
+- Bnbhero: New json structure
 
 ## [1.4.2] - 2016-12-27
 ### Added
