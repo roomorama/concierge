@@ -42,8 +42,7 @@
   "cancellation_policy": "strict",
   "services_airport_pickup": false,
   "services_concierge": false,
-  "services_cleaning": true,
-  "services_cleaning_required": true,
+  "services_cleaning": false,
   "images": [
     {
       "identifier": "33cb2bda5fc0a9e95bb8e4adb63191a7",

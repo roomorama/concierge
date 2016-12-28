@@ -43,9 +43,6 @@ module BnbHero
 
         "services_airport_pickup":    "services.airport_port.available",
         "services_concierge":         "services.concierge.available",
-        "services_cleaning":          "services.cleaning.available",
-        "services_cleaning_required": "services.cleaning.required",
-        "services_cleaning_rate":     "services.cleaning.rate",
 
         "multi_unit":           "multi_unit",
         "currency":             "currency",
@@ -108,6 +105,7 @@ module BnbHero
         attr[:surface] = data["surface"].to_f if data["surface"].to_f > 0.0
         attr[:surface_unit] = "metric"
         attr[:default_to_available] = true
+        attr[:services_cleaning] = false
         attr[:instant_booking] = false
         attr.merge! security_deposit(data)
         attr.merge! type_and_subtype(data)
