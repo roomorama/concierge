@@ -7,6 +7,7 @@ module Avantio
     class RoomoramaCalendar
       # Avantio does not allow to book properties for dates near then today + 3 days
       MARGIN = 3
+      MAX_DB_INT = 2147483647  # database int range
 
       attr_reader :property_id, :rate, :availability, :rule, :length
 
@@ -58,8 +59,8 @@ module Avantio
           if unavailable_counter < 0 && availability_period && rate_period && rule_season
             Roomorama::Calendar::Entry.new(
               date:             date.to_s,
-              available:        availability_period.available?,
-              nightly_rate:     rate_period.price,
+              available:        availability_period.available? && in_db_range(rate_period.price),
+              nightly_rate:     [rate_period.price, MAX_DB_INT].min,
               minimum_stay:     rule_season.min_nights,
               checkin_allowed:  rule_season.checkin_allowed(date),
               checkout_allowed: rule_season.checkout_allowed(date)
@@ -107,6 +108,10 @@ module Avantio
             }
           ]
         end.to_h
+      end
+
+      def in_db_range(price)
+        return price < MAX_DB_INT
       end
     end
   end
