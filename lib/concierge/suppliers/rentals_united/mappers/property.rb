@@ -198,7 +198,8 @@ module RentalsUnited
         multi_lang_values = property_hash.get("#{key}.Text")
 
         Array(multi_lang_values).find do |field|
-          field.attributes["LanguageID"] == EN_DESCRIPTION_LANG_CODE
+          language_code = field["@LanguageID"] || field.attributes["LanguageID"]
+          language_code == EN_DESCRIPTION_LANG_CODE
         end
       end
 
