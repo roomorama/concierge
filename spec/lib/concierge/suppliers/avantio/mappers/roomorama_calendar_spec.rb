@@ -11,6 +11,11 @@ RSpec.describe Avantio::Mappers::RoomoramaCalendar do
       [
         Avantio::Entities::Rate::Period.new(
           Date.new(2014, 6, 27),
+          Date.new(2014, 7, 26),
+          119999997542.4
+        ),
+        Avantio::Entities::Rate::Period.new(
+          Date.new(2014, 7, 27),
           Date.new(2014, 8, 22),
           156.50
         ),
@@ -120,6 +125,13 @@ RSpec.describe Avantio::Mappers::RoomoramaCalendar do
       entry = calendar.entries.detect { |e| e.date == Date.new(2014, 8, 24) }
 
       expect(entry.nightly_rate).to eq(0)
+      expect(entry.available).to be false
+    end
+
+    it 'returns unavailable entries for days with really big rate' do
+      entry = calendar.entries.detect { |e| e.date == Date.new(2014, 7, 20) }
+
+      expect(entry.nightly_rate).to eq(2147483647)
       expect(entry.available).to be false
     end
 
