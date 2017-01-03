@@ -5,6 +5,8 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+
+## [1.5.1] - 2016-01-03
 ### Fixed
 - Avantio: Daily rate exceeds database int range. Rate is overwritten and marked as unavailable
 - RentalsUnited: access hash attributes correctly. Fixes rollbar#805
