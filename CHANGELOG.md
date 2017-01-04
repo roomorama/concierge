@@ -6,6 +6,10 @@ how this file is formatted and how the process works.
 
 ## Unreleased
 
+## [1.5.2] - 2016-01-04
+### Changed
+- Avantio: Locality/Name instead of City/Name for city name
+
 ## [1.5.1] - 2016-01-03
 ### Fixed
 - Avantio: Daily rate exceeds database int range. Rate is overwritten and marked as unavailable

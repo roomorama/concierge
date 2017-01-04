@@ -17,7 +17,7 @@ RSpec.describe Avantio::Mappers::Accommodation do
     expect(accommodation.occupational_rule_id).to eq('204')
     expect(accommodation.master_kind_code).to eq('2')
     expect(accommodation.country_iso_code).to eq('ES')
-    expect(accommodation.city).to eq('Gerona / Girona')
+    expect(accommodation.city).to eq('Valencia ciudad')
     expect(accommodation.lat).to eq('39.4742')
     expect(accommodation.lng).to eq('-0.380721')
     expect(accommodation.district).to eq('Sin especificar')
