@@ -34,7 +34,7 @@ RSpec.describe Avantio::Mappers::RoomoramaProperty do
     expect(property.subtype).to eq('villa')
     expect(property.address).to eq('virgen del manzano, 10')
     expect(property.postal_code).to eq('46001')
-    expect(property.city).to eq('Gerona')
+    expect(property.city).to eq('Valencia ciudad')
     expect(property.number_of_bedrooms).to eq(1)
     expect(property.max_guests).to eq(1)
     expect(property.apartment_number).to be nil

@@ -10,7 +10,7 @@ module Avantio
         occupational_rule_id:   'OccupationalRuleId',
         master_kind_code:       'MasterKind/MasterKindCode',
         country_iso_code:       'LocalizationData/Country/ISOCode',
-        city:                   'LocalizationData/City/Name',
+        city:                   'LocalizationData/Locality/Name',
         lat:                    'LocalizationData/GoogleMaps/Latitude',
         lng:                    'LocalizationData/GoogleMaps/Longitude',
         district:               'LocalizationData/District/Name',
