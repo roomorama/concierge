@@ -5,6 +5,8 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+### Changed
+- Avantio: Locality/Name instead of City/Name for city name
 
 ## [1.5.1] - 2016-01-03
 ### Fixed
