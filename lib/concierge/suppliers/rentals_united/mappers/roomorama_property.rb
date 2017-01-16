@@ -14,9 +14,11 @@ module RentalsUnited
 
       # List of supported by Roomorama security deposit types
       NO_DEPOSIT_ID = "1"
+      NO_DEPOSIT_ID2 = "0"
       FLAT_AMOUNT_PER_STAY_ID = "5"
       SUPPORTED_SECURITY_DEPOSIT_TYPES = [
         NO_DEPOSIT_ID,
+        NO_DEPOSIT_ID2,
         FLAT_AMOUNT_PER_STAY_ID
       ]
       SECURITY_DEPOSIT_PAYMENT_TYPE = 'cash'
@@ -168,7 +170,7 @@ module RentalsUnited
       def supported_security_deposit?
         SUPPORTED_SECURITY_DEPOSIT_TYPES.include?(
           ru_property.security_deposit_type
-        )
+        ) || ru_property.security_deposit_amount == 0.0
       end
 
       def has_seasons?
