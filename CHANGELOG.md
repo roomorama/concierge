@@ -6,6 +6,10 @@ how this file is formatted and how the process works.
 
 ## Unreleased
 
+## [1.5.3] - 2016-01-16
+### Added
+- RentalsUnited: Support for additional security deposit types
+
 ## [1.5.2] - 2016-01-04
 ### Changed
 - Avantio: Locality/Name instead of City/Name for city name
