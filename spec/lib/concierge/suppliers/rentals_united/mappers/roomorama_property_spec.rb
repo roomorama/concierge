@@ -239,19 +239,26 @@ RSpec.describe RentalsUnited::Mappers::RoomoramaProperty do
   end
 
   context "when property has no security_deposit" do
-    it "sets security_deposit_amount to nil" do
+    it "sets security_deposit related fields to nil for SecurityDepositID 1" do
       ru_property_hash[:security_deposit_type] = "1"
       expect(property.security_deposit_amount).to be_nil
-    end
-
-    it "sets security_deposit_currency_code to nil" do
-      ru_property_hash[:security_deposit_type] = "1"
+      expect(property.security_deposit_type).to be_nil
       expect(property.security_deposit_currency_code).to be_nil
     end
 
-    it "sets security_deposit_type to nil" do
-      ru_property_hash[:security_deposit_type] = "1"
+    it "sets security_deposit related fields to nil for SecurityDepositID 0" do
+      ru_property_hash[:security_deposit_type] = "0"
+      expect(property.security_deposit_amount).to be_nil
       expect(property.security_deposit_type).to be_nil
+      expect(property.security_deposit_currency_code).to be_nil
+    end
+
+    it "sets security_deposit related fields to nil for 0.0 deposit amount" do
+      ru_property_hash[:security_deposit_type] = "4"
+      ru_property_hash[:security_deposit_amount] = 0.0
+      expect(property.security_deposit_amount).to eq nil
+      expect(property.security_deposit_type).to be_nil
+      expect(property.security_deposit_currency_code).to be_nil
     end
   end
 
