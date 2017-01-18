@@ -5,14 +5,15 @@ module Web::Controllers::Hosts
     params do
       param :supplier_id,      type: String,  presence: true
       param :host do
-        param :identifier,     type: String,  presence: true
-        param :username,       type: String,  presence: true
-        param :access_token,   type: String
-        param :email,          type: String
-        param :name,           type: String
-        param :phone,          type: String
-        param :payment_terms,  type: String
-        param :fee_percentage, type: Integer, presence: true
+        param :identifier,          type: String,  presence: true
+        param :username,            type: String,  presence: true
+        param :access_token,        type: String
+        param :email,               type: String
+        param :name,                type: String
+        param :phone,               type: String
+        param :payment_terms,       type: String
+        param :cancellation_policy, type: String
+        param :fee_percentage,      type: Integer, presence: true
       end
     end
 
@@ -49,14 +50,15 @@ module Web::Controllers::Hosts
 
     def build_host_creation(params)
       Concierge::Flows::HostUpsertion.new(
-        supplier:       supplier,
-        identifier:     params.get("host.identifier"),
-        username:       params.get("host.username"),
-        fee_percentage: params.get("host.fee_percentage"),
-        email:          params.get("host.email"),
-        phone:          params.get("host.phone"),
-        name:           params.get("host.name"),
-        payment_terms:  params.get("host.payment_terms")
+        supplier:            supplier,
+        identifier:          params.get("host.identifier"),
+        username:            params.get("host.username"),
+        fee_percentage:      params.get("host.fee_percentage"),
+        email:               params.get("host.email"),
+        phone:               params.get("host.phone"),
+        name:                params.get("host.name"),
+        cancellation_policy: params.get("host.cancellation_policy"),
+        payment_terms:       params.get("host.payment_terms")
       )
     end
 

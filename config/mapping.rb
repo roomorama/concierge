@@ -51,18 +51,19 @@ collection :hosts do
   entity     Host
   repository HostRepository
 
-  attribute :id,             Integer
-  attribute :supplier_id,    Integer
-  attribute :identifier,     String
-  attribute :username,       String
-  attribute :access_token,   String
-  attribute :payment_terms,  String
-  attribute :email,          String
-  attribute :name,           String
-  attribute :phone,          String
-  attribute :fee_percentage, Float
-  attribute :created_at,     Time
-  attribute :updated_at,     Time
+  attribute :id,                  Integer
+  attribute :supplier_id,         Integer
+  attribute :identifier,          String
+  attribute :username,            String
+  attribute :access_token,        String
+  attribute :payment_terms,       String
+  attribute :email,               String
+  attribute :name,                String
+  attribute :phone,               String
+  attribute :fee_percentage,      Float
+  attribute :cancellation_policy, String
+  attribute :created_at,          Time
+  attribute :updated_at,          Time
 end
 
 collection :properties do
