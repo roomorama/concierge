@@ -1,79 +1,52 @@
 module Workers::Suppliers::Kigo
-  # +Workers::Suppliers::Kigo::Metadata+
+  # +Workers::Suppliers::Kigo::Availabilities+
   #
-  # Performs synchronisation with supplier
+  # this class responsible for handling differences identifiers
+  # and calling process +Workers::Suppliers::Kigo::Property+ only for each
+  # updated property
+  #
   class Metadata
 
-    CACHE_PREFIX = 'metadata.kigo'
+    attr_reader :supplier, :property_content_diff_id
 
-    attr_reader :synchronisation, :host
-
-    def initialize(host)
-      @host            = host
-      @synchronisation = Workers::PropertySynchronisation.new(host)
+    def initialize(supplier, args = {})
+      @supplier                 = supplier
+      @property_content_diff_id = args[:property_content_diff_id]
     end
 
-    # for the fetching a property data performing process has to make two calls
-    #
-    #   * fetch_data   - performs fetching base property data
-    #   * fetch_prices - returns property pricing setup. (Uses for deposit, additional price ...)
-    #
-    # uses caching for properties list to avoid the same call for different hosts
     def perform
-      references = synchronisation.new_context('references') do
-        with_cache('references') { importer.fetch_references }
+      property_content_diff = new_context do
+        importer.fetch_property_content_diff(property_content_diff_id)
+      end
+      unless property_content_diff.success?
+        announce_error('Failed to perform `#fetch_property_content_diff` operation', prices_diff)
+        return initial_args_result
       end
 
-      unless references.success?
-        message = 'Failed to perform `#fetch_references` operation'
-        announce_error(message, references)
-        return
-      end
+      identifiers = property_content_diff.value['PROP_ID']
 
-      mapper = Kigo::Mappers::Property.new(references.value, resolver: mapper_resolver)
-      result = with_cache('list') { importer.fetch_properties }
-      if result.success?
-        properties = host_properties(result.value)
+      identifiers.each { |property_id| update_property(property_id) }
 
-        properties.each do |property|
-          id          = property['PROP_ID']
-          data_result = synchronisation.new_context(id) { importer.fetch_data(id) }
-
-          unless data_result.success?
-            if data_result.error.code == :http_status_429
-              synchronisation.mark_as_processed(id)
-            end
-            announce_error('Failed to perform the `#fetch_data` operation', data_result)
-            next
-          end
-
-          next unless valid_payload?(data_result.value)
-
-          synchronisation.start(id) do
-            price_result = importer.fetch_prices(id)
-
-            next price_result unless price_result.success?
-
-            mapper.prepare(data_result.value, price_result.value['PRICING'])
-          end
-        end
-        synchronisation.finish!
-      else
-        message = "Failed to perform the `#fetch_properties` operation"
-        announce_error(message, result)
-      end
+      Result.new({ property_content_diff_id: property_content_diff.value['DIFF_ID'] })
     end
 
     private
 
-    def host_properties(properties)
-      properties.select do |property|
-        wrapped_payload(property).get("PROP_PROVIDER.RA_ID") == host.identifier.to_i
-      end
+    def update_property(property_identifier)
+      Workers::Suppliers::Kigo::Property.new(property_identifier).perform
     end
 
-    def wrapped_payload(payload)
-      Concierge::SafeAccessHash.new(payload)
+    def new_context
+      Concierge.context = Concierge::Context.new(type: "batch")
+
+      message = Concierge::Context::Message.new(
+        label:     'Aggregated Sync',
+        message:   "Started aggregated metadata sync for `#{supplier}`",
+        backtrace: caller
+      )
+
+      Concierge.context.augment(message)
+      yield
     end
 
     def importer
@@ -85,19 +58,7 @@ module Workers::Suppliers::Kigo
     end
 
     def credentials
-      Concierge::Credentials.for(supplier_name)
-    end
-
-    def supplier_name
-      Kigo::Client::SUPPLIER_NAME
-    end
-
-    def valid_payload?(payload)
-      Kigo::PayloadValidation.new(payload).valid?
-    end
-
-    def mapper_resolver
-      Kigo::Mappers::Resolver.new
+      Concierge::Credentials.for(Kigo::Client::SUPPLIER_NAME)
     end
 
     def announce_error(message, result)
@@ -111,7 +72,7 @@ module Workers::Suppliers::Kigo
 
       Concierge::Announcer.trigger(Concierge::Errors::EXTERNAL_ERROR, {
         operation:   'sync',
-        supplier:    supplier_name,
+        supplier:    supplier.name,
         code:        result.error.code,
         description: result.error.data,
         context:     Concierge.context.to_h,
@@ -119,24 +80,12 @@ module Workers::Suppliers::Kigo
       })
     end
 
-    def with_cache(key)
-      freshness = 60 * 60 * 3 # 3 hours
-      cache.fetch(key, freshness: freshness, serializer: json_serializer) { yield }
-    end
-
-    def json_serializer
-      @serializer ||= Concierge::Cache::Serializers::JSON.new
-    end
-
-    def cache
-      @_cache ||= Concierge::Cache.new(namespace: CACHE_PREFIX)
+    def initial_args_result
+      Result.new({property_content_diff_id: property_content_diff_id})
     end
   end
 end
 
-
-# listen supplier worker
-Concierge::Announcer.on("metadata.#{Kigo::Client::SUPPLIER_NAME}") do |host|
-  Workers::Suppliers::Kigo::Metadata.new(host).perform
-  Result.new({})
+Concierge::Announcer.on("metadata.Kigo") do |supplier, args|
+  Workers::Suppliers::Kigo::Metadata.new(supplier, args).perform
 end

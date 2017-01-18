@@ -14,15 +14,16 @@ module Kigo
   class Importer
     include Concierge::JSON
 
-    PROPERTIES_LIST     = 'listProperties2'
-    PROPERTY_DATA       = 'readProperty2'
-    PRICES              = 'readPropertyPricingSetup'
-    PRICES_DIFF         = 'diffPropertyPricingSetup'
-    AVAILABILITIES      = 'listPropertyAvailability'
-    AVAILABILITIES_DIFF = 'diffPropertyAvailability'
-    RESERVATIONS        = 'listPropertyCalendarReservations'
-    RESERVATIONS_DIFF   = 'diffPropertyCalendarReservations'
-    IMAGE               = 'readPropertyPhotoFile'
+    PROPERTIES_LIST       = 'listProperties2'
+    PROPERTY_DATA         = 'readProperty2'
+    PROPERTY_CONTENT_DIFF = 'diffPropertyContent'
+    PRICES                = 'readPropertyPricingSetup'
+    PRICES_DIFF           = 'diffPropertyPricingSetup'
+    AVAILABILITIES        = 'listPropertyAvailability'
+    AVAILABILITIES_DIFF   = 'diffPropertyAvailability'
+    RESERVATIONS          = 'listPropertyCalendarReservations'
+    RESERVATIONS_DIFF     = 'diffPropertyCalendarReservations'
+    IMAGE                 = 'readPropertyPhotoFile'
 
     # references
     AMENITIES           = 'listKigoPropertyAmenities'
@@ -45,6 +46,10 @@ module Kigo
 
     def fetch_prices(id)
       fetch(PRICES, { PROP_ID: id })
+    end
+
+    def fetch_property_content_diff(id)
+      fetch(PROPERTY_CONTENT_DIFF, { DIFF_ID: id })
     end
 
     def fetch_prices_diff(id)
