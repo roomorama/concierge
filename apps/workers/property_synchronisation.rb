@@ -87,14 +87,6 @@ module Workers
       end
     end
 
-    def overwrite_attributes!(result)
-      return unless result.success?
-      property = result.value
-      overwrites = OverwriteRepository.all_for(identifier: property.identifier, host_id: host.id)
-      property.apply_overwrites! overwrites
-      return Result.new(property)
-    end
-
     # indicates that the synchronisation process failed. As a consequence:
     #
     # * no purging is done when +finish!+ is called.
@@ -214,6 +206,14 @@ module Workers
     end
 
     private
+
+    def overwrite_attributes!(result)
+      return unless result.success?
+      property = result.value
+      overwrites = OverwriteRepository.all_for(identifier: property.identifier, host_id: host.id)
+      property.apply_overwrites! overwrites
+      return Result.new(property)
+    end
 
     def finish_property_sync(result, property_id)
       if result.success?
