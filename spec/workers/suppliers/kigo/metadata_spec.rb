@@ -16,6 +16,7 @@ RSpec.describe Workers::Suppliers::Kigo::Metadata do
         Result.new(property_content_diff)
       }
       expect(subject).to receive(:update_property).exactly(2).times
+      expect(subject).to receive(:announce_all_errors).exactly(1).times
     end
 
     it do
@@ -32,6 +33,7 @@ RSpec.describe Workers::Suppliers::Kigo::Metadata do
         Result.new(property_content_diff)
       }
       expect(subject).to receive(:update_property).exactly(2).times
+      expect(subject).to receive(:announce_all_errors).exactly(1).times
     end
     it do
       result = subject.perform

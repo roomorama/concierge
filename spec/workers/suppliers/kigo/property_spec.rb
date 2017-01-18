@@ -90,7 +90,13 @@ RSpec.describe Workers::Suppliers::Kigo::Property do
   end
 
   context "property belongs to new unregistered host" do
-    before { expect(HostRepository.identified_by("15826").first).to be_nil }  # from fixtures/kigo/property_data.json#RA_ID
+    let(:property_data) { JSON.parse(read_fixture('kigo/property_data.json')) }
+
+    before do
+      allow_any_instance_of(Kigo::Importer).to receive(:fetch_data) { Result.new(property_data) }
+      expect(HostRepository.identified_by("15826").first).to be_nil  # from fixtures/kigo/property_data.json#RA_ID
+    end
+
     it 'does not process properties with unknown host' do
       expect_any_instance_of(Workers::PropertySynchronisation).not_to receive(:start)
       subject.perform
