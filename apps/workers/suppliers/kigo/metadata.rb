@@ -25,7 +25,8 @@ module Workers::Suppliers::Kigo
 
       identifiers = property_content_diff.value['PROP_ID']
 
-      identifiers.each { |property_id| update_property(property_id) }
+      update_results = identifiers.collect { |property_id| update_property(property_id) }
+      announce_all_errors(update_results)
 
       Result.new({ property_content_diff_id: property_content_diff.value['DIFF_ID'] })
     end
@@ -59,6 +60,12 @@ module Workers::Suppliers::Kigo
 
     def credentials
       Concierge::Credentials.for(Kigo::Client::SUPPLIER_NAME)
+    end
+
+    def announce_all_errors(results)
+      results.select { |r| !r.success? }.each do |r|
+        announce_error("Error when updating a #{supplier_name} property", r)
+      end
     end
 
     def announce_error(message, result)
