@@ -69,7 +69,7 @@ module Workers::Suppliers::Kigo
 
       message = Concierge::Context::Message.new(
         label:     "Kigo property sync",
-        message:   "Started single property sync for `#{supplier}`",
+        message:   "Started single property sync for `#{supplier_name}`",
         backtrace: caller
       )
 
@@ -135,8 +135,4 @@ module Workers::Suppliers::Kigo
       end
     end
   end
-end
-
-Concierge::Announcer.on("metadata.property.Kigo") do |property_identifier|
-  Workers::Suppliers::Kigo::Property.new(property_identifier).perform
 end
