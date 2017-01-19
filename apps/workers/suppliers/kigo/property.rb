@@ -6,11 +6,10 @@ module Workers::Suppliers::Kigo
 
     CACHE_PREFIX = 'metadata.kigo'
 
-    attr_reader :synchronisation, :host, :property_identifier, :retries
+    attr_reader :synchronisation, :host, :property_identifier
 
-    def initialize(property_identifier, retries=0)
+    def initialize(property_identifier)
       @property_identifier = property_identifier
-      @retries = retries
     end
 
     # for the fetching a property data performing process has to make two calls
@@ -138,6 +137,6 @@ module Workers::Suppliers::Kigo
   end
 end
 
-Concierge::Announcer.on("metadata.property.Kigo") do |property_identifier, retries|
-  Workers::Suppliers::Kigo::Property.new(property_identifier, retries).perform
+Concierge::Announcer.on("metadata.property.Kigo") do |property_identifier|
+  Workers::Suppliers::Kigo::Property.new(property_identifier).perform
 end
