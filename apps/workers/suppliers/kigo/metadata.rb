@@ -64,7 +64,7 @@ module Workers::Suppliers::Kigo
 
     def announce_all_errors(results)
       results.select { |r| !r.success? }.each do |r|
-        announce_error("Error when updating a #{supplier_name} property", r)
+        announce_error("Error when updating a #{Kigo::Client::SUPPLIER_NAME} property", r)
       end
     end
 
