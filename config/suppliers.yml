@@ -60,6 +60,7 @@ KigoLegacy:
   workers:
     metadata:
       every: "1d"
+      aggregated: true
     availabilities:
       every: "1d"
       aggregated: true
