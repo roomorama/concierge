@@ -1,5 +1,5 @@
 module Workers::Suppliers::Kigo
-  # +Workers::Suppliers::Kigo::Availabilities+
+  # +Workers::Suppliers::Kigo::Metadata+
   #
   # this class responsible for handling differences identifiers
   # and calling process +Workers::Suppliers::Kigo::Property+ only for each
