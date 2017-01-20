@@ -2,10 +2,12 @@ module Workers::Suppliers
 
   class Waytostay
 
-    attr_reader :property_sync, :calendar_sync, :host, :client
+    attr_reader :property_sync, :calendar_sync, :host, :client, :args
+    FULL_SYNC_INTERVAL = 3600 * 24 * 30  # 30 days
 
-    def initialize(host)
+    def initialize(host, args)
       @host = host
+      @args = args
       @property_sync = Workers::PropertySynchronisation.new(host)
       @calendar_sync = Workers::CalendarSynchronisation.new(host)
       property_sync.skip_purge!
@@ -13,15 +15,17 @@ module Workers::Suppliers
     end
 
     def perform
-      synchronise
+      property_sync.new_context
+      changes = if should_run_full_sync?
+                  all_waytostay_data
+                else
+                  new_waytostay_changes
+                end
+      synchronise(changes) if changes.success?
+      Result.new(next_run_args)
     end
 
-    def synchronise
-      changes = property_sync.new_context do
-        get_new_waytostay_changes
-      end
-      return unless changes.success?
-
+    def synchronise(changes)
       uniq_properties_in(changes.value).each do |property_ref|
         property_sync.start(property_ref) do
           wrapped_property = if changes.value[:properties].include? property_ref
@@ -58,8 +62,14 @@ module Workers::Suppliers
 
     # Starts a new context, run the block that augments to context
     # Then announce if any error was returned from the block
-    def get_new_waytostay_changes
+    def new_waytostay_changes
       client.get_changes_since(last_synced_timestamp).tap do |result|
+        announce_error(result) unless result.success?
+      end
+    end
+
+    def all_waytostay_data
+      client.get_changes_since(nil).tap do |result|
         announce_error(result) unless result.success?
       end
     end
@@ -133,11 +143,25 @@ module Workers::Suppliers
       PropertyRepository.from_host(host).identified_by(ids).map(&:identifier)
     end
 
+    # Returns the arguments for the next worker run
+    # We use this to manage the monthly full sync
+    def next_run_args
+      next_full_sync_time = if should_run_full_sync?
+                              Time.now + FULL_SYNC_INTERVAL
+                            else
+                              args["next_full_sync"]
+                            end
+      { "next_full_sync" => next_full_sync_time }
+    end
+
+    def should_run_full_sync?
+      args["next_full_sync"].nil? || Time.parse(args["next_full_sync"].to_s) < Time.now
+    end
+
   end
 end
 
 Concierge::Announcer.on("metadata.WayToStay") do |host, args|
-  Workers::Suppliers::Waytostay.new(host).perform
-  Result.new({})
+  Workers::Suppliers::Waytostay.new(host, args).perform
 end
 

@@ -5,9 +5,10 @@ RSpec.describe Workers::Suppliers::Waytostay do
   include Support::HTTPStubbing
   include Support::Fixtures
 
-  subject { described_class.new(host) }
+  subject { described_class.new(host, args) }
 
   let(:host) { create_host }
+  let(:args) { {} }
 
   before do
 
@@ -39,7 +40,7 @@ RSpec.describe Workers::Suppliers::Waytostay do
   end
 
   context 'there are events from previous syncs in current context' do
-    let(:fresh_subject) { described_class.new(host) }
+    let(:fresh_subject) { described_class.new(host, args) }
     before do
       Concierge.context = Concierge::Context.new(type: "batch")
       sync_process = Concierge::Context::SyncProcess.new(
@@ -58,6 +59,23 @@ RSpec.describe Workers::Suppliers::Waytostay do
       fresh_subject.perform
       error = ExternalErrorRepository.last
       expect(error.context.get("events").to_s).to_not include("UNRELATED_PROPERTY")
+    end
+  end
+
+  describe "#should_run_full_sync" do
+    context "no args added" do
+      let(:args) { {} }
+      it { expect(subject.send(:should_run_full_sync?)).to be_truthy }
+    end
+
+    context "next_full_sync is in the past" do
+      let(:args) { { "next_full_sync" => Time.now - 3600 * 2 }}
+      it { expect(subject.send(:should_run_full_sync?)).to be_truthy }
+    end
+
+    context "next_full_sync is in the future" do
+      let(:args) { { "next_full_sync" => Time.now + 3600 * 2 }}
+      it { expect(subject.send(:should_run_full_sync?)).to be_falsey }
     end
   end
 
@@ -127,7 +145,9 @@ RSpec.describe Workers::Suppliers::Waytostay do
           expect(subject).to receive(:sync_calendar).with("005")
           expect(subject).not_to receive(:sync_calendar).with("001")
 
-          subject.perform
+          result = subject.perform
+          expect(result).to be_success
+          expect(result.value).to match({"next_full_sync" => an_instance_of(Time)})
         end
       end
 

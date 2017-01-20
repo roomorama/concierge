@@ -202,7 +202,7 @@ module Workers
       )
 
       Concierge.context.augment(sync_process)
-      yield
+      yield if block_given?
     end
 
     private
