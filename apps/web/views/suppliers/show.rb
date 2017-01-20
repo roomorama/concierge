@@ -123,7 +123,7 @@ module Web::Views::Suppliers
     end
 
     def aggregated?(type)
-      definitions     = Concierge::SupplierConfig.for(supplier.name)
+      definitions     = Concierge::SupplierConfig.for(supplier.name)["workers"]
       type_definition = definitions && definitions[type]
 
       !!(type_definition && type_definition["aggregated"])
