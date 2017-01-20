@@ -170,6 +170,12 @@ module Web::Views::Suppliers
       next_run_at ? time_formatter.present(next_run_at) : "Soon (in at most 10 minutes)"
     end
 
+    # uses the +pretty+ and +indent+ options provided by +Yajl::Encoder+ to
+    # format the parsed JSON.
+    def pretty_print_json(content)
+      Yajl::Encoder.encode(content.to_h, pretty: true, indent: " " * 2)
+    end
+
     private
 
     def number_formatter

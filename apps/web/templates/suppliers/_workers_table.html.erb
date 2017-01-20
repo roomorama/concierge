@@ -4,6 +4,7 @@
       <th>Worker</th>
       <th>Status</th>
       <th>Scheduled to Run At</th>
+      <th>Arguments</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -14,6 +15,9 @@
         <td><%= worker.type %></td>
         <td><%= status_label(worker.status) %></td>
         <td><%= format_time(worker)%></td>
+        <td>
+          <%= pretty_print_json(worker.next_run_args)%>
+        </td>
         <td>
           <%=
             form_for :worker, routes.worker_resync_path do
