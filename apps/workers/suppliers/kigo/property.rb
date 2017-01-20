@@ -28,9 +28,12 @@ module Workers::Suppliers::Kigo
         return property_fetch
       end
 
-      return Result.error(:no_host) unless host_of(property_fetch)  # not an error, just that this Kigo host is not registered in Concierge yet.
+      return Result.error(:no_host,
+                          { property_identifier: property_identifier }) unless host_of(property_fetch)  # not an error, just that this Kigo host is not registered in Concierge yet.
       if !valid_payload?(property_fetch.value) && !should_disable(property_fetch)
-        return Result.error(:unsupported_property)
+        return Result.error(:unsupported_property,
+                            { property_identifier: property_identifier,
+                              host_identifier: host.identifier })
       end
 
       @synchronisation = Workers::PropertySynchronisation.new(host)
