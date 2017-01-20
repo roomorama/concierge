@@ -19,7 +19,7 @@ module Workers::Suppliers::Kigo
         importer.fetch_property_content_diff(property_content_diff_id)
       end
       unless property_content_diff.success?
-        announce_error('Failed to perform `#fetch_property_content_diff` operation', prices_diff)
+        announce_error('Failed to perform `#fetch_property_content_diff` operation', property_content_diff)
         return initial_args_result
       end
 
