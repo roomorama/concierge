@@ -129,7 +129,7 @@ module Workers::Suppliers::Kigo
         else
           # Get the host from previously persisted property record
           persisted_property = PropertyRepository.from_supplier(supplier).
-            identified_by(property_identifier).first
+            identified_by(property_identifier.to_s).first
           HostRepository.find persisted_property&.host_id
         end
       end
