@@ -38,6 +38,7 @@ module Roomorama
     include Concierge::JSON
 
     ENVIRONMENTS = %i(production sandbox staging)
+    CONNECTION_TIMEOUT = 30
 
     attr_reader :access_token, :api_url
 
@@ -58,7 +59,7 @@ module Roomorama
     private
 
     def http
-      @http ||= Concierge::HTTPClient.new(api_url)
+      @http ||= Concierge::HTTPClient.new(api_url, { timeout: CONNECTION_TIMEOUT })
     end
 
     def headers
