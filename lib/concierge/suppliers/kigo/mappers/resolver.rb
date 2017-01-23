@@ -15,7 +15,7 @@ module Kigo::Mappers
         caption    = image['PHOTO_COMMENTS']
         Roomorama::Image.new(identifier).tap do |i|
           i.url     = URI.encode(['https:', url].join)
-          i.caption = caption unless caption.strip.empty?
+          i.caption = caption unless caption.to_s.strip.empty?
         end
       end
     end

@@ -6,6 +6,9 @@ how this file is formatted and how the process works.
 
 ## Unreleased
 
+## [1.5.5] - 2016-01-23
+- Kigo: Fix crash on nil caption rollbar#773 and rollbar#947
+
 ## [1.5.4] - 2016-01-23
 ## Changed
 - Kigo: Metadata sync worker is aggregated instead, using diffPropertyContent api
