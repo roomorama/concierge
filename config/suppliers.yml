@@ -48,9 +48,10 @@ Kigo:
   controller: "kigo"
   workers:
     metadata:
-      every: "1d"
+      every: "6h"
+      aggregated: true
     availabilities:
-      every: "1d"
+      every: "6h"
       aggregated: true
 
 KigoLegacy:

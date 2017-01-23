@@ -14,15 +14,16 @@ module Kigo
   class Importer
     include Concierge::JSON
 
-    PROPERTIES_LIST     = 'listProperties2'
-    PROPERTY_DATA       = 'readProperty2'
-    PRICES              = 'readPropertyPricingSetup'
-    PRICES_DIFF         = 'diffPropertyPricingSetup'
-    AVAILABILITIES      = 'listPropertyAvailability'
-    AVAILABILITIES_DIFF = 'diffPropertyAvailability'
-    RESERVATIONS        = 'listPropertyCalendarReservations'
-    RESERVATIONS_DIFF   = 'diffPropertyCalendarReservations'
-    IMAGE               = 'readPropertyPhotoFile'
+    PROPERTIES_LIST       = 'listProperties2'
+    PROPERTY_DATA         = 'readProperty2'
+    PROPERTY_CONTENT_DIFF = 'diffPropertyContent'
+    PRICES                = 'readPropertyPricingSetup'
+    PRICES_DIFF           = 'diffPropertyPricingSetup'
+    AVAILABILITIES        = 'listPropertyAvailability'
+    AVAILABILITIES_DIFF   = 'diffPropertyAvailability'
+    RESERVATIONS          = 'listPropertyCalendarReservations'
+    RESERVATIONS_DIFF     = 'diffPropertyCalendarReservations'
+    IMAGE                 = 'readPropertyPhotoFile'
 
     # references
     AMENITIES           = 'listKigoPropertyAmenities'
@@ -45,6 +46,10 @@ module Kigo
 
     def fetch_prices(id)
       fetch(PRICES, { PROP_ID: id })
+    end
+
+    def fetch_property_content_diff(id)
+      fetch(PROPERTY_CONTENT_DIFF, { DIFF_ID: id })
     end
 
     def fetch_prices_diff(id)
@@ -108,8 +113,8 @@ module Kigo
 
       case payload.value['API_RESULT_CODE']
       when 'E_OK'     then Result.new(payload.value['API_REPLY'])
-      when 'E_NOSUCH' then Result.error(:invalid_input_data)
-      when 'E_INPUT'  then Result.error(:record_not_found)
+      when 'E_NOSUCH' then Result.error(:record_not_found)
+      when 'E_INPUT'  then Result.error(:invalid_input_data)
       else
         Result.error(:unknown_error_code)
       end

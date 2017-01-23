@@ -123,7 +123,8 @@ module Web::Views::Suppliers
     end
 
     def aggregated?(type)
-      definitions     = Concierge::SupplierConfig.for(supplier.name)
+      config          = Concierge::SupplierConfig.for(supplier.name)
+      definitions     = config && config["workers"]
       type_definition = definitions && definitions[type]
 
       !!(type_definition && type_definition["aggregated"])
@@ -168,6 +169,12 @@ module Web::Views::Suppliers
     def format_time(worker)
       next_run_at = worker.next_run_at
       next_run_at ? time_formatter.present(next_run_at) : "Soon (in at most 10 minutes)"
+    end
+
+    # uses the +pretty+ and +indent+ options provided by +Yajl::Encoder+ to
+    # format the parsed JSON.
+    def pretty_print_json(content)
+      Yajl::Encoder.encode(content.to_h, pretty: true, indent: " " * 2)
     end
 
     private

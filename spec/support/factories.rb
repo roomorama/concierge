@@ -50,6 +50,7 @@ module Support
 
       attributes[:host_id] ||= create_host.id
 
+      attributes[:data][:identifier] = attributes[:identifier]
       property = Property.new(attributes)
       PropertyRepository.create(property)
     end
