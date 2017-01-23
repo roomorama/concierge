@@ -6,6 +6,13 @@ how this file is formatted and how the process works.
 
 ## Unreleased
 
+## [1.5.4] - 2016-01-23
+## Changed
+- Kigo: Metadata sync worker is aggregated instead, using diffPropertyContent api
+
+## Fixed
+- Missing aggregated worker resync buttons
+
 ## [1.5.3] - 2016-01-16
 ### Added
 - RentalsUnited: Support for additional security deposit types
