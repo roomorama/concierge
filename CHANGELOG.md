@@ -6,14 +6,20 @@ how this file is formatted and how the process works.
 
 ## Unreleased
 
+## [1.5.6] - 2016-01-24
+### Changed
+- Kigo: Fix crash wrong property identifier type rollbar#950
+- JTB: Increase roomorama client timeout
+
 ## [1.5.5] - 2016-01-23
+### Fixed
 - Kigo: Fix crash on nil caption rollbar#773 and rollbar#947
 
 ## [1.5.4] - 2016-01-23
-## Changed
+### Changed
 - Kigo: Metadata sync worker is aggregated instead, using diffPropertyContent api
 
-## Fixed
+### Fixed
 - Missing aggregated worker resync buttons
 
 ## [1.5.3] - 2016-01-16
