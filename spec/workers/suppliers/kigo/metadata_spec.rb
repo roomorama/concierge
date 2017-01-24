@@ -15,7 +15,9 @@ RSpec.describe Workers::Suppliers::Kigo::Metadata do
       expect_any_instance_of(Kigo::Importer).to receive(:fetch_property_content_diff).with(nil) {
         Result.new(property_content_diff)
       }
-      expect(subject).to receive(:update_property).exactly(2).times
+      expect(subject).to receive(:update_property).exactly(2).times do |property_id|
+        expect(property_id).to be_a String
+      end
       expect(subject).to receive(:announce_all_errors).exactly(1).times
     end
 
