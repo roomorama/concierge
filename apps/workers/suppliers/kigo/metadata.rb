@@ -25,7 +25,7 @@ module Workers::Suppliers::Kigo
 
       identifiers = property_content_diff.value['PROP_ID']
 
-      update_results = identifiers.collect { |property_id| update_property(property_id) }
+      update_results = identifiers.collect { |property_id| update_property(property_id.to_s) }
       announce_all_errors(update_results)
 
       Result.new({ property_content_diff_id: property_content_diff.value['DIFF_ID'] })
