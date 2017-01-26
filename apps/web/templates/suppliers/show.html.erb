@@ -86,6 +86,6 @@
 
   <% hosts.each do |host| %>
     <h4><%= host.username %> (identifier <code><%= host.identifier %></code>)</h4>
-    <%= render partial: "suppliers/workers_table", locals: { workers: workers_for(host) } %>
+    <%= render partial: "background_workers/table", locals: { workers: workers_for(host) } %>
   <% end %>
 </div>

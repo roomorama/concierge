@@ -4,6 +4,7 @@ module Web::Views::Suppliers
   #
   class Show
     include Web::View
+    include Web::Views::BackgroundWorkersHelper
 
     NO_WORKERS_DEFINED = "No definition found. Please report this to the Roomorama developers."
     NO_METADATA_SYNC   = "This supplier does not synchronise metadata."
@@ -134,10 +135,6 @@ module Web::Views::Suppliers
       aggregated?("metadata") || aggregated?("availabilities")
     end
 
-    def workers_for(host)
-      BackgroundWorkerRepository.for_host(host)
-    end
-
     def aggregated_workers_for(supplier)
       BackgroundWorkerRepository.for_supplier(supplier)
     end
@@ -145,36 +142,6 @@ module Web::Views::Suppliers
     def overwrite_count_for(host)
       count = OverwriteRepository.for_host_id(host.id).count
       "#{count} overwrite#{'s' if count > 1}"
-    end
-
-    # Creates an HTML button/label for the status of a worker. +status+ is expected
-    # to be a +String+ equal to one of +BackgroundWorker::STATUSES+.
-    def status_label(status)
-      css_class = {
-        idle:    "secondary-button",
-        queued:  "warning-button",
-        running: "success-button"
-      }.fetch(status.to_sym, "warning-button")
-
-      html.button status, class: [css_class, " pure-button"].join
-    end
-
-    # Receives an instance of +BackgroundWorker+ and formats the
-    # +next_run_at+ column for display.
-    #
-    # If that column is +null+, meaning the worker has just been created
-    # and have never been run yet, the message indicates that the worker
-    # will be kicked in soon (time varies depending of when the scheduler
-    # will run next - see +Workers::Scheduler+).
-    def format_time(worker)
-      next_run_at = worker.next_run_at
-      next_run_at ? time_formatter.present(next_run_at) : "Soon (in at most 10 minutes)"
-    end
-
-    # uses the +pretty+ and +indent+ options provided by +Yajl::Encoder+ to
-    # format the parsed JSON.
-    def pretty_print_json(content)
-      Yajl::Encoder.encode(content.to_h, pretty: true, indent: " " * 2)
     end
 
     private

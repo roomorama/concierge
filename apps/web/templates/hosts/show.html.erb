@@ -2,6 +2,7 @@
   <h2 class="content-subhead"><%= supplier.name %> Host</h2>
   <%= link_to "Edit details", routes.edit_supplier_host_path(supplier_id: supplier.id, id: host.id), class: "pure-button" %>
   <%= link_to "See sync processes", routes.sync_processes_path(), class:"pure-button" %>
+  <%= link_to overwrite_count_for(host), routes.supplier_host_overwrites_path(supplier_id: supplier.id, host_id: host.id), class: "pure-button" %>
   <%=
     form_for :host, routes.supplier_hosts_path(supplier.id), values: {host: host}, class: 'pure-form pure-form-aligned' do
       fieldset do
@@ -46,4 +47,6 @@
       end
     end
   %>
+
+  <%= render partial: "background_workers/table", locals: { workers: workers_for(host) } unless workers_for(host).empty? %>
 </div>
