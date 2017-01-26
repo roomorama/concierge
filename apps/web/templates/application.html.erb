@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
     <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
     <%= stylesheet "dashboard", "external_errors", "flash_messages" %>
@@ -11,11 +12,14 @@
 
   <body>
     <div id="layout">
+      <a href="#menu" id="menuLink" class="menu-link">
+        <span></span>
+      </a>
       <div id="menu">
         <div class="pure-menu">
           <a class="pure-menu-heading" href="<%= routes.root_path %>">
-            <%= image "roomorama-white-small.png" %>
-            Concierge
+            <%= image "concierge-logo-white.png" %>
+            <span>Concierge</span>
           </a>
 
           <ul class="pure-menu-list">
@@ -27,13 +31,6 @@
       </div>
 
       <div id="main">
-        <div class="header">
-          <h1>
-            <%= image "concierge-logo.png" %>
-            Concierge: Supplier Integrations
-          </h1>
-        </div>
-
         <%= render partial: 'components/flash_messages', locals: { flash: flash } %>
         <%= yield %>
       </div>
@@ -45,5 +42,6 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
 
     <%= javascript "syntax_highlight" %>
+    <%= javascript "ui" %>
   </body>
 </html>
