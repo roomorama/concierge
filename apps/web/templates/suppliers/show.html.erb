@@ -33,7 +33,7 @@
           <td><%= format_fee_percentage(host.fee_percentage) %></td>
           <td><code><%= format_access_token(host) %></code></td>
           <td><%= host_properties(host) %></td>
-          <td> <%= link_to "Edit", routes.edit_supplier_host_path(supplier_id: supplier.id, id: host.id), class: "pure-button" %></p>
+          <td> <%= link_to "Show", routes.supplier_host_path(supplier_id: supplier.id, id: host.id), class: "pure-button" %></p>
           <td> <%= link_to overwrite_count_for(host), routes.supplier_host_overwrites_path(supplier_id: supplier.id, host_id: host.id), class: "pure-button" %></p>
         </tr>
       <% end %>

@@ -1,0 +1,49 @@
+<div class="content">
+  <h2 class="content-subhead"><%= supplier.name %> Host</h2>
+  <%= link_to "Edit details", routes.edit_supplier_host_path(supplier_id: supplier.id, id: host.id), class: "pure-button" %>
+  <%= link_to "See sync processes", routes.sync_processes_path(), class:"pure-button" %>
+  <%=
+    form_for :host, routes.supplier_hosts_path(supplier.id), values: {host: host}, class: 'pure-form pure-form-aligned' do
+      fieldset do
+        div(class: 'pure-control-group') do
+          label :identifier
+          text_field :identifier, class: 'pure-input-1-2', readonly: true, placeholder: "Host id in supplier's system. Duplicate username for single host suppliers"
+        end
+
+        div(class: 'pure-control-group') do
+          label :username
+          text_field :username, class: 'pure-input-1-2', readonly: true, placeholder: "Use Roomorama's user login"
+        end
+
+        div(class: 'pure-control-group') do
+          label :fee_percentage
+          number_field :fee_percentage, class: 'pure-input-1-2', readonly: true
+        end
+
+        br
+
+        legend
+
+        div(class: 'pure-control-group') do
+          label :first_and_last_name
+          text_field :name, class: 'pure-input-1-2', readonly: true
+        end
+
+        div(class: 'pure-control-group') do
+          label :email
+          text_field :email, class: 'pure-input-1-2', readonly: true
+        end
+
+        div(class: 'pure-control-group') do
+          label :phone
+          text_field :phone, class: 'pure-input-1-2', readonly: true
+        end
+
+        div(class: 'pure-control-group') do
+          label :payment_terms
+          text_area :payment_terms, class: 'pure-input-1-2', readonly: true
+        end
+      end
+    end
+  %>
+</div>
