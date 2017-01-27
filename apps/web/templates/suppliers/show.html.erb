@@ -81,7 +81,7 @@
 
   <% if any_aggregated_worker? %>
     <h4>Aggregated synchronisation</h4>
-    <%= render partial: "suppliers/workers_table", locals: { workers: aggregated_workers_for(supplier) } %>
+    <%= render partial: "background_workers/table", locals: { workers: aggregated_workers_for(supplier) } %>
   <% end %>
 
   <% hosts.each do |host| %>
