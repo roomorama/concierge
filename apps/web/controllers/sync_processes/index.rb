@@ -8,6 +8,7 @@ module Web::Controllers::SyncProcesses
 
     params do
       include Web::Controllers::Params::Paginated
+      param :host_id, type: Integer
     end
 
     expose :metadata_processes, :availabilities_processes
@@ -25,6 +26,10 @@ module Web::Controllers::SyncProcesses
         most_recent.
         paginate(page: page, per: per).
         of_type("availabilities")
+      if params[:host_id]
+        @metadata_processes.for_host(HostRepository.find params[:host_id])
+        @availabilities_processes.for_host(HostRepository.find params[:host_id])
+      end
     end
   end
 end

@@ -1,5 +1,6 @@
 <div class="content">
   <h2 class="content-subhead">Property attribute enforcements for <b><%=username%></b></h2>
+  <p><%= link_to "Back to host detail", routes.supplier_host_path(supplier_id, host_id), class: "pure-button" %></p>
   <p><%= link_to "Create New", routes.new_supplier_host_overwrite_path(supplier_id, host_id), class: "pure-button" %></p>
   <table class="concierge-table pure-table pure-table-striped">
     <thead>

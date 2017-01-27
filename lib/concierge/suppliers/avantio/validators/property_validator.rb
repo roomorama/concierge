@@ -20,7 +20,14 @@ module Avantio
       end
 
       def valid?
-        valid_property_type? && property.bedrooms
+        error_message.empty?
+      end
+
+      def error_message
+        errors = []
+        errors << "Property of type Garage/Parking or Hotel is not supported." unless valid_property_type?
+        errors << "Number of bedrooms not given." unless property.bedrooms
+        errors.join("\n")
       end
 
       private
