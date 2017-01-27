@@ -41,11 +41,11 @@ module Kigo
     end
 
     def fetch_data(id)
-      fetch(PROPERTY_DATA, { PROP_ID: id })
+      fetch(PROPERTY_DATA, { PROP_ID: id.to_i })
     end
 
     def fetch_prices(id)
-      fetch(PRICES, { PROP_ID: id })
+      fetch(PRICES, { PROP_ID: id.to_i })
     end
 
     def fetch_property_content_diff(id)
@@ -58,7 +58,7 @@ module Kigo
 
     def fetch_availabilities(id, start_date: Date.today, end_date: one_year_from_today)
       params = {
-        PROP_ID:         id,
+        PROP_ID:         id.to_i,
         LIST_START_DATE: start_date,
         LIST_END_DATE:   end_date
       }
@@ -71,7 +71,7 @@ module Kigo
 
     def fetch_reservations(id, start_date: Date.today, end_date: one_year_from_today)
       params = {
-        PROP_ID:         id,
+        PROP_ID:         id.to_i,
         LIST_START_DATE: start_date,
         LIST_END_DATE:   end_date
       }
@@ -95,7 +95,7 @@ module Kigo
     end
 
     def fetch_image(prop_id, image_id)
-      fetch(IMAGE, PROP_ID: prop_id, PHOTO_ID: image_id)
+      fetch(IMAGE, PROP_ID: prop_id.to_i, PHOTO_ID: image_id)
     end
 
     private
