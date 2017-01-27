@@ -72,7 +72,7 @@ module Workers::Suppliers::Avantio
 
         synchronisation.start(property_id) do
           unless validator(property).valid?
-            next skip_property(synchronisation, property_id, 'Invalid property')
+            next skip_property(synchronisation, property_id, validator(property).error_message)
           end
 
           rate = rates[property_id]
