@@ -81,8 +81,8 @@ module Workers::Suppliers::Avantio
           end
 
           description = descriptions[property_id]
-          unless description && description_validator(description).valid?
-            next skip_property(synchronisation, property_id, 'Description not found or invalid')
+          unless description_validator(description).valid?
+            next skip_property(synchronisation, property_id, description_validator(description).error_message)
           end
 
           occupational_rule = occupational_rules[property.occupational_rule_id]

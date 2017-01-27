@@ -15,7 +15,17 @@ module Avantio
       end
 
       def valid?
-        !description.images.empty?
+        error_message.empty?
+      end
+
+      def error_message
+        errors = []
+        if description.nil?
+          errors << "Description not found"
+        elsif description.images.empty?
+          errors << "Invalid description: images list is empty"
+        end
+        errors.join("\n")
       end
     end
   end
