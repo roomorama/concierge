@@ -5,6 +5,14 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+## Added
+- Avantio: Validation error messages during metadata sync
+- Host show page
+- Sync process index filtered by host
+- Small white concierge logo, removed Roomorama logo
+
+## Fixed
+- Menu to be mobile responsive
 
 ## [1.5.6] - 2016-01-24
 ### Changed
