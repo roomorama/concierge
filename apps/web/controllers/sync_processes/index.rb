@@ -17,19 +17,19 @@ module Web::Controllers::SyncProcesses
       page = params[:page]
       per  = params[:per]
 
-      relevant_meta_processes = SyncProcessRepository
-      relevant_meta_processes = relevant_meta_processes.for_host(HostRepository.find params[:host_id]) if params[:host_id]
-      @metadata_processes = relevant_meta_processes.
+      @metadata_processes = SyncProcessRepository.
         most_recent.
         paginate(page: page, per: per).
         of_type("metadata")
 
-      relevant_avail_processes = SyncProcessRepository
-      relevant_avail_processes = relevant_avail_processes.for_host(HostRepository.find params[:host_id]) if params[:host_id]
-      @availabilities_processes = relevant_avail_processes.
+      @availabilities_processes = SyncProcessRepository.
         most_recent.
         paginate(page: page, per: per).
         of_type("availabilities")
+      if params[:host_id]
+        @metadata_processes.for_host(HostRepository.find params[:host_id])
+        @availabilities_processes.for_host(HostRepository.find params[:host_id])
+      end
     end
   end
 end
