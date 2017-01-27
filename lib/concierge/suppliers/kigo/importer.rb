@@ -41,24 +41,24 @@ module Kigo
     end
 
     def fetch_data(id)
-      fetch(PROPERTY_DATA, { PROP_ID: id })
+      fetch(PROPERTY_DATA, { PROP_ID: id.to_i })
     end
 
     def fetch_prices(id)
-      fetch(PRICES, { PROP_ID: id })
+      fetch(PRICES, { PROP_ID: id.to_i })
     end
 
     def fetch_property_content_diff(id)
-      fetch(PROPERTY_CONTENT_DIFF, { DIFF_ID: id })
+      fetch(PROPERTY_CONTENT_DIFF, { DIFF_ID: id.to_i })
     end
 
     def fetch_prices_diff(id)
-      fetch(PRICES_DIFF, { DIFF_ID: id })
+      fetch(PRICES_DIFF, { DIFF_ID: id.to_i })
     end
 
     def fetch_availabilities(id, start_date: Date.today, end_date: one_year_from_today)
       params = {
-        PROP_ID:         id,
+        PROP_ID:         id.to_i,
         LIST_START_DATE: start_date,
         LIST_END_DATE:   end_date
       }
@@ -66,12 +66,12 @@ module Kigo
     end
 
     def fetch_availabilities_diff(id)
-      fetch(AVAILABILITIES_DIFF, { DIFF_ID: id })
+      fetch(AVAILABILITIES_DIFF, { DIFF_ID: id.to_i })
     end
 
     def fetch_reservations(id, start_date: Date.today, end_date: one_year_from_today)
       params = {
-        PROP_ID:         id,
+        PROP_ID:         id.to_i,
         LIST_START_DATE: start_date,
         LIST_END_DATE:   end_date
       }
@@ -79,7 +79,7 @@ module Kigo
     end
 
     def fetch_reservations_diff(id)
-      fetch(RESERVATIONS_DIFF, { DIFF_ID: id })
+      fetch(RESERVATIONS_DIFF, { DIFF_ID: id.to_i })
     end
 
     # references helps us to match data by their names instead of using ids
@@ -95,7 +95,7 @@ module Kigo
     end
 
     def fetch_image(prop_id, image_id)
-      fetch(IMAGE, PROP_ID: prop_id, PHOTO_ID: image_id)
+      fetch(IMAGE, PROP_ID: prop_id.to_i, PHOTO_ID: image_id)
     end
 
     private

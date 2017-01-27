@@ -6,14 +6,18 @@ how this file is formatted and how the process works.
 
 ## Unreleased
 
+## [1.6.1] - 2016-01-27
+### Fixed
+Kigo: Calling api should give id as int
+
 ## [1.6.0] - 2016-01-27
-## Added
+### Added
 - Avantio: Validation error messages during metadata sync
 - Host show page
 - Sync process index filtered by host
 - Small white concierge logo, removed Roomorama logo
 
-## Fixed
+### Fixed
 - Menu to be mobile responsive
 
 ## [1.5.6] - 2016-01-24
