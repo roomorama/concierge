@@ -49,11 +49,11 @@ module Kigo
     end
 
     def fetch_property_content_diff(id)
-      fetch(PROPERTY_CONTENT_DIFF, { DIFF_ID: id.to_i })
+      fetch(PROPERTY_CONTENT_DIFF, { DIFF_ID: id })
     end
 
     def fetch_prices_diff(id)
-      fetch(PRICES_DIFF, { DIFF_ID: id.to_i })
+      fetch(PRICES_DIFF, { DIFF_ID: id })
     end
 
     def fetch_availabilities(id, start_date: Date.today, end_date: one_year_from_today)
@@ -66,7 +66,7 @@ module Kigo
     end
 
     def fetch_availabilities_diff(id)
-      fetch(AVAILABILITIES_DIFF, { DIFF_ID: id.to_i })
+      fetch(AVAILABILITIES_DIFF, { DIFF_ID: id })
     end
 
     def fetch_reservations(id, start_date: Date.today, end_date: one_year_from_today)
@@ -79,7 +79,7 @@ module Kigo
     end
 
     def fetch_reservations_diff(id)
-      fetch(RESERVATIONS_DIFF, { DIFF_ID: id.to_i })
+      fetch(RESERVATIONS_DIFF, { DIFF_ID: id })
     end
 
     # references helps us to match data by their names instead of using ids
