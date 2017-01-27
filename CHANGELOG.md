@@ -5,6 +5,8 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+
+## [1.6.0] - 2016-01-27
 ## Added
 - Avantio: Validation error messages during metadata sync
 - Host show page
