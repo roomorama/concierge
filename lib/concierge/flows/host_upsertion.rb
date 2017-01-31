@@ -182,6 +182,7 @@ module Concierge::Flows
     # for the supplier the host belongs to.
     def perform
       if valid?
+        return Result.error(:username_already_used) if username_already_used?
         workers_definition = find_workers_definition
         return workers_definition unless workers_definition.success?
 
@@ -217,6 +218,10 @@ module Concierge::Flows
     end
 
     private
+
+    def username_already_used?
+      HostRepository.with_username(username).count > 0
+    end
 
     def create_roomorama_user
       client = Roomorama::Client.new(ENV["CONCIERGE_CREATE_HOST_TOKEN"])

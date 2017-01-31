@@ -94,6 +94,16 @@ RSpec.describe Concierge::Flows::HostUpsertion do
       expect(result.error.code).to eq :invalid_parameters
     end
 
+    it "returns an unsuccessful result if the host roomorama login is already used" do
+      create_host(username: parameters[:username])
+      expect {
+        result = subject.perform
+        expect(result).to be_a Result
+        expect(result).not_to be_success
+        expect(result.error.code).to eq :username_already_used
+      }.to_not change { HostRepository.count }
+    end
+
     it "creates the host and associated workers" do
       expect {
         expect(subject.perform).to be_success

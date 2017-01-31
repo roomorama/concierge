@@ -23,4 +23,11 @@ class HostRepository
       where(identifier: identifier)
     end
   end
+
+  def self.with_username(username)
+    query do
+      where(username: username)
+    end
+  end
+
 end
