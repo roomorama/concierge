@@ -16,6 +16,12 @@ class HostRepository
     end
   end
 
+  def self.not_from_supplier(supplier)
+    query do
+      where(Sequel.~(supplier_id: supplier.id))
+    end
+  end
+
   # queries for a host with the given +identifier+, which should be unique
   # per supplier.
   def self.identified_by(identifier)

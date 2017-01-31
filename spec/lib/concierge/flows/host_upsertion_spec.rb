@@ -133,7 +133,7 @@ RSpec.describe Concierge::Flows::HostUpsertion do
     end
 
     it "updates changed data on consecutive runs" do
-      subject.perform
+      expect(subject.perform).to be_success
 
       host     = HostRepository.last
       workers  = BackgroundWorkerRepository.for_host(host).to_a

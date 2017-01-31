@@ -182,7 +182,7 @@ module Concierge::Flows
     # for the supplier the host belongs to.
     def perform
       if valid?
-        return username_used_error if existing_username
+        return username_used_error if username_from_other_supplier
 
         workers_definition = find_workers_definition
         return workers_definition unless workers_definition.success?
@@ -220,13 +220,13 @@ module Concierge::Flows
 
     private
 
-    def existing_username
-      HostRepository.with_username(username).first
+    def username_from_other_supplier
+      HostRepository.with_username(username).not_from_supplier(supplier).first
     end
 
     def username_used_error
       Result.error(:username_already_used,
-                   "Username `#{existing_username.username}` is already connected with #{SupplierRepository.of_host(existing_username).name}. ")
+                   "Username `#{username_from_other_supplier.username}` is already connected with #{SupplierRepository.of_host(username_from_other_supplier).name}. ")
     end
 
     def create_roomorama_user
