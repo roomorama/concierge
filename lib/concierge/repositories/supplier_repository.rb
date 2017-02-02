@@ -16,4 +16,8 @@ class SupplierRepository
   def self.named(name)
     query { where(name: name) }.first
   end
+
+  def self.of_host(host)
+    query { where(id: host.supplier_id) }.first
+  end
 end

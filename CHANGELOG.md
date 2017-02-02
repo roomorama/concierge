@@ -6,9 +6,13 @@ how this file is formatted and how the process works.
 
 ## Unreleased
 
+## [1.6.2] - 2016-01-31
+### Added
+- Validates that Roomorama username is unique when creating new host
+
 ## [1.6.1] - 2016-01-27
 ### Fixed
-Kigo: Calling api should give id as int
+- Kigo: Calling api should give id as int
 
 ## [1.6.0] - 2016-01-27
 ### Added
