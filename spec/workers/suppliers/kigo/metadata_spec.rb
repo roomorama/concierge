@@ -51,12 +51,13 @@ RSpec.describe Workers::Suppliers::Kigo::Metadata do
         Result.error(:no_host),
         Result.error(:unsupported_property),
         Result.error(:connection_timeout),
+        Result.error(:http_status_429),
         Result.new(true)
       ]}
       it 'creates an external error for each' do
         expect {
           subject.send(:announce_all_errors, update_results)
-        }.to change { ExternalErrorRepository.count }.by 3
+        }.to change { ExternalErrorRepository.count }.by 4
       end
     end
   end

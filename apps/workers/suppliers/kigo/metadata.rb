@@ -42,7 +42,7 @@ module Workers::Suppliers::Kigo
 
       message = Concierge::Context::Message.new(
         label:     'Aggregated Sync',
-        message:   "Started aggregated metadata sync for `#{supplier}`",
+        message:   "Started aggregated metadata sync for `#{supplier.name}`",
         backtrace: caller
       )
 
@@ -59,12 +59,12 @@ module Workers::Suppliers::Kigo
     end
 
     def credentials
-      Concierge::Credentials.for(Kigo::Client::SUPPLIER_NAME)
+      Concierge::Credentials.for(supplier.name)
     end
 
     def announce_all_errors(results)
       results.select { |r| !r.success? }.each do |r|
-        announce_error("Error when updating a #{Kigo::Client::SUPPLIER_NAME} property", r)
+        announce_error("Error when updating a #{supplier.name} property", r)
       end
     end
 
