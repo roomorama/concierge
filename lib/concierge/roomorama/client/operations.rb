@@ -7,8 +7,8 @@ class Roomorama::Client
   class Operations
 
     # Performs a +publish+ operation for the given property.
-    def self.publish(property)
-      Publish.new(property)
+    def self.publish(property, **kwargs)
+      Publish.new(property, kwargs)
     end
 
     # Performs a +diff+ operation for the given property diff.

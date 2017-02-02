@@ -34,7 +34,11 @@ class Workers::OperationRunner
       result = roomorama_client.perform(operation)
       return result unless result.success?
 
-      Result.new(persist(property))
+      if operation.should_persist
+        Result.new(persist(property))
+      else
+        Result.new(true)
+      end
     end
 
     private
