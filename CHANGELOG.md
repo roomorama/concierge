@@ -5,8 +5,11 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+## [1.6.3] - 2016-02-02
+### Changed
+- Kigo diff api poll frequency
 
-## [1.6.2] - 2016-01-31
+## [1.6.2] - 2016-02-02
 ### Added
 - Validates that Roomorama username is unique when creating new host
 
