@@ -5,13 +5,13 @@ module Concierge::Flows
   # concierge to roomorama; for example, a reset of
   # property data on roomorama is needed, but we do not
   # want to fetch properties from suppliers again.
-  class PropertyPushJobEnqueue
+  class PropertiesPushJobEnqueue
     attr_reader :element
 
     def initialize(ids)
       @element = Concierge::Queue::Element.new(
         operation: "properties_push",
-        data:      { ids: [ids] }
+        data:      { ids: ids }
       )
     end
 
