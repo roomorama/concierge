@@ -6,7 +6,7 @@ RSpec.describe Concierge::Flows::PropertiesPushJobEnqueue do
     expect_any_instance_of(Concierge::Queue).
       to receive(:add) do |queue, element|
       expect(element.operation).to eq "properties_push"
-      expect(element.data).to eq({ ids: [1, 2] })
+      expect(element.data).to eq([1, 2])
     end
     subject.call
   end

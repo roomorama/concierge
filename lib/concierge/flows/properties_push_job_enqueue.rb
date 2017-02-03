@@ -11,7 +11,7 @@ module Concierge::Flows
     def initialize(ids)
       @element = Concierge::Queue::Element.new(
         operation: "properties_push",
-        data:      { ids: ids }
+        data:      ids
       )
     end
 

@@ -3,12 +3,13 @@ require "spec_helper"
 RSpec.describe Workers::Processor do
   include Support::Factories
 
-  let(:payload) { { operation: "background_worker", data: { background_worker_id: 2 } } }
   let(:json)    { payload.to_json }
 
   subject { described_class.new(json) }
 
-  describe "#process!" do
+  describe "#process! for background_worker" do
+    let(:payload) { { operation: "background_worker", data: { background_worker_id: 2 } } }
+
     it "returns an invalid result if the given JSON element is malformed" do
       subject = described_class.new("invalid-json")
       result = subject.process!
@@ -34,6 +35,18 @@ RSpec.describe Workers::Processor do
       ).and_return(worker_processor)
 
       expect(worker_processor).to receive(:run)
+      subject.process!
+    end
+  end
+
+  describe "#process! for properties_push" do
+    let(:payload) { { operation: "properties_push", data: [1, 2] } }
+    it "processes the message" do
+      worker_processor = double
+      expect(Workers::Processor::PropertiesPush).to receive(:new).
+        with([1, 2]).and_return(worker_processor)
+      expect(worker_processor).to receive(:run)
+
       subject.process!
     end
   end
