@@ -6,7 +6,7 @@ module Concierge::Flows
   # property data on roomorama is needed, but we do not
   # want to fetch properties from suppliers again.
   class PropertyPushJobEnqueue
-    attr_reader :host
+    attr_reader :element
 
     def initialize(ids)
       @element = Concierge::Queue::Element.new(
