@@ -36,7 +36,6 @@ module API::Controllers
       base.class_eval do
         include API::Action
         include Concierge::JSON
-        include API::Controllers::InternalError
 
         params API::Controllers::Params::Quote
 

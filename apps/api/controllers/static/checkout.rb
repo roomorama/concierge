@@ -15,7 +15,6 @@ module API::Controllers::Static
   class Checkout
     include API::Action
     include Concierge::JSON
-    include API::Controllers::InternalError
 
     def call(params)
       status 200, json_encode({ status: "ok" })

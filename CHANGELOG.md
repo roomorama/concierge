@@ -5,6 +5,9 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+### Changed
+- Move internal error handling to controller.prepare
+
 ## [1.6.3] - 2016-02-02
 ### Changed
 - Kigo diff api poll frequency
