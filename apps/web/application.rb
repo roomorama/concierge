@@ -50,6 +50,7 @@ module Web
       end
 
       controller.prepare do
+        include Web::Controllers::InternalError
         expose :flash
       end
     end

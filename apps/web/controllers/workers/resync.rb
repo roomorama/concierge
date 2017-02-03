@@ -3,7 +3,6 @@ require_relative "../internal_error"
 module Web::Controllers::Workers
   class Resync
     include Web::Action
-    include Web::Controllers::InternalError
 
     def call(params)
       worker = find_worker(params.get("worker.worker_id"))

@@ -1,7 +1,6 @@
 module Web::Controllers::SyncProcesses
   class Stats
     include Web::Action
-    include Web::Controllers::InternalError
 
     expose :sync_process
 
