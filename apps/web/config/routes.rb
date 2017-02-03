@@ -7,6 +7,10 @@ resources :reservations,   only: [:index]
 resources :suppliers,      only: [:show] do
   resources :hosts,        controller: "hosts" do
     resources :overwrites, controller: "overwrites"
+    member do
+      get '/properties', to: "hosts#properties", as: :properties
+      post '/properties_push', to: "hosts#properties_push", as: :properties_push
+    end
   end
 end
 resources :sync_processes, only: [:index]
