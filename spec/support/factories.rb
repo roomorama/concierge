@@ -39,8 +39,9 @@ module Support
       attributes = {
         identifier: "PROP1",
         data:       {
-          title: "Studio Apartment in Madrid",
-          type:  "bnb",
+          title:        "Studio Apartment in Madrid",
+          description:  "Some descriptions",
+          type:         "bnb",
           nightly_rate: 10,
           images: [
             { identifier: "PROP1IMAGE", url: "https://www.example.org/image.png" }

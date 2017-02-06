@@ -1,6 +1,36 @@
-<%=
-  form_for :worker, routes.properties_push_supplier_host_path(supplier_id: params[:supplier_id], id: params[:id]) do
-    submit 'Push Properties'
-  end
-%>
-
+<div class="content">
+  <h2 class="content-subhead"> Push properties to Roomorama.com</h2>
+  <p>
+    Select properties that should be republished. Note that modifications to imported property by Roomroama QC/admin may be overwrited.
+  </p>
+  <%=
+    form_for :properties_push, routes.properties_push_supplier_host_path(supplier_id: params[:supplier_id], id: params[:id]),
+      class: 'pure-form pure-form-aligned' do
+      table({class:"concierge-table pure-table"}) do
+        thead do
+          tr do
+            th { "" }
+            th { "Identifier" }
+            th { "Title" }
+            th { "Description" }
+          end
+        end
+        tbody do
+          properties.each do |p|
+            tr do
+              td do
+                check_box :properties, name: 'properties_push[properties][]', value: p.id, id: "property-#{p.id}"
+              end
+              td { p.identifier }
+              td { p.title }
+              td { "#{p.description[0...50]}..." }
+            end
+          end
+        end
+      end
+      div do
+        submit 'Push Properties', class: 'pure-button pure-button-primary'
+      end
+    end
+  %>
+</div>
