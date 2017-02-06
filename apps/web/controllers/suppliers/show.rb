@@ -3,7 +3,6 @@ require_relative "../internal_error"
 module Web::Controllers::Suppliers
   class Show
     include Web::Action
-    include Web::Controllers::InternalError
 
     params do
       param :id, type: Integer, presence: true

@@ -17,4 +17,12 @@ class Property
   include Hanami::Entity
 
   attributes :id, :identifier, :host_id, :data, :created_at, :updated_at
+
+  def title
+    data[:title]
+  end
+
+  def description
+    data[:description]
+  end
 end

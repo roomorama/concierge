@@ -15,15 +15,16 @@ class Roomorama::Client::Operations
     # the Roomorama API endpoint for the +publish+ call
     ENDPOINT = "/v1.0/host/publish"
 
-    attr_reader :property
+    attr_reader :property, :should_persist
 
     # property - a +Roomorama::Property+ object
     #
     # On initialization the +validate!+ method of the property is called - therefore,
     # an operation cannot be built unless the property given is conformant to the
     # basic validations performed on that class.
-    def initialize(property)
+    def initialize(property, should_persist: true)
       @property = property
+      @should_persist = should_persist
       property.validate!
     end
 

@@ -3,7 +3,6 @@ require_relative "../internal_error"
 module Web::Controllers::ExternalErrors
   class Show
     include Web::Action
-    include Web::Controllers::InternalError
 
     expose :error
 

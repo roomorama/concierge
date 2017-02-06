@@ -38,6 +38,10 @@ module API
         include Hanami::Helpers
         include API::Views::AcceptJSON
       end
+
+      controller.prepare do
+        include API::Controllers::InternalError
+      end
     end
 
     configure :development do

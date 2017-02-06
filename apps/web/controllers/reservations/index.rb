@@ -4,7 +4,6 @@ require_relative "../params/paginated"
 module Web::Controllers::Reservations
   class Index
     include Web::Action
-    include Web::Controllers::InternalError
 
     params do
       include Web::Controllers::Params::Paginated
