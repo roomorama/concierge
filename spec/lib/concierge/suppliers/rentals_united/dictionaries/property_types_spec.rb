@@ -32,7 +32,7 @@ module RentalsUnited
       it "returns all property types" do
         property_types = described_class.all
 
-        expect(property_types.size).to eq(12)
+        expect(property_types.size).to eq(13)
         expect(property_types).to all(
           be_kind_of(RentalsUnited::Entities::PropertyType)
         )
