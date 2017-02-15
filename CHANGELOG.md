@@ -5,8 +5,13 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+
+## [1.6.4] - 2016-02-15
 ### Added
 - RentalsUnited: Add support for "House" type
+
+### Changed
+- bnbhero rake name
 
 ## [1.6.3] - 2016-02-02
 ### Changed
