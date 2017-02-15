@@ -28,7 +28,7 @@ namespace :properties do
   end
 
   desc "Import from json feed"
-  task :import_bnb, [:json_file, :host_id] => :environment do |t, args|
+  task :import_bnbhero, [:json_file, :host_id] => :environment do |t, args|
     file = File.read(args[:json_file])
     feed = JSON.parse(file)
 

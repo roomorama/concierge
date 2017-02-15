@@ -26,6 +26,10 @@ module Web::Views::BackgroundWorkersHelper
     next_run_at ? time_formatter.present(next_run_at) : "Soon (in at most 10 minutes)"
   end
 
+  def time_formatter
+    @time_formatter ||= Web::Support::Formatters::Time.new
+  end
+
   # uses the +pretty+ and +indent+ options provided by +Yajl::Encoder+ to
   # format the parsed JSON.
   def pretty_print_json(content)
