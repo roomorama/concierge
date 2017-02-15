@@ -10,5 +10,6 @@
   { "id": "63", "rentals_united_name": "Aparthotel",        "roomorama_name": "apartment", "roomorama_subtype_name": null },
   { "id": "64", "rentals_united_name": "Boat",              "roomorama_name": null,        "roomorama_subtype_name": null },
   { "id": "65", "rentals_united_name": "Cottage",           "roomorama_name": "house",     "roomorama_subtype_name": "cottage" },
-  { "id": "66", "rentals_united_name": "Camping",           "roomorama_name": null,        "roomorama_subtype_name": null }
+  { "id": "66", "rentals_united_name": "Camping",           "roomorama_name": null,        "roomorama_subtype_name": null },
+  { "id": "67", "rentals_united_name": "House",             "roomorama_name": "house",     "roomorama_subtype_name": null }
 ]
