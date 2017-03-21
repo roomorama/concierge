@@ -5,6 +5,7 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+- SAW: Deactivated
 
 ## [1.6.4] - 2016-02-15
 ### Added
