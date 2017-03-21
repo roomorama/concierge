@@ -34,14 +34,14 @@ Ciirus:
     availabilities:
       every: "5h"
 
-# SAW:
-#   path: "saw"
-#   controller: "s_a_w"
-#   workers:
-#     metadata:
-#       every: "1d"
-#     availabilities:
-#       absence: "SAW does not provide a way to fetch the calendar of availabilities. Default availability is assumed."
+SAW:
+  path: "saw"
+  controller: "s_a_w"
+  workers:
+    metadata:
+      every: "1d"
+    availabilities:
+      absence: "SAW does not provide a way to fetch the calendar of availabilities. Default availability is assumed."
 
 Kigo:
   path: "kigo"
