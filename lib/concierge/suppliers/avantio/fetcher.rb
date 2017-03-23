@@ -55,7 +55,7 @@ module Avantio
     private
 
     def client
-      @client = Concierge::HTTPClient.new(FILES_PATH)
+      @client = Concierge::HTTPClient.new(FILES_PATH, timeout: 60)
     end
 
     def url(code)
