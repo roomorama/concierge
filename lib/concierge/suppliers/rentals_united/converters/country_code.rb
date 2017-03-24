@@ -19,8 +19,22 @@ module RentalsUnited
         #
         # Returns [String] country code
         def code_by_name(name)
-          country = IsoCountryCodes.search_by_name(name).first
+          country = IsoCountryCodes.search_by_name(resolve(name)).first
           (country && country.alpha2).to_s
+        end
+
+        private
+
+        # resolves conflicts for mismatching countries from the ISO 3366-1 list
+        def resolve(name)
+          countries_not_in_iso.fetch(name) { name }
+        end
+
+        def countries_not_in_iso
+          {
+            'Canary Islands' => 'Spain',
+            'Vietnam'        => 'Viet nam'
+          }
         end
       end
     end
