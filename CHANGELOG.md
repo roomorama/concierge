@@ -5,6 +5,8 @@ of Concierge. Please check the Wiki entry on the release process to understand
 how this file is formatted and how the process works.
 
 ## Unreleased
+### Added
+- RentalsUnited: support for Vietnam and Canary Islands countries
 
 ## [1.6.4] - 2016-02-15
 ### Added
