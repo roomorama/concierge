@@ -55,6 +55,9 @@ module Poplidays
         set_security_deposit!(roomorama_property, details)
         set_cleaning_info!(roomorama_property, extras)
 
+        if roomorama_property.description.to_s.empty?
+          roomorama_property.description = description_builder(roomorama_property).build
+        end
         Result.new(roomorama_property)
       end
 
@@ -98,7 +101,7 @@ module Poplidays
       end
 
       def build_descriptions(details)
-        [details.get('description.indoor'), details.get('description.outdoor')].compact.join("\n\n")
+        [details.get('description.indoor'), details.get('description.outdoor')].select { |d| !d.to_s.empty? }.join("\n\n")
       end
 
       def set_images!(result, details)
@@ -223,6 +226,10 @@ module Poplidays
         prices = Array(cleaning_extra['prices'])
         price = prices.detect { |p| p['selectedCodes'].nil? }
         price['value'] if price
+      end
+
+      def description_builder(property)
+        Concierge::PropertyDescription.new(property)
       end
 
       def to_stay(availability, mandatory_services)
