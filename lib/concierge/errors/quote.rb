@@ -2,7 +2,8 @@
 # for constructing common quote errors
 module Concierge::Errors::Quote
 
-  ERROR_CODES_WITH_SUCCESS_RESPONSE = [:check_in_too_near, :check_in_too_far, :stay_too_short]
+  ERROR_CODES_WITH_SUCCESS_RESPONSE = [:check_in_too_near, :check_in_too_far, :stay_too_short,
+                                       :property_not_instant_bookable, :max_guests_exceeded]
 
   def check_in_too_near
     Result.error(:check_in_too_near, "Selected check-in date is too near")
