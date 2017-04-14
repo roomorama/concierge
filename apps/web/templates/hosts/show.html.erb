@@ -4,6 +4,11 @@
   <%= link_to "See sync processes", routes.sync_processes_path(host_id: host.id), class:"pure-button" %>
   <%= link_to overwrite_count_for(host), routes.supplier_host_overwrites_path(supplier_id: supplier.id, host_id: host.id), class: "pure-button" %>
   <%=
+    form_for :host, routes.supplier_host_path(supplier_id: supplier.id, id: host.id), method: :delete, class: "inline-block" do
+      submit "Delete host", class: "pure-button warning-button"
+    end
+  %>
+  <%=
     form_for :host, routes.supplier_hosts_path(supplier.id), values: {host: host}, class: 'pure-form pure-form-aligned' do
       fieldset do
         div(class: 'pure-control-group') do
