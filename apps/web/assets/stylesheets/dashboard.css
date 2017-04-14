@@ -21,7 +21,9 @@ body {
 .concierge-status {
   list-style: none;
 }
-
+.inline-block {
+  display: inline-block;
+}
 .success-button {
   color: #eee;
   background: #1cb841;
